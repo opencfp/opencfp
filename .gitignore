@@ -1,1 +1,3 @@
 .vagrant
+web/vendor/*
+web/composer.lock
