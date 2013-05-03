@@ -1,0 +1,10 @@
+{
+    "name": "chartjes/opencfp",
+    "require": {
+        "twig/twig": "1.*",
+        "pagerfanta/pagerfanta": "1.0.*@dev",
+        "cartalyst/sentry": "2.0.*@dev",
+        "ircmaxell/password-compat": "1.0.*@dev"
+
+    }
+}
