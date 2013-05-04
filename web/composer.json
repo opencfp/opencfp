@@ -11,5 +11,8 @@
         "illuminate/support": "4.0.*@dev",
         "chh/optparse": "*@dev"
 
+    },
+    "autoload": {
+        "psr-0": {"TrueNorth\\opencfp": "classes/"}
     }
 }
