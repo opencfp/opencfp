@@ -4,8 +4,9 @@ require '../vendor/autoload.php';
 
 // Create our two Sentry groups
 class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
-$dsn = "mysql:dbname=cfp;host=localhost";
-$user = "root";
+$dsn = "mysql:dbname=" . $configuration->getMySQLDatabaseName() .
+    ";host=" . $configuration->getMySQLHost();
+$user = $configuration->getMySQLUser();
 Sentry::setupDatabaseResolver(new PDO($dsn, $user));
 $group = Sentry::getGroupProvider()->create(
     array(

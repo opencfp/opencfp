@@ -8,7 +8,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetMySQLHostDefault()
     {
-        putenv('OPENCFP_MYSQL_HOST');
+        putenv(Configuration::OPENCFP_MYSQL_HOST);
         $configuration = new Configuration();
         $host = $configuration->getMySQLHost();
         $this->assertEquals(
@@ -28,6 +28,56 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
             $expected,
             $host,
             "The MySQL host is " . $expected
+        );
+    }
+
+    public function testGetMySQLDatabaseNameDefault()
+    {
+        putenv(Configuration::OPENCFP_MYSQL_DATABASE_NAME);
+        $configuration = new Configuration();
+        $host = $configuration->getMySQLDatabaseName();
+        $this->assertEquals(
+            "cfp",
+            $host,
+            "The default MySQL database name is cfp"
+        );
+    }
+
+    public function testGetMySQLDatabaseNameFromEnvironment()
+    {
+        $expected = 'testDatabaseName';
+        putenv(Configuration::OPENCFP_MYSQL_DATABASE_NAME . '=' . $expected);
+        $configuration = new Configuration();
+        $host = $configuration->getMySQLDatabaseName();
+        $this->assertEquals(
+            $expected,
+            $host,
+            "The MySQL database name is " . $expected
+        );
+    }
+
+    public function testGetMySQLUserDefault()
+    {
+        putenv(Configuration::OPENCFP_MYSQL_USER_NAME);
+        $configuration = new Configuration();
+        $host = $configuration->getMySQLUser();
+        $this->assertEquals(
+            "root",
+            $host,
+            "The default MySQL user is root"
+        );
+    }
+
+    public function testGetMySQLUserFromEnvironment()
+    {
+        $expected = 'testUserName';
+        putenv(Configuration::OPENCFP_MYSQL_USER_NAME . '=' . $expected);
+        $configuration = new Configuration();
+        $host = $configuration->getMySQLUser();
+        $this->assertEquals(
+            $expected,
+            $host,
+            "The MySQL user is " . $expected
         );
     }
 }
