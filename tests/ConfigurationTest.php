@@ -2,7 +2,7 @@
 
 namespace TrueNorth\OpenCFP;
 
-require_once 'web/vendor/autoload.php';
+require_once '../web/vendor/autoload.php';
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase {
 
