@@ -35,7 +35,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
     {
         putenv(Configuration::OPENCFP_PDO_USER);
         $configuration = new Configuration();
-        $user = $configuration->getMySQLUser();
+        $user = $configuration->getPDOUser();
         $this->assertEquals(
             "root",
             $user,
@@ -48,7 +48,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
         $expected = 'testUserName';
         putenv(Configuration::OPENCFP_PDO_USER . '=' . $expected);
         $configuration = new Configuration();
-        $user = $configuration->getMySQLUser();
+        $user = $configuration->getPDOUser();
         $this->assertEquals(
             $expected,
             $user,
@@ -60,7 +60,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
     {
         putenv(Configuration::OPENCFP_PDO_PASSWORD);
         $configuration = new Configuration();
-        $password = $configuration->getMySQLPassword();
+        $password = $configuration->getPDOPassword();
         $this->assertEquals(
             "",
             $password,
@@ -73,7 +73,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
         $expected = 'testPassword';
         putenv(Configuration::OPENCFP_PDO_PASSWORD . '=' . $expected);
         $configuration = new Configuration();
-        $password = $configuration->getMySQLPassword();
+        $password = $configuration->getPDOPassword();
         $this->assertEquals(
             $expected,
             $password,

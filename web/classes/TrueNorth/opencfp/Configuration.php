@@ -13,13 +13,13 @@ class Configuration
         return $dsn ?: 'sqlite::memory:';
     }
 
-    public function getMySQLUser()
+    public function getPDOUser()
     {
         $user = getenv(self::OPENCFP_PDO_USER);
         return $user ?: 'root';
     }
 
-    public function getMySQLPassword()
+    public function getPDOPassword()
     {
         $password = getenv(self::OPENCFP_PDO_PASSWORD);
         return $password ?: '';
