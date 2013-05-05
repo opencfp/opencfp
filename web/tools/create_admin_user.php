@@ -3,11 +3,12 @@ require '../vendor/autoload.php';
 
 use CHH\Optparse;
 
+$configuration = new \TrueNorth\OpenCFP\Configuration();
+$database = new \TrueNorth\OpenCFP\Database();
+
 // Create our two Sentry groups
 class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
-$dsn = "mysql:dbname=cfp;host=localhost";
-$user = "root";
-Sentry::setupDatabaseResolver(new PDO($dsn, $user));
+Sentry::setupDatabaseResolver($database->getPDO());
 
 $parser = new Optparse\Parser();
 $parser->addFlag("help");
