@@ -2,7 +2,7 @@
 
 require '../vendor/autoload.php';
 
-$configuration = new \TrueNorth\opencfp\Configuration();
+$configuration = new \TrueNorth\OpenCFP\Configuration();
 
 // Create our two Sentry groups
 class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');

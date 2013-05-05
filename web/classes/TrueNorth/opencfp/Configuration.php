@@ -1,5 +1,5 @@
 <?php
-namespace TrueNorth\opencfp;
+namespace TrueNorth\OpenCFP;
 
 class Configuration
 {

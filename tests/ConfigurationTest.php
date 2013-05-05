@@ -1,6 +1,6 @@
 <?php
 
-namespace TrueNorth\opencfp;
+namespace TrueNorth\OpenCFP;
 
 require_once 'web/vendor/autoload.php';
 
