@@ -10,7 +10,8 @@ class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
 $dsn = "mysql:dbname=" . $configuration->getMySQLDatabaseName() .
     ";host=" . $configuration->getMySQLHost();
 $user = $configuration->getMySQLUser();
-Sentry::setupDatabaseResolver(new PDO($dsn, $user));
+$password = $configuration->getMySQLPassword();
+Sentry::setupDatabaseResolver(new PDO($dsn, $user, $password));
 
 $parser = new Optparse\Parser();
 $parser->addFlag("help");
