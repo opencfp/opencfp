@@ -1,0 +1,5 @@
+export OPENCFP_PDO_DSN=mysql:dbname=cfp;host=localhost
+export OPENCFP_PDO_USER=root
+export OPENCFP_PDO_PASSWORD=
+
+php create_groups.php

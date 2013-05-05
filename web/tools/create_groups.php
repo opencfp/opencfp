@@ -2,6 +2,8 @@
 
 require '../vendor/autoload.php';
 
+$configuration = new \TrueNorth\opencfp\Configuration();
+
 // Create our two Sentry groups
 class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
 $dsn = $configuration->getPDODSN();
