@@ -7,8 +7,7 @@ $configuration = new \TrueNorth\opencfp\Configuration();
 
 // Create our two Sentry groups
 class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
-$dsn = "mysql:dbname=" . $configuration->getMySQLDatabaseName() .
-    ";host=" . $configuration->getMySQLHost();
+$dsn = $configuration->getPDODSN();
 $user = $configuration->getMySQLUser();
 $password = $configuration->getMySQLPassword();
 Sentry::setupDatabaseResolver(new PDO($dsn, $user, $password));

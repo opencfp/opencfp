@@ -6,59 +6,34 @@ require_once 'web/vendor/autoload.php';
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase {
 
-    public function testGetMySQLHostDefault()
+    public function testGetPDODSNDefault()
     {
-        putenv(Configuration::OPENCFP_MYSQL_HOST);
+        putenv(Configuration::OPENCFP_PDO_DSN);
         $configuration = new Configuration();
-        $host = $configuration->getMySQLHost();
+        $dsn = $configuration->getPDODSN();
         $this->assertEquals(
-            "localhost",
-            $host,
-            "The default MySQL host is localhost"
+            "sqlite::memory:",
+            $dsn,
+            "The default PDO DSN is in-memory sqlite"
         );
     }
 
-    public function testGetMySQLHostFromEnvironment()
+    public function testGetPDODSNFromEnvironment()
     {
-        $expected = 'test.example.com';
-        putenv(Configuration::OPENCFP_MYSQL_HOST . '=' . $expected);
+        $expected = 'mysql:dbname=cfp;host=localhost';
+        putenv(Configuration::OPENCFP_PDO_DSN . '=' . $expected);
         $configuration = new Configuration();
-        $host = $configuration->getMySQLHost();
-        $this->assertEquals(
-            $expected,
-            $host,
-            "The MySQL host is " . $expected
-        );
-    }
-
-    public function testGetMySQLDatabaseNameDefault()
-    {
-        putenv(Configuration::OPENCFP_MYSQL_DATABASE_NAME);
-        $configuration = new Configuration();
-        $databaseName = $configuration->getMySQLDatabaseName();
-        $this->assertEquals(
-            "cfp",
-            $databaseName,
-            "The default MySQL database name is cfp"
-        );
-    }
-
-    public function testGetMySQLDatabaseNameFromEnvironment()
-    {
-        $expected = 'testDatabaseName';
-        putenv(Configuration::OPENCFP_MYSQL_DATABASE_NAME . '=' . $expected);
-        $configuration = new Configuration();
-        $databaseName = $configuration->getMySQLDatabaseName();
+        $dsn = $configuration->getPDODSN();
         $this->assertEquals(
             $expected,
-            $databaseName,
-            "The MySQL database name is " . $expected
+            $dsn,
+            "The PDO DSN is " . $expected
         );
     }
 
-    public function testGetMySQLUserDefault()
+    public function testGetPDOUserDefault()
     {
-        putenv(Configuration::OPENCFP_MYSQL_USER_NAME);
+        putenv(Configuration::OPENCFP_PDO_USER);
         $configuration = new Configuration();
         $user = $configuration->getMySQLUser();
         $this->assertEquals(
@@ -68,10 +43,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testGetMySQLUserFromEnvironment()
+    public function testGetPDOUserFromEnvironment()
     {
         $expected = 'testUserName';
-        putenv(Configuration::OPENCFP_MYSQL_USER_NAME . '=' . $expected);
+        putenv(Configuration::OPENCFP_PDO_USER . '=' . $expected);
         $configuration = new Configuration();
         $user = $configuration->getMySQLUser();
         $this->assertEquals(
@@ -81,9 +56,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testGetMySQLPasswordDefault()
+    public function testGetPDOPasswordDefault()
     {
-        putenv(Configuration::OPENCFP_MYSQL_PASSWORD);
+        putenv(Configuration::OPENCFP_PDO_PASSWORD);
         $configuration = new Configuration();
         $password = $configuration->getMySQLPassword();
         $this->assertEquals(
@@ -93,10 +68,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testGetMySQLPasswordFromEnvironment()
+    public function testGetPDOPasswordFromEnvironment()
     {
         $expected = 'testPassword';
-        putenv(Configuration::OPENCFP_MYSQL_PASSWORD . '=' . $expected);
+        putenv(Configuration::OPENCFP_PDO_PASSWORD . '=' . $expected);
         $configuration = new Configuration();
         $password = $configuration->getMySQLPassword();
         $this->assertEquals(

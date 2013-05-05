@@ -3,32 +3,25 @@ namespace TrueNorth\opencfp;
 
 class Configuration
 {
-    const OPENCFP_MYSQL_HOST = 'OPENCFP_MYSQL_HOST';
-    const OPENCFP_MYSQL_DATABASE_NAME = 'OPENCFP_MYSQL_DATABASE_NAME';
-    const OPENCFP_MYSQL_USER_NAME = 'OPENCFP_MYSQL_USER_NAME';
-    const OPENCFP_MYSQL_PASSWORD = 'OPENCFP_MYSQL_PASSWORD';
+    const OPENCFP_PDO_DSN = 'OPENCFP_PDO_DSN';
+    const OPENCFP_PDO_USER = 'OPENCFP_PDO_USER';
+    const OPENCFP_PDO_PASSWORD = 'OPENCFP_PDO_PASSWORD';
 
-    public function getMySQLHost()
+    public function getPDODSN()
     {
-        $host = getenv(self::OPENCFP_MYSQL_HOST);
-        return $host ?: 'localhost';
-    }
-
-    public function getMySQLDatabaseName()
-    {
-        $databaseName = getenv(self::OPENCFP_MYSQL_DATABASE_NAME);
-        return $databaseName ?: 'cfp';
+        $dsn = getenv(self::OPENCFP_PDO_DSN);
+        return $dsn ?: 'sqlite::memory:';
     }
 
     public function getMySQLUser()
     {
-        $user = getenv(self::OPENCFP_MYSQL_USER_NAME);
+        $user = getenv(self::OPENCFP_PDO_USER);
         return $user ?: 'root';
     }
 
     public function getMySQLPassword()
     {
-        $password = getenv(self::OPENCFP_MYSQL_PASSWORD);
+        $password = getenv(self::OPENCFP_PDO_PASSWORD);
         return $password ?: '';
     }
 }
