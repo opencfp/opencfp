@@ -1,3 +1,4 @@
-.vagrant
-web/vendor/*
-web/composer.lock
+/.vagrant
+/vendor
+/composer.lock
+/templates/compilation_cache
