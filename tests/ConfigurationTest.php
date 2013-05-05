@@ -35,10 +35,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
     {
         putenv(Configuration::OPENCFP_MYSQL_DATABASE_NAME);
         $configuration = new Configuration();
-        $host = $configuration->getMySQLDatabaseName();
+        $databaseName = $configuration->getMySQLDatabaseName();
         $this->assertEquals(
             "cfp",
-            $host,
+            $databaseName,
             "The default MySQL database name is cfp"
         );
     }
@@ -48,10 +48,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
         $expected = 'testDatabaseName';
         putenv(Configuration::OPENCFP_MYSQL_DATABASE_NAME . '=' . $expected);
         $configuration = new Configuration();
-        $host = $configuration->getMySQLDatabaseName();
+        $databaseName = $configuration->getMySQLDatabaseName();
         $this->assertEquals(
             $expected,
-            $host,
+            $databaseName,
             "The MySQL database name is " . $expected
         );
     }
@@ -60,10 +60,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
     {
         putenv(Configuration::OPENCFP_MYSQL_USER_NAME);
         $configuration = new Configuration();
-        $host = $configuration->getMySQLUser();
+        $user = $configuration->getMySQLUser();
         $this->assertEquals(
             "root",
-            $host,
+            $user,
             "The default MySQL user is root"
         );
     }
@@ -73,10 +73,35 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
         $expected = 'testUserName';
         putenv(Configuration::OPENCFP_MYSQL_USER_NAME . '=' . $expected);
         $configuration = new Configuration();
-        $host = $configuration->getMySQLUser();
+        $user = $configuration->getMySQLUser();
         $this->assertEquals(
             $expected,
-            $host,
+            $user,
+            "The MySQL user is " . $expected
+        );
+    }
+
+    public function testGetMySQLPasswordDefault()
+    {
+        putenv(Configuration::OPENCFP_MYSQL_PASSWORD);
+        $configuration = new Configuration();
+        $password = $configuration->getMySQLPassword();
+        $this->assertEquals(
+            "",
+            $password,
+            "The default MySQL password is blank"
+        );
+    }
+
+    public function testGetMySQLPasswordFromEnvironment()
+    {
+        $expected = 'testPassword';
+        putenv(Configuration::OPENCFP_MYSQL_PASSWORD . '=' . $expected);
+        $configuration = new Configuration();
+        $password = $configuration->getMySQLPassword();
+        $this->assertEquals(
+            $expected,
+            $password,
             "The MySQL user is " . $expected
         );
     }
