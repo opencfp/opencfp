@@ -20,4 +20,34 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
         $response = $form->hasRequiredFields();
         $this->assertFalse($response);
     }
+
+    /**
+     * Verify that emails are being validated correctly
+     *
+     * @test
+     * @param string $email
+     * @param boolean $expectedResponse
+     * @dataProvider emailProvider
+     */
+    public function emailsAreBeingValidatedCorrectly($email, $expectedResponse)
+    {
+        $data = array('email' => $email);
+        $form = new \OpenCFP\SignupForm($data);
+        $this->assertEquals(
+            $form->validateEmail(),
+            $expectedResponse,
+            "Did not validate {$email} as expected"
+        );
+    }
+
+    public function emailProvider()
+    {
+        return array(
+            array('test', false),
+            array('test@domain.com', true),
+            array('', false),
+            array('test@domain', false),
+            array('test+tricky@domain.com', true)
+        );
+    }
 }

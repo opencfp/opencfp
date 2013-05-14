@@ -44,4 +44,21 @@ class SignupForm
 
 	    return $allFieldsFound;
 	}
+
+	/**
+	 * Method that applies validation rules to email 
+	 *
+	 * @param string $email
+	 * @return boolean
+	 */
+	public function validateEmail()
+	{
+		if (!isset($this->_data['email'])) {
+			return false;
+		}
+
+		$response = filter_var($this->_data['email'], FILTER_VALIDATE_EMAIL);
+
+		return ($response !== false);
+	}
 }
