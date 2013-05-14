@@ -2,6 +2,7 @@
 
 // Bootstrap for OpenCFP
 require 'vendor/autoload.php';
+define('APP_DIR', __DIR__);
 
 // start our session
 session_start();
