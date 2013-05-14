@@ -40,6 +40,11 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Data provider for emailsAreBeingValidatedCorrectly
+     *
+     * @return array
+     */
     public function emailProvider()
     {
         return array(
@@ -48,6 +53,46 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             array('', false),
             array('test@domain', false),
             array('test+tricky@domain.com', true)
+        );
+    }
+
+    /**
+     * Test that passwords are being correctly matched and sanitized
+     *
+     * @test
+     * @param string $passwd
+     * @param string $passwd2
+     * @param boolean $expectedResponse
+     * @dataProvider passwordProvider
+     */
+    public function passwordsAreBeingCorrectlyMatched($passwd, $passwd2, $expectedResponse)
+    {
+        $data = array(
+            'password' => $passwd,
+            'password2' => $passwd2
+        );
+
+        $form = new \OpenCFP\SignupForm($data);
+        $testResponse = $form->validatePasswords();
+        $this->assertEquals(
+            $expectedResponse,
+            $testResponse,
+            "Did not validate passwords as expected"
+        );
+    }
+
+    /**
+     * Data provider for passwordsAreBeingCorrectlyMatched
+     *
+     * @return array
+     */
+    public function passwordProvider()
+    {
+        return array(
+            array('foo', 'foo', 'Your password must be at least 5 characters'),
+            array('bar', 'foo', "The submitted passwords do not match"),
+            array('acceptable', 'acceptable', true),
+            array(null, null, "Missing passwords"),
         );
     }
 }

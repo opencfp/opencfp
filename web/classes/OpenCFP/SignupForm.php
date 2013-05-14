@@ -7,6 +7,7 @@ namespace OpenCFP;
 class SignupForm
 {
 	protected $_data;
+	protected $_passwordMessages = '';
 
     /**
      * Class constructor
@@ -49,7 +50,6 @@ class SignupForm
 	 * Method that applies validation rules to email 
 	 *
 	 * @param string $email
-	 * @return boolean
 	 */
 	public function validateEmail()
 	{
@@ -60,5 +60,30 @@ class SignupForm
 		$response = filter_var($this->_data['email'], FILTER_VALIDATE_EMAIL);
 
 		return ($response !== false);
+	}
+
+	/**
+	 * Method that applies validation rules to user-submitted passwords
+	 *
+	 * @return true|string
+	 */
+	public function validatePasswords()
+	{
+		$passwd = filter_var($this->_data['password'], FILTER_SANITIZE_STRING);
+		$passwd2 = filter_var($this->_data['password2'], FILTER_SANITIZE_STRING);
+
+		if ($passwd == '' || $passwd2 == '') {
+			return "Missing passwords";
+		}
+
+		if ($passwd !== $passwd2) {
+	        return "The submitted passwords do not match";
+	    }
+
+	    if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
+            return "Your password must be at least 5 characters";
+	    }
+
+	    return true; 
 	}
 }
