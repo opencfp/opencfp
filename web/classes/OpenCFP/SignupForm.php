@@ -47,6 +47,21 @@ class SignupForm
 	}
 
 	/**
+	 * Validate all methods by calling all our validation methods
+	 *
+	 * @return boolean
+	 */
+	public function validateAll()
+	{
+		return (
+			$this->validateEmail() ||
+			$this->validatePasswords() ||
+			$this->validateFirstName() ||
+			$this->validateLastName()
+		);
+	}
+	
+	/**
 	 * Method that applies validation rules to email 
 	 *
 	 * @param string $email

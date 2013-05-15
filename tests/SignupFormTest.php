@@ -181,4 +181,26 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             array("<script>alert('XSS')</script>", false)
         );
     }
+
+    /**
+     * Test that verifies that our wrapper method for validating all
+     * fields works correctly
+     *
+     * @test
+     */
+    public function validateAllWorksCorrectly()
+    {
+        $data = array(
+            'email' => 'test@domain.com',
+            'password' => 'xxxxxx',
+            'password2' => 'xxxxxx',
+            'firstName' => 'Testy',
+            'lastName' => 'McTesterton'
+        );
+        $form = new \OpenCFP\SignupForm($data);
+        $this->assertTrue(
+            $form->validateAll(),
+            "All form fields did not validate as expected"
+        );
+    }
 }
