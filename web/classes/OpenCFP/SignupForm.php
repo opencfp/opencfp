@@ -117,4 +117,34 @@ class SignupForm
 		return true;
 	}
 
+
+	/**
+	 * Method that applies vaidation rules to user-submitted first names
+	 * 
+	 * @return boolean
+	 */
+	public function validateLastName()
+	{
+		$lastName = filter_var(
+			$this->_data['lastName'], 
+			FILTER_SANITIZE_STRING, 
+			array('flags' => FILTER_FLAG_STRIP_HIGH)
+		);
+
+		$lastName = strip_tags($lastName);
+
+		if ($lastName == '') {
+			return false;
+		}
+
+		if (strlen($lastName) > 255) {
+			return false;
+		}
+
+		if ($lastName !== $this->_data['lastName']) {
+			return false;
+		}
+
+		return true;
+	}
 }

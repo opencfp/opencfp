@@ -138,4 +138,47 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             array("<script>alert('XSS')</script>", false)
         );
     }
+
+    /**
+     * Test that the lastName is being validated correctly
+     *
+     * @test
+     * @param string $lastName
+     * @param boolean $expectedResponse
+     * @dataProvider lastNameProvider
+     */
+    public function lastNameIsValidatedCorrectly($lastName, $expectedResponse)
+    {
+        $data['lastName'] = $lastName;
+        $form = new \OpenCFP\SignupForm($data);
+
+        $this->assertEquals(
+            $expectedResponse,
+            $form->validateLastName(),
+            'Did not validate first name as expected'
+        );
+    }
+
+    /**
+     * Data provider for lastNameIsValidatedCorrectly
+     *
+     * @return array
+     */
+    public function lastNameProvider()
+    {
+        $longName = '';
+
+        for ($x = 1; $x <= 256; $x++) {
+            $longName .= 'X';
+        }
+
+        return array(
+            array('Chris', true),
+            array(null, false),
+            array('', false),
+            array(false, false),
+            array($longName, false),
+            array("<script>alert('XSS')</script>", false)
+        );
+    }
 }
