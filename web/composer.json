@@ -9,8 +9,8 @@
         "illuminate/events": "4.0.*@dev",
         "illuminate/container": "4.0.*@dev",
         "illuminate/support": "4.0.*@dev",
-        "chh/optparse": "*@dev"
-
+        "chh/optparse": "*@dev",
+        "ezyang/htmlpurifier": "dev-master"
     },
     "autoload": {
         "psr-0": {"TrueNorth\\OpenCFP": "classes/"},
