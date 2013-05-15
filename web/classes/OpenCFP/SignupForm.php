@@ -56,6 +56,33 @@ class SignupForm
 	 */
 	public function validateAll()
 	{
+		/**
+		 * First, use a circuit breaker to determine if the data the users
+		 * have submitted survives being sanitized
+		 */
+
+		// Grab all our fields we are expecting
+		// apply HTMLPurifier to it
+		// do a comparison and fail the check if they don't match
+		$sanitizedData = $this->sanitize();
+		$originalData = array(
+			'email' => $this->_data['email'],
+			'password' => $this->_data['password'],
+			'password2' => $this->_data['password2'],
+			'firstName' => $this->_data['firstName'],
+			'lastName' => $this->_data['lastName']
+		);
+
+		if (isset($this->_data['speaker_info'])) {
+			$originalData['speaker_info'] = $this->_data['speaker_info'];
+		}
+
+		$differences = array_diff($originalData, $sanitizedData);
+
+		if (count($differences) > 0) {
+			return false;
+		}
+
 		return (
 			$this->validateEmail() ||
 			$this->validatePasswords() ||

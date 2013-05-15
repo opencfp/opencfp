@@ -206,23 +206,90 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test that we get back some sanitized data
+     *
+     * @test
+     * @param array $inputData
+     * @param array $expectedData
+     * @dataProvider sanitizationProvider
      */
-    public function dataGetsReturnedCorrectlySanitized()
+    public function dataGetsSanitizedCorrectly($inputData, $expectedData)
     {
-        $data = array(
+        $form = new \OpenCFP\SignupForm($inputData);
+        $sanitizedData = $form->sanitize();
+        $this->assertEquals(
+            $expectedData,
+            $sanitizedData,
+            "Data was not sanitized properly"
+        );
+    }
+
+    /**
+     * Data provicer for dataGetsReturnedCorrectlySanitized
+     *
+     * @return array
+     */
+    public function sanitizationProvider()
+    {
+        $badDataIn = array(
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'firstName' => 'Testy',
-            'lastName' => "<script>alert('XSS')</script>" 
+            'lastName' => "<script>alert('XSS')</script>"
         );
 
-        $form = new \OpenCFP\SignupForm($data);
-        $sanitizedData = $form->sanitize();
-        $this->assertEquals(
-            $data,
-            $sanitizedData,
-            "Data was not sanitized properly"
+        $badDataOut = array(
+            'email' => 'test@domain.com',
+            'password' => 'xxxxxx',
+            'password2' => 'xxxxxx',
+            'firstName' => 'Testy',
+            'lastName' => ""
+        );
+
+        $goodDataIn = array(
+            'email' => 'test@domain.com',
+            'password' => 'xxxxxx',
+            'password2' => 'xxxxxx',
+            'firstName' => 'Testy',
+            'lastName' => "McTesterton"
+        );
+
+        $goodDataOut = $goodDataIn;
+
+        $badSpeakerInfoIn = array( 
+            'email' => 'test@domain.com',
+            'password' => 'xxxxxx',
+            'password2' => 'xxxxxx',
+            'firstName' => 'Testy',
+            'lastName' => "McTesterton",
+            'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
+        );
+
+        $badSpeakerInfoOut = array( 
+            'email' => 'test@domain.com',
+            'password' => 'xxxxxx',
+            'password2' => 'xxxxxx',
+            'firstName' => 'Testy',
+            'lastName' => "McTesterton",
+            'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
+        );
+
+        $goodSpeakerInfoIn = array( 
+            'email' => 'test@domain.com',
+            'password' => 'xxxxxx',
+            'password2' => 'xxxxxx',
+            'firstName' => 'Testy',
+            'lastName' => "McTesterton",
+            'speaker_info' => "Find my bio at http://littlehart.net"
+        );
+
+        $goodSpeakerInfoOut = $goodSpeakerInfoIn;
+
+        return array(
+            array($badDataIn, $badDataOut),
+            array($goodDataIn, $goodDataOut),
+            array($badSpeakerInfoIn, $badSpeakerInfoOut),
+            array($goodSpeakerInfoIn, $goodSpeakerInfoOut)
         );
     }
 }
