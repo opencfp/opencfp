@@ -8,6 +8,7 @@ class SignupForm
 {
 	protected $_data;
 	protected $_passwordMessages = '';
+	protected $_purifier;
 
     /**
      * Class constructor
@@ -17,6 +18,8 @@ class SignupForm
     public function __construct($data)
     {
     	$this->_data = $data;
+    	$config = \HTMLPurifier_Config::createDefault();
+    	$this->_purifier = new \HTMLPurifier($config);
     }
 
     /**
@@ -60,7 +63,7 @@ class SignupForm
 			$this->validateLastName()
 		);
 	}
-	
+
 	/**
 	 * Method that applies validation rules to email 
 	 *
@@ -115,8 +118,6 @@ class SignupForm
 			array('flags' => FILTER_FLAG_STRIP_HIGH)
 		);
 
-		$firstName = strip_tags($firstName);
-
 		if ($firstName == '') {
 			return false;
 		}
@@ -161,5 +162,21 @@ class SignupForm
 		}
 
 		return true;
+	}
+
+	/**
+	 * Santize all our fields that were submitted
+	 *
+	 * @return array
+	 */
+	public function sanitize()
+	{
+		$sanitizedData = array();
+
+		foreach ($this->_data as $key => $value) {
+			$sanitizedData[$key] = $this->_purifier->purify($value); 
+		}
+
+		return $sanitizedData;
 	}
 }

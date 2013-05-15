@@ -203,4 +203,26 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             "All form fields did not validate as expected"
         );
     }
+
+    /**
+     * Test that we get back some sanitized data
+     */
+    public function dataGetsReturnedCorrectlySanitized()
+    {
+        $data = array(
+            'email' => 'test@domain.com',
+            'password' => 'xxxxxx',
+            'password2' => 'xxxxxx',
+            'firstName' => 'Testy',
+            'lastName' => "<script>alert('XSS')</script>" 
+        );
+
+        $form = new \OpenCFP\SignupForm($data);
+        $sanitizedData = $form->sanitize();
+        $this->assertEquals(
+            $data,
+            $sanitizedData,
+            "Data was not sanitized properly"
+        );
+    }
 }
