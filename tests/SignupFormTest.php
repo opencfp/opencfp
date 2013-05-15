@@ -95,4 +95,47 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             array(null, null, "Missing passwords"),
         );
     }
+
+    /**
+     * Test that the firstName is being validated correctly
+     *
+     * @test
+     * @param string $firstName
+     * @param boolean $expectedResponse
+     * @dataProvider firstNameProvider
+     */
+    public function firstNameIsValidatedCorrectly($firstName, $expectedResponse)
+    {
+        $data['firstName'] = $firstName;
+        $form = new \OpenCFP\SignupForm($data);
+
+        $this->assertEquals(
+            $expectedResponse,
+            $form->validateFirstName(),
+            'Did not validate first name as expected'
+        );
+    }
+
+    /**
+     * Data provider for firstNameIsValidatedCorrectly
+     *
+     * @return array
+     */
+    public function firstNameProvider()
+    {
+        $longName = '';
+
+        for ($x = 1; $x <= 256; $x++) {
+            $longName .= 'X';
+        }
+
+        return array(
+            array('Chris', true),
+            array(null, false),
+            array('', false),
+            array(false, false),
+            array($longName, false),
+            array("<script>alert('XSS')</script>", false)
+        );
+    }
 }
