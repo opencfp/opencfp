@@ -1,7 +1,5 @@
 <?php
 
-require './bootstrap.php';
-
 class SignupFormTest extends PHPUnit_Framework_TestCase
 {
     /**
