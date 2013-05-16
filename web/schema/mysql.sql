@@ -85,3 +85,13 @@ CREATE TABLE `users_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+# Create our speaker table
+# ------------------------------------------------------------
+DROP TABLE IF EXISTS `speaker`;
+
+CREATE TABLE `speakers` (
+    `user_id` int(10) unsigned NOT NULL,
+    `info` text,
+    PRIMARY KEY(`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
