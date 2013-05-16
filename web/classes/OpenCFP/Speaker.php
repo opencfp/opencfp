@@ -32,7 +32,7 @@ class Speaker
 			return false;
 		}
 
-		$sql = "INSERT INTO speaker (user_id, info) VALUES (?, ?)";
+		$sql = "INSERT INTO speakers (user_id, info) VALUES (?, ?)";
 		$stmt = $this->_db->prepare($sql);
 		
 		return $stmt->execute(array(
@@ -54,7 +54,7 @@ class Speaker
 			return false;
 		}	
 
-		$sql = "SELECT info FROM speaker WHERE user_id = ?";
+		$sql = "SELECT info FROM speakers WHERE user_id = ?";
 		$stmt = $this->_db->prepare($sql);
 		$query = $stmt->execute($user_id);
 		$row = $stmt->fetch();
