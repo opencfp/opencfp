@@ -142,7 +142,7 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
      */
     public function firstNameIsValidatedCorrectly($firstName, $expectedResponse)
     {
-        $data['firstName'] = $firstName;
+        $data['first_name'] = $firstName;
         $form = new \OpenCFP\SignupForm($data);
 
         $this->assertEquals(
@@ -185,13 +185,13 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
      */
     public function lastNameIsValidatedCorrectly($lastName, $expectedResponse)
     {
-        $data['lastName'] = $lastName;
+        $data['last_name'] = $lastName;
         $form = new \OpenCFP\SignupForm($data);
 
         $this->assertEquals(
             $expectedResponse,
             $form->validateLastName(),
-            'Did not validate first name as expected'
+            'Did not validate last name as expected'
         );
     }
 
@@ -248,8 +248,8 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
-            'firstName' => 'Testy',
-            'lastName' => 'McTesterton'
+            'first_name' => 'Testy',
+            'last_name' => 'McTesterton'
         );
         $baseDataWithSpeakerInfo = $baseData;
         $baseDataWithSpeakerInfo['speaker_info'] = "Testing speaker info data";
@@ -327,24 +327,24 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
-            'firstName' => 'Testy',
-            'lastName' => "<script>alert('XSS')</script>"
+            'first_name' => 'Testy',
+            'last_name' => "<script>alert('XSS')</script>"
         );
 
         $badDataOut = array(
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
-            'firstName' => 'Testy',
-            'lastName' => ""
+            'first_name' => 'Testy',
+            'last_name' => ""
         );
 
         $goodDataIn = array(
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
-            'firstName' => 'Testy',
-            'lastName' => "McTesterton"
+            'first_name' => 'Testy',
+            'last_name' => "McTesterton"
         );
 
         $goodDataOut = $goodDataIn;
@@ -353,8 +353,8 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
-            'firstName' => 'Testy',
-            'lastName' => "McTesterton",
+            'first_name' => 'Testy',
+            'last_name' => "McTesterton",
             'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
         );
 
@@ -362,8 +362,8 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
-            'firstName' => 'Testy',
-            'lastName' => "McTesterton",
+            'first_name' => 'Testy',
+            'last_name' => "McTesterton",
             'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
         );
 
@@ -371,8 +371,8 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
-            'firstName' => 'Testy',
-            'lastName' => "McTesterton",
+            'first_name' => 'Testy',
+            'last_name' => "McTesterton",
             'speaker_info' => "Find my bio at http://littlehart.net"
         );
 

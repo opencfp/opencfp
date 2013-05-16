@@ -65,8 +65,8 @@ class SignupForm
 			'email' => $this->_data['email'],
 			'password' => $this->_data['password'],
 			'password2' => $this->_data['password2'],
-			'firstName' => $this->_data['firstName'],
-			'lastName' => $this->_data['lastName']
+			'first_name' => $this->_data['first_name'],
+			'last_name' => $this->_data['last_name']
 		);
 
 		if (!empty($this->_data['speaker_info'])) {
@@ -152,7 +152,7 @@ class SignupForm
 	public function validateFirstName()
 	{
 		$firstName = filter_var(
-			$this->_data['firstName'], 
+			$this->_data['first_name'], 
 			FILTER_SANITIZE_STRING, 
 			array('flags' => FILTER_FLAG_STRIP_HIGH)
 		);
@@ -168,7 +168,7 @@ class SignupForm
 			$validationResponse = false;
 		}
 
-		if ($firstName !== $this->_data['firstName']) {
+		if ($firstName !== $this->_data['first_name']) {
 			$this->errorMessages[] = 'First name contains unwanted characters';
 			$validationResponse = false;
 		}
@@ -185,7 +185,7 @@ class SignupForm
 	public function validateLastName()
 	{
 		$lastName = filter_var(
-			$this->_data['lastName'], 
+			$this->_data['last_name'], 
 			FILTER_SANITIZE_STRING, 
 			array('flags' => FILTER_FLAG_STRIP_HIGH)
 		);
@@ -203,7 +203,7 @@ class SignupForm
 			$validationResponse = false;
 		}
 
-		if ($lastName !== $this->_data['lastName']) {
+		if ($lastName !== $this->_data['last_name']) {
 			$this->errorMessage[] = "Last name data did not match after sanitizing";
 			$validationResponse = false;			
 		}
