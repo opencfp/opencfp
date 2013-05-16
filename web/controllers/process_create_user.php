@@ -14,26 +14,30 @@ if ($form->validateAll()) {
 		'email' => $sanitizedData['email'],
 		'password' => $sanitizedData['password']
 	);
-	$user = Sentry::getUserProvider()->create($userData);
 
-	// Add them to the proper group
-	$adminGroup = Sentry::getGroupProvider()->findByName('Speakers');
-	$user->addGroup($adminGroup);
+	try {
+		$user = Sentry::getUserProvider()->create($userData);
 
-	// Create a Speaker record
-	$speaker = new \OpenCFP\Speaker($db);
-	$speaker->create(array(
-	    $user->getId(),
-	    $sanitizedData['speaker_info'])
-	);
+		// Add them to the proper group
+		$adminGroup = Sentry::getGroupProvider()->findByName('Speakers');
+		$user->addGroup($adminGroup);
 
-	// Add flash message saying account has been created
-	$flashMessage = "Successfully created your account";
-	$pageTemplate = "create_user_success.twig";
+		// Create a Speaker record
+		$speaker = new \OpenCFP\Speaker($db);
+		$speaker->create(array(
+		    $user->getId(),
+		    $sanitizedData['speaker_info'])
+		);
+
+		$pageTemplate = "create_user_success.twig";
+	} catch (Cartalyst\Sentry\Users\UserExistsException $e) {
+		$data['error_messages'] = array("A user already exists with that email address");
+		$pageTemplate = 'create_user.twig';
+	}
 }
 
-if (!$form->validateAll()) {
-	$data['error_message'] = $form->errorMessages;
+if (!$form->validateAll() && empty($data['error_messages'])) {
+	$data['error_messages'] = $form->errorMessages;
 }
 
 $template = $twig->loadTemplate($pageTemplate);
