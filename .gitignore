@@ -1,3 +1,4 @@
 .vagrant
 web/vendor/*
 web/composer.lock
+web/tests/coverage/*
