@@ -7,7 +7,7 @@ namespace OpenCFP;
 class SignupForm
 {
 	protected $_data;
-	protected $_passwordMessages = '';
+	public $errorMessages = array();
 	protected $_purifier;
 
     /**
@@ -57,13 +57,9 @@ class SignupForm
 	public function validateAll()
 	{
 		/**
-		 * First, use a circuit breaker to determine if the data the users
-		 * have submitted survives being sanitized
+		 * Grab all out fields that we are expecting and make sure that
+		 * they match after they've been sanitized
 		 */
-
-		// Grab all our fields we are expecting
-		// apply HTMLPurifier to it
-		// do a comparison and fail the check if they don't match
 		$sanitizedData = $this->sanitize();
 		$originalData = array(
 			'email' => $this->_data['email'],
@@ -73,7 +69,7 @@ class SignupForm
 			'lastName' => $this->_data['lastName']
 		);
 
-		if (isset($this->_data['speaker_info'])) {
+		if (!empty($this->_data['speaker_info'])) {
 			$originalData['speaker_info'] = $this->_data['speaker_info'];
 		}
 
@@ -83,12 +79,24 @@ class SignupForm
 			return false;
 		}
 
+		$validEmail = $this->validateEmail();
+		$validPasswords = $this->validatePasswords();
+		$validFirstName = $this->validateFirstName();
+		$validLastName = $this->validateLastName();
+		$validSpeakerInfo = true;
+
+		if (!empty($this->_data['speaker_info'])) {
+			$validSpeakerInfo = $this->validateSpeakerInfo();
+		}
+
 		return (
-			$this->validateEmail() ||
-			$this->validatePasswords() ||
-			$this->validateFirstName() ||
-			$this->validateLastName()
+			$validEmail &&
+			$validPasswords &&
+			$validFirstName &&
+			$validLastName &&
+			$validSpeakerInfo
 		);
+
 	}
 
 	/**
@@ -116,20 +124,24 @@ class SignupForm
 	{
 		$passwd = filter_var($this->_data['password'], FILTER_SANITIZE_STRING);
 		$passwd2 = filter_var($this->_data['password2'], FILTER_SANITIZE_STRING);
+		$validationResponse = true;
 
 		if ($passwd == '' || $passwd2 == '') {
-			return "Missing passwords";
+			$validationResponse = false;
+			$this->errorMessages[] = "Missing passwords";
 		}
 
 		if ($passwd !== $passwd2) {
-	        return "The submitted passwords do not match";
+			$validationResponse = false;
+	        $this->errorMessages[] = "The submitted passwords do not match";
 	    }
 
 	    if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
-            return "Your password must be at least 5 characters";
+	    	$validationResponse = false;
+	    	$this->errorMessages[] = "The submitted password must be at least 5 characters";
 	    }
 
-	    return true; 
+	    return $validationResponse; 
 	}
 
 	/**
@@ -144,20 +156,24 @@ class SignupForm
 			FILTER_SANITIZE_STRING, 
 			array('flags' => FILTER_FLAG_STRIP_HIGH)
 		);
+		$validationResponse = true;
 
 		if ($firstName == '') {
-			return false;
+			$this->errorMessages[] = 'First name cannot be blank';
+			$validationResponse = false;
 		}
 
 		if (strlen($firstName) > 255) {
-			return false;
+			$this->errorMessages[] = 'First name cannot exceed 255 characters';
+			$validationResponse = false;
 		}
 
 		if ($firstName !== $this->_data['firstName']) {
-			return false;
+			$this->errorMessages[] = 'First name contains unwanted characters';
+			$validationResponse = false;
 		}
 
-		return true;
+		return $validationResponse;
 	}
 
 
@@ -173,22 +189,55 @@ class SignupForm
 			FILTER_SANITIZE_STRING, 
 			array('flags' => FILTER_FLAG_STRIP_HIGH)
 		);
+		$validationResponse = true;
 
 		$lastName = strip_tags($lastName);
 
 		if ($lastName == '') {
-			return false;
+			$this->errorMessage[] = "Last name was blank or contained unwanted characters";
+			$validationResponse = false;
 		}
 
 		if (strlen($lastName) > 255) {
-			return false;
+			$this->errorMessage[] = "Last name cannot be longer than 255 characters";
+			$validationResponse = false;
 		}
 
 		if ($lastName !== $this->_data['lastName']) {
-			return false;
+			$this->errorMessage[] = "Last name data did not match after sanitizing";
+			$validationResponse = false;			
 		}
 
-		return true;
+		return $validationResponse;
+	}
+
+	/**
+	 * Method that applies validation rules to user-submitted speaker info
+	 *
+	 * @return boolean
+	 */
+	public function validateSpeakerInfo()
+	{
+		$speakerInfo = filter_var(
+			$this->_data['speaker_info'],
+			FILTER_SANITIZE_STRING,
+			array('flags' => FILTER_FLAG_STRIP_HIGH)
+		);
+		$validationResponse = true;
+		$speakerInfo = strip_tags($speakerInfo);
+		$speakerInfo = $this->_purifier->purify($speakerInfo);
+
+		if ($speakerInfo !== $this->_data['speaker_info']) {
+			$this->errorMessages[] = "Your submitted speaker info contained unwanted characters";
+			$validationResponse = false;
+		}
+
+		if (empty($speakerInfo)) {
+			$this->errorMessages[] = "You submitted speaker info but it was empty";
+			$validationResponse = false;
+		}
+
+		return $validationResponse;
 	}
 
 	/**

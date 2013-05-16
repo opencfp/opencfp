@@ -41,6 +41,22 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Validation should fail if we don't have an email address in the data
+     * and try to validate it
+     *
+     * @test
+     */
+    public function emailValidationShouldFailWithoutEmail()
+    {
+        $data = array();
+        $form = new \OpenCFP\SignupForm($data);
+        $this->assertFalse(
+            $form->validateEmail(),
+            "Validating empty email did not fail"
+        );
+    }
+
+    /**
      * Data provider for emailsAreBeingValidatedCorrectly
      *
      * @return array
@@ -57,15 +73,36 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that passwords are being correctly matched and sanitized
+     * Test that password that match and are of the proper length pass validation
+     * and sanitization
+     * 
+     * @test
+     */
+    public function properPasswordsPassValidationAndSanitization()
+    {
+        $data = array(
+            'password' => 'acceptable',
+            'password2' => 'acceptable'
+        );
+        $form = new \OpenCFP\SignupForm($data);
+
+        $this->assertTrue(
+            $form->validatePasswords(),
+            "Valid passwords did not survive validation and sanitization"
+        );
+    }
+
+    /**
+     * Test that bad passwords are being correctly matched and sanitized
      *
      * @test
      * @param string $passwd
      * @param string $passwd2
+     * @param string $expectedMessage
      * @param boolean $expectedResponse
-     * @dataProvider passwordProvider
+     * @dataProvider badPasswordProvider
      */
-    public function passwordsAreBeingCorrectlyMatched($passwd, $passwd2, $expectedResponse)
+    public function badPasswordsAreBeingCorrectlyDetected($passwd, $passwd2, $expectedMessage, $expectedResponse)
     {
         $data = array(
             'password' => $passwd,
@@ -74,10 +111,12 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
 
         $form = new \OpenCFP\SignupForm($data);
         $testResponse = $form->validatePasswords();
-        $this->assertEquals(
-            $expectedResponse,
-            $testResponse,
-            "Did not validate passwords as expected"
+
+        $this->assertEquals($expectedResponse, $testResponse);
+        $this->assertContains(
+            $expectedMessage,
+            $form->errorMessages,
+            "Did not get expected error message"
         );
     }
 
@@ -86,13 +125,12 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function passwordProvider()
+    public function badPasswordProvider()
     {
         return array(
-            array('foo', 'foo', 'Your password must be at least 5 characters'),
-            array('bar', 'foo', "The submitted passwords do not match"),
-            array('acceptable', 'acceptable', true),
-            array(null, null, "Missing passwords"),
+            array('foo', 'foo', "The submitted password must be at least 5 characters", false),
+            array('bar', 'foo', "The submitted passwords do not match", false),
+            array(null, null, "Missing passwords", false),
         );
     }
 
@@ -187,20 +225,77 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
      * fields works correctly
      *
      * @test
+     * @param array $data
+     * @param boolean $expectedResponse
+     * @dataProvider validateAllProvider
      */
-    public function validateAllWorksCorrectly()
+    public function validateAllWorksCorrectly($data, $expectedResponse)
     {
-        $data = array(
+        $form = new \OpenCFP\SignupForm($data);
+        $this->assertEquals(
+            $expectedResponse,
+            $form->validateAll(),
+            "All submitted data did not validate as expected"
+        );
+    }
+
+    /**
+     * Data provider method for validateAllWOrksCorrectly
+     *
+     * @return array
+     */
+    public function validateAllProvider()
+    {
+        $baseData = array(
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'firstName' => 'Testy',
             'lastName' => 'McTesterton'
         );
+        $baseDataWithSpeakerInfo = $baseData;
+        $baseDataWithSpeakerInfo['speaker_info'] = "Testing speaker info data";
+        $baseDataWithBadContent = $baseData;
+        $baseDataWithBadContent['speaker_info'] = "<script>alert('LOL')</script>";
+
+        return array(
+            array($baseData, true),
+            array($baseDataWithSpeakerInfo, true),
+            array($baseDataWithBadContent, false)
+        );
+    }
+
+    /**
+     * Test that speaker info is validated correctly
+     *
+     * @test
+     * @param string $speakerInfo
+     * @param boolean $expectedResponse
+     * @dataProvider speakerInfoProvider
+     */
+    public function speakerInfoValidatedCorrectly($speakerInfo, $expectedResponse)
+    {
+        $data['speaker_info'] = $speakerInfo;
         $form = new \OpenCFP\SignupForm($data);
-        $this->assertTrue(
-            $form->validateAll(),
-            "All form fields did not validate as expected"
+
+        $this->assertEquals(
+            $expectedResponse,
+            $form->validateSpeakerInfo(),
+            "Speaker info was not validated as expected"
+        );
+    }
+   
+    /**
+      * Data provider for speakerInfoValidatedCorrectly
+      *
+      * @return array
+      */ 
+    public function speakerInfoProvider()
+    {
+        return array(
+            array('Speaker info', true),
+            array(null, false),
+            array("<script>alert('LOL')</script>", false)
         );
     }
 
