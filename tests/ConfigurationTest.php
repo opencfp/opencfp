@@ -1,8 +1,5 @@
 <?php
-
-namespace TrueNorth\OpenCFP;
-
-require_once '../web/vendor/autoload.php';
+namespace OpenCFP;
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase {
 
