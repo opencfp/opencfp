@@ -1,5 +1,5 @@
 <?php
-namespace TrueNorth\OpenCFP;
+namespace OpenCFP;
 
 class Database
 {
