@@ -56,7 +56,7 @@ class Speaker
 
 		$sql = "SELECT info FROM speakers WHERE user_id = ?";
 		$stmt = $this->_db->prepare($sql);
-		$query = $stmt->execute($user_id);
+		$query = $stmt->execute(array($user_id));
 		$row = $stmt->fetch();
 
 		if ($row !== false) {
