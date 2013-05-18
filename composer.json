@@ -13,7 +13,6 @@
         "ezyang/htmlpurifier": "dev-master"
     },
     "autoload": {
-        "psr-0": {"TrueNorth\\OpenCFP": "classes/"},
         "psr-0": {"OpenCFP": "classes/"}
     },
     "require-dev": {
