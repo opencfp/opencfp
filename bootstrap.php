@@ -8,7 +8,7 @@ define('APP_DIR', __DIR__);
 session_start();
 
 /**
- * Database and Sentty configuration done here
+ * Database and Sentry configuration done here
  * CHANGE THIS TO MATCH YOUR PREFERRED USERNAME AND PASSWORD 
  */
 class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
