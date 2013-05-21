@@ -1,0 +1,40 @@
+{% extends "layouts/default.twig" %}
+{% block title %}TrueNorthPHP - Call for Papers{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="well">
+        <p style="visibility: hidden" class="text-error">Please enter both your User ID and Password.</p>
+        <p class="text-error">{{ errorMessage }}</p>
+        <form id="login" class="form-horizontal" method="post" action="login.php">
+            <legend>Let me in!</legend>
+            <div class="control-group">
+                <label class="control-label">Email</label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-envelope"></i></span>
+                        <input type="text" class="input-xlarge" id="email" name="email" placeholder="Email" value="{{ email }}">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Password</label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-lock"></i></span>
+                        <input type="Password" id="passwd" class="input-xlarge" name="passwd" placeholder="Password">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"></label>
+                <div class="controls">
+                    <button type="submit" class="btn btn-success" >Login</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="js/login.js"></script>
+{% endblock %}
