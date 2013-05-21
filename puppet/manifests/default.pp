@@ -92,6 +92,11 @@ database { "cfp":
     charset => "utf8"
 }
 
+$mysql_pass_arg = ''
+if $mysql_root_password != '' {
+    $mysql_pass_arg = "-p${mysql_root_password}"
+}
+
 exec { "seed_data":
-    command => "/bin/cat /vagrant/schema/mysql.sql | /usr/bin/mysql -u root cfp"
+    command => "/bin/cat /vagrant/schema/mysql.sql | /usr/bin/mysql -u root ${mysql_pass_arg} cfp"
 }
