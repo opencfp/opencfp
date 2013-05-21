@@ -5,6 +5,7 @@
  */
 $form = new \OpenCFP\SignupForm($_POST);
 $data = array();
+$pageTemplate = 'create_user.twig';
 
 if ($form->validateAll()) {
 	$sanitizedData = $form->sanitize();
@@ -32,7 +33,6 @@ if ($form->validateAll()) {
 		$pageTemplate = "create_user_success.twig";
 	} catch (Cartalyst\Sentry\Users\UserExistsException $e) {
 		$data['error_messages'] = array("A user already exists with that email address");
-		$pageTemplate = 'create_user.twig';
 	}
 }
 
