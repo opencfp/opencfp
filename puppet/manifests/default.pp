@@ -91,3 +91,7 @@ database { "cfp":
     ensure => "present",
     charset => "utf8"
 }
+
+exec { "seed_data":
+    command => "/bin/cat /vagrant/schema/mysql.sql | /usr/bin/mysql -u root cfp"
+}
