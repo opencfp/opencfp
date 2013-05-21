@@ -1,4 +1,6 @@
 .vagrant
-web/vendor/*
-web/composer.lock
-web/tests/coverage/*
+vendor/*
+composer.lock
+tests/coverage/*
+.idea
+opencfp.iml
