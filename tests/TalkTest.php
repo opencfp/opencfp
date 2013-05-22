@@ -166,15 +166,16 @@ class TalkTest extends PHPUnit_Framework_TestCase
      * @test
      * @dataProvider updateProvider
      * @param boolean $updateResponse
+     * @param integer $rowCount
      */
-    public function updateTalkWorksCorrectly($updateResponse)
+    public function updateTalkWorksCorrectly($updateResponse, $rowCount)
     {
         $stmt = $this->getMockBuilder('StdClass')
-            ->setMethods(array('execute'))
+            ->setMethods(array('execute', 'rowCount'))
             ->getMock();
         $stmt->expects($this->once())
-            ->method('execute')
-            ->will($this->returnValue($updateResponse));
+            ->method('rowCount')
+            ->will($this->returnValue($rowCount));
         
         $db = $this->getMockBuilder('PDOMock')
             ->setMethods(array('prepare'))
@@ -209,8 +210,9 @@ class TalkTest extends PHPUnit_Framework_TestCase
     public function updateProvider()
     {
         return array(
-            array(true),
-            array(false)
+            array(true, 1),
+            array(false, 3),
+            array(false, 0)
         );
     }
 }

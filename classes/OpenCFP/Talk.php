@@ -96,13 +96,14 @@ class Talk
             AND user_id = ?
         ";
         $stmt = $this->_db->prepare($sql);
-        
-        return $stmt->execute(array(
+        $stmt->execute(array(
             $data['title'],
             $data['description'],
             $data['type'],
             $data['user_id'],
             $data['id']
         ));   
+
+        return ($stmt->rowCount() === 1); 
     }
 }
