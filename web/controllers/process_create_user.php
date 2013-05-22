@@ -13,7 +13,8 @@ if ($form->validateAll()) {
 	// Create account using Sentry
 	$userData = array(
 		'email' => $sanitizedData['email'],
-		'password' => $sanitizedData['password']
+		'password' => $sanitizedData['password'],
+		'activated' => 1
 	);
 
 	try {
