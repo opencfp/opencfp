@@ -215,4 +215,56 @@ class TalkTest extends PHPUnit_Framework_TestCase
             array(false, 0)
         );
     }
+
+    /**
+     * Test to make sure deletion works correctly
+     *
+     * @test
+     * @dataProvider deleteProvider
+     * @param boolean $expectedResponse
+     * @param boolean $rowCount
+     */
+    public function deleteTalkWorksCorrectly($expectedResponse, $rowCount)
+    {
+        // Values that don't mean anything
+        $userId = 2;
+        $talkId = 17;
+
+        $stmt = $this->getMockBuilder('StdClass')
+            ->setMethods(array('execute', 'rowCount'))
+            ->getMock();
+        $stmt->expects($this->once())
+            ->method('rowCount')
+            ->will($this->returnValue($rowCount));
+        
+        $db = $this->getMockBuilder('PDOMock')
+            ->setMethods(array('prepare'))
+            ->getMock();
+        $db->expects($this->once())
+            ->method('prepare')
+            ->with($this->stringContains("DELETE FROM talks"))
+            ->will($this->returnValue($stmt));
+
+        $talk = new \OpenCFP\Talk($db);
+
+        $this->assertEquals(
+            $expectedResponse,
+            $talk->delete($talkId, $userId),
+            '\OpenCFP\Talk::delete() did not handle deletion correctly'
+        );
+    }
+
+    /**
+     * Data provider for deleteTalkWorksCorrectly
+     *
+     * @return array
+     */
+    public function deleteProvider()
+    {
+        return array(
+            array(true, 1),
+            array(false, 2),
+            array(false, 0)
+        );
+    }
 }

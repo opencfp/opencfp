@@ -106,4 +106,20 @@ class Talk
 
         return ($stmt->rowCount() === 1); 
     }
+
+    /**
+     * Delete a Talk record given a talk ID and a user ID
+     *
+     * @param integer $talkId
+     * @param integer $userId
+     * @return boolean
+     */
+    public function delete($talkId, $userId)
+    {
+        $sql = "DELETE FROM talks WHERE id = ? AND user_id = ?";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute(array($talkId, $userId));
+
+        return ($stmt->rowCount() === 1); 
+    }
 }
