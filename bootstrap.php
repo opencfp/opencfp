@@ -9,17 +9,17 @@ session_start();
 
 /**
  * Database and Sentry configuration done here
- * CHANGE THIS TO MATCH YOUR PREFERRED USERNAME AND PASSWORD 
+ * CHANGE THIS TO MATCH YOUR PREFERRED USERNAME AND PASSWORD
  */
 class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
 $dsn = "mysql:dbname=cfp;host=localhost";
 $user = "root";
 $password = "";
 $db = new \PDO($dsn, $user, $password);
-
+unset($dsn, $user, $password);
 Sentry::setupDatabaseResolver($db);
 
 // Initialize Twig
-$loader = new Twig_Loader_Filesystem('../templates');
+$loader = new Twig_Loader_Filesystem(APP_DIR . '/templates');
 $twig = new Twig_Environment($loader);
 
