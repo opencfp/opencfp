@@ -1,9 +1,7 @@
 <?php
-
 /**
  * Object that represents a talk that a speaker has submitted
  */
-
 namespace OpenCFP;
 
 class Talk
