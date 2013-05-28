@@ -4,3 +4,4 @@ composer.lock
 tests/coverage/*
 .idea
 opencfp.iml
+config/config.ini
