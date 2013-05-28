@@ -32,7 +32,7 @@ apache::vhost { 'cfp':
     priority      => '1',
 }
 
-exec {'/usr/sbin/a2dissite default': 
+exec {'/usr/sbin/a2dissite default':
     require => Apache::Vhost['cfp'],
 }
 
@@ -82,14 +82,18 @@ xdebug::config { 'default' :
 #     require    => Class['php'],
 # }
 
-class { 'mysql': }
+class { 'mysql':
+    require => Exec['apt-get update'],
+}
 class { 'mysql::server':
-  config_hash => { 'root_password' => $mysql_root_password }
+    require => Exec['apt-get update'],
+    config_hash => { 'root_password' => $mysql_root_password }
 }
 
 database { "cfp":
     ensure => "present",
-    charset => "utf8"
+    charset => "utf8",
+    require   => [ Class['mysql::server'], Class['mysql'] ]
 }
 
 $mysql_pass_arg = ''
@@ -98,5 +102,6 @@ if $mysql_root_password != '' {
 }
 
 exec { "seed_data":
-    command => "/bin/cat /vagrant/schema/mysql.sql | /usr/bin/mysql -u root ${mysql_pass_arg} cfp"
+    command => "/bin/cat /vagrant/schema/mysql.sql | /usr/bin/mysql -u root ${mysql_pass_arg} cfp",
+    require   => Database['cfp']
 }
