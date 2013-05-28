@@ -1,7 +1,9 @@
+{% set navigation_bar = [['index', 'Home'], ['about', 'About'], ['contact', 'Contact']] %}
+{% set active_page = active_page|default('index') %}
 <!DOCTYPE html>
 <html>
 <head>
-<title>{% block title %}{% endblock %}</title>
+<title>{% block title %}TrueNorthPHP - Call for Papers{% endblock %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -10,11 +12,14 @@
 <body>
 <div class="container-narrow">
     <div class="masthead">
-        <ul class="nav nav-pills pull-right">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
+        {% block navigation %}
+        <ul id="navigation" class="nav nav-pills pull-right">
+            {% for item in navigation_bar %}
+            <li{% if item[0] == active_page %} class="active"{% endif%}>
+            <a href="{{ item[0] }}.php">{{item[1]}}</a></li>
+            {% endfor %}
         </ul>
+        {% endblock %}
         <h3 class="muted">TrueNorthPHP Call For Papers</h3>
     </div>
 {% block content %}
