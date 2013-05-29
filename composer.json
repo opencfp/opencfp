@@ -10,7 +10,8 @@
         "illuminate/container": "4.0.*@dev",
         "illuminate/support": "4.0.*@dev",
         "chh/optparse": "*@dev",
-        "ezyang/htmlpurifier": "dev-master"
+        "ezyang/htmlpurifier": "dev-master",
+        "swiftmailer/swiftmailer": "5.0"
     },
     "autoload": {
         "psr-0": {"OpenCFP": "classes/"}

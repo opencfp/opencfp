@@ -14,7 +14,6 @@ if ($form->validateAll()) {
 	$userData = array(
 		'email' => $sanitizedData['email'],
 		'password' => $sanitizedData['password'],
-		'activated' => 1
 	);
 
 	try {
@@ -32,6 +31,8 @@ if ($form->validateAll()) {
 		);
 
 		$pageTemplate = "create_user_success.twig";
+
+        $form->sendActivationMessage($user);
 	} catch (Cartalyst\Sentry\Users\UserExistsException $e) {
 		$data['error_messages'] = array("A user already exists with that email address");
 	}
