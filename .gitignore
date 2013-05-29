@@ -4,3 +4,5 @@ composer.lock
 tests/coverage/*
 .idea
 opencfp.iml
+templates/compilation_cache
+.DS_Store
