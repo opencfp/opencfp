@@ -52,7 +52,7 @@ class Speaker
     {
         if ((int)$user_id != $user_id) {
             return false;
-        }	
+        }    
 
         $sql = "SELECT info FROM speakers WHERE user_id = ?";
         $stmt = $this->_db->prepare($sql);

@@ -206,7 +206,7 @@ class SignupForm
 
         if ($lastName !== $this->_data['last_name']) {
             $this->errorMessage[] = "Last name data did not match after sanitizing";
-            $validationResponse = false;			
+            $validationResponse = false;            
         }
 
         return $validationResponse;
