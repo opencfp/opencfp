@@ -34,12 +34,12 @@ class Speaker
 
         $sql = "INSERT INTO speakers (user_id, info) VALUES (?, ?)";
         $stmt = $this->_db->prepare($sql);
-        
+
         return $stmt->execute(array(
             $data['user_id'],
             $data['info']
-            )
-        );
+        )
+    );
     }
 
     /**
@@ -50,13 +50,13 @@ class Speaker
      */
     public function findByUserId($user_id)
     {
-        if ((int)$user_id !== $user_id) {
+        if ((int)$user_id != $user_id) {
             return false;
         }    
 
         $sql = "SELECT info FROM speakers WHERE user_id = ?";
         $stmt = $this->_db->prepare($sql);
-        $query = $stmt->execute(array($user_id));
+        $stmt->execute(array($user_id));
         $row = $stmt->fetch();
 
         if ($row !== false) {

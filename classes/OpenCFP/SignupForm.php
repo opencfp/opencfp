@@ -30,6 +30,7 @@ class SignupForm
     public function hasRequiredFields()
     {
         // If any of our fields are empty, reject stuff
+        $allFieldsFound = true;
         $fieldList = array(
             'email', 
             'password', 
@@ -247,15 +248,18 @@ class SignupForm
      */
     public function sanitize()
     {
-        $sanitizedData = array();
+        $purifier = $this->_purifier;
 
-        foreach ($this->_data as $key => $value) {
-            $sanitizedData[$key] = $this->_purifier->purify($value); 
-        }
+        $sanitizedData = array_map(
+            function ($field) use ($purifier) {
+                return $purifier->purify($field);
+            },
+            $this->_data
+        );
 
         return $sanitizedData;
     }
-
+    
     /**
      * Build activation email
      *
