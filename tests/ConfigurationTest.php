@@ -1,50 +1,60 @@
 <?php
 namespace OpenCFP;
+use \Mockery as m;
 
-class ConfigurationTest extends \PHPUnit_Framework_TestCase {
+class ConfigurationTest extends \PHPUnit_Framework_TestCase
+{
+    protected $configuration;
+    protected $parser;
+    protected $defaults;
 
-    public function testGetPDODSNDefault()
+    public function setUp()
     {
-        putenv(Configuration::OPENCFP_PDO_DSN);
-        $configuration = new Configuration();
-        $dsn = $configuration->getPDODSN();
-        $this->assertEquals(
-            "sqlite::memory:",
-            $dsn,
-            "The default PDO DSN is in-memory sqlite"
+        $this->parser = m::mock('OpenCFP\ConfigLoaderInterface');
+        $this->defaults = array(
+            'database' => array(
+                'dsn' => 'something',
+                'user' => 'me',
+                'password' => 'mipass'
+            ),
+            'application' => array(
+                'title' => 'some title',
+                'url' => 'some url'
+            ),
+            'twig' => array(
+                'template_dir' => 'some dir'
+            )
         );
     }
 
-    public function testGetPDODSNFromEnvironment()
+    public function tearDown()
+    {
+        m::close();
+    }
+
+    public function testGetPDODSN()
     {
         $expected = 'mysql:dbname=cfp;host=localhost';
-        putenv(Configuration::OPENCFP_PDO_DSN . '=' . $expected);
-        $configuration = new Configuration();
-        $dsn = $configuration->getPDODSN();
+        $data = $this->defaults;
+        $data['database']['dsn'] = $expected;
+        $this->parser->shouldReceive('load')->andReturn($data);
+        $this->configuration = new Configuration($this->parser);
+
+        $dsn = $this->configuration->getPDODSN();
         $this->assertEquals(
             $expected,
             $dsn,
-            "The PDO DSN is " . $expected
+            "The DSN is " . $expected
         );
     }
 
-    public function testGetPDOUserDefault()
-    {
-        putenv(Configuration::OPENCFP_PDO_USER);
-        $configuration = new Configuration();
-        $user = $configuration->getPDOUser();
-        $this->assertEquals(
-            "root",
-            $user,
-            "The default MySQL user is root"
-        );
-    }
-
-    public function testGetPDOUserFromEnvironment()
+    public function testGetPDOUser()
     {
         $expected = 'testUserName';
-        putenv(Configuration::OPENCFP_PDO_USER . '=' . $expected);
-        $configuration = new Configuration();
+        $data = $this->defaults;
+        $data['database']['user'] = $expected;
+        $this->parser->shouldReceive('load')->andReturn($data);
+        $configuration = new Configuration($this->parser);
         $user = $configuration->getPDOUser();
         $this->assertEquals(
             $expected,
@@ -53,28 +63,33 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-    public function testGetPDOPasswordDefault()
-    {
-        putenv(Configuration::OPENCFP_PDO_PASSWORD);
-        $configuration = new Configuration();
-        $password = $configuration->getPDOPassword();
-        $this->assertEquals(
-            "",
-            $password,
-            "The default MySQL password is blank"
-        );
-    }
-
-    public function testGetPDOPasswordFromEnvironment()
+    public function testGetPDOPassword()
     {
         $expected = 'testPassword';
-        putenv(Configuration::OPENCFP_PDO_PASSWORD . '=' . $expected);
-        $configuration = new Configuration();
+        $data = $this->defaults;
+        $data['database']['password'] = $expected;
+        $this->parser->shouldReceive('load')->andReturn($data);
+        $configuration = new Configuration($this->parser);
         $password = $configuration->getPDOPassword();
         $this->assertEquals(
             $expected,
             $password,
-            "The MySQL user is " . $expected
+            "The MySQL password is " . $expected
+        );
+    }
+
+    public function testGetTwigTemplateDir()
+    {
+        $expected = 'somedirectory';
+        $data = $this->defaults;
+        $data['twig']['template_dir'] = $expected;
+        $this->parser->shouldReceive('load')->andReturn($data);
+        $configuration = new Configuration($this->parser);
+        $password = $configuration->getTwigTemplateDir();
+        $this->assertEquals(
+            $expected,
+            $password,
+            "The Twig Template Directory is " . $expected
         );
     }
 }

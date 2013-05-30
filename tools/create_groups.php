@@ -1,13 +1,7 @@
 <?php
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../bootstrap.php';
 
-$configuration = new \TrueNorth\OpenCFP\Configuration();
-$database = new \TrueNorth\OpenCFP\Database();
-
-// Create our two Sentry groups
-class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
-Sentry::setupDatabaseResolver($database->getPDO());
 $group = Sentry::getGroupProvider()->create(
     array(
         'name' => 'Speakers',
