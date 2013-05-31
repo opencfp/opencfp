@@ -259,7 +259,7 @@ class SignupForm
 
         return $sanitizedData;
     }
-    
+
     /**
      * Build activation email
      *
