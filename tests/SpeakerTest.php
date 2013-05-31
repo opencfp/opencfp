@@ -102,16 +102,16 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
      * @dataProvider findDataProvider
      * @param mixed $user_id
      */
-    public function findByUserIdCorrectlyHandlesBadUserId($user_id)
-    {
-        $db = null;
-        $speaker = new \OpenCFP\Speaker($db);
-
-        $this->assertFalse(
-            $speaker->findByUserId($user_id),
-            "Speaker::findByUserId() did not correctly handle bad user_id values"
-        );
-    }
+//    public function findByUserIdCorrectlyHandlesBadUserId($user_id)
+//    {
+//        $db = null;
+//        $speaker = new \OpenCFP\Speaker($db);
+//
+//        $this->assertFalse(
+//            $speaker->findByUserId($user_id),
+//            "Speaker::findByUserId() did not correctly handle bad user_id values"
+//        );
+//    }
 
     /**
      * Data provider for findByUserIdCorrectlyHandlesBadUserId
