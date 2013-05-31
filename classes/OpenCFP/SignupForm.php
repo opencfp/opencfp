@@ -206,7 +206,7 @@ class SignupForm
 
         if ($lastName !== $this->_data['last_name']) {
             $this->errorMessage[] = "Last name data did not match after sanitizing";
-            $validationResponse = false;			
+            $validationResponse = false;
         }
 
         return $validationResponse;
@@ -258,5 +258,81 @@ class SignupForm
         );
 
         return $sanitizedData;
+    }
+
+    /**
+     * Build activation email
+     *
+     * @param $activationCode string
+     * @param $message Swift_Message
+     */
+    private function constructActivationMessage($activationCode, $message)
+    {
+        global $twig;
+
+        $template = $twig->loadTemplate('activation_email.twig');
+        $parameters = array(
+            'name' => $this->_data['first_name'],
+            'activationCode' => $activationCode,
+            'method' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
+                ? 'https' : 'http',
+            'host' => !empty($_SERVER['HTTP_HOST'])
+                ? $_SERVER['HTTP_HOST'] : 'localhost',
+        );
+
+        $message->setTo(
+            $this->_data['email'],
+            $this->_data['first_name'] . ' ' . $this->_data['last_name']
+        );
+        $message->setFrom(
+            $template->renderBlock('from', $parameters),
+            $template->renderBlock('from_name', $parameters)
+        );
+        $message->setSubject($template->renderBlock('subject', $parameters));
+        $message->setBody($template->renderBlock('body_text', $parameters));
+        $message->addPart(
+            $template->renderBlock('body_html', $parameters),
+            'text/html'
+        );
+    }
+
+    /**
+     * Send out activation email.  Returns # of emails sent which should be 1.
+     *
+     * @param $user \Cartalyst\Sentry\Users\Eloquent\User
+     * @param null $transport \Swift_SmtpTransport
+     * @param null $mailer \Swift_Mailer
+     * @param null $message \Swift_Message
+     * @return int
+     */
+    public function sendActivationMessage(
+        $user,
+        $transport = null,
+        $mailer = null,
+        $message = null
+    )
+    {
+        $configuration = new Configuration();
+        if (!$transport) {
+            $transport = new \Swift_SmtpTransport();
+        }
+        $transport->setPort($configuration->getSMTPPort());
+        $transport->setHost($configuration->getSMTPHost());
+        $SMTPUser = $configuration->getSMTPUser();
+        if ($SMTPUser) {
+            $transport->setUsername($SMTPUser)
+                ->setPassword($configuration->getSMTPPassword());
+        }
+        if (!$mailer) {
+            $mailer = new \Swift_Mailer($transport);
+        }
+        if (!$message) {
+            $message = new \Swift_Message();
+        }
+        $this->constructActivationMessage(
+            $user->getActivationCode(),
+            $message
+        );
+        return $mailer->send($message);
     }
 }
