@@ -50,7 +50,7 @@ class Speaker
      */
     public function findByUserId($user_id)
     {
-        if ((int)$user_id != $user_id) {
+        if (!is_int($user_id)) {
             return false;
         }	
 
