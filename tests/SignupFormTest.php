@@ -1,7 +1,5 @@
 <?php
 
-use \Mockery as m;
-
 class SignupFormTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -387,79 +385,4 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             array($goodSpeakerInfoIn, $goodSpeakerInfoOut)
         );
     }
-
-    public function testSendActivationEmail()
-    {
-        $activationCode = '6788ab52-8171-4190-83e7-12d4dc51baac';
-        $inputData = array(
-            'email' => 'test@domain.com',
-            'password' => 'xxxxxx',
-            'password2' => 'xxxxxx',
-            'first_name' => 'Testy',
-            'last_name' => "McTesterton"
-        );
-        $form = new \OpenCFP\SignupForm($inputData);
-
-        $transport = m::mock('Swift_SmtpTransport');
-        $transport->shouldReceive('setUsername')->andReturn($transport);
-        $transport->shouldReceive('setPassword')->andReturn($transport);
-        $mailer = m::mock('Swift_Mailer');
-        $mailer->
-            shouldReceive('send')->
-            withAnyArgs();
-
-        $message = m::mock('Swift_Message');
-        $message->
-            shouldReceive('setTo')->
-            with(
-                $inputData['email'],
-                $inputData['first_name'] . ' ' . $inputData['last_name']
-            )->
-            andReturn(m::self());
-        $message->
-            shouldReceive('setFrom')->
-            withAnyArgs()->
-            andReturn(m::self());
-        $message->
-            shouldReceive('setSubject')->
-            with($inputData['first_name'] . ', please confirm your account')->
-            andReturn(m::self());
-        $message->
-            shouldReceive('setBody')->
-            with('/' . $activationCode . '/')->
-            andReturn(m::self());
-        $message->
-            shouldReceive('addPart')->
-            with(
-                '/' . $activationCode . '/',
-                'text/html'
-            )->
-            andReturn(m::self());
-
-        $user = m::mock('Cartalyst\Sentry\Users\Eloquent\User');
-        $user->
-            shouldReceive('getActivationCode')->
-            withNoArgs()->
-            andReturn($activationCode);
-
-        $smtp = array(
-            'smtp.port' => 25,
-            'smtp.host' => 'localhost',
-            'smtp.user' => 'test',
-            'smtp.password' => 'password'
-        );
-
-        $loader = new Twig_Loader_Filesystem('../templates');
-        $twig = new Twig_Environment($loader);
-
-        $form->sendActivationMessage(
-            $user,
-            $smtp,
-            $twig,
-            $transport,
-            $mailer,
-            $message
-        );
-    }
-
 }
