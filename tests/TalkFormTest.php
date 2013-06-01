@@ -83,7 +83,7 @@ class TalkFormTest extends PHPUnit_Framework_TestCase
         $faker = Faker\Factory::create();
 
         return array(
-            array($faker->text(100), true),
+            array(substr($faker->text(100), 0, 100), true),
             array(null, false),
             array($faker->text(), false),
             array("<script>alert('XSS')</script>", false),

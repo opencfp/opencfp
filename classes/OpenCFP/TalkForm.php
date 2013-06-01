@@ -159,7 +159,7 @@ class TalkForm
         $userId = $sanitizedData['user_id'];
         $thisSpeaker = $speaker->findByUserId($userId);
         
-        if (!is_array($thisSpeaker)) {
+        if (!$thisSpeaker) {
             return false;
         }
 

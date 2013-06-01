@@ -14,6 +14,7 @@ class SignupForm
      * Class constructor
      *
      * @param $data array of $_POST data
+     * @param 
      */
     public function __construct($data)
     {
@@ -265,11 +266,10 @@ class SignupForm
      *
      * @param $activationCode string
      * @param $message Swift_Message
+     * @param $twig Twig objecg
      */
-    private function constructActivationMessage($activationCode, $message)
+    private function constructActivationMessage($activationCode, $message, $twig)
     {
-        global $twig;
-
         $template = $twig->loadTemplate('activation_email.twig');
         $parameters = array(
             'name' => $this->_data['first_name'],
@@ -300,6 +300,8 @@ class SignupForm
      * Send out activation email.  Returns # of emails sent which should be 1.
      *
      * @param $user \Cartalyst\Sentry\Users\Eloquent\User
+     * @param $smtp  
+     * @param $twig
      * @param null $transport \Swift_SmtpTransport
      * @param null $mailer \Swift_Mailer
      * @param null $message \Swift_Message
@@ -307,21 +309,24 @@ class SignupForm
      */
     public function sendActivationMessage(
         $user,
+        $smtp,
+        $twig,
         $transport = null,
         $mailer = null,
         $message = null
     )
     {
-        $configuration = new Configuration();
-        if (!$transport) {
+        if ($transport !== null) {
             $transport = new \Swift_SmtpTransport();
         }
-        $transport->setPort($configuration->getSMTPPort());
-        $transport->setHost($configuration->getSMTPHost());
-        $SMTPUser = $configuration->getSMTPUser();
+
+        $transport->setPort($smtp['smtp.port']);
+        $transport->setHost($smtp['smtp.host']);
+        $SMTPUser = $smtp['smtp.user'];
+
         if ($SMTPUser) {
             $transport->setUsername($SMTPUser)
-                ->setPassword($configuration->getSMTPPassword());
+                ->setPassword($smtp['smtp.password']);
         }
         if (!$mailer) {
             $mailer = new \Swift_Mailer($transport);
@@ -331,7 +336,8 @@ class SignupForm
         }
         $this->constructActivationMessage(
             $user->getActivationCode(),
-            $message
+            $message,
+            $twig
         );
         return $mailer->send($message);
     }

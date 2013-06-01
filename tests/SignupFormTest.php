@@ -390,10 +390,6 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
 
     public function testSendActivationEmail()
     {
-        putenv(\OpenCFP\Configuration::OPENCFP_SMTP_HOST . '=');
-        putenv(\OpenCFP\Configuration::OPENCFP_SMTP_PORT . '=');
-        putenv(\OpenCFP\Configuration::OPENCFP_SMTP_USER . '=');
-        putenv(\OpenCFP\Configuration::OPENCFP_SMTP_PASSWORD . '=');
         $activationCode = '6788ab52-8171-4190-83e7-12d4dc51baac';
         $inputData = array(
             'email' => 'test@domain.com',
@@ -451,8 +447,20 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             withNoArgs()->
             andReturn($activationCode);
 
+        $smtp = array(
+            'smtp.port' => 25,
+            'smtp.host' => 'localhost',
+            'smtp.user' => 'test',
+            'smtp.password' => 'password'
+        );
+
+        $loader = new Twig_Loader_Filesystem('../templates');
+        $twig = new Twig_Environment($loader);
+
         $form->sendActivationMessage(
             $user,
+            $smtp,
+            $twig,
             $transport,
             $mailer,
             $message

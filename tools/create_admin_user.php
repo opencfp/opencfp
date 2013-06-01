@@ -1,14 +1,8 @@
 <?php
-require '../vendor/autoload.php';
+
+require __DIR__ . '/../bootstrap.php';
 
 use CHH\Optparse;
-
-$configuration = new \TrueNorth\OpenCFP\Configuration();
-$database = new \TrueNorth\OpenCFP\Database();
-
-// Create our two Sentry groups
-class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
-Sentry::setupDatabaseResolver($database->getPDO());
 
 $parser = new Optparse\Parser();
 $parser->addFlag("help");
@@ -24,7 +18,8 @@ try {
 
 $user = Sentry::getUserProvider()->create(array(
     'email' => $parser['email'],
-    'password' => $parser['password']
+		'password' => $parser['password'],
+		'activated' => 1
 ));
 
 $adminGroup = Sentry::getGroupProvider()->findByName('Admin');
@@ -32,6 +27,4 @@ $user->addGroup($adminGroup);
 
 echo "Done\n";
 exit();
-
-
 

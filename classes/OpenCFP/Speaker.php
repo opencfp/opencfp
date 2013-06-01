@@ -50,10 +50,6 @@ class Speaker
      */
     public function findByUserId($user_id)
     {
-        if (!is_int($user_id)) {
-            return false;
-        }    
-
         $sql = "SELECT info FROM speakers WHERE user_id = ?";
         $stmt = $this->_db->prepare($sql);
         $stmt->execute(array($user_id));
