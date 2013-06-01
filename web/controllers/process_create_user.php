@@ -7,7 +7,8 @@ $form = new \OpenCFP\SignupForm($_POST);
 $data = array();
 $pageTemplate = 'create_user.twig';
 
-if ($form->validateAll()) {
+$valid = $form->validateAll();
+if ($valid) {
     $sanitizedData = $form->sanitize();
 
     // Create account using Sentry
@@ -32,13 +33,13 @@ if ($form->validateAll()) {
 
         $pageTemplate = "create_user_success.twig";
 
-        $form->sendActivationMessage($user);
+        $form->sendActivationMessage($user, $container, $twig);
     } catch (Cartalyst\Sentry\Users\UserExistsException $e) {
         $data['error_messages'] = array("A user already exists with that email address");
     }
 }
 
-if (!$form->validateAll() && empty($data['error_messages'])) {
+if (!$valid && empty($data['error_messages'])) {
     $data['error_messages'] = $form->errorMessages;
 }
 

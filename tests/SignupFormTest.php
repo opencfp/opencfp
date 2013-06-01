@@ -400,20 +400,15 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
         );
         $form = new \OpenCFP\SignupForm($inputData);
 
-        $transport = m::mock();
-        $transport->
-            shouldReceive('setPort')->
-            with(25);
-        $transport->
-            shouldReceive('setHost')->
-            with('127.0.0.1');
-
-        $mailer = m::mock();
+        $transport = m::mock('Swift_SmtpTransport');
+        $transport->shouldReceive('setUsername')->andReturn($transport);
+        $transport->shouldReceive('setPassword')->andReturn($transport);
+        $mailer = m::mock('Swift_Mailer');
         $mailer->
             shouldReceive('send')->
             withAnyArgs();
 
-        $message = m::mock();
+        $message = m::mock('Swift_Message');
         $message->
             shouldReceive('setTo')->
             with(
@@ -441,7 +436,7 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             )->
             andReturn(m::self());
 
-        $user = m::mock();
+        $user = m::mock('Cartalyst\Sentry\Users\Eloquent\User');
         $user->
             shouldReceive('getActivationCode')->
             withNoArgs()->

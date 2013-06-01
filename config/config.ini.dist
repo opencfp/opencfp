@@ -1,0 +1,26 @@
+[application]
+title = "OpenCFP"
+url = "cfp.dev"
+
+[database]
+dsn = "mysql:dbname=cfp;host=127.0.0.1"
+user = "root"
+password = ""
+
+[twig]
+template_dir = "/templates"
+
+[smtp]
+user = ""
+password = ""
+
+; for Gmail set host = "smtp.gmail.com"
+host = "localhost"
+
+; for Gmail set port = "465"
+port = "25"
+
+; uncomment if your smtp server requires encryption
+; available options are "tls", "ssl"
+; for Gmail set encryption = "ssl"
+;encryption = "ssl"
