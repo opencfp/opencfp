@@ -268,7 +268,7 @@ class SignupForm
      * @param $message Swift_Message
      * @param $twig Twig objecg
      */
-    private function constructActivationMessage($activationCode, $message, $twig)
+    private function constructActivationMessage($activationCode, \Swift_Message $message, \Twig_Environment $twig)
     {
         $template = $twig->loadTemplate('activation_email.twig');
         $parameters = array(
@@ -300,33 +300,33 @@ class SignupForm
      * Send out activation email.  Returns # of emails sent which should be 1.
      *
      * @param $user \Cartalyst\Sentry\Users\Eloquent\User
-     * @param $smtp  
-     * @param $twig
+     * @param $smtp array
+     * @param $twig \Twig_Environment
      * @param null $transport \Swift_SmtpTransport
      * @param null $mailer \Swift_Mailer
      * @param null $message \Swift_Message
      * @return int
      */
     public function sendActivationMessage(
-        $user,
+        \Cartalyst\Sentry\Users\Eloquent\User $user,
         $smtp,
-        $twig,
-        $transport = null,
-        $mailer = null,
-        $message = null
+        \Twig_Environment $twig,
+        \Swift_SmtpTransport $transport = null,
+        \Swift_Mailer $mailer = null,
+        \Swift_Message $message = null
     )
     {
-        if ($transport !== null) {
-            $transport = new \Swift_SmtpTransport();
+        if (!$transport) {
+            $transport = new \Swift_SmtpTransport($smtp['smtp.host'], $smtp['smtp.port']);
         }
 
-        $transport->setPort($smtp['smtp.port']);
-        $transport->setHost($smtp['smtp.host']);
-        $SMTPUser = $smtp['smtp.user'];
+        if (!empty($smtp['smtp.user'])) {
+            $transport->setUsername($smtp['smtp.user'])
+                      ->setPassword($smtp['smtp.password']);
+        }
 
-        if ($SMTPUser) {
-            $transport->setUsername($SMTPUser)
-                ->setPassword($smtp['smtp.password']);
+        if (!empty($smtp['smtp.encryption'])) {
+            $transport->setEncryption($smtp['smtp.encryption']);
         }
         if (!$mailer) {
             $mailer = new \Swift_Mailer($transport);
