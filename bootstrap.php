@@ -5,9 +5,6 @@ if (!file_exists(APP_DIR . '/vendor/autoload.php')) {
     throw new Exception('Autoload file does not exist.  Did you run composer install?');
 }
 
-if (!file_exists(APP_DIR . '/config/config.ini')) {
-    throw new Exception('Config file does not exist.  Did you copy the config.ini.dist to config.ini?');
-}
 // Bootstrap for OpenCFP
 require APP_DIR . '/vendor/autoload.php';
 
@@ -31,7 +28,7 @@ session_start();
  */
 class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
 $db = new \PDO(
-    $container['database.dsn'], 
+    $container['database.dsn'],
     $container['database.user'],
     $container['database.password']
 );
