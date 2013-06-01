@@ -1,5 +1,7 @@
 <?php
 
+use \Mockery as m;
+
 class SignupFormTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -385,4 +387,76 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
             array($goodSpeakerInfoIn, $goodSpeakerInfoOut)
         );
     }
+
+    public function testSendActivationEmail()
+    {
+        putenv(\OpenCFP\Configuration::OPENCFP_SMTP_HOST . '=');
+        putenv(\OpenCFP\Configuration::OPENCFP_SMTP_PORT . '=');
+        putenv(\OpenCFP\Configuration::OPENCFP_SMTP_USER . '=');
+        putenv(\OpenCFP\Configuration::OPENCFP_SMTP_PASSWORD . '=');
+        $activationCode = '6788ab52-8171-4190-83e7-12d4dc51baac';
+        $inputData = array(
+            'email' => 'test@domain.com',
+            'password' => 'xxxxxx',
+            'password2' => 'xxxxxx',
+            'first_name' => 'Testy',
+            'last_name' => "McTesterton"
+        );
+        $form = new \OpenCFP\SignupForm($inputData);
+
+        $transport = m::mock();
+        $transport->
+            shouldReceive('setPort')->
+            with(25);
+        $transport->
+            shouldReceive('setHost')->
+            with('127.0.0.1');
+
+        $mailer = m::mock();
+        $mailer->
+            shouldReceive('send')->
+            withAnyArgs();
+
+        $message = m::mock();
+        $message->
+            shouldReceive('setTo')->
+            with(
+                $inputData['email'],
+                $inputData['first_name'] . ' ' . $inputData['last_name']
+            )->
+            andReturn(m::self());
+        $message->
+            shouldReceive('setFrom')->
+            withAnyArgs()->
+            andReturn(m::self());
+        $message->
+            shouldReceive('setSubject')->
+            with($inputData['first_name'] . ', please confirm your account')->
+            andReturn(m::self());
+        $message->
+            shouldReceive('setBody')->
+            with('/' . $activationCode . '/')->
+            andReturn(m::self());
+        $message->
+            shouldReceive('addPart')->
+            with(
+                '/' . $activationCode . '/',
+                'text/html'
+            )->
+            andReturn(m::self());
+
+        $user = m::mock();
+        $user->
+            shouldReceive('getActivationCode')->
+            withNoArgs()->
+            andReturn($activationCode);
+
+        $form->sendActivationMessage(
+            $user,
+            $transport,
+            $mailer,
+            $message
+        );
+    }
+
 }

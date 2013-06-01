@@ -2,11 +2,11 @@
 
 define('APP_DIR', __DIR__);
 if (!file_exists(APP_DIR . '/vendor/autoload.php')) {
-	throw new Exception('Autoload file does not exist.  Did you run composer install?');
+    throw new Exception('Autoload file does not exist.  Did you run composer install?');
 }
 
 if (!file_exists(APP_DIR . '/config/config.ini')) {
-	throw new Exception('Config file does not exist.  Did you copy the config.ini.dist to config.ini?');
+    throw new Exception('Config file does not exist.  Did you copy the config.ini.dist to config.ini?');
 }
 
 // Bootstrap for OpenCFP

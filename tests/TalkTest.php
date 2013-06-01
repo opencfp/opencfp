@@ -75,7 +75,7 @@ class TalkTest extends PHPUnit_Framework_TestCase
         $db->expects($this->once())
             ->method('prepare')
             ->with($this->stringContains("SELECT * FROM talks"))
-            ->will($this->returnValue($stmt));	
+            ->will($this->returnValue($stmt));    
 
         $talk = new \OpenCFP\Talk($db);
         $record = $talk->findById($info['user_id']);
@@ -112,7 +112,7 @@ class TalkTest extends PHPUnit_Framework_TestCase
         $db->expects($this->once())
             ->method('prepare')
             ->with($this->stringContains("SELECT * FROM talks"))
-            ->will($this->returnValue($stmt));			
+            ->will($this->returnValue($stmt));            
 
         $talk = new \OpenCFP\Talk($db);
         $talks = $talk->findByUserId(1);
@@ -183,7 +183,7 @@ class TalkTest extends PHPUnit_Framework_TestCase
         $db->expects($this->once())
             ->method('prepare')
             ->with($this->stringContains("UPDATE talks"))
-            ->will($this->returnValue($stmt));			
+            ->will($this->returnValue($stmt));            
 
         $data = array(
             'id' => 1,
