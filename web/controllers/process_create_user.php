@@ -32,7 +32,6 @@ if ($valid) {
         );
 
         $pageTemplate = "create_user_success.twig";
-
         $form->sendActivationMessage($user, $container, $twig);
     } catch (Cartalyst\Sentry\Users\UserExistsException $e) {
         $data['error_messages'] = array("A user already exists with that email address");

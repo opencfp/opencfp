@@ -10,5 +10,4 @@ if (empty($_POST)) {
     $pageTemplate = 'create_user.twig';
     $template = $twig->loadTemplate($pageTemplate); 
     $template->display(array());
-    $data = array();
 }

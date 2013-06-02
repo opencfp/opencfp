@@ -66,6 +66,33 @@ class TalkForm
     }
 
     /**
+     * Validate everything
+     *
+     * @return boolean
+     */
+    public function validateAll()
+    {
+        $sanitizedData = $this->sanitize();
+        $originalData = array(
+            'title' => $this->_data['title'],
+            'description' => $this->_data['description'],
+            'type' => $this->_data['type']
+        );
+
+        $differences = array_diff($originalData, $sanitizedData);
+
+        if (count($differences) > 0) {
+            return false;
+        }
+
+        return (
+            $this->validateTitle() &&
+            $this->validateDescription() &&
+            $this->validateType()
+        );
+    }
+
+    /**
      * Method that validates title data
      *
      * @return boolean

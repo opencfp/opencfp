@@ -1,0 +1,20 @@
+<?php
+
+require '../bootstrap.php';
+
+try {
+    $user = Sentry::getUser();
+} catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
+    header('Location: login.php');
+    exit;
+}
+
+if ($_POST) {
+    require './controllers/process_submit_talk.php';
+}
+
+if (empty($_POST)) {
+    $pageTemplate = 'submit_talk.twig';
+    $template = $twig->loadTemplate($pageTemplate);
+    $template->display(array());
+}

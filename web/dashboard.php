@@ -12,6 +12,13 @@ try {
     exit;
 }
 
+// Let's see if our logged in user has any talk submissions
+$talk = new \OpenCFP\Talk($db);
+$myTalks = $talk->findByUserId($user->getId());
+
 // Load our template and RENDER
 $template = $twig->loadTemplate('dashboard.twig');
-$template->display(array());
+$templateData = array(
+    'myTalks' => $myTalks
+);
+$template->display($templateData);

@@ -1,4 +1,23 @@
 {% extends "layouts/default.twig" %}
 {% block content %}
-Welcome to the dashboard. Here you can do stuff. Exciting right?
+<h2>My Talks</h2>
+{% if myTalks %}
+<table>
+<tr>
+<th>Talk Name</th>
+<th>&nbsp;</th>
+</tr>
+{% for talk in myTalks %}
+<tr>
+<td><b>{{ talk.title }}</b></td>
+<td><a href="edit_talk.php?id={{ talk.id}}">Edit</a></td>
+<td><a href="delete_talk.php?id={{ talk.id }}">Delete</a></td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+You currently have no talks submitted. 
+{% endif %}
+<br><br>
+<a class="btn btn-large btn-success" href="/submit_talk.php">Submit a talk</a>
 {% endblock %}
