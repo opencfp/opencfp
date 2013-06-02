@@ -95,3 +95,15 @@ CREATE TABLE `speakers` (
     PRIMARY KEY(`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+# Create our talks table
+# ------------------------------------------------------------
+DROP TABLE IF EXISTS `talks`;
+
+CREATE TABLE `talks` (
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `title` char(100) NOT NULL,
+    `description` text,
+    `type` char(50),
+    `user_id` int(10) unsigned NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
