@@ -1,0 +1,15 @@
+<form class="form-search" action="{{ formAction }}" method="POST">
+{% if id %}
+<input name="id" type="hidden" value="{{ id }}">
+{% endif %}
+<input name="title" type="text" value="{{ title }}" class="input-large search-query" placeholder="Title" size=50 max=100><br><br>
+<textarea name="description" class="search-query" rows=20 cols=20 placeholder="Description (resize me if I am too small!">{{ description }}</textarea><br><br>
+<select name="type" class="search-query">
+    <option value="regular" {% if type == 'regular' %}selected {% endif %}>Regular Talk</option>
+    <option value="half-day-tutorial" {% if type == 'half-day tutorial' %}selected {% endif %}">Half-day Tutorial</option>
+    <option value="full-day-tutorial"> {% if type == 'full-day tutorial' %}selected {% endif %}Full-day Tutorial</option>
+</select>
+<br><br>
+<button type="submit" class="btn">Submit My Talk!</button>
+</form>
+

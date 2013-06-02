@@ -85,11 +85,10 @@ class Talk
         if (empty($data['id'])) {
             return false;
         }
-
         $sql = "UPDATE talks 
-            SET title = ?
+            SET title = ?,
             description = ?,
-            type = ?,
+            type = ?
             WHERE id = ?
             AND user_id = ?
         ";
@@ -98,8 +97,8 @@ class Talk
             $data['title'],
             $data['description'],
             $data['type'],
-            $data['user_id'],
-            $data['id']
+            $data['id'],
+            $data['user_id']
         ));   
 
         return ($stmt->rowCount() === 1); 

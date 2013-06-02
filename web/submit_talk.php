@@ -16,5 +16,6 @@ if ($_POST) {
 if (empty($_POST)) {
     $pageTemplate = 'submit_talk.twig';
     $template = $twig->loadTemplate($pageTemplate);
-    $template->display(array());
+    $data = array('formAction' => 'submit_talk.php');
+    $template->display($data);
 }
