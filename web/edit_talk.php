@@ -11,7 +11,7 @@ try {
 
 // Let's look for data being passed in
 if ($_POST) {
-    require './controllers/process_edit_talk.php';
+    require '../controllers/process_edit_talk.php';
 }
 
 $talkId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
