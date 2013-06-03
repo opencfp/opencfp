@@ -1,6 +1,7 @@
 <?php
 
 require '../bootstrap.php';
+$user = require_once '../controllers/process_authenticate.php';
 
 try {
     $user = Sentry::getUser();
