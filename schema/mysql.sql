@@ -13,7 +13,8 @@ CREATE TABLE `groups` (
   UNIQUE KEY `groups_name_unique` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
+INSERT INTO `groups`(`id`,`name`,`permissions`,`created_at`,`updated_at`) VALUES (1,'Speakers','{\"users\":1}',NOW(),NOW());
+INSERT INTO `groups`(`id`,`name`,`permissions`,`created_at`,`updated_at`) VALUES (2,'Admin','{\"admin\":1}',NOW(),NOW());
 
 # Dump of table migrations
 # ------------------------------------------------------------
@@ -87,7 +88,7 @@ CREATE TABLE `users_groups` (
 
 # Create our speaker table
 # ------------------------------------------------------------
-DROP TABLE IF EXISTS `speaker`;
+DROP TABLE IF EXISTS `speakers`;
 
 CREATE TABLE `speakers` (
     `user_id` int(10) unsigned NOT NULL,
