@@ -10,7 +10,7 @@ try {
 }
 
 if ($_POST) {
-    require './controllers/process_submit_talk.php';
+    require '../controllers/process_submit_talk.php';
 }
 
 if (empty($_POST)) {
