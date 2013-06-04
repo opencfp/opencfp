@@ -37,6 +37,7 @@ $data = array(
     'id' => $talkId,
     'title' => $talkInfo['title'],
     'description' => $talkInfo['description'],
-    'type' => $talkInfo['type']
+    'type' => $talkInfo['type'],
+    'user' => $user,
 );
 $template->display($data);
