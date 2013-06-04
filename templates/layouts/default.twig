@@ -1,5 +1,10 @@
-{% set navigation_bar = [['index', 'Home'], ['about', 'About'], ['contact', 'Contact']] %}
-{% set active_page = active_page|default('index') %}
+{% if user %}
+    {% set navigation_bar = [['dashboard', 'Dashboard'], ['about', 'About'], ['contact', 'Contact'], ['logout', 'Logout']] %}
+    {% set active_page = active_page|default('dashboard') %}
+{% else %}
+    {% set navigation_bar = [['index', 'Home'], ['about', 'About'], ['contact', 'Contact']] %}
+    {% set active_page = active_page|default('index') %}
+{% endif %}
 <!DOCTYPE html>
 <html>
 <head>

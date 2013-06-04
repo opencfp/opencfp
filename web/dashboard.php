@@ -19,6 +19,7 @@ $myTalks = $talk->findByUserId($user->getId());
 // Load our template and RENDER
 $template = $twig->loadTemplate('dashboard.twig');
 $templateData = array(
-    'myTalks' => $myTalks
+    'myTalks' => $myTalks,
+    'user' => $user,
 );
 $template->display($templateData);
