@@ -1,17 +1,11 @@
 <?php
 
 require '../bootstrap.php';
-
-try {
-    $user = Sentry::getUser();
-} catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
-    header('Location: login.php');
-    exit;
-}
+$user = require_once '../controllers/process_authenticate.php';
 
 // Let's look for data being passed in
 if ($_POST) {
-    require './controllers/process_edit_talk.php';
+    require '../controllers/process_edit_talk.php';
 }
 
 $talkId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -37,6 +31,7 @@ $data = array(
     'id' => $talkId,
     'title' => $talkInfo['title'],
     'description' => $talkInfo['description'],
-    'type' => $talkInfo['type']
+    'type' => $talkInfo['type'],
+    'user' => $user,
 );
 $template->display($data);

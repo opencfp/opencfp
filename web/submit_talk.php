@@ -1,6 +1,7 @@
 <?php
 
 require '../bootstrap.php';
+$user = require_once '../controllers/process_authenticate.php';
 
 try {
     $user = Sentry::getUser();
@@ -10,12 +11,15 @@ try {
 }
 
 if ($_POST) {
-    require './controllers/process_submit_talk.php';
+    require '../controllers/process_submit_talk.php';
 }
 
 if (empty($_POST)) {
     $pageTemplate = 'submit_talk.twig';
     $template = $twig->loadTemplate($pageTemplate);
-    $data = array('formAction' => 'submit_talk.php');
+    $data = array(
+        'formAction' => 'submit_talk.php',
+        'user' => $user,
+    );
     $template->display($data);
 }
