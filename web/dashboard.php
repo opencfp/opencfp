@@ -1,16 +1,6 @@
 <?php
 require '../bootstrap.php';
-
-/**
- * Make sure the user is logged in, kicking them out to the login page
- * if they are not
- */
-try {
-    $user = Sentry::getUser();
-} catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
-    header('Location: login.php');
-    exit;
-}
+$user = require_once '../controllers/process_authenticate.php';
 
 // Let's see if our logged in user has any talk submissions
 $talk = new \OpenCFP\Talk($db);

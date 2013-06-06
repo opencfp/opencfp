@@ -1,13 +1,7 @@
 <?php
 
 require '../bootstrap.php';
-
-try {
-    $user = Sentry::getUser();
-} catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
-    header('Location: login.php');
-    exit;
-}
+$user = require_once '../controllers/process_authenticate.php';
 
 // Let's look for data being passed in
 if ($_POST) {
