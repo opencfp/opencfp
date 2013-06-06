@@ -86,9 +86,14 @@ class SignupForm
         $validFirstName = $this->validateFirstName();
         $validLastName = $this->validateLastName();
         $validSpeakerInfo = true;
-
+        $validSpeakerBio = true;
+        
         if (!empty($this->_data['speaker_info'])) {
             $validSpeakerInfo = $this->validateSpeakerInfo();
+        }
+
+        if (!empty($this->data['speaker_bio'])) {
+            $validSpeakerBio = $this->validateSpeakerBio();
         }
 
         return (
@@ -96,9 +101,9 @@ class SignupForm
             $validPasswords &&
             $validFirstName &&
             $validLastName &&
-            $validSpeakerInfo
+            $validSpeakerInfo &&
+            $validSpeakerBio
         );
-
     }
 
     /**
@@ -236,6 +241,35 @@ class SignupForm
 
         if (empty($speakerInfo)) {
             $this->errorMessages[] = "You submitted speaker info but it was empty";
+            $validationResponse = false;
+        }
+
+        return $validationResponse;
+    }
+    
+    /**
+     * Method that applies validation rules to user-submitted speaker bio 
+     *
+     * @return boolean
+     */
+    public function validateSpeakerBio()
+    {
+        $speakerBio = filter_var(
+            $this->_data['speaker_bio'],
+            FILTER_SANITIZE_STRING,
+            array('flags' => FILTER_FLAG_STRIP_HIGH)
+        );
+        $validationResponse = true;
+        $speakerBio = strip_tags($speakerBio);
+        $speakerBio = $this->_purifier->purify($speakerBio);
+
+        if ($speakerBio !== $this->_data['speaker_bio']) {
+            $this->errorMessages[] = "Your submitted speaker bio information contained unwanted characters";
+            $validationResponse = false;
+        }
+
+        if (empty($speakerBio)) {
+            $this->errorMessages[] = "You submitted speaker bio information but it was empty";
             $validationResponse = false;
         }
 

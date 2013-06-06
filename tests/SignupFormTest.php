@@ -269,7 +269,7 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
      * @test
      * @param string $speakerInfo
      * @param boolean $expectedResponse
-     * @dataProvider speakerInfoProvider
+     * @dataProvider speakerTextProvider
      */
     public function speakerInfoValidatedCorrectly($speakerInfo, $expectedResponse)
     {
@@ -284,14 +284,34 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
     }
    
     /**
+     * Test that speaker info is validated correctly
+     *
+     * @test
+     * @param string $speakerInfo
+     * @param boolean $expectedResponse
+     * @dataProvider speakerTextProvider
+     */
+    public function speakerBioValidatedCorrectly($speakerBio, $expectedResponse)
+    {
+        $data['speaker_bio'] = $speakerBio;
+        $form = new \OpenCFP\SignupForm($data);
+
+        $this->assertEquals(
+            $expectedResponse,
+            $form->validateSpeakerBio(),
+            "Speaker bio was not validated as expected"
+        );
+    }
+
+    /**
       * Data provider for speakerInfoValidatedCorrectly
       *
       * @return array
       */ 
-    public function speakerInfoProvider()
+    public function speakerTextProvider()
     {
         return array(
-            array('Speaker info', true),
+            array('Speaker text that can go in multiple places', true),
             array(null, false),
             array("<script>alert('LOL')</script>", false)
         );

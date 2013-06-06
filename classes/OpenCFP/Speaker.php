@@ -28,16 +28,25 @@ class Speaker
      */
     public function create($data)
     {
+        /**
+         * Records must have a user ID to associate with, some speaker info
+         * but bio info is optional
+         */
         if (empty($data['user_id']) || empty($data['info'])) {
             return false;
         }
 
-        $sql = "INSERT INTO speakers (user_id, info) VALUES (?, ?)";
+        if (!isset($data['bio'])) {
+            $data['bio'] = null;
+        }
+
+        $sql = "INSERT INTO speakers (user_id, info ,bio) VALUES (?, ?, ?)";
         $stmt = $this->_db->prepare($sql);
 
         return $stmt->execute(array(
             $data['user_id'],
-            $data['info']
+            $data['info'],
+            $data['bio']
         )
     );
     }
@@ -50,7 +59,7 @@ class Speaker
      */
     public function findByUserId($user_id)
     {
-        $sql = "SELECT info FROM speakers WHERE user_id = ?";
+        $sql = "SELECT * FROM speakers WHERE user_id = ?";
         $stmt = $this->_db->prepare($sql);
         $stmt->execute(array($user_id));
         $row = $stmt->fetch();
