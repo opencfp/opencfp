@@ -1,8 +1,14 @@
-<phpunit backupGlobals="true"
-   bootstrap="./bootstrap.php">
-   <filter>
-   	<blacklist>
-   		<directory>../vendor</directory>
-   	</blacklist>	
-   </filter>
+<phpunit backupGlobals="true" bootstrap="./bootstrap.php">
+    <filter> 
+        <blacklist>
+            <directory>../vendor</directory>
+        </blacklist>	
+    </filter>
+    <testsuite>
+        <file>LoginTest.php</file>
+        <file>SignupFormTest.php</file>
+        <file>SpeakerTest.php</file>
+        <file>TalkFormTest.php</file>
+        <file>TalkTest.php</file>
+    </testsuite>
 </phpunit>
