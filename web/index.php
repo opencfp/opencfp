@@ -15,8 +15,12 @@ $app['session']->start();
 $app->register(new Silex\Provider\TwigServiceProvider());
 $app['twig'] = $twig;
 
-// Add our DB to the app
-$app['db'] = $db;
+// Add our DB to the p
+$app['db'] = new \PDO(
+    $container['database.dsn'],
+    $container['database.user'],
+    $container['database.password']
+); 
 
 // We're using Sentry, so make it available to app
 $app['sentry'] = $app->share(function() use ($app) {
