@@ -82,6 +82,7 @@ class TalkForm
         $differences = array_diff($originalData, $sanitizedData);
 
         if (count($differences) > 0) {
+            $this->errorMessages[] = "You must have a title, description and select a talk type";
             return false;
         }
 
@@ -102,20 +103,19 @@ class TalkForm
         $sanitizedData = $this->sanitize();
 
         if (empty($sanitizedData['title']) || !isset($sanitizedData['title'])) {
+            $this->errorMessages[] = "You are missing a title";
             return false;
         }
 
         $title = $sanitizedData['title'];
 
         if ($title !== $this->_data['title']) {
-            return false;
-        }
-
-        if (empty($title) || $title === null) {
+            $this->errorMessages[] = "You had invalid characters in your talk title";
             return false;
         }
 
         if (strlen($title) > 100) {
+            $this->errorMessages[] = "Your talk title has to be 100 characters or less"; 
             return false;
         }
 
@@ -132,16 +132,19 @@ class TalkForm
         $santizedData = $this->sanitize();
 
         if (empty($santizedData['description']) || !isset($santizedData['description'])) {
+            $this->errorMessages[] = "Your description was missing or only contained invalid characters or content";
             return false;
         }
 
         $description = $santizedData['description'];
 
         if ($description !== $this->_data['description']) {
+            $this->errorMessages[] = "You are missing a description for your talk";
             return false;
         }
 
         if (empty($description) || $description === null) {
+            $this->errorMessages[] = "You are missing a description for your talk";
             return false;
         }
 
@@ -164,10 +167,12 @@ class TalkForm
         );
 
         if (empty($sanitizedData['type']) || !isset($sanitizedData['type'])) {
+            $this->errorMessages[] = "You must choose what type of talk you are submitting";
             return false;
         }
 
         if (!in_array($sanitizedData['type'], $validTalkTypes)) {
+            $this->errorMessages[] = "You did not choose a valid talk type";
             return false;
         }
 
@@ -187,6 +192,7 @@ class TalkForm
         $thisSpeaker = $speaker->findByUserId($userId);
         
         if (!$thisSpeaker) {
+            $this->errorMessages[] = "Your talk does not seem to belong to a valid speaker";
             return false;
         }
 
