@@ -4,7 +4,7 @@ namespace OpenCFP;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class LoginController
+class SignupController
 {
     public function indexAction(Request $req, Application $app)
     {
@@ -34,6 +34,7 @@ class LoginController
             $userData = array(
                 'email' => $sanitizedData['email'],
                 'password' => $sanitizedData['password'],
+                'activated' => 1
             );
 
             try {
