@@ -19,21 +19,6 @@ foreach ($configData as $category => $info) {
         $container["{$category}.{$key}"] = $value;
     }
 }
-
-// start our session
-session_start();
-
-/**
- * Sentry configuration done here
- */
-class_alias('Cartalyst\Sentry\Facades\Native\Sentry', 'Sentry');
-$db = new \PDO(
-    $container['database.dsn'],
-    $container['database.user'],
-    $container['database.password']
-);
-Sentry::setupDatabaseResolver($db);
-
 // Initialize Twig
 $loader = new Twig_Loader_Filesystem(APP_DIR . $container['twig.template_dir']);
 $twig = new Twig_Environment($loader);
