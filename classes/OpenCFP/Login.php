@@ -45,7 +45,7 @@ class Login
                 $variables['errorMessage'] = $this->getAuthenticationMessage();
                 $variables['email'] = $_REQUEST['email'];
             } else {
-                $variables['redirect'] = 'dashboard.php';
+                $variables['redirect'] = '/dashboard';
             }
         }
         return $variables;
