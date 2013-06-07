@@ -1,8 +1,8 @@
 {% if user %}
-    {% set navigation_bar = [['dashboard', 'Dashboard'], ['about', 'About'], ['contact', 'Contact'], ['logout', 'Logout']] %}
-    {% set active_page = active_page|default('dashboard') %}
+    {% set navigation_bar = [['/dashboard', 'Dashboard'], ['/about', 'About'], ['/contact', 'Contact'], ['/logout', 'Logout']] %}
+    {% set active_page = active_page|default('/dashboard') %}
 {% else %}
-    {% set navigation_bar = [['index', 'Home'], ['about', 'About'], ['contact', 'Contact']] %}
+    {% set navigation_bar = [['/', 'Home'], ['/about', 'About'], ['/contact', 'Contact']] %}
     {% set active_page = active_page|default('index') %}
 {% endif %}
 <!DOCTYPE html>
@@ -11,8 +11,8 @@
 <title>{% block title %}TrueNorthPHP - Call for Papers{% endblock %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="assets/css/site.css" rel="stylesheet" media="screen">
+<link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="/assets/css/site.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <div class="container-narrow">
@@ -31,6 +31,6 @@
 {% endblock %}
 </div>
 <script src="http://code.jquery.com/jquery.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 </body>
 </html>

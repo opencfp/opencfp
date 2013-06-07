@@ -2,9 +2,9 @@
 {% block content %}
 <div class="container">
     <div class="well">
-        <p style="visibility: hidden" class="text-error">Please enter both your User ID and Password.</p>
+        <p style="visibility: hidden" class="text-error">Please enter both your Email and Password.</p>
         <p class="text-error">{{ errorMessage }}</p>
-        <form id="login" class="form-horizontal" method="post" action="login.php">
+        <form id="login" class="form-horizontal" method="post" action="/login">
             <legend>Let me in!</legend>
             <div class="control-group">
                 <label class="control-label">Email</label>

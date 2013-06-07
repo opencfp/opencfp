@@ -1,4 +1,4 @@
-<form class="form-search" action="{{ formAction }}" method="POST">
+<form class="form-search" action="/submit_talk" method="POST">
 {% if id %}
 <input name="id" type="hidden" value="{{ id }}">
 {% endif %}
@@ -10,6 +10,6 @@
     <option value="full-day-tutorial"> {% if type == 'full-day tutorial' %}selected {% endif %}Full-day Tutorial</option>
 </select>
 <br><br>
-<button type="submit" class="btn">Submit My Talk!</button>
+<button type="submit" class="btn">{{ buttonInfo }}</button>
 </form>
 
