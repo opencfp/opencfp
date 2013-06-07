@@ -13,7 +13,8 @@
         "ezyang/htmlpurifier": "dev-master",
         "swiftmailer/swiftmailer": "5.0",
         "fzaninotto/faker": "1.1.*@dev",
-        "pimple/pimple": "1.0.*@dev"
+        "pimple/pimple": "1.0.*@dev",
+        "silex/silex": "1.0.*@dev"
     },
     "autoload": {
         "psr-0": {"OpenCFP": "classes/"}
