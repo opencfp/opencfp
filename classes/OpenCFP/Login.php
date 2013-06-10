@@ -17,6 +17,11 @@ class Login
 
     public function authenticate($user, $password)
     {
+        if (empty($user) || empty($password)) {
+            $this->authenticationMessage = "Missing Email or Password";
+            return false;
+        }
+
         try {
             $this->sentry->authenticate(
                 array(
@@ -25,15 +30,14 @@ class Login
                 ),
                 false
             );
-        }
-        catch (UserNotFoundException $e) {
+        } catch (UserNotFoundException $e) {
             $this->authenticationMessage = "Invalid Email or Password";
             return false;
-        }
-        catch (UserNotActivatedException $e) {
+        } catch (UserNotActivatedException $e) {
             $this->authenticationMessage = "Your account hasn't been activated. Did you get the activation email?";
             return false;
         }
+
         return true;
     }
 

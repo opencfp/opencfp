@@ -24,11 +24,17 @@ class LoginController
             if ($page->authenticate($req->get('email'), $req->get('passwd'))) {
                 return $app->redirect('/dashboard');
             }
+            
+            $templateData = array(
+                'user' => $app['sentry']->getUser(),
+                'email' => $req->get('email'),
+                'errorMessage' => $page->getAuthenticationMessage()
+            );
         } catch (Exception $e) {
             $templateData = array(
                 'user' => $app['sentry']->getUser(),
-                'errorMessage' => $e->getMessage(),
-                'email' => $req->get('email')
+                'email' => $req->get('email'),
+                'errorMessage' => $e->getMessage()
             );
         }
         
