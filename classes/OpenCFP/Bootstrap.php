@@ -13,9 +13,10 @@ class Bootstrap
     private $_config;
     private $_twig;
 
-    function __construct($initializer)
+    function __construct()
     {
-        $initializer($this->getApp());
+        $this->initializeAutoLoader();
+        $this->getApp();
     }
 
     function getApp()
@@ -67,8 +68,29 @@ class Bootstrap
             });
 
             $this->_app = $app;
+            $this->defineRoutes();
         }
         return $this->_app;
+    }
+
+    protected function defineRoutes()
+    {
+        $app = $this->_app;
+        $app->get('/', function() use($app) {
+            $template = $app['twig']->loadTemplate('home.twig');
+            return $template->render(array());
+        });
+
+        $app->get('/dashboard', 'OpenCFP\DashboardController::indexAction');
+        $app->get('/talk/edit/{id}', 'OpenCFP\TalkController::editAction');
+        $app->post('/talk/create', 'OpenCFP\TalkController::createAction');
+        $app->get('/login', 'OpenCFP\LoginController::indexAction');
+        $app->post('/login', 'OpenCFP\LoginController::processAction');
+        $app->get('/logout', 'OpenCFP\LoginController::outAction');
+        $app->get('/signup', 'OpenCFP\SignupController::indexAction');
+        $app->post('/signup', 'OpenCFP\SignupController::processAction');
+
+        $app['debug'] = true;
     }
 
     /**
@@ -114,5 +136,15 @@ class Bootstrap
             $container['database.user'],
             $container['database.password']
         );
+    }
+
+    private function initializeAutoLoader()
+    {
+        define('APP_DIR', dirname(dirname(__DIR__)));
+        if (!file_exists(APP_DIR . '/vendor/autoload.php')) {
+            throw new Exception('Autoload file does not exist.  Did you run composer install?');
+        }
+
+        require APP_DIR . '/vendor/autoload.php';
     }
 }
