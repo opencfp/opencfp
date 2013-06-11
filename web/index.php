@@ -64,6 +64,7 @@ $app->get('/talk/edit/{id}', 'OpenCFP\TalkController::editAction');
 $app->post('/talk/create', 'OpenCFP\TalkController::createAction');
 $app->get('/login', 'OpenCFP\LoginController::indexAction');
 $app->post('/login', 'OpenCFP\LoginController::processAction');
+$app->get('/logout', 'OpenCFP\LoginController::outAction');
 $app->get('/signup', 'OpenCFP\SignupController::indexAction');
 $app->post('/signup', 'OpenCFP\SignupController::processAction');
 
