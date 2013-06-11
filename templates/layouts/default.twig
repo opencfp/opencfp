@@ -21,7 +21,7 @@
         <ul id="navigation" class="nav nav-pills pull-right">
             {% for item in navigation_bar %}
             <li{% if item[0] == active_page %} class="active"{% endif%}>
-            <a href="{{ item[0] }}.php">{{item[1]}}</a></li>
+            <a href="{{ item[0] }}">{{item[1]}}</a></li>
             {% endfor %}
         </ul>
         {% endblock %}
