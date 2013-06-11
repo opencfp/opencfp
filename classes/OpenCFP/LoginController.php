@@ -40,4 +40,11 @@ class LoginController
         
         return $template->render($templateData);
     }
+
+    public function outAction(Request $req, Application $app)
+    {
+        $app['sentry']->logout();
+
+        return $app->redirect('/');
+    }
 }
