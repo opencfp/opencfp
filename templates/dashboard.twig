@@ -1,6 +1,7 @@
 {% extends "layouts/default.twig" %}
 {% block content %}
 <h2>My Talks</h2>
+Welcome <a href="/profile/edit/{{user.id}}">{{user.login}}</a>
 {% if myTalks %}
 <table>
 <tr>
