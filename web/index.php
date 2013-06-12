@@ -67,6 +67,8 @@ $app->post('/login', 'OpenCFP\LoginController::processAction');
 $app->get('/logout', 'OpenCFP\LoginController::outAction');
 $app->get('/signup', 'OpenCFP\SignupController::indexAction');
 $app->post('/signup', 'OpenCFP\SignupController::processAction');
+$app->get('/profile/edit/{id}', 'OpenCFP\ProfileController::editAction');
+$app->post('/profile/edit', 'OpenCFP\ProfileController::processAction');
 
 $app['debug'] = true;
 $app->run();
