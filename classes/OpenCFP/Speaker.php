@@ -70,4 +70,83 @@ class Speaker
 
         return false;
     }
+
+    /**
+     * Get details for a speaker based on user id
+     *
+     * @param integer $user_id
+     * @return false|array
+     */
+    public function getDetailsByUserId($user_id)
+    {
+        $sql = "
+            SELECT u.first_name, u.last_name, s.info, s.bio
+            FROM users u
+            LEFT JOIN speakers s ON s.user_id = u.id
+            WHERE u.id = ?
+        ";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute(array($user_id));
+        $row = $stmt->fetch();
+
+        if ($row !== false) {
+            return $row;
+        }
+
+        return false;
+    }
+
+    /**
+     * Update an speaker record
+     *
+     * @param array $speaker_details
+     * @return boolean
+     */
+    public function update($speaker_details)
+    {
+        // Grab our details and build a comparison
+        $details = $this->getDetailsByUserId($speaker_details['user_id']);
+
+        if ($details['first_name'] != $speaker_details['first_name']
+            || $details['last_name'] != $speaker_details['last_name']) {
+            $sql = "
+                UPDATE users 
+                SET first_name = ?,
+                last_name = ?
+                WHERE id = ?
+            ";
+            $stmt = $this->_db->prepare($sql);
+            $stmt->execute(array(
+                $speaker_details['first_name'],
+                $speaker_details['last_name'],
+                $speaker_details['user_id'])
+            );
+
+            if ($stmt->rowCount() !== 1) {
+                return false;
+            }
+        }
+
+        if ($details['info'] != $speaker_details['speaker_info']
+            || $details['bio'] != $speaker_details['speaker_bio']) {
+            $sql = "
+                UPDATE speakers
+                SET info = ?,
+                bio = ?
+                WHERE user_id = ?
+            ";
+            $stmt = $this->_db->prepare($sql);
+            $stmt->execute(array(
+                $speaker_details['speaker_info'],
+                $speaker_details['speaker_bio'],
+                $speaker_details['user_id'])
+            );
+
+            if ($stmt->rowCount() !== 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
