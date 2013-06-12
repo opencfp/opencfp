@@ -7,7 +7,7 @@ namespace OpenCFP;
 class SignupForm
 {
     protected $_data;
-    public $errorMessages = array();
+    public $error_messages = array();
     protected $_purifier;
 
     /**
@@ -31,8 +31,8 @@ class SignupForm
     public function hasRequiredFields()
     {
         // If any of our fields are empty, reject stuff
-        $allFieldsFound = true;
-        $fieldList = array(
+        $all_fields_found = true;
+        $field_list = array(
             'email', 
             'password', 
             'password2', 
@@ -41,68 +41,78 @@ class SignupForm
             'speaker_info'
         );
 
-        foreach ($fieldList as $field) {
+        foreach ($field_list as $field) {
             if (!isset($this->_data[$field])) {
-                $allFieldsFound = false;
+                $all_fields_found = false;
                 break;
             }
         }
 
-        return $allFieldsFound;
+        return $all_fields_found;
     }
 
     /**
      * Validate all methods by calling all our validation methods
      *
+     * @param string $action
      * @return boolean
      */
-    public function validateAll()
+    public function validateAll($action = 'create')
     {
         /**
          * Grab all out fields that we are expecting and make sure that
          * they match after they've been sanitized
          */
-        $sanitizedData = $this->sanitize();
-        $originalData = array(
-            'email' => $this->_data['email'],
-            'password' => $this->_data['password'],
-            'password2' => $this->_data['password2'],
+        $sanitized_data = $this->sanitize();
+        $original_data = array(
             'first_name' => $this->_data['first_name'],
             'last_name' => $this->_data['last_name']
         );
 
-        if (!empty($this->_data['speaker_info'])) {
-            $originalData['speaker_info'] = $this->_data['speaker_info'];
+        if ($action == 'create') {
+            $original_data['email'] = $this->_data['email'];
+            $original_data['password'] = $this->_data['password'];
+            $original_data['password2'] = $this->_data['password2']; 
         }
 
-        $differences = array_diff($originalData, $sanitizedData);
+        if (!empty($this->_data['speaker_info'])) {
+            $original_data['speaker_info'] = $this->_data['speaker_info'];
+        }
+
+        $differences = array_diff($original_data, $sanitized_data);
 
         if (count($differences) > 0) {
             return false;
         }
 
-        $validEmail = $this->validateEmail();
-        $validPasswords = $this->validatePasswords();
-        $validFirstName = $this->validateFirstName();
-        $validLastName = $this->validateLastName();
-        $validSpeakerInfo = true;
-        $validSpeakerBio = true;
+        $valid_email = true;
+        $valid_passwords = true;
+
+        if ($action == 'create') {
+            $valid_email = $this->validateEmail();
+            $valid_passwords = $this->validatePasswords();
+        } 
+
+        $valid_first_name = $this->validateFirstName();
+        $valid_last_name = $this->validateLastName();
+        $valid_speaker_info = true;
+        $valid_speaker_bio = true;
         
         if (!empty($this->_data['speaker_info'])) {
-            $validSpeakerInfo = $this->validateSpeakerInfo();
+            $valid_speaker_info = $this->validateSpeakerInfo();
         }
 
         if (!empty($this->data['speaker_bio'])) {
-            $validSpeakerBio = $this->validateSpeakerBio();
+            $valid_speaker_bio = $this->validateSpeakerBio();
         }
 
         return (
-            $validEmail &&
-            $validPasswords &&
-            $validFirstName &&
-            $validLastName &&
-            $validSpeakerInfo &&
-            $validSpeakerBio
+            $valid_email &&
+            $valid_passwords &&
+            $valid_first_name &&
+            $valid_last_name &&
+            $valid_speaker_info &&
+            $valid_speaker_bio
         );
     }
 
@@ -131,24 +141,24 @@ class SignupForm
     {
         $passwd = filter_var($this->_data['password'], FILTER_SANITIZE_STRING);
         $passwd2 = filter_var($this->_data['password2'], FILTER_SANITIZE_STRING);
-        $validationResponse = true;
+        $validation_response = true;
 
         if ($passwd == '' || $passwd2 == '') {
-            $validationResponse = false;
-            $this->errorMessages[] = "Missing passwords";
+            $validation_response = false;
+            $this->error_messages[] = "Missing passwords";
         }
 
         if ($passwd !== $passwd2) {
-            $validationResponse = false;
-            $this->errorMessages[] = "The submitted passwords do not match";
+            $validation_response = false;
+            $this->error_messages[] = "The submitted passwords do not match";
         }
 
         if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
-            $validationResponse = false;
-            $this->errorMessages[] = "The submitted password must be at least 5 characters";
+            $validation_response = false;
+            $this->error_messages[] = "The submitted password must be at least 5 characters";
         }
 
-        return $validationResponse; 
+        return $validation_response; 
     }
 
     /**
@@ -158,29 +168,29 @@ class SignupForm
      */
     public function validateFirstName()
     {
-        $firstName = filter_var(
+        $first_name = filter_var(
             $this->_data['first_name'], 
             FILTER_SANITIZE_STRING, 
             array('flags' => FILTER_FLAG_STRIP_HIGH)
         );
-        $validationResponse = true;
+        $validation_response = true;
 
-        if ($firstName == '') {
-            $this->errorMessages[] = 'First name cannot be blank';
-            $validationResponse = false;
+        if ($first_name == '') {
+            $this->error_messages[] = 'First name cannot be blank';
+            $validation_response = false;
         }
 
-        if (strlen($firstName) > 255) {
-            $this->errorMessages[] = 'First name cannot exceed 255 characters';
-            $validationResponse = false;
+        if (strlen($first_name) > 255) {
+            $this->error_messages[] = 'First name cannot exceed 255 characters';
+            $validation_response = false;
         }
 
-        if ($firstName !== $this->_data['first_name']) {
-            $this->errorMessages[] = 'First name contains unwanted characters';
-            $validationResponse = false;
+        if ($first_name !== $this->_data['first_name']) {
+            $this->error_messages[] = 'First name contains unwanted characters';
+            $validation_response = false;
         }
 
-        return $validationResponse;
+        return $validation_response;
     }
 
 
@@ -196,26 +206,26 @@ class SignupForm
             FILTER_SANITIZE_STRING, 
             array('flags' => FILTER_FLAG_STRIP_HIGH)
         );
-        $validationResponse = true;
+        $validation_response = true;
 
         $lastName = strip_tags($lastName);
 
         if ($lastName == '') {
             $this->errorMessage[] = "Last name was blank or contained unwanted characters";
-            $validationResponse = false;
+            $validation_response = false;
         }
 
         if (strlen($lastName) > 255) {
             $this->errorMessage[] = "Last name cannot be longer than 255 characters";
-            $validationResponse = false;
+            $validation_response = false;
         }
 
         if ($lastName !== $this->_data['last_name']) {
             $this->errorMessage[] = "Last name data did not match after sanitizing";
-            $validationResponse = false;
+            $validation_response = false;
         }
 
-        return $validationResponse;
+        return $validation_response;
     }
 
     /**
@@ -230,21 +240,21 @@ class SignupForm
             FILTER_SANITIZE_STRING,
             array('flags' => FILTER_FLAG_STRIP_HIGH)
         );
-        $validationResponse = true;
+        $validation_response = true;
         $speakerInfo = strip_tags($speakerInfo);
         $speakerInfo = $this->_purifier->purify($speakerInfo);
 
         if ($speakerInfo !== $this->_data['speaker_info']) {
-            $this->errorMessages[] = "Your submitted speaker info contained unwanted characters";
-            $validationResponse = false;
+            $this->error_messages[] = "Your submitted speaker info contained unwanted characters";
+            $validation_response = false;
         }
 
         if (empty($speakerInfo)) {
-            $this->errorMessages[] = "You submitted speaker info but it was empty";
-            $validationResponse = false;
+            $this->error_messages[] = "You submitted speaker info but it was empty";
+            $validation_response = false;
         }
 
-        return $validationResponse;
+        return $validation_response;
     }
     
     /**
@@ -254,26 +264,26 @@ class SignupForm
      */
     public function validateSpeakerBio()
     {
-        $speakerBio = filter_var(
+        $speaker_bio = filter_var(
             $this->_data['speaker_bio'],
             FILTER_SANITIZE_STRING,
             array('flags' => FILTER_FLAG_STRIP_HIGH)
         );
-        $validationResponse = true;
-        $speakerBio = strip_tags($speakerBio);
-        $speakerBio = $this->_purifier->purify($speakerBio);
+        $validation_response = true;
+        $speaker_bio = strip_tags($speaker_bio);
+        $speaker_bio = $this->_purifier->purify($speaker_bio);
 
-        if ($speakerBio !== $this->_data['speaker_bio']) {
-            $this->errorMessages[] = "Your submitted speaker bio information contained unwanted characters";
-            $validationResponse = false;
+        if ($speaker_bio !== $this->_data['speaker_bio']) {
+            $this->error_messages[] = "Your submitted speaker bio information contained unwanted characters";
+            $validation_response = false;
         }
 
-        if (empty($speakerBio)) {
-            $this->errorMessages[] = "You submitted speaker bio information but it was empty";
-            $validationResponse = false;
+        if (empty($speaker_bio)) {
+            $this->error_messages[] = "You submitted speaker bio information but it was empty";
+            $validation_response = false;
         }
 
-        return $validationResponse;
+        return $validation_response;
     }
 
     /**
@@ -285,14 +295,14 @@ class SignupForm
     {
         $purifier = $this->_purifier;
 
-        $sanitizedData = array_map(
+        $sanitized_data = array_map(
             function ($field) use ($purifier) {
                 return $purifier->purify($field);
             },
             $this->_data
         );
 
-        return $sanitizedData;
+        return $sanitized_data;
     }
 
     /**

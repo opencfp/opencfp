@@ -85,6 +85,7 @@ class Talk
         if (empty($data['id'])) {
             return false;
         }
+        
         $sql = "UPDATE talks 
             SET title = ?,
             description = ?,

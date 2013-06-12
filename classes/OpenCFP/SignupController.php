@@ -9,31 +9,33 @@ class SignupController
     public function indexAction(Request $req, Application $app)
     {
         $template = $app['twig']->loadTemplate('create_user.twig');
-        return $template->render(array());
+        return $template->render(array('formAction' => '/signup'));
     }
 
     public function processAction(Request $req, Application $app)
     {
-        $templateName = 'create_user.twig';
-        $formData = array(
+        $template_name = 'create_user.twig';
+        $form_data = array(
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
             'email' => $req->get('email'),
             'password' => $req->get('password'),
             'password2' => $req->get('password2')
         );
-        $formData['speaker_info'] = $req->get('speaker_info') ?: null;
-        $formData['speaker_bio'] = $req->get('speaker_bio') ?: null;
+        $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
+        $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
 
-        $form = new \OpenCFP\SignupForm($formData);
+        $form = new \OpenCFP\SignupForm($form_data);
 
         if ($form->validateAll()) {
-            $sanitizedData = $form->sanitize();
+            $sanitized_data = $form->sanitize();
 
             // Create account using Sentry
             $userData = array(
-                'email' => $sanitizedData['email'],
-                'password' => $sanitizedData['password'],
+                'first_name' => $sanitized_data['first_name'],
+                'last_name' => $sanitized_data['last_name'],
+                'email' => $sanitized_data['email'],
+                'password' => $sanitized_data['password'],
                 'activated' => 1
             );
 
@@ -48,12 +50,12 @@ class SignupController
                 $speaker = new \OpenCFP\Speaker($app['db']);
                 $response = $speaker->create(array(
                     'user_id' => $user->getId(),
-                    'info' => $sanitizedData['speaker_info'],
-                    'bio' => $sanitizedData['speaker_bio']
+                    'info' => $sanitized_data['speaker_info'],
+                    'bio' => $sanitized_data['speaker_bio']
                 ));
 
-                $templateName = 'create_user_success.twig';
-                $formData['user'] = $user;
+                $template_name = 'create_user_success.twig';
+                $form_data['user'] = $user;
             } catch (Cartalyst\Sentry\Users\UserExistsException $e) {
                 $app['session']->set('flash', array(
                     'type' => 'error',
@@ -67,13 +69,13 @@ class SignupController
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error!',
-                'ext' => implode("<br>", $form->errorMessages)
+                'ext' => implode("<br>", $form->error_messages)
             ));
         }
         
-        $template = $app['twig']->loadTemplate($templateName);
+        $template = $app['twig']->loadTemplate($template_name);
         
-        return $template->render($formData);
+        return $template->render($form_data);
     }
 }
 

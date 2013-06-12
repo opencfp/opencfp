@@ -14,16 +14,16 @@ class DashboardController
 
         $user = $app['sentry']->getUser();
         $talk = new \OpenCFP\Talk($app['db']);
-        $myTalks = $talk->findByUserId($user->getId());
+        $my_talks = $talk->findByUserId($user->getId());
 
         // Load our template and RENDER
         $template = $app['twig']->loadTemplate('dashboard.twig');
-        $templateData = array(
-            'myTalks' => $myTalks,
-            'user' => $user,
+        $template_data = array(
+            'myTalks' => $my_talks,
+            'user' => $user
         );
 
-        return $template->render($templateData);
+        return $template->render($template_data);
     }
 }
 

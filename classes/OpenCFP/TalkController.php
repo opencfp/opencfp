@@ -14,27 +14,27 @@ class TalkController
 
         $id = $req->get('id');
         $user = $app['sentry']->getUser();
-        $talkId = filter_var($id, FILTER_VALIDATE_INT);
+        $talk_id= filter_var($id, FILTER_VALIDATE_INT);
 
-        if (empty($talkId)) {
+        if (empty($talk_id)) {
             return $app->redirect('/dashboard');
         }
             
         $talk = new \OpenCFP\Talk($app['db']);
-        $talkInfo = $talk->findById($talkId);
+        $talk_info = $talk->findById($talkId);
 
-        if ($talkInfo['user_id'] !== $user->getId()) {
+        if ($talk_info['user_id'] !== $user->getId()) {
             return $app->redirect('/dashboard');
         }
 
-        $templateName = 'edit_talk.twig';
-        $template = $app['twig']->loadTemplate($templateName);
+        $template_name = 'edit_talk.twig';
+        $template = $app['twig']->loadTemplate($template_name);
         $data = array(
             'formAction' => '/talk/create',
             'id' => $talkId,
-            'title' => $talkInfo['title'],
-            'description' => $talkInfo['description'],
-            'type' => $talkInfo['type'],
+            'title' => $talk_info['title'],
+            'description' => $talk_info['description'],
+            'type' => $talk_info['type'],
             'buttonInfo' => 'Update my talk!',
             'user' => $user
         );
@@ -48,22 +48,22 @@ class TalkController
             return $app->redirect('/login');
         }
 
-        $requestData = array(
+        $request_data = array(
             'id' => $request->get('id'),
             'title' => $request->get('title'),
             'description' => $request->get('description'),
             'type' => $request->get('type'),
             'user_id' => $request->get('user_id')
         );
-        $form = new \OpenCFP\TalkForm($requestData);
+        $form = new \OpenCFP\TalkForm($request_data);
         
         if ($form->validateAll()) {
-            $sanitizedData = $form->sanitize();
+            $sanitized_data = $form->sanitize();
             $data = array(
-                'id' => (int)$sanitizedData['id'],
-                'title' => $sanitizedData['title'],
-                'description' => $sanitizedData['description'],
-                'type' => $sanitizedData['type'],
+                'id' => (int)$sanitized_data['id'],
+                'title' => $sanitized_data['title'],
+                'description' => $sanitized_data['description'],
+                'type' => $sanitized_data['type'],
                 'user_id' => (int)$user->getId()
             );
             $talk = new \OpenCFP\Talk($app['db']);

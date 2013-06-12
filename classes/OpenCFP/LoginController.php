@@ -16,7 +16,7 @@ class LoginController
     public function processAction(Request $req, Application $app)
     {
         $template = $app['twig']->loadTemplate('login.twig');
-        $templateData = array();
+        $template_data = array();
 
         try {
             $page = new \OpenCFP\Login($app['sentry']);
@@ -25,20 +25,20 @@ class LoginController
                 return $app->redirect('/dashboard');
             }
             
-            $templateData = array(
+            $template_data = array(
                 'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
                 'errorMessage' => $page->getAuthenticationMessage()
             );
         } catch (Exception $e) {
-            $templateData = array(
+            $template_data = array(
                 'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
                 'errorMessage' => $e->getMessage()
             );
         }
         
-        return $template->render($templateData);
+        return $template->render($template_data);
     }
 
     public function outAction(Request $req, Application $app)
