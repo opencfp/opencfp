@@ -66,11 +66,11 @@ class SignupForm
         $sanitized_data = $this->sanitize();
         $original_data = array(
             'first_name' => $this->_data['first_name'],
-            'last_name' => $this->_data['last_name']
+            'last_name' => $this->_data['last_name'],
+            'email' => $this->_data['email']
         );
 
         if ($action == 'create') {
-            $original_data['email'] = $this->_data['email'];
             $original_data['password'] = $this->_data['password'];
             $original_data['password2'] = $this->_data['password2']; 
         }
@@ -89,10 +89,10 @@ class SignupForm
         $valid_passwords = true;
 
         if ($action == 'create') {
-            $valid_email = $this->validateEmail();
             $valid_passwords = $this->validatePasswords();
         } 
 
+        $valid_email = $this->validateEmail();
         $valid_first_name = $this->validateFirstName();
         $valid_last_name = $this->validateLastName();
         $valid_speaker_info = true;
