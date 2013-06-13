@@ -8,6 +8,10 @@ class ProfileController
 {
     public function editAction(Request $req, Application $app)
     {
+        if (!$app['sentry']->check()) {
+            return $app->redirect('/login');
+        }
+
         $template = $app['twig']->loadTemplate('edit_user.twig');
         $user = $app['sentry']->getUser();
         
@@ -39,6 +43,10 @@ class ProfileController
 
     public function processAction(Request $req, Application $app)
     {
+        if (!$app['sentry']->check()) {
+            return $app->redirect('/login');
+        }
+        
         $user = $app['sentry']->getUser();
 
         if ($user->getId() !== $req->get('id')) {
