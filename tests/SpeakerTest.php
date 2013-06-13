@@ -185,5 +185,60 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             "Speaker::getDetailsById did not return details in expected format"
         );
     }
+
+    /**
+     * Verify that updating speaker info works correctly
+     *
+     * @test
+     * @dataProvider updateSpeakerProvider
+     * @param boolean $expected_response 
+     * @param integer $row_count
+     */
+    public function updateSpeakerBehavesAsExpected($expected_response, $row_count)
+    {
+        $speaker_info = array(
+            'email' => 'test@domain.com',
+            'first_name' => 'Testy',
+            'last_name' => 'McTesterton',
+            'speaker_info' => 'Speaker info',
+            'speaker_bio' => 'Speaker bio'
+        );
+
+        $stmt = $this->getMockBuilder('StdClass')
+            ->setMethods(array('execute', 'rowCount'))
+            ->getMock();
+        $stmt->expects($this->once())
+            ->method('rowCount')
+            ->will($this->returnValue($row_count));
+        
+        $db = $this->getMockBuilder('PDOMock')
+            ->setMethods(array('prepare'))
+            ->getMock();
+        $db->expects($this->any())
+            ->method('prepare')
+            ->with($this->stringContains("UPDATE "))
+            ->will($this->returnValue($stmt));  
+
+        $speaker = new \OpenCFP\Speaker($db);
+        $response = $speaker->update($speaker_info);
+
+        $this->assertEquals(
+            $expected_response,
+            $response,
+            "Speaker::upate() did return expected result"
+        );
+    }
+    
+    /**
+     * Data provider for updateSpeakerBehavesAsExpected
+     */
+    public function updateProvider()
+    {
+        return array(
+            array(true, 1),
+            array(false, 3),
+            array(false, 0)
+        );
+    }
 }
 
