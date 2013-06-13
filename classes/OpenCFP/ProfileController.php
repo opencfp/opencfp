@@ -22,8 +22,8 @@ class ProfileController
 
         $speaker = new \OpenCFP\Speaker($app['db']);
         $speaker_data = $speaker->getDetailsByUserId($user->getId());
-
         $form_data = array(
+            'email' => $user->getLogin(),
             'first_name' => $speaker_data['first_name'],
             'last_name' => $speaker_data['last_name'],
             'speaker_info' => $speaker_data['info'],
@@ -52,6 +52,7 @@ class ProfileController
         }
 
         $form_data = array(
+            'email' => $req->get('email'),
             'user_id' => $req->get('id'),
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
