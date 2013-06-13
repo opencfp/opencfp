@@ -113,7 +113,7 @@ class SignupFormTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResponse, $testResponse);
         $this->assertContains(
             $expectedMessage,
-            $form->errorMessages,
+            $form->error_messages,
             "Did not get expected error message"
         );
     }
