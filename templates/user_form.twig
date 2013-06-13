@@ -1,6 +1,6 @@
     <form class="form-search" action="{{ formAction }}" method="POST">
-    {% if formAction == '/signup' %} 
     <input name='email' type="text" value="{{ email }}" class="input-large search-query" placeholder="E-mail"><br><br>
+    {% if formAction == '/signup' %} 
     <input name='password' type="password" class="input-large search-query" placeholder="Password, at least 5 characters"><br><br>
     <input name='password2' type="password" class="input-large search-query" placeholder="Password (confirm)"><br><br>
     {% endif %} 
