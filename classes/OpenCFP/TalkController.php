@@ -21,7 +21,7 @@ class TalkController
         }
             
         $talk = new \OpenCFP\Talk($app['db']);
-        $talk_info = $talk->findById($talkId);
+        $talk_info = $talk->findById($talk_id);
 
         if ($talk_info['user_id'] !== $user->getId()) {
             return $app->redirect('/dashboard');
@@ -31,7 +31,7 @@ class TalkController
         $template = $app['twig']->loadTemplate($template_name);
         $data = array(
             'formAction' => '/talk/create',
-            'id' => $talkId,
+            'id' => $talk_id,
             'title' => $talk_info['title'],
             'description' => $talk_info['description'],
             'type' => $talk_info['type'],
