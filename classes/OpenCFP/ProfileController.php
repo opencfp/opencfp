@@ -100,5 +100,66 @@ class ProfileController
         
         return $template->render($form_data);
     }
+
+    public function passwordAction(Request $req, Application $app)
+    {
+        if (!$app['sentry']->check()) {
+            return $app->redirect('/login');
+        }
+        $user = $app['sentry']->getUser();
+         
+        $template = $app['twig']->loadTemplate('change_password.twig');
+
+        return $template->render(array('user' => $user));        
+    }
+
+    public function passwordProcessAction(Request $req, Application $app)
+    {
+        if (!$app['sentry']->check()) {
+            return $app->redirect('/login');
+        }
+
+        $user = $app['sentry']->getUser();
+
+        /**
+         * Okay, the logic is kind of weird but we can use the SignupFOrm
+         * validation code to make sure our password changes are good
+         */
+        $formData = array(
+            'password' => $req->get('passwd'),
+            'password2' => $req->get('passwd_confirm')
+        );
+        $form = new \OpenCFP\SignupForm($formData);
+
+        if ($form->validatePasswords() === false) {
+            $app['session']->set('flash', array(
+                'type' => 'error',
+                'short' => 'Error!',
+                'ext' => implode("<br>", $form->error_messages)
+            ));
+            return $app->redirect('/profile/change_password');
+        }
+
+        $sanitized_data = $form->sanitize();
+        $speaker = new \OpenCFP\Speaker($app['db']);
+
+        if ($speaker->changePassword($sanitized_data['password'], $user) === false) {
+            $app['session']->set('flash', array(
+                'type' => 'error',
+                'short' => 'Error!',
+                'ext' => "Unable to update your password in the database. Please try again."
+            ));
+            return $app->redirect('/profile/change_password');
+        }
+        
+        $app['session']->set('flash', array(
+            'type' => 'success',
+            'short' => 'Success!',
+            'ext' => "Changed your password."
+        ));
+
+        return $app->redirect('/profile/change_password');
+
+    }
 }
 

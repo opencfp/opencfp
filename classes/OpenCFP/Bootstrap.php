@@ -91,6 +91,8 @@ class Bootstrap
         $app->post('/signup', 'OpenCFP\SignupController::processAction');
         $app->get('/profile/edit/{id}', 'OpenCFP\ProfileController::editAction');
         $app->post('/profile/edit', 'OpenCFP\ProfileController::processAction');
+        $app->get('/profile/change_password', 'OpenCFP\ProfileController::passwordAction');
+        $app->post('/profile/change_password', 'OpenCFP\ProfileController::passwordProcessAction');
 
         $app['debug'] = true;
     }

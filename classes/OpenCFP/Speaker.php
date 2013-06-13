@@ -152,4 +152,15 @@ class Speaker
 
         return true;
     }
+
+    public function changePassword($new_password, $user)
+    {
+        /**
+         * This also appears kind of weird, because we use Sentry's own built-in
+         * password reset functionality to accomplish the task...
+         */
+        $reset_code = $user->getResetPasswordCode();
+
+        return $user->attemptResetPassword($reset_code, $new_password);
+    }
 }
