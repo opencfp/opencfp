@@ -1,4 +1,4 @@
-<form class="form-search" action="/submit_talk" method="POST">
+<form class="form-search" action="{{ formAction }}" method="POST">
 {% if id %}
 <input name="id" type="hidden" value="{{ id }}">
 {% endif %}

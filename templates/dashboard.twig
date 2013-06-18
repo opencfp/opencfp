@@ -1,5 +1,25 @@
 {% extends "layouts/default.twig" %}
 {% block content %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript">
+function deleteTalk(tid) {
+    $.ajax({
+        type: "POST",
+        url: "/talk/delete",
+        data: "tid=" + tid + "&user_id=" + {{ user.id }},
+        success: function(data, textStatus, jqXHR) {
+            if (data.delete == 'ok') {
+                alert("Deleted talk!");
+                $("#talk-"+tid).remove();
+            } else if (data.delete == 'no-user') {
+                alert("You must be logged in to delete talks")
+            } else {
+                alert("Unable to delete talk");
+            }
+        }
+    });
+}
+</script>
 Welcome <b>{{ user.login }}<br><br>
 <a href="/profile/edit/{{user.id}}">Edit Profile</a><br>
 <a href="/profile/change_password">Change Password</a>
@@ -12,10 +32,10 @@ Welcome <b>{{ user.login }}<br><br>
 <th>&nbsp;</th>
 </tr>
 {% for talk in myTalks %}
-<tr>
+<tr id="talk-{{ talk.id }}">
 <td><b>{{ talk.title }}</b></td>
 <td><a href="/talk/edit/{{ talk.id}}">Edit</a></td>
-<td><a href="/talk/delete/{{ talk.id }}">Delete</a></td>
+<td><a onClick="deleteTalk('{{ talk.id }}');">Delete</a></td>
 </tr>
 {% endfor %}
 </table>
@@ -23,5 +43,5 @@ Welcome <b>{{ user.login }}<br><br>
 You currently have no talks submitted. 
 {% endif %}
 <br><br>
-<a class="btn btn-large btn-success" href="/submit_talk">Submit a talk</a>
+<a class="btn btn-large btn-success" href="/talk/create">Submit a talk</a>
 {% endblock %}

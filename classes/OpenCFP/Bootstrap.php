@@ -83,7 +83,10 @@ class Bootstrap
 
         $app->get('/dashboard', 'OpenCFP\DashboardController::indexAction');
         $app->get('/talk/edit/{id}', 'OpenCFP\TalkController::editAction');
-        $app->post('/talk/create', 'OpenCFP\TalkController::createAction');
+        $app->get('/talk/create', 'OpenCFP\TalkController::createAction');
+        $app->post('/talk/create', 'OpenCFP\TalkController::processCreateAction');
+        $app->post('/talk/update', 'OpenCFP\TalkController::updateAction');
+        $app->post('/talk/delete', 'OpenCFP\TalkController::deleteAction');
         $app->get('/login', 'OpenCFP\LoginController::indexAction');
         $app->post('/login', 'OpenCFP\LoginController::processAction');
         $app->get('/logout', 'OpenCFP\LoginController::outAction');
