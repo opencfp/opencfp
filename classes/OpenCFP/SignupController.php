@@ -8,8 +8,13 @@ class SignupController
 {
     public function indexAction(Request $req, Application $app)
     {
+        $app['sentry']->logout();
         $template = $app['twig']->loadTemplate('create_user.twig');
-        return $template->render(array('formAction' => '/signup'));
+        $data = array(
+            'formAction' => '/signup',
+            'buttonInfo' => 'Create Account'
+        );
+        return $template->render($data);
     }
 
     public function processAction(Request $req, Application $app)
@@ -55,12 +60,17 @@ class SignupController
                 ));
 
                 $template_name = 'create_user_success.twig';
-                $form_data['user'] = $user;
             } catch (Cartalyst\Sentry\Users\UserExistsException $e) {
                 $app['session']->set('flash', array(
                     'type' => 'error',
                     'short' => 'Error!',
                     'ext' => 'A user already exists with that email address'
+                ));
+            } catch (Exception $e) {
+                $app['session']->set('flash', array(
+                    'type' => 'error',
+                    'short' => 'Error!',
+                    'ext' => $e->getMessage()
                 ));
             }
         }
