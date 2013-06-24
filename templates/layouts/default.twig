@@ -1,36 +1,33 @@
 {% if user %}
-    {% set navigation_bar = [['/dashboard', 'Dashboard'], ['/about', 'About'], ['/contact', 'Contact'], ['/logout', 'Logout']] %}
+    {% set navigation_bar = [['/', 'Home'], ['/dashboard', 'Dashboard'], ['/logout', 'Logout']] %}
     {% set active_page = active_page|default('/dashboard') %}
-{% else %}
-    {% set navigation_bar = [['/', 'Home'], ['/about', 'About'], ['/contact', 'Contact']] %}
-    {% set active_page = active_page|default('index') %}
 {% endif %}
 <!DOCTYPE html>
 <html>
-<head>
-<title>{% block title %}TrueNorthPHP - Call for Papers{% endblock %}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap -->
-<link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="/assets/css/site.css" rel="stylesheet" media="screen">
-</head>
-<body>
-<div class="container-narrow">
-    <div class="masthead">
-        {% block navigation %}
-        <ul id="navigation" class="nav nav-pills pull-right">
-            {% for item in navigation_bar %}
-            <li{% if item[0] == active_page %} class="active"{% endif%}>
-            <a href="{{ item[0] }}">{{item[1]}}</a></li>
-            {% endfor %}
-        </ul>
-        {% endblock %}
-        <h3 class="muted">TrueNorthPHP Call For Papers</h3>
-    </div>
-{% block content %}
-{% endblock %}
-</div>
-<script src="http://code.jquery.com/jquery.js"></script>
-<script src="/assets/js/bootstrap.min.js"></script>
-</body>
+    <head>
+        <title>{% block title %}True North PHP - Call for Papers{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/site.css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <div class="container-narrow">
+            <div class="masthead">
+                {% block navigation %}
+                    <ul id="navigation" class="nav nav-pills pull-right">
+                        {% for item in navigation_bar %}
+                            <li{% if item[0] == active_page %} class="active"{% endif%}>
+                            <a href="{{ item[0] }}">{{item[1]}}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endblock %}
+                {% block mainheading %}<h3 class="muted">True North PHP - Call for Papers</h3>{% endblock %}
+            </div>
+            {% block content %}
+            {% endblock %}
+        </div>
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
+    </body>
 </html>
