@@ -101,7 +101,7 @@ class TalkForm
     public function validateTitle()
     {
         $sanitized_data = $this->sanitize();
-        
+
         if (empty($sanitized_data['title']) || !isset($sanitized_data['title'])) {
             $this->error_messages[] = "You are missing a title";
             return false;
@@ -115,7 +115,7 @@ class TalkForm
         }
 
         if (strlen($title) > 100) {
-            $this->error_messages[] = "Your talk title has to be 100 characters or less"; 
+            $this->error_messages[] = "Your talk title has to be 100 characters or less";
             return false;
         }
 
@@ -131,20 +131,8 @@ class TalkForm
     {
         $santizedData = $this->sanitize();
 
-        if (empty($santizedData['description']) || !isset($santizedData['description'])) {
+        if (empty($santizedData['description']) || $santizedData['description'] !== $this->_data['description']) {
             $this->error_messages[] = "Your description was missing or only contained invalid characters or content";
-            return false;
-        }
-
-        $description = $santizedData['description'];
-
-        if ($description !== $this->_data['description']) {
-            $this->error_messages[] = "You are missing a description for your talk";
-            return false;
-        }
-
-        if (empty($description) || $description === null) {
-            $this->error_messages[] = "You are missing a description for your talk";
             return false;
         }
 
@@ -190,7 +178,7 @@ class TalkForm
         $sanitized_data = $this->sanitize();
         $userId = $sanitized_data['user_id'];
         $thisSpeaker = $speaker->findByUserId($userId);
-        
+
         if (!$thisSpeaker) {
             $this->error_messages[] = "Your talk does not seem to belong to a valid speaker";
             return false;
