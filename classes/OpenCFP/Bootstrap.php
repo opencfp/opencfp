@@ -77,8 +77,13 @@ class Bootstrap
     {
         $app = $this->_app;
         $app->get('/', function() use($app) {
+            $view = array();
+            if ($app['sentry']->check()) {
+                $view['user'] = $app['sentry']->getUser();
+            }
+
             $template = $app['twig']->loadTemplate('home.twig');
-            return $template->render(array());
+            return $template->render($view);
         });
 
         $app->get('/dashboard', 'OpenCFP\DashboardController::indexAction');

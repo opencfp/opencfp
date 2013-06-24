@@ -1,35 +1,48 @@
 body {
     padding-top: 20px;
     padding-bottom: 40px;
-  }
+}
 
-  /* Custom container */
-  .container-narrow {
-      margin: 0 auto;
-      max-width: 700px;
-  }
-  .container-narrow > hr {
-      margin: 30px 0;
-  }
+/* Custom container */
+.container-narrow {
+    margin: 0 auto;
+    max-width: 700px;
+}
 
-  /* Main marketing message and sign up button */
-  .jumbotron {
-      margin: 60px 0;
-      text-align: center;
-  }
-  .jumbotron h1 {
-      font-size: 68px;
-      line-height: 1;
-  }
-  .jumbotron .btn {
-      font-size: 21px;
-      padding: 14px 24px;
-  }
+.container-narrow > hr {
+    margin: 30px 0;
+}
 
-  /* Supporting marketing content */
-  .marketing {
-      margin: 60px 0;
-  }
-  .marketing p + h4 {
-      margin-top: 28px;
-  }
+/* Main marketing message and sign up button */
+.jumbotron {
+    margin: 60px 0;
+    text-align: center;
+}
+
+.jumbotron h1 {
+    font-size: 68px;
+    line-height: 1;
+}
+
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+.jumbotron .btn .small {
+    font-size: 13px;
+    line-height: 10px;
+}
+
+.jumbotron .btn.btn-warning {
+    line-height: 30px;
+}
+
+/* Supporting marketing content */
+.marketing {
+    margin: 60px 0;
+}
+
+.marketing p + h4 {
+    margin-top: 28px;
+}

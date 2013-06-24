@@ -35,7 +35,7 @@ Welcome <b>{{ user.login }}<br><br>
 <tr id="talk-{{ talk.id }}">
 <td><b>{{ talk.title }}</b></td>
 <td><a href="/talk/edit/{{ talk.id}}">Edit</a></td>
-<td><a onClick="deleteTalk('{{ talk.id }}');">Delete</a></td>
+<td><a href="#" onClick="deleteTalk('{{ talk.id }}');return false;">Delete</a></td>
 </tr>
 {% endfor %}
 </table>
