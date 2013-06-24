@@ -81,7 +81,6 @@ class TalkController
         $form = new \OpenCFP\TalkForm($request_data);
         
         if (!$form->validateAll()) {
-            die('Form did not validate');
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
