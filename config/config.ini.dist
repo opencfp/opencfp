@@ -30,4 +30,4 @@ port = "25"
 ; path must be writeable
 ; path must not have trailing slash
 ; if not set will default to html purifier library folder
-;cachedir = /path/to/htmlpurifier/cache
+;cachedir = "/path/to/htmlpurifier/cache"
