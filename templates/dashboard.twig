@@ -1,6 +1,6 @@
 {% extends "layouts/default.twig" %}
-{% block content %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+{% block scripts %}
+{{ parent() }}
 <script type="text/javascript">
 function deleteTalk(tid) {
     $.ajax({
@@ -20,6 +20,8 @@ function deleteTalk(tid) {
     });
 }
 </script>
+{% endblock %}
+{% block content %}
 Welcome <b>{{ user.login }}<br><br>
 <a href="/profile/edit/{{user.id}}">Edit Profile</a><br>
 <a href="/profile/change_password">Change Password</a>
