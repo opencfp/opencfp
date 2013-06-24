@@ -16,11 +16,10 @@ class SignupForm
      * @param $data array of $_POST data
      * @param 
      */
-    public function __construct($data)
+    public function __construct($data, $purifier)
     {
         $this->_data = $data;
-        $config = \HTMLPurifier_Config::createDefault();
-        $this->_purifier = new \HTMLPurifier($config);
+        $this->_purifier = $purifier;
     }
 
     /**

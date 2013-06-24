@@ -77,9 +77,9 @@ class TalkController
             'type' => $req->get('type'),
             'user_id' => $req->get('user_id')
         );
-        
-        $form = new \OpenCFP\TalkForm($request_data);
-        
+
+        $form = new \OpenCFP\TalkForm($request_data, $app['purifier']);
+
         if (!$form->validateAll()) {
             $app['session']->set('flash', array(
                 'type' => 'error',
@@ -148,7 +148,7 @@ class TalkController
             'user_id' => $req->get('user_id')
         );
 
-        $form = new \OpenCFP\TalkForm($request_data);
+        $form = new \OpenCFP\TalkForm($request_data, $app['purifier']);
         $valid = $form->validateAll();
 
         if ($valid) {

@@ -12,6 +12,7 @@ class Bootstrap
     private $_app;
     private $_config;
     private $_twig;
+    private $_purifier;
 
     function __construct()
     {
@@ -34,6 +35,8 @@ class Bootstrap
             $app['twig'] = $this->getTwig();
 
             $app['db'] = $this->getDb();
+
+            $app['purifier'] = $this->getPurifier();
 
             // We're using Sentry, so make it available to app
             $app['sentry'] = $app->share(function() use ($app) {
@@ -135,6 +138,18 @@ class Bootstrap
             $this->_twig = new Twig_Environment($loader);
         }
         return $this->_twig;
+    }
+
+    public function getPurifier() {
+        if (!isset($this->_purifier)) {
+            $config = \HTMLPurifier_Config::createDefault();
+            if ($cachedir = $this->getConfig('htmlpurifier.cachedir')) {
+                $config->set('Cache.SerializerPath', $cachedir);
+            }
+            $this->_purifier = new \HTMLPurifier($config);
+        }
+
+        return $this->_purifier;
     }
 
     /**

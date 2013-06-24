@@ -1,10 +1,18 @@
 <?php
+
 /**
  * Tests for our TalkForm object
  */
 
-class TalkFormTest extends PHPUnit_Framework_TestCase
+class TalkFormTest extends \PHPUnit_Framework_TestCase
 {
+    private $purifier;
+
+    protected function setUp()
+    {
+        $this->purifier = new \HTMLPurifier();
+    }
+
     /**
      * Test that form object correctly detects if all the required fields
      * are in the user-submitted data
@@ -17,7 +25,7 @@ class TalkFormTest extends PHPUnit_Framework_TestCase
     public function correctlyDetectsRequiredFields($rawData, $response)
     {
         $data = unserialize($rawData);
-        $form = new \OpenCFP\TalkForm($data);
+        $form = new \OpenCFP\TalkForm($data, $this->purifier);
 
         $this->assertEquals(
             $response,
@@ -64,7 +72,7 @@ class TalkFormTest extends PHPUnit_Framework_TestCase
     public function titleValidatesCorrectly($title, $expectedResponse)
     {
         $data = array('title' => $title);
-        $form = new \OpenCFP\TalkForm($data);
+        $form = new \OpenCFP\TalkForm($data, $this->purifier);
 
         $this->assertEquals(
             $expectedResponse,
@@ -80,7 +88,7 @@ class TalkFormTest extends PHPUnit_Framework_TestCase
      */
     public function titleValidatesProvider()
     {
-        $faker = Faker\Factory::create();
+        $faker = \Faker\Factory::create();
 
         return array(
             array(substr($faker->text(100), 0, 100), true),
@@ -103,7 +111,7 @@ class TalkFormTest extends PHPUnit_Framework_TestCase
     public function descriptionValidatesCorrectly($description, $expectedResponse)
     {
         $data = array('description' => $description);
-        $form = new \OpenCFP\TalkForm($data);
+        $form = new \OpenCFP\TalkForm($data, $this->purifier);
 
         $this->assertEquals(
             $expectedResponse,
@@ -119,7 +127,7 @@ class TalkFormTest extends PHPUnit_Framework_TestCase
      */
     public function descriptionValidatesProvider()
     {
-        $faker = Faker\Factory::create();
+        $faker = \Faker\Factory::create();
 
         return array(
             array($faker->text(), true),
@@ -140,7 +148,7 @@ class TalkFormTest extends PHPUnit_Framework_TestCase
     public function typeValidattesCorrectly($type, $expectedResponse)
     {
         $data = array('type' => $type);
-        $form = new \OpenCFP\TalkForm($data);
+        $form = new \OpenCFP\TalkForm($data, $this->purifier);
 
         $this->assertEquals(
             $expectedResponse,
@@ -202,7 +210,7 @@ class TalkFormTest extends PHPUnit_Framework_TestCase
 
         $speaker = new \OpenCFP\Speaker($db);
         $data['user_id'] = $speakerId;
-        $form = new \OpenCFP\TalkForm($data);
+        $form = new \OpenCFP\TalkForm($data, $this->purifier);
 
         $this->assertEquals(
             $expectedResponse,
