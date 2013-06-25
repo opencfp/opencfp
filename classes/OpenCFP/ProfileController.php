@@ -68,7 +68,7 @@ class ProfileController
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
 
-        $form = new \OpenCFP\SignupForm($form_data);
+        $form = new \OpenCFP\SignupForm($form_data, $app['purifier']);
 
         if ($form->validateAll('update') == true) {
             $sanitized_data = $form->sanitize();
@@ -129,7 +129,7 @@ class ProfileController
             'password' => $req->get('passwd'),
             'password2' => $req->get('passwd_confirm')
         );
-        $form = new \OpenCFP\SignupForm($formData);
+        $form = new \OpenCFP\SignupForm($formData, $app['purifier']);
 
         if ($form->validatePasswords() === false) {
             $app['session']->set('flash', array(

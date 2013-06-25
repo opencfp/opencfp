@@ -30,7 +30,7 @@ class SignupController
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
 
-        $form = new \OpenCFP\SignupForm($form_data);
+        $form = new \OpenCFP\SignupForm($form_data, $app['purifier']);
 
         if ($form->validateAll()) {
             $sanitized_data = $form->sanitize();
