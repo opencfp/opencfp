@@ -144,17 +144,17 @@ class SignupForm
 
         if ($passwd == '' || $passwd2 == '') {
             $validation_response = false;
-            $this->error_messages[] = "Missing passwords";
+            $this->_addErrorMessage("Missing passwords");
         }
 
         if ($passwd !== $passwd2) {
             $validation_response = false;
-            $this->error_messages[] = "The submitted passwords do not match";
+            $this-_addErrorMessage("The submitted passwords to not match");
         }
 
         if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
             $validation_response = false;
-            $this->error_messages[] = "The submitted password must be at least 5 characters";
+            $this->_addErrorMessage[] = "The submitted password must be at least 5 characters long";
         }
 
         return $validation_response; 
@@ -175,17 +175,17 @@ class SignupForm
         $validation_response = true;
 
         if ($first_name == '') {
-            $this->error_messages[] = 'First name cannot be blank';
+            $this->_addErrorMessage('First name cannot be blank');
             $validation_response = false;
         }
 
         if (strlen($first_name) > 255) {
-            $this->error_messages[] = 'First name cannot exceed 255 characters';
+            $this->_addErrorMessage('First name cannot exceed 255 characters');
             $validation_response = false;
         }
 
         if ($first_name !== $this->_data['first_name']) {
-            $this->error_messages[] = 'First name contains unwanted characters';
+            $this->_addErrorMessage('First name contains unwanted characters');
             $validation_response = false;
         }
 
@@ -210,17 +210,17 @@ class SignupForm
         $lastName = strip_tags($lastName);
 
         if ($lastName == '') {
-            $this->errorMessage[] = "Last name was blank or contained unwanted characters";
+            $this->_addErrorMessage("Last name was blank or contained unwanted characters");
             $validation_response = false;
         }
 
         if (strlen($lastName) > 255) {
-            $this->errorMessage[] = "Last name cannot be longer than 255 characters";
+            $this->_addErrorMessage("Last name cannot be longer than 255 characters");
             $validation_response = false;
         }
 
         if ($lastName !== $this->_data['last_name']) {
-            $this->errorMessage[] = "Last name data did not match after sanitizing";
+            $this->_addErrorMessage("Last name data did not match after sanitizing");
             $validation_response = false;
         }
 
@@ -244,12 +244,12 @@ class SignupForm
         $speakerInfo = $this->_purifier->purify($speakerInfo);
 
         if ($speakerInfo !== $this->_data['speaker_info']) {
-            $this->error_messages[] = "Your submitted speaker info contained unwanted characters";
+            $this->_addErrorMessage("Your submitted speaker info contained unwanted characters");
             $validation_response = false;
         }
 
         if (empty($speakerInfo)) {
-            $this->error_messages[] = "You submitted speaker info but it was empty";
+            $this->_addErrorMessage("You submitted speaker info but it was empty");
             $validation_response = false;
         }
 
@@ -273,12 +273,12 @@ class SignupForm
         $speaker_bio = $this->_purifier->purify($speaker_bio);
 
         if ($speaker_bio !== $this->_data['speaker_bio']) {
-            $this->error_messages[] = "Your submitted speaker bio information contained unwanted characters";
+            $this->_addErrorMessage("Your submitted speaker bio information contained unwanted characters");
             $validation_response = false;
         }
 
         if (empty($speaker_bio)) {
-            $this->error_messages[] = "You submitted speaker bio information but it was empty";
+            $this->_addErrorMessage("You submitted speaker bio information but it was empty");
             $validation_response = false;
         }
 
@@ -384,4 +384,16 @@ class SignupForm
         );
         return $mailer->send($message);
     }
+
+    /**
+     * Method that adds error message to our class attribute, making sure to
+     * not add anything that is in there already
+     */
+    protected function _addErrorMessage($message)
+    {
+        if (!in_array($message, $this->error_messages)) {
+            $this->error_messages[] = $message;
+        }
+    }
+        
 }

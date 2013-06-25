@@ -12,7 +12,7 @@ class SignupController
         $template = $app['twig']->loadTemplate('create_user.twig');
         $data = array(
             'formAction' => '/signup',
-            'buttonInfo' => 'Create Account'
+            'buttonInfo' => 'Create my speaker profile'
         );
         return $template->render($data);
     }
@@ -84,7 +84,7 @@ class SignupController
         }
         
         $template = $app['twig']->loadTemplate($template_name);
-        
+        $form_data['buttonInfo'] = "Create my speaker profile";    
         return $template->render($form_data);
     }
 }
