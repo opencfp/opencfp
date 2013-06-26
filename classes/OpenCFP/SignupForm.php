@@ -14,7 +14,7 @@ class SignupForm
      * Class constructor
      *
      * @param $data array of $_POST data
-     * @param 
+     * @param
      */
     public function __construct($data, $purifier)
     {
@@ -32,10 +32,10 @@ class SignupForm
         // If any of our fields are empty, reject stuff
         $all_fields_found = true;
         $field_list = array(
-            'email', 
-            'password', 
-            'password2', 
-            'first_name', 
+            'email',
+            'password',
+            'password2',
+            'first_name',
             'last_name',
             'speaker_info'
         );
@@ -71,7 +71,7 @@ class SignupForm
 
         if ($action == 'create') {
             $original_data['password'] = $this->_data['password'];
-            $original_data['password2'] = $this->_data['password2']; 
+            $original_data['password2'] = $this->_data['password2'];
         }
 
         if (!empty($this->_data['speaker_info'])) {
@@ -89,14 +89,14 @@ class SignupForm
 
         if ($action == 'create') {
             $valid_passwords = $this->validatePasswords();
-        } 
+        }
 
         $valid_email = $this->validateEmail();
         $valid_first_name = $this->validateFirstName();
         $valid_last_name = $this->validateLastName();
         $valid_speaker_info = true;
         $valid_speaker_bio = true;
-        
+
         if (!empty($this->_data['speaker_info'])) {
             $valid_speaker_info = $this->validateSpeakerInfo();
         }
@@ -116,7 +116,7 @@ class SignupForm
     }
 
     /**
-     * Method that applies validation rules to email 
+     * Method that applies validation rules to email
      *
      * @param string $email
      */
@@ -157,19 +157,19 @@ class SignupForm
             $this->_addErrorMessage[] = "The submitted password must be at least 5 characters long";
         }
 
-        return $validation_response; 
+        return $validation_response;
     }
 
     /**
      * Method that applies vaidation rules to user-submitted first names
-     * 
+     *
      * @return boolean
      */
     public function validateFirstName()
     {
         $first_name = filter_var(
-            $this->_data['first_name'], 
-            FILTER_SANITIZE_STRING, 
+            $this->_data['first_name'],
+            FILTER_SANITIZE_STRING,
             array('flags' => FILTER_FLAG_STRIP_HIGH)
         );
         $validation_response = true;
@@ -195,14 +195,14 @@ class SignupForm
 
     /**
      * Method that applies vaidation rules to user-submitted first names
-     * 
+     *
      * @return boolean
      */
     public function validateLastName()
     {
         $lastName = filter_var(
-            $this->_data['last_name'], 
-            FILTER_SANITIZE_STRING, 
+            $this->_data['last_name'],
+            FILTER_SANITIZE_STRING,
             array('flags' => FILTER_FLAG_STRIP_HIGH)
         );
         $validation_response = true;
@@ -255,9 +255,9 @@ class SignupForm
 
         return $validation_response;
     }
-    
+
     /**
-     * Method that applies validation rules to user-submitted speaker bio 
+     * Method that applies validation rules to user-submitted speaker bio
      *
      * @return boolean
      */
@@ -395,5 +395,5 @@ class SignupForm
             $this->error_messages[] = $message;
         }
     }
-        
+
 }
