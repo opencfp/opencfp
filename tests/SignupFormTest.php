@@ -11,7 +11,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that form object rejects validation when we don't have
-     * enough fields 
+     * enough fields
      *
      * @test
      */
@@ -80,7 +80,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     /**
      * Test that password that match and are of the proper length pass validation
      * and sanitization
-     * 
+     *
      * @test
      */
     public function properPasswordsPassValidationAndSanitization()
@@ -133,7 +133,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     public function badPasswordProvider()
     {
         return array(
-            array('foo', 'foo', "The submitted password must be at least 5 characters", false),
+            array('foo', 'foo', "The submitted password must be at least 5 characters long", false),
             array('bar', 'foo', "The submitted passwords do not match", false),
             array(null, null, "Missing passwords", false),
         );
@@ -289,7 +289,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             "Speaker info was not validated as expected"
         );
     }
-   
+
     /**
      * Test that speaker info is validated correctly
      *
@@ -314,7 +314,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
       * Data provider for speakerInfoValidatedCorrectly
       *
       * @return array
-      */ 
+      */
     public function speakerTextProvider()
     {
         return array(
@@ -376,7 +376,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
 
         $goodDataOut = $goodDataIn;
 
-        $badSpeakerInfoIn = array( 
+        $badSpeakerInfoIn = array(
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
@@ -385,7 +385,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
         );
 
-        $badSpeakerInfoOut = array( 
+        $badSpeakerInfoOut = array(
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
@@ -394,7 +394,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
         );
 
-        $goodSpeakerInfoIn = array( 
+        $goodSpeakerInfoIn = array(
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',

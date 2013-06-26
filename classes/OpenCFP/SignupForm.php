@@ -149,12 +149,11 @@ class SignupForm
 
         if ($passwd !== $passwd2) {
             $validation_response = false;
-            $this-_addErrorMessage("The submitted passwords do not match");
+            $this->_addErrorMessage("The submitted passwords do not match");
         }
-
         if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
             $validation_response = false;
-            $this->_addErrorMessage[] = "The submitted password must be at least 5 characters long";
+            $this->_addErrorMessage("The submitted password must be at least 5 characters long");
         }
 
         return $validation_response;
