@@ -17,8 +17,15 @@ class SignupController
         $form_data = array();
         $form_data['formAction'] = '/signup';
         $form_data['buttonInfo'] = 'Create my speaker profile';
-        
+
         return $template->render($form_data);
+    }
+
+    public function successAction(Application $app)
+    {
+        $template = $app['twig']->loadTemplate('create_user_success.twig');
+
+        return $template->render(array());
     }
 
     public function processAction(Request $req, Application $app)
@@ -78,11 +85,11 @@ class SignupController
         if (!$form->validateAll()) {
             $form_data['error_message'] = implode("<br>", $form->error_messages);
         }
-        
+
         $template = $app['twig']->loadTemplate('create_user.twig');
         $form_data['formAction'] = '/signup';
         $form_data['buttonInfo'] = 'Create my speaker profile';
-        
+
         return $template->render($form_data);
     }
 }

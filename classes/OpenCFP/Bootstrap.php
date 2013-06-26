@@ -100,6 +100,7 @@ class Bootstrap
         $app->get('/logout', 'OpenCFP\LoginController::outAction');
         $app->get('/signup', 'OpenCFP\SignupController::indexAction');
         $app->post('/signup', 'OpenCFP\SignupController::processAction');
+        $app->get('/signup/success', 'OpenCFP\SignupController::successAction');
         $app->get('/profile/edit/{id}', 'OpenCFP\ProfileController::editAction');
         $app->post('/profile/edit', 'OpenCFP\ProfileController::processAction');
         $app->get('/profile/change_password', 'OpenCFP\ProfileController::passwordAction');
