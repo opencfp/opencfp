@@ -4,7 +4,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Verify that creating a new Speaker record in the database
-     * when given complete data 
+     * when given complete data
      *
      * @test
      */
@@ -97,7 +97,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
     /**
      * The findByUserId() method should return false if we send it
      * a non-integer value or pass it nothing
-     * 
+     *
      * @test
      * @dataProvider findDataProvider
      * @param mixed $user_id
@@ -157,7 +157,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             'last_name' => 'McTesterton',
             'speaker_info' => 'Test info',
             'speaker_bio' => 'Test bio',
-            'user_id' => 42 
+            'user_id' => 42
         );
 
         $stmt = $this->getMockBuilder('StdClass')
@@ -191,12 +191,13 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
      *
      * @test
      * @dataProvider updateSpeakerProvider
-     * @param boolean $expected_response 
+     * @param boolean $expected_response
      * @param integer $row_count
      */
     public function updateSpeakerBehavesAsExpected($expected_response, $row_count)
     {
-        $speaker_info = array(
+        $speaker_info = $speaker_info_old = array(
+            'user_id' => 1,
             'email' => 'test@domain.com',
             'first_name' => 'Testy',
             'last_name' => 'McTesterton',
@@ -204,20 +205,26 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             'speaker_bio' => 'Speaker bio'
         );
 
+        $speaker_info_old['last_name'] = 'MacTesterton';
+        $speaker_info_old['info'] = 'my old info';
+        $speaker_info_old['bio'] = 'my old bio';
+
         $stmt = $this->getMockBuilder('StdClass')
-            ->setMethods(array('execute', 'rowCount'))
+            ->setMethods(array('execute', 'rowCount', 'fetch'))
             ->getMock();
-        $stmt->expects($this->once())
+        $stmt->expects($this->any())
             ->method('rowCount')
             ->will($this->returnValue($row_count));
-        
+        $stmt->expects($this->once())
+            ->method('fetch')
+            ->will($this->returnValue($speaker_info_old));
+
         $db = $this->getMockBuilder('PDOMock')
             ->setMethods(array('prepare'))
             ->getMock();
         $db->expects($this->any())
             ->method('prepare')
-            ->with($this->stringContains("UPDATE "))
-            ->will($this->returnValue($stmt));  
+            ->will($this->returnValue($stmt));
 
         $speaker = new \OpenCFP\Speaker($db);
         $response = $speaker->update($speaker_info);
@@ -228,11 +235,11 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             "Speaker::upate() did return expected result"
         );
     }
-    
+
     /**
      * Data provider for updateSpeakerBehavesAsExpected
      */
-    public function updateProvider()
+    public function updateSpeakerProvider()
     {
         return array(
             array(true, 1),
