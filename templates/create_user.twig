@@ -3,6 +3,12 @@
 <div class="row-fluid marketing">
     <div class="span12">
     <h4>Create your TrueNorthPHP Speaker's Account below</h4>
-    {% include 'flash.twig' %}
+    {% if error_message %}
+    <div class="alert-message error">
+        <div class="container"m
+          <p><strong>Error!</strong><br>{% autoescape false %}{{ error_message  }}{% endautoescape %}</p>
+        </div>
+    </div>
+    {% endif %}
     {% include 'user_form.twig' %}
 {% endblock %}

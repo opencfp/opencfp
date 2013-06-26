@@ -8,13 +8,17 @@ class SignupController
 {
     public function indexAction(Request $req, Application $app)
     {
-        $app['sentry']->logout();
+        // Reset our user to make sure nothing weird happens
+        if ($app['sentry']->check()) {
+            $app['sentry']->logout();
+        }
+
         $template = $app['twig']->loadTemplate('create_user.twig');
-        $data = array(
-            'formAction' => '/signup',
-            'buttonInfo' => 'Create my speaker profile'
-        );
-        return $template->render($data);
+        $form_data = array();
+        $form_data['formAction'] = '/signup';
+        $form_data['buttonInfo'] = 'Create my speaker profile';
+        
+        return $template->render($form_data);
     }
 
     public function processAction(Request $req, Application $app)
@@ -36,7 +40,7 @@ class SignupController
             $sanitized_data = $form->sanitize();
 
             // Create account using Sentry
-            $userData = array(
+            $user_data = array(
                 'first_name' => $sanitized_data['first_name'],
                 'last_name' => $sanitized_data['last_name'],
                 'email' => $sanitized_data['email'],
@@ -45,7 +49,7 @@ class SignupController
             );
 
             try {
-                $user = $app['sentry']->getUserProvider()->create($userData);
+                $user = $app['sentry']->getUserProvider()->create($user_data);
 
                 // Add them to the proper group
                 $adminGroup = $app['sentry']->getGroupProvider()->findByName('Speakers');
@@ -59,33 +63,26 @@ class SignupController
                     'bio' => $sanitized_data['speaker_bio']
                 ));
 
-                $template_name = 'create_user_success.twig';
+                return $app->redirect('/signup/success');
             } catch (Cartalyst\Sentry\Users\UserExistsException $e) {
-                $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error!',
-                    'ext' => 'A user already exists with that email address'
-                ));
+                $form_data['error_message'] = 'A user already exists with that email address';
             } catch (Exception $e) {
-                $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error!',
-                    'ext' => $e->getMessage()
-                ));
+                $app['session']->getFlashBag()->set(
+                    'error',
+                    $e->getMessage()
+                );
+                $form_data['error_message'] = $e->getMessage();
             }
         }
 
         if (!$form->validateAll()) {
-            $app['session']->set('flash', array(
-                'type' => 'error',
-                'short' => 'Error!',
-                'ext' => implode("<br>", $form->error_messages)
-            ));
+            $form_data['error_message'] = implode("<br>", $form->error_messages);
         }
         
-        $template = $app['twig']->loadTemplate($template_name);
-        $form_data['buttonInfo'] = "Create my speaker profile";    
+        $template = $app['twig']->loadTemplate('create_user.twig');
+        $form_data['formAction'] = '/signup';
+        $form_data['buttonInfo'] = 'Create my speaker profile';
+        
         return $template->render($form_data);
     }
 }
-
