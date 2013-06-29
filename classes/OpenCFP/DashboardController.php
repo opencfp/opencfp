@@ -1,29 +1,25 @@
 <?php
+
 namespace OpenCFP;
 
 use Silex\Application;
+use OpenCFP\Talk;
 use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController
 {
-    public function indexAction(Request $req, Application $app)
+    public function indexAction(Application $app)
     {
         if (!$app['sentry']->check()) {
             return $app->redirect('/login');
         }
 
-        $user = $app['sentry']->getUser();
-        $talk = new \OpenCFP\Talk($app['db']);
-        $my_talks = $talk->findByUserId($user->getId());
+        $talk = new Talk($app['db']);
 
-        // Load our template and RENDER
-        $template = $app['twig']->loadTemplate('dashboard.twig');
-        $template_data = array(
-            'myTalks' => $my_talks,
-            'user' => $user
-        );
-
-        return $template->render($template_data);
+        return $app['twig']->render('dashboard.twig', array(
+            'myTalks' => $talk->findByUserId($user->getId()),
+            'user'    => $app['sentry']->getUser(),
+        ));
     }
 }
 

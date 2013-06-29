@@ -20,6 +20,21 @@ class Speaker
         $this->_db = $db;
     }
 
+    public function getData(array $data = array())
+    {
+        return array_merge(array(
+            'user_id'    => null,
+            'first_name' => null,
+            'last_name'  => null,
+            'email'      => null,
+            'password'   => null,
+            'info'       => null,
+            'bio'        => null,
+            'activated'  => 1,
+
+        ), $data);
+    }
+
     /**
      * Create new Speaker record in the database
      *

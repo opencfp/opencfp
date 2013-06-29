@@ -6,10 +6,18 @@
             {% if error_message %}
                 <div class="alert alert-error">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Error!</strong><br>{% autoescape false %}{{ error_message  }}{% endautoescape %}
+                    <strong>Error!</strong>
+                    <br>
+                    {% autoescape false %}{{ error_message  }}{% endautoescape %}
                 </div>
             {% endif %}
-            {% include 'user_form.twig' %}
+            <form action="/signup" method="POST">
+                {% include 'user_form.twig' with {
+                    'button_label': 'Create my speaker profile',
+                    'action': 'signup',
+                    'form': form
+                } only %}
+            </form>
         </div>
     </div>
 {% endblock %}

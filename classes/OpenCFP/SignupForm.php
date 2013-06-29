@@ -1,30 +1,270 @@
 <?php
+
 namespace OpenCFP;
+
+//use Cartalyst\Sentry\Users\Eloquent\User;
 
 /**
  * Form object for our signup page, handles validation of form data
+ *
  */
-class SignupForm
+class SignupForm extends Form
 {
-    protected $_data;
-    public $error_messages = array();
-    protected $_purifier;
-
     /**
-     * Class constructor
+     * Returns the user's data.
      *
-     * @param $data array of $_POST data
-     * @param
+     * User's data are account data.
+     *
+     * @param array $data An array of extra data that override the default ones
+     * @return array
      */
-    public function __construct($data, $purifier)
+    public function getUserData(array $data = array())
     {
-        $this->_data = $data;
-        $this->_purifier = $purifier;
+        return array_merge(
+            $this->getData(array('email', 'password', 'first_name', 'last_name')),
+            $data
+        );
     }
 
     /**
-     * Method verifies we have all required fields in our POST data
+     * Returns the profile data.
      *
+     * Profile data are info and bio.
+     *
+     * @param array $data An array of extra data that override the default ones
+     * @return array
+     */
+    public function getProfileData(array $data = array())
+    {
+        return array_merge(
+            $this->getData(array('bio', 'info')),
+            $data
+        );
+    }
+
+    /**
+     * Validates the form.
+     *
+     * Only parent method to implement/override.
+     *
+     * @return array $data An array of cleaned data
+     */
+    protected function _validate()
+    {
+        // Sanitize the submitted data
+        $sanitized = $this->_sanitize($this->getTaintedData());
+
+        if (empty($sanitized)) {
+            return $sanitized;
+        }
+
+        // Apply all validator methods
+        // Merge cleaned data arrays together
+        $data = array();
+        if ('create' === $this->getOption('action')) {
+            $data = array_merge($data, $this->validatePasswords($sanitized));
+        }
+
+        if (!empty($sanitized['info'])) {
+            $data = array_merge($data, $this->validateSpeakerInfo($sanitized));
+        }
+
+        if (!empty($sanitized['bio'])) {
+            $data = array_merge($data, $this->validateSpeakerBio($sanitized));
+        }
+
+        $data = array_merge(
+            $data,
+            $this->validateEmail($sanitized),
+            $this->validateFirstName($sanitized),
+            $this->validateLastName($sanitized)
+        );
+
+        // Return the cleaned data
+        return $data;
+    }
+
+    /**
+     * Method that applies validation rules to email
+     *
+     * @param array $taintedData The tainted data
+     * @return array $cleaned An array of cleaned data
+     */
+    public function validateEmail(array $taintedData)
+    {
+        $cleaned = array();
+        if (!isset($taintedData['email'])) {
+            return $cleaned;
+        }
+
+        $email = filter_var($taintedData['email'], FILTER_VALIDATE_EMAIL);
+        if (!empty($email)) {
+            $cleaned['email'] = $email;
+        } else {
+            $this->_addErrorMessage('The submitted email address is not valid');
+        }
+
+        return $cleaned;
+    }
+
+    /**
+     * Method that applies validation rules to user-submitted passwords
+     *
+     * @param array $taintedData The tainted data
+     * @return array $cleaned An array of cleaned data
+     */
+    public function validatePasswords(array $taintedData)
+    {
+        $passwd  = filter_var($taintedData['password'], FILTER_SANITIZE_STRING);
+        $passwd2 = filter_var($taintedData['password2'], FILTER_SANITIZE_STRING);
+
+        $errors = 0;
+        if (empty($passwd) || empty($passwd2)) {
+            $errors++;
+            $this->_addErrorMessage('Missing passwords');
+        }
+
+        if ($passwd !== $passwd2) {
+            $errors++;
+            $this->_addErrorMessage('The submitted passwords do not match');
+        }
+
+        if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
+            $errors++;
+            $this->_addErrorMessage('The submitted password must be at least 5 characters long');
+        }
+
+        $cleaned = array();
+        if (!$errors) {
+            $cleaned['password']  = $passwd;
+        }
+
+        return $cleaned;
+    }
+
+    /**
+     * Method that applies vaidation rules to user-submitted first names
+     *
+     * @param array $taintedData The tainted data
+     * @return array $cleaned An array of cleaned data
+     */
+    public function validateFirstName(array $taintedData)
+    {
+        $firstName = filter_var($taintedData['first_name'], FILTER_SANITIZE_STRING, array(
+            'flags' => FILTER_FLAG_STRIP_HIGH,
+        ));
+
+        $errors = 0;
+        if (empty($firstName)) {
+            $errors++;
+            $this->_addErrorMessage('First name cannot be blank');
+        }
+
+        if (strlen($firstName) > 255) {
+            $errors++;
+            $this->_addErrorMessage('First name cannot exceed 255 characters');
+        }
+
+        if ($firstName !== $taintedData['first_name']) {
+            $errors++;
+            $this->_addErrorMessage('First name contains unwanted characters');
+        }
+
+        $cleaned = array();
+        if (!$errors) {
+            $cleaned['first_name'] = $firstName;
+        }
+
+        return $cleaned;
+    }
+
+
+    /**
+     * Method that applies vaidation rules to user-submitted first names
+     *
+     * @param array $taintedData The tainted data
+     * @return array $cleaned An array of cleaned data
+     */
+    public function validateLastName(array $taintedData)
+    {
+        $lastName = filter_var($taintedData['last_name'], FILTER_SANITIZE_STRING, array(
+            'flags' => FILTER_FLAG_STRIP_HIGH,
+        ));
+
+        $lastName = strip_tags($lastName);
+
+        $errors = 0;
+        if (empty($lastName)) {
+            $errors++;
+            $this->_addErrorMessage('Last name was blank or contained unwanted characters');
+        }
+
+        if (strlen($lastName) > 255) {
+            $errors++;
+            $this->_addErrorMessage('Last name cannot be longer than 255 characters');
+        }
+
+        if ($lastName !== $taintedData['last_name']) {
+            $errors++;
+            $this->_addErrorMessage('Last name data did not match after sanitizing');
+        }
+
+        $cleaned = array();
+        if (!$errors) {
+            $cleaned['last_name'] = $lastName;
+        }
+
+        return $cleaned;
+    }
+
+    /**
+     * Method that applies validation rules to user-submitted speaker info
+     *
+     * @param array $taintedData The tainted data
+     * @return array $cleaned An array of cleaned data
+     */
+    public function validateSpeakerInfo(array $taintedData)
+    {
+        $data = filter_var($taintedData['info'], FILTER_SANITIZE_STRING);
+        $data = strip_tags($data);
+
+        $cleaned = array();
+        if (!empty($data)) {
+            $cleaned['info'] = $data;
+        } else {
+            $this->_addErrorMessage('You submitted speaker info but it was empty after sanitizing');
+        }
+
+        return $cleaned;
+    }
+
+    /**
+     * Method that applies validation rules to user-submitted speaker bio
+     *
+     * @param array $taintedData The tainted data
+     * @return array $cleaned An array of cleaned data
+     */
+    public function validateSpeakerBio(array $taintedData)
+    {
+        $data = filter_var($taintedData['bio'], FILTER_SANITIZE_STRING);
+        $data = strip_tags($data);
+
+        $cleaned = array();
+        if (!empty($data)) {
+            $cleaned['bio'] = $data;
+        } else {
+            $this->_addErrorMessage('You submitted speaker bio information but it was empty after sanitizing');
+        }
+
+        return $cleaned;
+    }
+
+    // @todo Code below should be moved in a separate notification service class
+
+    /**
+     * Verifies we have all required fields in our submitted data
+     *
+     * @todo to be removed?
      * @returns boolean
      */
     public function hasRequiredFields()
@@ -37,11 +277,12 @@ class SignupForm
             'password2',
             'first_name',
             'last_name',
-            'speaker_info'
+            'info'
         );
 
+        $taintedData = $this->getTaintedData();
         foreach ($field_list as $field) {
-            if (!isset($this->_data[$field])) {
+            if (!isset($taintedData[$field])) {
                 $all_fields_found = false;
                 break;
             }
@@ -50,233 +291,15 @@ class SignupForm
         return $all_fields_found;
     }
 
-    /**
-     * Validate all methods by calling all our validation methods
-     *
-     * @param string $action
-     * @return boolean
-     */
-    public function validateAll($action = 'create')
-    {
-        $sanitized_data = $this->sanitize();
-        $valid_email = true;
-        $valid_passwords = true;
-
-        if ($action == 'create') {
-            $valid_passwords = $this->validatePasswords();
-        }
-
-        $valid_email = $this->validateEmail();
-        $valid_first_name = $this->validateFirstName();
-        $valid_last_name = $this->validateLastName();
-        $valid_speaker_info = true;
-        $valid_speaker_bio = true;
-
-        if (!empty($this->_data['speaker_info'])) {
-            $valid_speaker_info = $this->validateSpeakerInfo();
-        }
-
-        if (!empty($this->data['speaker_bio'])) {
-            $valid_speaker_bio = $this->validateSpeakerBio();
-        }
-
-        return (
-            $valid_email &&
-            $valid_passwords &&
-            $valid_first_name &&
-            $valid_last_name &&
-            $valid_speaker_info &&
-            $valid_speaker_bio
-        );
-    }
-
-    /**
-     * Method that applies validation rules to email
-     *
-     * @param string $email
-     */
-    public function validateEmail()
-    {
-        if (!isset($this->_data['email'])) {
-            return false;
-        }
-
-        $response = filter_var($this->_data['email'], FILTER_VALIDATE_EMAIL);
-
-        return ($response !== false);
-    }
-
-    /**
-     * Method that applies validation rules to user-submitted passwords
-     *
-     * @return true|string
-     */
-    public function validatePasswords()
-    {
-        $passwd = filter_var($this->_data['password'], FILTER_SANITIZE_STRING);
-        $passwd2 = filter_var($this->_data['password2'], FILTER_SANITIZE_STRING);
-        $validation_response = true;
-
-        if ($passwd == '' || $passwd2 == '') {
-            $validation_response = false;
-            $this->_addErrorMessage("Missing passwords");
-        }
-
-        if ($passwd !== $passwd2) {
-            $validation_response = false;
-            $this->_addErrorMessage("The submitted passwords do not match");
-        }
-        if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
-            $validation_response = false;
-            $this->_addErrorMessage("The submitted password must be at least 5 characters long");
-        }
-
-        return $validation_response;
-    }
-
-    /**
-     * Method that applies vaidation rules to user-submitted first names
-     *
-     * @return boolean
-     */
-    public function validateFirstName()
-    {
-        $first_name = filter_var(
-            $this->_data['first_name'],
-            FILTER_SANITIZE_STRING,
-            array('flags' => FILTER_FLAG_STRIP_HIGH)
-        );
-        $validation_response = true;
-
-        if ($first_name == '') {
-            $this->_addErrorMessage('First name cannot be blank');
-            $validation_response = false;
-        }
-
-        if (strlen($first_name) > 255) {
-            $this->_addErrorMessage('First name cannot exceed 255 characters');
-            $validation_response = false;
-        }
-
-        if ($first_name !== $this->_data['first_name']) {
-            $this->_addErrorMessage('First name contains unwanted characters');
-            $validation_response = false;
-        }
-
-        return $validation_response;
-    }
-
-
-    /**
-     * Method that applies vaidation rules to user-submitted first names
-     *
-     * @return boolean
-     */
-    public function validateLastName()
-    {
-        $lastName = filter_var(
-            $this->_data['last_name'],
-            FILTER_SANITIZE_STRING,
-            array('flags' => FILTER_FLAG_STRIP_HIGH)
-        );
-        $validation_response = true;
-
-        $lastName = strip_tags($lastName);
-
-        if ($lastName == '') {
-            $this->_addErrorMessage("Last name was blank or contained unwanted characters");
-            $validation_response = false;
-        }
-
-        if (strlen($lastName) > 255) {
-            $this->_addErrorMessage("Last name cannot be longer than 255 characters");
-            $validation_response = false;
-        }
-
-        if ($lastName !== $this->_data['last_name']) {
-            $this->_addErrorMessage("Last name data did not match after sanitizing");
-            $validation_response = false;
-        }
-
-        return $validation_response;
-    }
-
-    /**
-     * Method that applies validation rules to user-submitted speaker info
-     *
-     * @return boolean
-     */
-    public function validateSpeakerInfo()
-    {
-        $speakerInfo = filter_var(
-            $this->_data['speaker_info'],
-            FILTER_SANITIZE_STRING
-        );
-        $validation_response = true;
-        $speakerInfo = strip_tags($speakerInfo);
-        $speakerInfo = $this->_purifier->purify($speakerInfo);
-
-        if (empty($speakerInfo)) {
-            $this->_addErrorMessage("You submitted speaker info but it was empty after sanitizing");
-            $validation_response = false;
-        }
-
-        return $validation_response;
-    }
-
-    /**
-     * Method that applies validation rules to user-submitted speaker bio
-     *
-     * @return boolean
-     */
-    public function validateSpeakerBio()
-    {
-        $speaker_bio = filter_var(
-            $this->_data['speaker_bio'],
-            FILTER_SANITIZE_STRING
-        );
-        $validation_response = true;
-        $speaker_bio = strip_tags($speaker_bio);
-        $speaker_bio = $this->_purifier->purify($speaker_bio);
-
-        if (empty($speaker_bio)) {
-            $this->_addErrorMessage("You submitted speaker bio information but it was empty after sanitizing");
-            $validation_response = false;
-        }
-
-        return $validation_response;
-    }
-
-    /**
-     * Santize all our fields that were submitted
-     *
-     * @return array
-     */
-    public function sanitize()
-    {
-        $purifier = $this->_purifier;
-        $sanitized_data = array_map(
-            function ($field) use ($purifier) {
-                return $purifier->purify($field);
-            },
-            $this->_data
-        );
-
-        return $sanitized_data;
-    }
-
-    /**
-     * Build activation email
-     *
-     * @param $activationCode string
-     * @param $message Swift_Message
-     * @param $twig Twig objecg
-     */
+    /*
     private function constructActivationMessage($activationCode, \Swift_Message $message, \Twig_Environment $twig)
     {
+        // Get cleaned data
+        $data = $this->getData();
+
         $template = $twig->loadTemplate('activation_email.twig');
         $parameters = array(
-            'name' => $this->_data['first_name'],
+            'name' => $data['first_name'],
             'activationCode' => $activationCode,
             'method' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
                 ? 'https' : 'http',
@@ -285,8 +308,8 @@ class SignupForm
         );
 
         $message->setTo(
-            $this->_data['email'],
-            $this->_data['first_name'] . ' ' . $this->_data['last_name']
+            $data['email'],
+            $data['first_name'] . ' ' . $data['last_name']
         );
         $message->setFrom(
             $template->renderBlock('from', $parameters),
@@ -300,19 +323,8 @@ class SignupForm
         );
     }
 
-    /**
-     * Send out activation email.  Returns # of emails sent which should be 1.
-     *
-     * @param $user \Cartalyst\Sentry\Users\Eloquent\User
-     * @param $smtp array
-     * @param $twig \Twig_Environment
-     * @param null $transport \Swift_SmtpTransport
-     * @param null $mailer \Swift_Mailer
-     * @param null $message \Swift_Message
-     * @return int
-     */
     public function sendActivationMessage(
-        \Cartalyst\Sentry\Users\Eloquent\User $user,
+        User $user,
         $smtp,
         \Twig_Environment $twig,
         \Swift_SmtpTransport $transport = null,
@@ -345,16 +357,5 @@ class SignupForm
         );
         return $mailer->send($message);
     }
-
-    /**
-     * Method that adds error message to our class attribute, making sure to
-     * not add anything that is in there already
-     */
-    protected function _addErrorMessage($message)
-    {
-        if (!in_array($message, $this->error_messages)) {
-            $this->error_messages[] = $message;
-        }
-    }
-
+    */
 }
