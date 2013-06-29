@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/OpenCFP/Bootstrap.php';
+require_once __DIR__.'/../classes/OpenCFP/Bootstrap.php';
 
 $bootstrap = new \OpenCFP\Bootstrap();
-$bootstrap->getApp()->run();
+$bootstrap->runApplication();

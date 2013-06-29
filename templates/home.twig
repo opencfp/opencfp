@@ -7,7 +7,7 @@
         <h3>Submissions will be accepted until 9pm EDT July 31, 2013</h3>
         <h4>For information about the conference, please visit <a href="http://www.truenorthphp.ca/">www.truenorthphp.ca</a></h4>
         <br>
-        {% if user == false %}
+        {% if app.user == false %}
             <a class="btn btn-large btn-warning" href="{{ site.url }}/signup">Create my profile!</a>
             <a class="btn btn-large btn-success" href="{{ site.url }}/login">
                 <div class="small">I have a profile</div>
@@ -38,7 +38,7 @@
                 Coffee, tea, drinks and lunch will be provided at no extra cost to attendees.
             </p>
             <p>
-                All accepted speakers will have as much of their travel & accommodation expenses covered
+                All accepted speakers will have as much of their travel &amp; accommodation expenses covered
                 as possible by the conference (for reference all 2012 speakers who required reimbursement
                 had 100% of their expenses covered).
             </p>

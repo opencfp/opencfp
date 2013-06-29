@@ -1,193 +1,169 @@
 <?php
+
 namespace OpenCFP;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Pimple;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
+use OpenCFP\Config\ConfigINIFileLoader;
+use OpenCFP\Config\ParameterResolver;
+use OpenCFP\ServiceProvider\ApplicationServiceProvider;
+use OpenCFP\ServiceProvider\DatabaseServiceProvider;
+use OpenCFP\ServiceProvider\HtmlPurifierServiceProvider;
+use OpenCFP\ServiceProvider\SentryServiceProvider;
+use Silex\Application;
+use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\SwiftmailerServiceProvider;
+use Silex\Provider\TwigServiceProvider;
 
 class Bootstrap
 {
     private $_app;
-    private $_config;
-    private $_twig;
-    private $_purifier;
+    private $_booted;
+    private $_debug;
 
-    function __construct()
+    /**
+     * Constructor.
+     *
+     * @param bool $debug Whether or not debug mode is enabled
+     */
+    public function __construct($debug = true)
+    {
+        $this->_booted = false;
+        $this->_debug  = (boolean) $debug;
+    }
+
+    /**
+     * Boots the application.
+     *
+     */
+    private function bootstrap()
     {
         $this->initializeAutoLoader();
-        $this->_app = $this->getApp();
+
+        // Create the new Silex application instance
+        $this->_app = $this->createApplication();
+        $this->_app['app.dir'] = $this->getAppDir();
+        $this->_app['app.cache_dir'] = $this->getCacheDir();
+
+        // Register a bunch of Silex extensions
+        $this->_app->register(new DatabaseServiceProvider());
+        $this->_app->register(new HtmlPurifierServiceProvider());
+        $this->_app->register(new SessionServiceProvider());
+        $this->_app->register(new TwigServiceProvider());
+        $this->_app->register(new SwiftmailerServiceProvider());
+        $this->_app->register(new SentryServiceProvider());
+
+        // Load the application configuration settings
+        $this->loadApplicationConfiguration();
+
+        // Customize the application and register routes
+        $this->_app->register(new ApplicationServiceProvider());
+
+        $this->_booted = true;
     }
 
-    function getApp()
+    /**
+     * Loads the application configuration.
+     *
+     */
+    private function loadApplicationConfiguration()
     {
-        if (isset($this->_app)) {
-            return $this->_app;
-        }
+        $application = $this->getApplication();
 
-        // Initialize out Silex app and let's do it
-        $app = new \Silex\Application();
-
-        $app['debug'] = true;
-        // Register our session provider
-        $app->register(new \Silex\Provider\SessionServiceProvider());
-        $app['session']->start();
-
-        // Register the Twig provider
-        $app->register(new \Silex\Provider\TwigServiceProvider());
-        $app['twig'] = $this->getTwig();
-
-        $app['db'] = $this->getDb();
-
-        $app['purifier'] = $this->getPurifier();
-
-        // We're using Sentry, so make it available to app
-        $app['sentry'] = $app->share(function() use ($app) {
-            $hasher = new \Cartalyst\Sentry\Hashing\NativeHasher;
-            $userProvider = new \Cartalyst\Sentry\Users\Eloquent\Provider($hasher);
-            $groupProvider = new \Cartalyst\Sentry\Groups\Eloquent\Provider;
-            $throttleProvider = new \Cartalyst\Sentry\Throttling\Eloquent\Provider($userProvider);
-            $session = new \Cartalyst\Sentry\Sessions\NativeSession;
-            $cookie = new \Cartalyst\Sentry\Cookies\NativeCookie(array());
-
-            $sentry = new \Cartalyst\Sentry\Sentry(
-                $userProvider,
-                $groupProvider,
-                $throttleProvider,
-                $session,
-                $cookie
-            );
-
-            \Cartalyst\Sentry\Facades\Native\Sentry::setupDatabaseResolver($app['db']);
-
-            return $sentry;
-        });
-
-        // Configure our flash messages functionality
-        $app->before(function() use ($app) {
-            $flash = $app['session']->get('flash');
-            $app['session']->set('flash', null);
-
-            if (!empty($flash)) {
-                $app['twig']->addGlobal('flash', $flash);
-            }
-        });
-
-        $app = $this->defineRoutes($app);
-
-        return $app;
+        $loader = new ConfigINIFileLoader($application, new ParameterResolver($application));
+        $loader->load($this->getAppDir() . '/config/config.ini');
     }
 
-    protected function defineRoutes($app)
+    /**
+     * Creates a new Silex application.
+     *
+     * @return \Silex\Application
+     */
+    protected function createApplication()
     {
-        $app->get('/', function() use($app) {
-            $view = array();
-            if ($app['sentry']->check()) {
-                $view['user'] = $app['sentry']->getUser();
-            }
-
-            $template = $app['twig']->loadTemplate('home.twig');
-            return $template->render($view);
-        });
-
-        $app->get('/dashboard', 'OpenCFP\DashboardController::indexAction');
-        $app->get('/talk/edit/{id}', 'OpenCFP\TalkController::editAction');
-        $app->get('/talk/create', 'OpenCFP\TalkController::createAction');
-        $app->post('/talk/create', 'OpenCFP\TalkController::processCreateAction');
-        $app->post('/talk/update', 'OpenCFP\TalkController::updateAction');
-        $app->post('/talk/delete', 'OpenCFP\TalkController::deleteAction');
-        $app->get('/login', 'OpenCFP\LoginController::indexAction');
-        $app->post('/login', 'OpenCFP\LoginController::processAction');
-        $app->get('/logout', 'OpenCFP\LoginController::outAction');
-        $app->get('/signup', 'OpenCFP\SignupController::indexAction');
-        $app->post('/signup', 'OpenCFP\SignupController::processAction');
-        $app->get('/signup/success', 'OpenCFP\SignupController::successAction');
-        $app->get('/profile/edit/{id}', 'OpenCFP\ProfileController::editAction');
-        $app->post('/profile/edit', 'OpenCFP\ProfileController::processAction');
-        $app->get('/profile/change_password', 'OpenCFP\ProfileController::passwordAction');
-        $app->post('/profile/change_password', 'OpenCFP\ProfileController::passwordProcessAction');
+        $app = new Application();
+        $app['debug'] = $this->isDebug();
 
         return $app;
     }
 
     /**
-     * @param bool $configKey
-     * @return Pimple | string
+     * Returns the Silex application.
+     *
+     * @return \Silex\Application
      */
-    public function getConfig($configKey = false)
+    public function getApplication()
     {
-        if (!isset($this->_config)) {
-            $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.ini');
-            $configData = $loader->load();
-
-            // Place our info into Pimple
-            $this->_config = new Pimple();
-
-            foreach ($configData as $category => $info) {
-                foreach ($info as $key => $value) {
-                    $this->_config["{$category}.{$key}"] = $value;
-                }
-            }
-        }
-
-        if (!$configKey) {
-            return $this->_config;
-        }
-
-        if (empty($this->_config[$configKey])) {
-            return null;
-        }
-
-        return $this->_config[$configKey];
-    }
-
-    public function getTwig()
-    {
-        if (!isset($this->_twig)) {
-            // Initialize Twig
-            $loader = new Twig_Loader_Filesystem(APP_DIR . $this->getConfig('twig.template_dir'));
-            $this->_twig = new Twig_Environment($loader);
-            $this->_twig->addGlobal('site', array(
-                'url' => $this->getConfig('application.url'),
-                'title' => $this->getConfig('application.title')
-            ));
-        }
-        return $this->_twig;
-    }
-
-    public function getPurifier() {
-        if (!isset($this->_purifier)) {
-            $config = \HTMLPurifier_Config::createDefault();
-            if ($cachedir = $this->getConfig('htmlpurifier.cachedir')) {
-                $config->set('Cache.SerializerPath', $cachedir);
-            }
-            $this->_purifier = new \HTMLPurifier($config);
-        }
-
-        return $this->_purifier;
+        return $this->_app;
     }
 
     /**
-     * @return \PDO
+     * Returns the absolute path to the application directory.
+     *
+     * @return string
      */
-    public function getDb()
+    public function getAppDir()
     {
-        $container = $this->getConfig();
-        return new \PDO(
-            $container['database.dsn'],
-            $container['database.user'],
-            $container['database.password']
-        );
+        return dirname(dirname(__DIR__));
     }
 
+    /**
+     * Returns the absolute path to the application cache directory.
+     *
+     * @return string
+     */
+    public function getCacheDir()
+    {
+        return $this->getAppDir().'/cache';
+    }
+
+    /**
+     * Returns whether or not debug mode is enabled.
+     *
+     * @return bool
+     */
+    public function isDebug()
+    {
+        return $this->_debug;
+    }
+
+    /**
+     * Returns whether or not the application is booted.
+     *
+     * @return bool
+     */
+    public function isBooted()
+    {
+        return $this->_booted;
+    }
+
+    /**
+     * Runs the application.
+     *
+     * @return string
+     */
+    public function runApplication()
+    {
+        if (!$this->isBooted()) {
+            $this->bootstrap();
+        }
+
+        return $this->_app->run();
+    }
+
+    /**
+     * Initializes the autoloaders.
+     *
+     * @throws \RuntimeException
+     * @return The Composer autoloader
+     */
     private function initializeAutoLoader()
     {
-        define('APP_DIR', dirname(dirname(__DIR__)));
-        if (!file_exists(APP_DIR . '/vendor/autoload.php')) {
-            throw new Exception('Autoload file does not exist.  Did you run composer install?');
+        $autoloader = $this->getAppDir() . '/vendor/autoload.php';
+        if (!file_exists($autoloader)) {
+            throw new \RuntimeException('Autoload file does not exist.  Did you run composer install?');
         }
 
-        require APP_DIR . '/vendor/autoload.php';
+        $loader = require $autoloader;
+
+        return $loader;
     }
 }

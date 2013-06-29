@@ -1,4 +1,5 @@
 {% extends "layouts/default.twig" %}
+
 {% block scripts %}
 {{ parent() }}
 <script type="text/javascript">
@@ -6,7 +7,7 @@ function deleteTalk(tid) {
     $.ajax({
         type: "POST",
         url: "/talk/delete",
-        data: "tid=" + tid + "&user_id=" + {{ user.id }},
+        data: "id=" + tid + "&user_id=" + {{ app.user.id }},
         success: function(data, textStatus, jqXHR) {
             if (data.delete == 'ok') {
                 alert("Deleted talk!");
@@ -20,34 +21,33 @@ function deleteTalk(tid) {
     });
 }
 </script>
-{% endblock %}
+{% endblock scripts %}
+
 {% block content %}
-Welcome <b>{{ user.login }}<br><br>
-<a href="/profile/edit/{{user.id}}">Edit Profile</a><br>
-<a href="/profile/change_password">Change Password</a>
+Welcome <strong>{{ app.user.login }}</strong>
 <br><br>
+<a href="{{ site.url }}/profile/edit/{{ app.user.id }}">Edit Profile</a><br>
+<a href="{{ site.url }}/profile/change_password">Change Password</a>
+<br><br>
+
 <h2>My Talks</h2>
-{% if myTalks %}
-<table class="table">
-<thead>
-<tr>
-<th>Talk Name</th>
-<th>&nbsp;</th>
-</tr>
-</thead>
-<tbody>
-{% for talk in myTalks %}
-<tr id="talk-{{ talk.id }}">
-<td><b>{{ talk.title }}</b></td>
-<td><a href="/talk/edit/{{ talk.id}}">Edit</a></td>
-<td><a href="#" onClick="deleteTalk('{{ talk.id }}');return false;">Delete</a></td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
+{% if talks %}
+    <table class="table">
+        <tr>
+            <th>Talk Name</th>
+            <th>&nbsp;</th>
+        </tr>
+    {% for talk in talks %}
+        <tr id="talk-{{ talk.id }}">
+            <td><strong>{{ talk.title }}</strong></td>
+            <td><a href="{{ site.url }}/talk/edit/{{ talk.id}}">Edit</a></td>
+            <td><a href="#" onClick="deleteTalk('{{ talk.id }}');return false;">Delete</a></td>
+        </tr>
+    {% endfor %}
+    </table>
 {% else %}
-You currently have no talks submitted.
+    You currently have no talks submitted.
 {% endif %}
 <br><br>
-<a class="btn btn-large btn-success" href="/talk/create">Submit a talk</a>
+<a class="btn btn-large btn-success" href="{{ site.url }}/talk/create">Submit a talk</a>
 {% endblock %}

@@ -3,7 +3,9 @@
 <div class="container">
     <div class="well">
         <p style="visibility: hidden" class="text-error">Please enter both your Email and Password.</p>
-        <p class="text-error">{{ errorMessage }}</p>
+    {% if error %}
+        <p class="text-error">{{ error }}</p>
+    {% endif %}
         <form id="login" class="form-horizontal" method="post" action="{{ site.url }}/login">
             <legend>Let me in!</legend>
             <div class="control-group">
@@ -33,7 +35,7 @@
         </form>
     </div>
 </div>
-{% endblock %}
+{% endblock content %}
 {% block js %}
 <script src="js/login.js"></script>
-{% endblock %}
+{% endblock js %}

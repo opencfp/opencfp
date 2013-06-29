@@ -1,5 +1,6 @@
 {% block flash %}
-{% if flash is defined %}
+{% if app.session.flashBag.has('flash') %}
+{% set flash = app.session.flashBag.get('flash').0 %}
 <div class="alert-message {{ flash.type }}">
 <div class="container">
   <p><strong>{{ flash.short }}</strong><br>{% autoescape false %}{{ flash.ext }}{% endautoescape %}</p>
