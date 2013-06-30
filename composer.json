@@ -12,7 +12,6 @@
         "chh/optparse": "*@dev",
         "ezyang/htmlpurifier": "dev-master",
         "swiftmailer/swiftmailer": "5.0",
-        "fzaninotto/faker": "1.1.*@dev",
         "pimple/pimple": "1.0.*@dev",
         "silex/silex": "1.0.*@dev"
     },
@@ -20,6 +19,7 @@
         "psr-0": {"OpenCFP": "classes/"}
     },
     "require-dev": {
+        "fzaninotto/faker": "1.2.*",
         "phpunit/phpunit": "3.7.*",
         "mockery/mockery": "dev-master@dev"
     }
