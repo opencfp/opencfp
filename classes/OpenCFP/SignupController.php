@@ -74,8 +74,6 @@ class SignupController
                 return $app->redirect('/signup/success');
             } catch (UserExistsException $e) {
                 $form_data['error_message'] = 'A user already exists with that email address';
-            } catch (Exception $e) {
-                $form_data['error_message'] = $e->getMessage();
             }
         } else {
             $form_data['error_message'] = implode("<br>", $form->error_messages);
