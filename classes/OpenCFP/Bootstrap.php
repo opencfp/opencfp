@@ -17,68 +17,70 @@ class Bootstrap
     function __construct()
     {
         $this->initializeAutoLoader();
-        $this->getApp();
+        $this->_app = $this->getApp();
     }
 
     function getApp()
     {
-        if (!isset($this->_app)) {
-            // Initialize out Silex app and let's do it
-            $app = new \Silex\Application();
-
-            // Register our session provider
-            $app->register(new \Silex\Provider\SessionServiceProvider());
-            $app['session']->start();
-
-            // Register the Twig provider
-            $app->register(new \Silex\Provider\TwigServiceProvider());
-            $app['twig'] = $this->getTwig();
-
-            $app['db'] = $this->getDb();
-
-            $app['purifier'] = $this->getPurifier();
-
-            // We're using Sentry, so make it available to app
-            $app['sentry'] = $app->share(function() use ($app) {
-                $hasher = new \Cartalyst\Sentry\Hashing\NativeHasher;
-                $userProvider = new \Cartalyst\Sentry\Users\Eloquent\Provider($hasher);
-                $groupProvider = new \Cartalyst\Sentry\Groups\Eloquent\Provider;
-                $throttleProvider = new \Cartalyst\Sentry\Throttling\Eloquent\Provider($userProvider);
-                $session = new \Cartalyst\Sentry\Sessions\NativeSession;
-                $cookie = new \Cartalyst\Sentry\Cookies\NativeCookie(array());
-
-                $sentry = new \Cartalyst\Sentry\Sentry(
-                    $userProvider,
-                    $groupProvider,
-                    $throttleProvider,
-                    $session,
-                    $cookie
-                );
-
-                \Cartalyst\Sentry\Facades\Native\Sentry::setupDatabaseResolver($app['db']);
-
-                return $sentry;
-            });
-
-            // Configure our flash messages functionality
-            $app->before(function() use ($app) {
-                $flash = $app['session']->get('flash');
-                $app['session']->set('flash', null);
-
-                if (!empty($flash)) {
-                    $app['twig']->addGlobal('flash', $flash);
-                }
-            });
-
-            $this->_app = $app;
-            $this->defineRoutes();
+        if (isset($this->_app)) {
+            return $this->_app;
         }
-        return $this->_app;
+
+        // Initialize out Silex app and let's do it
+        $app = new \Silex\Application();
+
+        $app['debug'] = true;
+        // Register our session provider
+        $app->register(new \Silex\Provider\SessionServiceProvider());
+        $app['session']->start();
+
+        // Register the Twig provider
+        $app->register(new \Silex\Provider\TwigServiceProvider());
+        $app['twig'] = $this->getTwig();
+
+        $app['db'] = $this->getDb();
+
+        $app['purifier'] = $this->getPurifier();
+
+        // We're using Sentry, so make it available to app
+        $app['sentry'] = $app->share(function() use ($app) {
+            $hasher = new \Cartalyst\Sentry\Hashing\NativeHasher;
+            $userProvider = new \Cartalyst\Sentry\Users\Eloquent\Provider($hasher);
+            $groupProvider = new \Cartalyst\Sentry\Groups\Eloquent\Provider;
+            $throttleProvider = new \Cartalyst\Sentry\Throttling\Eloquent\Provider($userProvider);
+            $session = new \Cartalyst\Sentry\Sessions\NativeSession;
+            $cookie = new \Cartalyst\Sentry\Cookies\NativeCookie(array());
+
+            $sentry = new \Cartalyst\Sentry\Sentry(
+                $userProvider,
+                $groupProvider,
+                $throttleProvider,
+                $session,
+                $cookie
+            );
+
+            \Cartalyst\Sentry\Facades\Native\Sentry::setupDatabaseResolver($app['db']);
+
+            return $sentry;
+        });
+
+        // Configure our flash messages functionality
+        $app->before(function() use ($app) {
+            $flash = $app['session']->get('flash');
+            $app['session']->set('flash', null);
+
+            if (!empty($flash)) {
+                $app['twig']->addGlobal('flash', $flash);
+            }
+        });
+
+        $app = $this->defineRoutes($app);
+
+        return $app;
     }
 
-    protected function defineRoutes()
+    protected function defineRoutes($app)
     {
-        $app = $this->_app;
         $app->get('/', function() use($app) {
             $view = array();
             if ($app['sentry']->check()) {
@@ -106,7 +108,7 @@ class Bootstrap
         $app->get('/profile/change_password', 'OpenCFP\ProfileController::passwordAction');
         $app->post('/profile/change_password', 'OpenCFP\ProfileController::passwordProcessAction');
 
-        $app['debug'] = true;
+        return $app;
     }
 
     /**
