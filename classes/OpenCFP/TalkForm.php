@@ -147,8 +147,8 @@ class TalkForm
     {
         $sanitized_data = $this->sanitize();
         $validTalkTypes = array(
-            'half-day tutorial',
-            'full-day tutorial',
+            'half-day-tutorial',
+            'full-day-tutorial',
             'regular',
             'lightning'
         );

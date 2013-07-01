@@ -81,11 +81,6 @@ class TalkController
         $form = new \OpenCFP\TalkForm($request_data, $app['purifier']);
 
         if (!$form->validateAll()) {
-            $app['session']->set('flash', array(
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => implode('<br>', $form->error_messages)
-            ));
             $template = $app['twig']->loadTemplate('create_talk.twig');
             $data = array(
                 'formAction' => '/talk/create',
@@ -93,7 +88,8 @@ class TalkController
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
                 'buttonInfo' => 'Submit my talk!',
-                'user' => $user
+                'user' => $user,
+                'error_message' => implode('<br>', $form->error_messages)
             );
             
             return $template->render($data);
@@ -110,15 +106,11 @@ class TalkController
         $talk = new \OpenCFP\Talk($app['db']);
         
         if (!$talk->create($data)) {
-            $app['session']->set('flash', array(
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => "Couldn't create a new record, please try again"
-            ));
             $template_name = 'create_talk.twig';
             $template = $app['twig']->loadTemplate('create_talk.twig');
             $data['formAction'] = '/talk/create';
             $data['buttonInfo'] = 'Submit my talk!';
+            $data['error_message'] = "Unable to create a new record in our talks database, please try again";
 
             return $template->render($data);
         }
