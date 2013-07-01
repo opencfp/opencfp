@@ -3,6 +3,7 @@ namespace OpenCFP;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Cartalyst\Sentry\Users\UserExistsException;
 
 class SignupController
 {
@@ -71,7 +72,7 @@ class SignupController
                 ));
 
                 return $app->redirect('/signup/success');
-            } catch (Cartalyst\Sentry\Users\UserExistsException $e) {
+            } catch (UserExistsException $e) {
                 $form_data['error_message'] = 'A user already exists with that email address';
             } catch (Exception $e) {
                 $app['session']->getFlashBag()->set(
