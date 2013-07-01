@@ -44,7 +44,8 @@ class SignupController
 
         $form = new \OpenCFP\SignupForm($form_data, $app['purifier']);
 
-        if ($form->validateAll()) {
+        $validate = $form->validateAll();
+        if ($validate) {
             $sanitized_data = $form->sanitize();
 
             // Create account using Sentry
@@ -83,7 +84,7 @@ class SignupController
             }
         }
 
-        if (!$form->validateAll()) {
+        if (!$validate) {
             $form_data['error_message'] = implode("<br>", $form->error_messages);
         }
 
