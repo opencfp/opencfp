@@ -1,16 +1,17 @@
 <?php
+
 namespace OpenCFP;
 
+use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;
-use Mockery\Exception;
 
 class Login
 {
     private $sentry;
-    private $authenticationMessage = '';
+    private $authenticationMessage;
 
-    function __construct($sentry)
+    public function __construct(Sentry $sentry)
     {
         $this->sentry = $sentry;
     }
@@ -18,29 +19,31 @@ class Login
     public function authenticate($user, $password)
     {
         if (empty($user) || empty($password)) {
-            $this->authenticationMessage = "Missing Email or Password";
+            $this->authenticationMessage = 'Missing Email or Password';
             return false;
         }
+
+        $credentials = array('email' => $user, 'password' => $password);
 
         try {
-            $this->sentry->authenticate(
-                array(
-                    'email'=>$user,
-                    'password'=>$password,
-                ),
-                false
-            );
+            $this->sentry->authenticate($credentials, false);
         } catch (UserNotFoundException $e) {
-            $this->authenticationMessage = "Invalid Email or Password";
-            return false;
+            $this->authenticationMessage = 'Invalid Email or Password';
         } catch (UserNotActivatedException $e) {
             $this->authenticationMessage = "Your account hasn't been activated. Did you get the activation email?";
-            return false;
+        } catch (\Exception $e) {
+            // Catch all
+            $this->authenticationMessage = 'Bad credentials';
         }
 
-        return true;
+        return empty($this->authenticationMessage);
     }
 
+    /**
+     * @todo to be removed?
+     *
+     * @return array
+     */
     public function getViewVariables()
     {
         $variables = array();

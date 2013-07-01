@@ -1,47 +1,34 @@
 <?php
+
 namespace OpenCFP;
 
 use Silex\Application;
+use OpenCFP\Login;
 use Symfony\Component\HttpFoundation\Request;
 
 class LoginController
 {
-    public function indexAction(Request $req, Application $app)
+    public function indexAction(Application $app)
     {
-        $template = $app['twig']->loadTemplate('login.twig');
-
-        return $template->render(array());
+        return $app['twig']->render('login.twig');
     }
 
-    public function processAction(Request $req, Application $app)
+    public function processAction(Request $request, Application $app)
     {
-        $template = $app['twig']->loadTemplate('login.twig');
-        $template_data = array();
+        $login = new Login($app['sentry']);
 
-        try {
-            $page = new \OpenCFP\Login($app['sentry']);
-
-            if ($page->authenticate($req->get('email'), $req->get('passwd'))) {
-                return $app->redirect('/dashboard');
-            }
-            
-            $template_data = array(
-                'user' => $app['sentry']->getUser(),
-                'email' => $req->get('email'),
-                'errorMessage' => $page->getAuthenticationMessage()
-            );
-        } catch (Exception $e) {
-            $template_data = array(
-                'user' => $app['sentry']->getUser(),
-                'email' => $req->get('email'),
-                'errorMessage' => $e->getMessage()
-            );
+        $email = $request->request->get('email');
+        if ($login->authenticate($email, $request->request->get('passwd'))) {
+            return $app->redirect('/dashboard');
         }
-        
-        return $template->render($template_data);
+
+        return $app['twig']->render('login.twig', array(
+            'email' => $email,
+            'error' => $login->getAuthenticationMessage(),
+        ));
     }
 
-    public function outAction(Request $req, Application $app)
+    public function outAction(Application $app)
     {
         $app['sentry']->logout();
 

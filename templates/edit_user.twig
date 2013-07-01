@@ -4,7 +4,12 @@
     <div class="span12">
         <h4>My Profile</h4>
         {% include 'flash.twig' %}
-        {% include 'user_form.twig' %}
+        <form action="/profile/edit" method="POST">
+            {% include 'user_form.twig' with {
+                'button_label': 'Update Profile',
+                'action': 'edit'
+            } %}
+        </form>
     </div>
 </div>
 {% endblock %}
