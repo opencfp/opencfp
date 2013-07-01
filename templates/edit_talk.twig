@@ -3,7 +3,12 @@
 <div class="row-fluid marketing">
     <div class="span12">
     <h4>Edit Your Talk</h4>
-    {% include "flash.twig" %}
+    {% if error_message %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong><br>{% autoescape false %}{{ error_message  }}{% endautoescape %}
+        </div>
+    {% endif %}
     {% include "talk_form.twig" %}
 {% endblock %}
 
