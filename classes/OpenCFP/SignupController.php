@@ -44,8 +44,7 @@ class SignupController
 
         $form = new \OpenCFP\SignupForm($form_data, $app['purifier']);
 
-        $validate = $form->validateAll();
-        if ($validate) {
+        if ($form->validateAll()) {
             $sanitized_data = $form->sanitize();
 
             // Create account using Sentry
@@ -76,15 +75,9 @@ class SignupController
             } catch (UserExistsException $e) {
                 $form_data['error_message'] = 'A user already exists with that email address';
             } catch (Exception $e) {
-                $app['session']->getFlashBag()->set(
-                    'error',
-                    $e->getMessage()
-                );
                 $form_data['error_message'] = $e->getMessage();
             }
-        }
-
-        if (!$validate) {
+        } else {
             $form_data['error_message'] = implode("<br>", $form->error_messages);
         }
 

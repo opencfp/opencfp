@@ -58,32 +58,7 @@ class SignupForm
      */
     public function validateAll($action = 'create')
     {
-        /**
-         * Grab all out fields that we are expecting and make sure that
-         * they match after they've been sanitized
-         */
         $sanitized_data = $this->sanitize();
-        $original_data = array(
-            'first_name' => $this->_data['first_name'],
-            'last_name' => $this->_data['last_name'],
-            'email' => $this->_data['email']
-        );
-
-        if ($action == 'create') {
-            $original_data['password'] = $this->_data['password'];
-            $original_data['password2'] = $this->_data['password2'];
-        }
-
-        if (!empty($this->_data['speaker_info'])) {
-            $original_data['speaker_info'] = $this->_data['speaker_info'];
-        }
-
-        $differences = array_diff($original_data, $sanitized_data);
-
-        if (count($differences) > 0) {
-            return false;
-        }
-
         $valid_email = true;
         $valid_passwords = true;
 
@@ -235,20 +210,14 @@ class SignupForm
     {
         $speakerInfo = filter_var(
             $this->_data['speaker_info'],
-            FILTER_SANITIZE_STRING,
-            array('flags' => FILTER_FLAG_STRIP_HIGH)
+            FILTER_SANITIZE_STRING
         );
         $validation_response = true;
         $speakerInfo = strip_tags($speakerInfo);
         $speakerInfo = $this->_purifier->purify($speakerInfo);
 
-        if ($speakerInfo !== $this->_data['speaker_info']) {
-            $this->_addErrorMessage("Your submitted speaker info contained unwanted characters");
-            $validation_response = false;
-        }
-
         if (empty($speakerInfo)) {
-            $this->_addErrorMessage("You submitted speaker info but it was empty");
+            $this->_addErrorMessage("You submitted speaker info but it was empty after sanitizing");
             $validation_response = false;
         }
 
@@ -264,20 +233,14 @@ class SignupForm
     {
         $speaker_bio = filter_var(
             $this->_data['speaker_bio'],
-            FILTER_SANITIZE_STRING,
-            array('flags' => FILTER_FLAG_STRIP_HIGH)
+            FILTER_SANITIZE_STRING
         );
         $validation_response = true;
         $speaker_bio = strip_tags($speaker_bio);
         $speaker_bio = $this->_purifier->purify($speaker_bio);
 
-        if ($speaker_bio !== $this->_data['speaker_bio']) {
-            $this->_addErrorMessage("Your submitted speaker bio information contained unwanted characters");
-            $validation_response = false;
-        }
-
         if (empty($speaker_bio)) {
-            $this->_addErrorMessage("You submitted speaker bio information but it was empty");
+            $this->_addErrorMessage("You submitted speaker bio information but it was empty after sanitizing");
             $validation_response = false;
         }
 
@@ -292,7 +255,6 @@ class SignupForm
     public function sanitize()
     {
         $purifier = $this->_purifier;
-
         $sanitized_data = array_map(
             function ($field) use ($purifier) {
                 return $purifier->purify($field);
