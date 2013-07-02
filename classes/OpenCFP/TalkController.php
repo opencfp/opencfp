@@ -158,14 +158,25 @@ class TalkController
                 'type' => 'success',
                 'short' => 'Updated talk!'
             ));
+            
+            return $app->redirect('/dashboard');
         }
 
         if (!$valid) {
-            $app['session']->set('flash', array(
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => implode('<br>', $form->errorMessages)
-            ));
+            $template_name = 'edit_talk.twig';
+            $template = $app['twig']->loadTemplate($template_name);
+            $data = array(
+                'formAction' => '/talk/update',
+                'id' => $req->get('id'),
+                'title' => $req->get('title'),
+                'description' => $req->get('description'),
+                'type' => $req->get('type'),
+                'buttonInfo' => 'Update my talk!',
+                'user' => $user,
+                'error_message' => implode("<br>", $form->error_messages)
+            );
+
+            return $template->render($data);
         }
         
         return $app->redirect('/talk/edit/' . $req->get('id'));
