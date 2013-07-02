@@ -114,13 +114,13 @@ class TalkForm
      */
     public function validateDescription()
     {
-        $santizedData = $this->sanitize();
+        $sanitizedData = $this->sanitize();
 
-        if (empty($santizedData['description']) || $santizedData['description'] !== $this->_data['description']) {
-            $this->error_messages[] = "Your description was missing or only contained invalid characters or content";
+        if (empty($sanitizedData['description'])) {
+            $this->error_messages[] = "Your description was missing";
             return false;
         }
-
+        
         return true;
     }
 
