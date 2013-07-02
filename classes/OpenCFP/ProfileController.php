@@ -55,7 +55,6 @@ class ProfileController
                 'short' => '',
                 'ext' => "You cannot edit someone else's profile"
             ));
-            die('trying to edit a profile that is not yours');
             return $app->redirect('/dashboard');
         }
 
@@ -76,20 +75,14 @@ class ProfileController
             $response = $speaker->update($form_data);
             $template_name = 'edit_user.twig';
 
-            if ($response == false) {
-                $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error!',
-                    'ext' => "We were unable to update the speaker information"
-                ));
-            }
-
             if ($response == true) {
-                $app['session']->set('flash', array(
-                    'type' => 'success',
-                    'short' => 'Success',
-                    'ext' => 'Updated your profile' 
-                ));
+                $form_data['error_message'] = "Successfully updated your information!";
+                $form_data['message_type'] = 'success';
+            }
+            
+            if ($response == false) {
+                $form_data['error_message'] = "We were unable to update your information. Please try again";
+                $form_data['message_type'] = 'error';
             }
         } 
 
