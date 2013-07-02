@@ -165,8 +165,8 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function typeProvider()
     {
         return array(
-            array('half-day tutorial', true),
-            array('full-day tutorial', true),
+            array('half-day-tutorial', true),
+            array('full-day-tutorial', true),
             array('regular', true),
             array('lightning', true),
             array('foo', false),

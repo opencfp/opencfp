@@ -178,7 +178,6 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             array('', false),
             array(false, false),
             array($longName, false),
-            array("<script>alert('XSS')</script>", false)
         );
     }
 
@@ -221,7 +220,6 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             array('', false),
             array(false, false),
             array($longName, false),
-            array("<script>alert('XSS')</script>", false)
         );
     }
 
@@ -260,13 +258,10 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
         );
         $baseDataWithSpeakerInfo = $baseData;
         $baseDataWithSpeakerInfo['speaker_info'] = "Testing speaker info data";
-        $baseDataWithBadContent = $baseData;
-        $baseDataWithBadContent['speaker_info'] = "<script>alert('LOL')</script>";
 
         return array(
             array($baseData, true),
             array($baseDataWithSpeakerInfo, true),
-            array($baseDataWithBadContent, false)
         );
     }
 
@@ -320,7 +315,6 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
         return array(
             array('Speaker text that can go in multiple places', true),
             array(null, false),
-            array("<script>alert('LOL')</script>", false)
         );
     }
 

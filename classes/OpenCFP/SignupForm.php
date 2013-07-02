@@ -174,31 +174,25 @@ class SignupForm
      */
     public function validateLastName()
     {
-        $lastName = filter_var(
-            $this->_data['last_name'],
-            FILTER_SANITIZE_STRING,
-            array('flags' => FILTER_FLAG_STRIP_HIGH)
-        );
-        $validation_response = true;
+        $sanitized_data = $this->sanitize();
+        $last_name = $sanitized_data['last_name'];
 
-        $lastName = strip_tags($lastName);
-
-        if ($lastName == '') {
+        if (empty($last_name)) {
             $this->_addErrorMessage("Last name was blank or contained unwanted characters");
-            $validation_response = false;
+            return false;
         }
 
-        if (strlen($lastName) > 255) {
+        if (strlen($last_name) > 255) {
             $this->_addErrorMessage("Last name cannot be longer than 255 characters");
-            $validation_response = false;
+            return false;
         }
 
-        if ($lastName !== $this->_data['last_name']) {
+        if ($last_name !== $this->_data['last_name']) {
             $this->_addErrorMessage("Last name data did not match after sanitizing");
-            $validation_response = false;
+            return false;
         }
 
-        return $validation_response;
+        return true;
     }
 
     /**
