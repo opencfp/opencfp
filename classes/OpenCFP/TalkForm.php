@@ -71,20 +71,6 @@ class TalkForm
      */
     public function validateAll()
     {
-        $sanitized_data = $this->sanitize();
-        $originalData = array(
-            'title' => $this->_data['title'],
-            'description' => $this->_data['description'],
-            'type' => $this->_data['type']
-        );
-
-        $differences = array_diff($originalData, $sanitized_data);
-
-        if (count($differences) > 0) {
-            $this->error_messages[] = "You must have a title, description and select a talk type";
-            return false;
-        }
-
         return (
             $this->validateTitle() &&
             $this->validateDescription() &&
@@ -102,7 +88,7 @@ class TalkForm
         $sanitized_data = $this->sanitize();
 
         if (empty($sanitized_data['title']) || !isset($sanitized_data['title'])) {
-            $this->error_messages[] = "You are missing a title";
+            $this->error_messages[] = "Your title contained content that could be used for XSS";
             return false;
         }
 
