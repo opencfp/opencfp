@@ -35,9 +35,9 @@ class Talk
 
         return $stmt->execute(
             array(
-                $data['title'],
-                $data['description'],
-                $data['type'],
+                trim($data['title']),
+                trim($data['description']),
+                trim($data['type']),
                 $data['user_id']
             )
         );
@@ -95,9 +95,9 @@ class Talk
         ";
         $stmt = $this->_db->prepare($sql);
         $stmt->execute(array(
-            $data['title'],
-            $data['description'],
-            $data['type'],
+            trim($data['title']),
+            trim($data['description']),
+            trim($data['type']),
             $data['id'],
             $data['user_id']
         ));   

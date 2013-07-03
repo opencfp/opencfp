@@ -45,8 +45,8 @@ class Speaker
 
         return $stmt->execute(array(
             $data['user_id'],
-            $data['info'],
-            $data['bio']
+            trim($data['info']),
+            trim($data['bio'])
         )
     );
     }
@@ -119,9 +119,9 @@ class Speaker
             ";
             $stmt = $this->_db->prepare($sql);
             $stmt->execute(array(
-                $speaker_details['email'],
-                $speaker_details['first_name'],
-                $speaker_details['last_name'],
+                trim($speaker_details['email']),
+                trim($speaker_details['first_name']),
+                trim($speaker_details['last_name']),
                 $speaker_details['user_id'])
             );
 
@@ -140,9 +140,9 @@ class Speaker
             ";
             $stmt = $this->_db->prepare($sql);
             $stmt->execute(array(
-                $speaker_details['speaker_info'],
-                $speaker_details['speaker_bio'],
-                $speaker_details['user_id'])
+                trim($speaker_details['speaker_info']),
+                trim($speaker_details['speaker_bio']),
+                trim($speaker_details['user_id']))
             );
 
             if ($stmt->rowCount() !== 1) {
