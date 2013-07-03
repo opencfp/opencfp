@@ -130,7 +130,16 @@ class Bootstrap
                 }
             }
         }
-        return $configKey ? $this->_config[$configKey] : $this->_config;
+
+        if (!$configKey) {
+            return $this->_config;
+        }
+
+        if (empty($this->_config[$configKey])) {
+            return null;
+        }
+
+        return $this->_config[$configKey];
     }
 
     public function getTwig()
@@ -139,6 +148,10 @@ class Bootstrap
             // Initialize Twig
             $loader = new Twig_Loader_Filesystem(APP_DIR . $this->getConfig('twig.template_dir'));
             $this->_twig = new Twig_Environment($loader);
+            $this->_twig->addGlobal('site', array(
+                'url' => $this->getConfig('application.url'),
+                'title' => $this->getConfig('application.title')
+            ));
         }
         return $this->_twig;
     }

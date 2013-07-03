@@ -1,4 +1,4 @@
-<form action="{{ formAction }}" method="POST">
+<form action="{{ site.url }}{{ formAction }}" method="POST">
     <input name='email' type="text" value="{{ email }}" class="span5" placeholder="E-mail"><br>
     {% if formAction == '/signup' %} 
         <input name='password' type="password" class="span5" placeholder="Password, at least 5 characters"><br>
