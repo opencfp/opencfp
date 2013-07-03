@@ -1,6 +1,6 @@
 [application]
 title = "OpenCFP"
-url = "cfp.dev"
+url = "http://cfp.dev"
 
 [database]
 dsn = "mysql:dbname=cfp;host=127.0.0.1"
