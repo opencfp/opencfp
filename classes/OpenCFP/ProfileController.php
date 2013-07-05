@@ -63,6 +63,7 @@ class ProfileController
             'user_id' => $req->get('id'),
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
+            'formAction' => '/profile/edit',
         );
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
