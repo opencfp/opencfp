@@ -14,7 +14,7 @@ class ProfileController
 
         $template = $app['twig']->loadTemplate('edit_user.twig');
         $user = $app['sentry']->getUser();
-        
+
         if ($user->getId() !== $req->get('id')) {
             $app['session']->set('flash', array(
                 'type' => 'error',
@@ -46,7 +46,7 @@ class ProfileController
         if (!$app['sentry']->check()) {
             return $app->redirect('/login');
         }
-        
+
         $user = $app['sentry']->getUser();
 
         if ($user->getId() !== $req->get('id')) {
@@ -63,10 +63,9 @@ class ProfileController
             'user_id' => $req->get('id'),
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
-            'formAction' => '/profile/edit',
+            'speaker_info' => $req->get('speaker_info') ?: null,
+            'speaker_bio' => $req->get('speaker_bio') ?: null,
         );
-        $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
-        $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
 
         $form = new \OpenCFP\SignupForm($form_data, $app['purifier']);
 
@@ -74,24 +73,27 @@ class ProfileController
             $sanitized_data = $form->sanitize();
             $speaker = new \OpenCFP\Speaker($app['db']);
             $response = $speaker->update($form_data);
-            $template_name = 'edit_user.twig';
 
             if ($response == true) {
                 $form_data['error_message'] = "Successfully updated your information!";
                 $form_data['message_type'] = 'success';
             }
-            
+
             if ($response == false) {
                 $form_data['error_message'] = "We were unable to update your information. Please try again";
                 $form_data['message_type'] = 'error';
             }
-        } 
+        } else {
+            $form_data['message_type'] = 'error';
+            $form_data['error_message'] = implode('<br>', $form->error_messages);
+        }
 
+        $form_data['formAction'] = '/profile/edit';
         $form_data['buttonInfo'] = 'Update Profile';
         $form_data['id'] = $user->getId();
         $form_data['user'] = $user;
-        $template = $app['twig']->loadTemplate($template_name);
-        
+        $template = $app['twig']->loadTemplate('edit_user.twig');
+
         return $template->render($form_data);
     }
 
@@ -101,10 +103,10 @@ class ProfileController
             return $app->redirect('/login');
         }
         $user = $app['sentry']->getUser();
-         
+
         $template = $app['twig']->loadTemplate('change_password.twig');
 
-        return $template->render(array('user' => $user));        
+        return $template->render(array('user' => $user));
     }
 
     public function passwordProcessAction(Request $req, Application $app)
@@ -145,7 +147,7 @@ class ProfileController
             ));
             return $app->redirect('/profile/change_password');
         }
-        
+
         $app['session']->set('flash', array(
             'type' => 'success',
             'short' => 'Success!',

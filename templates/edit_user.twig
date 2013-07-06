@@ -9,7 +9,7 @@
                 {% autoescape false %}{{ error_message  }}{% endautoescape %}
             </div>
         {% endif %}
-        {% include 'user_form.twig' with {'formAction': formAction} %}
+        {% include 'user_form.twig' %}
     </div>
 </div>
 {% endblock %}
