@@ -28,11 +28,14 @@ Welcome <b>{{ user.login }}<br><br>
 <br><br>
 <h2>My Talks</h2>
 {% if myTalks %}
-<table>
+<table class="table">
+<thead>
 <tr>
 <th>Talk Name</th>
 <th>&nbsp;</th>
 </tr>
+</thead>
+<tbody>
 {% for talk in myTalks %}
 <tr id="talk-{{ talk.id }}">
 <td><b>{{ talk.title }}</b></td>
@@ -40,9 +43,10 @@ Welcome <b>{{ user.login }}<br><br>
 <td><a href="#" onClick="deleteTalk('{{ talk.id }}');return false;">Delete</a></td>
 </tr>
 {% endfor %}
+</tbody>
 </table>
 {% else %}
-You currently have no talks submitted. 
+You currently have no talks submitted.
 {% endif %}
 <br><br>
 <a class="btn btn-large btn-success" href="/talk/create">Submit a talk</a>
