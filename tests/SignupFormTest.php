@@ -136,6 +136,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             array('foo', 'foo', "The submitted password must be at least 5 characters long", false),
             array('bar', 'foo', "The submitted passwords do not match", false),
             array(null, null, "Missing passwords", false),
+            array('{<kdag', '{<kdag', "Passwords can only be alphanumeric at this time", false)
         );
     }
 
