@@ -95,8 +95,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             array(null, false),
             array($faker->text(), false),
             array("<script>alert('XSS')</script>", false),
-            array("<b>you suck</b>", false),
-            array('<a href="http://littlehart.net">Click here</a>', false)
+            array("<b>you suck</b>", false)
         );
     } 
 
@@ -133,7 +132,6 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             array($faker->text(), true),
             array(null, false),
             array('<script>alert("XSS");</script>', false),
-            array('<a href="http://littlehart.net">Find my talk here</a>', false)
         );
     }
 
