@@ -43,9 +43,10 @@ class SignupController
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
 
         $form = new \OpenCFP\SignupForm($form_data, $app['purifier']);
+        $form->sanitize();
 
         if ($form->validateAll()) {
-            $sanitized_data = $form->sanitize();
+            $sanitized_data = $form->getSanitizedData();
 
             // Create account using Sentry
             $user_data = array(

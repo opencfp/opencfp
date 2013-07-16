@@ -86,7 +86,8 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('acceptable'),
-            array('testing123')
+            array('testing123'),
+            array('{^secur3')
         );
     }
 
@@ -105,6 +106,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password2' => $passwd 
         );
         $form = new \OpenCFP\SignupForm($data, $this->purifier);
+        $form->sanitize();
 
         $this->assertTrue(
             $form->validatePasswords(),
@@ -130,6 +132,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
         );
 
         $form = new \OpenCFP\SignupForm($data, $this->purifier);
+        $form->sanitize();
         $testResponse = $form->validatePasswords();
 
         $this->assertEquals($expectedResponse, $testResponse);
@@ -151,7 +154,6 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             array('foo', 'foo', "The submitted password must be at least 5 characters long", false),
             array('bar', 'foo', "The submitted passwords do not match", false),
             array(null, null, "Missing passwords", false),
-            array('{<kdag', '{<kdag', "Passwords can only be alphanumeric at this time", false),
         );
     }
 
@@ -167,6 +169,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         $data['first_name'] = $firstName;
         $form = new \OpenCFP\SignupForm($data, $this->purifier);
+        $form->sanitize();
 
         $this->assertEquals(
             $expectedResponse,
@@ -209,6 +212,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         $data['last_name'] = $lastName;
         $form = new \OpenCFP\SignupForm($data, $this->purifier);
+        $form->sanitize();
 
         $this->assertEquals(
             $expectedResponse,
@@ -293,6 +297,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         $data['speaker_info'] = $speakerInfo;
         $form = new \OpenCFP\SignupForm($data, $this->purifier);
+        $form->sanitize();
 
         $this->assertEquals(
             $expectedResponse,
@@ -313,7 +318,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         $data['speaker_bio'] = $speakerBio;
         $form = new \OpenCFP\SignupForm($data, $this->purifier);
-
+        $form->sanitize();
         $this->assertEquals(
             $expectedResponse,
             $form->validateSpeakerBio(),
@@ -345,7 +350,8 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     public function dataGetsSanitizedCorrectly($inputData, $expectedData)
     {
         $form = new \OpenCFP\SignupForm($inputData, $this->purifier);
-        $sanitizedData = $form->sanitize();
+        $form->sanitize();
+        $sanitizedData = $form->getSanitizedData();
         $this->assertEquals(
             $expectedData,
             $sanitizedData,

@@ -73,6 +73,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('title' => $title);
         $form = new \OpenCFP\TalkForm($data, $this->purifier);
+        $form->sanitize();
 
         $this->assertEquals(
             $expectedResponse,
@@ -91,7 +92,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
         $faker = \Faker\Factory::create();
 
         return array(
-            array(substr($faker->text(100), 0, 100), true),
+            array(substr($faker->text(99), 0, 99), true),
             array(null, false),
             array($faker->text(), false),
             array("<script>alert('XSS')</script>", false),
@@ -111,6 +112,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('description' => $description);
         $form = new \OpenCFP\TalkForm($data, $this->purifier);
+        $form->sanitize();
 
         $this->assertEquals(
             $expectedResponse,
@@ -143,11 +145,12 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      * @param string $type
      * @param boolean $expectedResponse
      */
-    public function typeValidattesCorrectly($type, $expectedResponse)
+    public function typeValidatesCorrectly($type, $expectedResponse)
     {
         $data = array('type' => $type);
         $form = new \OpenCFP\TalkForm($data, $this->purifier);
-
+        $form->sanitize();
+        
         $this->assertEquals(
             $expectedResponse,
             $form->validateType(),
@@ -209,6 +212,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
         $speaker = new \OpenCFP\Speaker($db);
         $data['user_id'] = $speakerId;
         $form = new \OpenCFP\TalkForm($data, $this->purifier);
+        $form->sanitize();
 
         $this->assertEquals(
             $expectedResponse,

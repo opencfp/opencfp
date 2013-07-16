@@ -7,8 +7,9 @@ namespace OpenCFP;
 class SignupForm
 {
     protected $_data;
-    public $error_messages = array();
     protected $_purifier;
+    protected $_sanitized_data;
+    public $error_messages = array();
 
     /**
      * Class constructor
@@ -58,7 +59,7 @@ class SignupForm
      */
     public function validateAll($action = 'create')
     {
-        $sanitized_data = $this->sanitize();
+        $this->sanitize();
         $valid_email = true;
         $valid_passwords = true;
 
@@ -113,30 +114,25 @@ class SignupForm
      */
     public function validatePasswords()
     {
-        $passwd = filter_var($this->_data['password'], FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z0-9]+$/")));
-        $passwd2 = filter_var($this->_data['password2'], FILTER_SANITIZE_STRING, array('options' => array('regexp' => "/^[a-zA-Z0-9]+$/")));
-        $validation_response = true;
-
-        if ($passwd !== $this->_data['password'] || $passwd2 !== $this->_data['password2']) {
-            $validation_response = false;
-            $this->_addErrorMessage("Passwords can only be alphanumeric at this time");
-        }
+        $passwd = $this->_sanitized_data['password'];
+        $passwd2 = $this->_sanitized_data['password2'];
 
         if ($passwd == '' || $passwd2 == '') {
-            $validation_response = false;
             $this->_addErrorMessage("Missing passwords");
+            return false;
         }
 
         if ($passwd !== $passwd2) {
-            $validation_response = false;
             $this->_addErrorMessage("The submitted passwords do not match");
-        }
-        if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
-            $validation_response = false;
-            $this->_addErrorMessage("The submitted password must be at least 5 characters long");
+            return false;
         }
 
-        return $validation_response;
+        if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
+            $this->_addErrorMessage("The submitted password must be at least 5 characters long");
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -147,7 +143,7 @@ class SignupForm
     public function validateFirstName()
     {
         $first_name = filter_var(
-            $this->_data['first_name'],
+            $this->_sanitized_data['first_name'],
             FILTER_SANITIZE_STRING,
             array('flags' => FILTER_FLAG_STRIP_HIGH)
         );
@@ -179,8 +175,7 @@ class SignupForm
      */
     public function validateLastName()
     {
-        $sanitized_data = $this->sanitize();
-        $last_name = $sanitized_data['last_name'];
+        $last_name = $this->_sanitized_data['last_name'];
 
         if (empty($last_name)) {
             $this->_addErrorMessage("Last name was blank or contained unwanted characters");
@@ -208,7 +203,7 @@ class SignupForm
     public function validateSpeakerInfo()
     {
         $speakerInfo = filter_var(
-            $this->_data['speaker_info'],
+            $this->_sanitized_data['speaker_info'],
             FILTER_SANITIZE_STRING
         );
         $validation_response = true;
@@ -231,7 +226,7 @@ class SignupForm
     public function validateSpeakerBio()
     {
         $speaker_bio = filter_var(
-            $this->_data['speaker_bio'],
+            $this->_sanitized_data['speaker_bio'],
             FILTER_SANITIZE_STRING
         );
         $validation_response = true;
@@ -254,14 +249,12 @@ class SignupForm
     public function sanitize()
     {
         $purifier = $this->_purifier;
-        $sanitized_data = array_map(
+        $this->_sanitized_data = array_map(
             function ($field) use ($purifier) {
                 return $purifier->purify($field);
             },
             $this->_data
         );
-
-        return $sanitized_data;
     }
 
     /**
@@ -356,4 +349,13 @@ class SignupForm
         }
     }
 
+    /**
+     * Return the array containing sanitized data
+     *
+     * @return array
+     */
+    public function getSanitizedData()
+    {
+        return $this->_sanitized_data;
+    }
 }

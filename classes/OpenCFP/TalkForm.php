@@ -8,9 +8,9 @@ namespace OpenCFP;
 class TalkForm
 {
     protected $_data;
-    public $error_messages = array();
     protected $_purifier;
-    protected $_sanitzedData = array();
+    protected $_sanitized_data = array();
+    public $error_messages = array();
 
     /**
      * Class constructor
@@ -60,7 +60,15 @@ class TalkForm
             },
             $this->_data
         );
+    }
 
+    /**
+     * Method that returns an array containing our sanitized data
+     *
+     * @return array
+     */
+    public function getSanitizedData()
+    {
         return $this->_sanitized_data;
     }
 
@@ -85,14 +93,12 @@ class TalkForm
      */
     public function validateTitle()
     {
-        $sanitized_data = $this->sanitize();
-
-        if (empty($sanitized_data['title']) || !isset($sanitized_data['title'])) {
+        if (empty($this->_sanitized_data['title']) || !isset($this->_sanitized_data['title'])) {
             $this->error_messages[] = "Your title contained content that could be used for XSS";
             return false;
         }
 
-        $title = $sanitized_data['title'];
+        $title = $this->_sanitized_data['title'];
 
         if ($title !== $this->_data['title']) {
             $this->error_messages[] = "You had invalid characters in your talk title";
@@ -114,9 +120,7 @@ class TalkForm
      */
     public function validateDescription()
     {
-        $sanitizedData = $this->sanitize();
-
-        if (empty($sanitizedData['description'])) {
+        if (empty($this->_sanitized_data['description'])) {
             $this->error_messages[] = "Your description was missing";
             return false;
         }
@@ -131,7 +135,6 @@ class TalkForm
      */
     public function validateType()
     {
-        $sanitized_data = $this->sanitize();
         $validTalkTypes = array(
             'half-day-tutorial',
             'full-day-tutorial',
@@ -139,12 +142,12 @@ class TalkForm
             'lightning'
         );
 
-        if (empty($sanitized_data['type']) || !isset($sanitized_data['type'])) {
+        if (empty($this->_sanitized_data['type']) || !isset($this->_sanitized_data['type'])) {
             $this->error_messages[] = "You must choose what type of talk you are submitting";
             return false;
         }
 
-        if (!in_array($sanitized_data['type'], $validTalkTypes)) {
+        if (!in_array($this->_sanitized_data['type'], $validTalkTypes)) {
             $this->error_messages[] = "You did not choose a valid talk type";
             return false;
         }
@@ -160,8 +163,7 @@ class TalkForm
      */
     public function validateSpeakerId(\OpenCFP\Speaker $speaker)
     {
-        $sanitized_data = $this->sanitize();
-        $userId = $sanitized_data['user_id'];
+        $userId = $this->_sanitized_data['user_id'];
         $thisSpeaker = $speaker->findByUserId($userId);
 
         if (!$thisSpeaker) {
