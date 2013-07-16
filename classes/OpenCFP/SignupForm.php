@@ -113,8 +113,8 @@ class SignupForm
      */
     public function validatePasswords()
     {
-        $passwd = filter_var($this->_data['password'], FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z]+$/")));
-        $passwd2 = filter_var($this->_data['password2'], FILTER_SANITIZE_STRING, array('options' => array('regexp' => "/^[a-zA-Z]+$/")));
+        $passwd = filter_var($this->_data['password'], FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => "/^[a-zA-Z0-9]+$/")));
+        $passwd2 = filter_var($this->_data['password2'], FILTER_SANITIZE_STRING, array('options' => array('regexp' => "/^[a-zA-Z0-9]+$/")));
         $validation_response = true;
 
         if ($passwd !== $this->_data['password'] || $passwd2 !== $this->_data['password2']) {
