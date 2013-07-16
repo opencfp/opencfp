@@ -78,16 +78,31 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider for properPasswordsPassValidationAndSanitization
+     *
+     * @return array
+     */
+    public function properPasswordValidator()
+    {
+        return array(
+            array('acceptable'),
+            array('testing123')
+        );
+    }
+
+    /**
      * Test that password that match and are of the proper length pass validation
      * and sanitization
      *
      * @test
+     * @param string $passwd
+     * @dataProvider properPasswordValidator
      */
-    public function properPasswordsPassValidationAndSanitization()
+    public function properPasswordsPassValidationAndSanitization($passwd)
     {
         $data = array(
-            'password' => 'acceptable',
-            'password2' => 'acceptable'
+            'password' => $passwd,
+            'password2' => $passwd 
         );
         $form = new \OpenCFP\SignupForm($data, $this->purifier);
 
@@ -136,7 +151,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             array('foo', 'foo', "The submitted password must be at least 5 characters long", false),
             array('bar', 'foo', "The submitted passwords do not match", false),
             array(null, null, "Missing passwords", false),
-            array('{<kdag', '{<kdag', "Passwords can only be alphanumeric at this time", false)
+            array('{<kdag', '{<kdag', "Passwords can only be alphanumeric at this time", false),
         );
     }
 
