@@ -79,6 +79,7 @@ class TalkController
         );
 
         $form = new \OpenCFP\TalkForm($request_data, $app['purifier']);
+        $form->sanitize();
 
         if (!$form->validateAll()) {
             $template = $app['twig']->loadTemplate('create_talk.twig');
@@ -141,6 +142,7 @@ class TalkController
         );
 
         $form = new \OpenCFP\TalkForm($request_data, $app['purifier']);
+        $form->sanitize();
         $valid = $form->validateAll();
 
         if ($valid) {
