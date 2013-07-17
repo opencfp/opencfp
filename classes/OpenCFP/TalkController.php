@@ -96,7 +96,7 @@ class TalkController
             return $template->render($data);
         }
         
-        $sanitized_data = $form->sanitize();
+        $sanitized_data = $form->getSanitizedData();
         $data = array(
             'title' => $sanitized_data['title'],
             'description' => $sanitized_data['description'],
