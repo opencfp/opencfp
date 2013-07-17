@@ -146,7 +146,7 @@ class TalkController
         $valid = $form->validateAll();
 
         if ($valid) {
-            $sanitized_data = $form->sanitize();
+            $sanitized_data = $form->getSanitizedData();
             $data = array(
                 'id' => (int)$sanitized_data['id'],
                 'title' => $sanitized_data['title'],
