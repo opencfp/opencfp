@@ -4,6 +4,7 @@ namespace OpenCFP\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Cartalyst\Sentry\Users\UserExistsException;
+use OpenCFP\Form\SignupForm;
 
 class SignupController
 {
@@ -42,7 +43,7 @@ class SignupController
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
 
-        $form = new \OpenCFP\SignupForm($form_data, $app['purifier']);
+        $form = new SignupForm($form_data, $app['purifier']);
         $form->sanitize();
 
         if ($form->validateAll()) {

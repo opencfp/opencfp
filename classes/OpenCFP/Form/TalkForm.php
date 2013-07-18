@@ -3,7 +3,7 @@
  * Class representing the form that speakers fill out when they want
  * to submit a talk
  */
-namespace OpenCFP;
+namespace OpenCFP\Form;
 
 class TalkForm
 {

@@ -25,12 +25,12 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function correctlyDetectsRequiredFields($rawData, $response)
     {
         $data = unserialize($rawData);
-        $form = new \OpenCFP\TalkForm($data, $this->purifier);
+        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
 
         $this->assertEquals(
             $response,
             $form->hasRequiredFields(),
-            '\OpenCFP\TalkForm::hasRequired() did not work correctly'
+            '\OpenCFP\Form\TalkForm::hasRequired() did not work correctly'
         );
     }
 
@@ -72,13 +72,13 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function titleValidatesCorrectly($title, $expectedResponse)
     {
         $data = array('title' => $title);
-        $form = new \OpenCFP\TalkForm($data, $this->purifier);
+        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
             $expectedResponse,
             $form->validateTitle(),
-            '\OpenCFP\TalkForm::validateTitle() did not apply validation rules correctly'
+            '\OpenCFP\Form\TalkForm::validateTitle() did not apply validation rules correctly'
         );
     }
 
@@ -111,13 +111,13 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function descriptionValidatesCorrectly($description, $expectedResponse)
     {
         $data = array('description' => $description);
-        $form = new \OpenCFP\TalkForm($data, $this->purifier);
+        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
             $expectedResponse,
             $form->validateDescription(),
-            '\OpenCFP\TalkForm::validateDescription() did not apply validation rules correctly'
+            '\OpenCFP\Form\TalkForm::validateDescription() did not apply validation rules correctly'
         );
     }
 
@@ -148,13 +148,13 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function typeValidatesCorrectly($type, $expectedResponse)
     {
         $data = array('type' => $type);
-        $form = new \OpenCFP\TalkForm($data, $this->purifier);
+        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
         
         $this->assertEquals(
             $expectedResponse,
             $form->validateType(),
-            '\OpenCFP\TalkForm::validateType() did not apply validation rules correctly'
+            '\OpenCFP\Form\TalkForm::validateType() did not apply validation rules correctly'
         );
     }
 
@@ -211,13 +211,13 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
 
         $speaker = new \OpenCFP\Speaker($db);
         $data['user_id'] = $speakerId;
-        $form = new \OpenCFP\TalkForm($data, $this->purifier);
+        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
             $expectedResponse,
             $form->validateSpeakerId($speaker),
-            '\OpenCFP\TalkForm::validateSpeakerId() did not apply validation rules correctly'
+            '\OpenCFP\Form\TalkForm::validateSpeakerId() did not apply validation rules correctly'
         );
     }
 

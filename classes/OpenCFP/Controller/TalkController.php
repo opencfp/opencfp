@@ -3,6 +3,7 @@ namespace OpenCFP\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use OpenCFP\Form\TalkForm;
 
 class TalkController
 {
@@ -78,7 +79,7 @@ class TalkController
             'user_id' => $req->get('user_id')
         );
 
-        $form = new \OpenCFP\TalkForm($request_data, $app['purifier']);
+        $form = new TalkForm($request_data, $app['purifier']);
         $form->sanitize();
 
         if (!$form->validateAll()) {
@@ -141,7 +142,7 @@ class TalkController
             'user_id' => $req->get('user_id')
         );
 
-        $form = new \OpenCFP\TalkForm($request_data, $app['purifier']);
+        $form = new TalkForm($request_data, $app['purifier']);
         $form->sanitize();
         $valid = $form->validateAll();
 
