@@ -2,13 +2,15 @@
 {% block content %}
 <div class="row-fluid marketing">
     <div class="span12">
-    <h4>Create Your Talk</h4>
-    {% if error_message %}
-        <div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Error!</strong><br>{% autoescape false %}{{ error_message  }}{% endautoescape %}
-        </div>
-    {% endif %}
-    {% include "talk_form.twig" %}
+        <h4>Create Your Talk</h4>
+        {% include "form_errors.twig" with { 'form': form } only %}
+        <form action="{{ url.site }}/talk/create" method="POST">
+            {% include "talk_form.twig" with {
+                'form': form,
+                'button_label': 'Submit my talk!',
+            } only %}
+        </form>
+    </div>
+</div>
 {% endblock %}
 

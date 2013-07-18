@@ -1,0 +1,29 @@
+<phpunit
+    backupGlobals               = "false"
+    backupStaticAttributes      = "false"
+    colors                      = "true"
+    convertErrorsToExceptions   = "true"
+    convertNoticesToExceptions  = "true"
+    convertWarningsToExceptions = "true"
+    processIsolation            = "false"
+    stopOnFailure               = "false"
+    syntaxCheck                 = "false"
+    bootstrap                   = "./tests/bootstrap.php">
+    <testsuites>
+        <testsuite name="OpenCFP Test Suite">
+            <directory>./classes/*/Tests</directory>
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>./classes</directory>
+            <exclude>
+                <directory>./classes/*/Tests</directory>
+            </exclude>
+        </whitelist>
+        <blacklist>
+            <directory>../vendor</directory>
+        </blacklist>
+    </filter>
+</phpunit>

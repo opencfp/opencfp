@@ -1,5 +1,6 @@
 {
     "name": "chartjes/opencfp",
+    "description": "Open Source Call for Papers management application.",
     "require": {
         "twig/twig": "1.*",
         "pagerfanta/pagerfanta": "1.0.*@dev",
