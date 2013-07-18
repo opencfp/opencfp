@@ -3,6 +3,7 @@ namespace OpenCFP\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use OpenCFP\Model\Talk;
 
 class DashboardController
 {
@@ -13,7 +14,7 @@ class DashboardController
         }
 
         $user = $app['sentry']->getUser();
-        $talk = new \OpenCFP\Talk($app['db']);
+        $talk = new Talk($app['db']);
         $my_talks = $talk->findByUserId($user->getId());
 
         // Load our template and RENDER

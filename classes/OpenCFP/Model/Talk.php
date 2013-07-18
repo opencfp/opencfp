@@ -2,7 +2,7 @@
 /**
  * Object that represents a talk that a speaker has submitted
  */
-namespace OpenCFP;
+namespace OpenCFP\Model;
 
 class Talk
 {
@@ -20,14 +20,14 @@ class Talk
 
     /**
      * Create a talk when you pass new data in
-     * 
+     *
      * @param array $data
      * @return boolean
      */
     public function create($data)
     {
         $sql = "
-            INSERT INTO talks 
+            INSERT INTO talks
             (title, description, type, user_id)
             VALUES (?, ?, ?, ?)
             ";
@@ -85,8 +85,8 @@ class Talk
         if (empty($data['id'])) {
             return false;
         }
-        
-        $sql = "UPDATE talks 
+
+        $sql = "UPDATE talks
             SET title = ?,
             description = ?,
             type = ?
@@ -100,9 +100,9 @@ class Talk
             trim($data['type']),
             $data['id'],
             $data['user_id']
-        ));   
+        ));
 
-        return ($stmt->rowCount() === 1); 
+        return ($stmt->rowCount() === 1);
     }
 
     /**
@@ -118,6 +118,6 @@ class Talk
         $stmt = $this->_db->prepare($sql);
         $stmt->execute(array($talkId, $userId));
 
-        return ($stmt->rowCount() === 1); 
+        return ($stmt->rowCount() === 1);
     }
 }

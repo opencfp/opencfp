@@ -4,7 +4,7 @@
  * in the Sentry User object
  */
 
-namespace OpenCFP;
+namespace OpenCFP\Model;
 
 class Speaker
 {

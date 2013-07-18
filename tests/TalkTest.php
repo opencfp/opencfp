@@ -29,7 +29,7 @@ class TalkTest extends PHPUnit_Framework_TestCase
             ->with($this->stringContains("INSERT INTO talks"))
             ->will($this->returnValue($stmt));
 
-        $talk = new \OpenCFP\Talk($db);
+        $talk = new \OpenCFP\Model\Talk($db);
         $data = array(
             'title' => "The Awesome Talk of Awesomeoneess",
             'description' => "This is where a description of the talk would go, how long should it be?",
@@ -75,9 +75,9 @@ class TalkTest extends PHPUnit_Framework_TestCase
         $db->expects($this->once())
             ->method('prepare')
             ->with($this->stringContains("SELECT * FROM talks"))
-            ->will($this->returnValue($stmt));    
+            ->will($this->returnValue($stmt));
 
-        $talk = new \OpenCFP\Talk($db);
+        $talk = new \OpenCFP\Model\Talk($db);
         $record = $talk->findById($info['user_id']);
 
         $this->assertEquals(
@@ -89,9 +89,9 @@ class TalkTest extends PHPUnit_Framework_TestCase
 
     /**
      * Verify that findByUserId finds one or more talks by a user
-     * 
+     *
      * @test
-     * @param integer $data 
+     * @param integer $data
      * @dataProvider findByUserIdProvider
      */
     public function findByUserIdReturnsCorrectRecords($data)
@@ -112,9 +112,9 @@ class TalkTest extends PHPUnit_Framework_TestCase
         $db->expects($this->once())
             ->method('prepare')
             ->with($this->stringContains("SELECT * FROM talks"))
-            ->will($this->returnValue($stmt));            
+            ->will($this->returnValue($stmt));
 
-        $talk = new \OpenCFP\Talk($db);
+        $talk = new \OpenCFP\Model\Talk($db);
         $talks = $talk->findByUserId(1);
 
         $this->assertEquals(
@@ -176,14 +176,14 @@ class TalkTest extends PHPUnit_Framework_TestCase
         $stmt->expects($this->once())
             ->method('rowCount')
             ->will($this->returnValue($rowCount));
-        
+
         $db = $this->getMockBuilder('PDOMock')
             ->setMethods(array('prepare'))
             ->getMock();
         $db->expects($this->once())
             ->method('prepare')
             ->with($this->stringContains("UPDATE talks"))
-            ->will($this->returnValue($stmt));            
+            ->will($this->returnValue($stmt));
 
         $data = array(
             'id' => 1,
@@ -193,12 +193,12 @@ class TalkTest extends PHPUnit_Framework_TestCase
             'user_id' => 1
         );
 
-        $talk = new \OpenCFP\Talk($db);
+        $talk = new \OpenCFP\Model\Talk($db);
 
         $this->assertEquals(
             $updateResponse,
             $talk->update($data),
-            '\OpenCFP\Talk::update() did not update valid data'
+            '\OpenCFP\Model\Talk::update() did not update valid data'
         );
     }
 
@@ -236,7 +236,7 @@ class TalkTest extends PHPUnit_Framework_TestCase
         $stmt->expects($this->once())
             ->method('rowCount')
             ->will($this->returnValue($rowCount));
-        
+
         $db = $this->getMockBuilder('PDOMock')
             ->setMethods(array('prepare'))
             ->getMock();
@@ -245,12 +245,12 @@ class TalkTest extends PHPUnit_Framework_TestCase
             ->with($this->stringContains("DELETE FROM talks"))
             ->will($this->returnValue($stmt));
 
-        $talk = new \OpenCFP\Talk($db);
+        $talk = new \OpenCFP\Model\Talk($db);
 
         $this->assertEquals(
             $expectedResponse,
             $talk->delete($talkId, $userId),
-            '\OpenCFP\Talk::delete() did not handle deletion correctly'
+            '\OpenCFP\Model\Talk::delete() did not handle deletion correctly'
         );
     }
 
