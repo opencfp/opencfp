@@ -1,14 +1,11 @@
-<form action="{{ site.url }}{{ formAction }}" method="POST">
-    <input name='email' type="text" value="{{ email }}" class="span5" placeholder="E-mail"><br>
-    {% if formAction == '/signup' %} 
-        <input name='password' type="password" class="span5" placeholder="Password, at least 5 characters"><br>
-        <input name='password2' type="password" class="span5" placeholder="Password (confirm)"><br>
-    {% endif %} 
-    <input name='first_name' type="text" value="{{ first_name}}" class="span5" placeholder="First name"><br>
-    <input name='last_name' type="text" value="{{ last_name}}" class="span5" placeholder="Last name"><br>
-    <textarea name="speaker_bio" rows="5" class="span7" placeholder="Put information about yourself into this field. Twitter, web site, etc.">{{speaker_bio}}</textarea><br>
-    <textarea name="speaker_info" rows="5" class="span7" placeholder="Other information (Where you will be travelling from, special needs, can your employer cover travel expenses, etc.)">{{speaker_info}}</textarea><br>
-    <button type="submit" class="btn btn-primary">{{ buttonInfo }}</button>
-    <input name="id" type="hidden" value="{{ id }}">
-</form>
-
+<input name='user[email]' type="text" value="{{ form.get('email') }}" class="span5" placeholder="E-mail"><br>
+{% if action == 'signup' %}
+    <input name='user[password]' type="password" class="span5" placeholder="Password, at least 5 characters"><br>
+    <input name='user[confirmation]' type="password" class="span5" placeholder="Password (confirm)"><br>
+{% endif %}
+<input name='user[first_name]' type="text" value="{{ form.get('first_name') }}" class="span5" placeholder="First name"><br>
+<input name='user[last_name]' type="text" value="{{ form.get('last_name') }}" class="span5" placeholder="Last name"><br>
+<textarea name="user[bio]" rows="5" class="span7" placeholder="Put information about yourself into this field. Twitter, web site, etc.">{{ form.get('bio') }}</textarea><br>
+<textarea name="user[info]" rows="5" class="span7" placeholder="Other information (Where you will be travelling from, special needs, can your employer cover travel expenses, etc.)">{{ form.get('info') }}</textarea><br>
+<input name="user[id]" type="hidden" value="{{ form.get('id') }}">
+<button type="submit" class="btn btn-primary">{{ button_label }}</button>

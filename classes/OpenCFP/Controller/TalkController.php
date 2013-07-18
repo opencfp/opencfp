@@ -1,204 +1,141 @@
 <?php
+
 namespace OpenCFP\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use OpenCFP\Form\TalkForm;
-use OpenCFP\Model\Talk;
 
+/**
+ * This class manages all actions related to talks.
+ *
+ * @package OpenCFP\Controller
+ *
+ * @author Chris Hartjes
+ * @author Peter Meth
+ * @author Hugo Hamon
+ */
 class TalkController
 {
-    public function editAction(Request $req, Application $app)
+    /**
+     * Displays the form to create a new talk.
+     *
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function newAction(Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect('/login');
         }
 
-        $id = $req->get('id');
-        $user = $app['sentry']->getUser();
-        $talk_id= filter_var($id, FILTER_VALIDATE_INT);
-
-        if (empty($talk_id)) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
-        $talk = new Talk($app['db']);
-        $talk_info = $talk->findById($talk_id);
-
-        if ($talk_info['user_id'] !== $user->getId()) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
-        $template_name = 'edit_talk.twig';
-        $template = $app['twig']->loadTemplate($template_name);
-        $data = array(
-            'formAction' => '/talk/update',
-            'id' => $talk_id,
-            'title' => $talk_info['title'],
-            'description' => $talk_info['description'],
-            'type' => $talk_info['type'],
-            'buttonInfo' => 'Update my talk!',
-            'user' => $user
-        );
-
-        return $template->render($data);
-    }
-
-    public function createAction(Request $req, Application $app)
-    {
-        if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
-        }
-
-        $user = $app['sentry']->getUser();
-
-        $template_name = 'create_talk.twig';
-        $template = $app['twig']->loadTemplate($template_name);
-        $data = array(
-            'formAction' => '/talk/create',
-            'title' => $req->get('title'),
-            'description' => $req->get('description'),
-            'type' => $req->get('type'),
-            'buttonInfo' => 'Submit my talk!',
-            'user' => $user
-        );
-
-        return $template->render($data);
-    }
-
-    public function processCreateAction(Request $req, Application $app)
-    {
-        if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
-        }
-
-        $user = $app['sentry']->getUser();
-        $request_data = array(
-            'title' => $req->get('title'),
-            'description' => $req->get('description'),
-            'type' => $req->get('type'),
-            'user_id' => $req->get('user_id')
-        );
-
-        $form = new TalkForm($request_data, $app['purifier']);
-        $form->sanitize();
-
-        if (!$form->validateAll()) {
-            $template = $app['twig']->loadTemplate('create_talk.twig');
-            $data = array(
-                'formAction' => '/talk/create',
-                'title' => $req->get('title'),
-                'description' => $req->get('description'),
-                'type' => $req->get('type'),
-                'buttonInfo' => 'Submit my talk!',
-                'user' => $user,
-                'error_message' => implode('<br>', $form->error_messages)
-            );
-
-            return $template->render($data);
-        }
-
-        $sanitized_data = $form->getSanitizedData();
-        $data = array(
-            'title' => $sanitized_data['title'],
-            'description' => $sanitized_data['description'],
-            'type' => $sanitized_data['type'],
-            'user_id' => (int)$user->getId(),
-            'user' => $user
-        );
-        $talk = new Talk($app['db']);
-
-        if (!$talk->create($data)) {
-            $template_name = 'create_talk.twig';
-            $template = $app['twig']->loadTemplate('create_talk.twig');
-            $data['formAction'] = '/talk/create';
-            $data['buttonInfo'] = 'Submit my talk!';
-            $data['error_message'] = "Unable to create a new record in our talks database, please try again";
-
-            return $template->render($data);
-        }
-
-        $app['session']->set('flash', array(
-            'type' => 'success',
-            'short' => '',
-            'ext' => "Succesfully created a talk"
+        return $app['twig']->render('create_talk.twig', array(
+            'form' => $app['cfp']->createTalkForm(),
         ));
-
-        return $app->redirect($app['url'] . '/dashboard');
     }
 
-    public function updateAction(Request $req, Application $app)
+    /**
+     * Processes the form and saves the new talk to the database.
+     *
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function createAction(Request $request, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect('/login');
         }
 
-        $user = $app['sentry']->getUser();
+        $form = $app['cfp']->createTalkForm();
+        $form->submit($request->request->get('talk'));
 
-        $request_data = array(
-            'id' => $req->get('id'),
-            'title' => $req->get('title'),
-            'description' => $req->get('description'),
-            'type' => $req->get('type'),
-            'user_id' => $req->get('user_id')
-        );
-
-        $form = new TalkForm($request_data, $app['purifier']);
-        $form->sanitize();
-        $valid = $form->validateAll();
-
-        if ($valid) {
-            $sanitized_data = $form->getSanitizedData();
-            $data = array(
-                'id' => (int)$sanitized_data['id'],
-                'title' => $sanitized_data['title'],
-                'description' => $sanitized_data['description'],
-                'type' => $sanitized_data['type'],
-                'user_id' => (int)$user->getId()
-            );
-            $talk = new Talk($app['db']);
-            $talk->update($data);
-            $app['session']->set('flash', array(
-                'type' => 'success',
-                'short' => 'Updated talk!'
-            ));
-
-            return $app->redirect($app['url'] . '/dashboard');
+        if ($form->isValid()) {
+            $app['cfp']->submitTalkProposal($form);
+            $app['session']->getFlashBag()->set('success', 'Succesfully created a talk');
+            return $app->redirect('/dashboard');
         }
 
-        if (!$valid) {
-            $template_name = 'edit_talk.twig';
-            $template = $app['twig']->loadTemplate($template_name);
-            $data = array(
-                'formAction' => '/talk/update',
-                'id' => $req->get('id'),
-                'title' => $req->get('title'),
-                'description' => $req->get('description'),
-                'type' => $req->get('type'),
-                'buttonInfo' => 'Update my talk!',
-                'user' => $user,
-                'error_message' => implode("<br>", $form->error_messages)
-            );
-
-            return $template->render($data);
-        }
-
-        return $app->redirect($app['url'] . '/talk/edit/' . $req->get('id'));
+        return $app['twig']->render('create_talk.twig', array('form' => $form));
     }
 
-    public function deleteAction(Request $req, Application $app)
+    /**
+     * Displays the talk edit form.
+     *
+     * @param Request $request
+     * @param Application $app
+     * @return string
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function editAction(Request $request, Application $app)
     {
+        if (!$app['sentry']->check()) {
+            return $app->redirect('/login');
+        }
+
+        $id = $request->attributes->getInt('id');
+        if (!$data = $app['cfp']->find($id)) {
+            $app->abort(404, sprintf("Unable to find current user's talk identified by %u.", $id));
+        }
+
+        return $app['twig']->render('edit_talk.twig', array(
+            'form' => $app['cfp']->createTalkForm($data),
+            'talk' => $data,
+        ));
+    }
+
+    /**
+     * Edits the current logged-in user's talk.
+     *
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|string
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function updateAction(Request $request, Application $app)
+    {
+        if (!$app['sentry']->check()) {
+            return $app->redirect('/login');
+        }
+
+        $id = $request->attributes->getInt('id');
+        if (!$data = $app['cfp']->find($id)) {
+            $app->abort(404, sprintf("Unable to find current user's talk identified by %u.", $id));
+        }
+
+        $form = $app['cfp']->createTalkForm($data);
+        $form->submit($request->request->get('talk'));
+
+        if ($form->isValid()) {
+            $app['cfp']->updateTalkProposal($form);
+            $app['session']->getFlashBag()->set('success', 'Succesfully updated your talk');
+            return $app->redirect('/dashboard');
+        }
+
+        return $app['twig']->render('edit_talk.twig', array(
+            'form' => $form,
+            'talk' => $data,
+        ));
+    }
+
+    /**
+     * Deletes an existing talk submission.
+     *
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function deleteAction(Request $request, Application $app)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            $app->abort(404, 'Not an ajax request.');
+        }
+
         if (!$app['sentry']->check()) {
             return $app->json(array('delete' => 'no-user'));
         }
 
-        $user = $app['sentry']->getUser();
-        $talk = new Talk($app['db']);
+        $deleted = $app['cfp']->cancelTalkProposal($request->request->get('id'));
 
-        if ($talk->delete($req->get('tid'), $req->get('user_id')) === true) {
-            return $app->json(array('delete' => 'ok'));
-        }
-
-        return $app->json(array('delete' => 'no'));
+        return $app->json(array('delete' => $deleted ? 'ok' : 'no'));
     }
 }

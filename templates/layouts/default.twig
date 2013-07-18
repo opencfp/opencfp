@@ -1,4 +1,4 @@
-{% if user %}
+{% if app.user %}
     {% set navigation_bar = [['/', 'Home'], ['/dashboard', 'Dashboard'], ['/logout', 'Logout']] %}
     {% set active_page = active_page|default('/dashboard') %}
 {% else %}

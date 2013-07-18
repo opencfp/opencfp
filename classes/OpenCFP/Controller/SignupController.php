@@ -1,90 +1,60 @@
 <?php
+
 namespace OpenCFP\Controller;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Form\SignupForm;
+use Symfony\Component\HttpFoundation\Request;
 
 class SignupController
 {
-    public function indexAction(Request $req, Application $app)
+    /**
+     * Renders the registration form.
+     *
+     * @param Application $app The service container
+     * @return string The response content
+     */
+    public function indexAction(Application $app)
     {
         // Reset our user to make sure nothing weird happens
         if ($app['sentry']->check()) {
             $app['sentry']->logout();
         }
 
-        $template = $app['twig']->loadTemplate('create_user.twig');
-        $form_data = array();
-        $form_data['formAction'] = '/signup';
-        $form_data['buttonInfo'] = 'Create my speaker profile';
-
-        return $template->render($form_data);
+        return $app['twig']->render('create_user.twig', array(
+            'form' => $app['registration']->createSignupForm(array('action' => 'create')),
+        ));
     }
 
-    public function successAction(Application $app)
+    /**
+     * Processes the registration form.
+     *
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function processAction(Request $request, Application $app)
     {
-        $template = $app['twig']->loadTemplate('create_user_success.twig');
+        $form = $app['registration']->createSignupForm(array('action' => 'create'));
+        $form->submit($request->request->get('user'));
 
-        return $template->render(array());
-    }
-
-    public function processAction(Request $req, Application $app)
-    {
-        $template_name = 'create_user.twig';
-        $form_data = array(
-            'first_name' => $req->get('first_name'),
-            'last_name' => $req->get('last_name'),
-            'email' => $req->get('email'),
-            'password' => $req->get('password'),
-            'password2' => $req->get('password2')
-        );
-        $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
-        $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
-
-        $form = new SignupForm($form_data, $app['purifier']);
-        $form->sanitize();
-
-        if ($form->validateAll()) {
-            $sanitized_data = $form->getSanitizedData();
-
-            // Create account using Sentry
-            $user_data = array(
-                'first_name' => $sanitized_data['first_name'],
-                'last_name' => $sanitized_data['last_name'],
-                'email' => $sanitized_data['email'],
-                'password' => $sanitized_data['password'],
-                'activated' => 1
-            );
-
-            try {
-                $user = $app['sentry']->getUserProvider()->create($user_data);
-
-                // Add them to the proper group
-                $adminGroup = $app['sentry']->getGroupProvider()->findByName('Speakers');
-                $user->addGroup($adminGroup);
-
-                // Create a Speaker record
-                $speaker = new \OpenCFP\Speaker($app['db']);
-                $response = $speaker->create(array(
-                    'user_id' => $user->getId(),
-                    'info' => $sanitized_data['speaker_info'],
-                    'bio' => $sanitized_data['speaker_bio']
-                ));
-
-                return $app->redirect($app['url'] . '/signup/success');
-            } catch (UserExistsException $e) {
-                $form_data['error_message'] = 'A user already exists with that email address';
+        if ($form->isValid()) {
+            if ($app['registration']->createUserAccount($form)) {
+                return $app->redirect('/signup/success');
             }
-        } else {
-            $form_data['error_message'] = implode("<br>", $form->error_messages);
         }
 
-        $template = $app['twig']->loadTemplate('create_user.twig');
-        $form_data['formAction'] = '/signup';
-        $form_data['buttonInfo'] = 'Create my speaker profile';
+        return $app['twig']->render('create_user.twig', array('form' => $form));
+    }
 
-        return $template->render($form_data);
+    /**
+     * Confirms the creation of the user account.
+     *
+     * @param Application $app
+     * @return string
+     */
+    public function successAction(Application $app)
+    {
+        return $app['twig']->render('create_user_success.twig');
     }
 }

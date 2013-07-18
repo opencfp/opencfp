@@ -1,0 +1,10 @@
+{% if form.hasErrors %}
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Error!</strong>
+        <br>
+        {% for message in form.errorMessages %}
+            {{ message }}<br/>
+        {% endfor %}
+    </div>
+{% endif %}

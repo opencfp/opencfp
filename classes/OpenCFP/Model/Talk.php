@@ -1,7 +1,5 @@
 <?php
-/**
- * Object that represents a talk that a speaker has submitted
- */
+
 namespace OpenCFP\Model;
 
 class Talk
@@ -26,21 +24,16 @@ class Talk
      */
     public function create($data)
     {
-        $sql = "
-            INSERT INTO talks
-            (title, description, type, user_id)
-            VALUES (?, ?, ?, ?)
-            ";
-        $stmt = $this->_db->prepare($sql);
+        $sql = 'INSERT INTO `talks` (`title`, `description`, `type`, `user_id`) VALUES (:title, :description, :type, :user)';
 
-        return $stmt->execute(
-            array(
-                trim($data['title']),
-                trim($data['description']),
-                trim($data['type']),
-                $data['user_id']
-            )
-        );
+        $stmt = $this->_db->prepare($sql);
+        $stmt->bindValue(':title', $data['title']);
+        $stmt->bindValue(':description', $data['description']);
+        $stmt->bindValue(':type', $data['type']);
+        $stmt->bindValue(':user', $data['user_id'], \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return 1 === (int) $stmt->rowCount();
     }
 
     /**
@@ -56,6 +49,23 @@ class Talk
         $stmt->execute(array($id));
 
         return $stmt->fetch() ?: false;
+    }
+
+    /**
+     * Returns a user's talk.
+     *
+     * @param int $id The talk's primary key
+     * @param int $user The user's primary key
+     * @return array|false
+     */
+    public function findUserTalk($id, $user)
+    {
+        $stmt = $this->_db->prepare('SELECT * FROM talks WHERE id = :id AND user_id = :user');
+        $stmt->bindValue(':id', (int) $id, \PDO::PARAM_INT);
+        $stmt->bindValue(':user', (int) $user, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -86,23 +96,18 @@ class Talk
             return false;
         }
 
-        $sql = "UPDATE talks
-            SET title = ?,
-            description = ?,
-            type = ?
-            WHERE id = ?
-            AND user_id = ?
-        ";
-        $stmt = $this->_db->prepare($sql);
-        $stmt->execute(array(
-            trim($data['title']),
-            trim($data['description']),
-            trim($data['type']),
-            $data['id'],
-            $data['user_id']
-        ));
+        $sql = 'UPDATE `talks` SET `title` = :title, `description` = :description, `type` = :type';
+        $sql.= ' WHERE `id` = :id AND `user_id` = :user';
 
-        return ($stmt->rowCount() === 1);
+        $stmt = $this->_db->prepare($sql);
+        $stmt->bindValue(':title', $data['title']);
+        $stmt->bindValue(':description', $data['description']);
+        $stmt->bindValue(':type', $data['type']);
+        $stmt->bindValue(':id', $data['id'], \PDO::PARAM_INT);
+        $stmt->bindValue(':user', $data['user_id'], \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return 1 === (int) $stmt->rowCount();
     }
 
     /**
@@ -114,10 +119,11 @@ class Talk
      */
     public function delete($talkId, $userId)
     {
-        $sql = "DELETE FROM talks WHERE id = ? AND user_id = ?";
-        $stmt = $this->_db->prepare($sql);
-        $stmt->execute(array($talkId, $userId));
+        $stmt = $this->_db->prepare('DELETE FROM talks WHERE id = :id AND user_id = :user');
+        $stmt->bindValue(':id', (int) $talkId, \PDO::PARAM_INT);
+        $stmt->bindValue(':user', (int) $userId, \PDO::PARAM_INT);
+        $stmt->execute();
 
-        return ($stmt->rowCount() === 1);
+        return 1 === (int) $stmt->rowCount();
     }
 }

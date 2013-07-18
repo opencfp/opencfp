@@ -1,4 +1,5 @@
 <?php
+
 namespace OpenCFP\Controller;
 
 use Silex\Application;
@@ -6,45 +7,54 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SecurityController
 {
-    public function indexAction(Request $req, Application $app)
+    /**
+     * Displays the login form.
+     *
+     * @param Application $app
+     * @return string
+     */
+    public function loginAction(Application $app)
     {
-        $template = $app['twig']->loadTemplate('login.twig');
-
-        return $template->render(array());
+        return $app['twig']->render('login.twig');
     }
 
-    public function processAction(Request $req, Application $app)
+    /**
+     * Authenticates the user.
+     *
+     * @param Request $request
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function signinAction(Request $request, Application $app)
     {
-        $template = $app['twig']->loadTemplate('login.twig');
-        $template_data = array();
+        // Get submitted user's credentials
+        $email = $request->request->get('email');
+        $password = $request->request->get('passwd');
 
-        try {
-            $page = new \OpenCFP\Login($app['sentry']);
+        // Try to authenticate the user
+        $token = $app['security']->authenticate($email, $password);
 
-            if ($page->authenticate($req->get('email'), $req->get('passwd'))) {
-                return $app->redirect($app['url'] . '/dashboard');
-            }
-            
-            $template_data = array(
-                'user' => $app['sentry']->getUser(),
-                'email' => $req->get('email'),
-                'errorMessage' => $page->getAuthenticationMessage()
-            );
-        } catch (Exception $e) {
-            $template_data = array(
-                'user' => $app['sentry']->getUser(),
-                'email' => $req->get('email'),
-                'errorMessage' => $e->getMessage()
-            );
+        // Redirect the user if he's authenticated
+        if ($token->isAuthenticated()) {
+            return $app->redirect('/dashboard');
         }
-        
-        return $template->render($template_data);
+
+        return $app['twig']->render('login.twig', array(
+            'email' => $email,
+            'error' => $token->getAuthenticationError(),
+        ));
     }
 
-    public function outAction(Request $req, Application $app)
+    /**
+     * Disconnects the user from his personal area.
+     *
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function logoutAction(Application $app)
     {
         $app['sentry']->logout();
 
-        return $app->redirect($app['url'] . '/');
+        return $app->redirect('/');
     }
 }
