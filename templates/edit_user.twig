@@ -1,15 +1,18 @@
 {% extends "layouts/default.twig" %}
+
+{% block title "Edit my profile" %}
+
 {% block content %}
 <div class="row-fluid">
     <div class="span12">
         <h4>My Profile</h4>
-        {% if error_message %}
-            <div class="alert alert-{{ message_type }}">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {% autoescape false %}{{ error_message  }}{% endautoescape %}
-            </div>
-        {% endif %}
-        {% include 'user_form.twig' %}
+        {% include "form_errors.twig" with { 'form': form } only %}
+        <form action="{{ site.url }}/profile/edit" method="POST">
+            {% include 'user_form.twig' with {
+                'button_label': 'Update Profile',
+                'action': 'edit'
+            } %}
+        </form>
     </div>
 </div>
 {% endblock %}

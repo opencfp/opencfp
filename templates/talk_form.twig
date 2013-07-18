@@ -1,15 +1,15 @@
-<form class="form-search" action="{{ site.url }}{{ formAction }}" method="POST">
-{% if id %}
-<input name="id" type="hidden" value="{{ id }}">
-{% endif %}
-<input name="title" type="text" value="{{ title }}" class="input-large search-query" placeholder="Title" size=50 max=100><br><br>
-<textarea name="description" class="search-query" rows=20 cols=20 placeholder="Description (resize me if I am too small!">{{ description }}</textarea><br><br>
-<select name="type" class="search-query">
-    <option value="regular" {% if type == 'regular' %}selected {% endif %}>Regular Talk</option>
-    <option value="half-day-tutorial" {% if type == 'half-day-tutorial' %}selected {% endif %}>Half-day Tutorial</option>
-    <option value="full-day-tutorial" {% if type == 'full-day-tutorial' %}selected {% endif %}>Full-day Tutorial</option>
+<input name="talk[title]" type="text" value="{{ form.get('title') }}" class="input-large search-query" placeholder="Title" size="50" max="100">
+<br/><br/>
+<textarea name="talk[description]" class="search-query" rows="20" cols="20" placeholder="Description (resize me if I am too small!">
+    {{- form.get('description') -}}
+</textarea>
+<br/><br/>
+<select name="talk[type]" class="search-query">
+{% for key, type in form.talkTypes %}
+    <option value="{{ key }}" {% if form.get('type') == key %}selected="selected"{% endif %}>{{ type }}</option>
+{% endfor %}
 </select>
-<br><br>
-<button type="submit" class="btn">{{ buttonInfo }}</button>
-</form>
+<br/><br/>
+<input name="talk[id]" type="hidden" value="{{ form.get('id') }}"/>
+<button type="submit" class="btn">{{ button_label }}</button>
 

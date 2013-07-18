@@ -1,37 +1,158 @@
 <?php
-/**
- * Class representing the form that speakers fill out when they want
- * to submit a talk
- */
+
 namespace OpenCFP\Form;
 
-class TalkForm
+class TalkForm extends Form
 {
-    protected $_data;
-    protected $_purifier;
-    protected $_sanitized_data = array();
-    public $error_messages = array();
+    private static $expectedFields = array('id', 'title', 'description', 'type');
 
     /**
-     * Class constructor
+     * Validates the form's submitted data.
      *
-     * @param $data array of form data
+     * @return array An array of cleaned values
      */
-    public function __construct($data, $purifier)
+    protected function _validate()
     {
-        $this->_data = $data;
-        $this->_purifier = $purifier;
+        // Sanitize the submitted data
+        $sanitized = $this->_sanitize($this->getTaintedData());
+        $differences = array_diff(self::$expectedFields, array_keys($sanitized));
+
+        if (empty($sanitized) || count($differences) > 0) {
+            $this->_addErrorMessage('You must have a title, description and select a talk type');
+            return $sanitized;
+        }
+
+        // Sets the mandatory safe values
+        $data['id'] = isset($sanitized['id']) ? (int) $sanitized['id'] : null;
+        $data['user_id'] = isset($sanitized['user_id']) ? (int) $sanitized['user_id'] : null;
+
+        // Apply all validator methods
+        // Merge cleaned data arrays together
+        $data = array_merge(
+            $data,
+            $this->_validateTitle($sanitized),
+            $this->_validateDescription($sanitized),
+            $this->_validateType($sanitized)
+        );
+
+        // Return the cleaned data
+        return $data;
+    }
+
+    /**
+     * Validates the title.
+     *
+     * @param array $taintedData The tainted data
+     * @return array $cleaned The cleaned data
+     */
+    private function _validateTitle(array $taintedData)
+    {
+        $title = filter_var($taintedData['title'], FILTER_SANITIZE_STRING, array(
+            'flags' => FILTER_FLAG_STRIP_HIGH,
+        ));
+
+        $errors = 0;
+        if (empty($title)) {
+            $errors++;
+            $this->_addErrorMessage('You are missing a title');
+        }
+
+        if (strlen($title) > 100) {
+            $errors++;
+            $this->_addErrorMessage('Your talk title has to be 100 characters or less');
+        }
+
+        if ($title !== $taintedData['title']) {
+            $errors++;
+            $this->_addErrorMessage('You had invalid characters in your talk title');
+        }
+
+        $cleaned = array();
+        if (!$errors) {
+            $cleaned['title'] = $title;
+        }
+
+        return $cleaned;
+    }
+
+    /**
+     * Validates the description.
+     *
+     * @param array $taintedData The tainted data
+     * @return array $cleaned The cleaned data
+     */
+    private function _validateDescription(array $taintedData)
+    {
+        $description = filter_var($taintedData['description'], FILTER_SANITIZE_STRING, array(
+            'flags' => FILTER_FLAG_STRIP_HIGH,
+        ));
+
+        $cleaned = array();
+        if (empty($description) || $description !== $taintedData['description']) {
+            $this->_addErrorMessage("Your description was missing or only contained invalid characters or content");
+        } else {
+            $cleaned['description'] = $description;
+        }
+
+        return $cleaned;
+    }
+
+    /**
+     * Validates the type.
+     *
+     * @param array $taintedData The tainted data
+     * @return array $cleaned The cleaned data
+     */
+    private function _validateType(array $taintedData)
+    {
+        $type = filter_var($taintedData['type'], FILTER_SANITIZE_STRING, array(
+            'flags' => FILTER_FLAG_STRIP_HIGH,
+        ));
+
+        $type = strtolower($type);
+        $errors = 0;
+        if (empty($type)) {
+            $errors++;
+            $this->_addErrorMessage('You must choose what type of talk you are submitting');
+        }
+
+        if (!in_array($type, array_keys($this->getTalkTypes()))) {
+            $errors++;
+            $this->_addErrorMessage('You did not choose a valid talk type');
+        }
+
+        $cleaned = array();
+        if (!$errors) {
+            $cleaned['type'] = $type;
+        }
+
+        return $cleaned;
+    }
+
+    /**
+     * Returns the list of talk types.
+     *
+     * @return array
+     */
+    public function getTalkTypes()
+    {
+        return array(
+            'regular'           => 'Regular Talk',
+            //'lightning'         => 'Lightning Talk',
+            'half-day-tutorial' => 'Half-Day Tutorial',
+            'full-day-tutorial' => 'Full-Day Tutorial',
+        );
     }
 
     /**
      * Method that validates that we have all required
      * fields in our submitted data
      *
+     * @todo to be removed?
      * @return boolean
      */
     public function hasRequiredFields()
     {
-        $allFieldsFound = true;
         $fieldList = array(
             'title',
             'description',
@@ -43,134 +164,5 @@ class TalkForm
         $foundFields = array_intersect($fieldList, $dataKeys);
 
         return ($foundFields == $fieldList);
-    }
-
-    /**
-     * Method that sanitizes all data
-     *
-     * @param boolean $redo
-     * @return array
-     */
-    public function sanitize()
-    {
-        $purifier = $this->_purifier;
-        $this->_sanitized_data = array_map(
-            function ($field) use ($purifier) {
-                return strip_tags($purifier->purify($field));
-            },
-            $this->_data
-        );
-    }
-
-    /**
-     * Method that returns an array containing our sanitized data
-     *
-     * @return array
-     */
-    public function getSanitizedData()
-    {
-        return $this->_sanitized_data;
-    }
-
-    /**
-     * Validate everything
-     *
-     * @return boolean
-     */
-    public function validateAll()
-    {
-        return (
-            $this->validateTitle() &&
-            $this->validateDescription() &&
-            $this->validateType()
-        );
-    }
-
-    /**
-     * Method that validates title data
-     *
-     * @return boolean
-     */
-    public function validateTitle()
-    {
-        if (empty($this->_sanitized_data['title']) || !isset($this->_sanitized_data['title'])) {
-            $this->error_messages[] = "Your title contained content that could be used for XSS";
-            return false;
-        }
-
-        $title = $this->_sanitized_data['title'];
-
-        if ($title !== $this->_data['title']) {
-            $this->error_messages[] = "You had invalid characters in your talk title";
-            return false;
-        }
-
-        if (strlen($title) > 100) {
-            $this->error_messages[] = "Your talk title has to be 100 characters or less";
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Method that validates description data
-     *
-     * @return boolean
-     */
-    public function validateDescription()
-    {
-        if (empty($this->_sanitized_data['description'])) {
-            $this->error_messages[] = "Your description was missing";
-            return false;
-        }
-        
-        return true;
-    }
-
-    /**
-     * Method that validates talk types
-     *
-     * @return boolean
-     */
-    public function validateType()
-    {
-        $validTalkTypes = array(
-            'half-day-tutorial',
-            'full-day-tutorial',
-            'regular',
-            'lightning'
-        );
-
-        if (empty($this->_sanitized_data['type']) || !isset($this->_sanitized_data['type'])) {
-            $this->error_messages[] = "You must choose what type of talk you are submitting";
-            return false;
-        }
-
-        if (!in_array($this->_sanitized_data['type'], $validTalkTypes)) {
-            $this->error_messages[] = "You did not choose a valid talk type";
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Method that validates we have a valid user_id
-     *
-     * @param \OpenCFP\Speaker $speaker
-     * @return boolean
-     */
-    public function validateSpeakerId(\OpenCFP\Speaker $speaker)
-    {
-        $userId = $this->_sanitized_data['user_id'];
-        $thisSpeaker = $speaker->findByUserId($userId);
-
-        if (!$thisSpeaker) {
-            $this->error_messages[] = "Your talk does not seem to belong to a valid speaker";
-            return false;
-        }
-
-        return true;
     }
 }

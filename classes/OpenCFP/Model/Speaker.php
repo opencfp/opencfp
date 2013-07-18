@@ -1,8 +1,4 @@
 <?php
-/**
- * Object representing Speaker information that is not contained
- * in the Sentry User object
- */
 
 namespace OpenCFP\Model;
 
@@ -13,9 +9,9 @@ class Speaker
     /**
      * Constructor for object
      *
-     * @param PDO $db
+     * @param \PDO $db The database connection
      */
-    public function __construct($db)
+    public function __construct(\PDO $db)
     {
         $this->_db = $db;
     }
@@ -40,117 +36,75 @@ class Speaker
             $data['bio'] = null;
         }
 
-        $sql = "INSERT INTO speakers (user_id, info ,bio) VALUES (?, ?, ?)";
-        $stmt = $this->_db->prepare($sql);
+        $stmt = $this->_db->prepare('INSERT INTO speakers (user_id, info, bio) VALUES (:user_id, :info, :bio)');
+        $stmt->bindValue(':user_id', $data['user_id'], \PDO::PARAM_INT);
+        $stmt->bindValue(':info', $data['info']);
+        $stmt->bindValue(':bio', $data['bio']);
 
-        return $stmt->execute(array(
-            $data['user_id'],
-            trim($data['info']),
-            trim($data['bio'])
-        )
-    );
+        return $stmt->execute();
     }
 
     /**
      * Find info for a speaker given a known Sentry User if
      *
-     * @param integer $user_id
+     * @param integer $user
      * @return false|array
      */
-    public function findByUserId($user_id)
+    public function findByUserId($user)
     {
-        $sql = "SELECT * FROM speakers WHERE user_id = ?";
+        $sql = 'SELECT s.*, u.`email`, u.`first_name`, u.`last_name`';
+        $sql.= ' FROM `speakers` AS `s`';
+        $sql.= ' LEFT JOIN `users` AS `u` ON s.`user_id` = u.`id`';
+        $sql.= ' WHERE s.`user_id` = :user';
+
         $stmt = $this->_db->prepare($sql);
-        $stmt->execute(array($user_id));
-        $row = $stmt->fetch();
+        $stmt->bindValue(':user', $user, \PDO::PARAM_INT);
+        $stmt->execute();
 
-        if ($row !== false) {
-            return $row;
-        }
-
-        return false;
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
-     * Get details for a speaker based on user id
+     * Update speaker info.
      *
-     * @param integer $user_id
-     * @return false|array
-     */
-    public function getDetailsByUserId($user_id)
-    {
-        $sql = "
-            SELECT u.email, u.first_name, u.last_name, s.info, s.bio
-            FROM users u
-            LEFT JOIN speakers s ON s.user_id = u.id
-            WHERE u.id = ?
-        ";
-        $stmt = $this->_db->prepare($sql);
-        $stmt->execute(array($user_id));
-        $row = $stmt->fetch();
-
-        if ($row !== false) {
-            return $row;
-        }
-
-        return false;
-    }
-
-    /**
-     * Update an speaker record
-     *
-     * @param array $speaker_details
+     * @param array $data
      * @return boolean
      */
-    public function update($speaker_details)
+    public function updateUser(array $data)
     {
-        // Grab our details and build a comparison
-        $details = $this->getDetailsByUserId($speaker_details['user_id']);
+        $sql = 'UPDATE `users`';
+        $sql.= ' SET `email` = :email, `first_name` = :firstName, `last_name` = :lastName';
+        $sql.= ' WHERE `id` = :id';
 
-        if ($details['first_name'] != $speaker_details['first_name']
-            || $details['last_name'] != $speaker_details['last_name']
-            || $details['email'] != $speaker_details['email']) {
-            $sql = "
-                UPDATE users
-                SET email = ?,
-                first_name = ?,
-                last_name = ?
-                WHERE id = ?
-            ";
-            $stmt = $this->_db->prepare($sql);
-            $stmt->execute(array(
-                trim($speaker_details['email']),
-                trim($speaker_details['first_name']),
-                trim($speaker_details['last_name']),
-                $speaker_details['user_id'])
-            );
+        $stmt = $this->_db->prepare($sql);
+        $stmt->bindValue(':email', $data['email']);
+        $stmt->bindValue(':firstName', $data['first_name']);
+        $stmt->bindValue(':lastName', $data['last_name']);
+        $stmt->bindValue(':id', $data['user_id'], \PDO::PARAM_INT);
+        $stmt->execute();
 
-            if ($stmt->rowCount() !== 1) {
-                return false;
-            }
-        }
+        return 1 === (int) $stmt->rowCount();
+    }
 
-        if ($details['info'] != $speaker_details['speaker_info']
-            || $details['bio'] != $speaker_details['speaker_bio']) {
-            $sql = "
-                UPDATE speakers
-                SET info = ?,
-                bio = ?
-                WHERE user_id = ?
-            ";
-            $stmt = $this->_db->prepare($sql);
-            $stmt->execute(array(
-                trim($speaker_details['speaker_info']),
-                trim($speaker_details['speaker_bio']),
-                trim($speaker_details['user_id']))
-            );
+    /**
+     * Updates a user record.
+     *
+     * @param array $data
+     * @return boolean
+     */
+    public function updateSpeaker(array $data)
+    {
+        $sql = 'UPDATE `speakers`';
+        $sql.= ' SET `info` = :info, `bio` = :bio';
+        $sql.= ' WHERE `user_id` = :id';
 
-            if ($stmt->rowCount() !== 1) {
-                return false;
-            }
-        }
+        $stmt = $this->_db->prepare($sql);
+        $stmt->bindValue(':info', $data['info']);
+        $stmt->bindValue(':bio', $data['bio']);
+        $stmt->bindValue(':id', $data['user_id'], \PDO::PARAM_INT);
+        $stmt->execute();
 
-        return true;
+        return 1 === (int) $stmt->rowCount();
     }
 
     public function changePassword($new_password, $user)

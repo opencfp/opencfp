@@ -3,5 +3,5 @@ namespace OpenCFP\Config;
 
 interface ConfigLoaderInterface
 {
-    public function load();
+    public function load($filename);
 }
