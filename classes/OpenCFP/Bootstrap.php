@@ -3,6 +3,7 @@ namespace OpenCFP;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use OpenCFP\Config\ConfigINIFileLoader;
 use Pimple;
 use Twig_Environment;
 use Twig_Loader_Filesystem;

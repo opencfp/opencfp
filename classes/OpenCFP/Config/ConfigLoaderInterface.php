@@ -1,5 +1,5 @@
 <?php
-namespace OpenCFP;
+namespace OpenCFP\Config;
 
 interface ConfigLoaderInterface
 {
