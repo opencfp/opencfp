@@ -30,4 +30,26 @@ port = "25"
 ; path must be writeable
 ; path must not have trailing slash
 ; if not set will default to html purifier library folder
-;cachedir = "/path/to/htmlpurifier/cache"
+cache = "${app.cache_dir}/htmlpurifier"
+
+[twig]
+path = "${app.dir}/templates"
+options[cache] = "${app.cache_dir}/twig"
+options[strict_variables] = false
+
+;options[debug]               = false
+;options[charset]             = UTF-8
+;options[base_template_class] = Twig_Template
+;options[strict_variables]    = false
+;options[autoescape]          = html
+;options[cache]               = false
+;options[auto_reload]         = null
+;options[optimizations]       = -1
+
+[swiftmailer]
+;options[host]       = localhost
+;options[port]       = 25
+;options[username]   = null
+;options[password]   = null
+;options[encryption] = null
+;options[auth_mode]  = null

@@ -145,48 +145,6 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Make sure that we get back speaker data that
-     * we expect
-     *
-     * @test
-     */
-    public function getDetailsByUserIdReturnsExpectedValues()
-    {
-        $speakerDetails = array(
-            'first_name' => 'Test',
-            'last_name' => 'McTesterton',
-            'speaker_info' => 'Test info',
-            'speaker_bio' => 'Test bio',
-            'user_id' => 42
-        );
-
-        $stmt = $this->getMockBuilder('StdClass')
-            ->setMethods(array('execute', 'fetch'))
-            ->getMock();
-        $stmt->expects($this->once())
-            ->method('execute');
-        $stmt->expects($this->once())
-            ->method('fetch')
-            ->will($this->returnValue($speakerDetails));
-
-        $db = $this->getMockBuilder('PDOMock')
-            ->setMethods(array('prepare'))
-            ->getMock();
-        $db->expects($this->once())
-            ->method('prepare')
-            ->will($this->returnValue($stmt));
-
-        $speaker = new \OpenCFP\Speaker($db);
-        $details = $speaker->getDetailsByUserId($speakerDetails['user_id']);
-
-        $this->assertEquals(
-            $speakerDetails,
-            $details,
-            "Speaker::getDetailsById did not return details in expected format"
-        );
-    }
-
-    /**
      * Verify that updating speaker info works correctly
      *
      * @test
