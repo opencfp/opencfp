@@ -34,7 +34,7 @@ class Bootstrap
         // Register our session provider
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app['session']->start();
-
+		$app['url'] = $this->getConfig('application.url');
         // Register the Twig provider
         $app->register(new \Silex\Provider\TwigServiceProvider());
         $app['twig'] = $this->getTwig();
@@ -92,22 +92,22 @@ class Bootstrap
             return $template->render($view);
         });
 
-        $app->get('/dashboard', 'OpenCFP\DashboardController::indexAction');
-        $app->get('/talk/edit/{id}', 'OpenCFP\TalkController::editAction');
-        $app->get('/talk/create', 'OpenCFP\TalkController::createAction');
-        $app->post('/talk/create', 'OpenCFP\TalkController::processCreateAction');
-        $app->post('/talk/update', 'OpenCFP\TalkController::updateAction');
-        $app->post('/talk/delete', 'OpenCFP\TalkController::deleteAction');
-        $app->get('/login', 'OpenCFP\LoginController::indexAction');
-        $app->post('/login', 'OpenCFP\LoginController::processAction');
-        $app->get('/logout', 'OpenCFP\LoginController::outAction');
-        $app->get('/signup', 'OpenCFP\SignupController::indexAction');
-        $app->post('/signup', 'OpenCFP\SignupController::processAction');
-        $app->get('/signup/success', 'OpenCFP\SignupController::successAction');
-        $app->get('/profile/edit/{id}', 'OpenCFP\ProfileController::editAction');
-        $app->post('/profile/edit', 'OpenCFP\ProfileController::processAction');
-        $app->get('/profile/change_password', 'OpenCFP\ProfileController::passwordAction');
-        $app->post('/profile/change_password', 'OpenCFP\ProfileController::passwordProcessAction');
+        $app->get('/dashboard', 'OpenCFP\Controller\DashboardController::indexAction');
+        $app->get('/talk/edit/{id}', 'OpenCFP\Controller\TalkController::editAction');
+        $app->get('/talk/create', 'OpenCFP\Controller\TalkController::createAction');
+        $app->post('/talk/create', 'OpenCFP\Controller\TalkController::processCreateAction');
+        $app->post('/talk/update', 'OpenCFP\Controller\TalkController::updateAction');
+        $app->post('/talk/delete', 'OpenCFP\Controller\TalkController::deleteAction');
+        $app->get('/login', 'OpenCFP\Controller\SecurityController::indexAction');
+        $app->post('/login', 'OpenCFP\Controller\SecurityController::processAction');
+        $app->get('/logout', 'OpenCFP\Controller\SecurityController::outAction');
+        $app->get('/signup', 'OpenCFP\Controller\SignupController::indexAction');
+        $app->post('/signup', 'OpenCFP\Controller\SignupController::processAction');
+        $app->get('/signup/success', 'OpenCFP\Controller\SignupController::successAction');
+        $app->get('/profile/edit/{id}', 'OpenCFP\Controller\ProfileController::editAction');
+        $app->post('/profile/edit', 'OpenCFP\Controller\ProfileController::processAction');
+        $app->get('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordAction');
+        $app->post('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordProcessAction');
 
         return $app;
     }

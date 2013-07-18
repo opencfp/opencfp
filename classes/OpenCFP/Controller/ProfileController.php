@@ -1,5 +1,5 @@
 <?php
-namespace OpenCFP;
+namespace OpenCFP\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,7 +9,7 @@ class ProfileController
     public function editAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect('/login');
+            return $app->redirect($app['url'] . '/login');
         }
 
         $template = $app['twig']->loadTemplate('edit_user.twig');
@@ -21,7 +21,7 @@ class ProfileController
                 'short' => '',
                 'ext' => "You cannot edit someone else's profile"
             ));
-            return $app->redirect('/dashboard');
+            return $app->redirect($app['url'] . '/dashboard');
         }
 
         $speaker = new \OpenCFP\Speaker($app['db']);
@@ -44,7 +44,7 @@ class ProfileController
     public function processAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect('/login');
+            return $app->redirect($app['url'] . '/login');
         }
 
         $user = $app['sentry']->getUser();
@@ -55,7 +55,7 @@ class ProfileController
                 'short' => '',
                 'ext' => "You cannot edit someone else's profile"
             ));
-            return $app->redirect('/dashboard');
+            return $app->redirect($app['url'] . '/dashboard');
         }
 
         $form_data = array(
@@ -100,7 +100,7 @@ class ProfileController
     public function passwordAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect('/login');
+            return $app->redirect($app['url'] . '/login');
         }
         $user = $app['sentry']->getUser();
 
@@ -112,7 +112,7 @@ class ProfileController
     public function passwordProcessAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect('/login');
+            return $app->redirect($app['url'] . '/login');
         }
 
         $user = $app['sentry']->getUser();
@@ -133,7 +133,7 @@ class ProfileController
                 'short' => 'Error!',
                 'ext' => implode("<br>", $form->error_messages)
             ));
-            return $app->redirect('/profile/change_password');
+            return $app->redirect($app['url'] . '/profile/change_password');
         }
 
         $sanitized_data = $form->sanitize();
@@ -145,7 +145,7 @@ class ProfileController
                 'short' => 'Error!',
                 'ext' => "Unable to update your password in the database. Please try again."
             ));
-            return $app->redirect('/profile/change_password');
+            return $app->redirect($app['url'] . '/profile/change_password');
         }
 
         $app['session']->set('flash', array(
@@ -154,7 +154,7 @@ class ProfileController
             'ext' => "Changed your password."
         ));
 
-        return $app->redirect('/profile/change_password');
+        return $app->redirect($app['url'] . '/profile/change_password');
 
     }
 }

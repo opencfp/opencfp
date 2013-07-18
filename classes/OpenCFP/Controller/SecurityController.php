@@ -1,10 +1,10 @@
 <?php
-namespace OpenCFP;
+namespace OpenCFP\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class LoginController
+class SecurityController
 {
     public function indexAction(Request $req, Application $app)
     {
@@ -22,7 +22,7 @@ class LoginController
             $page = new \OpenCFP\Login($app['sentry']);
 
             if ($page->authenticate($req->get('email'), $req->get('passwd'))) {
-                return $app->redirect('/dashboard');
+                return $app->redirect($app['url'] . '/dashboard');
             }
             
             $template_data = array(
@@ -45,6 +45,6 @@ class LoginController
     {
         $app['sentry']->logout();
 
-        return $app->redirect('/');
+        return $app->redirect($app['url'] . '/');
     }
 }

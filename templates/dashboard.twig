@@ -23,8 +23,8 @@ function deleteTalk(tid) {
 {% endblock %}
 {% block content %}
 Welcome <b>{{ user.login }}<br><br>
-<a href="/profile/edit/{{user.id}}">Edit Profile</a><br>
-<a href="/profile/change_password">Change Password</a>
+<a href="{{ site.url }}/profile/edit/{{user.id}}">Edit Profile</a><br>
+<a href="{{ site.url }}/profile/change_password">Change Password</a>
 <br><br>
 <h2>My Talks</h2>
 {% if myTalks %}
@@ -39,7 +39,7 @@ Welcome <b>{{ user.login }}<br><br>
 {% for talk in myTalks %}
 <tr id="talk-{{ talk.id }}">
 <td><b>{{ talk.title }}</b></td>
-<td><a href="/talk/edit/{{ talk.id}}">Edit</a></td>
+<td><a href="{{ site.url }}/talk/edit/{{ talk.id}}">Edit</a></td>
 <td><a href="#" onClick="deleteTalk('{{ talk.id }}');return false;">Delete</a></td>
 </tr>
 {% endfor %}
@@ -49,5 +49,5 @@ Welcome <b>{{ user.login }}<br><br>
 You currently have no talks submitted.
 {% endif %}
 <br><br>
-<a class="btn btn-large btn-success" href="/talk/create">Submit a talk</a>
+<a class="btn btn-large btn-success" href="{{ site.url }}/talk/create">Submit a talk</a>
 {% endblock %}

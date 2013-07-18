@@ -1,5 +1,5 @@
 <?php
-namespace OpenCFP;
+namespace OpenCFP\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,7 +9,7 @@ class TalkController
     public function editAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect('/login');
+            return $app->redirect($app['url'] . '/login');
         }
 
         $id = $req->get('id');
@@ -17,14 +17,14 @@ class TalkController
         $talk_id= filter_var($id, FILTER_VALIDATE_INT);
 
         if (empty($talk_id)) {
-            return $app->redirect('/dashboard');
+            return $app->redirect($app['url'] . '/dashboard');
         }
             
         $talk = new \OpenCFP\Talk($app['db']);
         $talk_info = $talk->findById($talk_id);
 
         if ($talk_info['user_id'] !== $user->getId()) {
-            return $app->redirect('/dashboard');
+            return $app->redirect($app['url'] . '/dashboard');
         }
 
         $template_name = 'edit_talk.twig';
@@ -45,7 +45,7 @@ class TalkController
     public function createAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect('/login');
+            return $app->redirect($app['url'] . '/login');
         }
         
         $user = $app['sentry']->getUser();
@@ -67,7 +67,7 @@ class TalkController
     public function processCreateAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect('/login');
+            return $app->redirect($app['url'] . '/login');
         }
 
         $user = $app['sentry']->getUser();
@@ -122,13 +122,13 @@ class TalkController
             'ext' => "Succesfully created a talk"
         ));
 
-        return $app->redirect('/dashboard');
+        return $app->redirect($app['url'] . '/dashboard');
     }
 
     public function updateAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect('/login');
+            return $app->redirect($app['url'] . '/login');
         }
 
         $user = $app['sentry']->getUser();
@@ -161,7 +161,7 @@ class TalkController
                 'short' => 'Updated talk!'
             ));
             
-            return $app->redirect('/dashboard');
+            return $app->redirect($app['url'] . '/dashboard');
         }
 
         if (!$valid) {
@@ -181,7 +181,7 @@ class TalkController
             return $template->render($data);
         }
         
-        return $app->redirect('/talk/edit/' . $req->get('id'));
+        return $app->redirect($app['url'] . '/talk/edit/' . $req->get('id'));
     }
 
     public function deleteAction(Request $req, Application $app)

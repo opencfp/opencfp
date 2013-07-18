@@ -1,5 +1,5 @@
 <?php
-namespace OpenCFP;
+namespace OpenCFP\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,7 +72,7 @@ class SignupController
                     'bio' => $sanitized_data['speaker_bio']
                 ));
 
-                return $app->redirect('/signup/success');
+                return $app->redirect($app['url'] . '/signup/success');
             } catch (UserExistsException $e) {
                 $form_data['error_message'] = 'A user already exists with that email address';
             }
