@@ -61,7 +61,7 @@ class Bootstrap
             );
 
             \Cartalyst\Sentry\Facades\Native\Sentry::setupDatabaseResolver($app['db']);
-
+            $throttleProvider->disable();
             return $sentry;
         });
 
