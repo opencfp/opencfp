@@ -4,6 +4,7 @@ namespace OpenCFP\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Form\SignupForm;
+use OpenCFP\Model\Speaker;
 
 class ProfileController
 {
@@ -25,7 +26,7 @@ class ProfileController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        $speaker = new \OpenCFP\Speaker($app['db']);
+        $speaker = new Speaker($app['db']);
         $speaker_data = $speaker->getDetailsByUserId($user->getId());
         $form_data = array(
             'email' => $user->getLogin(),
@@ -72,7 +73,7 @@ class ProfileController
 
         if ($form->validateAll('update') == true) {
             $sanitized_data = $form->sanitize();
-            $speaker = new \OpenCFP\Speaker($app['db']);
+            $speaker = new Speaker($app['db']);
             $response = $speaker->update($form_data);
 
             if ($response == true) {
@@ -138,7 +139,7 @@ class ProfileController
         }
 
         $sanitized_data = $form->sanitize();
-        $speaker = new \OpenCFP\Speaker($app['db']);
+        $speaker = new Speaker($app['db']);
 
         if ($speaker->changePassword($sanitized_data['password'], $user) === false) {
             $app['session']->set('flash', array(
