@@ -66,6 +66,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         // Override the default Sentry services
         $app['sentry'] = $app->extend('sentry', function ($sentry, $app) {
             SentryFacade::setupDatabaseResolver($app['db']);
+            $app['sentry.throttle_provider']->disable();
             return $sentry;
         });
 
