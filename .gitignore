@@ -1,5 +1,7 @@
 /.idea
 /.vagrant
+/cache/
+/coverage/
 /vendor/*
 /tests/coverage/*
 /templates/compilation_cache

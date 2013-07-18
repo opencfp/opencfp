@@ -12,8 +12,8 @@
         "chh/optparse": "*@dev",
         "ezyang/htmlpurifier": "dev-master",
         "swiftmailer/swiftmailer": "5.0",
-        "pimple/pimple": "1.0.*@dev",
-        "silex/silex": "1.0.*@dev"
+        "pimple/pimple": "1.*",
+        "silex/silex": "1.*"
     },
     "autoload": {
         "psr-0": {"OpenCFP": "classes/"}
