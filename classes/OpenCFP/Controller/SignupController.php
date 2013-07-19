@@ -5,6 +5,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Form\SignupForm;
+use OpenCFP\Model\Speaker;
 
 class SignupController
 {
@@ -66,7 +67,7 @@ class SignupController
                 $user->addGroup($adminGroup);
 
                 // Create a Speaker record
-                $speaker = new \OpenCFP\Speaker($app['db']);
+                $speaker = new Speaker($app['db']);
                 $response = $speaker->create(array(
                     'user_id' => $user->getId(),
                     'info' => $sanitized_data['speaker_info'],
