@@ -1,0 +1,27 @@
+{% extends "layouts/default.twig" %}
+{% block content %}
+<div class="well">
+    {% include "flash.twig" %}
+    <form id="forgot" class="form-horizontal" action="{{ site.url }}/forgot" method="POST">
+        <legend>Forgot my password</legend>
+        <div class="control-group">
+            <div class="controls">
+            {{ form_errors(form) }}
+            {{ form_row(form._token) }}
+                <div class="input-prepend">
+                    {{ form_row(form.email, {'attr': {'placeholder' : "Enter your email address"}, 'label' : false, 'class': 'input-xlarge'}) }}
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls">
+                <button type="submit" class="btn btn-success" >Reset my password</button>
+            </div>
+      </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
