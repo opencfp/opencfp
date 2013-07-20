@@ -31,14 +31,36 @@ class Bootstrap
         $app = new \Silex\Application();
 
         $app['debug'] = true;
+        
+        
         // Register our session provider
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app['session']->start();
 		$app['url'] = $this->getConfig('application.url');
-        // Register the Twig provider
-        $app->register(new \Silex\Provider\TwigServiceProvider());
-        $app['twig'] = $this->getTwig();
+        
+        // Register the Twig provider and lazy-load the global values
+        $app->register(
+            new \Silex\Provider\TwigServiceProvider(),
+            array('twig.path' => APP_DIR . $this->getConfig('twig.template_dir'))
+        );
+        $that = $this;
+        $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) use ($that) {
+            $twig->addGlobal('site', array(
+                'url' => $that->getConfig('application.url'),
+                'title' => $that->getConfig('application.title')
+            ));
 
+            return $twig;
+        }));
+        
+        // Register our use of the Form Service Provider
+        $app->register(new \Silex\Provider\FormServiceProvider());
+        $app->register(new \Silex\Provider\ValidatorServiceProvider());
+        $app->register(new \Silex\Provider\TranslationServiceProvider(), array(
+            'translator.messages' => array()
+        ));
+
+        
         $app['db'] = $this->getDb();
 
         $app['purifier'] = $this->getPurifier();
@@ -77,6 +99,7 @@ class Bootstrap
 
         $app = $this->defineRoutes($app);
 
+
         return $app;
     }
 
@@ -108,6 +131,11 @@ class Bootstrap
         $app->post('/profile/edit', 'OpenCFP\Controller\ProfileController::processAction');
         $app->get('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordAction');
         $app->post('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordProcessAction');
+        $app->get('/forgot', 'OpenCFP\Controller\ForgotController::indexAction');
+        $app->post('/forgot', 'OpenCFP\Controller\ForgotController::sendResetAction');
+        $app->get('/forgot_success', 'OpenCFP\Controller\ForgotController::successAction');
+        $app->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Controller\ForgotController::resetAction');
+        $app->post('/reset', 'OpenCFP\Controller\ForgotController::processResetAction');
 
         return $app;
     }
