@@ -13,7 +13,13 @@
         "ezyang/htmlpurifier": "dev-master",
         "swiftmailer/swiftmailer": "5.0",
         "pimple/pimple": "1.*",
-        "silex/silex": "1.*"
+        "silex/silex": "1.*",
+        "symfony/form": "~2.3",
+        "symfony/validator": "~2.3",
+        "symfony/config": "dev-master",
+        "symfony/translation": "~2.3",
+        "symfony/twig-bridge": "~2.3"
+
     },
     "autoload": {
         "psr-0": {"OpenCFP": "classes/"}
