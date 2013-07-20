@@ -114,7 +114,6 @@ class ForgotController
         try {
             $user = $app['sentry']->getUserProvider()->findById($data['user_id']);
         } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-            die('User does not exist');
             $template = $app['twig']->loadTemplate('bad_reset_code.twig');
       
             return $template->render(array());
@@ -132,7 +131,6 @@ class ForgotController
          * already
          */
         if ($user->checkPassword($data['password']) === true) {
-            die('Trying to use same password');
             $passwordError = new \Symfony\Component\Form\FormError('text', 'Please select a different password than your current one');
             $form->addError($passwordError);
             $template = $app['twig']->loadTemplate('reset_password.twig');
