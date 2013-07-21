@@ -5,13 +5,12 @@ use OpenCFP\Config\ConfigINIFileLoader;
 use OpenCFP\Model\User;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class ForgotController
 {
     public function indexAction(Request $req, Application $app)
     {
-        $form = $this->getForm($app);
+        $form = $app['form.factory']->create(new \OpenCFP\Form\ForgotForm());
         $template = $app['twig']->loadTemplate('forgot_index.twig');
 
         return $template->render(array('form' => $form->createView()));
@@ -19,7 +18,7 @@ class ForgotController
 
     public function sendResetAction(Request $req, Application $app)
     {
-        $form = $this->getForm($app);
+        $form = $app['form.factory']->create(new \OpenCFP\Form\ForgotForm());
         $form->bind($req);
 
         if (!$form->isValid()) {
@@ -76,7 +75,7 @@ class ForgotController
         try {
             $user = $app['sentry']->getUserProvider()->findById($req->get('user_id'));
         } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-            $template = $app['twig']->loadTemplate('bad_reset_code.twig');
+            $template = $app['twig']->loadTemplate('bad_reset_user.twig');
       
             return $template->render(array());
         }
@@ -88,7 +87,11 @@ class ForgotController
         }
 
         // Build password form and display it to the user
-        $form = $this->getResetForm($app, $req->get('user_id'), $req->get('reset_code'));
+        $form_options = array(
+            'user_id' => $req->get('user_id'),
+            'reset_code' => $req->get('reset_code')
+        );
+        $form = $app['form.factory']->create(new \OpenCFP\Form\ResetForm(), $form_options);
         $template = $app['twig']->loadTemplate('reset_password.twig');
         
         return $template->render(array('form' => $form->createView()));
@@ -98,8 +101,11 @@ class ForgotController
     {
         $user_id = $req->get('user_id');
         $reset_code = $req->get('reset_code');
-
-        $form = $this->getResetForm($app, $user_id, $reset_code);
+        $form_options = array(
+            'user_id' => $user_id,
+            'reset_code' => $reset_code
+        );
+        $form = $app['form.factory']->create(new \OpenCFP\Form\ResetForm(), $form_options);
         $form->bind($req);
 
         if (!$form->isValid()) {
@@ -114,17 +120,18 @@ class ForgotController
         try {
             $user = $app['sentry']->getUserProvider()->findById($data['user_id']);
         } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-            $template = $app['twig']->loadTemplate('bad_reset_code.twig');
+            $template = $app['twig']->loadTemplate('bad_reset_user.twig');
       
             return $template->render(array());
         }
-        
+
         // Make sure they are using a valid code
-        if (!$user->checkResetPasswordCode($data['reset_code'])) {
+        $response = $user->checkResetPasswordCode($data['reset_code']);
+
+        if ($user->checkResetPasswordCode($data['reset_code']) !== true) {
             $template = $app['twig']->loadTemplate('bad_reset_code.twig');
             return $template->render(array());
         }
-
 
         /**
          * Can't let people replace their passwords with one they have
@@ -138,46 +145,16 @@ class ForgotController
             return $template->render(array('form' => $form->createView()));
         }
 
-
         //Everything looks good, let's actually reset their password
-        $template_name = 'reset_success.twig';
+        $template_name = 'reset_failure.twig';
 
-        if ($user->attemptResetPassword($data['reset_code'], $data['password']) === false) {
-            $template_name = 'reset_failure.twig';
+        if ($user->attemptResetPassword($data['reset_code'], $data['password'])) {
+            $template_name = 'reset_success.twig';
         }
 
         $template = $app['twig']-> loadTemplate($template_name);
 
         return $template->render(array());
-    }
-
-    protected function getForm($app)
-    {
-        $form = $app['form.factory']->createBuilder('form')
-            ->add('email', 'text', array('constraints' => new Assert\Email()))
-            ->getForm();
-
-        return $form;
-    }
-
-    protected function getResetForm($app, $user_id, $reset_code)
-    {
-        $form = $app['form.factory']->createBuilder('form')
-            ->add('password', 'repeated', array(
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array('min' => 5))),
-                'type' => 'password',
-                'first_options' => array('label' => 'Password (minimum 5 characters)'),
-                'second_options' => array('label' => 'Password (confirm)'),
-                'first_name' => 'passwd',
-                'second_name' => 'passwd2',
-                'invalid_message' => 'Passwords did not match'))
-            ->add('user_id', 'hidden', array('attr' => array('value' => $user_id)))
-            ->add('reset_code', 'hidden', array('attr' => array('value' => $reset_code)))
-            ->getForm();
-
-        return $form;
     }
 
     protected function sendResetEmail($twig, $user_id, $email, $reset_code)
