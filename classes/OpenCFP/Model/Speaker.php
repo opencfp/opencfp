@@ -130,24 +130,42 @@ class Speaker
             }
         }
 
-        if ($details['info'] != $speaker_details['speaker_info']
-            || $details['bio'] != $speaker_details['speaker_bio']) {
-            $sql = "
-                UPDATE speakers
-                SET info = ?,
-                bio = ?
-                WHERE user_id = ?
-            ";
-            $stmt = $this->_db->prepare($sql);
-            $stmt->execute(array(
-                trim($speaker_details['speaker_info']),
-                trim($speaker_details['speaker_bio']),
-                trim($speaker_details['user_id']))
-            );
+        // Do we have an existing record?
+        $sql = "SELECT COUNT(info) AS speaker_count FROM speakers WHERE user_id = ?";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute(array($speaker_details['user_id']));
+        $row = $stmt->fetch();
 
-            if ($stmt->rowCount() !== 1) {
-                return false;
+        if ($row['speaker_count'] == 1) {
+            if ($details['info'] != $speaker_details['speaker_info']
+                || $details['bio'] != $speaker_details['speaker_bio']) {
+                $sql = "
+                    UPDATE speakers
+                    SET info = ?,
+                    bio = ?
+                    WHERE user_id = ?
+                ";
+                $stmt = $this->_db->prepare($sql);
+                $stmt->execute(array(
+                    trim($speaker_details['speaker_info']),
+                    trim($speaker_details['speaker_bio']),
+                    trim($speaker_details['user_id']))
+                );
+
+                if ($stmt->rowCount() !== 1) {
+                    return false;
+                }
             }
+        } 
+
+        if ($row['speaker_count'] == 0) {
+            $sql = "INSERT INTO speakers (user_id, info ,bio) VALUES (?, ?, ?)";
+            $stmt = $this->_db->prepare($sql);
+            return $stmt->execute(array(
+                $speaker_details['user_id'],
+                trim($speaker_details['speaker_info']),
+                trim($speaker_details['speaker_bio'])
+            ));
         }
 
         return true;
