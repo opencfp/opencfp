@@ -1,5 +1,5 @@
 <form class="form-search" action="{{ site.url }}{{ formAction }}" method="POST">
-{% if id %}
+{% if id is defined %}
 <input name="id" type="hidden" value="{{ id }}">
 {% endif %}
 <input name="title" type="text" value="{{ title }}" class="input-large search-query" placeholder="Title" size=50 max=100><br><br>

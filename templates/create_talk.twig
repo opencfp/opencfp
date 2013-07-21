@@ -3,7 +3,7 @@
 <div class="row-fluid marketing">
     <div class="span12">
     <h4>Create Your Talk</h4>
-    {% if error_message %}
+    {% if error_message is defined %}
         <div class="alert alert-error">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>Error!</strong><br>{% autoescape false %}{{ error_message  }}{% endautoescape %}
