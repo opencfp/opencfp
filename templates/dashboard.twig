@@ -27,7 +27,7 @@ Welcome <b>{{ user.login }}<br><br>
 <a href="{{ site.url }}/profile/change_password">Change Password</a>
 <br><br>
 <h2>My Talks</h2>
-{% if myTalks %}
+{% if myTalks is defined %}
 <table class="table">
 <thead>
 <tr>
