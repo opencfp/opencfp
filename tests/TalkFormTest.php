@@ -92,7 +92,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
         $faker = \Faker\Factory::create();
 
         return array(
-            array(substr($faker->text(99), 0, 99), true),
+            array(substr($faker->text(90), 0, 90), true),
             array(null, false),
             array($faker->text(), false),
             array("<script>alert('XSS')</script>", false),
@@ -209,7 +209,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
                 ->method('prepare')
                 ->will($this->returnValue($stmt));
 
-        $speaker = new \OpenCFP\Speaker($db);
+        $speaker = new \OpenCFP\Model\Speaker($db);
         $data['user_id'] = $speakerId;
         $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
         $form->sanitize();

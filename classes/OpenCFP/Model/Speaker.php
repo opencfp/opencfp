@@ -136,7 +136,7 @@ class Speaker
         $stmt->execute(array($speaker_details['user_id']));
         $row = $stmt->fetch();
 
-        if ($row['speaker_count'] == 1) {
+        if (isset($row['speaker_count']) && $row['speaker_count'] == 1) {
             if ($details['info'] != $speaker_details['speaker_info']
                 || $details['bio'] != $speaker_details['speaker_bio']) {
                 $sql = "
@@ -158,7 +158,7 @@ class Speaker
             }
         } 
 
-        if ($row['speaker_count'] == 0) {
+        if (isset($row['speaker_count']) && $row['speaker_count'] == 0) {
             $sql = "INSERT INTO speakers (user_id, info ,bio) VALUES (?, ?, ?)";
             $stmt = $this->_db->prepare($sql);
             return $stmt->execute(array(

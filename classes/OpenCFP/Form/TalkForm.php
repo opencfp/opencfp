@@ -161,7 +161,7 @@ class TalkForm
      * @param \OpenCFP\Speaker $speaker
      * @return boolean
      */
-    public function validateSpeakerId(\OpenCFP\Speaker $speaker)
+    public function validateSpeakerId(\OpenCFP\Model\Speaker $speaker)
     {
         $userId = $this->_sanitized_data['user_id'];
         $thisSpeaker = $speaker->findByUserId($userId);
