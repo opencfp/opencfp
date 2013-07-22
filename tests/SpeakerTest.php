@@ -25,7 +25,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             ->method('prepare')
             ->will($this->returnValue($stmt));
 
-        $speaker = new \OpenCFP\Speaker($db);
+        $speaker = new \OpenCFP\Model\Speaker($db);
         $data = array(
             'user_id' => 1,
             'info' => 'Test info'
@@ -49,7 +49,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
         $data = array();
         $db = null;
 
-        $speaker = new \OpenCFP\Speaker($db);
+        $speaker = new \OpenCFP\Model\Speaker($db);
 
         $this->assertFalse(
             $speaker->create($data),
@@ -84,7 +84,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             ->method('prepare')
             ->will($this->returnValue($stmt));
 
-        $speaker = new \OpenCFP\Speaker($db);
+        $speaker = new \OpenCFP\Model\Speaker($db);
         $testResponse = $speaker->findByUserId(1);
 
         $this->assertEquals(
@@ -121,7 +121,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             ->method('prepare')
             ->will($this->returnValue($stmt));
 
-        $speaker = new \OpenCFP\Speaker($db);
+        $speaker = new \OpenCFP\Model\Speaker($db);
 
         $this->assertFalse(
             $speaker->findByUserId($user_id),
@@ -176,7 +176,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             ->method('prepare')
             ->will($this->returnValue($stmt));
 
-        $speaker = new \OpenCFP\Speaker($db);
+        $speaker = new \OpenCFP\Model\Speaker($db);
         $details = $speaker->getDetailsByUserId($speakerDetails['user_id']);
 
         $this->assertEquals(
@@ -226,7 +226,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             ->method('prepare')
             ->will($this->returnValue($stmt));
 
-        $speaker = new \OpenCFP\Speaker($db);
+        $speaker = new \OpenCFP\Model\Speaker($db);
         $response = $speaker->update($speaker_info);
 
         $this->assertEquals(
