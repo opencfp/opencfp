@@ -19,8 +19,8 @@
         "symfony/config": "dev-master",
         "symfony/translation": "~2.3",
         "symfony/twig-bridge": "~2.3",
-        "symfony/locale": "~2.3"
-
+        "symfony/locale": "~2.3",
+        "doctrine/dbal": "~2.3"
     },
     "autoload": {
         "psr-0": {"OpenCFP": "classes/"}
