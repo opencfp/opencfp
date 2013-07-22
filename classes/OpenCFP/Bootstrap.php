@@ -15,8 +15,9 @@ class Bootstrap
     private $_twig;
     private $_purifier;
 
-    function __construct()
+    function __construct(array $config = null)
     {
+        $this->_config = $config;
         $this->initializeAutoLoader();
         $this->_app = $this->getApp();
     }
