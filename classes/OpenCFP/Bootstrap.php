@@ -8,6 +8,8 @@ use Pimple;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
+define('APP_DIR', dirname(dirname(__DIR__)));
+
 class Bootstrap
 {
     private $_app;
@@ -209,7 +211,6 @@ class Bootstrap
 
     private function initializeAutoLoader()
     {
-        define('APP_DIR', dirname(dirname(__DIR__)));
         if (!file_exists(APP_DIR . '/vendor/autoload.php')) {
             throw new Exception('Autoload file does not exist.  Did you run composer install?');
         }
