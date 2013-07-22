@@ -98,7 +98,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             array("<script>alert('XSS')</script>", false),
             array("<b>you suck</b>", false)
         );
-    } 
+    }
 
     /**
      * Test that description data is being properly validated
@@ -150,7 +150,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
         $data = array('type' => $type);
         $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
-        
+
         $this->assertEquals(
             $expectedResponse,
             $form->validateType(),
@@ -209,7 +209,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
                 ->method('prepare')
                 ->will($this->returnValue($stmt));
 
-        $speaker = new \OpenCFP\Speaker($db);
+        $speaker = new \OpenCFP\Model\Speaker($db);
         $data['user_id'] = $speakerId;
         $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
         $form->sanitize();

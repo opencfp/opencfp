@@ -156,7 +156,7 @@ class Speaker
                     return false;
                 }
             }
-        } 
+        }
 
         if ($row['speaker_count'] == 0) {
             $sql = "INSERT INTO speakers (user_id, info ,bio) VALUES (?, ?, ?)";
