@@ -37,7 +37,8 @@ class Bootstrap
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app->before(function ($request) use ($app) {
             $app['session']->start();
-        }
+        });
+
 		$app['url'] = $this->getConfig('application.url');
         
         // Register the Twig provider and lazy-load the global values
