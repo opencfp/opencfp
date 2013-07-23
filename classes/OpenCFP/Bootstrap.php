@@ -17,8 +17,9 @@ class Bootstrap
     private $_twig;
     private $_purifier;
 
-    function __construct()
+    function __construct(array $config = null)
     {
+        $this->_config = $config;
         $this->initializeAutoLoader();
         $this->_app = $this->getApp();
     }
@@ -34,7 +35,9 @@ class Bootstrap
         
         // Register our session provider
         $app->register(new \Silex\Provider\SessionServiceProvider());
-        $app['session']->start();
+        $app->before(function ($request) use ($app) {
+            $app['session']->start();
+        }
 		$app['url'] = $this->getConfig('application.url');
         
         // Register the Twig provider and lazy-load the global values
@@ -140,34 +143,39 @@ class Bootstrap
     }
 
     /**
-     * @param bool $configKey
-     * @return Pimple | string
+     * @param string $configKey
+     * @return mixed
      */
-    public function getConfig($configKey = false)
+    public function getConfig($configKey)
     {
-        if (!isset($this->_config)) {
-            $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.ini');
-            $configData = $loader->load();
+        $config = $this->getConfigContainer();
 
-            // Place our info into Pimple
-            $this->_config = new Pimple();
-
-            foreach ($configData as $category => $info) {
-                foreach ($info as $key => $value) {
-                    $this->_config["{$category}.{$key}"] = $value;
-                }
-            }
-        }
-
-        if (!$configKey) {
-            return $this->_config;
-        }
-
-        if (empty($this->_config[$configKey])) {
+        if (!isset($config[$configKey])) {
             return null;
         }
 
         return $this->_config[$configKey];
+    }
+
+    public function getConfigContainer()
+    {
+        if (isset($this->_config)) {
+            return $this->_config;
+        }
+
+        $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.ini');
+        $configData = $loader->load();
+
+        // Place our info into Pimple
+        $this->_config = new Pimple();
+
+        foreach ($configData as $category => $info) {
+            foreach ($info as $key => $value) {
+                $this->_config["{$category}.{$key}"] = $value;
+            }
+        }
+
+        return $this->_config;
     }
 
     public function getTwig()
@@ -201,7 +209,7 @@ class Bootstrap
      */
     public function getDb()
     {
-        $container = $this->getConfig();
+        $container = $this->getConfigContainer();
         return new \PDO(
             $container['database.dsn'],
             $container['database.user'],
