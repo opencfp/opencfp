@@ -73,7 +73,7 @@ class Bootstrap
             $userProvider = new \Cartalyst\Sentry\Users\Eloquent\Provider($hasher);
             $groupProvider = new \Cartalyst\Sentry\Groups\Eloquent\Provider;
             $throttleProvider = new \Cartalyst\Sentry\Throttling\Eloquent\Provider($userProvider);
-            $session = new \Cartalyst\Sentry\Sessions\NativeSession;
+            $session = new \OpenCFP\SymfonySentrySession($app['session']);
             $cookie = new \Cartalyst\Sentry\Cookies\NativeCookie(array());
 
             $sentry = new \Cartalyst\Sentry\Sentry(
