@@ -3,6 +3,7 @@ namespace OpenCFP\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SecurityController
 {
@@ -17,6 +18,7 @@ class SecurityController
     {
         $template = $app['twig']->loadTemplate('login.twig');
         $template_data = array();
+        $code = 200;
 
         try {
             $page = new \OpenCFP\Login($app['sentry']);
@@ -24,21 +26,23 @@ class SecurityController
             if ($page->authenticate($req->get('email'), $req->get('passwd'))) {
                 return $app->redirect($app['url'] . '/dashboard');
             }
-            
+
             $template_data = array(
                 'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
                 'errorMessage' => $page->getAuthenticationMessage()
             );
+            $code = 400;
         } catch (Exception $e) {
             $template_data = array(
                 'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
                 'errorMessage' => $e->getMessage()
             );
+            $code = 400;
         }
-        
-        return $template->render($template_data);
+
+        return new Response($template->render($template_data), $code);
     }
 
     public function outAction(Request $req, Application $app)
