@@ -131,6 +131,11 @@ class SignupForm
             $this->_addErrorMessage("The submitted password must be at least 5 characters long");
             return false;
         }
+        
+        if ($passwd !== str_replace(" ", "", $passwd)) {
+            $this->_addErrorMessage("The submitted password contains invalid characters");
+            return false;
+        }
 
         return true;
     }
@@ -255,6 +260,15 @@ class SignupForm
             },
             $this->_data
         );
+
+        // We shouldn't be sanitizing passwords, so reset them
+        if (isset($this->_data['password'])) {
+            $this->_sanitized_data['password'] = $this->_data['password'];
+        }
+
+        if (isset($this->_data['password2'])) {
+            $this->_sanitized_data['password2'] = $this->_data['password2'];
+        }
     }
 
     /**

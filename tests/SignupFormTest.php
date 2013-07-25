@@ -87,7 +87,8 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
         return array(
             array('acceptable'),
             array('testing123'),
-            array('{^secur3')
+            array('{^secur3'),
+            array('invalidChars&*$')
         );
     }
 
@@ -154,6 +155,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             array('foo', 'foo', "The submitted password must be at least 5 characters long", false),
             array('bar', 'foo', "The submitted passwords do not match", false),
             array(null, null, "Missing passwords", false),
+            array('password with spaces', 'password with spaces', "The submitted password contains invalid characters", false),
         );
     }
 
