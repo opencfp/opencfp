@@ -77,7 +77,7 @@ class SignupForm
             $valid_speaker_info = $this->validateSpeakerInfo();
         }
 
-        if (!empty($this->data['speaker_bio'])) {
+        if (!empty($this->_data['speaker_bio'])) {
             $valid_speaker_bio = $this->validateSpeakerBio();
         }
 
@@ -131,7 +131,7 @@ class SignupForm
             $this->_addErrorMessage("The submitted password must be at least 5 characters long");
             return false;
         }
-        
+
         if ($passwd !== str_replace(" ", "", $passwd)) {
             $this->_addErrorMessage("The submitted password contains invalid characters");
             return false;
