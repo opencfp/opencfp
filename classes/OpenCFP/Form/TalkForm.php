@@ -1,75 +1,32 @@
 <?php
+namespace OpenCFP\Form;
+
+use OpenCFP\Model\Speaker;
 /**
  * Class representing the form that speakers fill out when they want
  * to submit a talk
  */
-namespace OpenCFP\Form;
-
-class TalkForm
+class TalkForm extends Form
 {
-    protected $_data;
-    protected $_purifier;
-    protected $_sanitized_data = array();
-    public $error_messages = array();
+    protected $_field_list = array(
+        'title',
+        'description',
+        'type',
+        'user_id'
+    );
 
     /**
-     * Class constructor
+     * Santize all our fields that were submitted
      *
-     * @param $data array of form data
-     */
-    public function __construct($data, $purifier)
-    {
-        $this->_data = $data;
-        $this->_purifier = $purifier;
-    }
-
-    /**
-     * Method that validates that we have all required
-     * fields in our submitted data
-     *
-     * @return boolean
-     */
-    public function hasRequiredFields()
-    {
-        $allFieldsFound = true;
-        $fieldList = array(
-            'title',
-            'description',
-            'type',
-            'user_id'
-        );
-
-        $dataKeys = array_keys($this->_data);
-        $foundFields = array_intersect($fieldList, $dataKeys);
-
-        return ($foundFields == $fieldList);
-    }
-
-    /**
-     * Method that sanitizes all data
-     *
-     * @param boolean $redo
      * @return array
      */
     public function sanitize()
     {
-        $purifier = $this->_purifier;
-        $this->_sanitized_data = array_map(
-            function ($field) use ($purifier) {
-                return strip_tags($purifier->purify($field));
-            },
-            $this->_data
-        );
-    }
+        parent::sanitize();
 
-    /**
-     * Method that returns an array containing our sanitized data
-     *
-     * @return array
-     */
-    public function getSanitizedData()
-    {
-        return $this->_sanitized_data;
+        foreach($this->_sanitized_data as $key => $value) {
+            $this->_sanitized_data[$key] = strip_tags($value);
+        }
     }
 
     /**
@@ -77,7 +34,7 @@ class TalkForm
      *
      * @return boolean
      */
-    public function validateAll()
+    public function validateAll($action = 'create')
     {
         return (
             $this->validateTitle() &&
@@ -124,7 +81,7 @@ class TalkForm
             $this->error_messages[] = "Your description was missing";
             return false;
         }
-        
+
         return true;
     }
 
@@ -158,10 +115,10 @@ class TalkForm
     /**
      * Method that validates we have a valid user_id
      *
-     * @param \OpenCFP\Speaker $speaker
+     * @param Speaker $speaker
      * @return boolean
      */
-    public function validateSpeakerId(\OpenCFP\Model\Speaker $speaker)
+    public function validateSpeakerId(Speaker $speaker)
     {
         $userId = $this->_sanitized_data['user_id'];
         $thisSpeaker = $speaker->findByUserId($userId);
