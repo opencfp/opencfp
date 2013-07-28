@@ -50,8 +50,8 @@ class TalkForm extends Form
      */
     public function validateTitle()
     {
-        if (empty($this->_sanitized_data['title']) || !isset($this->_sanitized_data['title'])) {
-            $this->_addErrorMessage("Your title contained content that could be used for XSS");
+        if (empty($this->_data['title'])) {
+            $this->_addErrorMessage("Please fill in the title");
             return false;
         }
 
