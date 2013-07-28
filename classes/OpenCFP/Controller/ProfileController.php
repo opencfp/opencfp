@@ -72,7 +72,7 @@ class ProfileController
         $form = new SignupForm($form_data, $app['purifier']);
 
         if ($form->validateAll('update') == true) {
-            $sanitized_data = $form->getSanitizedData();
+            $sanitized_data = $form->getCleanData();
             $speaker = new Speaker($app['db']);
             $response = $speaker->update($form_data);
 
@@ -139,7 +139,7 @@ class ProfileController
             return $app->redirect($app['url'] . '/profile/change_password');
         }
 
-        $sanitized_data = $form->getSanitizedData();
+        $sanitized_data = $form->getCleanData();
         $speaker = new Speaker($app['db']);
 
         if ($speaker->changePassword($sanitized_data['password'], $user) === false) {

@@ -353,7 +353,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         $form = new \OpenCFP\Form\SignupForm($inputData, $this->purifier);
         $form->sanitize();
-        $sanitizedData = $form->getSanitizedData();
+        $sanitizedData = $form->getCleanData();
         $this->assertEquals(
             $expectedData,
             $sanitizedData,

@@ -4,12 +4,11 @@ namespace OpenCFP\Form;
 abstract class Form
 {
     protected $_options;
-    protected $_data;
+    protected $_messages;
+    protected $_cleanData;
+    protected $_taintedData;
     protected $_purifier;
-    protected $_sanitized_data;
-    protected $_field_list = array();
-
-    public $error_messages = array();
+    protected $_fieldList = array();
 
     /**
      * Class constructor
@@ -22,6 +21,9 @@ abstract class Form
     {
         $this->_purifier    = $purifier;
         $this->_options     = $options;
+        $this->_messages    = array();
+        $this->_cleanData   = array();
+        $this->_taintedData = array();
 
         $this->populate($data);
     }
@@ -33,8 +35,8 @@ abstract class Form
      */
     public function populate(array $data)
     {
-        $this->_data = $data;
-        $this->_sanitized_data = null;
+        $this->_taintedData = $data;
+        $this->_cleanData = null;
     }
 
     /**
@@ -44,9 +46,9 @@ abstract class Form
      */
     public function update(array $data)
     {
-        // The $_data property might have been already set by
+        // The $_taintedData property might have been already set by
         // the populate() method.
-        $this->_data = array_merge($this->_data, (array) $data);
+        $this->_taintedData = array_merge($this->_taintedData, (array) $data);
     }
 
     /**
@@ -59,20 +61,32 @@ abstract class Form
     {
         $allFieldsFound = true;
 
-        $dataKeys = array_keys($this->_data);
-        $foundFields = array_intersect($this->_field_list, $dataKeys);
+        $dataKeys = array_keys($this->_taintedData);
+        $foundFields = array_intersect($this->_fieldList, $dataKeys);
 
-        return ($foundFields == $this->_field_list);
+        return ($foundFields == $this->_fieldList);
     }
 
     /**
      * Returns the clean data.
      *
+     * @array array $keys The wanted data
      * @return array The cleaned data
      */
-    public function getSanitizedData()
+    public function getCleanData(array $keys = array())
     {
-        return $this->_sanitized_data;
+        if (empty($keys)) {
+            return $this->_cleanData;
+        }
+
+        $data = array();
+        foreach ($keys as $key) {
+            if (isset($this->_cleanData[$key])) {
+                $data[$key] = $this->_cleanData[$key];
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -83,7 +97,7 @@ abstract class Form
      */
     public function getTaintedField($name, $default = null)
     {
-        return isset($this->_data[$name]) ? $this->_data[$name] : $default;
+        return isset($this->_taintedData[$name]) ? $this->_taintedData[$name] : $default;
     }
 
     /**
@@ -93,7 +107,7 @@ abstract class Form
      */
     public function getTaintedData()
     {
-        return $this->_data;
+        return $this->_taintedData;
     }
 
     /**
@@ -121,7 +135,7 @@ abstract class Form
      */
     public function getErrorMessages()
     {
-        return $this->error_messages;
+        return $this->_messages;
     }
 
     /**
@@ -131,7 +145,7 @@ abstract class Form
      */
     public function hasErrors()
     {
-        return count($this->error_messages) > 0;
+        return count($this->_messages) > 0;
     }
 
     /**
@@ -142,8 +156,8 @@ abstract class Form
      */
     protected function _addErrorMessage($message)
     {
-        if (!in_array($message, $this->error_messages)) {
-            $this->error_messages[] = $message;
+        if (!in_array($message, $this->_messages)) {
+            $this->_messages[] = $message;
         }
     }
 
@@ -153,7 +167,7 @@ abstract class Form
      */
     public function sanitize()
     {
-        $this->_sanitized_data = $this->_sanitize($this->_data);
+        $this->_cleanData = $this->_sanitize($this->_taintedData);
     }
 
     /**

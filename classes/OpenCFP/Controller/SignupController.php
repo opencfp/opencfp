@@ -48,7 +48,7 @@ class SignupController
         $form->sanitize();
 
         if ($form->validateAll()) {
-            $sanitized_data = $form->getSanitizedData();
+            $sanitized_data = $form->getCleanData();
 
             // Create account using Sentry
             $user_data = array(

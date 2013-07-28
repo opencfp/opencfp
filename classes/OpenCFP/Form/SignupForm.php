@@ -6,7 +6,7 @@ namespace OpenCFP\Form;
  */
 class SignupForm extends Form
 {
-    protected $_field_list = array(
+    protected $_fieldList = array(
         'email',
         'password',
         'password2',
@@ -38,11 +38,11 @@ class SignupForm extends Form
         $valid_speaker_info = true;
         $valid_speaker_bio = true;
 
-        if (!empty($this->_data['speaker_info'])) {
+        if (!empty($this->_taintedData['speaker_info'])) {
             $valid_speaker_info = $this->validateSpeakerInfo();
         }
 
-        if (!empty($this->_data['speaker_bio'])) {
+        if (!empty($this->_taintedData['speaker_bio'])) {
             $valid_speaker_bio = $this->validateSpeakerBio();
         }
 
@@ -63,12 +63,12 @@ class SignupForm extends Form
      */
     public function validateEmail()
     {
-        if (!isset($this->_data['email']) || $this->_data['email'] == '') {
+        if (!isset($this->_taintedData['email']) || $this->_taintedData['email'] == '') {
             $this->_addErrorMessage("Missing email");
             return false;
         }
 
-        $response = filter_var($this->_data['email'], FILTER_VALIDATE_EMAIL);
+        $response = filter_var($this->_taintedData['email'], FILTER_VALIDATE_EMAIL);
 
         if (!$response) {
             $this->_addErrorMessage("Invalid email address format");
@@ -85,8 +85,8 @@ class SignupForm extends Form
      */
     public function validatePasswords()
     {
-        $passwd = $this->_sanitized_data['password'];
-        $passwd2 = $this->_sanitized_data['password2'];
+        $passwd = $this->_cleanData['password'];
+        $passwd2 = $this->_cleanData['password2'];
 
         if ($passwd == '' || $passwd2 == '') {
             $this->_addErrorMessage("Missing passwords");
@@ -119,7 +119,7 @@ class SignupForm extends Form
     public function validateFirstName()
     {
         $first_name = filter_var(
-            $this->_sanitized_data['first_name'],
+            $this->_cleanData['first_name'],
             FILTER_SANITIZE_STRING,
             array('flags' => FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW)
         );
@@ -135,7 +135,7 @@ class SignupForm extends Form
             $validation_response = false;
         }
 
-        if ($first_name !== $this->_data['first_name']) {
+        if ($first_name !== $this->_taintedData['first_name']) {
             $this->_addErrorMessage('First name contains unwanted characters');
             $validation_response = false;
         }
@@ -151,7 +151,7 @@ class SignupForm extends Form
      */
     public function validateLastName()
     {
-        $last_name = $this->_sanitized_data['last_name'];
+        $last_name = $this->_cleanData['last_name'];
 
         if (empty($last_name)) {
             $this->_addErrorMessage("Last name was blank or contained unwanted characters");
@@ -163,7 +163,7 @@ class SignupForm extends Form
             return false;
         }
 
-        if ($last_name !== $this->_data['last_name']) {
+        if ($last_name !== $this->_taintedData['last_name']) {
             $this->_addErrorMessage("Last name data did not match after sanitizing");
             return false;
         }
@@ -179,7 +179,7 @@ class SignupForm extends Form
     public function validateSpeakerInfo()
     {
         $speakerInfo = filter_var(
-            $this->_sanitized_data['speaker_info'],
+            $this->_cleanData['speaker_info'],
             FILTER_SANITIZE_STRING
         );
         $validation_response = true;
@@ -202,7 +202,7 @@ class SignupForm extends Form
     public function validateSpeakerBio()
     {
         $speaker_bio = filter_var(
-            $this->_sanitized_data['speaker_bio'],
+            $this->_cleanData['speaker_bio'],
             FILTER_SANITIZE_STRING
         );
         $validation_response = true;
@@ -227,12 +227,12 @@ class SignupForm extends Form
         parent::sanitize();
 
         // We shouldn't be sanitizing passwords, so reset them
-        if (isset($this->_data['password'])) {
-            $this->_sanitized_data['password'] = $this->_data['password'];
+        if (isset($this->_taintedData['password'])) {
+            $this->_cleanData['password'] = $this->_taintedData['password'];
         }
 
-        if (isset($this->_data['password2'])) {
-            $this->_sanitized_data['password2'] = $this->_data['password2'];
+        if (isset($this->_taintedData['password2'])) {
+            $this->_cleanData['password2'] = $this->_taintedData['password2'];
         }
     }
 

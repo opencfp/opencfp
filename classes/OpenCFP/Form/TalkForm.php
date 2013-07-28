@@ -8,7 +8,7 @@ use OpenCFP\Model\Speaker;
  */
 class TalkForm extends Form
 {
-    protected $_field_list = array(
+    protected $_fieldList = array(
         'title',
         'description',
         'type',
@@ -24,8 +24,8 @@ class TalkForm extends Form
     {
         parent::sanitize();
 
-        foreach($this->_sanitized_data as $key => $value) {
-            $this->_sanitized_data[$key] = strip_tags($value);
+        foreach($this->_cleanData as $key => $value) {
+            $this->_cleanData[$key] = strip_tags($value);
         }
     }
 
@@ -50,14 +50,14 @@ class TalkForm extends Form
      */
     public function validateTitle()
     {
-        if (empty($this->_data['title'])) {
+        if (empty($this->_taintedData['title'])) {
             $this->_addErrorMessage("Please fill in the title");
             return false;
         }
 
-        $title = $this->_sanitized_data['title'];
+        $title = $this->_cleanData['title'];
 
-        if ($title !== $this->_data['title']) {
+        if ($title !== $this->_taintedData['title']) {
             $this->_addErrorMessage("You had invalid characters in your talk title");
             return false;
         }
@@ -77,7 +77,7 @@ class TalkForm extends Form
      */
     public function validateDescription()
     {
-        if (empty($this->_sanitized_data['description'])) {
+        if (empty($this->_cleanData['description'])) {
             $this->_addErrorMessage("Your description was missing");
             return false;
         }
@@ -99,12 +99,12 @@ class TalkForm extends Form
             'lightning'
         );
 
-        if (empty($this->_sanitized_data['type']) || !isset($this->_sanitized_data['type'])) {
+        if (empty($this->_cleanData['type']) || !isset($this->_cleanData['type'])) {
             $this->_addErrorMessage("You must choose what type of talk you are submitting");
             return false;
         }
 
-        if (!in_array($this->_sanitized_data['type'], $validTalkTypes)) {
+        if (!in_array($this->_cleanData['type'], $validTalkTypes)) {
             $this->_addErrorMessage("You did not choose a valid talk type");
             return false;
         }
@@ -120,7 +120,7 @@ class TalkForm extends Form
      */
     public function validateSpeakerId(Speaker $speaker)
     {
-        $userId = $this->_sanitized_data['user_id'];
+        $userId = $this->_cleanData['user_id'];
         $thisSpeaker = $speaker->findByUserId($userId);
 
         if (!$thisSpeaker) {

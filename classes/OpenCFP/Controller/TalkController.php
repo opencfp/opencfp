@@ -98,7 +98,7 @@ class TalkController
             return $template->render($data);
         }
 
-        $sanitized_data = $form->getSanitizedData();
+        $sanitized_data = $form->getCleanData();
         $data = array(
             'title' => $sanitized_data['title'],
             'description' => $sanitized_data['description'],
@@ -148,7 +148,7 @@ class TalkController
         $valid = $form->validateAll();
 
         if ($valid) {
-            $sanitized_data = $form->getSanitizedData();
+            $sanitized_data = $form->getCleanData();
             $data = array(
                 'id' => (int)$sanitized_data['id'],
                 'title' => $sanitized_data['title'],
