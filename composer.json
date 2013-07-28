@@ -22,8 +22,7 @@
         "symfony/locale": "~2.3",
         "doctrine/dbal": "~2.3",
         "symfony/browser-kit": "~2.3",
-        "symfony/css-selector": "~2.3",
-        "symfony/icu": "1.0.*"
+        "symfony/css-selector": "~2.3"
     },
     "autoload": {
         "psr-0": {"OpenCFP": "classes/"}
