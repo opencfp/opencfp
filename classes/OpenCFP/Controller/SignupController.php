@@ -79,7 +79,7 @@ class SignupController
                 $form_data['error_message'] = 'A user already exists with that email address';
             }
         } else {
-            $form_data['error_message'] = implode("<br>", $form->error_messages);
+            $form_data['error_message'] = implode("<br>", $form->getErrorMessages());
         }
 
         $template = $app['twig']->loadTemplate('create_user.twig');

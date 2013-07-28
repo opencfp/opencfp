@@ -87,7 +87,7 @@ class ProfileController
             }
         } else {
             $form_data['message_type'] = 'error';
-            $form_data['error_message'] = implode('<br>', $form->error_messages);
+            $form_data['error_message'] = implode('<br>', $form->getErrorMessages());
         }
 
         $form_data['formAction'] = '/profile/edit';
@@ -134,7 +134,7 @@ class ProfileController
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error!',
-                'ext' => implode("<br>", $form->error_messages)
+                'ext' => implode("<br>", $form->getErrorMessages())
             ));
             return $app->redirect($app['url'] . '/profile/change_password');
         }

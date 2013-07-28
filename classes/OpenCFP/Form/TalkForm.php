@@ -51,19 +51,19 @@ class TalkForm extends Form
     public function validateTitle()
     {
         if (empty($this->_sanitized_data['title']) || !isset($this->_sanitized_data['title'])) {
-            $this->error_messages[] = "Your title contained content that could be used for XSS";
+            $this->_addErrorMessage("Your title contained content that could be used for XSS");
             return false;
         }
 
         $title = $this->_sanitized_data['title'];
 
         if ($title !== $this->_data['title']) {
-            $this->error_messages[] = "You had invalid characters in your talk title";
+            $this->_addErrorMessage("You had invalid characters in your talk title");
             return false;
         }
 
         if (strlen($title) > 100) {
-            $this->error_messages[] = "Your talk title has to be 100 characters or less";
+            $this->_addErrorMessage("Your talk title has to be 100 characters or less");
             return false;
         }
 
@@ -78,7 +78,7 @@ class TalkForm extends Form
     public function validateDescription()
     {
         if (empty($this->_sanitized_data['description'])) {
-            $this->error_messages[] = "Your description was missing";
+            $this->_addErrorMessage("Your description was missing");
             return false;
         }
 
@@ -100,12 +100,12 @@ class TalkForm extends Form
         );
 
         if (empty($this->_sanitized_data['type']) || !isset($this->_sanitized_data['type'])) {
-            $this->error_messages[] = "You must choose what type of talk you are submitting";
+            $this->_addErrorMessage("You must choose what type of talk you are submitting");
             return false;
         }
 
         if (!in_array($this->_sanitized_data['type'], $validTalkTypes)) {
-            $this->error_messages[] = "You did not choose a valid talk type";
+            $this->_addErrorMessage("You did not choose a valid talk type");
             return false;
         }
 
@@ -124,7 +124,7 @@ class TalkForm extends Form
         $thisSpeaker = $speaker->findByUserId($userId);
 
         if (!$thisSpeaker) {
-            $this->error_messages[] = "Your talk does not seem to belong to a valid speaker";
+            $this->_addErrorMessage("Your talk does not seem to belong to a valid speaker");
             return false;
         }
 

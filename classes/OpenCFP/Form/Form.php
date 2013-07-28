@@ -121,7 +121,7 @@ abstract class Form
      */
     public function getErrorMessages()
     {
-        return $this->_error_messages;
+        return $this->error_messages;
     }
 
     /**
@@ -131,7 +131,7 @@ abstract class Form
      */
     public function hasErrors()
     {
-        return count($this->_error_messages) > 0;
+        return count($this->error_messages) > 0;
     }
 
     /**

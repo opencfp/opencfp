@@ -104,7 +104,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         $data = array(
             'password' => $passwd,
-            'password2' => $passwd 
+            'password2' => $passwd
         );
         $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
@@ -139,7 +139,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResponse, $testResponse);
         $this->assertContains(
             $expectedMessage,
-            $form->error_messages,
+            $form->getErrorMessages(),
             "Did not get expected error message"
         );
     }

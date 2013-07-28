@@ -92,7 +92,7 @@ class TalkController
                 'type' => $req->get('type'),
                 'buttonInfo' => 'Submit my talk!',
                 'user' => $user,
-                'error_message' => implode('<br>', $form->error_messages)
+                'error_message' => implode('<br>', $form->getErrorMessages())
             );
 
             return $template->render($data);
@@ -177,7 +177,7 @@ class TalkController
                 'type' => $req->get('type'),
                 'buttonInfo' => 'Update my talk!',
                 'user' => $user,
-                'error_message' => implode("<br>", $form->error_messages)
+                'error_message' => implode("<br>", $form->getErrorMessages())
             );
 
             return $template->render($data);
