@@ -77,14 +77,28 @@ class TalksController
         // Get info about our speaker
         $speakerModel = new Speaker($app['db']);
         $speaker = $speakerModel->findByUserId($talk['user_id']);
-
+        
         $talkUser = $user->find($talk['user_id']);
         $speaker['name'] = "{$talkUser['first_name']} {$talkUser['last_name']}";
+
+        // Grab all the other talks and filter out the one we have
+        $rawTalks = $talkModel->findByUserId($talk['user_id']);
+        
+        $otherTalks = array_filter($rawTalks, function ($talk) use ($talkId) {
+            if ($talk['id'] !== $talkId) {
+                return true;
+            }
+
+            return false;
+        });
+
+        // Build and render the template
         $template = $app['twig']->loadTemplate('admin/view_talk.twig');
         $templateData = array(
             'talk' => $talk,
             'speaker' => $speaker,
-            'page' => $req->get('page')
+            'page' => $req->get('page'),
+            'otherTalks' => $otherTalks
         );
         return $template->render($templateData);
     }

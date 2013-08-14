@@ -66,7 +66,7 @@ class Talk
      */
     public function findByUserId($userId)
     {
-        $sql = "SELECT * FROM talks WHERE user_id = ?";
+        $sql = "SELECT * FROM talks WHERE user_id = ? ORDER BY title";
         $stmt = $this->_db->prepare($sql);
         $stmt->execute(array($userId));
 
