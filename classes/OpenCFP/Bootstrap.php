@@ -32,7 +32,7 @@ class Bootstrap
 
         // Initialize out Silex app and let's do it
         $app = new \Silex\Application();
-        
+
         // Register our session provider
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app->before(function ($request) use ($app) {
@@ -63,7 +63,6 @@ class Bootstrap
             'translator.messages' => array()
         ));
 
-        
         $app['db'] = $this->getDb();
 
         $app['purifier'] = $this->getPurifier();
@@ -139,7 +138,9 @@ class Bootstrap
         $app->get('/forgot_success', 'OpenCFP\Controller\ForgotController::successAction');
         $app->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Controller\ForgotController::resetAction');
         $app->post('/reset', 'OpenCFP\Controller\ForgotController::processResetAction');
-
+        $app->get('/admin/talks', 'OpenCFP\Controller\Admin\TalksController::indexAction');
+        $app->get('/admin/talks/{page}', 'OpenCFP\Controller\Admin\TalksController::indexAction');
+        $app->get('/admin/talks/view/{id}/page/{page}', 'OpenCFP\Controller\Admin\TalksController::viewAction');
         return $app;
     }
 
