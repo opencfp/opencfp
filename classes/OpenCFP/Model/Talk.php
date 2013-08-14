@@ -120,4 +120,36 @@ class Talk
 
         return ($stmt->rowCount() === 1);
     }
+
+    /**
+     * Return an array of all the talks, ordered by the title by default 
+     * by default
+     *
+     * @param string $order default is 'title'
+     * @return array
+     */
+    public function getAll($orderBy = 'title')
+    {
+        $sql = "SELECT * FROM talks ORDER BY {$orderBy}";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        $talks = array();
+
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute();
+
+        $sql = "SELECT email FROM users WHERE id = ?";
+        $stmt = $this->_db->prepare($sql);
+
+        foreach ($results as $result) {
+            $stmt->execute(array($result['user_id']));
+            $userDetails = $stmt->fetch();
+            $talkInfo = $result;
+            $talkInfo['user'] = $userDetails['email'];
+            $talks[] = $talkInfo;
+        }
+
+        return $talks;
+    }
 }
