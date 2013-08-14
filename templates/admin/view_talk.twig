@@ -13,7 +13,7 @@
 <h3>Speaker Bio</h3>
 {{ speaker.bio|raw }}
 <br><br>
-{% if otherTalks is defined %}
+{% if otherTalks | length > 0 %}
 <h4>Other talks by this speaker</h4>
 {% for talk in otherTalks %}
 <a href="{{ site.url}}/admin/talks/view/{{ talk.id }}/page/{{ page }}">{{ talk.title }}</a> [{{ talk.type}}]<br>
