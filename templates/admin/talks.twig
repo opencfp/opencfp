@@ -1,0 +1,19 @@
+{% extends "layouts/default.twig" %}
+{% block content %}
+<h2>Submitted Talks</h2>
+<table>
+<tr>
+<th align='left'><b>Title</b></th>
+<th align='left'><b>Type</b></th>
+<th align='left'><b>Submitted by</b></th>
+</tr>
+{% for talk in talks %}
+<tr>
+<td><a href="{{ site.url }}/admin/talks/view/{{ talk.id }}/page/{{ page }}">{{ talk.title }}</a></td>
+<td>{{ talk.type }}</td>
+<td>{{ talk.user }}</td>
+</tr>
+{% endfor %}
+</table>
+{{ pagination|raw }}
+{% endblock %}

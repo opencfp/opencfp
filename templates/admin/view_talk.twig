@@ -1,0 +1,18 @@
+{% extends "layouts/default.twig" %}
+{% block content %}
+<h2>Talk Details</h2>
+<h3>{{ talk.title}}</h3>
+<h4>Submitted by {{ speaker.name }}</h4>
+<h4>{{ talk.type }}</h4>
+<p>
+{{ talk.description|raw }}
+</p>
+<br><br>
+<h3>Speaker Info</h3>
+{{ speaker.info|raw }}
+<h3>Speaker Bio</h3>
+{{ speaker.bio|raw }}
+<br><br>
+<a href="{{ site.url}}/admin/talks/{{ page}}">Return to viewing all talks</a>
+{% endblock %}
+
