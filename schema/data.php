@@ -28,6 +28,12 @@ $table->addColumn('id', 'integer', array('autoincrement' => true));
 $table->addColumn('title', 'string', array('length' => 100, 'fixed' => true));
 $table->addColumn('description', 'text', array('notnull' => false));
 $table->addColumn('type', 'string', array('notnull' => false, 'length' => 50, 'fixed' => true));
+$table->addColumn('level', 'string', array('notnull' => false, 'length' => 50, 'fixed' => true));
+$table->addColumn('category', 'string', array('notnull' => false, 'length' => 50, 'fixed' => true));
+$table->addColumn('desired', 'boolean', array('default' => '0'));
+$table->addColumn('slides', 'string', array('notnull' => false, 'length' => 255));
+$table->addColumn('other', 'text', array('notnull' => false));
+$table->addColumn('sponsor', 'boolean', array('default' => '0'));
 $table->addColumn('user_id', 'integer', array());
 $table->setPrimaryKey(array('id'), 'PRIMARY');
 

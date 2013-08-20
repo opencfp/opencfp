@@ -3,13 +3,26 @@
 <input name="id" type="hidden" value="{{ id }}">
 {% endif %}
 <input name="title" type="text" value="{{ title }}" class="input-large search-query" placeholder="Title" size=50 max=100><br><br>
-<textarea name="description" class="search-query" rows=20 cols=20 placeholder="Description (resize me if I am too small!">{{ description }}</textarea><br><br>
+<textarea name="description" class="search-query" rows=20 cols=20 placeholder="Description/Abstract (resize me if I am too small!)">{{ description }}</textarea><br><br>
 <select name="type" class="search-query">
     <option value="regular" {% if type == 'regular' %}selected {% endif %}>Regular Talk</option>
-    <option value="half-day-tutorial" {% if type == 'half-day-tutorial' %}selected {% endif %}>Half-day Tutorial</option>
-    <option value="full-day-tutorial" {% if type == 'full-day-tutorial' %}selected {% endif %}>Full-day Tutorial</option>
-</select>
-<br><br>
+    <option value="tutorial" {% if type == 'tutorial' %}selected {% endif %}>Tutorial</option>
+</select><br /><br />
+<select name="category" class="search-query">
+    <option value="development" {% if category == 'development' %}selected {% endif %}>Development Talk</option>
+    <option value="database" {% if category == 'database' %}selected {% endif %}>Database</option>
+    <option value="management" {% if category == 'management' %}selected {% endif %}>Management</option>
+    <option value="other" {% if category == 'other' %}selected {% endif %}>Other</option>
+</select><br /><br />
+<select name="level" class="search-query">
+    <option value="entry" {% if level == 'entry' %}selected {% endif %}>Entry level</option>
+    <option value="mid" {% if level == 'mid' %}selected {% endif %}>Mid-level</option>
+    <option value="advanced" {% if level == 'advanced' %}selected {% endif %}>Advanced</option>
+</select><br /><br />
+<input name="slides" type="text" value="{{ slides }}" class="input-large search-query" placeholder="Slides URL (if exists)" size=50 max=255><br><br>
+<textarea name="other" class="search-query" rows=20 cols=20 placeholder="Other Considerations (resize me if I am too small!)">{{ other }}</textarea><br><br>
+Most desired talk: <input name="desired" type="checkbox" value="1" class="checkbox" {% if desired == '1' %}checked {% endif %} /><br /><br />
+Sponsor: <input name="sponsor" type="checkbox" value="1" class="checkbox" {% if sponsor == '1' %}checked {% endif %} /><br /><br />
 <button type="submit" class="btn">{{ buttonInfo }}</button>
 </form>
 

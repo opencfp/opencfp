@@ -108,6 +108,12 @@ CREATE TABLE `talks` (
     `title` char(100) NOT NULL,
     `description` text,
     `type` char(50),
+    `level` char(50),
+    `category` char(50),
+    `desired` tinyint(4) NOT NULL DEFAULT '0',
+    `slides` varchar(255),
+    `other` text,
+    `sponsor` tinyint(4) NOT NULL DEFAULT '0',
     `user_id` int(10) unsigned NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
