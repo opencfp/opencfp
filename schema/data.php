@@ -56,6 +56,8 @@ $table->addColumn('persist_code', 'string', array('notnull' => false, 'length' =
 $table->addColumn('reset_password_code', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('first_name', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('last_name', 'string', array('notnull' => false, 'length' => 255));
+$table->addColumn('company', 'string', array('notnull' => false, 'length' => 255));
+$table->addColumn('twitter', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('created_at', 'datetime', array('default' => '0000-00-00 00:00:00'));
 $table->addColumn('updated_at', 'datetime', array('default' => '0000-00-00 00:00:00'));
 $table->setPrimaryKey(array('id'), 'PRIMARY');

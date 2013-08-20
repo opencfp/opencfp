@@ -6,7 +6,9 @@
     {% endif %} 
     <input name='first_name' type="text" value="{{ first_name}}" class="span5" placeholder="First name"><br>
     <input name='last_name' type="text" value="{{ last_name}}" class="span5" placeholder="Last name"><br>
-    <textarea name="speaker_bio" rows="5" class="span7" placeholder="Put information about yourself into this field. Twitter, web site, etc.">{{speaker_bio}}</textarea><br>
+    <input name='company' type="text" value="{{ company}}" class="span5" placeholder="Company name"><br>
+    <input name='twitter' type="text" value="{{ twitter}}" class="span5" placeholder="Twitter"> (ex: @SunshinePHP)<br>
+    <textarea name="speaker_bio" rows="5" class="span7" placeholder="Put information about yourself (bio) into this field. web site, etc.">{{speaker_bio}}</textarea><br>
     <textarea name="speaker_info" rows="5" class="span7" placeholder="Other information (Where you will be travelling from, special needs, can your employer cover travel expenses, etc.)">{{speaker_info}}</textarea><br>
     <button type="submit" class="btn btn-primary">{{ buttonInfo }}</button>
     <input name="id" type="hidden" value="{{ id }}">
