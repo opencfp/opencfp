@@ -10,6 +10,7 @@
 </select><br /><br />
 <select name="category">
     <option value="development" {% if category == 'development' %}selected {% endif %}>Development Talk</option>
+    <option value="framework" {% if category == 'framework' %}selected {% endif %}>Framework Talk</option>
     <option value="database" {% if category == 'database' %}selected {% endif %}>Database</option>
     <option value="management" {% if category == 'management' %}selected {% endif %}>Management</option>
     <option value="other" {% if category == 'other' %}selected {% endif %}>Other</option>

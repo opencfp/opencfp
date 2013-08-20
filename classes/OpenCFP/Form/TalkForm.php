@@ -147,6 +147,7 @@ class TalkForm extends Form
     {
         $validCategories = array(
             'development',
+            'framework',
             'database',
             'management',
             'other'
