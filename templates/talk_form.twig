@@ -5,8 +5,8 @@
 <input name="title" type="text" value="{{ title }}" class="input-large search-query" placeholder="Title" size=50 max=100><br><br>
 <textarea name="description" rows="5" class="span7" placeholder="Description/Abstract (resize me if I am too small!)">{{ description }}</textarea><br><br>
 <select name="type">
-    <option value="regular" {% if type == 'regular' %}selected {% endif %}>Regular Talk</option>
-    <option value="tutorial" {% if type == 'tutorial' %}selected {% endif %}>Tutorial</option>
+    <option value="regular" {% if type == 'regular' %}selected {% endif %}>Regular Talk (50min)</option>
+    <option value="tutorial" {% if type == 'tutorial' %}selected {% endif %}>Tutorial (3 hour)</option>
 </select><br /><br />
 <select name="category">
     <option value="development" {% if category == 'development' %}selected {% endif %}>Development Talk</option>
