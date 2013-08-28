@@ -1,168 +1,48 @@
 body {
-    padding-top: 60px;
-    padding-bottom: 40px;
+	padding-top: 20px;
+	padding-bottom: 40px;
 }
 
 /* Custom container */
 .container-narrow {
-    margin: 0 auto;
-    max-width: 700px;
+	margin: 0 auto;
+	max-width: 700px;
 }
 
 .container-narrow > hr {
-    margin: 30px 0;
+	margin: 30px 0;
 }
 
 /* Main marketing message and sign up button */
 .jumbotron {
-    margin: 30px 0;
-    text-align: center;
+	margin: 60px 0;
+	text-align: center;
 }
 
 .jumbotron h1 {
-    font-size: 68px;
-    line-height: 1;
+	font-size: 68px;
+	line-height: 1;
 }
 
 .jumbotron .btn {
-    font-size: 21px;
-    padding: 14px 24px;
+	font-size: 21px;
+	padding: 14px 24px;
 }
 
 .jumbotron .btn .small {
-    font-size: 13px;
-    line-height: 10px;
+	font-size: 13px;
+	line-height: 10px;
 }
 
 .jumbotron .btn.btn-warning {
-    line-height: 30px;
+	line-height: 30px;
 }
 
 /* Supporting marketing content */
 .marketing {
-    margin: 60px 0;
+	margin: 60px 0;
 }
 
 .marketing p + h4 {
-    margin-top: 28px;
-}
-
-/* sunshinephp customizations below this line */
-.nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a:focus {
-	border: 0;
-	text-shadow: 0 1px 1px #303030;
-	-webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
-	-moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
-	box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
-	background: #B24926; /* Old browsers */
-	background: -moz-linear-gradient(45deg,  #B24926 0%, #B74025 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#B24926), color-stop(100%,#B74025)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(45deg,  #B24926 0%,#B74025 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(45deg,  #B24926 0%,#B74025 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(45deg,  #B24926 0%,#B74025 100%); /* IE10+ */
-	background: linear-gradient(45deg,  #B24926 0%,#B74025 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#B24926', endColorstr='#B74025',GradientType=1 );
-}
-.nav-pills > li > a {
-	color: #B24926;
-	font-weight:bold;
-}
-.text-left {text-align:left;}
-.text-center {text-align:center;}
-.text-right {text-align:right;}
-.navbar-inverse .navbar-inner {
-	background-color: #f49b2e;
-	background-image: -moz-linear-gradient(top, #B24926, #B74025);
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#B24926), to(#B74025));
-	background-image: -webkit-linear-gradient(top, #B24926, #B74025);
-	background-image: -o-linear-gradient(top, #B24926, #B74025);
-	background-image: linear-gradient(to bottom, #B24926, #B74025);
-	background-repeat: repeat-x;
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#B24926', endColorstr='#B74025', GradientType=0);
-	border-color: #B74025;
-}
-.navbar-inverse .brand, .navbar-inverse .nav>li>a {
-	color: #fff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	moz-transition: background-color 0.5s;
-	-webkit-transition: background-color 0.5s;
-	-o-transition: background-color 0.5s;
-	transition: background-color 0.5s;
-}
-.navbar-inverse .nav .active>a, .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav .active>a:focus {
-	background-color:#B24926;
-	color:#fae80b;
-}
-.navbar-inverse .nav>li>a:focus, .navbar-inverse .nav>li>a:hover {
-	background-color: #B24926;
-	color: #fae80b;
-	moz-transition: background-color 0.5s;
-	-webkit-transition: background-color 0.5s;
-	-o-transition: background-color 0.5s;
-	transition: background-color 0.5s;
-}
-
-.jumbotron {
-	position: relative;
-	padding: 1.3em 0;
-	color: #B74025;
-	text-align: center;
-	/*text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);*/
-	text-shadow: 0px 1px 0px #EF6969;
-	background: #f49b2e; /* Old browsers */
-	background: -moz-linear-gradient(45deg,  #f49b2e 0%, #f49b2e 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#f49b2e), color-stop(100%,#f49b2e)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(45deg,  #f49b2e 0%,#f49b2e 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(45deg,  #f49b2e 0%,#f49b2e 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(45deg,  #f49b2e 0%,#f49b2e 100%); /* IE10+ */
-	background: linear-gradient(45deg,  #f49b2e 0%,#f49b2e 100%); /* W3C */
-	font-family:Tahoma, Geneva, sans-serif;
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f49b2e', endColorstr='#f49b2e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-	-webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
-	-moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
-	box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
-	background-image: url("http://cfp.sunshinephp.com/assets/img/sunshinephp_header_bg.jpg");
-}
-.jumbotron h1 {
-	font-size: 40px;
-	font-weight: bold;
-	letter-spacing: -1px;
-	line-height: 1;
-}
-.jumbotron p {
-	font-size: 1.25em;
-	font-weight: 400;
-	line-height: 1.3em;
-}
-
-/* Link styles (used on .masthead-links as well) */
-.jumbotron a {
-	-webkit-transition: all .2s ease-in-out;
-	-moz-transition: all .2s ease-in-out;
-	transition: all .2s ease-in-out;
-	font-size: 1.6em;
-	font-weight: bold;
-	height: 1.5em;
-	line-height: 1.5em;
-	color: #fff;
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	letter-spacing: 0.25em;
-	text-shadow: 0 1px 1px #303030;
-}
-.jumbotron a:hover {
-	color: #fff;
-	text-shadow: 0 0 10px rgba(255,255,255,.25);
-}
-
-#footer-home {
-	border-top: 4px solid #4287bd;
-	margin-top:40px;
-	background: #B24926;
-	color: #fff;
-	text-align: center;
-	text-shadow: 0 1px 1px #303030
-}
-
-.muted {
-	color: #FFF;
+	margin-top: 28px;
 }

@@ -15,63 +15,24 @@
         <link href="{{ site.url }}/assets/css/site.css" rel="stylesheet" media="screen">
     </head>
     <body>
-
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <div class="nav-collapse collapse">
-                        {% block navigation %}
-                            <ul id="navigation" class="nav nav-pills pull-right">
-                                {% for item in navigation_bar %}
-                                    <li{% if item[0] == active_page %} class="active"{% endif%}>
-                                        <a href="{{ site.url }}{{ item[0] }}">{{item[1]}}</a></li>
-                                {% endfor %}
-                            </ul>
-                        {% endblock %}
-                        {% block mainheading %}<h3 class="muted">{{ site.title}}</h3>{% endblock %}
-                    </div><!--/.nav-collapse -->
-                </div>
-            </div>
+    <div class="container-narrow">
+        <div class="masthead">
+            {% block navigation %}
+                <ul id="navigation" class="nav nav-pills pull-right">
+                    {% for item in navigation_bar %}
+                        <li{% if item[0] == active_page %} class="active"{% endif%}>
+                            <a href="{{ site.url }}{{ item[0] }}">{{item[1]}}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endblock %}
+            {% block mainheading %}<h3 class="muted">{{ site.title}}</h3>{% endblock %}
         </div>
-        <div class="container">
-            <div class="row">
-                {% block content %}
-                {% endblock %}
-            </div>
-        </div>
-
-        <footer id="footer-home">
-            <div class="container">
-                <div class="row">
-                    <h5 class="text-center capitalize fade-in four">&copy; 2012 - 2013 by SunshinePHP Developer Conference All rights reserved.</h5>
-                </div>
-            </div>
-        </footer>
-        
-        {% block scripts %}
-            <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-            <script src="{{ site.url }}/assets/js/bootstrap.min.js"></script>
-
-            <script type="text/javascript">
-
-                var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', 'UA-35868187-1']);
-                _gaq.push(['_setDomainName', 'sunshinephp.com']);
-                _gaq.push(['_trackPageview']);
-
-                (function() {
-                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-                })();
-
-            </script>
+        {% block content %}
         {% endblock %}
-    
+    </div>
+    {% block scripts %}
+        <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+        <script src="{{ site.url }}/assets/js/bootstrap.min.js"></script>
+    {% endblock %}
     </body>
 </html>

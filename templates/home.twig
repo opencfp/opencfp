@@ -2,11 +2,10 @@
 {% set active_page = "/" %}
 {% block content %}
     <div class="jumbotron">
-        <h1>Submit your talk idea for</h1>
-        <a href="/" title=""><img src="/assets/img/sunshinephp_logo_2014_800px.png" alt="SunshinePHP Conference - February 6th-8th, 2014"></a>
-        <h3>Submissions will be accepted until midnight Oct. 15, 2013</h3>
+        <h1>Submit your talk idea for<br />{{ site.title }}</h1>
+        <h3>Submissions will be accepted until midnight {{ site.enddate }}</h3>
         <h4>For information about the conference, please visit<br />
-            <a href="http://sunshinephp.com/">http://sunshinephp.com</a></h4>
+            <a href="{{ site.eventurl }}">{{ site.eventurl }}</a></h4>
         <br>
         {% if user is not defined  %}
             <a class="btn btn-large btn-warning" href="{{ site.url }}/signup">Create my profile!</a>
