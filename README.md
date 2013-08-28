@@ -3,23 +3,58 @@ opencfp
 
 Repo for OpenCFP project, a PHP-based conference talk submission system
 
-After cloning and getting the composer.phar I ran composer install and was presented with "Your requirements could not be resolved to an installable set of packages." because the Symfony/icu package requires lib-icu to be installed on the system running it.
+Requirements
+------------
 
-    Resolved by installing php5-intl extension for PHP. (on Ubuntu)
-    Composer install went well after that.
+You may need to install php5-intl extension for PHP. (on Ubuntu, not sure what it is called for other OS)
+Also, must have PHP 5.3.3+.
 
-Set up Apache to have vhost pointing to project root and did hosts file to use dev domain locally.
-Navigating in a browser to the /web directory after the install I received an error about the Config file missing.
 
-    Resolved by renaming the /config/config.ini.dist to /config/config.ini, then updating the contents of the ini file to match environment.
-    This highlighted that I needed to set up the DB, so I created the cfp database. (don't see a sql file anywhere, so hope the app builds schema on initial load.)
-    Site loads now, but ugly.
+Installation
+------------
 
-Realized that I should have set up Apache to use /web as the document root, so edited that and now get styles.
-Try to add first speaker:
+### Main Setup
 
-    Oops, /vendor/ezyang/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer directory needs to be writeable.
-    Now I just get the error message that something went wrong, but no details.
+#### Clone project
 
-Found /schema/mysql.sql file and used it to create tables in the DB.
-Now all seems functional, YAY!
+1. Clone this project into your working directory.
+
+#### Use Composer to get dependencies
+
+2. Now tell composer to download dependencies by running the command:
+NOTE: May need to download composer.phar first from http://getcomposer.org
+
+    ```bash
+    $ php composer.phar install
+    ```
+3. Set up your desired webserver to point to the '/web' directory.
+
+4. Create database along with user/password in MySQL for application to use.
+
+5. Rename the /config/config.ini.dist file to /config/config.ini.
+
+    ```bash
+    $ mv /config/config.ini.dist /config/config.ini
+    ```
+
+6. Customize /config/config.ini as needed for your environment and site settings.
+
+7. Populate MySQL database by using the mysql.sql script available in /schema folder.
+
+8. May need to edit directory permissions for some of the packages. (your mileage may vary)
+
+9. Customize templates and /web/assets/css/site.css to your hearts content.
+
+10. Enjoy!!!
+
+
+Additional Admin Setup
+----------------------
+
+There is also a script available in /tools directory (to be called via command line)
+To enable a user to become an Admin.  So from within the /tools directory:
+
+    ```bash
+    $ php create_admin_user.php update {email-address}
+    ```
+This will enable that user to navigate to /admin/talks in a browser to view submitted talks.
