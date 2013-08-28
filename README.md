@@ -57,4 +57,9 @@ To enable a user to become an Admin.  So from within the /tools directory:
     ```bash
     $ php create_admin_user.php update {email-address}
     ```
-This will enable that user to navigate to /admin/talks in a browser to view submitted talks.
+This will enable that user to navigate to /admin/talks through a link now visible on the Dashboard.
+
+Testing
+-------
+
+More to come on this.
