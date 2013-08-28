@@ -16,9 +16,9 @@ class TalksController
         }
 
         $user = $app['sentry']->getUser();
-        $permissions = $user->getPermissions();
-
-        if (!isset($permissions['admin']) || $permissions['admin'] !== 1) {
+        $permissions = $user->hasPermission('admin');
+        
+        if (!$permissions) {
             return $app->redirect($app['url'] . '/login');
         }
 
