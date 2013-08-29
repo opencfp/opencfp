@@ -201,6 +201,8 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             'email' => 'test@domain.com',
             'first_name' => 'Testy',
             'last_name' => 'McTesterton',
+            'company' => 'My Company',
+            'twitter' => '@twitter',
             'speaker_info' => 'Speaker info',
             'speaker_bio' => 'Speaker bio'
         );

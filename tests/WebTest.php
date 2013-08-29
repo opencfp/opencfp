@@ -43,6 +43,8 @@ class WebTest extends WebTestCase
         $form['password2'] = 'password123';
         $form['first_name'] = 'Igor';
         $form['last_name'] = 'Wiedler';
+        $form['company'] = 'Test Company';
+        $form['twitter'] = '@name';
         $form['speaker_bio'] = 'Bla.';
         $form['speaker_info'] = 'Bleh.';
 
@@ -86,6 +88,13 @@ class WebTest extends WebTestCase
         $form = $crawler->filter('form')->form();
         $form['title'] = 'foo talk';
         $form['description'] = 'talking about foos, bars and related concepts.';
+        $form['type'] = 'regular';
+        $form['category'] = 'framework';
+        $form['level'] = 'entry';
+        $form['slides'] = 'http://slideshare.net';
+        $form['other'] = 'blah blah';
+        $form['desired'] = '1';
+        $form['sponsor'] = '1';
 
         $crawler = $client->submit($form);
         $crawler = $client->followRedirect();
