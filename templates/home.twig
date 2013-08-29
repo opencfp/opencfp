@@ -2,10 +2,10 @@
 {% set active_page = "/" %}
 {% block content %}
     <div class="jumbotron">
-        <h1>Submit your talk idea for True North PHP!</h1>
-        <h3>November 7-9, 2013</h3>
-        <h3>Submissions will be accepted until 9pm EDT July 31, 2013</h3>
-        <h4>For information about the conference, please visit <a href="http://www.truenorthphp.ca/">www.truenorthphp.ca</a></h4>
+        <h1>Submit your talk idea for<br />{{ site.title }}</h1>
+        <h3>Submissions will be accepted until midnight {{ site.enddate }}</h3>
+        <h4>For information about the conference, please visit<br />
+            <a href="{{ site.eventurl }}">{{ site.eventurl }}</a></h4>
         <br>
         {% if user is not defined  %}
             <a class="btn btn-large btn-warning" href="{{ site.url }}/signup">Create my profile!</a>

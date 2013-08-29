@@ -16,9 +16,9 @@ class TalksController
         }
 
         $user = $app['sentry']->getUser();
-        $permissions = $user->getPermissions();
-
-        if (!isset($permissions['admin']) || $permissions['admin'] !== 1) {
+        $permissions = $user->hasPermission('admin');
+        
+        if (!$permissions) {
             return $app->redirect($app['url'] . '/login');
         }
 
@@ -63,9 +63,9 @@ class TalksController
         }
 
         $user = $app['sentry']->getUser();
-        $permissions = $user->getPermissions();
+        $permissions['admin'] = $user->hasPermission('admin');
 
-        if (!isset($permissions['admin']) || $permissions['admin'] !== 1) {
+        if (!$permissions['admin']) {
             return $app->redirect($app['url'] . '/login');
         }
 

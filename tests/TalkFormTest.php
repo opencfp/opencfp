@@ -49,6 +49,12 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             'title' => 'Talk Title',
             'description' => 'Description of our talk',
             'type' => 'session',
+            'category' => 'development',
+            'level' => 'entry',
+            'slides' => 'http://slideshare.net',
+            'other' => 'Misc comments',
+            'desired' => 1,
+            'sponsor' => 1,
             'user_id' => 1
         );
         $extendedData = $goodData;
@@ -159,17 +165,15 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provider for typeValidattesCorrectly
+     * Data provider for typeValidatesCorrectly
      *
      * @return boolean
      */
     public function typeProvider()
     {
         return array(
-            array('half-day-tutorial', true),
-            array('full-day-tutorial', true),
             array('regular', true),
-            array('lightning', true),
+            array('tutorial', true),
             array('foo', false),
             array(null, false),
             array(false, false),

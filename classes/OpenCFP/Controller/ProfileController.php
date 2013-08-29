@@ -32,6 +32,8 @@ class ProfileController
             'email' => $user->getLogin(),
             'first_name' => $speaker_data['first_name'],
             'last_name' => $speaker_data['last_name'],
+            'company' => $speaker_data['company'],
+            'twitter' => $speaker_data['twitter'],
             'speaker_info' => $speaker_data['info'],
             'speaker_bio' => $speaker_data['bio'],
             'id' => $user->getId(),
@@ -65,6 +67,8 @@ class ProfileController
             'user_id' => $req->get('id'),
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
+            'company' => $req->get('company'),
+            'twitter' => $req->get('twitter'),
             'speaker_info' => $req->get('speaker_info') ?: null,
             'speaker_bio' => $req->get('speaker_bio') ?: null,
         );

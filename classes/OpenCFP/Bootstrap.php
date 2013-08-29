@@ -50,7 +50,10 @@ class Bootstrap
         $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) use ($that) {
             $twig->addGlobal('site', array(
                 'url' => $that->getConfig('application.url'),
-                'title' => $that->getConfig('application.title')
+                'title' => $that->getConfig('application.title'),
+                'email' => $that->getConfig('application.email'),
+                'eventurl' => $that->getConfig('application.eventurl'),
+                'enddate' => $that->getConfig('application.enddate')
             ));
 
             return $twig;
@@ -188,7 +191,10 @@ class Bootstrap
             $this->_twig = new Twig_Environment($loader);
             $this->_twig->addGlobal('site', array(
                 'url' => $this->getConfig('application.url'),
-                'title' => $this->getConfig('application.title')
+                'title' => $this->getConfig('application.title'),
+                'email' => $this->getConfig('application.email'),
+                'eventurl' => $this->getConfig('application.eventurl'),
+                'enddate' => $this->getConfig('application.enddate')
             ));
         }
         return $this->_twig;

@@ -37,6 +37,12 @@ class TalkController
             'title' => $talk_info['title'],
             'description' => $talk_info['description'],
             'type' => $talk_info['type'],
+            'level' => $talk_info['level'],
+            'category' => $talk_info['category'],
+            'desired' => $talk_info['desired'],
+            'slides' => $talk_info['slides'],
+            'other' => $talk_info['other'],
+            'sponsor' => $talk_info['sponsor'],
             'buttonInfo' => 'Update my talk!',
             'user' => $user
         );
@@ -59,6 +65,12 @@ class TalkController
             'title' => $req->get('title'),
             'description' => $req->get('description'),
             'type' => $req->get('type'),
+            'level' => $req->get('level'),
+            'category' => $req->get('category'),
+            'desired' => $req->get('desired'),
+            'slides' => $req->get('slides'),
+            'other' => $req->get('other'),
+            'sponsor' => $req->get('sponsor'),
             'buttonInfo' => 'Submit my talk!',
             'user' => $user
         );
@@ -77,6 +89,12 @@ class TalkController
             'title' => $req->get('title'),
             'description' => $req->get('description'),
             'type' => $req->get('type'),
+            'level' => $req->get('level'),
+            'category' => $req->get('category'),
+            'desired' => $req->get('desired'),
+            'slides' => $req->get('slides'),
+            'other' => $req->get('other'),
+            'sponsor' => $req->get('sponsor'),
             'user_id' => $req->get('user_id')
         );
 
@@ -90,6 +108,12 @@ class TalkController
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
+                'level' => $req->get('level'),
+                'category' => $req->get('category'),
+                'desired' => $req->get('desired'),
+                'slides' => $req->get('slides'),
+                'other' => $req->get('other'),
+                'sponsor' => $req->get('sponsor'),
                 'buttonInfo' => 'Submit my talk!',
                 'user' => $user,
                 'error_message' => implode('<br>', $form->getErrorMessages())
@@ -103,6 +127,12 @@ class TalkController
             'title' => $sanitized_data['title'],
             'description' => $sanitized_data['description'],
             'type' => $sanitized_data['type'],
+            'level' => $sanitized_data['level'],
+            'category' => $sanitized_data['category'],
+            'desired' => $sanitized_data['desired'],
+            'slides' => $sanitized_data['slides'],
+            'other' => $sanitized_data['other'],
+            'sponsor' => $sanitized_data['sponsor'],
             'user_id' => (int)$user->getId(),
             'user' => $user
         );
@@ -140,6 +170,12 @@ class TalkController
             'title' => $req->get('title'),
             'description' => $req->get('description'),
             'type' => $req->get('type'),
+            'level' => $req->get('level'),
+            'category' => $req->get('category'),
+            'desired' => $req->get('desired'),
+            'slides' => $req->get('slides'),
+            'other' => $req->get('other'),
+            'sponsor' => $req->get('sponsor'),
             'user_id' => $req->get('user_id')
         );
 
@@ -154,6 +190,12 @@ class TalkController
                 'title' => $sanitized_data['title'],
                 'description' => $sanitized_data['description'],
                 'type' => $sanitized_data['type'],
+                'level' => $sanitized_data['level'],
+                'category' => $sanitized_data['category'],
+                'desired' => $sanitized_data['desired'],
+                'slides' => $sanitized_data['slides'],
+                'other' => $sanitized_data['other'],
+                'sponsor' => $sanitized_data['sponsor'],
                 'user_id' => (int)$user->getId()
             );
             $talk = new Talk($app['db']);
@@ -175,6 +217,12 @@ class TalkController
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
+                'level' => $req->get('level'),
+                'category' => $req->get('category'),
+                'desired' => $req->get('desired'),
+                'slides' => $req->get('slides'),
+                'other' => $req->get('other'),
+                'sponsor' => $req->get('sponsor'),
                 'buttonInfo' => 'Update my talk!',
                 'user' => $user,
                 'error_message' => implode("<br>", $form->getErrorMessages())

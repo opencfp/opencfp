@@ -34,6 +34,12 @@ class TalkTest extends PHPUnit_Framework_TestCase
             'title' => "The Awesome Talk of Awesomeoneess",
             'description' => "This is where a description of the talk would go, how long should it be?",
             'type' => 'tutorial',
+            'category' => 'development',
+            'level' => 'entry',
+            'slides' => 'http://slideshare.net',
+            'other' => 'Misc comments',
+            'desired' => 1,
+            'sponsor' => 1,
             'user_id' => 1
         );
         $response = $talk->create($data);
@@ -190,6 +196,12 @@ class TalkTest extends PHPUnit_Framework_TestCase
             'title' => 'Test Talk',
             'description' => 'Test description',
             'type' => 'session',
+            'category' => 'development',
+            'level' => 'entry',
+            'slides' => 'http://slideshare.net',
+            'other' => 'Misc comments',
+            'desired' => 1,
+            'sponsor' => 1,
             'user_id' => 1
         );
 
