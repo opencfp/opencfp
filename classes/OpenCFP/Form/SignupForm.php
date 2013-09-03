@@ -12,6 +12,8 @@ class SignupForm extends Form
         'password2',
         'first_name',
         'last_name',
+        'company',
+        'twitter',
         'speaker_info',
         'speaker_bio'
     );
@@ -35,6 +37,8 @@ class SignupForm extends Form
         $valid_email = $this->validateEmail();
         $valid_first_name = $this->validateFirstName();
         $valid_last_name = $this->validateLastName();
+        $valid_company = $this->validateCompany();
+        $valid_twitter = $this->validateTwitter();
         $valid_speaker_info = true;
         $valid_speaker_bio = true;
 
@@ -51,6 +55,8 @@ class SignupForm extends Form
             $valid_passwords &&
             $valid_first_name &&
             $valid_last_name &&
+            $valid_company &&
+            $valid_twitter &&
             $valid_speaker_info &&
             $valid_speaker_bio
         );
@@ -168,6 +174,20 @@ class SignupForm extends Form
             return false;
         }
 
+        return true;
+    }
+    
+    public function validateCompany()
+    {
+        // $company = $this->_cleanData['company'];
+        
+        return true;
+    }
+    
+    public function validateTwitter()
+    {
+        // $twitter = $this->_cleanData['twitter'];
+        
         return true;
     }
 

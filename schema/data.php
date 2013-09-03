@@ -28,6 +28,12 @@ $table->addColumn('id', 'integer', array('autoincrement' => true));
 $table->addColumn('title', 'string', array('length' => 100, 'fixed' => true));
 $table->addColumn('description', 'text', array('notnull' => false));
 $table->addColumn('type', 'string', array('notnull' => false, 'length' => 50, 'fixed' => true));
+$table->addColumn('level', 'string', array('notnull' => false, 'length' => 50, 'fixed' => true));
+$table->addColumn('category', 'string', array('notnull' => false, 'length' => 50, 'fixed' => true));
+$table->addColumn('desired', 'boolean', array('default' => '0'));
+$table->addColumn('slides', 'string', array('notnull' => false, 'length' => 255));
+$table->addColumn('other', 'text', array('notnull' => false));
+$table->addColumn('sponsor', 'boolean', array('default' => '0'));
 $table->addColumn('user_id', 'integer', array());
 $table->setPrimaryKey(array('id'), 'PRIMARY');
 
@@ -56,6 +62,8 @@ $table->addColumn('persist_code', 'string', array('notnull' => false, 'length' =
 $table->addColumn('reset_password_code', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('first_name', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('last_name', 'string', array('notnull' => false, 'length' => 255));
+$table->addColumn('company', 'string', array('notnull' => false, 'length' => 255));
+$table->addColumn('twitter', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('created_at', 'datetime', array('default' => '0000-00-00 00:00:00'));
 $table->addColumn('updated_at', 'datetime', array('default' => '0000-00-00 00:00:00'));
 $table->setPrimaryKey(array('id'), 'PRIMARY');

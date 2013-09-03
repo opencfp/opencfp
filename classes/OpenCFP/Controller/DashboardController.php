@@ -14,7 +14,8 @@ class DashboardController
         }
 
         $user = $app['sentry']->getUser();
-        $permissions = $user->getPermissions();
+        $permissions['admin'] = $user->hasPermission('admin');
+        
         $talk = new Talk($app['db']);
         $my_talks = $talk->findByUserId($user->getId());
         

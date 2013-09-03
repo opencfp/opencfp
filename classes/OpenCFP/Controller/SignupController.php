@@ -37,6 +37,8 @@ class SignupController
         $form_data = array(
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
+            'company' => $req->get('company'),
+            'twitter' => $req->get('twitter'),
             'email' => $req->get('email'),
             'password' => $req->get('password'),
             'password2' => $req->get('password2')
@@ -54,6 +56,8 @@ class SignupController
             $user_data = array(
                 'first_name' => $sanitized_data['first_name'],
                 'last_name' => $sanitized_data['last_name'],
+                'company' => $sanitized_data['company'],
+                'twitter' => $sanitized_data['twitter'],
                 'email' => $sanitized_data['email'],
                 'password' => $sanitized_data['password'],
                 'activated' => 1

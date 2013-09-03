@@ -28,8 +28,8 @@ class Talk
     {
         $sql = "
             INSERT INTO talks
-            (title, description, type, user_id)
-            VALUES (?, ?, ?, ?)
+            (title, description, type, level, category, desired, slides, other, sponsor, user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ";
         $stmt = $this->_db->prepare($sql);
 
@@ -38,6 +38,12 @@ class Talk
                 trim($data['title']),
                 trim($data['description']),
                 trim($data['type']),
+                trim($data['level']),
+                trim($data['category']),
+                trim($data['desired']),
+                trim($data['slides']),
+                trim($data['other']),
+                trim($data['sponsor']),
                 $data['user_id']
             )
         );
@@ -89,7 +95,13 @@ class Talk
         $sql = "UPDATE talks
             SET title = ?,
             description = ?,
-            type = ?
+            type = ?,
+            level = ?,
+            category = ?,
+            desired = ?,
+            slides = ?,
+            other = ?,
+            sponsor = ?
             WHERE id = ?
             AND user_id = ?
         ";
@@ -98,6 +110,12 @@ class Talk
             trim($data['title']),
             trim($data['description']),
             trim($data['type']),
+            trim($data['level']),
+            trim($data['category']),
+            trim($data['desired']),
+            trim($data['slides']),
+            trim($data['other']),
+            trim($data['sponsor']),
             $data['id'],
             $data['user_id']
         ));

@@ -6,7 +6,7 @@
     {% set active_page = active_page|default('/home') %}
 {% endif %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>{% block title %}{{ site.title }}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,24 +15,24 @@
         <link href="{{ site.url }}/assets/css/site.css" rel="stylesheet" media="screen">
     </head>
     <body>
-        <div class="container-narrow">
-            <div class="masthead">
-                {% block navigation %}
-                    <ul id="navigation" class="nav nav-pills pull-right">
-                        {% for item in navigation_bar %}
-                            <li{% if item[0] == active_page %} class="active"{% endif%}>
+    <div class="container-narrow">
+        <div class="masthead">
+            {% block navigation %}
+                <ul id="navigation" class="nav nav-pills pull-right">
+                    {% for item in navigation_bar %}
+                        <li{% if item[0] == active_page %} class="active"{% endif%}>
                             <a href="{{ site.url }}{{ item[0] }}">{{item[1]}}</a></li>
-                        {% endfor %}
-                    </ul>
-                {% endblock %}
-                {% block mainheading %}<h3 class="muted">{{ site.title}}</h3>{% endblock %}
-            </div>
-            {% block content %}
+                    {% endfor %}
+                </ul>
             {% endblock %}
+            {% block mainheading %}<h3 class="muted">{{ site.title}}</h3>{% endblock %}
         </div>
-        {% block scripts %}
-            <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-            <script src="{{ site.url }}/assets/js/bootstrap.min.js"></script>
+        {% block content %}
         {% endblock %}
+    </div>
+    {% block scripts %}
+        <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+        <script src="{{ site.url }}/assets/js/bootstrap.min.js"></script>
+    {% endblock %}
     </body>
 </html>

@@ -80,7 +80,7 @@ class Speaker
     public function getDetailsByUserId($user_id)
     {
         $sql = "
-            SELECT u.email, u.first_name, u.last_name, s.info, s.bio
+            SELECT u.email, u.first_name, u.last_name, u.company, u.twitter, s.info, s.bio
             FROM users u
             LEFT JOIN speakers s ON s.user_id = u.id
             WHERE u.id = ?
@@ -109,12 +109,16 @@ class Speaker
 
         if ($details['first_name'] != $speaker_details['first_name']
             || $details['last_name'] != $speaker_details['last_name']
+            || $details['company'] != $speaker_details['company']
+            || $details['twitter'] != $speaker_details['twitter']
             || $details['email'] != $speaker_details['email']) {
             $sql = "
                 UPDATE users
                 SET email = ?,
                 first_name = ?,
-                last_name = ?
+                last_name = ?,
+                company = ?,
+                twitter = ?
                 WHERE id = ?
             ";
             $stmt = $this->_db->prepare($sql);
@@ -122,6 +126,8 @@ class Speaker
                 trim($speaker_details['email']),
                 trim($speaker_details['first_name']),
                 trim($speaker_details['last_name']),
+                trim($speaker_details['company']),
+                trim($speaker_details['twitter']),
                 $speaker_details['user_id'])
             );
 

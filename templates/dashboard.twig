@@ -36,6 +36,7 @@ Welcome <b>{{ user.login }}<br><br>
 <thead>
 <tr>
 <th>Talk Name</th>
+<th>Type</th>
 <th>&nbsp;</th>
 </tr>
 </thead>
@@ -43,6 +44,7 @@ Welcome <b>{{ user.login }}<br><br>
 {% for talk in myTalks %}
 <tr id="talk-{{ talk.id }}">
 <td><b>{{ talk.title }}</b></td>
+<td>{{ talk.type }}</td>
 <td><a href="{{ site.url }}/talk/edit/{{ talk.id}}">Edit</a></td>
 <td><a href="#" onClick="deleteTalk('{{ talk.id }}');return false;">Delete</a></td>
 </tr>
