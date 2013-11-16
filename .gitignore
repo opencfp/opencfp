@@ -9,3 +9,4 @@
 /htmlpurifier_cache
 .DS_Store
 opencfp.iml
+composer.lock
