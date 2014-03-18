@@ -25,7 +25,7 @@ class ForgotController
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => '',
-                'ext' => "Please enter a properly formatted email address"
+                'ext' => "Please enter a properly formatted email address."
             ));
             
             return $app->redirect($app['url'] . '/forgot');
@@ -54,7 +54,7 @@ class ForgotController
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => '',
-                'ext' => "We were unable to send your password reset request. Please try again"
+                'ext' => "We were unable to send your password reset request. Please try again."
             ));
             
             return $app->redirect($app['url'] . '/forgot');
@@ -138,7 +138,7 @@ class ForgotController
          * already
          */
         if ($user->checkPassword($data['password']) === true) {
-            $passwordError = new \Symfony\Component\Form\FormError('text', 'Please select a different password than your current one');
+            $passwordError = new \Symfony\Component\Form\FormError('text', 'Please select a different password than your current one.');
             $form->addError($passwordError);
             $template = $app['twig']->loadTemplate('reset_password.twig');
 

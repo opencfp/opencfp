@@ -21,7 +21,7 @@ class ProfileController
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => '',
-                'ext' => "You cannot edit someone else's profile"
+                'ext' => "You cannot edit someone else's profile."
             ));
             return $app->redirect($app['url'] . '/dashboard');
         }
@@ -57,7 +57,7 @@ class ProfileController
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => '',
-                'ext' => "You cannot edit someone else's profile"
+                'ext' => "You cannot edit someone else's profile."
             ));
             return $app->redirect($app['url'] . '/dashboard');
         }
@@ -86,7 +86,7 @@ class ProfileController
             }
 
             if ($response == false) {
-                $form_data['error_message'] = "We were unable to update your information. Please try again";
+                $form_data['error_message'] = "We were unable to update your information. Please try again.";
                 $form_data['message_type'] = 'error';
             }
         } else {
