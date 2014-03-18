@@ -100,17 +100,17 @@ class SignupForm extends Form
         }
 
         if ($passwd !== $passwd2) {
-            $this->_addErrorMessage("The submitted passwords do not match");
+            $this->_addErrorMessage("The submitted passwords do not match.");
             return false;
         }
 
         if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
-            $this->_addErrorMessage("The submitted password must be at least 5 characters long");
+            $this->_addErrorMessage("The submitted password must be at least 5 characters long.");
             return false;
         }
 
         if ($passwd !== str_replace(" ", "", $passwd)) {
-            $this->_addErrorMessage("The submitted password contains invalid characters");
+            $this->_addErrorMessage("The submitted password contains invalid characters.");
             return false;
         }
 
@@ -132,17 +132,17 @@ class SignupForm extends Form
         $validation_response = true;
 
         if ($first_name == '') {
-            $this->_addErrorMessage('First name cannot be blank');
+            $this->_addErrorMessage('First name cannot be blank.');
             $validation_response = false;
         }
 
         if (strlen($first_name) > 255) {
-            $this->_addErrorMessage('First name cannot exceed 255 characters');
+            $this->_addErrorMessage('First name cannot exceed 255 characters.');
             $validation_response = false;
         }
 
         if ($first_name !== $this->_taintedData['first_name']) {
-            $this->_addErrorMessage('First name contains unwanted characters');
+            $this->_addErrorMessage('First name contains unwanted characters.');
             $validation_response = false;
         }
 
@@ -160,17 +160,17 @@ class SignupForm extends Form
         $last_name = $this->_cleanData['last_name'];
 
         if (empty($last_name)) {
-            $this->_addErrorMessage("Last name was blank or contained unwanted characters");
+            $this->_addErrorMessage("Last name was blank or contained unwanted characters.");
             return false;
         }
 
         if (strlen($last_name) > 255) {
-            $this->_addErrorMessage("Last name cannot be longer than 255 characters");
+            $this->_addErrorMessage("Last name cannot be longer than 255 characters.");
             return false;
         }
 
         if ($last_name !== $this->_taintedData['last_name']) {
-            $this->_addErrorMessage("Last name data did not match after sanitizing");
+            $this->_addErrorMessage("Last name data did not match after sanitizing.");
             return false;
         }
 
@@ -207,7 +207,7 @@ class SignupForm extends Form
         $speakerInfo = $this->_purifier->purify($speakerInfo);
 
         if (empty($speakerInfo)) {
-            $this->_addErrorMessage("You submitted speaker info but it was empty after sanitizing");
+            $this->_addErrorMessage("You submitted speaker info but it was empty after sanitizing.");
             $validation_response = false;
         }
 
@@ -230,7 +230,7 @@ class SignupForm extends Form
         $speaker_bio = $this->_purifier->purify($speaker_bio);
 
         if (empty($speaker_bio)) {
-            $this->_addErrorMessage("You submitted speaker bio information but it was empty after sanitizing");
+            $this->_addErrorMessage("You submitted speaker bio information but it was empty after sanitizing.");
             $validation_response = false;
         }
 
