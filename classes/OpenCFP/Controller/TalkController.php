@@ -16,7 +16,7 @@ class TalkController
 
         $id = $req->get('id');
         $user = $app['sentry']->getUser();
-        $talk_id= filter_var($id, FILTER_VALIDATE_INT);
+        $talk_id = filter_var($id, FILTER_VALIDATE_INT);
 
         if (empty($talk_id)) {
             return $app->redirect($app['url'] . '/dashboard');
@@ -143,7 +143,7 @@ class TalkController
             $template = $app['twig']->loadTemplate('create_talk.twig');
             $data['formAction'] = '/talk/create';
             $data['buttonInfo'] = 'Submit my talk!';
-            $data['error_message'] = "Unable to create a new record in our talks database, please try again";
+            $data['error_message'] = "Unable to create a new record in our talks database; please try again.";
 
             return $template->render($data);
         }
@@ -151,7 +151,7 @@ class TalkController
         $app['session']->set('flash', array(
             'type' => 'success',
             'short' => '',
-            'ext' => "Succesfully created a talk"
+            'ext' => "Successfully created a talk"
         ));
 
         return $app->redirect($app['url'] . '/dashboard');
