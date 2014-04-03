@@ -10,6 +10,10 @@ use Twig_Loader_Filesystem;
 
 define('APP_DIR', dirname(dirname(__DIR__)));
 
+$environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'development';
+// Set constant for app wide use
+define('APP_ENV', $environment);
+
 class Bootstrap
 {
     private $_app;
@@ -40,7 +44,8 @@ class Bootstrap
         });
 
 		$app['url'] = $this->getConfig('application.url');
-        
+        $app['uploadPath'] = $this->getConfig('upload.path');
+
         // Register the Twig provider and lazy-load the global values
         $app->register(
             new \Silex\Provider\TwigServiceProvider(),
@@ -168,7 +173,7 @@ class Bootstrap
             return $this->_config;
         }
 
-        $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.ini');
+        $loader = new ConfigINIFileLoader($this->getConfigPath());
         $configData = $loader->load();
 
         // Place our info into Pimple
@@ -181,6 +186,11 @@ class Bootstrap
         }
 
         return $this->_config;
+    }
+
+    public function getConfigPath()
+    {
+        return APP_DIR . "/config/config." . APP_ENV . ".ini";
     }
 
     public function getTwig()

@@ -1,0 +1,39 @@
+[application]
+title = "OpenCFP"
+url = "http://cfp.dev"
+email = "contact@openconf.com"
+eventurl = "http://myevent.com"
+enddate = "Oct. 14th, 2013"
+
+[upload]
+path = "/var/www/web/uploads/"
+
+[database]
+dsn = "mysql:dbname=cfp;host=127.0.0.1"
+user = "root"
+password = ""
+
+[twig]
+template_dir = "/templates"
+
+[smtp]
+user = ""
+password = ""
+
+; for Gmail set host = "smtp.gmail.com"
+host = "localhost"
+
+; for Gmail set port = "465"
+port = "25"
+
+; uncomment if your smtp server requires encryption
+; available options are "tls", "ssl"
+; for Gmail set encryption = "ssl"
+;encryption = "ssl"
+
+[htmlpurifier]
+; absolute path to cache the serialized definitions
+; path must be writeable
+; path must not have trailing slash
+; if not set will default to html purifier library folder
+;cachedir = "/path/to/htmlpurifier/cache"
