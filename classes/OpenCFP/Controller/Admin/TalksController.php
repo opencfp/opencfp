@@ -5,7 +5,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Model\Talk;
 use OpenCFP\Model\Speaker;
-use Pagerfanta\View\TwitterBootstrapView;
+use Pagerfanta\View\TwitterBootstrap3View;
 
 class TalksController 
 {
@@ -39,7 +39,7 @@ class TalksController
         $routeGenerator = function($page) {
             return '/admin/talks/' . $page;
         };
-        $view = new TwitterBootstrapView();
+        $view = new TwitterBootstrap3View();
         $pagination = $view->render(
             $pagerfanta,
             $routeGenerator,

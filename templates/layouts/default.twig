@@ -1,9 +1,8 @@
-{% if user is defined %}
-    {% set navigation_bar = [['/', 'Home'], ['/dashboard', 'Dashboard'], ['/logout', 'Logout']] %}
-    {% set active_page = active_page|default('/dashboard') %}
+{% if user is not empty %}
+    {% set profile_edit_url = '/profile/edit/' ~ user.id %}
+    {% set navigation_bar = [['/dashboard', 'Dashboard'], ['/profile/change_password', 'Change Password'], [profile_edit_url, 'Edit Profile'], ['/logout', 'Logout']] %}
 {% else %}
-    {% set navigation_bar = [['/', 'Home']] %}
-    {% set active_page = active_page|default('/home') %}
+    {% set navigation_bar = [['/login', 'Login']] %}
 {% endif %}
 <!DOCTYPE html>
 <html lang="en">
@@ -13,26 +12,52 @@
         <!-- Bootstrap -->
         <link href="{{ site.url }}/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="{{ site.url }}/assets/css/site.css" rel="stylesheet" media="screen">
+        <link href="{{ site.url }}/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:300,700|Open+Sans+Condensed:700,300|Sanchez' rel='stylesheet' type='text/css'>
     </head>
-    <body>
-    <div class="container-narrow">
-        <div class="masthead">
-            {% block navigation %}
-                <ul id="navigation" class="nav nav-pills pull-right">
-                    {% for item in navigation_bar %}
-                        <li{% if item[0] == active_page %} class="active"{% endif%}>
-                            <a href="{{ site.url }}{{ item[0] }}">{{item[1]}}</a></li>
-                    {% endfor %}
-                </ul>
-            {% endblock %}
-            {% block mainheading %}<h3 class="muted">{{ site.title}}</h3>{% endblock %}
+    <body{% if "/" == current_page %} class="home-page"{% endif %}>
+        <div class="navbar navbar-lsp navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li{% if "/" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/">Home</a></li>
+                        <li{% if "/package" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/package">Speaker Package</a></li>
+                        <li{% if "/ideas" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/ideas">Talk Ideas</a></li>
+                    </ul>
+                    {% block navigation %}
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if permissions.admin == true %}
+                                <li><a href="{{ site.url }}/admin">Admin</a></li>
+                            {% endif %}
+                            {% for item in navigation_bar %}
+                                <li{% if item[0] == current_page %} class="active"{% endif %}>
+                                    <a href="{{ site.url }}{{ item[0] }}">{{item[1]}}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endblock %}
+                </div>
+            </div>
         </div>
-        {% block content %}
+
+        <div class="container">
+            <div class="module">
+                {% include "_flash.twig" %}
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        {% block scripts %}
+            <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+            <script src="{{ site.url }}/assets/js/bootstrap.min.js"></script>
         {% endblock %}
-    </div>
-    {% block scripts %}
-        <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-        <script src="{{ site.url }}/assets/js/bootstrap.min.js"></script>
-    {% endblock %}
     </body>
 </html>
