@@ -7,19 +7,28 @@ use OpenCFP\Model\Talk;
 use OpenCFP\Model\Speaker;
 use Pagerfanta\View\TwitterBootstrap3View;
 
-class TalksController 
+class TalksController
 {
-    public function indexAction(Request $req, Application $app)
+    protected function userHasAccess($app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return false;
         }
 
         $user = $app['sentry']->getUser();
-        $permissions = $user->hasPermission('admin');
-        
-        if (!$permissions) {
-            return $app->redirect($app['url'] . '/login');
+
+        if (!$user->hasPermission('admin')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function indexAction(Request $req, Application $app)
+    {
+        // Check if user is an logged in and an Admin
+        if (!$this->userHasAccess($app)) {
+            return $app->redirect($app['url'] . '/dashboard');
         }
 
         $talkModel = new Talk($app['db']);
@@ -37,7 +46,7 @@ class TalksController
 
         // Create our default view for the navigation options
         $routeGenerator = function($page) {
-            return '/admin/talks/' . $page;
+            return '/admin/talks?page=' . $page;
         };
         $view = new TwitterBootstrap3View();
         $pagination = $view->render(
@@ -46,11 +55,12 @@ class TalksController
             array('proximity' => 3)
         );
 
-        $template = $app['twig']->loadTemplate('admin/talks.twig');
+        $template = $app['twig']->loadTemplate('admin/talks/index.twig');
         $templateData = array(
             'pagination' => $pagination,
             'talks' => $pagerfanta,
-            'page' => $pagerfanta->getCurrentPage()
+            'page' => $pagerfanta->getCurrentPage(),
+            'totalRecords' => count($rawTalks)
         );
 
         return $template->render($templateData);
@@ -58,15 +68,9 @@ class TalksController
 
     public function viewAction(Request $req, Application $app)
     {
-        if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
-        }
-
-        $user = $app['sentry']->getUser();
-        $permissions['admin'] = $user->hasPermission('admin');
-
-        if (!$permissions['admin']) {
-            return $app->redirect($app['url'] . '/login');
+        // Check if user is an logged in and an Admin
+        if (!$this->userHasAccess($app)) {
+            return $app->redirect($app['url'] . '/dashboard');
         }
 
         // Get info about the talks
@@ -76,14 +80,11 @@ class TalksController
 
         // Get info about our speaker
         $speakerModel = new Speaker($app['db']);
-        $speaker = $speakerModel->findByUserId($talk['user_id']);
-        
-        $talkUser = $user->find($talk['user_id']);
-        $speaker['name'] = "{$talkUser['first_name']} {$talkUser['last_name']}";
+        $speaker = $speakerModel->getDetailsByUserId($talk['user_id']);
 
         // Grab all the other talks and filter out the one we have
         $rawTalks = $talkModel->findByUserId($talk['user_id']);
-        
+
         $otherTalks = array_filter($rawTalks, function ($talk) use ($talkId) {
             if ($talk['id'] !== $talkId) {
                 return true;

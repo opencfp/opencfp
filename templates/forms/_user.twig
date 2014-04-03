@@ -1,0 +1,82 @@
+<form action="{{ site.url }}{{ formAction }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+    {% if id is defined %}
+        <input name="id" type="hidden" value="{{ id }}">
+    {% endif %}
+    <div class="form-group">
+        <label for="form-user-email" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+            <input id="form-user-email" type="email" name="email" class="form-control" placeholder="you@domain.com" value="{{ email }}">
+        </div>
+    </div>
+    {% if formAction == '/signup' %}
+        <div class="form-group">
+            <label for="form-user-password" class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-10">
+                <input id="form-user-password" type="password" name="password" class="form-control" placeholder="Password, at least 5 characters">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="form-user-password2" class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-10">
+                <input id="form-user-password2" type="password" name="password2" class="form-control" placeholder="Password (confirm)">
+            </div>
+        </div>
+    {% endif %}
+    <div class="form-group">
+        <label for="form-user-first-name" class="col-sm-2 control-label">First Name</label>
+        <div class="col-sm-10">
+            <input id="form-user-first-name" type="text" name="first_name" class="form-control" placeholder="First Name" value="{{ first_name }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="form-user-last-name" class="col-sm-2 control-label">Last Name</label>
+        <div class="col-sm-10">
+            <input id="form-user-last-name" type="text" name="last_name" class="form-control" placeholder="Last Name" value="{{ last_name }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="form-user-company" class="col-sm-2 control-label">Company</label>
+        <div class="col-sm-10">
+            <input id="form-user-company" type="text" name="company" class="form-control" placeholder="Company" value="{{ company }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="form-user-twitter" class="col-sm-2 control-label">Twitter</label>
+        <div class="col-sm-10">
+            <input id="form-user-twitter" type="text" name="twitter" class="form-control" placeholder="@twitter" value="@{{ twitter }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="form-user-bio" class="col-sm-2 control-label">Speaker Bio</label>
+        <div class="col-sm-10">
+            <textarea id="form-user-bio" name="speaker_bio" class="form-control" placeholder="Information About You" rows="5">{{ speaker_bio }}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="form-user-airport" class="col-sm-2 control-label">Departing Airport</label>
+        <div class="col-sm-10">
+            <input id="form-user-airport" type="text" name="airport" class="form-control" placeholder="Airport Code" value="{{ airport }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="form-user-notes" class="col-sm-2 control-label">Additional Notes</label>
+        <div class="col-sm-10">
+            <textarea id="form-user-notes" name="speaker_info" class="form-control" placeholder="Other information you feel the organizers should be aware of" rows="5">{{ speaker_info }}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="form-user-notes" class="col-sm-2 control-label">Photo</label>
+        <div class="col-sm-10">
+            <input type="file" id="form-user-photo" name="speaker_photo" class="form-control" placeholder="Photo at least 300px wide by 300px high" accept="image/jpg, image/jpeg, image/png">
+            <p class="help-block">Photo must be at least 250px wide by 250px high. JPG and PNG are the only accepted formats.</p>
+            {% if speaker_photo is not empty %}
+                <img src="/uploads/{{ speaker_photo }}" class="profile-photo">
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-success">{{ buttonInfo }}</button>
+        </div>
+    </div>
+</form>

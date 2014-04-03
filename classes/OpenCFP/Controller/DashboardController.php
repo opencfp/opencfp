@@ -15,10 +15,10 @@ class DashboardController
 
         $user = $app['sentry']->getUser();
         $permissions['admin'] = $user->hasPermission('admin');
-        
+
         $talk = new Talk($app['db']);
         $my_talks = $talk->findByUserId($user->getId());
-        
+
         // Load our template and RENDER
         $template = $app['twig']->loadTemplate('dashboard.twig');
         $template_data = array(

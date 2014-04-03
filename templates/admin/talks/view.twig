@@ -1,0 +1,15 @@
+{% extends "layouts/admin.twig" %}
+{% block content %}
+    <h2 class="headline">{{ talk.title }}</h2>
+    <h4>Submitted by <a href="{{ site.url }}/admin/speakers/{{ talk.user_id }}">{{ speaker.first_name }} {{ speaker.last_name }}</a></h4>
+    <p>{{ talk.description|raw }}</p>
+
+    {% if otherTalks | length > 0 %}
+        <h4>Other talks by this speaker</h4>
+        {% for talk in otherTalks %}
+            <a href="{{ site.url}}/admin/talks/{{ talk.id }}">{{ talk.title }}</a><br>
+        {% endfor %}
+    {% endif %}
+
+    <p><a href="{{ site.url}}/admin/talks" class="btn btn-primary">Return to viewing all talks</a></p>
+{% endblock %}

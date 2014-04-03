@@ -6,9 +6,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Form\SignupForm;
 use OpenCFP\Model\Speaker;
+use Intervention\Image\Image;
 
 class SignupController
 {
+    public function getFlash(Application $app)
+    {
+        $flash = $app['session']->get('flash');
+        $this->clearFlash($app);
+        return $flash;
+    }
+
+    public function clearFlash(Application $app)
+    {
+        $app['session']->set('flash', null);
+    }
+
     public function indexAction(Request $req, Application $app)
     {
         // Reset our user to make sure nothing weird happens
@@ -16,7 +29,7 @@ class SignupController
             $app['sentry']->logout();
         }
 
-        $template = $app['twig']->loadTemplate('create_user.twig');
+        $template = $app['twig']->loadTemplate('user/create.twig');
         $form_data = array();
         $form_data['formAction'] = '/signup';
         $form_data['buttonInfo'] = 'Create my speaker profile';
@@ -24,12 +37,6 @@ class SignupController
         return $template->render($form_data);
     }
 
-    public function successAction(Application $app)
-    {
-        $template = $app['twig']->loadTemplate('create_user_success.twig');
-
-        return $template->render(array());
-    }
 
     public function processAction(Request $req, Application $app)
     {
@@ -41,7 +48,8 @@ class SignupController
             'twitter' => $req->get('twitter'),
             'email' => $req->get('email'),
             'password' => $req->get('password'),
-            'password2' => $req->get('password2')
+            'password2' => $req->get('password2'),
+            'airport' => $req->get('airport')
         );
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
@@ -60,8 +68,14 @@ class SignupController
                 'twitter' => $sanitized_data['twitter'],
                 'email' => $sanitized_data['email'],
                 'password' => $sanitized_data['password'],
+                'airport' => $sanitized_data['airport'],
                 'activated' => 1
             );
+
+            // Remove leading @ for twitter
+            if ($sanitized_data['twitter'][0] === "@") {
+                $sanitized_data['twitter'] = substr($sanitized_data['twitter'], 1);
+            }
 
             try {
                 $user = $app['sentry']->getUserProvider()->create($user_data);
@@ -78,17 +92,32 @@ class SignupController
                     'bio' => $sanitized_data['speaker_bio']
                 ));
 
-                return $app->redirect($app['url'] . '/signup/success');
+                // Set Success Flash Message
+                $app['session']->set('flash', array(
+                    'type' => 'success',
+                    'short' => 'Success',
+                    'ext' => "You've successfully created your account!",
+                ));
+
+                return $app->redirect($app['url'] . '/login');
             } catch (UserExistsException $e) {
-                $form_data['error_message'] = 'A user already exists with that email address.';
+                $errorMessage = 'A user already exists with that email address';
             }
         } else {
-            $form_data['error_message'] = implode("<br>", $form->getErrorMessages());
+            $errorMessage = implode("<br>", $form->getErrorMessages());
         }
 
-        $template = $app['twig']->loadTemplate('create_user.twig');
+        // Set Success Flash Message
+        $app['session']->set('flash', array(
+            'type' => 'error',
+            'short' => 'Error',
+            'ext' => $errorMessage,
+        ));
+
+        $template = $app['twig']->loadTemplate('user/create.twig');
         $form_data['formAction'] = '/signup';
         $form_data['buttonInfo'] = 'Create my speaker profile';
+        $form_data['flash'] = $this->getFlash($app);
 
         return $template->render($form_data);
     }

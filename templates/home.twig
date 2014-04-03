@@ -1,19 +1,18 @@
 {% extends "layouts/default.twig" %}
-{% set active_page = "/" %}
 {% block content %}
-    <div class="jumbotron">
-        <h1>Submit your talk idea for<br />{{ site.title }}</h1>
-        <h3>Submissions will be accepted until midnight {{ site.enddate }}</h3>
-        <h4>For information about the conference, please visit<br />
-            <a href="{{ site.eventurl }}">{{ site.eventurl }}</a></h4>
-        <br>
-        {% if user is not defined  %}
-            <a class="btn btn-large btn-warning" href="{{ site.url }}/signup">Create my profile!</a>
-            <a class="btn btn-large btn-success" href="{{ site.url }}/login">
-                <div class="small">I have a profile</div>
-                <div>Let me in!</div>
-            </a>
-        {% endif %}
+    <div class="intro--block">
+        <div class="intro-body">
+            <p><img src="{{ site.url }}/assets/img/lonestarphp-logo.png" class="logo"></p>
+            <p>Submissions accepted until 11:59 PM CST <span class="intro-highlight">{{ site.enddate }}</span></p>
+            <p>For information about the conference, please visit:</p>
+            <p><a href="{{ site.eventurl }}" target="_blank" rel="external">{{ site.eventurl }}</a></p>
+            <p>
+            {% if user is not defined  %}
+                <a class="lsp-btn lsp-btn-large lsp-btn-primary" href="{{ site.url }}/signup"><i class="fa fa-user"></i> Create my profile!</a>
+                <a class="lsp-btn lsp-btn-large lsp-btn-primary" href="{{ site.url }}/dashboard"><i class="fa fa-list-alt"></i> View Submissions</a>
+            {% endif %}
+            </p>
+        </div>
     </div>
-    {% include "marketing.twig" %}
+    {% include "_marketing.twig" %}
 {% endblock %}

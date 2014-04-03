@@ -68,6 +68,7 @@ CREATE TABLE `users` (
   `last_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `company` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `twitter` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `airport` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
@@ -115,5 +116,7 @@ CREATE TABLE `talks` (
     `other` text,
     `sponsor` tinyint(4) NOT NULL DEFAULT '0',
     `user_id` int(10) unsigned NOT NULL,
+    `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

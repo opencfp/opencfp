@@ -7,6 +7,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecurityController
 {
+    public function getFlash(Application $app)
+    {
+        $flash = $app['session']->get('flash');
+        $this->clearFlash($app);
+        return $flash;
+    }
+
+    public function clearFlash(Application $app)
+    {
+        $app['session']->set('flash', null);
+    }
+
     public function indexAction(Request $req, Application $app)
     {
         $template = $app['twig']->loadTemplate('login.twig');
@@ -23,24 +35,34 @@ class SecurityController
         try {
             $page = new \OpenCFP\Login($app['sentry']);
 
-            if ($page->authenticate($req->get('email'), $req->get('passwd'))) {
+            if ($page->authenticate($req->get('email'), $req->get('password'))) {
                 return $app->redirect($app['url'] . '/dashboard');
             }
+
+            $errorMessage = $page->getAuthenticationMessage();
 
             $template_data = array(
                 'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
-                'errorMessage' => $page->getAuthenticationMessage()
             );
             $code = 400;
         } catch (Exception $e) {
+            $errorMessage = $e->getMessage();
             $template_data = array(
                 'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
-                'errorMessage' => $e->getMessage()
             );
             $code = 400;
         }
+
+        // Set Success Flash Message
+        $app['session']->set('flash', array(
+            'type' => 'error',
+            'short' => 'Error',
+            'ext' => $errorMessage,
+        ));
+
+        $template_data['flash'] = $this->getFlash($app);
 
         return new Response($template->render($template_data), $code);
     }
