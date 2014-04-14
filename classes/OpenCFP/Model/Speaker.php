@@ -40,13 +40,14 @@ class Speaker
             $data['bio'] = null;
         }
 
-        $sql = "INSERT INTO speakers (user_id, info ,bio) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO speakers (user_id, info, bio, photo_path) VALUES (?, ?, ?, ?)";
         $stmt = $this->_db->prepare($sql);
 
         return $stmt->execute(array(
             $data['user_id'],
             trim($data['info']),
-            trim($data['bio'])
+            trim($data['bio']),
+            $data['photo_path'],
         )
     );
     }
@@ -80,7 +81,7 @@ class Speaker
     public function getDetailsByUserId($user_id)
     {
         $sql = "
-            SELECT u.email, u.first_name, u.last_name, u.company, u.twitter, s.info, s.bio
+            SELECT u.email, u.first_name, u.last_name, u.company, u.twitter, u.airport, s.info, s.bio, s.photo_path
             FROM users u
             LEFT JOIN speakers s ON s.user_id = u.id
             WHERE u.id = ?
@@ -107,6 +108,13 @@ class Speaker
         // Grab our details and build a comparison
         $details = $this->getDetailsByUserId($speaker_details['user_id']);
 
+        $speakerPhoto = isset($speaker_details['speaker_photo']) ? $speaker_details['speaker_photo'] : $details['photo_path'];
+
+        // Remove old photo if new one has been uploaded
+        if ($speakerPhoto !== $details['photo_path']) {
+            unlink(UPLOAD_PATH . $details['photo_path']);
+        }
+
         if ($details['first_name'] != $speaker_details['first_name']
             || $details['last_name'] != $speaker_details['last_name']
             || $details['company'] != $speaker_details['company']
@@ -118,7 +126,8 @@ class Speaker
                 first_name = ?,
                 last_name = ?,
                 company = ?,
-                twitter = ?
+                twitter = ?,
+                airport = ?
                 WHERE id = ?
             ";
             $stmt = $this->_db->prepare($sql);
@@ -128,6 +137,7 @@ class Speaker
                 trim($speaker_details['last_name']),
                 trim($speaker_details['company']),
                 trim($speaker_details['twitter']),
+                trim($speaker_details['airport']),
                 $speaker_details['user_id'])
             );
 

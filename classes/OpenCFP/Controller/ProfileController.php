@@ -84,15 +84,53 @@ class ProfileController
             'last_name' => $req->get('last_name'),
             'company' => $req->get('company'),
             'twitter' => $req->get('twitter'),
+            'airport' => $req->get('airport'),
             'speaker_info' => $req->get('speaker_info') ?: null,
             'speaker_bio' => $req->get('speaker_bio') ?: null,
         );
+
+        if ($req->files->get('speaker_photo') != null) {
+            // Upload Image
+            $form_data['speaker_photo'] = $req->files->get('speaker_photo');
+        }
 
         $form = new SignupForm($form_data, $app['purifier']);
 
         $flash = array();
         if ($form->validateAll('update') == true) {
             $sanitized_data = $form->getCleanData();
+
+            // Remove leading @ for twitter
+            if ($sanitized_data['twitter'][0] === "@") {
+                $sanitized_data['twitter'] = substr($sanitized_data['twitter'], 1);
+            }
+
+            if (isset($form_data['speaker_photo'])) {
+                // Move file into uploads directory
+                $fileName = $form_data['speaker_photo']->getClientOriginalName();
+                $form_data['speaker_photo']->move($app['uploadPath'], $fileName);
+
+                // Resize Photo
+                $speakerPhoto = Image::make($app['uploadPath'] . '/' . $fileName);
+
+                if ($speakerPhoto->height > $speakerPhoto->width) {
+                    $speakerPhoto->resize(250, null, true);
+                } else {
+                    $speakerPhoto->resize(null, 250, true);
+                }
+
+                $speakerPhoto->crop(250, 250);
+
+
+                // Give photo a unique name
+                $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $speakerPhoto->extension;
+
+                // Resize image and destroy original
+                if ($speakerPhoto->save($app['uploadPath'] . $sanitized_data['speaker_photo'])) {
+                    unlink($app['uploadPath'] . $fileName);
+                }
+            }
+
             $speaker = new Speaker($app['db']);
             $response = $speaker->update($sanitized_data);
 

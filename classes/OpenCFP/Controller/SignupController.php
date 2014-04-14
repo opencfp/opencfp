@@ -54,11 +54,41 @@ class SignupController
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
 
+        if ($req->files->get('speaker_photo') != null) {
+            // Upload Image
+            $form_data['speaker_photo'] = $req->files->get('speaker_photo');
+        }
+
         $form = new SignupForm($form_data, $app['purifier']);
         $form->sanitize();
 
         if ($form->validateAll()) {
             $sanitized_data = $form->getCleanData();
+
+            if (isset($form_data['speaker_photo'])) {
+                // Move file into uploads directory
+                $fileName = $form_data['speaker_photo']->getClientOriginalName();
+                $form_data['speaker_photo']->move($app['uploadPath'], $fileName);
+
+                // Resize Photo
+                $speakerPhoto = Image::make($app['uploadPath'] . '/' . $fileName);
+
+                if ($speakerPhoto->height > $speakerPhoto->width) {
+                    $speakerPhoto->resize(250, null, true);
+                } else {
+                    $speakerPhoto->resize(null, 250, true);
+                }
+
+                $speakerPhoto->crop(250, 250);
+
+                // Give photo a unique name
+                $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $speakerPhoto->extension;
+
+                // Resize image and destroy original
+                if ($speakerPhoto->save($app['uploadPath'] . $sanitized_data['speaker_photo'])) {
+                    unlink($app['uploadPath'] . $fileName);
+                }
+            }
 
             // Create account using Sentry
             $user_data = array(
@@ -89,7 +119,8 @@ class SignupController
                 $response = $speaker->create(array(
                     'user_id' => $user->getId(),
                     'info' => $sanitized_data['speaker_info'],
-                    'bio' => $sanitized_data['speaker_bio']
+                    'bio' => $sanitized_data['speaker_bio'],
+                    'photo_path' => $sanitized_data['speaker_photo'],
                 ));
 
                 // Set Success Flash Message

@@ -46,6 +46,7 @@ php::module { 'curl' : }
 php::module { 'intl' : }
 php::module { 'mcrypt' : }
 php::module { 'mysql' : }
+php::module { 'gd' : }
 
 class { 'php::pear' :
     require => Class['php'],
