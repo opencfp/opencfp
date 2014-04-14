@@ -35,6 +35,8 @@ $table->addColumn('desired', 'boolean', array('default' => '0'));
 $table->addColumn('slides', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('other', 'text', array('notnull' => false));
 $table->addColumn('sponsor', 'boolean', array('default' => '0'));
+$table->addColumn('favorite', 'boolean', array('default' => '0'));
+$table->addColumn('selected', 'boolean', array('default' => '0'));
 $table->addColumn('user_id', 'integer', array());
 $table->addColumn('created_at', 'datetime', array('notnull' => false));
 $table->addColumn('updated_at', 'datetime', array('notnull' => false));

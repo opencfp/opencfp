@@ -94,14 +94,51 @@ class TalksController
         });
 
         // Build and render the template
-        $template = $app['twig']->loadTemplate('admin/view_talk.twig');
+        $template = $app['twig']->loadTemplate('admin/talks/view.twig');
         $templateData = array(
             'talk' => $talk,
             'speaker' => $speaker,
-            'page' => $req->get('page'),
             'otherTalks' => $otherTalks
         );
         return $template->render($templateData);
+    }
+
+    /**
+     * Set Favorited Talk [POST]
+     * @param Request $req Request Object
+     * @param Application $app Silex Application Object
+     */
+    public function favoriteAction(Request $req, Application $app)
+    {
+        $status = true;
+
+        if ($req->get('delete') !== null) {
+            $status = false;
+        }
+
+        $talk = new Talk($app['db']);
+        $talk->setFavorite($req->get('id'), $status);
+
+        return true;
+    }
+
+    /**
+     * Set Selected Talk [POST]
+     * @param Request $req Request Object
+     * @param Application $app Silex Application Object
+     */
+    public function selectAction(Request $req, Application $app)
+    {
+        $status = true;
+
+        if ($req->get('delete') !== null) {
+            $status = false;
+        }
+
+        $talk = new Talk($app['db']);
+        $talk->setSelect($req->get('id'), $status);
+
+        return true;
     }
 }
 

@@ -115,6 +115,8 @@ CREATE TABLE `talks` (
     `slides` varchar(255),
     `other` text,
     `sponsor` tinyint(4) NOT NULL DEFAULT '0',
+    `favorite` tinyint(1),
+    `selected` tinyint(1),
     `user_id` int(10) unsigned NOT NULL,
     `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
