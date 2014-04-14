@@ -185,7 +185,7 @@ class ForgotController
     protected function sendResetEmail($twig, $user_id, $email, $reset_code)
     {
         // Create our Mailer object
-        $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.ini');
+        $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.' . APP_ENV . '.ini');
         $config_data = $loader->load();
         $transport = new \Swift_SmtpTransport(
             $config_data['smtp']['host'],
