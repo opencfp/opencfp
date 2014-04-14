@@ -32,7 +32,7 @@ class TalksController
         }
 
         $talkModel = new Talk($app['db']);
-        $rawTalks = $talkModel->getAll();
+        $rawTalks = $talkModel->getAll('created_at', 'DESC');
 
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($rawTalks);
