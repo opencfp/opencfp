@@ -153,38 +153,78 @@ class Speaker
         $row = $stmt->fetch();
 
         if (isset($row['speaker_count']) && $row['speaker_count'] == 1) {
-            if ($details['info'] != $speaker_details['speaker_info']
-                || $details['bio'] != $speaker_details['speaker_bio']) {
-                $sql = "
-                    UPDATE speakers
-                    SET info = ?,
-                    bio = ?
-                    WHERE user_id = ?
-                ";
-                $stmt = $this->_db->prepare($sql);
-                $stmt->execute(array(
-                    trim($speaker_details['speaker_info']),
-                    trim($speaker_details['speaker_bio']),
-                    trim($speaker_details['user_id']))
-                );
-
-                if ($stmt->rowCount() !== 1) {
-                    return false;
-                }
+            // Check if any fields have changed
+            if (
+                $speaker_details['speaker_info'] == $details['info'] &&
+                $speaker_details['speaker_bio'] == $details['bio'] &&
+                $speakerPhoto == $details['photo_path']
+            ) {
+                return true;
             }
-        } 
+
+            $sql = "
+                UPDATE speakers
+                SET info = ?,
+                bio = ?,
+                photo_path = ?
+                WHERE user_id = ?
+            ";
+            $stmt = $this->_db->prepare($sql);
+            $stmt->execute(array(
+                trim($speaker_details['speaker_info']),
+                trim($speaker_details['speaker_bio']),
+                $speakerPhoto,
+                trim($speaker_details['user_id']))
+            );
+
+            if ($stmt->rowCount() !== 1) {
+                return false;
+            }
+        }
 
         if (isset($row['speaker_count']) && $row['speaker_count'] == 0) {
-            $sql = "INSERT INTO speakers (user_id, info ,bio) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO speakers (user_id, info, bio, photo_path) VALUES (?, ?, ?, ?)";
             $stmt = $this->_db->prepare($sql);
             return $stmt->execute(array(
                 $speaker_details['user_id'],
                 trim($speaker_details['speaker_info']),
-                trim($speaker_details['speaker_bio'])
+                trim($speaker_details['speaker_bio']),
+                $speakerPhoto
             ));
         }
 
         return true;
+    }
+
+    /**
+     * Return an array of all the speakers, ordered by the last name by default
+     * by default
+     *
+     * @param string $order default is 'title'
+     * @return array
+     */
+    public function getAll($orderBy = 'last_name', $orderByDirection = 'ASC')
+    {
+        $sql = "SELECT * FROM users ORDER BY {$orderBy} {$orderByDirection}";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
+
+
+    /**
+     * Get total record count
+     */
+    public function getTotalRecords()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM users";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetch();
+
+        return $results['total'];
     }
 
     public function changePassword($new_password, $user)
