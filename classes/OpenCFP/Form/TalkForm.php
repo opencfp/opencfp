@@ -45,7 +45,6 @@ class TalkForm extends Form
         return (
             $this->validateTitle() &&
             $this->validateDescription() &&
-            $this->validateType() &&
             $this->validateLevel() &&
             $this->validateCategory() &&
             $this->validateDesired() &&
