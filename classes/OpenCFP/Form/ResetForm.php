@@ -16,8 +16,8 @@ class ResetForm extends AbstractType
                 'type' => 'password',
                 'first_options' => array('label' => 'Password (minimum 5 characters)'),
                 'second_options' => array('label' => 'Password (confirm)'),
-                'first_name' => 'passwd',
-                'second_name' => 'passwd2',
+                'first_name' => 'password',
+                'second_name' => 'password2',
                 'invalid_message' => 'Passwords did not match'))
             ->add('user_id', 'hidden')
             ->add('reset_code', 'hidden')
