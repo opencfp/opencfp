@@ -39,6 +39,7 @@ class SignupForm extends Form
         $valid_last_name = $this->validateLastName();
         $valid_company = $this->validateCompany();
         $valid_twitter = $this->validateTwitter();
+        $valid_speaker_photo = $this->validateSpeakerPhoto();
         $valid_speaker_info = true;
         $valid_speaker_bio = true;
 
@@ -58,8 +59,37 @@ class SignupForm extends Form
             $valid_company &&
             $valid_twitter &&
             $valid_speaker_info &&
-            $valid_speaker_bio
+            $valid_speaker_bio &&
+            $valid_speaker_photo
         );
+    }
+
+    public function validateSpeakerPhoto()
+    {
+        $allowedMimeTypes = array(
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+        );
+
+        // Speaker Photo is not required, only validate if it exists
+        if (!isset($this->_taintedData['speaker_photo'])) {
+            return true;
+        }
+
+        // Check if uploaded file is greater than 5MB
+        if ($this->_taintedData['speaker_photo']->getClientSize() > (5 * 1048576)) {
+            $this->_addErrorMessage("Speaker photo can not be larger than 5MB");
+            return false;
+        }
+
+        // Check if photo is in the mime-type white list
+        if (!in_array($this->_taintedData['speaker_photo']->getMimeType(), $allowedMimeTypes)) {
+            $this->_addErrorMessage("Speaker photo must be a jpg or png");
+            return false;
+        }
+
+        return true;
     }
 
     /**
