@@ -131,25 +131,30 @@ class TalkForm extends Form
         );
 
         if (empty($this->_cleanData['level']) || !isset($this->_cleanData['level'])) {
-            $this->_addErrorMessage("You must choose what level of talk you are submitting.");
+            $this->_addErrorMessage("You must choose what level of talk you are submitting");
             return false;
         }
 
         if (!in_array($this->_cleanData['level'], $validLevels)) {
-            $this->_addErrorMessage("You did not choose a valid talk level.");
+            $this->_addErrorMessage("You did not choose a valid talk level");
             return false;
         }
-        
+
         return true;
     }
-    
+
     public function validateCategory()
     {
         $validCategories = array(
             'development',
             'framework',
             'database',
-            'management',
+            'testing',
+            'security',
+            'devops',
+            'api',
+            'javascript',
+            'uiux',
             'other'
         );
 
