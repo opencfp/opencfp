@@ -8,8 +8,6 @@ use Pimple;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
-define('APP_DIR', dirname(dirname(__DIR__)));
-
 $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'development';
 // Set constant for app wide use
 define('APP_ENV', $environment);
@@ -63,7 +61,7 @@ class Bootstrap
 
             return $twig;
         }));
-        
+
         // Register our use of the Form Service Provider
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Silex\Provider\ValidatorServiceProvider());
