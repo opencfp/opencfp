@@ -9,3 +9,6 @@
 /htmlpurifier_cache
 .DS_Store
 opencfp.iml
+.buildpath
+.project
+.settings
