@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<package xmlns="http://www.zend.com/server/deployment-descriptor/1.0" version="1.0">
+    <name>cfp.zendcon.com</name>
+    <version>
+        <release>0.0.1</release>
+    </version>
+    <appdir>data</appdir>
+    <docroot>data/web</docroot>
+</package>
