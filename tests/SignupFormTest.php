@@ -362,7 +362,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Data provicer for dataGetsReturnedCorrectlySanitized
+     * Data provider for dataGetsReturnedCorrectlySanitized
      *
      * @return array
      */

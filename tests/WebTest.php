@@ -47,7 +47,8 @@ class WebTest extends WebTestCase
         $form['twitter'] = '@name';
         $form['speaker_bio'] = 'Bla.';
         $form['speaker_info'] = 'Bleh.';
-
+        $form['speaker_photo'] = APP_DIR . '/web/uploads/dummyphoto.jpg';
+        
         $crawler = $client->submit($form);
         $crawler = $client->followRedirect();
         $this->assertOk($client);

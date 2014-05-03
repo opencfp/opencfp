@@ -154,7 +154,9 @@ class TalkForm extends Form
             'api',
             'javascript',
             'uiux',
-            'other'
+            'other',
+        	'continuousdelivery',
+        	'ibmi'
         );
 
         if (empty($this->_cleanData['category']) || !isset($this->_cleanData['category'])) {

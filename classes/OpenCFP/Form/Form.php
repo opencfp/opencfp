@@ -59,8 +59,6 @@ abstract class Form
      */
     public function hasRequiredFields()
     {
-        $allFieldsFound = true;
-
         $dataKeys = array_keys($this->_taintedData);
         $foundFields = array_intersect($this->_fieldList, $dataKeys);
 
@@ -71,6 +69,7 @@ abstract class Form
      * Returns the clean data.
      *
      * @array array $keys The wanted data
+     * @param array $keys
      * @return array The cleaned data
      */
     public function getCleanData(array $keys = array())
@@ -94,6 +93,7 @@ abstract class Form
      *
      * @param string $name The tainted value name
      * @param mixed $default The default value to return if not set
+     * @return mixed|null
      */
     public function getTaintedField($name, $default = null)
     {

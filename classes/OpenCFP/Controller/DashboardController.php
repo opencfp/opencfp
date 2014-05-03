@@ -29,5 +29,23 @@ class DashboardController
 
         return $template->render($template_data);
     }
+    
+    public function ideasAction(Request $req, Application $app)
+    {
+    	// Load our template and RENDER
+    	$template = $app['twig']->loadTemplate('ideas.twig');
+    	$template_data = array();
+    
+    	return $template->render($template_data);
+    }
+    
+    public function packageAction(Request $req, Application $app)
+    {
+    	// Load our template and RENDER
+    	$template = $app['twig']->loadTemplate('package.twig');
+    	$template_data = array();
+    
+    	return $template->render($template_data);
+    }
 }
 

@@ -6,17 +6,18 @@ namespace OpenCFP\Form;
  */
 class SignupForm extends Form
 {
-    protected $_fieldList = array(
-        'email',
-        'password',
-        'password2',
-        'first_name',
-        'last_name',
-        'company',
-        'twitter',
-        'speaker_info',
-        'speaker_bio'
-    );
+//    protected $_fieldList = array(
+//        'email',
+//        'password',
+//        'password2',
+//        'first_name',
+//        'last_name',
+//        'company',
+//        'twitter',
+//        'speaker_info',
+//        'speaker_bio',
+//        'speaker_photo'
+//    );
 
     /**
      * Validate all methods by calling all our validation methods
@@ -27,7 +28,6 @@ class SignupForm extends Form
     public function validateAll($action = 'create')
     {
         $this->sanitize();
-        $valid_email = true;
         $valid_passwords = true;
 
         if ($action == 'create') {
@@ -95,7 +95,8 @@ class SignupForm extends Form
     /**
      * Method that applies validation rules to email
      *
-     * @param string $email
+     * @return bool
+     * @internal param string $email
      */
     public function validateEmail()
     {
