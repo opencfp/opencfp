@@ -100,6 +100,8 @@ class WebTest extends WebTestCase
         $crawler = $client->submit($form);
         $crawler = $client->followRedirect();
         $this->assertOk($client);
+        
+        // @todo this works but speaker image left behind, automate cleanup
 
         $response = $client->getResponse();
         $this->assertContains('foo talk', $response->getContent());
