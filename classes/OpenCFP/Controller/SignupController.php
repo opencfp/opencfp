@@ -86,7 +86,7 @@ class SignupController
 
                 // Resize image and destroy original
                 if ($speakerPhoto->save(APP_DIR . '/web/' . $app['uploadPath'] . $sanitized_data['speaker_photo'])) {
-                    unlink(APP_DIR . $app['uploadPath'] . $fileName);
+                    unlink(APP_DIR . '/web/' . $app['uploadPath'] . $fileName);
                 }
             }
 
