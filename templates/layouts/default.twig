@@ -29,6 +29,8 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li{% if "/" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/">Home</a></li>
+                        <li{% if "/package" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/package">Speaker Package</a></li>
+                        <li{% if "/ideas" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/ideas">Talk Ideas</a></li>
                     </ul>
                     {% block navigation %}
                         <ul class="nav navbar-nav navbar-right">
