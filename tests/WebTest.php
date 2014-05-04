@@ -36,7 +36,7 @@ class WebTest extends WebTestCase
         $link = $crawler->filter('a:contains("Create my profile!")')->link();
         $crawler = $client->click($link);
         $this->assertOk($client);
-
+        
         $form = $crawler->filter('form')->form();
         $form['email'] = 'igor@igor.io';
         $form['password'] = 'password123';
@@ -51,9 +51,10 @@ class WebTest extends WebTestCase
         
         $crawler = $client->submit($form);
         $crawler = $client->followRedirect();
+        
         $this->assertOk($client);
 
-        $this->assertContains('Account Created', $client->getResponse()->getContent());
+        $this->assertContains('successfully created', $client->getResponse()->getContent());
 
         return $client;
     }
@@ -66,7 +67,7 @@ class WebTest extends WebTestCase
 
         $form = $crawler->filter('form')->form();
         $form['email'] = 'igor@igor.io';
-        $form['passwd'] = 'password123';
+        $form['password'] = 'password123';
 
         $crawler = $client->submit($form);
 
@@ -94,7 +95,6 @@ class WebTest extends WebTestCase
         $form['level'] = 'entry';
         $form['slides'] = 'http://slideshare.net';
         $form['other'] = 'blah blah';
-        $form['desired'] = '1';
         $form['sponsor'] = '1';
 
         $crawler = $client->submit($form);
