@@ -6,18 +6,18 @@ namespace OpenCFP\Form;
  */
 class SignupForm extends Form
 {
-//    protected $_fieldList = array(
-//        'email',
-//        'password',
-//        'password2',
-//        'first_name',
-//        'last_name',
-//        'company',
-//        'twitter',
-//        'speaker_info',
-//        'speaker_bio',
-//        'speaker_photo'
-//    );
+    protected $_fieldList = array(
+        'email',
+        'password',
+        'password2',
+        'first_name',
+        'last_name',
+        'company',
+        'twitter',
+        'speaker_info',
+        'speaker_bio',
+        'speaker_photo'
+    );
 
     /**
      * Validate all methods by calling all our validation methods
