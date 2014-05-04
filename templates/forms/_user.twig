@@ -70,7 +70,7 @@
             <input type="file" id="form-user-photo" name="speaker_photo" class="form-control" placeholder="Photo at least 300px wide by 300px high" accept="image/jpg, image/jpeg, image/png">
             <p class="help-block">Photo must be at least 250px wide by 250px high. JPG and PNG are the only accepted formats.</p>
             {% if speaker_photo is not empty %}
-                <img src="http://173.203.18.212/zendcon_speaker_headshots/uploads/{{ speaker_photo }}" class="profile-photo">
+                <img src="{{ preview_photo }}" class="profile-photo">
             {% endif %}
         </div>
     </div>

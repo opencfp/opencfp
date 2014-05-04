@@ -201,7 +201,9 @@ class Speaker
      * Return an array of all the speakers, ordered by the last name by default
      * by default
      *
-     * @param string $order default is 'title'
+     * @param string $orderBy
+     * @param string $orderByDirection
+     * @internal param string $order default is 'title'
      * @return array
      */
     public function getAll($orderBy = 'last_name', $orderByDirection = 'ASC')

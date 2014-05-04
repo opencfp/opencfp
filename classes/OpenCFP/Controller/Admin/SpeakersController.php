@@ -80,6 +80,7 @@ class SpeakersController
         $template = $app['twig']->loadTemplate('admin/speaker/view.twig');
         $templateData = array(
             'speaker' => $speaker,
+            'photo_path' => $app['uploadPath'],
             'page' => $req->get('page'),
         );
         return $template->render($templateData);

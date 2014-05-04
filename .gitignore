@@ -5,7 +5,6 @@
 /vendor/*
 /tests/coverage/*
 /templates/compilation_cache
-/config/config.ini
 /htmlpurifier_cache
 .DS_Store
 opencfp.iml

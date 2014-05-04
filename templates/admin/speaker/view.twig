@@ -2,11 +2,11 @@
 {% block content %}
 <div class="row">
     {% if speaker.photo_path is not empty %}
-    <div class="col-md-3">
-        <img src="/uploads/{{ speaker.photo_path }}" alt="">
+    <div class="col-md-4">
+        <img src="{{ photo_path }}{{ speaker.photo_path }}" alt="profile photo">
     </div>
     {% endif %}
-    <div class="col-md-9">
+    <div class="col-md-8">
         <blockquote>
             <h2>{{ speaker.first_name }} {{ speaker.last_name }}</h2>
             <p>{{ speaker.airport }} <i class="fa fa-plane"></i></p>
