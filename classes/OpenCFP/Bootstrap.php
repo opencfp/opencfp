@@ -45,6 +45,9 @@ class Bootstrap
 
 		$app['url'] = $this->getConfig('application.url');
         $app['uploadPath'] = $this->getConfig('upload.path');
+        $app['confAirport'] = $this->getConfig('application.airport');
+        $app['arrival'] = $this->getConfig('application.arrival');
+        $app['departure'] = $this->getConfig('application.departure');
 
         // Register the Twig provider and lazy-load the global values
         $app->register(

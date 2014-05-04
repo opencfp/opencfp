@@ -56,6 +56,9 @@ class SpeakersController
 
         $template = $app['twig']->loadTemplate('admin/speaker/index.twig');
         $templateData = array(
+            'airport' => $app['confAirport'],
+            'arrival' => $app['arrival'],
+            'departure' => $app['departure'],
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage()
