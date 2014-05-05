@@ -47,7 +47,7 @@ class Speaker
             $data['user_id'],
             trim($data['info']),
             trim($data['bio']),
-            $data['photo_path'],
+            $data['photo_path']
         )
     );
     }
@@ -119,7 +119,8 @@ class Speaker
             || $details['last_name'] != $speaker_details['last_name']
             || $details['company'] != $speaker_details['company']
             || $details['twitter'] != $speaker_details['twitter']
-            || $details['email'] != $speaker_details['email']) {
+            || $details['email'] != $speaker_details['email']
+            || $details['airport'] != $speaker_details['airport']) {
             $sql = "
                 UPDATE users
                 SET email = ?,
@@ -200,7 +201,9 @@ class Speaker
      * Return an array of all the speakers, ordered by the last name by default
      * by default
      *
-     * @param string $order default is 'title'
+     * @param string $orderBy
+     * @param string $orderByDirection
+     * @internal param string $order default is 'title'
      * @return array
      */
     public function getAll($orderBy = 'last_name', $orderByDirection = 'ASC')

@@ -29,7 +29,7 @@ class Talk
         $sql = "
             INSERT INTO talks
             (title, description, type, level, category, desired, slides, other, sponsor, user_id, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ";
         $stmt = $this->_db->prepare($sql);
 
@@ -44,7 +44,8 @@ class Talk
                 trim($data['slides']),
                 trim($data['other']),
                 trim($data['sponsor']),
-                $data['user_id']
+                $data['user_id'],
+                date('Y-m-d H:i:s')
             )
         );
     }

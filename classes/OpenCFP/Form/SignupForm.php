@@ -15,7 +15,8 @@ class SignupForm extends Form
         'company',
         'twitter',
         'speaker_info',
-        'speaker_bio'
+        'speaker_bio',
+        'speaker_photo'
     );
 
     /**
@@ -27,7 +28,6 @@ class SignupForm extends Form
     public function validateAll($action = 'create')
     {
         $this->sanitize();
-        $valid_email = true;
         $valid_passwords = true;
 
         if ($action == 'create') {
@@ -95,7 +95,8 @@ class SignupForm extends Form
     /**
      * Method that applies validation rules to email
      *
-     * @param string $email
+     * @return bool
+     * @internal param string $email
      */
     public function validateEmail()
     {

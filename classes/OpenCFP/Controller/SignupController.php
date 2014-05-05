@@ -68,10 +68,10 @@ class SignupController
             if (isset($form_data['speaker_photo'])) {
                 // Move file into uploads directory
                 $fileName = $form_data['speaker_photo']->getClientOriginalName();
-                $form_data['speaker_photo']->move($app['uploadPath'], $fileName);
+                $form_data['speaker_photo']->move(APP_DIR . '/web/' . $app['uploadPath'], $fileName);
 
                 // Resize Photo
-                $speakerPhoto = Image::make($app['uploadPath'] . '/' . $fileName);
+                $speakerPhoto = Image::make(APP_DIR . '/web/' . $app['uploadPath'] . '/' . $fileName);
 
                 if ($speakerPhoto->height > $speakerPhoto->width) {
                     $speakerPhoto->resize(250, null, true);
@@ -85,8 +85,8 @@ class SignupController
                 $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $speakerPhoto->extension;
 
                 // Resize image and destroy original
-                if ($speakerPhoto->save($app['uploadPath'] . $sanitized_data['speaker_photo'])) {
-                    unlink($app['uploadPath'] . $fileName);
+                if ($speakerPhoto->save(APP_DIR . '/web/' . $app['uploadPath'] . $sanitized_data['speaker_photo'])) {
+                    unlink(APP_DIR . '/web/' . $app['uploadPath'] . $fileName);
                 }
             }
 

@@ -10,7 +10,7 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
      */
     public function createNewSpeakerUsingCompleteData()
     {
-        // Mock out PDO statments and PDO object
+        // Mock out PDO statements and PDO object
         $stmt = $this->getMockBuilder('StdClass')
             ->setMethods(array('execute'))
             ->getMock();
@@ -28,7 +28,9 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
         $speaker = new \OpenCFP\Model\Speaker($db);
         $data = array(
             'user_id' => 1,
-            'info' => 'Test info'
+            'info' => 'Test info',
+            'bio' => 'Test speaker bio',
+            'photo_path' => 'dummyphoto.jpg'
         );
         $response = $speaker->create($data);
 
@@ -203,13 +205,16 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             'last_name' => 'McTesterton',
             'company' => 'My Company',
             'twitter' => '@twitter',
+            'airport' => 'AIR',
             'speaker_info' => 'Speaker info',
-            'speaker_bio' => 'Speaker bio'
+            'speaker_bio' => 'Speaker bio',
+            'speaker_photo' => 'dummyphoto.jpg'
         );
 
         $speaker_info_old['last_name'] = 'MacTesterton';
         $speaker_info_old['info'] = 'my old info';
         $speaker_info_old['bio'] = 'my old bio';
+        $speaker_info_old['photo_path'] = 'dummyphoto.jpg';
 
         $stmt = $this->getMockBuilder('StdClass')
             ->setMethods(array('execute', 'rowCount', 'fetch'))

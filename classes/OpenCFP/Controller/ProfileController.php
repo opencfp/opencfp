@@ -38,7 +38,7 @@ class ProfileController
             ));
             return $app->redirect($app['url'] . '/dashboard');
         }
-
+        
         $speaker = new Speaker($app['db']);
         $speaker_data = $speaker->getDetailsByUserId($user->getId());
         $form_data = array(
@@ -50,6 +50,7 @@ class ProfileController
             'speaker_info' => $speaker_data['info'],
             'speaker_bio' => $speaker_data['bio'],
             'speaker_photo' => $speaker_data['photo_path'],
+            'preview_photo' => $app['uploadPath'] . $speaker_data['photo_path'],
             'airport' => $speaker_data['airport'],
             'id' => $user->getId(),
             'formAction' => '/profile/edit',
@@ -108,10 +109,10 @@ class ProfileController
             if (isset($form_data['speaker_photo'])) {
                 // Move file into uploads directory
                 $fileName = $form_data['speaker_photo']->getClientOriginalName();
-                $form_data['speaker_photo']->move($app['uploadPath'], $fileName);
+                $form_data['speaker_photo']->move(APP_DIR . '/web/' . $app['uploadPath'], $fileName);
 
                 // Resize Photo
-                $speakerPhoto = Image::make($app['uploadPath'] . '/' . $fileName);
+                $speakerPhoto = Image::make(APP_DIR . '/web/' . $app['uploadPath'] . '/' . $fileName);
 
                 if ($speakerPhoto->height > $speakerPhoto->width) {
                     $speakerPhoto->resize(250, null, true);
@@ -126,7 +127,7 @@ class ProfileController
                 $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $speakerPhoto->extension;
 
                 // Resize image and destroy original
-                if ($speakerPhoto->save($app['uploadPath'] . $sanitized_data['speaker_photo'])) {
+                if ($speakerPhoto->save(APP_DIR . '/web/' . $app['uploadPath'] . $sanitized_data['speaker_photo'])) {
                     unlink($app['uploadPath'] . $fileName);
                 }
             }

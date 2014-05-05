@@ -9,8 +9,10 @@ use Twig_Environment;
 use Twig_Loader_Filesystem;
 
 $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'development';
+// $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'production';
 // Set constant for app wide use
 define('APP_ENV', $environment);
+define('APP_DIR', dirname(dirname(__DIR__)));
 
 class Bootstrap
 {
@@ -43,6 +45,9 @@ class Bootstrap
 
 		$app['url'] = $this->getConfig('application.url');
         $app['uploadPath'] = $this->getConfig('upload.path');
+        $app['confAirport'] = $this->getConfig('application.airport');
+        $app['arrival'] = $this->getConfig('application.arrival');
+        $app['departure'] = $this->getConfig('application.departure');
 
         // Register the Twig provider and lazy-load the global values
         $app->register(
@@ -149,6 +154,10 @@ class Bootstrap
             return $template->render($view);
         });
 
+        // Secondary Pages
+        $app->get('/package', 'OpenCFP\Controller\DashboardController::packageAction');
+        $app->get('/ideas', 'OpenCFP\Controller\DashboardController::ideasAction');
+        
         // User Dashboard
         $app->get('/dashboard', 'OpenCFP\Controller\DashboardController::indexAction');
 

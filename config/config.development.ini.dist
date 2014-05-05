@@ -4,9 +4,13 @@ url = "http://cfp.dev"
 email = "contact@openconf.com"
 eventurl = "http://myevent.com"
 enddate = "Oct. 14th, 2013"
+airport = "MIA"
+arrival = "2014-10-26"
+departure = "2014-10-31"
 
 [upload]
-path = "/var/www/web/uploads/"
+; This will be appended to the main app/web directory
+path = "/uploads/"
 
 [database]
 dsn = "mysql:dbname=cfp;host=127.0.0.1"

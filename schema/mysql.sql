@@ -97,6 +97,7 @@ CREATE TABLE `speakers` (
     `user_id` int(10) unsigned NOT NULL,
     `info` text,
     `bio` text,
+    `photo_path` text,
     PRIMARY KEY(`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
