@@ -5,7 +5,7 @@
 
 {% block body_html %}
     <p>
-        Welcome to OpenCFP.  Please confirm your email address by following
+        Welcome to {{ site.title }}.  Please confirm your email address by following
         this link:
     </p>
     <p>
@@ -13,16 +13,16 @@
     </p>
     <p>
         Thanks,<br>
-        &nbsp;&nbsp;The OpenCFP Team.
+        &nbsp;&nbsp;The {{ site.title }} Team.
     </p>
 {% endblock %}
 
 {% block body_text %}
-Welcome to OpenCFP.  Please confirm your email address by following
+Welcome to {{ site.title }}.  Please confirm your email address by following
 this link:
 
 {{ method }}://{{ host }}/activate.php?code={{ activationCode }}
 
 Thanks,
-  The OpenCFP Team.
+  The {{ site.title }} Team.
 {% endblock %}

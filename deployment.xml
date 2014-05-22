@@ -10,4 +10,12 @@
     <appdir>data</appdir>
     <docroot>data/web</docroot>
     <scriptsdir>scripts</scriptsdir>
+    <dependencies>
+    <required>
+      <library>
+        <name>PHPUnit</name>
+        <min>3.7.24</min>
+      </library>
+    </required>
+  </dependencies>
     </package>
