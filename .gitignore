@@ -13,3 +13,6 @@ opencfp.iml
 .settings
 composer.phar
 composer.lock
+deployment.properties
+deployment.xml
+/scripts
