@@ -113,7 +113,7 @@ class ForgotController
         $template = $app['twig']->loadTemplate('user/forgot_password.twig');
 
         $data['form'] = $form->createView();
-        $data['flash'] = $this->getFlash();
+        $data['flash'] = $this->getFlash($app);
 
         return $template->render($data);
     }
@@ -201,9 +201,6 @@ class ForgotController
             $transport->setEncryption($config_data['smtp']['encryption']);
         }
 
-        $mailer = new \Swift_Mailer($transport);
-        $message = new \Swift_Message();
-
         // Build our email that we will send
         $template = $twig->loadTemplate('emails/reset_password.twig');
         $parameters = array(
@@ -212,21 +209,32 @@ class ForgotController
                 ? 'https' : 'http',
             'host' => !empty($_SERVER['HTTP_HOST'])
             ? $_SERVER['HTTP_HOST'] : 'localhost',
-            'user_id' => $user_id
+            'user_id' => $user_id,
+            'email' => $config_data['application']['email'],
+            'title' => $config_data['application']['title']
         );
-        $message->setTo($email);
-        $message->setFrom(
-            $template->renderBlock('from', $parameters),
-            $template->renderBlock('from_name', $parameters)
-        );
-        $message->setSubject($template->renderBlock('subject', $parameters));
-        $message->setBody($template->renderBlock('body_text', $parameters));
-        $message->addPart(
-            $template->renderBlock('body_html', $parameters),
-            'text/html'
-        );
+        
+        try {
+            $mailer = new \Swift_Mailer($transport);
+            $message = new \Swift_Message();
+            
+            $message->setTo($email);
+            $message->setFrom(
+                $template->renderBlock('from', $parameters),
+                $template->renderBlock('from_name', $parameters)
+            );
+            
+            $message->setSubject($template->renderBlock('subject', $parameters));
+            $message->setBody($template->renderBlock('body_text', $parameters));
+            $message->addPart(
+                $template->renderBlock('body_html', $parameters),
+                'text/html'
+            );
 
-        return $mailer->send($message);
+            return $mailer->send($message);
+        } catch (\Exception $e) {
+            echo $e;die();
+        }
     }
 }
 
