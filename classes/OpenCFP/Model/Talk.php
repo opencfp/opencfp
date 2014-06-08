@@ -28,8 +28,8 @@ class Talk
     {
         $sql = "
             INSERT INTO talks
-            (title, description, type, level, category, desired, slides, other, sponsor, user_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (title, description, type, level, category, desired, slides, other, sponsor, user_id, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ";
         $stmt = $this->_db->prepare($sql);
 
@@ -44,7 +44,8 @@ class Talk
                 trim($data['slides']),
                 trim($data['other']),
                 trim($data['sponsor']),
-                $data['user_id']
+                $data['user_id'],
+                date('Y-m-d H:i:s')
             )
         );
     }
@@ -101,7 +102,8 @@ class Talk
             desired = ?,
             slides = ?,
             other = ?,
-            sponsor = ?
+            sponsor = ?,
+            updated_at = NOW()
             WHERE id = ?
             AND user_id = ?
         ";
@@ -140,15 +142,15 @@ class Talk
     }
 
     /**
-     * Return an array of all the talks, ordered by the title by default 
+     * Return an array of all the talks, ordered by the title by default
      * by default
      *
      * @param string $order default is 'title'
      * @return array
      */
-    public function getAll($orderBy = 'title')
+    public function getAll($orderBy = 'title', $orderByDirection = 'ASC')
     {
-        $sql = "SELECT * FROM talks ORDER BY {$orderBy}";
+        $sql = "SELECT * FROM talks ORDER BY {$orderBy} {$orderByDirection}";
         $stmt = $this->_db->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll();
@@ -157,17 +159,81 @@ class Talk
         $stmt = $this->_db->prepare($sql);
         $stmt->execute();
 
-        $sql = "SELECT email FROM users WHERE id = ?";
+        $sql = "SELECT email, first_name, last_name, id FROM users WHERE id = ?";
         $stmt = $this->_db->prepare($sql);
 
         foreach ($results as $result) {
             $stmt->execute(array($result['user_id']));
             $userDetails = $stmt->fetch();
             $talkInfo = $result;
-            $talkInfo['user'] = $userDetails['email'];
+            $talkInfo['user'] = $userDetails;
             $talks[] = $talkInfo;
         }
 
         return $talks;
+    }
+
+
+    /**
+     * Get total record count
+     */
+    public function getTotalRecords($field = null, $value = null)
+    {
+        $sql = "SELECT COUNT(*) AS total FROM talks";
+
+        if ($field && $value) {
+            $sql = "SELECT COUNT(*) AS total FROM talks WHERE {$field} = {$value}";
+        }
+
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetch();
+
+        return $results['total'];
+    }
+
+    public function getRecent($limit = 10)
+    {
+        $sql = "SELECT t.*, u.first_name, u.last_name, u.email FROM talks t LEFT JOIN users u ON (u.id = t.user_id) ORDER BY t.created_at DESC LIMIT {$limit}";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute();
+        $talks = $stmt->fetchAll();
+
+        // Map to match data format for table view
+        for ($i = 0; $i <= count($talks) - 1; $i++) {
+            $talks[$i]['user'] = array(
+                'first_name' => $talks[$i]['first_name'],
+                'last_name' => $talks[$i]['last_name'],
+                'email' => $talks[$i]['email']
+            );
+        }
+
+        return $talks;
+    }
+
+    public function setFavorite($talkId, $status)
+    {
+        $sql = "UPDATE talks t SET t.favorite = ? WHERE id = ?";
+        $stmt = $this->_db->prepare($sql);
+
+        $stmt->execute(array(
+            (int) $status,
+            (int) $talkId,
+        ));
+
+        return ($stmt->rowCount() === 1);
+    }
+
+    public function setSelect($talkId, $status)
+    {
+        $sql = "UPDATE talks t SET t.selected = ? WHERE id = ?";
+        $stmt = $this->_db->prepare($sql);
+
+        $stmt->execute(array(
+            (int) $status,
+            (int) $talkId,
+        ));
+
+        return ($stmt->rowCount() === 1);
     }
 }

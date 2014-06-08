@@ -1,0 +1,26 @@
+{% extends "layouts/admin.twig" %}
+{% block content %}
+<div class="row">
+    {% if speaker.photo_path is not empty %}
+    <div class="col-md-4">
+        <img src="{{ photo_path }}{{ speaker.photo_path }}" alt="profile photo">
+    </div>
+    {% endif %}
+    <div class="col-md-8">
+        <blockquote>
+            <h2>{{ speaker.first_name }} {{ speaker.last_name }}</h2>
+            <p>{{ speaker.airport }} <i class="fa fa-plane"></i></p>
+        </blockquote>
+        <p>
+          <i class="fa fa-envelope"></i> <a href="mailto:{{ speaker.email }}">{{ speaker.email }}</a><br>
+          {% if speaker.url is not empty %}<i class="fa fa-globe"></i> <a href="{{ speaker.url }}" target="_blank" rel="external">{{ speaker.url }}</a><br>{% endif %}
+          {% if speaker.twitter is not empty %}<i class="fa fa-twitter-square"></i> <a href="http://twitter.com/{{ speaker.twitter }}" target="_blank" rel="external">{{ speaker.twitter }}</a>{% endif %}
+        </p>
+        <h3>Speaker Bio</h3>
+        <p>{{ speaker.bio|raw }}</p>
+
+        <h3>Speaker Additional Information</h3>
+        <p>{{ speaker.info|raw }}</p>
+    </div>
+</div>
+{% endblock %}

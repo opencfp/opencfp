@@ -8,6 +8,10 @@ use Pimple;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
+$environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'development';
+// $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'production';
+// Set constant for app wide use
+define('APP_ENV', $environment);
 define('APP_DIR', dirname(dirname(__DIR__)));
 
 class Bootstrap
@@ -40,7 +44,11 @@ class Bootstrap
         });
 
 		$app['url'] = $this->getConfig('application.url');
-        
+        $app['uploadPath'] = $this->getConfig('upload.path');
+        $app['confAirport'] = $this->getConfig('application.airport');
+        $app['arrival'] = $this->getConfig('application.arrival');
+        $app['departure'] = $this->getConfig('application.departure');
+
         // Register the Twig provider and lazy-load the global values
         $app->register(
             new \Silex\Provider\TwigServiceProvider(),
@@ -58,7 +66,7 @@ class Bootstrap
 
             return $twig;
         }));
-        
+
         // Register our use of the Form Service Provider
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Silex\Provider\ValidatorServiceProvider());
@@ -102,6 +110,29 @@ class Bootstrap
             }
         });
 
+        // Add current page global
+        $app->before(function (Request $request) use ($app) {
+            $app['twig']->addGlobal('current_page', $request->getRequestUri());
+        });
+
+        // Define error template paths
+        $app->error(function (\Exception $e, $code) use ($app) {
+            switch ($code) {
+                case 401:
+                    $message = $app['twig']->render('error/401.twig');
+                    break;
+                case 403:
+                    $message = $app['twig']->render('error/403.twig');
+                    break;
+                case 404:
+                    $message = $app['twig']->render('error/404.twig');
+                    break;
+                default:
+                    $message = $app['twig']->render('error/500.twig');
+            }
+            return new Response($message, $code);
+        });
+
         $app = $this->defineRoutes($app);
 
 
@@ -110,30 +141,48 @@ class Bootstrap
 
     protected function defineRoutes($app)
     {
+        // Load Static Routes
         $app->get('/', function() use($app) {
             $view = array();
             if ($app['sentry']->check()) {
-                $view['user'] = $app['sentry']->getUser();
+                $user = $app['sentry']->getUser();
+                $view['user'] = $user;
+                $view['permissions']['admin'] = $user->hasPermission('admin');
             }
 
             $template = $app['twig']->loadTemplate('home.twig');
             return $template->render($view);
         });
 
+        // Secondary Pages
+        $app->get('/package', 'OpenCFP\Controller\DashboardController::packageAction');
+        $app->get('/ideas', 'OpenCFP\Controller\DashboardController::ideasAction');
+        
+        // User Dashboard
         $app->get('/dashboard', 'OpenCFP\Controller\DashboardController::indexAction');
+
+        // Talks
         $app->get('/talk/edit/{id}', 'OpenCFP\Controller\TalkController::editAction');
         $app->get('/talk/create', 'OpenCFP\Controller\TalkController::createAction');
         $app->post('/talk/create', 'OpenCFP\Controller\TalkController::processCreateAction');
         $app->post('/talk/update', 'OpenCFP\Controller\TalkController::updateAction');
         $app->post('/talk/delete', 'OpenCFP\Controller\TalkController::deleteAction');
+
+        // Login/Logout
         $app->get('/login', 'OpenCFP\Controller\SecurityController::indexAction');
         $app->post('/login', 'OpenCFP\Controller\SecurityController::processAction');
         $app->get('/logout', 'OpenCFP\Controller\SecurityController::outAction');
+
+        // Create Account
         $app->get('/signup', 'OpenCFP\Controller\SignupController::indexAction');
         $app->post('/signup', 'OpenCFP\Controller\SignupController::processAction');
         $app->get('/signup/success', 'OpenCFP\Controller\SignupController::successAction');
+
+        // Edit Profile/Account
         $app->get('/profile/edit/{id}', 'OpenCFP\Controller\ProfileController::editAction');
         $app->post('/profile/edit', 'OpenCFP\Controller\ProfileController::processAction');
+
+        // Change/forgot Password
         $app->get('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordAction');
         $app->post('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordProcessAction');
         $app->get('/forgot', 'OpenCFP\Controller\ForgotController::indexAction');
@@ -141,9 +190,20 @@ class Bootstrap
         $app->get('/forgot_success', 'OpenCFP\Controller\ForgotController::successAction');
         $app->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Controller\ForgotController::resetAction');
         $app->post('/reset', 'OpenCFP\Controller\ForgotController::processResetAction');
+
+        // Admin Routes
+        $app->get('/admin', 'OpenCFP\Controller\Admin\DashboardController::indexAction');
+
+        // Admin::Talks
         $app->get('/admin/talks', 'OpenCFP\Controller\Admin\TalksController::indexAction');
-        $app->get('/admin/talks/{page}', 'OpenCFP\Controller\Admin\TalksController::indexAction');
-        $app->get('/admin/talks/view/{id}/page/{page}', 'OpenCFP\Controller\Admin\TalksController::viewAction');
+        $app->get('/admin/talks/{id}', 'OpenCFP\Controller\Admin\TalksController::viewAction');
+        $app->post('/admin/talks/{id}/favorite', 'OpenCFP\Controller\Admin\TalksController::favoriteAction');
+        $app->post('/admin/talks/{id}/select', 'OpenCFP\Controller\Admin\TalksController::selectAction');
+
+        // Admin::Speakers
+        $app->get('/admin/speakers', 'OpenCFP\Controller\Admin\SpeakersController::indexAction');
+        $app->get('/admin/speakers/{id}', 'OpenCFP\Controller\Admin\SpeakersController::viewAction');
+
         return $app;
     }
 
@@ -168,7 +228,7 @@ class Bootstrap
             return $this->_config;
         }
 
-        $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.ini');
+        $loader = new ConfigINIFileLoader($this->getConfigPath());
         $configData = $loader->load();
 
         // Place our info into Pimple
@@ -181,6 +241,11 @@ class Bootstrap
         }
 
         return $this->_config;
+    }
+
+    public function getConfigPath()
+    {
+        return APP_DIR . "/config/config." . APP_ENV . ".ini";
     }
 
     public function getTwig()

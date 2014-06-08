@@ -15,10 +15,10 @@ class DashboardController
 
         $user = $app['sentry']->getUser();
         $permissions['admin'] = $user->hasPermission('admin');
-        
+
         $talk = new Talk($app['db']);
         $my_talks = $talk->findByUserId($user->getId());
-        
+
         // Load our template and RENDER
         $template = $app['twig']->loadTemplate('dashboard.twig');
         $template_data = array(
@@ -28,6 +28,24 @@ class DashboardController
         );
 
         return $template->render($template_data);
+    }
+    
+    public function ideasAction(Request $req, Application $app)
+    {
+    	// Load our template and RENDER
+    	$template = $app['twig']->loadTemplate('ideas.twig');
+    	$template_data = array();
+    
+    	return $template->render($template_data);
+    }
+    
+    public function packageAction(Request $req, Application $app)
+    {
+    	// Load our template and RENDER
+    	$template = $app['twig']->loadTemplate('package.twig');
+    	$template_data = array();
+    
+    	return $template->render($template_data);
     }
 }
 

@@ -21,6 +21,7 @@ $table = $schema->createTable('speakers');
 $table->addColumn('user_id', 'integer', array());
 $table->addColumn('info', 'text', array('notnull' => false));
 $table->addColumn('bio', 'text', array('notnull' => false));
+$table->addColumn('photo_path', 'string', array('notnull' => false));
 $table->setPrimaryKey(array('user_id'), 'PRIMARY');
 
 $table = $schema->createTable('talks');
@@ -34,7 +35,11 @@ $table->addColumn('desired', 'boolean', array('default' => '0'));
 $table->addColumn('slides', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('other', 'text', array('notnull' => false));
 $table->addColumn('sponsor', 'boolean', array('default' => '0'));
+$table->addColumn('favorite', 'boolean', array('default' => '0'));
+$table->addColumn('selected', 'boolean', array('default' => '0'));
 $table->addColumn('user_id', 'integer', array());
+$table->addColumn('created_at', 'datetime', array('notnull' => false));
+$table->addColumn('updated_at', 'datetime', array('notnull' => false));
 $table->setPrimaryKey(array('id'), 'PRIMARY');
 
 $table = $schema->createTable('throttle');
@@ -64,6 +69,7 @@ $table->addColumn('first_name', 'string', array('notnull' => false, 'length' => 
 $table->addColumn('last_name', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('company', 'string', array('notnull' => false, 'length' => 255));
 $table->addColumn('twitter', 'string', array('notnull' => false, 'length' => 255));
+$table->addColumn('airport', 'string', array('notnull' => false, 'length' => 5));
 $table->addColumn('created_at', 'datetime', array('default' => '0000-00-00 00:00:00'));
 $table->addColumn('updated_at', 'datetime', array('default' => '0000-00-00 00:00:00'));
 $table->setPrimaryKey(array('id'), 'PRIMARY');

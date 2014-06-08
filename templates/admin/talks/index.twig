@@ -1,0 +1,9 @@
+{% extends "layouts/admin.twig" %}
+{% block content %}
+    <h2 class="headline">Submitted Talks</h2>
+    {% include "admin/talks/_table.twig" %}
+    {{ pagination|raw }}
+{% endblock %}
+{% block scripts %}
+    <script src="/assets/js/admin/talk.js"></script>
+{% endblock %}

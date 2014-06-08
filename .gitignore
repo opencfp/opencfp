@@ -5,7 +5,14 @@
 /vendor/*
 /tests/coverage/*
 /templates/compilation_cache
-/config/config.ini
 /htmlpurifier_cache
 .DS_Store
 opencfp.iml
+.buildpath
+.project
+.settings
+composer.phar
+composer.lock
+deployment.properties
+deployment.xml
+/scripts

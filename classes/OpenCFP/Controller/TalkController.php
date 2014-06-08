@@ -8,6 +8,18 @@ use OpenCFP\Model\Talk;
 
 class TalkController
 {
+    public function getFlash(Application $app)
+    {
+        $flash = $app['session']->get('flash');
+        $this->clearFlash($app);
+        return $flash;
+    }
+
+    public function clearFlash(Application $app)
+    {
+        $app['session']->set('flash', null);
+    }
+
     public function editAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
@@ -16,7 +28,7 @@ class TalkController
 
         $id = $req->get('id');
         $user = $app['sentry']->getUser();
-        $talk_id = filter_var($id, FILTER_VALIDATE_INT);
+        $talk_id= filter_var($id, FILTER_VALIDATE_INT);
 
         if (empty($talk_id)) {
             return $app->redirect($app['url'] . '/dashboard');
@@ -29,8 +41,7 @@ class TalkController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        $template_name = 'edit_talk.twig';
-        $template = $app['twig']->loadTemplate($template_name);
+        $template = $app['twig']->loadTemplate('talk/edit.twig');
         $data = array(
             'formAction' => '/talk/update',
             'id' => $talk_id,
@@ -58,8 +69,7 @@ class TalkController
 
         $user = $app['sentry']->getUser();
 
-        $template_name = 'create_talk.twig';
-        $template = $app['twig']->loadTemplate($template_name);
+        $template = $app['twig']->loadTemplate('talk/create.twig');
         $data = array(
             'formAction' => '/talk/create',
             'title' => $req->get('title'),
@@ -80,6 +90,7 @@ class TalkController
 
     public function processCreateAction(Request $req, Application $app)
     {
+        $error = 0;
         if (!$app['sentry']->check()) {
             return $app->redirect($app['url'] . '/login');
         }
@@ -102,7 +113,7 @@ class TalkController
         $form->sanitize();
 
         if (!$form->validateAll()) {
-            $template = $app['twig']->loadTemplate('create_talk.twig');
+            $error++;
             $data = array(
                 'formAction' => '/talk/create',
                 'title' => $req->get('title'),
@@ -116,10 +127,7 @@ class TalkController
                 'sponsor' => $req->get('sponsor'),
                 'buttonInfo' => 'Submit my talk!',
                 'user' => $user,
-                'error_message' => implode('<br>', $form->getErrorMessages())
             );
-
-            return $template->render($data);
         }
 
         $sanitized_data = $form->getCleanData();
@@ -139,19 +147,26 @@ class TalkController
         $talk = new Talk($app['db']);
 
         if (!$talk->create($data)) {
-            $template_name = 'create_talk.twig';
-            $template = $app['twig']->loadTemplate('create_talk.twig');
-            $data['formAction'] = '/talk/create';
-            $data['buttonInfo'] = 'Submit my talk!';
-            $data['error_message'] = "Unable to create a new record in our talks database; please try again.";
+            $error++;
+            // Set Success Flash Message
+            $app['session']->set('flash', array(
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => "Unable to create a new record in our talks database, please try again",
+            ));
+        }
 
+        // If any errors were found
+        if ($error > 0) {
+            $data['flash'] = $this->getFlash($app);
+            $template = $app['twig']->loadTemplate('talk/create.twig');
             return $template->render($data);
         }
 
         $app['session']->set('flash', array(
             'type' => 'success',
-            'short' => '',
-            'ext' => "Successfully created a talk"
+            'short' => 'Success',
+            'ext' => "Succesfully created a talk"
         ));
 
         return $app->redirect($app['url'] . '/dashboard');
@@ -181,9 +196,9 @@ class TalkController
 
         $form = new TalkForm($request_data, $app['purifier']);
         $form->sanitize();
-        $valid = $form->validateAll();
+        $isValid = $form->validateAll();
 
-        if ($valid) {
+        if ($isValid) {
             $sanitized_data = $form->getCleanData();
             $data = array(
                 'id' => (int)$sanitized_data['id'],
@@ -202,15 +217,15 @@ class TalkController
             $talk->update($data);
             $app['session']->set('flash', array(
                 'type' => 'success',
-                'short' => 'Updated talk!'
+                'short' => 'Success',
+                'ext' => 'Successfully updated talk.',
             ));
 
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        if (!$valid) {
-            $template_name = 'edit_talk.twig';
-            $template = $app['twig']->loadTemplate($template_name);
+        if (!$isValid) {
+            $template = $app['twig']->loadTemplate('talk/edit.twig');
             $data = array(
                 'formAction' => '/talk/update',
                 'id' => $req->get('id'),
@@ -225,13 +240,18 @@ class TalkController
                 'sponsor' => $req->get('sponsor'),
                 'buttonInfo' => 'Update my talk!',
                 'user' => $user,
-                'error_message' => implode("<br>", $form->getErrorMessages())
             );
 
-            return $template->render($data);
+            $app['session']->set('flash', array(
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => implode("<br>", $form->getErrorMessages())
+            ));
         }
 
-        return $app->redirect($app['url'] . '/talk/edit/' . $req->get('id'));
+        $data['flash'] = $this->getFlash($app);
+
+        return $template->render($data);
     }
 
     public function deleteAction(Request $req, Application $app)

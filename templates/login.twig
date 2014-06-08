@@ -1,43 +1,8 @@
 {% extends "layouts/default.twig" %}
 {% block content %}
-<div class="well">
-    <p style="visibility: hidden" class="text-error">Please enter both your Email and Password.</p>
-    {% if errorMessage is defined %}
-    <p class="text-error">{{ errorMessage }}</p>
-    {% endif %}
-    {% if email is not defined %}
-    {% set email = null %}
-    {% endif %}
-    <form id="login" class="form-horizontal" method="post" action="{{ site.url }}/login">
-        <legend>Let me in!</legend>
-        <div class="control-group">
-            <label class="control-label">Email</label>
-            <div class="controls">
-                <div class="input-prepend">
-                    <span class="add-on"><i class="icon-envelope"></i></span>
-                    <input type="text" class="input-xlarge" id="email" name="email" placeholder="Email" value="{{ email }}">
-                </div>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">Password</label>
-            <div class="controls">
-                <div class="input-prepend">
-                    <span class="add-on"><i class="icon-lock"></i></span>
-                    <input type="Password" id="passwd" class="input-xlarge" name="passwd" placeholder="Password">
-                </div>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label"></label>
-            <div class="controls">
-                <button type="submit" class="btn btn-success" >Login</button>
-                <br><a href="/forgot">Forgot my password</a>
-            </div>
-        </div>
-    </form>
-</div>
+    <h2 class="headline">Login</h2>
+    {% include "forms/_login.twig" %}
 {% endblock %}
 {% block js %}
-<script src="js/login.js"></script>
+    <script src="js/login.js"></script>
 {% endblock %}

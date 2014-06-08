@@ -5,7 +5,7 @@ use Doctrine\DBAL\DriverManager;
 
 require __DIR__.'/../vendor/autoload.php';
 
-$options = getopt('v', ['verbose', 'dump-sql']);
+$options = getopt('v', array('verbose', 'dump-sql'));
 $verbose = isset($options['v']) || isset($options['verbose']);
 $dumpSql = isset($options['dump-sql']);
 $init = isset($options['init']);

@@ -1,6 +1,188 @@
 body {
-	padding-top: 20px;
-	padding-bottom: 40px;
+	background: #FFF url('../img/bg/texture.png') repeat;
+	font-size: 1.6rem;
+	padding: 40px 0;
+}
+
+a {
+	color: #f49c2c;
+}
+a:hover {
+	color: #f49c2c;
+}
+
+.star-favorite { color: #CCC; }
+.star-favorite--selected { color: #f49c2c; }
+
+.check-select { color: #CCC; }
+.check-select--selected { color: #f49c2c; }
+
+.tile {
+  padding: 20px;
+  margin: 0 15px 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  color: #fff;
+}
+.tile-content { z-index: 20; }
+.tile-content > h2 {
+  font-size: 3.5em;
+  margin-top: 0;
+}
+.tile > .fa {
+  color: rgba(0, 0, 0, 0.1);
+  font-size: 5em;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+.tile-speakers { background: #f56954; }
+.tile-talks { background: #1fa67a; }
+.tile-favorites { background: #ffb848; }
+.tile-selected { background: #852b99; }
+
+.logo {
+	max-width: 100%;
+}
+
+.navbar-lsp {
+	background: #FFF;
+	border-bottom: 3px solid #63625A;
+}
+.navbar-lsp .navbar-nav > li > a {
+	color: #f49c2c;
+}
+.navbar-lsp .navbar-nav > .active > a,
+.navbar-lsp .navbar-nav > .active > a:hover,
+.navbar-lsp .navbar-nav > .active > a:focus {
+	background: #63625A;
+	color: #FFF;
+}
+.navbar-lsp .navbar-toggle { background: #000; }
+.navbar-lsp .icon-bar { background: #FFF; }
+
+.alert { margin: 20px 0; }
+
+.headline {
+	border-bottom: 1px solid #ccc;
+	box-shadow: 0 1px 0 #fff;
+	margin: 0.75em 0;
+	padding: 0.5em 0;
+	position: relative;
+
+	font-family: 'Open Sans Condensed', 'lucida grande', arial;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.headline:before {
+	background: #f49c2c;
+	display: block;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	height: 4px;
+	width: 60px;
+
+	content: "";
+}
+
+.intro--block {
+	display: block;
+	padding: 2em 0;
+}
+.intro-body {
+	margin: 0;
+	color: #63625A;
+	font: 4rem/1 'Sanchez', palatino, georgia;
+	text-align: center;
+	text-shadow: 1px 2px 0 rgba(191, 188, 174, 0.6);
+}
+.intro-highlight {
+	color: #f49c2c;
+}
+
+.home-page .module {
+  box-shadow: none;
+  background: transparent;
+  border: none;
+}
+.module {
+	position: relative;
+	display: block;
+	padding: 8px;
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+	border: 6px solid #FFF;
+	background: #FFF;
+}
+
+.profile-photo {
+  border: 6px solid #eee;
+  margin: 1rem 0;
+  width: 250px;
+  height: 250px;
+}
+
+/**
+ * Base Button Object
+ * @tags ^button
+ * @format
+ * <a href="#" class="btn">Register</a>
+ * <button class="btn">Register</button>
+ * <input type="submit" class="btn" value="Register">
+ */
+.lsp-btn {
+    border: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0.5em;
+    cursor: pointer;
+    font: inherit;
+    line-height: 1;
+}
+.lsp-btn,
+.lsp-btn:hover {
+    text-decoration: none;
+}
+
+/**
+ * Button Sizes
+ * @tags ^button
+ * @extends btn
+ */
+.lsp-btn-xsmall { font-size: 1rem; }
+.lsp-btn-small { font-size: 1.5rem; }
+.lsp-btn-medium { font-size: 2rem; }
+.lsp-btn-large { font-size: 3rem; }
+.lsp-btn-xlarge { font-size: 4rem; }
+.lsp-btn--full { display: block; }
+
+/**
+ * Primary Button Style
+ * @tags ^button
+ * @extends btn
+ */
+.lsp-btn-primary {
+	box-shadow: 3px 3px 0 rgba(0,0,0,0.25);
+  margin: 1rem 0;
+	background: #403731;
+	color: #FFF;
+	font-family: 'Open Sans Condensed', 'lucida grande', arial;
+	font-weight: 300;
+	letter-spacing: 1px;
+	text-shadow: none;
+	text-transform: uppercase;
+  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+.lsp-btn-primary:hover {
+    background: #4E433C;
+    color: #FFF;
+}
+.lsp-btn-primary:visited {
+    color: #FFF;
 }
 
 /* Custom container */
@@ -8,41 +190,11 @@ body {
 	margin: 0 auto;
 	max-width: 700px;
 }
-
 .container-narrow > hr {
 	margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
-	margin: 60px 0;
-	text-align: center;
-}
-
-.jumbotron h1 {
-	font-size: 68px;
-	line-height: 1;
-}
-
-.jumbotron .btn {
-	font-size: 21px;
-	padding: 14px 24px;
-}
-
-.jumbotron .btn .small {
-	font-size: 13px;
-	line-height: 10px;
-}
-
-.jumbotron .btn.btn-warning {
-	line-height: 30px;
 }
 
 /* Supporting marketing content */
 .marketing {
 	margin: 60px 0;
-}
-
-.marketing p + h4 {
-	margin-top: 28px;
 }

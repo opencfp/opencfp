@@ -45,7 +45,6 @@ class TalkForm extends Form
         return (
             $this->validateTitle() &&
             $this->validateDescription() &&
-            $this->validateType() &&
             $this->validateLevel() &&
             $this->validateCategory() &&
             $this->validateDesired() &&
@@ -70,12 +69,12 @@ class TalkForm extends Form
         $title = $this->_cleanData['title'];
 
         if ($title !== $this->_taintedData['title']) {
-            $this->_addErrorMessage("You had invalid characters in your talk title.");
+            $this->_addErrorMessage("You had invalid characters in your talk title");
             return false;
         }
 
         if (strlen($title) > 100) {
-            $this->_addErrorMessage("Your talk title has to be 100 characters or less.");
+            $this->_addErrorMessage("Your talk title has to be 100 characters or less");
             return false;
         }
 
@@ -90,7 +89,7 @@ class TalkForm extends Form
     public function validateDescription()
     {
         if (empty($this->_cleanData['description'])) {
-            $this->_addErrorMessage("Your description was missing.");
+            $this->_addErrorMessage("Your description was missing");
             return false;
         }
 
@@ -110,12 +109,12 @@ class TalkForm extends Form
         );
 
         if (empty($this->_cleanData['type']) || !isset($this->_cleanData['type'])) {
-            $this->_addErrorMessage("You must choose what type of talk you are submitting.");
+            $this->_addErrorMessage("You must choose what type of talk you are submitting");
             return false;
         }
 
         if (!in_array($this->_cleanData['type'], $validTalkTypes)) {
-            $this->_addErrorMessage("You did not choose a valid talk type.");
+            $this->_addErrorMessage("You did not choose a valid talk type");
             return false;
         }
 
@@ -131,26 +130,33 @@ class TalkForm extends Form
         );
 
         if (empty($this->_cleanData['level']) || !isset($this->_cleanData['level'])) {
-            $this->_addErrorMessage("You must choose what level of talk you are submitting.");
+            $this->_addErrorMessage("You must choose what level of talk you are submitting");
             return false;
         }
 
         if (!in_array($this->_cleanData['level'], $validLevels)) {
-            $this->_addErrorMessage("You did not choose a valid talk level.");
+            $this->_addErrorMessage("You did not choose a valid talk level");
             return false;
         }
-        
+
         return true;
     }
-    
+
     public function validateCategory()
     {
         $validCategories = array(
             'development',
             'framework',
             'database',
-            'management',
-            'other'
+            'testing',
+            'security',
+            'devops',
+            'api',
+            'javascript',
+            'uiux',
+            'other',
+        	'continuousdelivery',
+        	'ibmi'
         );
 
         if (empty($this->_cleanData['category']) || !isset($this->_cleanData['category'])) {
@@ -162,25 +168,25 @@ class TalkForm extends Form
             $this->_addErrorMessage("You did not choose a valid talk category");
             return false;
         }
-        
+
         return true;
     }
-    
+
     public function validateDesired()
     {
         return true;
     }
-    
+
     public function validateSlides()
     {
         return true;
     }
-    
+
     public function validateOther()
     {
         return true;
     }
-    
+
     public function validateSponsor()
     {
         return true;
@@ -198,7 +204,7 @@ class TalkForm extends Form
         $thisSpeaker = $speaker->findByUserId($userId);
 
         if (!$thisSpeaker) {
-            $this->_addErrorMessage("Your talk does not seem to belong to a valid speaker.");
+            $this->_addErrorMessage("Your talk does not seem to belong to a valid speaker");
             return false;
         }
 

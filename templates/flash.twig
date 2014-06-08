@@ -1,9 +1,0 @@
-{% block flash %}
-{% if flash is defined %}
-<div class="alert-message {{ flash.type }}">
-<div class="container">
-  <p><strong>{{ flash.short }}</strong><br>{% autoescape false %}{{ flash.ext }}{% endautoescape %}</p>
-</div>
-</div>
-{% endif %}
-{% endblock flash %}

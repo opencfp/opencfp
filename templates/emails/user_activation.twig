@@ -1,0 +1,28 @@
+{% block subject %}{{ name }}, please confirm your account{% endblock %}
+
+{% block from %}no-reply@example.com{% endblock %}
+{% block from_name %}OpenCFP{% endblock %}
+
+{% block body_html %}
+    <p>
+        Welcome to {{ site.title }}.  Please confirm your email address by following
+        this link:
+    </p>
+    <p>
+        <a href="{{ method }}://{{ host }}/activate.php?code={{ activationCode }}">{{ method }}://{{ host }}/activate.php?code={{ activationCode }}</a>
+    </p>
+    <p>
+        Thanks,<br>
+        &nbsp;&nbsp;The {{ site.title }} Team.
+    </p>
+{% endblock %}
+
+{% block body_text %}
+Welcome to {{ site.title }}.  Please confirm your email address by following
+this link:
+
+{{ method }}://{{ host }}/activate.php?code={{ activationCode }}
+
+Thanks,
+  The {{ site.title }} Team.
+{% endblock %}
