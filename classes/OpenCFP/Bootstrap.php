@@ -188,8 +188,9 @@ class Bootstrap
         $app->get('/forgot', 'OpenCFP\Controller\ForgotController::indexAction');
         $app->post('/forgot', 'OpenCFP\Controller\ForgotController::sendResetAction');
         $app->get('/forgot_success', 'OpenCFP\Controller\ForgotController::successAction');
-        $app->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Controller\ForgotController::resetAction');
-        $app->post('/reset', 'OpenCFP\Controller\ForgotController::processResetAction');
+        $app->post('/reset', 'OpenCFP\Controller\ForgotController::resetAction');
+        $app->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Controller\ForgotController::processResetAction');
+        $app->post('/updatepassword', 'OpenCFP\Controller\ForgotController::updatePasswordAction');
 
         // Admin Routes
         $app->get('/admin', 'OpenCFP\Controller\Admin\DashboardController::indexAction');
