@@ -2,7 +2,7 @@
 namespace OpenCFP\Controller;
 
 use OpenCFP\Config\ConfigINIFileLoader;
-use OpenCFP\Model\User;
+//use OpenCFP\Model\User;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -88,11 +88,11 @@ class ForgotController
         $error = 0;
         try {
             $user = $app['sentry']->getUserProvider()->findById($req->get('user_id'));
-        } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-            $error++;
-        }
 
-        if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
+            if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
+                $error++;
+            }
+        } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
             $error++;
         }
 
@@ -113,7 +113,7 @@ class ForgotController
         $template = $app['twig']->loadTemplate('user/forgot_password.twig');
 
         $data['form'] = $form->createView();
-        $data['flash'] = $this->getFlash();
+        $data['flash'] = $this->getFlash($app);
 
         return $template->render($data);
     }
@@ -127,15 +127,14 @@ class ForgotController
             'reset_code' => $reset_code
         );
         $form = $app['form.factory']->create(new \OpenCFP\Form\ResetForm(), $form_options);
-        $form->bind($req);
 
         if (!$form->isValid()) {
-            $template = $app['twig']->loadTemplate('user/forgot_password.twig');
+            $template = $app['twig']->loadTemplate('user/reset_password.twig');
 
             return $template->render(array('form' => $form->createView()));
         }
 
-        $data = $form->getData();
+//        $data = $form->getData();
 
         $errorMessage = "The reset you have requested appears to be invalid, please try again.";
         $error = 0;
@@ -157,29 +156,53 @@ class ForgotController
             ));
         }
 
+        return $app->redirect($app['url'] . '/forgot');
+    }
+    
+    public function updatePasswordAction(Request $req, Application $app)
+    {
+        $postArray = $req->request->all();
+        $user_id = $postArray['reset']['user_id'];
+        $reset_code = $postArray['reset']['reset_code'];
+        $password = $postArray['reset']['password']['password'];
+        
+        try {
+            $user = $app['sentry']->getUserProvider()->findById($user_id);
+        } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+            echo $e;
+            die();
+        }
+        
         /**
          * Can't let people replace their passwords with one they have
          * already
          */
-        if ($user->checkPassword($data['password']) === true) {
+        if ($user->checkPassword($password) === true) {
             $app['session']->set('flash', array(
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => "Please select a different password than your current one.",
-            ));
-        }
-
-        // Everything looks good, let's actually reset their password
-        if ($user->attemptResetPassword($data['reset_code'], $data['password'])) {
-            $app['session']->set('flash', array(
-                'type' => 'success',
-                'short' => 'Success',
-                'ext' => "You've successfully reset your password.",
-            ));
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => "Please select a different password than your current one.",
+                ));
             return $app->redirect($app['url'] . '/login');
         }
 
-        return $app->redirect($app['url'] . '/forgot');
+        // Everything looks good, let's actually reset their password
+        if ($user->attemptResetPassword($reset_code, $password)) {
+            $app['session']->set('flash', array(
+                    'type' => 'success',
+                    'short' => 'Success',
+                    'ext' => "You've successfully reset your password.",
+                ));
+            return $app->redirect($app['url'] . '/login');
+        }
+
+        // user may have tried using the recovery twice
+        $app['session']->set('flash', array(
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => "Password reset failed, please contact the administrator.",
+            ));
+        return $app->redirect($app['url'] . '/');
     }
 
     protected function sendResetEmail($twig, $user_id, $email, $reset_code)
@@ -201,9 +224,6 @@ class ForgotController
             $transport->setEncryption($config_data['smtp']['encryption']);
         }
 
-        $mailer = new \Swift_Mailer($transport);
-        $message = new \Swift_Message();
-
         // Build our email that we will send
         $template = $twig->loadTemplate('emails/reset_password.twig');
         $parameters = array(
@@ -212,21 +232,32 @@ class ForgotController
                 ? 'https' : 'http',
             'host' => !empty($_SERVER['HTTP_HOST'])
             ? $_SERVER['HTTP_HOST'] : 'localhost',
-            'user_id' => $user_id
+            'user_id' => $user_id,
+            'email' => $config_data['application']['email'],
+            'title' => $config_data['application']['title']
         );
-        $message->setTo($email);
-        $message->setFrom(
-            $template->renderBlock('from', $parameters),
-            $template->renderBlock('from_name', $parameters)
-        );
-        $message->setSubject($template->renderBlock('subject', $parameters));
-        $message->setBody($template->renderBlock('body_text', $parameters));
-        $message->addPart(
-            $template->renderBlock('body_html', $parameters),
-            'text/html'
-        );
+        
+        try {
+            $mailer = new \Swift_Mailer($transport);
+            $message = new \Swift_Message();
+            
+            $message->setTo($email);
+            $message->setFrom(
+                $template->renderBlock('from', $parameters),
+                $template->renderBlock('from_name', $parameters)
+            );
+            
+            $message->setSubject($template->renderBlock('subject', $parameters));
+            $message->setBody($template->renderBlock('body_text', $parameters));
+            $message->addPart(
+                $template->renderBlock('body_html', $parameters),
+                'text/html'
+            );
 
-        return $mailer->send($message);
+            return $mailer->send($message);
+        } catch (\Exception $e) {
+            echo $e;die();
+        }
     }
 }
 
