@@ -110,6 +110,11 @@ class TalksController
      */
     public function favoriteAction(Request $req, Application $app)
     {
+        // Check if user is an logged in and an Admin
+        if (!$this->userHasAccess($app)) {
+            return $app->redirect($app['url'] . '/dashboard');
+        }
+
         $status = true;
 
         if ($req->get('delete') !== null) {
@@ -129,6 +134,11 @@ class TalksController
      */
     public function selectAction(Request $req, Application $app)
     {
+        // Check if user is an logged in and an Admin
+        if (!$this->userHasAccess($app)) {
+            return $app->redirect($app['url'] . '/dashboard');
+        }
+
         $status = true;
 
         if ($req->get('delete') !== null) {
