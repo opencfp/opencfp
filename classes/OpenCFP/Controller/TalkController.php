@@ -263,7 +263,7 @@ class TalkController
         $user = $app['sentry']->getUser();
         $talk = new Talk($app['db']);
 
-        if ($talk->delete($req->get('tid'), $req->get('user_id')) === true) {
+        if ($talk->delete($req->get('tid'), $user->getId()) === true) {
             return $app->json(array('delete' => 'ok'));
         }
 

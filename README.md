@@ -31,33 +31,35 @@ NOTE: May need to download composer.phar first from http://getcomposer.org
 
 4. Create database along with user/password in MySQL for application to use.
 
-5. Rename the /config/config.ini.dist file to /config/config.ini.
+5. Rename the /config/config.development.ini.dist file to /config/config.development.ini.
 
     ```bash
-    $ mv /config/config.ini.dist /config/config.ini
+    $ mv /config/config.development.ini.dist /config/config.development.ini
     ```
+NOTE: Use development or production naming as appropriate.
 
-6. Customize /config/config.ini as needed for your environment and site settings.
+6. Customize /config/config.development.ini as needed for your environment and site settings.
 
-7. Populate MySQL database by using the mysql.sql script available in /schema folder.
+7. Alter the /classes/OpenCFP/Bootstrap.php file with the desired environment. Lines 11 and 12.
 
-8. May need to edit directory permissions for some of the packages. (your mileage may vary)
+8. Populate MySQL database by using the mysql.sql script available in /schema folder.
 
-9. Customize templates and /web/assets/css/site.css to your hearts content.
+9. May need to edit directory permissions for some of the vendor packages. (your mileage may vary)
 
-10. Enjoy!!!
+10. Customize templates and /web/assets/css/site.css to your hearts content.
+
+11. Enjoy!!!
 
 
 Additional Admin Setup
 ----------------------
 
-There is also a script available in /tools directory (to be called via command line)
-To enable a user to become an Admin.  So from within the /tools directory:
+1. There is also a script available in /tools directory (to be called via command line) To enable a user to become an Admin.  So via CLI from within the /tools directory.
 
     ```bash
     $ php create_admin_user.php update {email-address}
     ```
-This will enable that user to navigate to /admin/talks through a link now visible on the Dashboard.
+This will enable specified user to navigate to /admin/talks through a link now visible on the Dashboard.
 
 Testing
 -------
