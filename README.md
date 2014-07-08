@@ -57,9 +57,9 @@ Additional Admin Setup
 1. There is also a script available in /tools directory (to be called via command line) To enable a user to become an Admin.  So via CLI from within the /tools directory.
 
     ```bash
-    $ php create_admin_user.php update {email-address}
+    $ php create_admin_user.php --update {email-address}
     ```
-This will enable specified user to navigate to /admin/talks through a link now visible on the Dashboard.
+This will enable specified user to navigate to /admin through a link now visible on the Dashboard.
 
 Testing
 -------
