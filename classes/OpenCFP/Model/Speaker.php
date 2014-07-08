@@ -215,6 +215,16 @@ class Speaker
 
         return $results;
     }
+    
+    public function getAdmins($orderBy = 'last_name', $orderByDirection = 'ASC')
+    {
+        $sql = "SELECT * FROM users u LEFT JOIN users_groups ug ON u.id = ug.user_id WHERE ug.group_id = 2 ORDER BY {$orderBy} {$orderByDirection}";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
 
 
     /**

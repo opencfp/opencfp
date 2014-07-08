@@ -1,0 +1,27 @@
+{% extends "layouts/admin.twig" %}
+{% block content %}
+    <h2 class="headline">Admins</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th align='left'><b>Remove</b></th>
+                <th align='left'><b>Full Name</b></th>
+                <th align='left'><b>Twitter</b></th>
+                <th align='left'><b>Email</b></th>
+                <th align='left'><b>Created On</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for speaker in speakers %}
+                <tr>
+                    <td><a href="{{ site.url }}/admin/admins/{{ speaker.user_id }}">Remove Admin</a></td>
+                    <td>{{ speaker.first_name }} {{ speaker.last_name }}</td>
+                    <td>{{ speaker.twitter }}</td>
+                    <td><a href="mailto:{{ speaker.email }}">{{ speaker.email }}</a></td>
+                    <td>{{ speaker.created_at|date("F jS \\a\\t g:ia T") }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ pagination|raw }}
+{% endblock %}
