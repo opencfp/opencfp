@@ -30,11 +30,11 @@ class AdminsController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        $speakerModel = new Speaker($app['db']);
-        $rawAdmins = $speakerModel->getAdmins();
+        $adminGroup = $app['sentry']->getGroupProvider()->findByName('admin');
+        $adminUsers = $app['sentry']->findAllUsersInGroup($adminGroup);
 
         // Set up our page stuff
-        $adapter = new \Pagerfanta\Adapter\ArrayAdapter($rawAdmins);
+        $adapter = new \Pagerfanta\Adapter\ArrayAdapter($adminUsers->toArray());
         $pagerfanta = new \Pagerfanta\Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage(20);
         $pagerfanta->getNbResults();
@@ -81,7 +81,7 @@ class AdminsController
                     'ext' => 'Sorry, you cannot remove yourself as Admin.',
                 ));
             
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app['url'] . '/admin/admins');
         }
         
         $user = new Speaker($app['db']);
@@ -108,7 +108,7 @@ class AdminsController
                 ));
         }
 
-        return $app->redirect($app['url'] . '/dashboard');
+        return $app->redirect($app['url'] . '/admin/admins');
     }
 }
 

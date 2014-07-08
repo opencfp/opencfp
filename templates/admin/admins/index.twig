@@ -14,7 +14,7 @@
         <tbody>
             {% for speaker in speakers %}
                 <tr>
-                    <td><a href="{{ site.url }}/admin/admins/{{ speaker.user_id }}">Remove Admin</a></td>
+                    <td><a href="{{ site.url }}/admin/admins/{{ speaker.id }}">Remove Admin</a></td>
                     <td>{{ speaker.first_name }} {{ speaker.last_name }}</td>
                     <td>{{ speaker.twitter }}</td>
                     <td><a href="mailto:{{ speaker.email }}">{{ speaker.email }}</a></td>
