@@ -215,8 +215,7 @@ class Speaker
 
         return $results;
     }
-
-
+    
     /**
      * Get total record count
      */
