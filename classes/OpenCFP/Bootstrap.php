@@ -37,6 +37,10 @@ class Bootstrap
         // Initialize out Silex app and let's do it
         $app = new \Silex\Application();
 
+        if (true == $this->getConfig('twig.debug')) {
+            $app['debug'] = true;
+        }
+
         // Register our session provider
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app->before(function ($request) use ($app) {
@@ -157,7 +161,7 @@ class Bootstrap
         // Secondary Pages
         $app->get('/package', 'OpenCFP\Controller\DashboardController::packageAction');
         $app->get('/ideas', 'OpenCFP\Controller\DashboardController::ideasAction');
-        
+
         // User Dashboard
         $app->get('/dashboard', 'OpenCFP\Controller\DashboardController::indexAction');
 
