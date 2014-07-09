@@ -120,22 +120,24 @@ class Bootstrap
         });
 
         // Define error template paths
-        $app->error(function (\Exception $e, $code) use ($app) {
-            switch ($code) {
-                case 401:
-                    $message = $app['twig']->render('error/401.twig');
-                    break;
-                case 403:
-                    $message = $app['twig']->render('error/403.twig');
-                    break;
-                case 404:
-                    $message = $app['twig']->render('error/404.twig');
-                    break;
-                default:
-                    $message = $app['twig']->render('error/500.twig');
-            }
-            return new Response($message, $code);
-        });
+        if (true != $app['debug']) {
+            $app->error(function (\Exception $e, $code) use ($app) {
+                switch ($code) {
+                    case 401:
+                        $message = $app['twig']->render('error/401.twig');
+                        break;
+                    case 403:
+                        $message = $app['twig']->render('error/403.twig');
+                        break;
+                    case 404:
+                        $message = $app['twig']->render('error/404.twig');
+                        break;
+                    default:
+                        $message = $app['twig']->render('error/500.twig');
+                }
+                return new Response($message, $code);
+            });
+        }
 
         $app = $this->defineRoutes($app);
 
