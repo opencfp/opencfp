@@ -1,5 +1,5 @@
 {% block flash %}
-  {% if flash is not empty %}
+  {% if flash is defined and flash is not empty %}
     {% set flash_type = (flash.type == 'error') ? 'danger' : flash.type %}
     <div class="alert alert-{{ flash_type }}">
       {% if flash.short is not empty %}<strong>{{ flash.short }}:</strong> {% endif %}
