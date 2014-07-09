@@ -41,7 +41,7 @@ NOTE: Use development or production naming as appropriate.
 
 6. Customize /config/config.development.ini as needed for your environment and site settings.
 
-IMPORTANT: The enddate will be observed. The app now locks at 11:59pm on the given enddate.
+NOTE: The enddate will be observed. The app now locks at 11:59pm on the given enddate.
 
 7. Alter the /classes/OpenCFP/Bootstrap.php file with the desired $environment. Lines 11 and 12.
 
