@@ -29,7 +29,7 @@ class SignupController
         $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.' . APP_ENV . '.ini');
         $config_data = $loader->load();
 
-        if (strtotime($config_data['application']['enddate'] . ' 09:17 PM') < strtotime('now')) {
+        if (strtotime($config_data['application']['enddate'] . ' 11:59 PM') < strtotime('now')) {
 
             $app['session']->set('flash', array(
                     'type' => 'error',
