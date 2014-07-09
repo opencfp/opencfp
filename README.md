@@ -41,14 +41,15 @@ NOTE: Use development or production naming as appropriate.
 
 6. Customize /config/config.development.ini as needed for your environment and site settings.
 
-NOTE: The enddate will be observed. The app now locks at 11:59pm on the given enddate.
+    NOTE: The enddate will be observed. The app now locks at 11:59pm on the given enddate.
 
 7. Alter the /classes/OpenCFP/Bootstrap.php file with the desired $environment. Lines 11 and 12.
 
 8. Populate MySQL database by using the mysql.sql script available in /schema folder.
 
 9. May need to edit directory permissions for some of the vendor packages. (your mileage may vary)
-NOTE: We're looking at you ezyang htmlpurifier.
+
+    NOTE: We're looking at you ezyang htmlpurifier.
 
 10. Customize templates and /web/assets/css/site.css to your hearts content.
 
