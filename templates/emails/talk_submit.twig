@@ -1,0 +1,27 @@
+{% block subject %}{{ title }} CFP talk confirmation{% endblock %}
+
+{% block from %}{{ email }}{% endblock %}
+{% block from_name %}{{ title }}{% endblock %}
+
+{% block body_html %}
+<p>
+    Thank you for the awesome talk submission. When the call for papers is over on {{ enddate }} talk selection will begin. We'll be in touch soon.
+</p>
+<p>
+    Submitted Talk Title: "{{ talk }}"
+</p>
+<p>&nbsp;</p>
+<p>
+    Thanks and Good Luck,<br>
+    &nbsp;&nbsp;The {{ title }} Team.
+</p>
+{% endblock %}
+
+{% block body_text %}
+    Thank you for the awesome talk submission. When the call for papers is over on {{ enddate }} talk selection will begin. We'll be in touch soon.
+
+Submitted Talk Title: "{{ talk }}"
+
+Thanks and Good Luck,
+  The {{ site.title }} Team.
+{% endblock %}
