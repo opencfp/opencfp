@@ -19,10 +19,10 @@ class Talk
     }
 
     /**
-     * Create a talk when you pass new data in
+     * Create a talk when you pass new data in. Return the last insert id.
      *
      * @param array $data
-     * @return boolean
+     * @return integer
      */
     public function create($data)
     {
@@ -33,21 +33,25 @@ class Talk
             ";
         $stmt = $this->_db->prepare($sql);
 
-        return $stmt->execute(
-            array(
-                trim($data['title']),
-                trim($data['description']),
-                trim($data['type']),
-                trim($data['level']),
-                trim($data['category']),
-                trim($data['desired']),
-                trim($data['slides']),
-                trim($data['other']),
-                trim($data['sponsor']),
-                $data['user_id'],
-                date('Y-m-d H:i:s')
-            )
+        $insertData = array(
+            trim($data['title']),
+            trim($data['description']),
+            trim($data['type']),
+            trim($data['level']),
+            trim($data['category']),
+            trim($data['desired']),
+            trim($data['slides']),
+            trim($data['other']),
+            trim($data['sponsor']),
+            $data['user_id'],
+            date('Y-m-d H:i:s')
         );
+        
+        if ($stmt->execute($insertData)) {
+            return $this->_db->lastInsertId();
+        }
+        
+        return false;
     }
 
     /**

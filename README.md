@@ -6,9 +6,9 @@ Repo for OpenCFP project, a PHP-based conference talk submission system
 Requirements
 ------------
 
+Please see the [composer.json](composer.json) file.
 You may need to install php5-intl extension for PHP. (on Ubuntu, not sure what it is called for other OS)
 Also, must have PHP 5.3.3+.
-
 
 Installation
 ------------
@@ -35,16 +35,21 @@ NOTE: May need to download composer.phar first from http://getcomposer.org
 
     ```bash
     $ mv /config/config.development.ini.dist /config/config.development.ini
+    $ mv /config/config.production.ini.dist /config/config.production.ini
     ```
 NOTE: Use development or production naming as appropriate.
 
 6. Customize /config/config.development.ini as needed for your environment and site settings.
 
-7. Alter the /classes/OpenCFP/Bootstrap.php file with the desired environment. Lines 11 and 12.
+    NOTE: The enddate will be observed. The app now locks at 11:59pm on the given enddate.
+
+7. Alter the /classes/OpenCFP/Bootstrap.php file with the desired $environment. Lines 11 and 12.
 
 8. Populate MySQL database by using the mysql.sql script available in /schema folder.
 
 9. May need to edit directory permissions for some of the vendor packages. (your mileage may vary)
+
+    NOTE: We're looking at you ezyang htmlpurifier.
 
 10. Customize templates and /web/assets/css/site.css to your hearts content.
 

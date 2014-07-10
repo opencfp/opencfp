@@ -7,6 +7,7 @@ use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Form\SignupForm;
 use OpenCFP\Model\Speaker;
 use Intervention\Image\Image;
+use OpenCFP\Config\ConfigINIFileLoader;
 
 class SignupController
 {
@@ -24,6 +25,21 @@ class SignupController
 
     public function indexAction(Request $req, Application $app)
     {
+        // Nobody can login after CFP deadline
+        $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.' . APP_ENV . '.ini');
+        $config_data = $loader->load();
+
+        if (strtotime($config_data['application']['enddate'] . ' 11:59 PM') < strtotime('now')) {
+
+            $app['session']->set('flash', array(
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => 'Sorry, the call for papers has ended.',
+                ));
+
+            return $app->redirect($app['url']);
+        }
+        
         // Reset our user to make sure nothing weird happens
         if ($app['sentry']->check()) {
             $app['sentry']->logout();
