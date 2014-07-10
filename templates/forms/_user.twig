@@ -5,7 +5,7 @@
     <div class="form-group">
         <label for="form-user-email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
-            <input id="form-user-email" type="email" name="email" class="form-control" placeholder="you@domain.com" value="{{ email }}">
+            <input id="form-user-email" type="email" name="email" class="form-control" placeholder="you@domain.com" value="{{ email | default('') }}">
         </div>
     </div>
     {% if formAction == '/signup' %}
@@ -25,43 +25,43 @@
     <div class="form-group">
         <label for="form-user-first-name" class="col-sm-2 control-label">First Name</label>
         <div class="col-sm-10">
-            <input id="form-user-first-name" type="text" name="first_name" class="form-control" placeholder="First Name" value="{{ first_name }}">
+            <input id="form-user-first-name" type="text" name="first_name" class="form-control" placeholder="First Name" value="{{ first_name | default('') }}">
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-last-name" class="col-sm-2 control-label">Last Name</label>
         <div class="col-sm-10">
-            <input id="form-user-last-name" type="text" name="last_name" class="form-control" placeholder="Last Name" value="{{ last_name }}">
+            <input id="form-user-last-name" type="text" name="last_name" class="form-control" placeholder="Last Name" value="{{ last_name | default('') }}">
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-company" class="col-sm-2 control-label">Company</label>
         <div class="col-sm-10">
-            <input id="form-user-company" type="text" name="company" class="form-control" placeholder="Company" value="{{ company }}">
+            <input id="form-user-company" type="text" name="company" class="form-control" placeholder="Company" value="{{ company | default('') }}">
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-twitter" class="col-sm-2 control-label">Twitter</label>
         <div class="col-sm-10">
-            <input id="form-user-twitter" type="text" name="twitter" class="form-control" placeholder="@twitter" value="{{ twitter }}">
+            <input id="form-user-twitter" type="text" name="twitter" class="form-control" placeholder="@twitter" value="{{ twitter | default('') }}">
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-bio" class="col-sm-2 control-label">Speaker Bio</label>
         <div class="col-sm-10">
-            <textarea id="form-user-bio" name="speaker_bio" class="form-control" placeholder="Information About You" rows="5">{{ speaker_bio }}</textarea>
+            <textarea id="form-user-bio" name="speaker_bio" class="form-control" placeholder="Information About You" rows="5">{{ speaker_bio | default('') }}</textarea>
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-airport" class="col-sm-2 control-label">Departing Airport Code</label>
         <div class="col-sm-10">
-            <input id="form-user-airport" type="text" name="airport" class="form-control" placeholder="3 Characters" value="{{ airport }}">
+            <input id="form-user-airport" type="text" name="airport" class="form-control" placeholder="3 Characters" value="{{ airport | default('') }}">
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-notes" class="col-sm-2 control-label">Additional Notes</label>
         <div class="col-sm-10">
-            <textarea id="form-user-notes" name="speaker_info" class="form-control" placeholder="Other information you feel the organizers should be aware of" rows="5">{{ speaker_info }}</textarea>
+            <textarea id="form-user-notes" name="speaker_info" class="form-control" placeholder="Other information you feel the organizers should be aware of" rows="5">{{ speaker_info | default('') }}</textarea>
         </div>
     </div>
     <div class="form-group">
@@ -69,7 +69,7 @@
         <div class="col-sm-10">
             <input type="file" id="form-user-photo" name="speaker_photo" class="form-control" placeholder="Photo at least 300px wide by 300px high" accept="image/jpg, image/jpeg, image/png">
             <p class="help-block">Photo must be at least 300px wide by 300px high. JPG and PNG are the only accepted formats.</p>
-            {% if speaker_photo is not empty %}
+            {% if speaker_photo is defined and speaker_photo is not empty %}
                 <img src="{{ preview_photo }}" class="profile-photo">
             {% endif %}
         </div>
