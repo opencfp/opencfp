@@ -83,7 +83,7 @@ class SignupController
 
             if (isset($form_data['speaker_photo'])) {
                 // Move file into uploads directory
-                $fileName = $form_data['speaker_photo']->getClientOriginalName();
+                $fileName = uniqid() . '_' . $form_data['speaker_photo']->getClientOriginalName();
                 $form_data['speaker_photo']->move(APP_DIR . '/web/' . $app['uploadPath'], $fileName);
 
                 // Resize Photo
