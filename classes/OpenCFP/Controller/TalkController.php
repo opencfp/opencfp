@@ -147,9 +147,8 @@ class TalkController
         );
         $talk = new Talk($app['db']);
 
-        $talk_id = $talk->create($data); 
-        
-        if (!$talk_id) {
+        $result = $talk->create($data);
+        if (!$result) {
             $error++;
             // Set Success Flash Message
             $app['session']->set('flash', array(
@@ -173,7 +172,7 @@ class TalkController
         ));
 
         // send email to speaker showing submission
-        $this->sendSubmitEmail($app, $user, $talk_id);
+        $this->sendSubmitEmail($app, $user, $app['db']->lastInsertId());
         
         return $app->redirect($app['url'] . '/dashboard');
     }

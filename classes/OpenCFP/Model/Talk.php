@@ -33,7 +33,7 @@ class Talk
             ";
         $stmt = $this->_db->prepare($sql);
 
-        $insertData = array(
+        return $stmt->execute(array(
             trim($data['title']),
             trim($data['description']),
             trim($data['type']),
@@ -44,14 +44,8 @@ class Talk
             trim($data['other']),
             trim($data['sponsor']),
             $data['user_id'],
-            date('Y-m-d H:i:s')
+            date('Y-m-d H:i:s'))
         );
-        
-        if ($stmt->execute($insertData)) {
-            return $this->_db->lastInsertId();
-        }
-        
-        return false;
     }
 
     /**
