@@ -19,6 +19,7 @@ password = ""
 
 [twig]
 template_dir = "/templates"
+debug = false
 
 [smtp]
 user = ""
