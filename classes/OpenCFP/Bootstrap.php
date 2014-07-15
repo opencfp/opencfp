@@ -212,6 +212,7 @@ class Bootstrap
         // Admin::Speakers
         $app->get('/admin/speakers', 'OpenCFP\Controller\Admin\SpeakersController::indexAction');
         $app->get('/admin/speakers/{id}', 'OpenCFP\Controller\Admin\SpeakersController::viewAction');
+        $app->get('/admin/speakers/delete/{id}', 'OpenCFP\Controller\Admin\SpeakersController::deleteAction');
         $app->get('/admin/admins', 'OpenCFP\Controller\Admin\AdminsController::indexAction');
         $app->get('/admin/admins/{id}', 'OpenCFP\Controller\Admin\AdminsController::removeAction');
 
