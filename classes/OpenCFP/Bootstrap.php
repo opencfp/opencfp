@@ -141,6 +141,8 @@ class Bootstrap
 
         $app = $this->defineRoutes($app);
 
+        // Add the starting date for submissions
+        $app['cfpdate'] = $this->getConfig('application.cfpdate');
 
         return $app;
     }
