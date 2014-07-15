@@ -13,7 +13,7 @@
             <tr>
                 <td><a href="{{ site.url }}/admin/talks/{{ talk.id }}">{{ talk.title }}</a></td>
                 <td>{{ talk.category }}</td>
-                <td>{{ talk.created_at|date("F jS \\a\\t g:ia T") }}</td>
+                <td>{{ talk.created_at|date("F jS Y \\a\\t g:ia T") }}</td>
                 {% if false == talk.user %}
                 <td><em>Unknown User</em></td>
                 {% else %}
