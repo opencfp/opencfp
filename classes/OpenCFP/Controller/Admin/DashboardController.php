@@ -37,10 +37,10 @@ class DashboardController
         $template = $app['twig']->loadTemplate('admin/index.twig');
         $templateData = array(
             'speakerTotal' => $speakers->getTotalRecords(),
-            'talkTotal' => $talks->getTotalRecords(null, null, $app['cfpdate']),
+            'talkTotal' => $talks->getTotalRecords(),
             'favoriteTotal' => $talks->getTotalRecords('favorite', 1),
             'selectTotal' => $talks->getTotalRecords('selected', 1),
-            'talks' => $talks->getRecent(10, $app['cfpdate'])
+            'talks' => $talks->getRecent()
         );
 
         return $template->render($templateData);

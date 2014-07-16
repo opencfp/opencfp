@@ -179,16 +179,12 @@ class Talk
      * @param string $value value associated with that field
      * @return integer
      */
-    public function getTotalRecords($field = null, $value = null, $created_at = null)
+    public function getTotalRecords($field = null, $value = null)
     {
         $sql = "SELECT COUNT(*) AS total FROM talks";
 
         if ($field && $value) {
             $sql = "SELECT COUNT(*) AS total FROM talks WHERE {$field} = {$value}";
-        }
-
-        if ($created_at !== null) {
-            $sql = "SELECT COUNT(*) AS total FROM talks WHERE created_at >= '{$created_at}'";
         }
 
         $stmt = $this->_db->prepare($sql);
@@ -198,14 +194,9 @@ class Talk
         return $results['total'];
     }
 
-    public function getRecent($limit = 10, $created_at = null)
+    public function getRecent($limit = 10)
     {
         $sql = "SELECT t.*, u.first_name, u.last_name, u.email FROM talks t LEFT JOIN users u ON (u.id = t.user_id) ORDER BY t.created_at DESC LIMIT {$limit}";
-
-        if ($created_at !== null) {
-            $sql .= " WHERE created_at >= '{$created_at}'";
-        }
-
         $stmt = $this->_db->prepare($sql);
         $stmt->execute();
         $talks = $stmt->fetchAll();
