@@ -21,6 +21,8 @@ $table = $schema->createTable('speakers');
 $table->addColumn('user_id', 'integer', array());
 $table->addColumn('info', 'text', array('notnull' => false));
 $table->addColumn('bio', 'text', array('notnull' => false));
+$table->addColumn('transportation', 'boolean', array('default' => '0'));
+$table->addColumn('hotel', 'boolean', array('default' => '0'));
 $table->addColumn('photo_path', 'string', array('notnull' => false));
 $table->setPrimaryKey(array('user_id'), 'PRIMARY');
 

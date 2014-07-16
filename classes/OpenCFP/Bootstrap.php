@@ -37,8 +37,8 @@ class Bootstrap
         // Initialize out Silex app and let's do it
         $app = new \Silex\Application();
 
-        if (true == $this->getConfig('twig.debug')) {
-            $app['debug'] = true;
+        if ($this->getConfig('twig.debug')) {
+            $app['debug'] = $this->getConfig('twig.debug');
         }
 
         // Register our session provider
@@ -120,7 +120,7 @@ class Bootstrap
         });
 
         // Define error template paths
-        if (true != $app['debug']) {
+        if (!$app['debug']) {
             $app->error(function (\Exception $e, $code) use ($app) {
                 switch ($code) {
                     case 401:

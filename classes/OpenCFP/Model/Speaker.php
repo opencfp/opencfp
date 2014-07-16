@@ -81,7 +81,7 @@ class Speaker
     public function getDetailsByUserId($user_id)
     {
         $sql = "
-            SELECT u.email, u.first_name, u.last_name, u.company, u.twitter, u.airport, s.info, s.bio, s.photo_path
+            SELECT u.email, u.first_name, u.last_name, u.company, u.twitter, u.airport, s.info, s.bio, s.transportation, s.hotel, s.photo_path
             FROM users u
             LEFT JOIN speakers s ON s.user_id = u.id
             WHERE u.id = ?
