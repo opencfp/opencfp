@@ -70,7 +70,8 @@ class SignupController
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
 
-        if ($req->files->get('speaker_photo') != null) {
+        $form_data['speaker_photo'] = null;
+        if ($req->files->get('speaker_photo') !== null) {
             // Upload Image
             $form_data['speaker_photo'] = $req->files->get('speaker_photo');
         }
