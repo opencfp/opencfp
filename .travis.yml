@@ -1,0 +1,15 @@
+language: php
+
+php:
+  - 5.5
+
+cache:
+  directories:
+    - $HOME/.composer
+
+before_script:
+  - composer self-update
+  - composer install --working-dir=application/
+
+script:
+  - phpunit --configuration ./tests/phpunit.xml
