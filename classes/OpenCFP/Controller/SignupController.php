@@ -106,6 +106,9 @@ class SignupController
                 }
             }
 
+            // Remove leading @ for twitter
+            $sanitized_data['twitter'] = preg_replace('/^@/', '', $sanitized_data['twitter']);
+
             // Create account using Sentry
             $user_data = array(
                 'first_name' => $sanitized_data['first_name'],
@@ -117,11 +120,6 @@ class SignupController
                 'airport' => $sanitized_data['airport'],
                 'activated' => 1
             );
-
-            // Remove leading @ for twitter
-            if ($sanitized_data['twitter'][0] === "@") {
-                $sanitized_data['twitter'] = substr($sanitized_data['twitter'], 1);
-            }
 
             try {
                 $user = $app['sentry']->getUserProvider()->create($user_data);
