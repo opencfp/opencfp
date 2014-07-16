@@ -10,7 +10,7 @@ cache:
 
 before_script:
   - composer self-update
-  - composer install --working-dir=application/
+  - composer install
 
 script:
   - phpunit --configuration ./tests/phpunit.xml
