@@ -13,4 +13,4 @@ before_script:
   - composer install
 
 script:
-  - phpunit --configuration ./tests/phpunit.xml
+  - cd tests; phpunit --configuration ./tests/phpunit.xml
