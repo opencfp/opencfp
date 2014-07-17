@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)
 opencfp
 =======
 
