@@ -29,7 +29,7 @@ password = ""
 host = "localhost"
 
 ; for Gmail set port = "465", SMTP is "110", STARTLS is "587"
-port = "25"
+port = "2525"
 
 ; uncomment if your smtp server requires encryption
 ; available options are "tls", "ssl"
