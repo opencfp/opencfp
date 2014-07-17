@@ -1,0 +1,16 @@
+language: php
+
+php:
+  - 5.5
+
+# cache composer downloads so installing is quicker
+cache:
+  directories:
+    - $HOME/.composer
+
+before_script:
+  - composer self-update
+  - composer install
+
+script:
+  - cd tests; phpunit
