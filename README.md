@@ -94,9 +94,3 @@ There is a test suite that uses PHPUnit in the /tests directory. The recommended
     $ ../vendor/bin/phpunit
 
 [![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)
-
-
-Contributions Welcome
----------------------
-
-The project can only get better with contributions from people. See something wrong? Have an idea for a new feature? Send a pull request and let's talk about it.
