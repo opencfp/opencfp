@@ -89,10 +89,10 @@ Testing
 
 There is a test suite that uses PHPUnit in the /tests directory. The recommended way to run the tests is:
 
-    ```bash
+
     $ cd tests
     $ ../vendor/bin/phpunit
-    ```
+
 [![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)
 
 
