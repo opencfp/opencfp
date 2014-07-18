@@ -87,4 +87,14 @@ This will enable specified user to navigate to /admin through a link now visible
 Testing
 -------
 
-More to come on this.
+There is a test suite that uses PHPUnit in the /tests directory. The recommended way to run the tests is:
+
+    ```bash
+    $ cd tests
+    $ ../vendor/bin/phpunit
+    ```
+
+Contributions Welcome
+---------------------
+
+The project can only get better with contributions from people. See something wrong? Have an idea for a new feature? Send a pull request and let's talk about it.
