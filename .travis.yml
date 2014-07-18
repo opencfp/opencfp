@@ -2,6 +2,8 @@ language: php
 
 php:
   - 5.5
+  - 5.4
+  - 5.3
 
 # cache composer downloads so installing is quicker
 cache:
