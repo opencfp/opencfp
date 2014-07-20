@@ -21,6 +21,10 @@
 
         <h3>Speaker Additional Information</h3>
         <p>{{ speaker.info|raw }}</p>
+        
+        <h3>Other Information</h3>
+        <strong>Need Transportation:</strong> {% if speaker.transportation == '1' %} Yes {% else %} No {% endif %}<br />
+        <strong>Need Hotel:</strong> {% if speaker.hotel == '1' %} Yes {% else %} No {% endif %}
     </div>
 </div>
 {% endblock %}
