@@ -239,4 +239,20 @@ class Speaker
 
         return $user->attemptResetPassword($reset_code, $new_password);
     }
+
+    public function delete($userId)
+    {
+        // Check to make sure the user exists
+        $details = $this->getDetailsByUserId($userId);
+
+        if (!$details) {
+            return false;
+        }
+
+        $sql = "DELETE FROM users WHERE id = ?";
+        $stmt = $this->_db->prepare($sql);
+        $stmt->execute(array($userId));
+
+        return true;
+    }
 }

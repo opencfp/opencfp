@@ -1,0 +1,25 @@
+language: php
+
+php:
+  - 5.5
+  - 5.4
+  - 5.3
+
+# cache composer downloads so installing is quicker
+cache:
+  directories:
+    - $HOME/.composer
+
+before_script:
+  - composer self-update
+  - composer install
+
+  - cp config/config.travis.ini.dist config/config.development.ini
+
+  # Hack to write outgoing e-mails to stdout in order for the WebTest to pass.
+  # http://serverfault.com/a/248838/17428
+  - sudo python -m smtpd -n -c DebuggingServer localhost:2525 1> /dev/null &
+  - sleep 3
+
+script:
+  - cd tests; phpunit

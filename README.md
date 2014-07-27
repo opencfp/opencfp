@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)
 opencfp
 =======
 
@@ -87,4 +88,10 @@ This will enable specified user to navigate to /admin through a link now visible
 Testing
 -------
 
-More to come on this.
+There is a test suite that uses PHPUnit in the /tests directory. The recommended way to run the tests is:
+
+
+    $ cd tests
+    $ ../vendor/bin/phpunit
+
+[![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)

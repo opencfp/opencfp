@@ -8,6 +8,20 @@ use Pagerfanta\View\TwitterBootstrap3View;
 
 class SpeakersController
 {
+    
+    public function getFlash(Application $app)
+    {
+        $flasg = $app['session']->get('flash');
+        $this->clearFlash($app);
+
+        return $flash;
+    }
+
+    public function clearFlash(Application $app)
+    {
+        $app['session']->set('flash', null);
+    }
+    
     protected function userHasAccess($app)
     {
         if (!$app['sentry']->check()) {
@@ -88,6 +102,38 @@ class SpeakersController
         );
         return $template->render($templateData);
     }
+
+    public function deleteAction(Request $req, Application $app)
+    {
+        // Check if user is an logged in and an Admin
+        if (!$this->userHasAccess($app)) {
+            return $app->redirect($app['url'] . '/dashboard');
+        }
+
+        $userId = $req->get('id');
+        $speakerModel = new Speaker($app['db']);
+        $response = $speakerModel->delete($userId);
+
+        $ext = "Succesfully deleted the requested user";
+        $type = 'success';
+        $short = 'Success';
+
+        if ($response === false) {
+            $ext = "Unable to delete the requested user";
+            $type = 'error';
+            $short = 'Error';
+        }
+
+        // Set flash message
+        $app['session']->set('flash', array(
+            'type' => $type,
+            'short' => $short,
+            'ext' => $ext
+        ));
+
+        return $app->redirect($all['url'] . '/admin/speakers');
+    }
+
 }
 
 
