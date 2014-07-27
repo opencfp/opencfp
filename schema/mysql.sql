@@ -26,8 +26,6 @@ CREATE TABLE `migrations` (
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
-
 # Dump of table throttle
 # ------------------------------------------------------------
 
@@ -46,8 +44,6 @@ CREATE TABLE `throttle` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
-
 # Dump of table users
 # ------------------------------------------------------------
 
@@ -55,27 +51,26 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `permissions` text COLLATE utf8_unicode_ci,
-  `activated` tinyint(1) NOT NULL DEFAULT '0',
-  `activation_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `activated_at` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `last_login` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `persist_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `reset_password_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `first_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+	`password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `company` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `twitter` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `airport` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`permissions` text COLLATE utf8_unicode_ci,
+	`activated` tinyint(1) NOT NULL DEFAULT '0',
+	`activation_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`activated_at` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`last_login` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`persist_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`reset_password_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
 
 # Dump of table users_groups
 # ------------------------------------------------------------
@@ -109,6 +104,7 @@ DROP TABLE IF EXISTS `talks`;
 
 CREATE TABLE `talks` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+		`user_id` int(10) unsigned NOT NULL,
     `title` char(100) NOT NULL,
     `description` text,
     `type` char(50),
@@ -120,7 +116,6 @@ CREATE TABLE `talks` (
     `sponsor` tinyint(1) NOT NULL DEFAULT '0',
     `favorite` tinyint(1) NOT NULL DEFAULT '0',
     `selected` tinyint(1) NOT NULL DEFAULT '0',
-    `user_id` int(10) unsigned NOT NULL,
     `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     PRIMARY KEY (`id`)

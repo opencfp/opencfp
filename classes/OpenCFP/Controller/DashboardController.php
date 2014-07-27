@@ -30,6 +30,7 @@ class DashboardController
             'first_name' => $speaker_data['first_name'],
             'last_name' => $speaker_data['last_name'],
             'company' => $speaker_data['company'],
+            'url' => $speaker_data['url'],
             'twitter' => $speaker_data['twitter'],
             'speaker_info' => $speaker_data['info'],
             'speaker_bio' => $speaker_data['bio'],
