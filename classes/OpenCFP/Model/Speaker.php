@@ -112,7 +112,7 @@ class Speaker
 
         // Remove old photo if new one has been uploaded
         if ($speakerPhoto !== $details['photo_path']) {
-            unlink(UPLOAD_PATH . $details['photo_path']);
+            unlink(APP_DIR . '/web/' . UPLOAD_PATH . $details['photo_path']);
         }
 
         if ($details['first_name'] != $speaker_details['first_name']
@@ -156,8 +156,8 @@ class Speaker
         if (isset($row['speaker_count']) && $row['speaker_count'] == 1) {
             // Check if any fields have changed
             if (
-                $speaker_details['speaker_info'] == $details['info'] &&
-                $speaker_details['speaker_bio'] == $details['bio'] &&
+                $speaker_details['speaker_info'] == $details['info'] && 
+                $speaker_details['speaker_bio'] == $details['bio'] && 
                 $speakerPhoto == $details['photo_path']
             ) {
                 return true;
