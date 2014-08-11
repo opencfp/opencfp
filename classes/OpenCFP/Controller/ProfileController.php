@@ -108,7 +108,7 @@ class ProfileController
 
             if (isset($form_data['speaker_photo'])) {
                 // Move file into uploads directory
-                $fileName = $form_data['speaker_photo']->getClientOriginalName();
+                $fileName = uniqid() . '_' . $form_data['speaker_photo']->getClientOriginalName();
                 $form_data['speaker_photo']->move(APP_DIR . '/web/' . $app['uploadPath'], $fileName);
 
                 // Resize Photo
@@ -122,13 +122,12 @@ class ProfileController
 
                 $speakerPhoto->crop(250, 250);
 
-
                 // Give photo a unique name
                 $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $speakerPhoto->extension;
 
                 // Resize image and destroy original
                 if ($speakerPhoto->save(APP_DIR . '/web/' . $app['uploadPath'] . $sanitized_data['speaker_photo'])) {
-                    unlink($app['uploadPath'] . $fileName);
+                    unlink(APP_DIR . '/web/' . $app['uploadPath'] . $fileName);
                 }
             }
 
