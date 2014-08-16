@@ -40,13 +40,15 @@ class Speaker
             $data['bio'] = null;
         }
 
-        $sql = "INSERT INTO speakers (user_id, info, bio, photo_path) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO speakers (user_id, info, bio, transportation, hotel, photo_path) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->_db->prepare($sql);
 
         return $stmt->execute(array(
             $data['user_id'],
             trim($data['info']),
             trim($data['bio']),
+            $data['transportation'],
+            $data['hotel'],
             $data['photo_path']
         )
     );
@@ -158,6 +160,8 @@ class Speaker
             if (
                 $speaker_details['speaker_info'] == $details['info'] && 
                 $speaker_details['speaker_bio'] == $details['bio'] && 
+                $speaker_details['transportation'] == $details['transportation'] && 
+                $speaker_details['hotel'] == $details['hotel'] && 
                 $speakerPhoto == $details['photo_path']
             ) {
                 return true;
@@ -167,6 +171,8 @@ class Speaker
                 UPDATE speakers
                 SET info = ?,
                 bio = ?,
+                transportation = ?,
+                hotel = ?,
                 photo_path = ?
                 WHERE user_id = ?
             ";
@@ -174,6 +180,8 @@ class Speaker
             $stmt->execute(array(
                 trim($speaker_details['speaker_info']),
                 trim($speaker_details['speaker_bio']),
+                $speaker_details['transportation'],
+                $speaker_details['hotel'],
                 $speakerPhoto,
                 trim($speaker_details['user_id']))
             );
@@ -184,12 +192,14 @@ class Speaker
         }
 
         if (isset($row['speaker_count']) && $row['speaker_count'] == 0) {
-            $sql = "INSERT INTO speakers (user_id, info, bio, photo_path) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO speakers (user_id, info, bio, transportation, hotel, photo_path) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $this->_db->prepare($sql);
             return $stmt->execute(array(
                 $speaker_details['user_id'],
                 trim($speaker_details['speaker_info']),
                 trim($speaker_details['speaker_bio']),
+                $speaker_details['transportation'],
+                $speaker_details['hotel'],
                 $speakerPhoto
             ));
         }

@@ -52,6 +52,8 @@ class ProfileController
             'speaker_photo' => $speaker_data['photo_path'],
             'preview_photo' => $app['uploadPath'] . $speaker_data['photo_path'],
             'airport' => $speaker_data['airport'],
+            'transportation' => $speaker_data['transportation'],
+            'hotel' => $speaker_data['hotel'],
             'id' => $user->getId(),
             'formAction' => '/profile/edit',
             'buttonInfo' => 'Update Profile',
@@ -86,6 +88,8 @@ class ProfileController
             'company' => $req->get('company'),
             'twitter' => $req->get('twitter'),
             'airport' => $req->get('airport'),
+            'transportation' => $req->get('transportation'),
+            'hotel' => $req->get('hotel'),
             'speaker_info' => $req->get('speaker_info') ?: null,
             'speaker_bio' => $req->get('speaker_bio') ?: null,
         );

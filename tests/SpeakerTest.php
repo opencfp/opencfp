@@ -30,6 +30,8 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             'user_id' => 1,
             'info' => 'Test info',
             'bio' => 'Test speaker bio',
+            'transportation' => 1,
+            'hotel' => 1,
             'photo_path' => 'dummyphoto.jpg'
         );
         $response = $speaker->create($data);
@@ -159,6 +161,8 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             'last_name' => 'McTesterton',
             'speaker_info' => 'Test info',
             'speaker_bio' => 'Test bio',
+            'transportation' => 1,
+            'hotel' => 1,
             'user_id' => 42
         );
 
@@ -208,6 +212,8 @@ class SpeakerTest extends PHPUnit_Framework_TestCase
             'airport' => 'AIR',
             'speaker_info' => 'Speaker info',
             'speaker_bio' => 'Speaker bio',
+            'transportation' => 1,
+            'hotel' => 1,
             'speaker_photo' => 'dummyphoto.jpg'
         );
 
