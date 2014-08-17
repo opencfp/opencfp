@@ -47,6 +47,8 @@ class SignupController
 
         $template = $app['twig']->loadTemplate('user/create.twig');
         $form_data = array();
+        $form_data['transportation'] = 0;
+        $form_data['hotel'] = 0;
         $form_data['formAction'] = '/signup';
         $form_data['buttonInfo'] = 'Create my speaker profile';
 
@@ -69,6 +71,8 @@ class SignupController
         );
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
+        $form_data['transportation'] = $req->get('transportation') ?: null;
+        $form_data['hotel'] = $req->get('hotel') ?: null;
 
         $form_data['speaker_photo'] = null;
         if ($req->files->get('speaker_photo') !== null) {
@@ -135,6 +139,8 @@ class SignupController
                     'user_id' => $user->getId(),
                     'info' => $sanitized_data['speaker_info'],
                     'bio' => $sanitized_data['speaker_bio'],
+                    'transportation' => $sanitized_data['transportation'],
+                    'hotel' => $sanitized_data['hotel'],
                     'photo_path' => $sanitized_data['speaker_photo'],
                 ));
 
