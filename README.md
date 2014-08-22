@@ -18,7 +18,7 @@ Requirements
 
 Please see the [composer.json](composer.json) file.
 You may need to install php5-intl extension for PHP. (on Ubuntu, not sure what it is called for other OS)
-Also, must have PHP 5.3.3+.
+Also, must have PHP 5.4+.
 Requires apache 2+ with mod_rewrite enabled and "AllowOverride all" directive in your <Directory> block.
 
 Installation
