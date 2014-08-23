@@ -21,10 +21,36 @@ class TalkController
         $app['session']->set('flash', null);
     }
 
+    public function isCfpOpen($current_time)
+    {
+        $loader = new ConfigINIFileLoader(
+            APP_DIR . '/config/config.' . APP_ENV . '.ini'
+        );
+        $config_data = $loader->load();
+        $end_date = $config_data['application']['enddate'] . ' 11:59 PM';
+
+        if ($current_time < strtotime($end_date)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function editAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
             return $app->redirect($app['url'] . '/login');
+        }
+
+        // You can only edit talks while the CfP is open
+        if (!$this->isCfpOpen(strtotime('now'))) {
+            $app['session']->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'You cannot edit talks once the call for papers has ended']
+            );
+
+            return $app->redirect($app['url'] . '/dashboard');
         }
 
         $id = $req->get('id');
@@ -68,6 +94,17 @@ class TalkController
             return $app->redirect($app['url'] . '/login');
         }
 
+        // You can only create talks while the CfP is open
+        if (!$this->isCfpOpen(strtotime('now'))) {
+            $app['session']->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'You cannot create talks once the call for papers has ended']
+            );
+
+            return $app->redirect($app['url'] . '/dashboard');
+        }
+
         $user = $app['sentry']->getUser();
 
         $template = $app['twig']->loadTemplate('talk/create.twig');
@@ -92,8 +129,20 @@ class TalkController
     public function processCreateAction(Request $req, Application $app)
     {
         $error = 0;
+
         if (!$app['sentry']->check()) {
             return $app->redirect($app['url'] . '/login');
+        }
+
+        // You can only create talks while the CfP is open
+        if (!$this->isCfpOpen(strtotime('now'))) {
+            $app['session']->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'You cannot create talks once the call for papers has ended']
+            );
+
+            return $app->redirect($app['url'] . '/dashboard');
         }
 
         $user = $app['sentry']->getUser();
@@ -173,7 +222,7 @@ class TalkController
 
         // send email to speaker showing submission
         $this->sendSubmitEmail($app, $user, $app['db']->lastInsertId());
-        
+
         return $app->redirect($app['url'] . '/dashboard');
     }
 
@@ -265,6 +314,11 @@ class TalkController
             return $app->json(array('delete' => 'no-user'));
         }
 
+        // You can only delete talks while the CfP is open
+        if (!$this->isCfpOpen(strtotime('now'))) {
+            return $app->json(array('delete' => 'no'));
+        }
+
         $user = $app['sentry']->getUser();
         $talk = new Talk($app['db']);
 
@@ -279,9 +333,11 @@ class TalkController
     {
         $talk = new Talk($app['db']);
         $talk_info = $talk->findById($talk_id);
-        
+
         // Create our Mailer object
-        $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.' . APP_ENV . '.ini');
+        $loader = new ConfigINIFileLoader(
+            APP_DIR . '/config/config.' . APP_ENV . '.ini'
+        );
         $config_data = $loader->load();
         $transport = new \Swift_SmtpTransport(
             $config_data['smtp']['host'],

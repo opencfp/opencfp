@@ -24,6 +24,30 @@ function deleteTalk(tid) {
 {% block content %}
 <div class="module">
     <span class="pull-right">Welcome <strong>{{ user.login }}</strong></span>
+
+    <h2 class="headline">My Profile</h2>
+    <div class="row">
+        <div class="col-md-3">
+            {% if speaker_photo is defined and speaker_photo is not empty %}
+                <img src="{{ preview_photo }}" class="profile-photo" />
+            {% else %}
+                <img src="/uploads/dummyphoto.jpg" class="profile-photo" />
+            {% endif %}
+        </div>
+        <div class="col-md-9">
+            <br />
+            <strong>Name:</strong> {{ first_name }} {{ last_name }} <a href="https://twitter.com/@{{ twitter }}" title="{{ first_name }} {{ last_name }} on Twitter">@{{ twitter }}</a><br />
+            <strong>Company:</strong> {{ company }}<br />
+            <strong>URL:</strong> {{ url }}<br />
+            <strong>Airport:</strong> {{ airport }}<br />
+            <strong>Bio:</strong> {{ speaker_bio }}<br /><br />
+            <strong>Other Info:</strong> {{ speaker_info }}<br /><br />
+            
+            <strong>Need Transportation:</strong> {% if transportation == '1' %} Yes {% else %} No {% endif %}<br />
+            <strong>Need Hotel:</strong> {% if hotel == '1' %} Yes {% else %} No {% endif %}
+        </div>
+    </div>
+    
     <h2 class="headline">My Talks</h2>
     {% if myTalks is defined %}
     <table class="table table-striped">

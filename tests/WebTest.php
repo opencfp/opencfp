@@ -46,6 +46,8 @@ class WebTest extends WebTestCase
         $form['company'] = 'Test Company';
         $form['twitter'] = '@name';
         $form['speaker_bio'] = 'Bla.';
+        $form['transportation'] = 1;
+        $form['hotel'] = 1;
         $form['speaker_info'] = 'Bleh.';
         $form['speaker_photo'] = APP_DIR . '/web/uploads/dummyphoto.jpg';
         
