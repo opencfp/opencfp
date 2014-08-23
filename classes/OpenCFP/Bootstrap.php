@@ -1,6 +1,7 @@
 <?php
 namespace OpenCFP;
 
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenCFP\Config\ConfigINIFileLoader;
@@ -79,6 +80,15 @@ class Bootstrap
         ));
 
         $app['db'] = $this->getDb();
+        $capsule = new Capsule;
+        $capsule->addConnection([
+            'driver' => 'mysql',
+            'database' => $this->getConfig('database.database'),
+            'host' => $this->getConfig('database.host'),
+            'user' => $this->getConfig('database.user'),
+            'password' => $this->getConfig('database.password')
+        ]);
+        $capsule->bootEloquent();
 
         $app['purifier'] = $this->getPurifier();
 

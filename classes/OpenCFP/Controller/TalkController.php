@@ -5,6 +5,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Form\TalkForm;
 use OpenCFP\Model\Talk;
+use OpenCFP\Model\TalkModel;
 use OpenCFP\Config\ConfigINIFileLoader;
 
 class TalkController
@@ -61,26 +62,26 @@ class TalkController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        $talk = new Talk($app['db']);
-        $talk_info = $talk->findById($talk_id);
+        $model = new TalkModel;
+        $talk = $model->findById($talk_id);
 
-        if ($talk_info['user_id'] !== $user->getId()) {
+        if ($talk->user_id !== $user->getId()) {
             return $app->redirect($app['url'] . '/dashboard');
         }
 
         $template = $app['twig']->loadTemplate('talk/edit.twig');
         $data = array(
             'formAction' => '/talk/update',
-            'id' => $talk_id,
-            'title' => $talk_info['title'],
-            'description' => $talk_info['description'],
-            'type' => $talk_info['type'],
-            'level' => $talk_info['level'],
-            'category' => $talk_info['category'],
-            'desired' => $talk_info['desired'],
-            'slides' => $talk_info['slides'],
-            'other' => $talk_info['other'],
-            'sponsor' => $talk_info['sponsor'],
+            'id' => $talk->id,
+            'title' => $talk->title,
+            'description' => $talk->description,
+            'type' => $talk->type,
+            'level' => $talk->level,
+            'category' => $talk->category,
+            'desired' => $talk->desired,
+            'slides' => $talk->slides,
+            'other' => $talk->other,
+            'sponsor' => $talk->sponsor,
             'buttonInfo' => 'Update my talk!',
             'user' => $user
         );
@@ -128,8 +129,6 @@ class TalkController
 
     public function processCreateAction(Request $req, Application $app)
     {
-        $error = 0;
-
         if (!$app['sentry']->check()) {
             return $app->redirect($app['url'] . '/login');
         }
@@ -163,7 +162,6 @@ class TalkController
         $form->sanitize();
 
         if (!$form->validateAll()) {
-            $error++;
             $data = array(
                 'formAction' => '/talk/create',
                 'title' => $req->get('title'),
@@ -178,37 +176,50 @@ class TalkController
                 'buttonInfo' => 'Submit my talk!',
                 'user' => $user,
             );
+            $validation_errors = implode("<br>", $form->getErrorMessages());
+            $app['session']->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => $validation_errors
+            ]);
+            $data['flash'] = $this->getFlash($app);
+            $template = $app['twig']->loadTemplate('talk/create.twig');
+            return $template->render($data);
         }
 
         $sanitized_data = $form->getCleanData();
-        $data = array(
-            'title' => $sanitized_data['title'],
-            'description' => $sanitized_data['description'],
-            'type' => $sanitized_data['type'],
-            'level' => $sanitized_data['level'],
-            'category' => $sanitized_data['category'],
-            'desired' => $sanitized_data['desired'],
-            'slides' => $sanitized_data['slides'],
-            'other' => $sanitized_data['other'],
-            'sponsor' => $sanitized_data['sponsor'],
-            'user_id' => (int)$user->getId(),
-            'user' => $user
-        );
-        $talk = new Talk($app['db']);
 
-        $result = $talk->create($data);
-        if (!$result) {
-            $error++;
-            // Set Success Flash Message
+        $talk = new TalkModel;
+        $talk->user_id = (int)$user->getId();
+        $talk->title = $sanitized_data['title'];
+        $talk->type = $sanitized_data['type'];
+        $talk->level = $sanitized_data['level'];
+        $talk->category = $sanitized_data['category'];
+        $talk->desired = $sanitized_data['desired'];
+        $talk->slides = $sanitized_data['slides'];
+        $talk->other = $sanitized_data['other'];
+        $talk->sponsor = $sanitized_data['sponsor'];
+        $result = $talk->save();
+
+        if ($result !== true) {
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "Unable to add the talk, please try again",
             ));
-        }
-
-        // If any errors were found
-        if ($error > 0) {
+            $data = array(
+                'title' => $sanitized_data['title'],
+                'description' => $sanitized_data['description'],
+                'type' => $sanitized_data['type'],
+                'level' => $sanitized_data['level'],
+                'category' => $sanitized_data['category'],
+                'desired' => $sanitized_data['desired'],
+                'slides' => $sanitized_data['slides'],
+                'other' => $sanitized_data['other'],
+                'sponsor' => $sanitized_data['sponsor'],
+                'user_id' => (int)$user->getId(),
+                'user' => $user
+            );
             $data['flash'] = $this->getFlash($app);
             $template = $app['twig']->loadTemplate('talk/create.twig');
             return $template->render($data);
@@ -254,21 +265,19 @@ class TalkController
 
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
-            $data = array(
-                'id' => (int)$sanitized_data['id'],
-                'title' => $sanitized_data['title'],
-                'description' => $sanitized_data['description'],
-                'type' => $sanitized_data['type'],
-                'level' => $sanitized_data['level'],
-                'category' => $sanitized_data['category'],
-                'desired' => $sanitized_data['desired'],
-                'slides' => $sanitized_data['slides'],
-                'other' => $sanitized_data['other'],
-                'sponsor' => $sanitized_data['sponsor'],
-                'user_id' => (int)$user->getId()
-            );
-            $talk = new Talk($app['db']);
-            $talk->update($data);
+            $model = new TalkModel;
+            $talk = $model->findById($sanitized_data['id']);
+            $talk->title = $sanitized_data['title'];
+            $talk->description = $sanitized_data['description'];
+            $talk->type = $sanitized_data['type'];
+            $talk->level = $sanitized_data['level'];
+            $talk->category = $sanitized_data['category'];
+            $talk->desired = $sanitized_data['desired'];
+            $talk->slides = $sanitized_data['slides'];
+            $talk->other = $sanitized_data['other'];
+            $talk->sponsor = $sanitized_data['sponsor'];
+            $talk->user_id = (int)$user->getId();
+            $talk->save();
             $app['session']->set('flash', array(
                 'type' => 'success',
                 'short' => 'Success',
@@ -320,19 +329,24 @@ class TalkController
         }
 
         $user = $app['sentry']->getUser();
-        $talk = new Talk($app['db']);
+        $model = new TalkModel;
+        $talk = $model->findById($req->get('tid'));
 
-        if ($talk->delete($req->get('tid'), $user->getId()) === true) {
-            return $app->json(array('delete' => 'ok'));
+        if ($talk->user_id !== $user->getId()) {
+            return $app->json(array('delete' => 'no'));
         }
 
-        return $app->json(array('delete' => 'no'));
+        if ($talk->delete() !== true) {
+            return $app->json(array('delete' => 'no'));
+        }
+
+        return $app->json(array('delete' => 'ok'));
     }
 
     protected function sendSubmitEmail(Application $app, $user, $talk_id)
     {
-        $talk = new Talk($app['db']);
-        $talk_info = $talk->findById($talk_id);
+        $model = new TalkModel;
+        $talk = $model->findById($talk_id);
 
         // Create our Mailer object
         $loader = new ConfigINIFileLoader(
@@ -358,7 +372,7 @@ class TalkController
         $parameters = array(
             'email' => $config_data['application']['email'],
             'title' => $config_data['application']['title'],
-            'talk' => $talk_info['title'],
+            'talk' => $talk->title,
             'enddate' => $config_data['application']['enddate']
         );
 
