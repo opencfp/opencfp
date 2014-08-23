@@ -6,7 +6,7 @@ class Favorites extends AbstractMigration
 {
     public function change()
     {
-        $table = $this->table('favorites', array('id' => false));
+        $table = $this->table('favorites');
         $table->addColumn('admin_user_id', 'integer')
             ->addColumn('talk_id', 'integer')
             ->addColumn('created', 'datetime')
