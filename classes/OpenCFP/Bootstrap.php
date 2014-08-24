@@ -228,6 +228,9 @@ class Bootstrap
         $app->get('/admin/admins', 'OpenCFP\Controller\Admin\AdminsController::indexAction');
         $app->get('/admin/admins/{id}', 'OpenCFP\Controller\Admin\AdminsController::removeAction');
 
+        // Admin::Review
+        $app->get('/admin/review', 'OpenCFP\Controller\Admin\ReviewController::indexAction');
+
         return $app;
     }
 

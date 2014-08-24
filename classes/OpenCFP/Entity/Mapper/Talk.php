@@ -51,6 +51,33 @@ class Talk extends Mapper
     }
 
     /**
+     * Return a collection of talks that a majority of the admins have liked
+     *
+     * @param integet $admin_majority
+     * @return array
+     */
+    public function getAdminFavorites($admin_majority)
+    {
+        $talks = $this->all()
+            ->order(['created_at' => 'DESC'])
+            ->with(['favorites', 'speaker']);
+
+        foreach ($talks as $talk) {
+            if ($talk->favorites->count() >= $admin_majority) {
+                $favorite_talks[] = $talk;
+            }
+        }
+
+        $formatted = [];
+
+        foreach ($favorite_talks as $talk) {
+            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id);
+        }
+
+        return $formatted;
+    }
+
+    /**
      * Iterates over DBAL objects and returns a formatted result set
      *
      * @param mixed $talk
