@@ -18,7 +18,7 @@ class DashboardController
         $speaker = new Speaker($app['db']);
         $speaker_data = $speaker->getDetailsByUserId($user->getId());
         $permissions['admin'] = $user->hasPermission('admin');
-        
+
         $talk = new Talk($app['db']);
         $my_talks = $talk->findByUserId($user->getId());
 

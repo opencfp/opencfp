@@ -32,15 +32,17 @@ class DashboardController
         }
 
         $speakers = new Speaker($app['db']);
-        $talks = new Talk($app['db']);
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $favorite_mapper = $app['spot']->mapper('OpenCFP\Entity\Favorite');
+        $recent_talks = $mapper->getRecent($app['sentry']->getUser()->getId());
 
         $template = $app['twig']->loadTemplate('admin/index.twig');
         $templateData = array(
             'speakerTotal' => $speakers->getTotalRecords(),
-            'talkTotal' => $talks->getTotalRecords(),
-            'favoriteTotal' => $talks->getTotalRecords('favorite', 1),
-            'selectTotal' => $talks->getTotalRecords('selected', 1),
-            'talks' => $talks->getRecent()
+            'talkTotal' => $mapper->all()->count(),
+            'favoriteTotal' => $favorite_mapper->all()->count(),
+            'selectTotal' => $mapper->all()->where(['selected' => 1])->count(),
+            'talks' => $recent_talks
         );
 
         return $template->render($templateData);
