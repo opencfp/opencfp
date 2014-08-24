@@ -80,15 +80,17 @@ class Bootstrap
         ));
 
         $app['db'] = $this->getDb();
-        $capsule = new Capsule;
-        $capsule->addConnection([
-            'driver' => 'mysql',
-            'database' => $this->getConfig('database.database'),
-            'host' => $this->getConfig('database.host'),
+        $app['spot'] = $this->getSpot();
+
+        $cfg = new \Spot\Config();
+        $cfg->addConnection('mysql', [
+            'dbname' => $this->getConfig('database.database'),
             'user' => $this->getConfig('database.user'),
-            'password' => $this->getConfig('database.password')
+            'password' => $this->getConfig('database.password'),
+            'host' => $this->getConfig('database.host'),
+            'driver' => 'pdo_mysql'
         ]);
-        $capsule->bootEloquent();
+        $app['spot'] = new \Spot\Locator($cfg);
 
         $app['purifier'] = $this->getPurifier();
 
@@ -254,7 +256,7 @@ class Bootstrap
         $configData = $loader->load();
 
         // Place our info into Pimple
-        $this->_config = new Pimple();
+        $this->_config = new \Pimple();
 
         foreach ($configData as $category => $info) {
             foreach ($info as $key => $value) {
@@ -310,6 +312,19 @@ class Bootstrap
             $container['database.user'],
             $container['database.password']
         );
+    }
+
+    public function getSpot()
+    {
+        $cfg = new \Spot\Config();
+        $cfg->addConnection('mysql', [
+            'dbname' => $this->getConfig('database.database'),
+            'user' => $this->getConfig('database.user'),
+            'password' => $this->getConfig('database.password'),
+            'host' => $this->getConfig('database.host'),
+            'driver' => 'pdo_mysql'
+        ]);
+        return new \Spot\Locator($cfg);
     }
 
     private function initializeAutoLoader()
