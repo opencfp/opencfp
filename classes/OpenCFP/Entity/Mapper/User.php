@@ -18,17 +18,25 @@ class User extends Mapper
             ->with(['speaker'])
             ->first();
 
-        return [
-            'photo_path' => $user->speaker->photo_path ?: null,
+        $details = [
+            'photo_path' => null,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'airport' => $user->airport,
             'email' => $user->email,
             'twitter' => $user->twitter,
-            'bio' => $user->speaker->bio ?: null,
-            'info' => $user->speaker->info ?: null,
+            'bio' => null,
+            'info' => null,
             'hotel' => $user->hotel,
             'transportation' => $user->transportation
         ];
+
+        if (is_object($user->speaker)) {
+            $details['photo_path'] = $user->speaker->photo_path;
+            $details['bio'] = $user->speaker->bio;
+            $details['info'] = $user->speaker->info;
+        }
+
+        return $details;
     }
 }
