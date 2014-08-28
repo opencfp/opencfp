@@ -42,9 +42,6 @@ class Bootstrap
             $app['debug'] = $this->getConfig('twig.debug');
         }
 
-        // Force debug mode
-        $app['debug'] = true;
-
         // Register our session provider
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app->before(function ($request) use ($app) {
