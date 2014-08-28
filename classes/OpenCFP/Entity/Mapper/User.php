@@ -19,14 +19,14 @@ class User extends Mapper
             ->first();
 
         return [
-            'photo_path' => $user->speaker->photo_path,
+            'photo_path' => $user->speaker->photo_path ?: null,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'airport' => $user->airport,
             'email' => $user->email,
             'twitter' => $user->twitter,
-            'bio' => $user->speaker->bio,
-            'info' => $user->speaker->info,
+            'bio' => $user->speaker->bio ?: null,
+            'info' => $user->speaker->info ?: null,
             'hotel' => $user->hotel,
             'transportation' => $user->transportation
         ];
