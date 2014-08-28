@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th align='left'><b>Title</b></th>
+            <th align='left'><b>Type</b></th>
             <th align='left'><b>Category</b></th>
             <th align='left'><b>Created On</b></th>
             <th align='left'><b>Submitted by</b></th>
@@ -12,6 +13,7 @@
         {% for talk in talks %}
             <tr>
                 <td><a href="{{ site.url }}/admin/talks/{{ talk.id }}">{{ talk.title }}</a></td>
+                <td>{{ talk.type }}</td>
                 <td>{{ talk.category }}</td>
                 <td>{{ talk.created_at|date("F jS Y \\a\\t g:ia T") }}</td>
                 {% if false == talk.user %}

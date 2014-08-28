@@ -97,6 +97,7 @@ class Talk extends Mapper
         $output = [
             'id' => $talk->id,
             'title' => $talk->title,
+            'type' => $talk->type,
             'category' => $talk->category,
             'created_at' => $talk->created_at,
             'selected' => $talk->selected,
