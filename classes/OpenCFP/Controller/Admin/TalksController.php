@@ -76,23 +76,24 @@ class TalksController
         }
 
         // Get info about the talks
-        $talkId = $req->get('id');
-        $talkModel = new Talk($app['db']);
-        $talk = $talkModel->findById($talkId);
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_id = $req->get('id');
+        $talk = $talk_mapper->get($talk_id);
+        $all_talks = $talk_mapper->all()
+            ->where(['user_id' => $talk->user_id])
+            ->toArray();
 
         // Get info about our speaker
-        $speakerModel = new Speaker($app['db']);
-        $speaker = $speakerModel->getDetailsByUserId($talk['user_id']);
+        $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $speaker = $user_mapper->getDetails($talk->user_id);
 
         // Grab all the other talks and filter out the one we have
-        $rawTalks = $talkModel->findByUserId($talk['user_id']);
-
-        $otherTalks = array_filter($rawTalks, function ($talk) use ($talkId) {
-            if ($talk['id'] !== $talkId) {
-                return true;
+        $otherTalks = array_filter($all_talks, function ($talk) use ($talk_id) {
+            if ((int)$talk['id'] == (int)$talk_id) {
+                return false;
             }
 
-            return false;
+            return true;
         });
 
         // Build and render the template
