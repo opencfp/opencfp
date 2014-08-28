@@ -5,7 +5,7 @@ namespace OpenCFP\Entity;
 class Speaker extends \Spot\Entity
 {
     protected static $table = 'speakers';
-    protected static $mapper = 'OpenCFP\Entity\Mapper\Speaker';
+
     public static function fields()
     {
         return [
