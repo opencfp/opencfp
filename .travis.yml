@@ -21,4 +21,7 @@ before_script:
   - sleep 3
 
 script:
-  - cd tests; phpunit
+  - cd tests
+  - phpunit --coverage-clover build/logs/clover.xml
+  - CODECLIMATE_REPO_TOKEN=3df25819765c78c9f1eaa02232d42362033703ef645e54703dff3ab4c636aae5
+  - ../vendor/bin/test-reporter
