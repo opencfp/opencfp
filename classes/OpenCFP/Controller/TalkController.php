@@ -128,8 +128,6 @@ class TalkController
 
     public function processCreateAction(Request $req, Application $app)
     {
-        $error = 0;
-
         if (!$app['sentry']->check()) {
             return $app->redirect($app['url'] . '/login');
         }
@@ -161,11 +159,44 @@ class TalkController
 
         $form = new TalkForm($request_data, $app['purifier']);
         $form->sanitize();
-
-        if (!$form->validateAll()) {
-            $error++;
+        $isValid = $form->validateAll();
+        
+        if ($isValid) {
+            $sanitized_data = $form->getCleanData();
             $data = array(
-                'formAction' => '/talk/create',
+                'title' => $sanitized_data['title'],
+                'description' => $sanitized_data['description'],
+                'type' => $sanitized_data['type'],
+                'level' => $sanitized_data['level'],
+                'category' => $sanitized_data['category'],
+                'desired' => $sanitized_data['desired'],
+                'slides' => $sanitized_data['slides'],
+                'other' => $sanitized_data['other'],
+                'sponsor' => $sanitized_data['sponsor'],
+                'user_id' => (int)$user->getId(),
+                'user' => $user
+            );
+            
+            $talk = new Talk($app['db']);
+            $talk->create($data);
+            
+            $app['session']->set('flash', array(
+                    'type' => 'success',
+                    'short' => 'Success',
+                    'ext' => 'Successfully added talk.',
+                ));
+
+            // send email to speaker showing submission
+            $this->sendSubmitEmail($app, $user, $app['db']->lastInsertId());
+
+            return $app->redirect($app['url'] . '/dashboard');
+        }
+
+        if (!$isValid) {
+            $template = $app['twig']->loadTemplate('talk/edit.twig');
+            $data = array(
+                'formAction' => '/talk/update',
+                'id' => $req->get('id'),
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
@@ -178,52 +209,16 @@ class TalkController
                 'buttonInfo' => 'Submit my talk!',
                 'user' => $user,
             );
-        }
 
-        $sanitized_data = $form->getCleanData();
-        $data = array(
-            'title' => $sanitized_data['title'],
-            'description' => $sanitized_data['description'],
-            'type' => $sanitized_data['type'],
-            'level' => $sanitized_data['level'],
-            'category' => $sanitized_data['category'],
-            'desired' => $sanitized_data['desired'],
-            'slides' => $sanitized_data['slides'],
-            'other' => $sanitized_data['other'],
-            'sponsor' => $sanitized_data['sponsor'],
-            'user_id' => (int)$user->getId(),
-            'user' => $user
-        );
-        $talk = new Talk($app['db']);
-
-        $result = $talk->create($data);
-        if (!$result) {
-            $error++;
-            // Set Success Flash Message
             $app['session']->set('flash', array(
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => "Unable to add the talk, please try again",
-            ));
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => implode("<br>", $form->getErrorMessages())
+                ));
         }
-
-        // If any errors were found
-        if ($error > 0) {
-            $data['flash'] = $this->getFlash($app);
-            $template = $app['twig']->loadTemplate('talk/create.twig');
-            return $template->render($data);
-        }
-
-        $app['session']->set('flash', array(
-            'type' => 'success',
-            'short' => 'Success',
-            'ext' => "Succesfully added the talk"
-        ));
-
-        // send email to speaker showing submission
-        $this->sendSubmitEmail($app, $user, $app['db']->lastInsertId());
-
-        return $app->redirect($app['url'] . '/dashboard');
+        
+        $data['flash'] = $this->getFlash($app);
+        return $template->render($data);
     }
 
     public function updateAction(Request $req, Application $app)
