@@ -33,6 +33,7 @@
     "require-dev": {
         "fzaninotto/faker": "1.2.*",
         "phpunit/phpunit": "3.7.*",
-        "mockery/mockery": "dev-master@dev"
+        "mockery/mockery": "dev-master@dev",
+        "codeclimate/php-test-reporter": "dev-master"
     }
 }

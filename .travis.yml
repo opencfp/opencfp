@@ -21,4 +21,9 @@ before_script:
   - sleep 3
 
 script:
-  - cd tests; phpunit
+  - cd tests
+  - phpunit --coverage-clover build/logs/clover.xml
+
+after_script:
+  - CODECLIMATE_REPO_TOKEN="3df25819765c78c9f1eaa02232d42362033703ef645e54703dff3ab4c636aae5" ../vendor/bin/test-reporter --stdout > codeclimate.json
+  - curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports
