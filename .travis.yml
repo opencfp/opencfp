@@ -24,4 +24,4 @@ script:
   - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
-  - vendor/bin/test-reporter
+  - ../vendor/bin/test-reporter
