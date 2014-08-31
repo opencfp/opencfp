@@ -62,6 +62,7 @@ class TalksController
             'pagination' => $pagination,
             'talks' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage(),
+            'current_page' => $pagerfanta->getCurrentPage(),
             'totalRecords' => count($pager_formatted_talks)
         );
 
