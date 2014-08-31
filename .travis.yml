@@ -9,6 +9,8 @@ cache:
   directories:
     - $HOME/.composer
 
+env: CODECLIMATE_REPO_TOKEN=3df25819765c78c9f1eaa02232d42362033703ef645e54703dff3ab4c636aae5
+
 addons:
   code_climate:
     repo_token: 3df25819765c78c9f1eaa02232d42362033703ef645e54703dff3ab4c636aae5
