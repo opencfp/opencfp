@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)
+[![Code Climate](https://codeclimate.com/github/chartjes/opencfp/badges/gpa.svg)](https://codeclimate.com/github/chartjes/opencfp)
+[![Test Coverage](https://codeclimate.com/github/chartjes/opencfp/badges/coverage.svg)](https://codeclimate.com/github/chartjes/opencfp)
 opencfp
 =======
 
@@ -86,6 +88,16 @@ Additional Admin Setup
     ```
 This will enable specified user to navigate to /admin through a link now visible on the Dashboard.
 
+
+Migrations
+----------
+
+OpenCFP is using [Phinx](http://phinx.org) for migrations. From the root diretory of the project you can run them by doing the following:
+
+    ```bash
+    $ ./vendor/bin/phinx migrate
+    ```
+
 Testing
 -------
 
@@ -94,5 +106,3 @@ There is a test suite that uses PHPUnit in the /tests directory. The recommended
 
     $ cd tests
     $ ../vendor/bin/phpunit
-
-[![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)
