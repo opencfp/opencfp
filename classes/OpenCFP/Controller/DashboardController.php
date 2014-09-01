@@ -43,6 +43,7 @@ class DashboardController
             'preview_photo' => $app['uploadPath'] . $speaker_data['photo_path'],
             'airport' => $speaker_data['airport'],
             'permissions' => $permissions,
+            'current_page' => '/dashboard'
         );
 
         return $template->render($template_data);
