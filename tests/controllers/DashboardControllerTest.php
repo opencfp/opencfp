@@ -72,7 +72,7 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
 
         // Create a fake request object
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
-        $req->shouldReceive('get')->with('page')->andReturn(1);
+        $req->shouldReceive('get')->with('page')->andReturn($user->id);
 
         // Instantiate the controller and run the indexAction
         $controller = new \OpenCFP\Controller\DashboardController();

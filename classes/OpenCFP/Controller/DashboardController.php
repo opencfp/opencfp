@@ -16,6 +16,8 @@ class DashboardController
 
         $user = $app['sentry']->getUser();
         $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $user_info = $user_mapper->get($user->getId())->toArray();
+
         $speaker_data = $user_mapper->getDetails($user->getId());;
 
         $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
@@ -27,7 +29,7 @@ class DashboardController
         $template = $app['twig']->loadTemplate('dashboard.twig');
         $template_data = array(
             'myTalks' => $my_talks,
-            'user' => $user,
+            'user' => $user_info,
             'first_name' => $speaker_data['first_name'],
             'last_name' => $speaker_data['last_name'],
             'company' => $speaker_data['company'] ?: null,
@@ -45,22 +47,22 @@ class DashboardController
 
         return $template->render($template_data);
     }
-    
+
     public function ideasAction(Request $req, Application $app)
     {
     	// Load our template and RENDER
     	$template = $app['twig']->loadTemplate('ideas.twig');
     	$template_data = array();
-    
+
     	return $template->render($template_data);
     }
-    
+
     public function packageAction(Request $req, Application $app)
     {
     	// Load our template and RENDER
     	$template = $app['twig']->loadTemplate('package.twig');
     	$template_data = array();
-    
+
     	return $template->render($template_data);
     }
 }
