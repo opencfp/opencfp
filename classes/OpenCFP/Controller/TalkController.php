@@ -36,30 +36,60 @@ class TalkController
         return false;
     }
 
+    public function viewAction(Request $req, Application $app)
+    {
+        if (!$app['sentry']->check()) {
+            return $app->redirect($app['url'] . '/login');
+        }
+
+        $id = $req->get('id');
+        $talk_id = filter_var($id, FILTER_VALIDATE_INT);
+
+        $talk = new Talk($app['db']);
+        $talk_info = $talk->findById($talk_id);
+
+        $user = $app['sentry']->getUser();
+
+        if ($talk_info['user_id'] !== $user->getId()) {
+            return $app->redirect($app['url'] . '/dashboard');
+        }
+
+        $template = $app['twig']->loadTemplate('talk/view.twig');
+        $data = array(
+            'id' => $talk_id,
+            'talk' => $talk_info,
+            'user' => $user
+        );
+
+        return $template->render($data);
+    }
+
     public function editAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
             return $app->redirect($app['url'] . '/login');
         }
 
+        $id = $req->get('id');
+        $talk_id = filter_var($id, FILTER_VALIDATE_INT);
+
         // You can only edit talks while the CfP is open
+        // This will redirect to "view" the talk in a read-only template
         if (!$this->isCfpOpen(strtotime('now'))) {
             $app['session']->set('flash', [
                 'type' => 'error',
-                'short' => 'Error',
+                'short' => 'Read Only',
                 'ext' => 'You cannot edit talks once the call for papers has ended']
             );
 
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app['url'] . '/talk/'.$talk_id);
         }
-
-        $id = $req->get('id');
-        $user = $app['sentry']->getUser();
-        $talk_id= filter_var($id, FILTER_VALIDATE_INT);
 
         if (empty($talk_id)) {
             return $app->redirect($app['url'] . '/dashboard');
         }
+
+        $user = $app['sentry']->getUser();
 
         $talk = new Talk($app['db']);
         $talk_info = $talk->findById($talk_id);
@@ -160,7 +190,7 @@ class TalkController
         $form = new TalkForm($request_data, $app['purifier']);
         $form->sanitize();
         $isValid = $form->validateAll();
-        
+
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
             $data = array(
@@ -176,10 +206,10 @@ class TalkController
                 'user_id' => (int)$user->getId(),
                 'user' => $user
             );
-            
+
             $talk = new Talk($app['db']);
             $talk->create($data);
-            
+
             $app['session']->set('flash', array(
                     'type' => 'success',
                     'short' => 'Success',
@@ -216,7 +246,7 @@ class TalkController
                     'ext' => implode("<br>", $form->getErrorMessages())
                 ));
         }
-        
+
         $data['flash'] = $this->getFlash($app);
         return $template->render($data);
     }
