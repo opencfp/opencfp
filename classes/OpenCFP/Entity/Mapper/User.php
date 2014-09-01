@@ -28,7 +28,9 @@ class User extends Mapper
             'bio' => null,
             'info' => null,
             'hotel' => $user->hotel,
-            'transportation' => $user->transportation
+            'transportation' => $user->transportation,
+            'company' => $user->company,
+            'url' => $user->url
         ];
 
         if (is_object($user->speaker)) {

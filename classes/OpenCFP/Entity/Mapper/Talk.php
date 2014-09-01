@@ -78,6 +78,18 @@ class Talk extends Mapper
     }
 
     /**
+     * Return a collection of entities representing talks that belong to a
+     * specific user
+     *
+     * @param integer $user_id
+     * @return array
+     */
+    public function getByUser($user_id)
+    {
+        return $this->where(['user_id' => $user_id]);
+    }
+
+    /**
      * Iterates over DBAL objects and returns a formatted result set
      *
      * @param mixed $talk
