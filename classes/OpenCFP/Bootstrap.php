@@ -187,6 +187,7 @@ class Bootstrap
         $app->post('/talk/create', 'OpenCFP\Controller\TalkController::processCreateAction');
         $app->post('/talk/update', 'OpenCFP\Controller\TalkController::updateAction');
         $app->post('/talk/delete', 'OpenCFP\Controller\TalkController::deleteAction');
+        $app->get('/talk/{id}', 'OpenCFP\Controller\TalkController::viewAction');
 
         // Login/Logout
         $app->get('/login', 'OpenCFP\Controller\SecurityController::indexAction');
