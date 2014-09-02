@@ -58,8 +58,8 @@ class SignupController
 
     public function processAction(Request $req, Application $app)
     {
-        $template_name = 'create_user.twig';
         $form_data = array(
+            'formAction' => '/signup',
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
             'company' => $req->get('company'),
@@ -67,13 +67,14 @@ class SignupController
             'email' => $req->get('email'),
             'password' => $req->get('password'),
             'password2' => $req->get('password2'),
-            'airport' => $req->get('airport')
+            'airport' => $req->get('airport'),
+            'buttonInfo' => 'Create my speaker profile'
         );
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
-        $form_data['transportation'] = $req->get('transportation') ?: null;
-        $form_data['hotel'] = $req->get('hotel') ?: null;
-
+        $form_data['transportation'] = $req->get('transportation') ?: 0;
+        $form_data['hotel'] = $req->get('hotel') ?: 0;
+        
         $form_data['speaker_photo'] = null;
         if ($req->files->get('speaker_photo') !== null) {
             // Upload Image
@@ -82,10 +83,12 @@ class SignupController
 
         $form = new SignupForm($form_data, $app['purifier']);
         $form->sanitize();
+        $isValid = $form->validateAll();
 
-        if ($form->validateAll()) {
+        if ($isValid) {
             $sanitized_data = $form->getCleanData();
 
+            // process the speaker photo
             if (isset($form_data['speaker_photo'])) {
                 // Move file into uploads directory
                 $fileName = uniqid() . '_' . $form_data['speaker_photo']->getClientOriginalName();
@@ -105,7 +108,7 @@ class SignupController
                 // Give photo a unique name
                 $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $speakerPhoto->extension;
 
-                // Resize image and destroy original
+                // Resize image, save, and destroy original
                 if ($speakerPhoto->save(APP_DIR . '/web/' . $app['uploadPath'] . $sanitized_data['speaker_photo'])) {
                     unlink(APP_DIR . '/web/' . $app['uploadPath'] . $fileName);
                 }
@@ -115,27 +118,26 @@ class SignupController
             $sanitized_data['twitter'] = preg_replace('/^@/', '', $sanitized_data['twitter']);
 
             // Create account using Sentry
-            $user_data = array(
-                'first_name' => $sanitized_data['first_name'],
-                'last_name' => $sanitized_data['last_name'],
-                'company' => $sanitized_data['company'],
-                'twitter' => $sanitized_data['twitter'],
-                'email' => $sanitized_data['email'],
-                'password' => $sanitized_data['password'],
-                'airport' => $sanitized_data['airport'],
-                'activated' => 1
-            );
-
             try {
+                $user_data = array(
+                    'first_name' => $sanitized_data['first_name'],
+                    'last_name' => $sanitized_data['last_name'],
+                    'company' => $sanitized_data['company'],
+                    'twitter' => $sanitized_data['twitter'],
+                    'email' => $sanitized_data['email'],
+                    'password' => $sanitized_data['password'],
+                    'airport' => $sanitized_data['airport'],
+                    'activated' => 1
+                );
+                
                 $user = $app['sentry']->getUserProvider()->create($user_data);
 
                 // Add them to the proper group
-                $adminGroup = $app['sentry']->getGroupProvider()->findByName('Speakers');
-                $user->addGroup($adminGroup);
+                $user->addGroup($app['sentry']->getGroupProvider()->findByName('Speakers'));
 
                 // Create a Speaker record
                 $speaker = new Speaker($app['db']);
-                $response = $speaker->create(array(
+                $speaker->create(array(
                     'user_id' => $user->getId(),
                     'info' => $sanitized_data['speaker_info'],
                     'bio' => $sanitized_data['speaker_bio'],
@@ -153,24 +155,25 @@ class SignupController
 
                 return $app->redirect($app['url'] . '/login');
             } catch (UserExistsException $e) {
-                $errorMessage = 'A user already exists with that email address';
+                $app['session']->set('flash', array(
+                        'type' => 'error',
+                        'short' => 'Error',
+                        'ext' => 'A user already exists with that email address'
+                    ));
             }
-        } else {
-            $errorMessage = implode("<br>", $form->getErrorMessages());
+        }
+        
+        if (!$isValid) {
+            // Set Success Flash Message
+            $app['session']->set('flash', array(
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => implode("<br>", $form->getErrorMessages())
+                ));
         }
 
-        // Set Success Flash Message
-        $app['session']->set('flash', array(
-            'type' => 'error',
-            'short' => 'Error',
-            'ext' => $errorMessage,
-        ));
-
         $template = $app['twig']->loadTemplate('user/create.twig');
-        $form_data['formAction'] = '/signup';
-        $form_data['buttonInfo'] = 'Create my speaker profile';
         $form_data['flash'] = $this->getFlash($app);
-
         return $template->render($form_data);
     }
 }
