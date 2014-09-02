@@ -92,12 +92,25 @@ This will enable specified user to navigate to /admin through a link now visible
 Migrations
 ----------
 
+<<<<<<< HEAD
 OpenCFP is using [Phinx](http://phinx.org) for migrations. From the root diretory of the project you can run them by doing the following:
+=======
+This project uses [Phinx](http://phinx.org) to handle migrations. Be sure to edit the phinx.yml file that is in the root directory for the project to match your own
+database settings.
+
+To run migrations, make sure you are in the root directory for the project and then execute the following:
+>>>>>>> origin/truenorth2014
 
     ```bash
     $ ./vendor/bin/phinx migrate
     ```
 
+<<<<<<< HEAD
+=======
+This will run through existing migrations in the /migrations directory, applying any that have not yet been done.
+
+
+>>>>>>> origin/truenorth2014
 Testing
 -------
 
@@ -106,3 +119,10 @@ There is a test suite that uses PHPUnit in the /tests directory. The recommended
 
     $ cd tests
     $ ../vendor/bin/phpunit
+<<<<<<< HEAD
+=======
+
+[![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)
+[![Code Climate](https://codeclimate.com/github/chartjes/opencfp/badges/gpa.svg)](https://codeclimate.com/github/chartjes/opencfp)
+[![Test Coverage](https://codeclimate.com/github/chartjes/opencfp/badges/coverage.svg)](https://codeclimate.com/github/chartjes/opencfp)
+>>>>>>> origin/truenorth2014

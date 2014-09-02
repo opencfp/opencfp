@@ -3,8 +3,9 @@ namespace OpenCFP\Controller\Admin;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use OpenCFP\Model\Talk;
+use OpenCFP\Model\FavoriteModel;
 use OpenCFP\Model\Speaker;
+use OpenCFP\Model\Talk;
 use Pagerfanta\View\TwitterBootstrap3View;
 
 class TalksController
@@ -31,11 +32,12 @@ class TalksController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        $talkModel = new Talk($app['db']);
-        $rawTalks = $talkModel->getAll('created_at', 'DESC');
+        $admin_user_id = $app['sentry']->getUser()->getId();
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $pager_formatted_talks = $mapper->getAllPagerFormatted($admin_user_id);
 
         // Set up our page stuff
-        $adapter = new \Pagerfanta\Adapter\ArrayAdapter($rawTalks);
+        $adapter = new \Pagerfanta\Adapter\ArrayAdapter($pager_formatted_talks);
         $pagerfanta = new \Pagerfanta\Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage(20);
         $pagerfanta->getNbResults();
@@ -60,7 +62,8 @@ class TalksController
             'pagination' => $pagination,
             'talks' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage(),
-            'totalRecords' => count($rawTalks)
+            'current_page' => $pagerfanta->getCurrentPage(),
+            'totalRecords' => count($pager_formatted_talks)
         );
 
         return $template->render($templateData);
@@ -74,23 +77,24 @@ class TalksController
         }
 
         // Get info about the talks
-        $talkId = $req->get('id');
-        $talkModel = new Talk($app['db']);
-        $talk = $talkModel->findById($talkId);
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_id = $req->get('id');
+        $talk = $talk_mapper->get($talk_id);
+        $all_talks = $talk_mapper->all()
+            ->where(['user_id' => $talk->user_id])
+            ->toArray();
 
         // Get info about our speaker
-        $speakerModel = new Speaker($app['db']);
-        $speaker = $speakerModel->getDetailsByUserId($talk['user_id']);
+        $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $speaker = $user_mapper->getDetails($talk->user_id);
 
         // Grab all the other talks and filter out the one we have
-        $rawTalks = $talkModel->findByUserId($talk['user_id']);
-
-        $otherTalks = array_filter($rawTalks, function ($talk) use ($talkId) {
-            if ($talk['id'] !== $talkId) {
-                return true;
+        $otherTalks = array_filter($all_talks, function ($talk) use ($talk_id) {
+            if ((int)$talk['id'] == (int)$talk_id) {
+                return false;
             }
 
-            return false;
+            return true;
         });
 
         // Build and render the template
@@ -115,14 +119,36 @@ class TalksController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
+        $admin_user_id = (int)$app['sentry']->getUser()->getId();
         $status = true;
 
         if ($req->get('delete') !== null) {
             $status = false;
         }
 
-        $talk = new Talk($app['db']);
-        $talk->setFavorite($req->get('id'), $status);
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\Favorite');
+
+        if ($status == false) {
+            // Delete the record that matches
+            $favorite = $mapper->first([
+                'admin_user_id' => $admin_user_id,
+                'talk_id' => (int)$req->get('id')
+            ]);
+            return $mapper->delete($favorite);
+        }
+
+        $previous_favorite = $mapper->where([
+            'admin_user_id' => $admin_user_id,
+            'talk_id' => (int)$req->get('id')
+        ]);
+
+        if ($previous_favorite->count() == 0) {
+            $favorite = $mapper->get();
+            $favorite->admin_user_id = $admin_user_id;
+            $favorite->talk_id = (int)$req->get('id');
+
+            return $mapper->insert($favorite);
+        }
 
         return true;
     }

@@ -160,7 +160,7 @@ class TalkController
         $form = new TalkForm($request_data, $app['purifier']);
         $form->sanitize();
         $isValid = $form->validateAll();
-        
+
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
             $data = array(
@@ -176,10 +176,10 @@ class TalkController
                 'user_id' => (int)$user->getId(),
                 'user' => $user
             );
-            
+
             $talk = new Talk($app['db']);
             $talk->create($data);
-            
+
             $app['session']->set('flash', array(
                     'type' => 'success',
                     'short' => 'Success',
@@ -216,7 +216,7 @@ class TalkController
                     'ext' => implode("<br>", $form->getErrorMessages())
                 ));
         }
-        
+
         $data['flash'] = $this->getFlash($app);
         return $template->render($data);
     }

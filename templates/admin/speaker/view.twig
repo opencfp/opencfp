@@ -14,7 +14,6 @@
         </blockquote>
         <p>
           <i class="fa fa-envelope"></i> <a href="mailto:{{ speaker.email }}">{{ speaker.email }}</a><br>
-          {% if speaker.url is not empty %}<i class="fa fa-globe"></i> <a href="{{ speaker.url }}" target="_blank" rel="external">{{ speaker.url }}</a><br>{% endif %}
           {% if speaker.twitter is not empty %}<i class="fa fa-twitter-square"></i> <a href="http://twitter.com/{{ speaker.twitter }}" target="_blank" rel="external">{{ speaker.twitter }}</a>{% endif %}
         </p>
         <h3>Speaker Bio</h3>
@@ -22,7 +21,7 @@
 
         <h3>Speaker Additional Information</h3>
         <p>{{ speaker.info|raw }}</p>
-        
+
         <h3>Other Information</h3>
         <strong>Need Transportation:</strong> {% if speaker.transportation == '1' %} Yes {% else %} No {% endif %}<br />
         <strong>Need Hotel:</strong> {% if speaker.hotel == '1' %} Yes {% else %} No {% endif %}
