@@ -56,7 +56,15 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
             'title' => 'Test Title',
             'description' => 'Test title description',
             'user_id' => 1,
-            'type' => 'regular'
+            'type' => 'regular',
+            'category' => 'testing',
+            'level' => 'beginner',
+            'desired' => 1,
+            'slides' => 'slides',
+            'other' => 'other',
+            'sponsor' => 1,
+            'favorite' => 0,
+            'selected' => 0,
         ]);
         $talk_mapper->save($talk);
 

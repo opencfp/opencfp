@@ -22,6 +22,7 @@ class Talk extends \Spot\Entity
             'other' => ['type' => 'text'],
             'sponsor' => ['type' => 'smallint', 'value' => 0],
             'favorite' => ['type' => 'smallint', 'value' => 0],
+            'selected' => ['type' => 'smallint', 'value' => 0],
             'created_at' => ['type' => 'datetime', 'value' => new \DateTime()],
             'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()]
         ];
