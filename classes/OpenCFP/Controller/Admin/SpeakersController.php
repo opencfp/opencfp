@@ -1,6 +1,7 @@
 <?php
 namespace OpenCFP\Controller\Admin;
 
+use OpenCFP\Model\Talk;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Model\Speaker;
@@ -92,11 +93,15 @@ class SpeakersController
         $userId = $req->get('id');
         $speakerModel = new Speaker($app['db']);
         $speaker = $speakerModel->getDetailsByUserId($userId);
+        
+        $talkModel = new Talk($app['db']);
+        $talks = $talkModel->findByUserId($userId);
 
         // Build and render the template
         $template = $app['twig']->loadTemplate('admin/speaker/view.twig');
         $templateData = array(
             'speaker' => $speaker,
+            'talks' => $talks,
             'photo_path' => $app['uploadPath'],
             'page' => $req->get('page'),
         );
