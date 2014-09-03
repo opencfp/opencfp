@@ -94,8 +94,6 @@ class SpeakersController
         $speaker_details = $mapper->getDetails($req->get('id'));
         // Get info about the talks
         $userId = $req->get('id');
-        $speakerModel = new Speaker($app['db']);
-        $speaker = $speakerModel->getDetailsByUserId($userId);
         
         $talkModel = new Talk($app['db']);
         $talks = $talkModel->findByUserId($userId);
@@ -104,7 +102,6 @@ class SpeakersController
         $template = $app['twig']->loadTemplate('admin/speaker/view.twig');
         $templateData = array(
             'speaker' => $speaker_details,
-            'speaker' => $speaker,
             'talks' => $talks,
             'photo_path' => $app['uploadPath'],
             'page' => $req->get('page'),
@@ -140,7 +137,7 @@ class SpeakersController
             'ext' => $ext
         ));
 
-        return $app->redirect($all['url'] . '/admin/speakers');
+        return $app->redirect($app['url'] . '/admin/speakers');
     }
 
 }
