@@ -25,6 +25,14 @@
         <h3>Other Information</h3>
         <strong>Need Transportation:</strong> {% if speaker.transportation == '1' %} Yes {% else %} No {% endif %}<br />
         <strong>Need Hotel:</strong> {% if speaker.hotel == '1' %} Yes {% else %} No {% endif %}
+
+        {% if talks | length > 0 %}
+            <h3>Talk Submissions</h3>
+        
+            {% for talk in talks %}
+                <a href="{{ site.url}}/admin/talks/{{ talk.id }}">{{ talk.title }}</a><br />
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}
