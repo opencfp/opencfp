@@ -100,15 +100,13 @@ class ProfileController
         }
 
         $form = new SignupForm($form_data, $app['purifier']);
+        $isValid = $form->validateAll('update');
 
-        $flash = array();
-        if ($form->validateAll('update') == true) {
+        if ($isValid) {
             $sanitized_data = $form->getCleanData();
 
             // Remove leading @ for twitter
-            if ($sanitized_data['twitter'][0] === "@") {
-                $sanitized_data['twitter'] = substr($sanitized_data['twitter'], 1);
-            }
+            $sanitized_data['twitter'] = preg_replace('/^@/', '', $sanitized_data['twitter']);
 
             if (isset($form_data['speaker_photo'])) {
                 // Move file into uploads directory
@@ -139,28 +137,27 @@ class ProfileController
             $response = $speaker->update($sanitized_data);
 
             if ($response == true) {
-                $flash['message'] = "Successfully updated your information!";
-                $flash['type'] = 'success';
+                $app['session']->set('flash', array(
+                        'type' => 'success',
+                        'short' => 'Success',
+                        'ext' => "Successfully updated your information!"
+                    ));
+                return $app->redirect($app['url'] . '/profile/edit/' . $form_data['user_id']);
             }
 
             if ($response == false) {
-                $flash['message'] = "We were unable to update your information. Please try again";
-                $flash['type'] = 'error';
+                $app['session']->set('flash', array(
+                        'type' => 'error',
+                        'short' => 'Error',
+                        'ext' => "We were unable to update your information. Please try again."
+                    ));
             }
         } else {
-            $flash['message'] = implode('<br>', $form->getErrorMessages());
-            $flash['type'] = 'error';
-        }
-
-        $app['session']->set('flash', array(
-            'type' => $flash['type'],
-            'short' => ucfirst($flash['type']),
-            'ext' => $flash['message'],
-        ));
-
-        // Update was successful
-        if ($response) {
-            return $app->redirect($app['url'] . '/profile/edit/' . $form_data['user_id']);
+            $app['session']->set('flash', array(
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => implode('<br>', $form->getErrorMessages())
+                ));
         }
 
         $form_data['formAction'] = '/profile/edit';
