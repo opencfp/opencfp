@@ -1,6 +1,7 @@
 <?php
 namespace OpenCFP;
 
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenCFP\Config\ConfigINIFileLoader;
@@ -79,6 +80,17 @@ class Bootstrap
         ));
 
         $app['db'] = $this->getDb();
+        $app['spot'] = $this->getSpot();
+
+        $cfg = new \Spot\Config();
+        $cfg->addConnection('mysql', [
+            'dbname' => $this->getConfig('database.database'),
+            'user' => $this->getConfig('database.user'),
+            'password' => $this->getConfig('database.password'),
+            'host' => $this->getConfig('database.host'),
+            'driver' => 'pdo_mysql'
+        ]);
+        $app['spot'] = new \Spot\Locator($cfg);
 
         $app['purifier'] = $this->getPurifier();
 
@@ -141,6 +153,8 @@ class Bootstrap
 
         $app = $this->defineRoutes($app);
 
+        // Add the starting date for submissions
+        $app['cfpdate'] = $this->getConfig('application.cfpdate');
 
         return $app;
     }
@@ -173,6 +187,7 @@ class Bootstrap
         $app->post('/talk/create', 'OpenCFP\Controller\TalkController::processCreateAction');
         $app->post('/talk/update', 'OpenCFP\Controller\TalkController::updateAction');
         $app->post('/talk/delete', 'OpenCFP\Controller\TalkController::deleteAction');
+        $app->get('/talk/{id}', 'OpenCFP\Controller\TalkController::viewAction');
 
         // Login/Logout
         $app->get('/login', 'OpenCFP\Controller\SecurityController::indexAction');
@@ -214,6 +229,9 @@ class Bootstrap
         $app->get('/admin/admins', 'OpenCFP\Controller\Admin\AdminsController::indexAction');
         $app->get('/admin/admins/{id}', 'OpenCFP\Controller\Admin\AdminsController::removeAction');
 
+        // Admin::Review
+        $app->get('/admin/review', 'OpenCFP\Controller\Admin\ReviewController::indexAction');
+
         return $app;
     }
 
@@ -242,7 +260,7 @@ class Bootstrap
         $configData = $loader->load();
 
         // Place our info into Pimple
-        $this->_config = new Pimple();
+        $this->_config = new \Pimple();
 
         foreach ($configData as $category => $info) {
             foreach ($info as $key => $value) {
@@ -298,6 +316,19 @@ class Bootstrap
             $container['database.user'],
             $container['database.password']
         );
+    }
+
+    public function getSpot()
+    {
+        $cfg = new \Spot\Config();
+        $cfg->addConnection('mysql', [
+            'dbname' => $this->getConfig('database.database'),
+            'user' => $this->getConfig('database.user'),
+            'password' => $this->getConfig('database.password'),
+            'host' => $this->getConfig('database.host'),
+            'driver' => 'pdo_mysql'
+        ]);
+        return new \Spot\Locator($cfg);
     }
 
     private function initializeAutoLoader()

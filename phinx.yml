@@ -1,0 +1,26 @@
+paths:
+    migrations: %%PHINX_CONFIG_DIR%%/migrations
+
+environments:
+    default_migration_table: phinxlog
+    default_database: development
+    production:
+        adapter: mysql
+        host: localhost
+        name: cfp
+        user: root
+        pass: ''
+
+    development:
+        adapter: mysql
+        host: localhost
+        name: cfp
+        user: root
+        pass: ''
+
+    testing:
+        adapter: mysql
+        host: localhost
+        name: cfp
+        user: root
+        pass: ''

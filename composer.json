@@ -23,7 +23,9 @@
         "doctrine/dbal": "~2.3",
         "symfony/browser-kit": "~2.3",
         "symfony/css-selector": "~2.3",
-        "intervention/image": "1.5.*"
+        "intervention/image": "1.5.*",
+        "robmorgan/phinx": "*",
+        "vlucas/spot2": "dev-master"
     },
     "autoload": {
         "psr-0": {"OpenCFP": "classes/"}

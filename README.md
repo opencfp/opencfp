@@ -92,11 +92,16 @@ This will enable specified user to navigate to /admin through a link now visible
 Migrations
 ----------
 
-OpenCFP is using [Phinx](http://phinx.org) for migrations. From the root diretory of the project you can run them by doing the following:
+This project uses [Phinx](http://phinx.org) to handle migrations. Be sure to edit the phinx.yml file that is in the root directory for the project to match your own
+database settings.
+
+To run migrations, make sure you are in the root directory for the project and then execute the following:
 
     ```bash
     $ ./vendor/bin/phinx migrate
     ```
+
+This will run through existing migrations in the /migrations directory, applying any that have not yet been done.
 
 Testing
 -------

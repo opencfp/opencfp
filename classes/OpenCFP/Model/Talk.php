@@ -173,7 +173,11 @@ class Talk
 
 
     /**
-     * Get total record count
+     * Get total record count for submitted talks
+     *
+     * @param string $field name of the field
+     * @param string $value value associated with that field
+     * @return integer
      */
     public function getTotalRecords($field = null, $value = null)
     {

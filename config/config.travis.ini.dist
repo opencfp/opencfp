@@ -13,7 +13,7 @@ departure = "2014-10-31"
 path = "/uploads/"
 
 [database]
-dsn = "mysql:dbname=cfp;host=127.0.0.1"
+dsn = "sqlite::memory:"
 user = "root"
 password = ""
 

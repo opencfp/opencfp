@@ -1,0 +1,7 @@
+{% extends "layouts/admin.twig" %}
+{% block content %}
+    <h2 class="headline">Favorite Talks</h2>
+    {% include "admin/review/_table.twig" %}
+    {{ pagination|raw }}
+{% endblock %}
+

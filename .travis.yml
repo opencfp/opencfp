@@ -9,21 +9,20 @@ cache:
   directories:
     - $HOME/.composer
 
+addons:
+  code_climate:
+    repo_token: 3df25819765c78c9f1eaa02232d42362033703ef645e54703dff3ab4c636aae5
+
 before_script:
   - composer self-update
   - composer install
 
   - cp config/config.travis.ini.dist config/config.development.ini
 
-  # Hack to write outgoing e-mails to stdout in order for the WebTest to pass.
-  # http://serverfault.com/a/248838/17428
-  - sudo python -m smtpd -n -c DebuggingServer localhost:2525 1> /dev/null &
-  - sleep 3
-
 script:
   - cd tests
   - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
-  - CODECLIMATE_REPO_TOKEN="3df25819765c78c9f1eaa02232d42362033703ef645e54703dff3ab4c636aae5" ../vendor/bin/test-reporter --stdout > codeclimate.json
+  - ../vendor/bin/test-reporter --stdout > codeclimate.json
   - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"

@@ -9,7 +9,7 @@ use Pagerfanta\View\TwitterBootstrap3View;
 
 class SpeakersController
 {
-    
+
     public function getFlash(Application $app)
     {
         $flasg = $app['session']->get('flash');
@@ -22,7 +22,7 @@ class SpeakersController
     {
         $app['session']->set('flash', null);
     }
-    
+
     protected function userHasAccess($app)
     {
         if (!$app['sentry']->check()) {
@@ -89,6 +89,9 @@ class SpeakersController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
+        // Get info about the speaker
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $speaker_details = $mapper->getDetails($req->get('id'));
         // Get info about the talks
         $userId = $req->get('id');
         $speakerModel = new Speaker($app['db']);
@@ -100,6 +103,7 @@ class SpeakersController
         // Build and render the template
         $template = $app['twig']->loadTemplate('admin/speaker/view.twig');
         $templateData = array(
+            'speaker' => $speaker_details,
             'speaker' => $speaker,
             'talks' => $talks,
             'photo_path' => $app['uploadPath'],
