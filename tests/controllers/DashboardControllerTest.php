@@ -32,7 +32,7 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
             'last_name' => 'User',
             'activated' => 1,
             'transportation' => 0,
-            'hotel' => 0
+            'hotel' => 0,
         ]);
         $user_mapper->save($user);
         $speaker_mapper = $app['spot']->mapper('OpenCFP\Entity\Speaker');

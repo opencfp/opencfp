@@ -191,23 +191,4 @@ class TalkForm extends Form
     {
         return true;
     }
-
-    /**
-     * Method that validates we have a valid user_id
-     *
-     * @param Speaker $speaker
-     * @return boolean
-     */
-    public function validateSpeakerId(Speaker $speaker)
-    {
-        $userId = $this->_cleanData['user_id'];
-        $thisSpeaker = $speaker->findByUserId($userId);
-
-        if (!$thisSpeaker) {
-            $this->_addErrorMessage("Your talk does not seem to belong to a valid speaker");
-            return false;
-        }
-
-        return true;
-    }
 }

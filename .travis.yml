@@ -18,13 +18,12 @@ addons:
 before_script:
   - composer self-update
   - composer install
-
   - cp config/config.travis.ini.dist config/config.development.ini
+  - ./vendor/bin/phinx migrate
 
 script:
-  - cd tests
-  - phpunit --coverage-clover build/logs/clover.xml
+    - phpunit -c tests/phpunit.xml --coverage-clover build/logs/clover.xml
 
 after_script:
-  - ../vendor/bin/test-reporter --stdout > codeclimate.json
+  - vendor/bin/test-reporter --stdout > codeclimate.json
   - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"

@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)
+[![Code Climate](https://codeclimate.com/github/chartjes/opencfp/badges/gpa.svg)](https://codeclimate.com/github/chartjes/opencfp)
+[![Test Coverage](https://codeclimate.com/github/chartjes/opencfp/badges/coverage.svg)](https://codeclimate.com/github/chartjes/opencfp)
 opencfp
 =======
 
@@ -107,10 +109,4 @@ Testing
 
 There is a test suite that uses PHPUnit in the /tests directory. The recommended way to run the tests is:
 
-
-    $ cd tests
-    $ ../vendor/bin/phpunit
-
-[![Build Status](https://travis-ci.org/chartjes/opencfp.svg?branch=master)](https://travis-ci.org/chartjes/opencfp)
-[![Code Climate](https://codeclimate.com/github/chartjes/opencfp/badges/gpa.svg)](https://codeclimate.com/github/chartjes/opencfp)
-[![Test Coverage](https://codeclimate.com/github/chartjes/opencfp/badges/coverage.svg)](https://codeclimate.com/github/chartjes/opencfp)
+    $ ./vendor/bin/phpunit -c tests/phpunit.xml

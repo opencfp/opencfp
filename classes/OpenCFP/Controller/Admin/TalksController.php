@@ -3,9 +3,6 @@ namespace OpenCFP\Controller\Admin;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use OpenCFP\Model\FavoriteModel;
-use OpenCFP\Model\Speaker;
-use OpenCFP\Model\Talk;
 use Pagerfanta\View\TwitterBootstrap3View;
 
 class TalksController
@@ -86,7 +83,7 @@ class TalksController
 
         // Get info about our speaker
         $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
-        $speaker = $user_mapper->getDetails($talk->user_id);
+        $speaker = $user_mapper->get($talk->user_id)->toArray();;
 
         // Grab all the other talks and filter out the one we have
         $otherTalks = array_filter($all_talks, function ($talk) use ($talk_id) {
@@ -171,8 +168,10 @@ class TalksController
             $status = false;
         }
 
-        $talk = new Talk($app['db']);
-        $talk->setSelect($req->get('id'), $status);
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk = $mapper->get($req->get('id'));
+        $talk->select = $status;
+        $mapper->save($talk);
 
         return true;
     }

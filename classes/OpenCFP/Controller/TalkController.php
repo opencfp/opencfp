@@ -4,8 +4,6 @@ namespace OpenCFP\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Form\TalkForm;
-use OpenCFP\Model\Talk;
-use OpenCFP\Model\TalkModel;
 use OpenCFP\Config\ConfigINIFileLoader;
 
 class TalkController
@@ -37,51 +35,81 @@ class TalkController
         return false;
     }
 
+    public function viewAction(Request $req, Application $app)
+    {
+        if (!$app['sentry']->check()) {
+            return $app->redirect($app['url'] . '/login');
+        }
+
+        $id = $req->get('id');
+        $talk_id = filter_var($id, FILTER_VALIDATE_INT);
+
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_info = $talk_mapper->get($talk_id);
+
+        $user = $app['sentry']->getUser();
+
+        if ($talk_info['user_id'] !== $user->getId()) {
+            return $app->redirect($app['url'] . '/dashboard');
+        }
+
+        $template = $app['twig']->loadTemplate('talk/view.twig');
+        $data = array(
+            'id' => $talk_id,
+            'talk' => $talk_info,
+            'user' => $user
+        );
+
+        return $template->render($data);
+    }
+
     public function editAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
             return $app->redirect($app['url'] . '/login');
         }
 
+        $id = $req->get('id');
+        $talk_id = filter_var($id, FILTER_VALIDATE_INT);
+
         // You can only edit talks while the CfP is open
+        // This will redirect to "view" the talk in a read-only template
         if (!$this->isCfpOpen(strtotime('now'))) {
             $app['session']->set('flash', [
                 'type' => 'error',
-                'short' => 'Error',
+                'short' => 'Read Only',
                 'ext' => 'You cannot edit talks once the call for papers has ended']
             );
 
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app['url'] . '/talk/'.$talk_id);
         }
-
-        $id = $req->get('id');
-        $user = $app['sentry']->getUser();
-        $talk_id= filter_var($id, FILTER_VALIDATE_INT);
 
         if (empty($talk_id)) {
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        $model = new TalkModel;
-        $talk = $model->findById($talk_id);
+        $user = $app['sentry']->getUser();
 
-        if ($talk->user_id !== $user->getId()) {
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_info = $talk_mapper->get($talk_id)->toArray();
+
+        if ($talk_info['user_id'] !== (int)$user->getId()) {
             return $app->redirect($app['url'] . '/dashboard');
         }
 
         $template = $app['twig']->loadTemplate('talk/edit.twig');
         $data = array(
             'formAction' => '/talk/update',
-            'id' => $talk->id,
-            'title' => $talk->title,
-            'description' => $talk->description,
-            'type' => $talk->type,
-            'level' => $talk->level,
-            'category' => $talk->category,
-            'desired' => $talk->desired,
-            'slides' => $talk->slides,
-            'other' => $talk->other,
-            'sponsor' => $talk->sponsor,
+            'id' => $talk_id,
+            'title' => $talk_info['title'],
+            'description' => $talk_info['description'],
+            'type' => $talk_info['type'],
+            'level' => $talk_info['level'],
+            'category' => $talk_info['category'],
+            'desired' => $talk_info['desired'],
+            'slides' => $talk_info['slides'],
+            'other' => $talk_info['other'],
+            'sponsor' => $talk_info['sponsor'],
             'buttonInfo' => 'Update my talk!',
             'user' => $user
         );
@@ -160,10 +188,43 @@ class TalkController
 
         $form = new TalkForm($request_data, $app['purifier']);
         $form->sanitize();
+        $isValid = $form->validateAll();
 
-        if (!$form->validateAll()) {
+        if ($isValid) {
+            $sanitized_data = $form->getCleanData();
             $data = array(
-                'formAction' => '/talk/create',
+                'title' => $sanitized_data['title'],
+                'description' => $sanitized_data['description'],
+                'type' => $sanitized_data['type'],
+                'level' => $sanitized_data['level'],
+                'category' => $sanitized_data['category'],
+                'desired' => $sanitized_data['desired'],
+                'slides' => $sanitized_data['slides'],
+                'other' => $sanitized_data['other'],
+                'sponsor' => $sanitized_data['sponsor'],
+                'user_id' => (int)$user->getId(),
+            );
+
+            $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+            $mapper->create($data);
+
+            $app['session']->set('flash', array(
+                    'type' => 'success',
+                    'short' => 'Success',
+                    'ext' => 'Successfully added talk.',
+                ));
+
+            // send email to speaker showing submission
+            $this->sendSubmitEmail($app, $user, $app['db']->lastInsertId());
+
+            return $app->redirect($app['url'] . '/dashboard');
+        }
+
+        if (!$isValid) {
+            $template = $app['twig']->loadTemplate('talk/edit.twig');
+            $data = array(
+                'formAction' => '/talk/update',
+                'id' => $req->get('id'),
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
@@ -176,65 +237,16 @@ class TalkController
                 'buttonInfo' => 'Submit my talk!',
                 'user' => $user,
             );
-            $validation_errors = implode("<br>", $form->getErrorMessages());
-            $app['session']->set('flash', [
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => $validation_errors
-            ]);
-            $data['flash'] = $this->getFlash($app);
-            $template = $app['twig']->loadTemplate('talk/create.twig');
-            return $template->render($data);
-        }
 
-        $sanitized_data = $form->getCleanData();
-
-        $talk = new TalkModel;
-        $talk->user_id = (int)$user->getId();
-        $talk->title = $sanitized_data['title'];
-        $talk->type = $sanitized_data['type'];
-        $talk->level = $sanitized_data['level'];
-        $talk->category = $sanitized_data['category'];
-        $talk->desired = $sanitized_data['desired'];
-        $talk->slides = $sanitized_data['slides'];
-        $talk->other = $sanitized_data['other'];
-        $talk->sponsor = $sanitized_data['sponsor'];
-        $result = $talk->save();
-
-        if ($result !== true) {
             $app['session']->set('flash', array(
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => "Unable to add the talk, please try again",
-            ));
-            $data = array(
-                'title' => $sanitized_data['title'],
-                'description' => $sanitized_data['description'],
-                'type' => $sanitized_data['type'],
-                'level' => $sanitized_data['level'],
-                'category' => $sanitized_data['category'],
-                'desired' => $sanitized_data['desired'],
-                'slides' => $sanitized_data['slides'],
-                'other' => $sanitized_data['other'],
-                'sponsor' => $sanitized_data['sponsor'],
-                'user_id' => (int)$user->getId(),
-                'user' => $user
-            );
-            $data['flash'] = $this->getFlash($app);
-            $template = $app['twig']->loadTemplate('talk/create.twig');
-            return $template->render($data);
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => implode("<br>", $form->getErrorMessages())
+                ));
         }
 
-        $app['session']->set('flash', array(
-            'type' => 'success',
-            'short' => 'Success',
-            'ext' => "Succesfully added the talk"
-        ));
-
-        // send email to speaker showing submission
-        $this->sendSubmitEmail($app, $user, $app['db']->lastInsertId());
-
-        return $app->redirect($app['url'] . '/dashboard');
+        $data['flash'] = $this->getFlash($app);
+        return $template->render($data);
     }
 
     public function updateAction(Request $req, Application $app)
@@ -265,19 +277,28 @@ class TalkController
 
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
-            $model = new TalkModel;
-            $talk = $model->findById($sanitized_data['id']);
-            $talk->title = $sanitized_data['title'];
-            $talk->description = $sanitized_data['description'];
-            $talk->type = $sanitized_data['type'];
-            $talk->level = $sanitized_data['level'];
-            $talk->category = $sanitized_data['category'];
-            $talk->desired = $sanitized_data['desired'];
-            $talk->slides = $sanitized_data['slides'];
-            $talk->other = $sanitized_data['other'];
-            $talk->sponsor = $sanitized_data['sponsor'];
-            $talk->user_id = (int)$user->getId();
-            $talk->save();
+            $data = array(
+                'id' => (int)$sanitized_data['id'],
+                'title' => $sanitized_data['title'],
+                'description' => $sanitized_data['description'],
+                'type' => $sanitized_data['type'],
+                'level' => $sanitized_data['level'],
+                'category' => $sanitized_data['category'],
+                'desired' => $sanitized_data['desired'],
+                'slides' => $sanitized_data['slides'],
+                'other' => $sanitized_data['other'],
+                'sponsor' => $sanitized_data['sponsor'],
+                'user_id' => (int)$user->getId()
+            );
+            $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+            $talk = $mapper->get($data['id']);
+
+            foreach ($data as $field => $value) {
+                $talk->$field = $value;
+            }
+
+            $mapper->save($talk);
+
             $app['session']->set('flash', array(
                 'type' => 'success',
                 'short' => 'Success',
@@ -320,33 +341,31 @@ class TalkController
     public function deleteAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->json(array('delete' => 'no-user'));
+            return $app->json(['delete' => 'no-user']);
         }
 
         // You can only delete talks while the CfP is open
         if (!$this->isCfpOpen(strtotime('now'))) {
-            return $app->json(array('delete' => 'no'));
+            return $app->json(['delete' => 'no']);
         }
 
         $user = $app['sentry']->getUser();
-        $model = new TalkModel;
-        $talk = $model->findById($req->get('tid'));
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk = $talk_mapper->get($req->get('tid'));
 
-        if ($talk->user_id !== $user->getId()) {
-            return $app->json(array('delete' => 'no'));
+        if ($talk->user_id !== (int)$user->getId()) {
+            return $app->json(['delete' => 'no']);
         }
 
-        if ($talk->delete() !== true) {
-            return $app->json(array('delete' => 'no'));
-        }
+        $talk->mapper->delete($talk);
 
-        return $app->json(array('delete' => 'ok'));
+        return $app->json(['delete' => 'ok']);
     }
 
     protected function sendSubmitEmail(Application $app, $user, $talk_id)
     {
-        $model = new TalkModel;
-        $talk = $model->findById($talk_id);
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk = $mapper->get($talk_id);
 
         // Create our Mailer object
         $loader = new ConfigINIFileLoader(
