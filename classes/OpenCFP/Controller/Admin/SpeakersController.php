@@ -1,15 +1,12 @@
 <?php
 namespace OpenCFP\Controller\Admin;
 
-use OpenCFP\Model\Talk;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use OpenCFP\Model\Speaker;
 use Pagerfanta\View\TwitterBootstrap3View;
 
 class SpeakersController
 {
-
     public function getFlash(Application $app)
     {
         $flasg = $app['session']->get('flash');
@@ -45,8 +42,11 @@ class SpeakersController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        $speakerModel = new Speaker($app['db']);
-        $rawSpeakers = $speakerModel->getAll();
+        $rawSpeakers = $app['spot']
+            ->mapper('\OpenCFP\Entity\User')
+            ->all()
+            ->order(['last_name' => 'ASC'])
+            ->toArray();
 
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($rawSpeakers);
@@ -90,13 +90,12 @@ class SpeakersController
         }
 
         // Get info about the speaker
-        $mapper = $app['spot']->mapper('OpenCFP\Entity\User');
-        $speaker_details = $mapper->getDetails($req->get('id'));
+        $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $speaker_details = $user_mapper->get($req->get('id'))->toArray();
+
         // Get info about the talks
-        $userId = $req->get('id');
-        
-        $talkModel = new Talk($app['db']);
-        $talks = $talkModel->findByUserId($userId);
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talks = $talk_mapper->getByUser($req->get('id'))->toArray();
 
         // Build and render the template
         $template = $app['twig']->loadTemplate('admin/speaker/view.twig');
@@ -116,9 +115,9 @@ class SpeakersController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        $userId = $req->get('id');
-        $speakerModel = new Speaker($app['db']);
-        $response = $speakerModel->delete($userId);
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $speaker = $mapper->get($req->get('id'));
+        $response = $mapper->delete($speaker);
 
         $ext = "Succesfully deleted the requested user";
         $type = 'success';

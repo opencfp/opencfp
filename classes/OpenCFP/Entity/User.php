@@ -5,7 +5,6 @@ namespace OpenCFP\Entity;
 class User extends \Spot\Entity
 {
     protected static $table = 'users';
-    protected static $mapper = 'OpenCFP\Entity\Mapper\User';
 
     public static function fields()
     {
@@ -28,15 +27,17 @@ class User extends \Spot\Entity
             'twitter' => ['type' => 'string', 'length' => 255],
             'airport' => ['type' => 'string', 'length' => 5],
             'hotel' => ['type' => 'smallint', 'value' => 0],
-            'transportation' => ['type' => 'smallint', 'value' => 0]
+            'transportation' => ['type' => 'smallint', 'value' => 0],
+            'info' => ['type' => 'text'],
+            'bio' => ['type' => 'text'],
+            'photo_path' => ['type' => 'string', 'length' => 255]
         ];
     }
 
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'talk' => $mapper->hasMany($entity, 'OpenCFP\Entity\Talk', 'user_id'),
-            'speaker' => $mapper->hasOne($entity, 'OpenCFP\Entity\Speaker', 'user_id')
+            'talks' => $mapper->hasMany($entity, 'OpenCFP\Entity\Talk', 'user_id'),
         ];
     }
 }

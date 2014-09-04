@@ -21,7 +21,7 @@ class RemoveSpeakerTable extends AbstractMigration
             $info = filter_var($row['info'], FILTER_SANITIZE_MAGIC_QUOTES);
             $bio = filter_var($row['bio'], FILTER_SANITIZE_MAGIC_QUOTES);
             $photo_path = filter_var($row['photo_path'], FILTER_SANITIZE_MAGIC_QUOTES);
-            $sql = "UPDATE users SET info = '{$info}', bio = '{$bio}', photo_path = '{$photo_path}' WHERE id = {$row['id']}";
+            $sql = "UPDATE users SET info = '{$info}', bio = '{$bio}', photo_path = '{$photo_path}' WHERE id = {$row['user_id']}";
             $this->execute($sql);
         }
 

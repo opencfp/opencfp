@@ -4,7 +4,6 @@ namespace OpenCFP\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Form\SignupForm;
-use OpenCFP\Model\Speaker;
 use Intervention\Image\Image;
 
 class ProfileController
@@ -38,9 +37,10 @@ class ProfileController
             ));
             return $app->redirect($app['url'] . '/dashboard');
         }
-        
-        $speaker = new Speaker($app['db']);
-        $speaker_data = $speaker->getDetailsByUserId($user->getId());
+
+        $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+        $speaker_data = $mapper->get($user->getId())->toArray();
+
         $form_data = array(
             'email' => $user->getLogin(),
             'first_name' => $speaker_data['first_name'],
@@ -133,8 +133,19 @@ class ProfileController
                 }
             }
 
-            $speaker = new Speaker($app['db']);
-            $response = $speaker->update($sanitized_data);
+            $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+            $user = $mapper->get($user->getId());
+            $user->email = $sanitized_data['email'];
+            $user->first_name = $sanitized_data['first_name'];
+            $user->last_name = $sanitized_data['last_name'];
+            $user->company = $sanitized_data['company'];
+            $user->twitter = $sanitized_data['twitter'];
+            $user->airport = $sanitized_data['airport'];
+            $user->transportation = $sanitized_data['transportation'];
+            $user->hotel = $sanitized_data['hotel'];
+            $user->info = $sanitized_data['speaker_info'];
+            $user->bio = $sanitized_data['speaker_bio'];
+            $response = $mapper->save($user);
 
             if ($response == true) {
                 $app['session']->set('flash', array(
@@ -210,10 +221,14 @@ class ProfileController
             return $app->redirect($app['url'] . '/profile/change_password');
         }
 
+        /**
+         * Resetting passwords looks weird because we need to use Sentry's
+         * own built-in password reset functionality to do it
+         */
         $sanitized_data = $form->getCleanData();
-        $speaker = new Speaker($app['db']);
+        $reset_code = $user->getResetPasswordCode();
 
-        if ($speaker->changePassword($sanitized_data['password'], $user) === false) {
+        if (!$user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
@@ -229,7 +244,31 @@ class ProfileController
         ));
 
         return $app->redirect($app['url'] . '/profile/change_password');
+    }
 
+    /**
+     * Method that saves user info using sanitized data and an Entity mapper
+     *
+     * @param Application $app
+     * @param array $sanitized_data
+     * @return boolean
+     */
+    protected function saveUser($app, $sanitized_data)
+    {
+        $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+        $user = $mapper->get($sanitized_data['user_id']);
+        $user->email = $sanitized_data['email'];
+        $user->first_name = $sanitized_data['first_name'];
+        $user->last_name = $sanitized_data['last_name'];
+        $user->company = $sanitized_data['company'];
+        $user->twitter = $sanitized_data['twitter'];
+        $user->airport = $sanitized_data['airport'];
+        $user->transportation = $sanitized_data['transportation'];
+        $user->hotel = $sanitized_data['hotel'];
+        $user->info = $sanitized_data['speaker_info'];
+        $user->bio = $sanitized_data['speaker_bio'];
+
+        return $mapper->save($user);
     }
 }
 

@@ -4,7 +4,6 @@ namespace OpenCFP\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Form\TalkForm;
-use OpenCFP\Model\Talk;
 use OpenCFP\Config\ConfigINIFileLoader;
 
 class TalkController
@@ -45,8 +44,8 @@ class TalkController
         $id = $req->get('id');
         $talk_id = filter_var($id, FILTER_VALIDATE_INT);
 
-        $talk = new Talk($app['db']);
-        $talk_info = $talk->findById($talk_id);
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_info = $talk_mapper->get($talk_id);
 
         $user = $app['sentry']->getUser();
 
@@ -91,10 +90,10 @@ class TalkController
 
         $user = $app['sentry']->getUser();
 
-        $talk = new Talk($app['db']);
-        $talk_info = $talk->findById($talk_id);
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_info = $talk_mapper->get($talk_id)->toArray();
 
-        if ($talk_info['user_id'] !== $user->getId()) {
+        if ($talk_info['user_id'] !== (int)$user->getId()) {
             return $app->redirect($app['url'] . '/dashboard');
         }
 
@@ -204,11 +203,10 @@ class TalkController
                 'other' => $sanitized_data['other'],
                 'sponsor' => $sanitized_data['sponsor'],
                 'user_id' => (int)$user->getId(),
-                'user' => $user
             );
 
-            $talk = new Talk($app['db']);
-            $talk->create($data);
+            $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+            $mapper->create($data);
 
             $app['session']->set('flash', array(
                     'type' => 'success',
@@ -292,8 +290,15 @@ class TalkController
                 'sponsor' => $sanitized_data['sponsor'],
                 'user_id' => (int)$user->getId()
             );
-            $talk = new Talk($app['db']);
-            $talk->update($data);
+            $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+            $talk = $mapper->get($data['id']);
+
+            foreach ($data as $field => $value) {
+                $talk->$field = $value;
+            }
+
+            $mapper->save($talk);
+
             $app['session']->set('flash', array(
                 'type' => 'success',
                 'short' => 'Success',
@@ -336,28 +341,31 @@ class TalkController
     public function deleteAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->json(array('delete' => 'no-user'));
+            return $app->json(['delete' => 'no-user']);
         }
 
         // You can only delete talks while the CfP is open
         if (!$this->isCfpOpen(strtotime('now'))) {
-            return $app->json(array('delete' => 'no'));
+            return $app->json(['delete' => 'no']);
         }
 
         $user = $app['sentry']->getUser();
-        $talk = new Talk($app['db']);
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk = $talk_mapper->get($req->get('tid'));
 
-        if ($talk->delete($req->get('tid'), $user->getId()) === true) {
-            return $app->json(array('delete' => 'ok'));
+        if ($talk->user_id !== (int)$user->getId()) {
+            return $app->json(['delete' => 'no']);
         }
 
-        return $app->json(array('delete' => 'no'));
+        $talk->mapper->delete($talk);
+
+        return $app->json(['delete' => 'ok']);
     }
 
     protected function sendSubmitEmail(Application $app, $user, $talk_id)
     {
-        $talk = new Talk($app['db']);
-        $talk_info = $talk->findById($talk_id);
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk = $mapper->get($talk_id);
 
         // Create our Mailer object
         $loader = new ConfigINIFileLoader(
@@ -383,7 +391,7 @@ class TalkController
         $parameters = array(
             'email' => $config_data['application']['email'],
             'title' => $config_data['application']['title'],
-            'talk' => $talk_info['title'],
+            'talk' => $talk->title,
             'enddate' => $config_data['application']['enddate']
         );
 

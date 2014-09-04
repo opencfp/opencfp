@@ -109,5 +109,4 @@ Testing
 There is a test suite that uses PHPUnit in the /tests directory. The recommended way to run the tests is:
 
 
-    $ cd tests
-    $ ../vendor/bin/phpunit
+    $ ./vendor/bin/phpunit -c tests/phpunit.xml

@@ -3,7 +3,6 @@ namespace OpenCFP\Controller\Admin;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use OpenCFP\Model\Speaker;
 use Pagerfanta\View\TwitterBootstrap3View;
 
 class AdminsController
@@ -72,7 +71,7 @@ class AdminsController
         }
 
         $admin = $app['sentry']->getUser();
-        
+
         if ($admin->getId() == $req->get('id')) {
 
             $app['session']->set('flash', array(
@@ -80,18 +79,17 @@ class AdminsController
                     'short' => 'Error',
                     'ext' => 'Sorry, you cannot remove yourself as Admin.',
                 ));
-            
+
             return $app->redirect($app['url'] . '/admin/admins');
         }
-        
-        $user = new Speaker($app['db']);
-        $user_data = $user->getDetailsByUserId($req->get('id'));
 
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $user_data = $mapper->get($req->get('id'))->toArray();
         $user = $app['sentry']->getUserProvider()->findByLogin($user_data['email']);
 
         $adminGroup = $app['sentry']->getGroupProvider()->findByName('Admin');
         $response = $user->removeGroup($adminGroup);
-        
+
         if ($response == true) {
             $app['session']->set('flash', array(
                     'type' => 'success',
