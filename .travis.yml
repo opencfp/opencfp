@@ -19,7 +19,7 @@ before_script:
   - cp config/config.travis.ini.dist config/config.development.ini
 
 script:
-    - phpunit -c tests/phpunit.xml --coverage-clover build/logs/clover.xml
+    - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
   - vendor/bin/test-reporter --stdout > codeclimate.json
