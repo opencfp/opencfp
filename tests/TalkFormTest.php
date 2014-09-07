@@ -101,8 +101,6 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             array(substr($faker->text(90), 0, 90), true),
             array(null, false),
             array("This is a string that could be more than 100 characters long but will we really know for sure until I check it out?", false),
-            array("<script>alert('XSS')</script>", false),
-            array("<b>you suck</b>", false)
         );
     }
 

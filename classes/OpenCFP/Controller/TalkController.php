@@ -8,6 +8,12 @@ use OpenCFP\Config\ConfigINIFileLoader;
 
 class TalkController
 {
+    /**
+     * Get the flash value from inside our session object
+     *
+     * @param Application $app
+     * @return array
+     */
     public function getFlash(Application $app)
     {
         $flash = $app['session']->get('flash');
@@ -15,11 +21,22 @@ class TalkController
         return $flash;
     }
 
+    /**
+     * Clear the flash value inside the session
+     *
+     * @param Application $app
+     */
     public function clearFlash(Application $app)
     {
         $app['session']->set('flash', null);
     }
 
+    /**
+     * Check to see if the CfP for this app is still open
+     *
+     * @param integer $current_time
+     * @return boolean
+     */
     public function isCfpOpen($current_time)
     {
         $loader = new ConfigINIFileLoader(
@@ -35,6 +52,13 @@ class TalkController
         return false;
     }
 
+    /**
+     * Controller action for viewing a specific talk
+     *
+     * @param Request $req
+     * @param Application $app
+     * @return mixed
+     */
     public function viewAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
@@ -63,6 +87,13 @@ class TalkController
         return $template->render($data);
     }
 
+    /**
+     * Controller action for displaying the form to edit an existing talk
+     *
+     * @param Request $req
+     * @param Application $app
+     * @return mixed
+     */
     public function editAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
@@ -101,8 +132,8 @@ class TalkController
         $data = array(
             'formAction' => '/talk/update',
             'id' => $talk_id,
-            'title' => $talk_info['title'],
-            'description' => $talk_info['description'],
+            'title' => html_entity_decode($talk_info['title']),
+            'description' => html_entity_decode($talk_info['description']),
             'type' => $talk_info['type'],
             'level' => $talk_info['level'],
             'category' => $talk_info['category'],
@@ -117,6 +148,13 @@ class TalkController
         return $template->render($data);
     }
 
+    /**
+     * Action for displaying the form to create a new talk
+     *
+     * @param Request $req
+     * @param Application $app
+     * @return mixed
+     */
     public function createAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
@@ -155,6 +193,14 @@ class TalkController
         return $template->render($data);
     }
 
+    /**
+     * Controller action the processes the POST request to try and create
+     * a new talk
+     *
+     * @param Request $req
+     * @param Application $app
+     * @return mixed
+     */
     public function processCreateAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
@@ -205,8 +251,8 @@ class TalkController
                 'user_id' => (int)$user->getId(),
             );
 
-            $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
-            $mapper->create($data);
+            $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+            $talk = $talk_mapper->create($data);
 
             $app['session']->set('flash', array(
                     'type' => 'success',
@@ -215,7 +261,7 @@ class TalkController
                 ));
 
             // send email to speaker showing submission
-            $this->sendSubmitEmail($app, $user, $app['db']->lastInsertId());
+            $this->sendSubmitEmail($app, $user->getLogin(), $talk->id);
 
             return $app->redirect($app['url'] . '/dashboard');
         }
@@ -224,7 +270,6 @@ class TalkController
             $template = $app['twig']->loadTemplate('talk/edit.twig');
             $data = array(
                 'formAction' => '/talk/update',
-                'id' => $req->get('id'),
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
@@ -363,7 +408,15 @@ class TalkController
         return $app->json(['delete' => 'ok']);
     }
 
-    protected function sendSubmitEmail(Application $app, $user, $talk_id)
+    /**
+     * Method that sends an email when a talk is created
+     *
+     * @param Application $app
+     * @param string $email
+     * @param integer $talk_id
+     * @return mixed
+     */
+    protected function sendSubmitEmail(Application $app, $email, $talk_id)
     {
         $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
         $talk = $mapper->get($talk_id);
@@ -392,7 +445,7 @@ class TalkController
         $parameters = array(
             'email' => $config_data['application']['email'],
             'title' => $config_data['application']['title'],
-            'talk' => $talk_info['title'],
+            'talk' => $talk->title,
             'enddate' => $config_data['application']['enddate']
         );
 
@@ -400,7 +453,7 @@ class TalkController
             $mailer = new \Swift_Mailer($transport);
             $message = new \Swift_Message();
 
-            $message->setTo($user['email']);
+            $message->setTo($email);
             $message->setFrom(
                 $template->renderBlock('from', $parameters),
                 $template->renderBlock('from_name', $parameters)
