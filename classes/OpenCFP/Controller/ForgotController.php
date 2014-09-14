@@ -25,7 +25,12 @@ class ForgotController
         $form = $app['form.factory']->create(new \OpenCFP\Form\ForgotForm());
         $template = $app['twig']->loadTemplate('user/forgot_password.twig');
 
-        return $template->render(array('form' => $form->createView()));
+        $data = array(
+            'form' => $form->createView(),
+            'current_page' => "Forgot Password"
+        );
+
+        return $template->render($data);
     }
 
     public function sendResetAction(Request $req, Application $app)
