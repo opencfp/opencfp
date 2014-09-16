@@ -16,6 +16,7 @@ path = "/uploads/"
 host = "127.0.0.1"
 database = "cfp"
 dsn = "mysql:dbname=cfp;host=127.0.0.1"
+name = "cfp"
 user = "root"
 password = ""
 
