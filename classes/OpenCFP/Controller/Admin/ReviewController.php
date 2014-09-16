@@ -29,6 +29,8 @@ class ReviewController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
+        $user = $app['sentry']->getUser();
+
         // How many admins make for a majority?
         $mapper = $app['spot']->mapper('OpenCFP\Entity\User');
         $admin_count = $mapper->all()
@@ -38,7 +40,7 @@ class ReviewController
 
         // Get list of talks where majority of admins 'favorited' them
         $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
-        $favorite_talks = $mapper->getAdminFavorites($admin_majority);
+        $favorite_talks = $mapper->getAdminFavorites($user->id, $admin_majority);
 
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($favorite_talks);

@@ -53,10 +53,10 @@ class Talk extends Mapper
     /**
      * Return a collection of talks that a majority of the admins have liked
      *
-     * @param integet $admin_majority
+     * @param integer $admin_majority
      * @return array
      */
-    public function getAdminFavorites($admin_majority)
+    public function getAdminFavorites($admin_user_id, $admin_majority)
     {
         $talks = $this->all()
             ->order(['created_at' => 'DESC'])
