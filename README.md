@@ -58,7 +58,11 @@ NOTE: Use development or production naming as appropriate.
 
 7. Alter the /classes/OpenCFP/Bootstrap.php file with the desired $environment. Lines 11 and 12.
 
-8. Populate MySQL database by using the mysql.sql script available in /schema folder.
+8. Populate MySQL database by using the `schema.sql` script available in '/migrations' folder.
+
+    ```bash
+    $ mysql -h HOST -u USER_NAME -p DATABASE_NAME < /migrations/schema.sql
+    ```
 
 9. May need to edit directory permissions for some of the vendor packages. (your mileage may vary)
 
