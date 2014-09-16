@@ -62,6 +62,8 @@ class Talk extends Mapper
             ->order(['created_at' => 'DESC'])
             ->with(['favorites', 'speaker']);
 
+        $favorite_talks = [];
+
         foreach ($talks as $talk) {
             if ($talk->favorites->count() >= $admin_majority) {
                 $favorite_talks[] = $talk;
