@@ -13,6 +13,8 @@ departure = "2014-10-31"
 path = "/uploads/"
 
 [database]
+host = "127.0.0.1"
+database = "cfp"
 dsn = "mysql:dbname=cfp;host=127.0.0.1"
 user = "root"
 password = ""
