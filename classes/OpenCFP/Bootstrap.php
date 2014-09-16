@@ -81,17 +81,6 @@ class Bootstrap
 
         $app['db'] = $this->getDb();
         $app['spot'] = $this->getSpot();
-
-        $cfg = new \Spot\Config();
-        $cfg->addConnection('mysql', [
-            'dbname' => $this->getConfig('database.database'),
-            'user' => $this->getConfig('database.user'),
-            'password' => $this->getConfig('database.password'),
-            'host' => $this->getConfig('database.host'),
-            'driver' => 'pdo_mysql'
-        ]);
-        $app['spot'] = new \Spot\Locator($cfg);
-
         $app['purifier'] = $this->getPurifier();
 
         // We're using Sentry, so make it available to app
@@ -322,7 +311,7 @@ class Bootstrap
     {
         $cfg = new \Spot\Config();
         $cfg->addConnection('mysql', [
-            'dbname' => $this->getConfig('database.database'),
+            'dbname' => $this->getConfig('database.name'),
             'user' => $this->getConfig('database.user'),
             'password' => $this->getConfig('database.password'),
             'host' => $this->getConfig('database.host'),
