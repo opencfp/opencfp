@@ -311,7 +311,7 @@ class Bootstrap
     {
         $cfg = new \Spot\Config();
         $cfg->addConnection('mysql', [
-            'dbname' => $this->getConfig('database.database'),
+            'dbname' => $this->getConfig('database.name'),
             'user' => $this->getConfig('database.user'),
             'password' => $this->getConfig('database.password'),
             'host' => $this->getConfig('database.host'),
