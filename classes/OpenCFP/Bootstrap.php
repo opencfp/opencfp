@@ -57,7 +57,12 @@ class Bootstrap
         // Register the Twig provider and lazy-load the global values
         $app->register(
             new \Silex\Provider\TwigServiceProvider(),
-            array('twig.path' => APP_DIR . $this->getConfig('twig.template_dir'))
+            array(
+                'twig.path' => APP_DIR . $this->getConfig('twig.template_dir'),
+                'twig.options' => array(
+                    'cache' => $this->getConfig('cache.enabled') ? $this->getTwigCachePath() : false
+                )
+            )
         );
         $that = $this;
         $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) use ($that) {
@@ -265,6 +270,12 @@ class Bootstrap
         return APP_DIR . "/config/config." . APP_ENV . ".ini";
     }
 
+    private function getTwigCachePath()
+    {
+        $cacheDirectory = $this->getConfig('cache.directory') ?: '/cache';
+        return APP_DIR . $cacheDirectory . '/twig';
+    }
+
     public function getTwig()
     {
         if (!isset($this->_twig)) {
@@ -328,4 +339,5 @@ class Bootstrap
 
         require APP_DIR . '/vendor/autoload.php';
     }
+
 }
