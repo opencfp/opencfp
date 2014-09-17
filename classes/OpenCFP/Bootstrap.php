@@ -308,7 +308,7 @@ class Bootstrap
 
             if ($this->getConfig('cache.enabled')) {
                 if (!is_dir($this->getPurifierCacheDirectory())) {
-                    mkdir($this->getPurifierCacheDirectory(), 0775, true);
+                    mkdir($this->getPurifierCacheDirectory(), 0755, true);
                 }
                 $config->set('Cache.SerializerPath', $this->getPurifierCacheDirectory());
             }
