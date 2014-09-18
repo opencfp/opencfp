@@ -25,7 +25,6 @@ class DashboardController
         $template = $app['twig']->loadTemplate('dashboard.twig');
         $template_data = array(
             'myTalks' => $my_talks,
-            'user' => $user_info,
             'first_name' => $user_info['first_name'],
             'last_name' => $user_info['last_name'],
             'company' => $user_info['company'] ?: null,

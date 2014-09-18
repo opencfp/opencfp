@@ -105,6 +105,11 @@ class Bootstrap
             return $sentry;
         });
 
+        $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+            $twig->addGlobal('user', $app['sentry']->getUser());
+            return $twig;
+        }));
+
         // Configure our flash messages functionality
         $app->before(function() use ($app) {
             $flash = $app['session']->get('flash');
@@ -323,7 +328,7 @@ class Bootstrap
     private function initializeAutoLoader()
     {
         if (!file_exists(APP_DIR . '/vendor/autoload.php')) {
-            throw new Exception('Autoload file does not exist.  Did you run composer install?');
+            throw new \Exception('Autoload file does not exist.  Did you run composer install?');
         }
 
         require APP_DIR . '/vendor/autoload.php';

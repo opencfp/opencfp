@@ -42,14 +42,12 @@ class SecurityController
             $errorMessage = $page->getAuthenticationMessage();
 
             $template_data = array(
-                'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
             );
             $code = 400;
         } catch (Exception $e) {
             $errorMessage = $e->getMessage();
             $template_data = array(
-                'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
             );
             $code = 400;
