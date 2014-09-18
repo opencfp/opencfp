@@ -81,7 +81,6 @@ class TalkController
         $data = array(
             'id' => $talk_id,
             'talk' => $talk_info,
-            'user' => $user
         );
 
         return $template->render($data);
@@ -142,7 +141,6 @@ class TalkController
             'other' => $talk_info['other'],
             'sponsor' => $talk_info['sponsor'],
             'buttonInfo' => 'Update my talk!',
-            'user' => $user
         );
 
         return $template->render($data);
@@ -187,7 +185,6 @@ class TalkController
             'other' => $req->get('other'),
             'sponsor' => $req->get('sponsor'),
             'buttonInfo' => 'Submit my talk!',
-            'user' => $user
         );
 
         return $template->render($data);
@@ -280,7 +277,6 @@ class TalkController
                 'other' => $req->get('other'),
                 'sponsor' => $req->get('sponsor'),
                 'buttonInfo' => 'Submit my talk!',
-                'user' => $user,
             );
 
             $app['session']->set('flash', array(
@@ -369,7 +365,6 @@ class TalkController
                 'other' => $req->get('other'),
                 'sponsor' => $req->get('sponsor'),
                 'buttonInfo' => 'Update my talk!',
-                'user' => $user,
             );
 
             $app['session']->set('flash', array(

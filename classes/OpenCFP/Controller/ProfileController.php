@@ -57,7 +57,6 @@ class ProfileController
             'id' => $user->getId(),
             'formAction' => '/profile/edit',
             'buttonInfo' => 'Update Profile',
-            'user' => $user,
         );
 
         return $template->render($form_data) ;
@@ -190,7 +189,7 @@ class ProfileController
 
         $template = $app['twig']->loadTemplate('user/change_password.twig');
 
-        return $template->render(array('user' => $user));
+        return $template->render(array());
     }
 
     public function passwordProcessAction(Request $req, Application $app)
