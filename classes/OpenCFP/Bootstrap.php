@@ -57,7 +57,12 @@ class Bootstrap
         // Register the Twig provider and lazy-load the global values
         $app->register(
             new \Silex\Provider\TwigServiceProvider(),
-            array('twig.path' => APP_DIR . $this->getConfig('twig.template_dir'))
+            array(
+                'twig.path' => APP_DIR . $this->getConfig('twig.template_dir'),
+                'twig.options' => array(
+                    'cache' => $this->getConfig('cache.enabled') ? $this->getTwigCacheDirectory() : false
+                )
+            )
         );
         $that = $this;
         $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) use ($that) {
@@ -270,6 +275,21 @@ class Bootstrap
         return APP_DIR . "/config/config." . APP_ENV . ".ini";
     }
 
+    private function getTwigCacheDirectory()
+    {
+        return APP_DIR . $this->getCacheDirectory() . '/twig';
+    }
+
+    private function getPurifierCacheDirectory()
+    {
+        return APP_DIR . $this->getCacheDirectory() . '/htmlpurifier';
+    }
+
+    private function getCacheDirectory()
+    {
+        return $this->getConfig('cache.directory') ?: '/cache';
+    }
+
     public function getTwig()
     {
         if (!isset($this->_twig)) {
@@ -290,9 +310,14 @@ class Bootstrap
     public function getPurifier() {
         if (!isset($this->_purifier)) {
             $config = \HTMLPurifier_Config::createDefault();
-            if ($cachedir = $this->getConfig('htmlpurifier.cachedir')) {
-                $config->set('Cache.SerializerPath', $cachedir);
+
+            if ($this->getConfig('cache.enabled')) {
+                if (!is_dir($this->getPurifierCacheDirectory())) {
+                    mkdir($this->getPurifierCacheDirectory(), 0755, true);
+                }
+                $config->set('Cache.SerializerPath', $this->getPurifierCacheDirectory());
             }
+
             $this->_purifier = new \HTMLPurifier($config);
         }
 
@@ -333,4 +358,5 @@ class Bootstrap
 
         require APP_DIR . '/vendor/autoload.php';
     }
+
 }

@@ -8,6 +8,10 @@ airport = "MIA"
 arrival = "2014-10-26"
 departure = "2014-10-31"
 
+[cache]
+enabled = false
+directory = "/cache"
+
 [upload]
 ; This will be appended to the main app/web directory
 path = "/uploads/"
