@@ -35,10 +35,3 @@ port = "2525"
 ; available options are "tls", "ssl"
 ; for Gmail set encryption = "ssl"
 ;encryption = "ssl"
-
-[htmlpurifier]
-; absolute path to cache the serialized definitions
-; path must be writeable
-; path must not have trailing slash
-; if not set will default to html purifier library folder
-;cachedir = "/path/to/htmlpurifier/cache"
