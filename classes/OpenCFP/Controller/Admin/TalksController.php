@@ -170,7 +170,7 @@ class TalksController
 
         $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
         $talk = $mapper->get($req->get('id'));
-        $talk->select = $status;
+        $talk->selected = $status;
         $mapper->save($talk);
 
         return true;
