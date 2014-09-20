@@ -398,7 +398,7 @@ class TalkController
             return $app->json(['delete' => 'no']);
         }
 
-        $talk->mapper->delete($talk);
+        $talk_mapper->delete($talk);
 
         return $app->json(['delete' => 'ok']);
     }
