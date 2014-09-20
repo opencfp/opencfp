@@ -4,8 +4,22 @@ Feature: Show conference information
   As a visitor
   I should be able to see information about the conference
 
-  Scenario: Prospective speaker visits before the call for papers has begun
+  Scenario: Visitor comes to site during call for papers
+    Given the call for papers has begun
+    And the call for papers ends on "Dec. 14th, 2014"
+    When I visit the homepage
+    Then I should see "Create My Profile"
+    And I should see that the call for papers ends on "Dec. 14th, 2014"
 
-  Scenario: Call for papers has begun
+  @proposed
+  Scenario: Visitor comes to site before the call for papers has begun
+    Given the call for papers begins next week
+    When I visit the homepage
+    Then I should not see "Create My Profile"
+    And I should not see "Submissions accepted until"
 
-  Scenario: Call for papers has closed
+  @proposed
+  Scenario: Visitor comes to site after call for papers has closed
+    Given the call for papers has ended
+    When I visit the homepage
+    Then I should see "Sorry

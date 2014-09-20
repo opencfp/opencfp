@@ -1,0 +1,1 @@
+Feature: Visitor registers as a speaker
