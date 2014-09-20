@@ -111,7 +111,10 @@ class Bootstrap
         });
 
         $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-            $twig->addGlobal('user', $app['sentry']->getUser());
+            if ($app['sentry']->check()) {
+                $twig->addGlobal('user', $app['sentry']->getUser());
+            }
+
             return $twig;
         }));
 
