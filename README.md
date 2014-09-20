@@ -66,7 +66,8 @@ NOTE: Use development or production naming as appropriate.
 
 9. May need to edit directory permissions for some of the vendor packages. (your mileage may vary)
 
-    NOTE: We're looking at you ezyang htmlpurifier.
+    NOTE: If you are enabling template / htmlpurifier caching, you should create a directory with appropriate file
+    permissions and configure accordingly in your `config.*.ini`.
 
 10. Update directory permissions to allow for headshot upload.
 
