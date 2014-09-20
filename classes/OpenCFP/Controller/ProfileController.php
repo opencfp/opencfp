@@ -172,7 +172,7 @@ class ProfileController
 
         $form_data['formAction'] = '/profile/edit';
         $form_data['buttonInfo'] = 'Update Profile';
-        $form_data['id'] = $user->getId();
+        $form_data['id'] = $user->id;
         $form_data['user'] = $user;
         $form_data['flash'] = $this->getFlash($app);
         $template = $app['twig']->loadTemplate('user/edit.twig');
