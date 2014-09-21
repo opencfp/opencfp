@@ -416,36 +416,19 @@ class TalkController
         $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
         $talk = $mapper->get($talk_id);
 
-        // Create our Mailer object
-        $loader = new ConfigINIFileLoader(
-            APP_DIR . '/config/config.' . APP_ENV . '.ini'
-        );
-        $config_data = $loader->load();
-        $transport = new \Swift_SmtpTransport(
-            $config_data['smtp']['host'],
-            $config_data['smtp']['port']
-        );
-
-        if (!empty($config_data['smtp']['user'])) {
-            $transport->setUsername($config_data['smtp']['user'])
-                      ->setPassword($config_data['smtp']['password']);
-        }
-
-        if (!empty($config_data['smtp']['encryption'])) {
-            $transport->setEncryption($config_data['smtp']['encryption']);
-        }
+        $config = $app['config'];
 
         // Build our email that we will send
         $template = $app['twig']->loadTemplate('emails/talk_submit.twig');
         $parameters = array(
-            'email' => $config_data['application']['email'],
-            'title' => $config_data['application']['title'],
+            'email' => $config['application.email'],
+            'title' => $config['application.title'],
             'talk' => $talk->title,
-            'enddate' => $config_data['application']['enddate']
+            'enddate' => $config['application.enddate']
         );
 
         try {
-            $mailer = new \Swift_Mailer($transport);
+            $mailer = $app['mailer'];
             $message = new \Swift_Message();
 
             $message->setTo($email);

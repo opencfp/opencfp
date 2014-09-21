@@ -52,6 +52,11 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
     {
         $controller = new OpenCFP\Controller\TalkController();
 
+        // Create a test double for SwiftMailer
+        $swiftmailer = m::mock('StdClass');
+        $swiftmailer->shouldReceive('send')->andReturn(true);
+        $this->app['mailer'] = $swiftmailer;
+
         // Get our request object to return expected data
         $talk_data = [
             'title' => 'Test Title With Ampersand',

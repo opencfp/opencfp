@@ -2,6 +2,8 @@
 namespace OpenCFP;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Swift_Mailer;
+use Swift_SmtpTransport;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenCFP\Config\ConfigINIFileLoader;
@@ -37,6 +39,8 @@ class Bootstrap
 
         // Initialize out Silex app and let's do it
         $app = new \Silex\Application();
+
+        $app['config'] = $this->getConfigContainer();
 
         if ($this->getConfig('twig.debug')) {
             $app['debug'] = $this->getConfig('twig.debug');
@@ -87,6 +91,7 @@ class Bootstrap
         $app['db'] = $this->getDb();
         $app['spot'] = $this->getSpot();
         $app['purifier'] = $this->getPurifier();
+        $app['mailer'] = $this->getSwiftMailer();
 
         // We're using Sentry, so make it available to app
         $app['sentry'] = $app->share(function() use ($app) {
@@ -360,6 +365,26 @@ class Bootstrap
         }
 
         require APP_DIR . '/vendor/autoload.php';
+    }
+
+    private function getSwiftMailer()
+    {
+        // Create our Mailer object
+        $transport = new Swift_SmtpTransport(
+            $this->getConfig('smtp.host'),
+            $this->getConfig('smtp.port')
+        );
+
+        if ($this->getConfig('smtp.user') !== '') {
+            $transport->setUsername($this->getConfig('smtp.user'))
+            ->setPassword($this->getConfig('smtp.password'));
+        }
+
+        if ($this->getConfig('smtp.encryption') !== '') {
+            $transport->setEncryption($this->getConfig('smtp.encryption'));
+        }
+
+        return new Swift_Mailer($transport);
     }
 
 }
