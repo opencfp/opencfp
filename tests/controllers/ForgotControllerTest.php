@@ -13,10 +13,10 @@ class ForgotControllerTest extends PHPUnit_Framework_TestCase
         $session = m::mock('Symfony\Component\HttpFoundation\Session\Session');
         $session->shouldReceive('start')->andReturn(true);
         $session->shouldReceive('getId')->andReturn(uniqid());
+        $session->shouldReceive('get');
 
         $this->app['session'] = $session;
         $this->req = m::mock('Symfony\Component\HttpFoundation\Request');
-
     }
     /**
      * Test that index action displays a form that allows the user to reset
