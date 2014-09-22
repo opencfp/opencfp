@@ -27,6 +27,7 @@ class DashboardController
             'myTalks' => $my_talks,
             'first_name' => $user_info['first_name'],
             'last_name' => $user_info['last_name'],
+            'user' => $user_info,
             'company' => $user_info['company'] ?: null,
             'twitter' => $user_info['twitter'],
             'speaker_info' => $user_info['info'],
