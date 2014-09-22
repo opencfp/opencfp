@@ -266,7 +266,7 @@ class TalkController
         if (!$isValid) {
             $template = $app['twig']->loadTemplate('talk/edit.twig');
             $data = array(
-                'formAction' => '/talk/update',
+                'formAction' => '/talk/create',
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
