@@ -65,7 +65,7 @@ class ForgotController
 
         // Create a reset code and email the URL to our user
         $reset_code = $user->getResetPasswordCode();
-        $response = $this->sendResetEmail($app['twig'], $user->getId(), $data['email'], $reset_code);
+        $response = $this->sendResetEmail($app, $user->getId(), $data['email'], $reset_code);
 
         if ($response == false) {
             $app['session']->set('flash', array(
@@ -210,24 +210,13 @@ class ForgotController
         return $app->redirect($app['url'] . '/');
     }
 
-    protected function sendResetEmail($twig, $user_id, $email, $reset_code)
+    protected function sendResetEmail(Application $app, $user_id, $email, $reset_code)
     {
-        // Create our Mailer object
-        $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.' . APP_ENV . '.ini');
-        $config_data = $loader->load();
-        $transport = new \Swift_SmtpTransport(
-            $config_data['smtp']['host'],
-            $config_data['smtp']['port']
-        );
+        // Here to cover possible errors from refactor. Should be substituted appropriately below.
+        $twig = $app['twig'];
 
-        if (!empty($config_data['smtp']['user'])) {
-            $transport->setUsername($config_data['smtp']['user'])
-                      ->setPassword($config_data['smtp']['password']);
-        }
-
-        if (!empty($config_data['smtp']['encryption'])) {
-            $transport->setEncryption($config_data['smtp']['encryption']);
-        }
+        // Bring in config
+        $config = $app['config'];
 
         // Build our email that we will send
         $template = $twig->loadTemplate('emails/reset_password.twig');
@@ -238,12 +227,12 @@ class ForgotController
             'host' => !empty($_SERVER['HTTP_HOST'])
             ? $_SERVER['HTTP_HOST'] : 'localhost',
             'user_id' => $user_id,
-            'email' => $config_data['application']['email'],
-            'title' => $config_data['application']['title']
+            'email' => $config['application.email'],
+            'title' => $config['application.title']
         );
         
         try {
-            $mailer = new \Swift_Mailer($transport);
+            $mailer = $app['mailer'];
             $message = new \Swift_Message();
             
             $message->setTo($email);
