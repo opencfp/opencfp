@@ -19,7 +19,7 @@ Feature: Visitor registers as a speaker
   Scenario: Visitor attempts to register after call for papers has ended
     Given the call for papers has ended
     When I visit the create profile page
-    Then I should see "Sorry! The call for papers has ended."
+    Then I should see "Sorry! The call for papers has ended"
 
   Scenario: Visitor submits an invalid profile
     Given I am at the create profile page
