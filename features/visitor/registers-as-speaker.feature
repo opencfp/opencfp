@@ -8,7 +8,7 @@ Feature: Visitor registers as a speaker
     Given the call for papers has begun
     And I am on the homepage
     When I follow "Create my profile"
-    Then I see "Create your OpenCFP profile below"
+    Then I see "Create your OpenCFP profile"
 
   Scenario: Visitor completes a new profile
     Given I am at the create profile page
@@ -20,3 +20,9 @@ Feature: Visitor registers as a speaker
     Given the call for papers has ended
     When I visit the create profile page
     Then I should see "Sorry! The call for papers has ended."
+
+  Scenario: Visitor submits an invalid profile
+    Given I am at the create profile page
+    And I forgot to fill out my "password"
+    When I press "Create my speaker profile"
+    Then I see "Error: Missing passwords"
