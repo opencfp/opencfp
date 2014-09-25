@@ -144,6 +144,7 @@ class ProfileController
             $user->hotel = $sanitized_data['hotel'];
             $user->info = $sanitized_data['speaker_info'];
             $user->bio = $sanitized_data['speaker_bio'];
+            $user->photo_path = $sanitized_data['speaker_photo'];
             $response = $mapper->save($user);
 
             if ($response == true) {
