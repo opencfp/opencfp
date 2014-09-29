@@ -108,6 +108,7 @@ class ProfileController
             $sanitized_data['twitter'] = preg_replace('/^@/', '', $sanitized_data['twitter']);
 
             if (isset($form_data['speaker_photo'])) {
+
                 // Move file into uploads directory
                 $fileName = uniqid() . '_' . $form_data['speaker_photo']->getClientOriginalName();
                 $form_data['speaker_photo']->move(APP_DIR . '/web/' . $app['uploadPath'], $fileName);
@@ -144,23 +145,22 @@ class ProfileController
             $user->hotel = $sanitized_data['hotel'];
             $user->info = $sanitized_data['speaker_info'];
             $user->bio = $sanitized_data['speaker_bio'];
-            $response = $mapper->save($user);
 
-            if ($response == true) {
-                $app['session']->set('flash', array(
-                        'type' => 'success',
-                        'short' => 'Success',
-                        'ext' => "Successfully updated your information!"
-                    ));
-                return $app->redirect($app['url'] . '/profile/edit/' . $form_data['user_id']);
+            if (isset($sanitized_data['speaker_photo'])) {
+                $user->photo_path = $sanitized_data['speaker_photo'];
             }
 
-            if ($response == false) {
+            /** @var $response number of affected rows */
+            $response = $mapper->save($user);
+
+            if ($response >= 0) {
                 $app['session']->set('flash', array(
-                        'type' => 'error',
-                        'short' => 'Error',
-                        'ext' => "We were unable to update your information. Please try again."
-                    ));
+                    'type' => 'success',
+                    'short' => 'Success',
+                    'ext' => "Successfully updated your information!"
+                ));
+
+                return $app->redirect($app['url'] . '/profile/edit/' . $form_data['user_id']);
             }
         } else {
             $app['session']->set('flash', array(
