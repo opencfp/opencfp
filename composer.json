@@ -1,6 +1,7 @@
 {
     "name": "chartjes/opencfp",
     "require": {
+        "php": ">=5.4",
         "twig/twig": "1.*",
         "pagerfanta/pagerfanta": "1.0.*@dev",
         "cartalyst/sentry": "2.0.*@dev",
