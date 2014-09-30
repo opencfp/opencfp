@@ -1,3 +1,4 @@
+@speaker @wip
 Feature: Talk Submission
   In order to be considered as a speaker at the conference
   As a speaker

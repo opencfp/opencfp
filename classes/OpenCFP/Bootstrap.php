@@ -75,7 +75,7 @@ class Bootstrap
                 'title' => $that->getConfig('application.title'),
                 'email' => $that->getConfig('application.email'),
                 'eventurl' => $that->getConfig('application.eventurl'),
-                'enddate' => $that->getConfig('application.enddate')
+                'enddate' => getenv('application.enddate') ?: $that->getConfig('application.enddate')
             ));
 
             return $twig;

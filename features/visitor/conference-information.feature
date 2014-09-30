@@ -6,10 +6,10 @@ Feature: Show conference information
 
   Scenario: Visitor comes to site during call for papers
     Given the call for papers has begun
-    And the call for papers ends on "Dec. 14th, 2014"
+    And the call for papers ends on "Oct. 14th, 2014"
     When I visit the homepage
     Then I should see "Create My Profile"
-    And I should see that the call for papers ends on "Dec. 14th, 2014"
+    And I should see that the call for papers ends on "Oct. 14th, 2014"
 
   @proposed
   Scenario: Visitor comes to site before the call for papers has begun
@@ -22,4 +22,4 @@ Feature: Show conference information
   Scenario: Visitor comes to site after call for papers has closed
     Given the call for papers has ended
     When I visit the homepage
-    Then I should see "Sorry
+    Then I should see "Sorry"

@@ -1,3 +1,4 @@
+@speaker @wip
 Feature: Speaker authentication
   In order to submit and manage my talks
   As a speaker
