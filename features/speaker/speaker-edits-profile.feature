@@ -1,3 +1,4 @@
+@speaker @wip
 Feature: Edit speaker profile
   In order to keep my information up to date
   As a speaker
