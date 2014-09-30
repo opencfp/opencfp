@@ -5,10 +5,9 @@ default:
       contexts: [ FeatureContext ]
   gherkin:
     filters:
-  formatters:
-    pretty: true
+      tags: "~@wip&~@proposed"
   extensions:
     Behat\MinkExtension:
-      base_url: 'http://localhost/'
+      base_url: 'http://localhost'
       selenium2:
-        wd_host: "http://localhost:4444/"
+        wd_host: "http://localhost:4444"

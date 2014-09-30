@@ -15,15 +15,9 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function theCallForPapersHasBegun()
     {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given the call for papers ends on :date
-     */
-    public function theCallForPapersEndsOn($date)
-    {
-        throw new PendingException();
+        // Dummy until we can set application environment somehow.
+        $this->visit("ideas");
+        $this->printCurrentUrl();
     }
 
     /**
@@ -191,7 +185,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iShouldSeeThatTheCallForPapersEndsOn($date)
     {
-        $this->assertPageContainsText("Submissions accepted until 11:59 PM EST Oct. 14th, 2014");
+        $this->assertPageContainsText("Submissions accepted until 11:59 PM EST $date");
     }
 
     /**
@@ -223,7 +217,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iSee($textOnPage)
     {
-        throw new PendingException();
+        $this->assertPageContainsText($textOnPage);
     }
 
     /**
