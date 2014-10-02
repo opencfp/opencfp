@@ -20,4 +20,4 @@ Feature: Show conference information
   Scenario: Visitor comes to site after call for papers has closed
     Given the call for papers has ended
     When I visit the homepage
-    Then I should see "Sorry"
+    Then I should see "Sorry! The call for papers has ended"

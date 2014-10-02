@@ -10,14 +10,16 @@ use Behat\MinkExtension\Context\MinkContext;
 class FeatureContext extends MinkContext implements SnippetAcceptingContext
 {
 
-    /**
-     * @Given the call for papers has begun
-     */
-    public function theCallForPapersHasBegun()
+    /** @BeforeScenario */
+    public function setWindowSize()
     {
-        // Dummy until we can set application environment somehow.
-        $this->visit("ideas");
-        $this->printCurrentUrl();
+        $this->getSession()->resizeWindow(1920, 1080, 'current');
+    }
+
+    /** @AfterScenario */
+    public function resetDatabase()
+    {
+        shell_exec('sh tools/refresh-database.sh');
     }
 
     /**
@@ -189,19 +191,12 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     }
 
     /**
+     * @Given the call for papers has begun
      * @Given the call for papers begins next week
-     */
-    public function theCallForPapersBeginsNextWeek()
-    {
-        throw new PendingException();
-    }
-
-    /**
      * @Given the call for papers has ended
      */
     public function theCallForPapersHasEnded()
     {
-        throw new PendingException();
     }
 
     /**
@@ -221,19 +216,12 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     }
 
     /**
-     * @When I visit the create profile page
-     */
-    public function iVisitTheCreateProfilePage()
-    {
-        throw new PendingException();
-    }
-
-    /**
      * @Given I am at the create profile page
+     * @When I visit the create profile page
      */
     public function iAmAtTheCreateProfilePage()
     {
-        throw new PendingException();
+        $this->visit('signup');
     }
 
     /**
@@ -241,14 +229,18 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iHaveFilledOutAValidProfile()
     {
-        throw new PendingException();
+        $this->fillField('email', 'speaker@fake.com');
+        $this->fillField('password', 'secrets');
+        $this->fillField('password2', 'secrets');
+        $this->fillField('first_name', 'Sample');
+        $this->fillField('last_name', 'User');
     }
 
     /**
-     * @Given I forgot to fill out my :arg1
+     * @Given I forgot to fill out my :fieldName
      */
-    public function iForgotToFillOutMy($arg1)
+    public function iForgotToFillOutMy($fieldName)
     {
-        throw new PendingException();
+        $this->fillField($fieldName, '');
     }
 }

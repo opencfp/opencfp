@@ -1,21 +1,9 @@
 #!/usr/bin/env bash
 
-# Note that this is also specified in the Phinx testing environment.
-TRAVIS_DB="cfp_travis"
-
 # Get a path to the project's root.
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 
-# FIXME: Set up cache and upload directory permissions.
-
-# Set up testing database.
-echo "Setting up testing database..."
-mysql -e "DROP DATABASE IF EXISTS $TRAVIS_DB" -uroot
-mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
-
-# Run Phinx migrations.
-echo "Running migrations..."
-mysql -uroot $TRAVIS_DB < "$PROJECT_ROOT/migrations/schema.sql"
-$PROJECT_ROOT/vendor/bin/phinx --configuration="$PROJECT_ROOT/phinx.yml" migrate -e testing
+sh $PROJECT_ROOT/tools/refresh-database.sh
 
 phpunit -c "$PROJECT_ROOT/phpunit.xml"
+$PROJECT_ROOT/vendor/bin/behat --colors

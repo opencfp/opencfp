@@ -7,7 +7,7 @@ Feature: Visitor registers as a speaker
   Scenario: Visitor starts a new profile from homepage
     Given the call for papers has begun
     And I am on the homepage
-    When I follow "Talk Ideas"
+    When I follow "Create my profile"
     Then I see "Create your OpenCFP speaker profile"
 
   Scenario: Visitor completes a new profile
