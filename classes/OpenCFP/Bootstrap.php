@@ -392,7 +392,7 @@ class Bootstrap
      */
     private function getPort()
     {
-        if (!in_array($_SERVER['SERVER_PORT'], array(80, 443))) {
+        if (isset($_SERVER['SERVER_PORT']) && !in_array($_SERVER['SERVER_PORT'], array(80, 443))) {
             return ':' . $_SERVER['SERVER_PORT'];
         }
 
