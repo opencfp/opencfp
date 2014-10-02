@@ -52,7 +52,7 @@ class Bootstrap
             $app['session']->start();
         });
 
-		$app['url'] = $this->getConfig('application.url');
+        $app['url'] = $this->getConfig('application.url') . $this->getPort();
         $app['uploadPath'] = $this->getConfig('upload.path');
         $app['confAirport'] = $this->getConfig('application.airport');
         $app['arrival'] = $this->getConfig('application.arrival');
@@ -71,7 +71,7 @@ class Bootstrap
         $that = $this;
         $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) use ($that) {
             $twig->addGlobal('site', array(
-                'url' => $that->getConfig('application.url'),
+                'url' => $app['url'],
                 'title' => $that->getConfig('application.title'),
                 'email' => $that->getConfig('application.email'),
                 'eventurl' => $that->getConfig('application.eventurl'),
@@ -385,6 +385,18 @@ class Bootstrap
         }
 
         return new Swift_Mailer($transport);
+    }
+
+    /**
+     * @return string
+     */
+    private function getPort()
+    {
+        if (!in_array($_SERVER['SERVER_PORT'], array(80, 443))) {
+            return ':' . $_SERVER['SERVER_PORT'];
+        }
+
+        return '';
     }
 
 }
