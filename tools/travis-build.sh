@@ -5,5 +5,5 @@ PROJECT_ROOT=$(git rev-parse --show-toplevel)
 
 sh $PROJECT_ROOT/tools/refresh-database.sh
 
-phpunit -c "$PROJECT_ROOT/phpunit.xml"
-$PROJECT_ROOT/vendor/bin/behat --colors
+phpunit -c "$PROJECT_ROOT/phpunit.xml" --coverage-clover build/logs/clover.xml
+$PROJECT_ROOT/vendor/bin/behat --colors -vvv
