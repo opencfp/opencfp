@@ -1,4 +1,4 @@
-@visitor @wip
+@visitor
 Feature: Visitor registers as a speaker
   In order to submit talks as part of the call for papers process
   As a visitor
@@ -16,6 +16,7 @@ Feature: Visitor registers as a speaker
     When I press "Create my speaker profile"
     Then I see "Success: You've successfully created your account!"
 
+  @wip
   Scenario: Visitor attempts to register after call for papers has ended
     Given the call for papers has ended
     When I visit the create profile page

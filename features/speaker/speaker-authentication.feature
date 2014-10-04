@@ -1,4 +1,4 @@
-@speaker @wip
+@speaker
 Feature: Speaker authentication
   In order to submit and manage my talks
   As a speaker
@@ -22,7 +22,8 @@ Feature: Speaker authentication
 
   Scenario: Speaker forgets their password
     Given I am on the login page
-    When I press "Forgot password"
-    And I fill in "email" with "speaker@opencfp.org"
+    When I follow "Forgot password"
+    And I fill in "forgot[email]" with "speaker@opencfp.org"
+    And I press "Reset my password"
     Then the forgot password email should be sent
     And I should see "An email giving you a link to reset your password has been sent"

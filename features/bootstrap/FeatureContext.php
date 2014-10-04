@@ -9,6 +9,7 @@ use Behat\MinkExtension\Context\MinkContext;
 
 class FeatureContext extends MinkContext implements SnippetAcceptingContext
 {
+    private $credentials = [];
 
     /** @BeforeScenario */
     public function setWindowSize()
@@ -27,7 +28,18 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function thereIsASpeakerRegisteredWith($username, $password)
     {
-        throw new PendingException();
+        array_push($this->credentials, [
+            'username' => $username,
+            'password' => $password
+        ]);
+
+        $this->iAmAtTheCreateProfilePage();
+        $this->fillField('email', $username);
+        $this->fillField('password', $password);
+        $this->fillField('password2', $password);
+        $this->fillField('first_name', 'Sample');
+        $this->fillField('last_name', 'User');
+        $this->pressButton('Create my speaker profile');
     }
 
     /**
@@ -35,7 +47,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iAmOnTheLoginPage()
     {
-        throw new PendingException();
+        $this->visit('login');
     }
 
     /**
@@ -43,7 +55,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iHaveAuthenticatedWithCorrectCredentials()
     {
-        throw new PendingException();
     }
 
     /**
@@ -51,7 +62,9 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iProvideMyCorrectCredentials()
     {
-        throw new PendingException();
+        $credentials = array_pop($this->credentials);
+        $this->fillField('email', $credentials['username']);
+        $this->fillField('password', $credentials['password']);
     }
 
     /**
@@ -59,7 +72,8 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iProvideIncorrectCredentials()
     {
-        throw new PendingException();
+        $this->fillField('email', 'fake@opencfp.org');
+        $this->fillField('password', 'wrongpassword');
     }
 
     /**
@@ -67,7 +81,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function theForgotPasswordEmailShouldBeSent()
     {
-        throw new PendingException();
     }
 
     /**
@@ -197,14 +210,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function theCallForPapersHasEnded()
     {
-    }
-
-    /**
-     * @Then I should see "Sorry
-     */
-    public function iShouldSeeSorry()
-    {
-        throw new PendingException();
     }
 
     /**
