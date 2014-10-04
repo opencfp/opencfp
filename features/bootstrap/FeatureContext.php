@@ -10,6 +10,7 @@ use Behat\MinkExtension\Context\MinkContext;
 class FeatureContext extends MinkContext implements SnippetAcceptingContext
 {
     private $credentials = [];
+    private $talkISubmitted = [];
 
     /** @BeforeScenario */
     public function setWindowSize()
@@ -55,6 +56,10 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iHaveAuthenticatedWithCorrectCredentials()
     {
+        $this->thereIsASpeakerRegisteredWith('speaker@opencfp.org', 'secrets');
+        $this->iAmOnTheLoginPage();
+        $this->iProvideMyCorrectCredentials();
+        $this->pressButton('Login');
     }
 
     /**
@@ -88,7 +93,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iAmOnTheDashboardPage()
     {
-        throw new PendingException();
+        $this->visit('dashboard');
     }
 
     /**
@@ -96,7 +101,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iAmAtTheTalkSubmissionPage()
     {
-        throw new PendingException();
+        $this->visit('talk/create');
     }
 
     /**
@@ -104,7 +109,10 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iHaveFilledOutTheFormWithValidInformation()
     {
-        throw new PendingException();
+        array_push($this->talkISubmitted, 'The Best Talk');
+
+        $this->fillField('title', 'The Best Talk');
+        $this->fillField('description', 'The best description.. obviously.');
     }
 
     /**
@@ -112,15 +120,24 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iShouldSeeTheTalkISubmittedPreviously()
     {
-        throw new PendingException();
+        $talkISubmitted = array_pop($this->talkISubmitted);
+        $this->iSee($talkISubmitted);
     }
 
     /**
-     * @When I make a submission without filling in :arg1
+     * @When I make a submission without filling in :fieldName
      */
-    public function iMakeASubmissionWithoutFillingIn($arg1)
+    public function iMakeASubmissionWithoutFillingIn($fieldName)
     {
-        throw new PendingException();
+        $this->fillField('description', 'Blah blah blah');
+    }
+
+    /**
+     * @Given I forgot to fill out my :fieldName
+     */
+    public function iForgotToFillOutMy($fieldName)
+    {
+        $this->fillField($fieldName, '');
     }
 
     /**
@@ -241,11 +258,4 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
         $this->fillField('last_name', 'User');
     }
 
-    /**
-     * @Given I forgot to fill out my :fieldName
-     */
-    public function iForgotToFillOutMy($fieldName)
-    {
-        $this->fillField($fieldName, '');
-    }
 }
