@@ -21,7 +21,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     /** @AfterScenario */
     public function resetDatabase()
     {
-        shell_exec('sh tools/refresh-database.sh');
+        shell_exec('sh tools/travis/reset-database.sh');
     }
 
     /**
