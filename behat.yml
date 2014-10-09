@@ -9,5 +9,9 @@ default:
   extensions:
     Behat\MinkExtension:
       base_url: "http://localhost"
-      selenium2:
-        wd_host: "http://localhost:4444"
+      sessions:
+        default:
+          goutte: ~
+        javascript:
+          selenium2:
+            wd_host: "http://localhost:4444"

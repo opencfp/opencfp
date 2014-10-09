@@ -15,7 +15,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
     /** @BeforeScenario */
     public function setWindowSize()
     {
-        $this->getSession()->resizeWindow(1920, 1080, 'current');
+        #$this->getSession()->resizeWindow(1920, 1080, 'current');
     }
 
     /** @AfterScenario */
@@ -217,7 +217,8 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext
      */
     public function iShouldSeeThatTheCallForPapersEndsOn($date)
     {
-        $this->assertPageContainsText("Submissions accepted until 11:59 PM EST $date");
+        $this->assertPageContainsText("Submissions accepted until");
+        $this->assertPageContainsText("$date");
     }
 
     /**

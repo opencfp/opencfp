@@ -38,6 +38,7 @@
         "behat/behat": "~3.0,>=3.0.5",
         "behat/mink-extension": "~2.0@dev",
         "behat/mink-selenium2-driver": "*",
+        "behat/mink-goutte-driver": "*",
         "fzaninotto/faker": "1.2.*",
         "codeclimate/php-test-reporter": "dev-master"
     }
