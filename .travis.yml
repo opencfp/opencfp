@@ -16,7 +16,7 @@ addons:
 
 before_script:
   - sh tools/travis/setup-webserver.sh
-  - sh tools/travis/reset-mail.sh
+  - sh tools/travis/setup-mail.sh
   - composer self-update
   - composer install
   - cp config/config.travis.ini.dist config/config.development.ini
