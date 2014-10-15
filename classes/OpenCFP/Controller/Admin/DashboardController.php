@@ -3,8 +3,6 @@ namespace OpenCFP\Controller\Admin;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use OpenCFP\Model\Talk;
-use OpenCFP\Model\Speaker;
 use Pagerfanta\View\TwitterBootstrap3View;
 
 class DashboardController
@@ -31,16 +29,20 @@ class DashboardController
             return $app->redirect($app['url'] . '/dashboard');
         }
 
-        $speakers = new Speaker($app['db']);
-        $talks = new Talk($app['db']);
+        $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $speaker_total = $user_mapper->all()->count();
+
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $favorite_mapper = $app['spot']->mapper('OpenCFP\Entity\Favorite');
+        $recent_talks = $talk_mapper->getRecent($app['sentry']->getUser()->getId());
 
         $template = $app['twig']->loadTemplate('admin/index.twig');
         $templateData = array(
-            'speakerTotal' => $speakers->getTotalRecords(),
-            'talkTotal' => $talks->getTotalRecords(),
-            'favoriteTotal' => $talks->getTotalRecords('favorite', 1),
-            'selectTotal' => $talks->getTotalRecords('selected', 1),
-            'talks' => $talks->getRecent()
+            'speakerTotal' => $speaker_total,
+            'talkTotal' => $talk_mapper->all()->count(),
+            'favoriteTotal' => $favorite_mapper->all()->count(),
+            'selectTotal' => $talk_mapper->all()->where(['selected' => 1])->count(),
+            'talks' => $recent_talks
         );
 
         return $template->render($templateData);

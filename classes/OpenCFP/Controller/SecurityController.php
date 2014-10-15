@@ -4,6 +4,7 @@ namespace OpenCFP\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use OpenCFP\Config\ConfigINIFileLoader;
 
 class SecurityController
 {
@@ -22,7 +23,6 @@ class SecurityController
     public function indexAction(Request $req, Application $app)
     {
         $template = $app['twig']->loadTemplate('login.twig');
-
         return $template->render(array());
     }
 
@@ -42,14 +42,12 @@ class SecurityController
             $errorMessage = $page->getAuthenticationMessage();
 
             $template_data = array(
-                'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
             );
             $code = 400;
         } catch (Exception $e) {
             $errorMessage = $e->getMessage();
             $template_data = array(
-                'user' => $app['sentry']->getUser(),
                 'email' => $req->get('email'),
             );
             $code = 400;

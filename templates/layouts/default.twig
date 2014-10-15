@@ -1,4 +1,4 @@
-{% if user is not empty %}
+{% if user is defined and user is not empty %}
     {% set profile_edit_url = '/profile/edit/' ~ user.id %}
     {% set navigation_bar = [['/dashboard', 'Dashboard'], ['/profile/change_password', 'Change Password'], [profile_edit_url, 'Edit Profile'], ['/logout', 'Logout']] %}
 {% else %}
@@ -34,7 +34,7 @@
                     </ul>
                     {% block navigation %}
                         <ul class="nav navbar-nav navbar-right">
-                            {% if permissions.admin == true %}
+                            {% if permissions is defined and permissions.admin == true %}
                                 <li><a href="{{ site.url }}/admin">Admin</a></li>
                             {% endif %}
                             {% for item in navigation_bar %}

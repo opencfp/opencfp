@@ -19,10 +19,10 @@ class Talk
     }
 
     /**
-     * Create a talk when you pass new data in
+     * Create a talk when you pass new data in. Return the last insert id.
      *
      * @param array $data
-     * @return boolean
+     * @return integer
      */
     public function create($data)
     {
@@ -33,20 +33,18 @@ class Talk
             ";
         $stmt = $this->_db->prepare($sql);
 
-        return $stmt->execute(
-            array(
-                trim($data['title']),
-                trim($data['description']),
-                trim($data['type']),
-                trim($data['level']),
-                trim($data['category']),
-                trim($data['desired']),
-                trim($data['slides']),
-                trim($data['other']),
-                trim($data['sponsor']),
-                $data['user_id'],
-                date('Y-m-d H:i:s')
-            )
+        return $stmt->execute(array(
+            trim($data['title']),
+            trim($data['description']),
+            trim($data['type']),
+            trim($data['level']),
+            trim($data['category']),
+            trim($data['desired']),
+            trim($data['slides']),
+            trim($data['other']),
+            trim($data['sponsor']),
+            $data['user_id'],
+            date('Y-m-d H:i:s'))
         );
     }
 
@@ -175,7 +173,11 @@ class Talk
 
 
     /**
-     * Get total record count
+     * Get total record count for submitted talks
+     *
+     * @param string $field name of the field
+     * @param string $value value associated with that field
+     * @return integer
      */
     public function getTotalRecords($field = null, $value = null)
     {

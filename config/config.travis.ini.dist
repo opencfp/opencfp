@@ -1,0 +1,37 @@
+[application]
+title = "OpenCFP"
+url = "http://cfp.dev"
+email = "contact@openconf.com"
+eventurl = "http://myevent.com"
+enddate = "Oct. 14th, 9999"
+airport = "MIA"
+arrival = "2014-10-26"
+departure = "2014-10-31"
+
+[upload]
+; This will be appended to the main app/web directory
+path = "/uploads/"
+
+[database]
+dsn = "sqlite::memory:"
+user = "root"
+password = ""
+
+[twig]
+template_dir = "/templates"
+debug = true
+
+[smtp]
+user = ""
+password = ""
+
+; for Gmail set host = "smtp.gmail.com"
+host = "localhost"
+
+; for Gmail set port = "465", SMTP is "110", STARTLS is "587"
+port = "2525"
+
+; uncomment if your smtp server requires encryption
+; available options are "tls", "ssl"
+; for Gmail set encryption = "ssl"
+;encryption = "ssl"

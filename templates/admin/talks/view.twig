@@ -1,11 +1,25 @@
 {% extends "layouts/admin.twig" %}
 {% block content %}
     <h2 class="headline">{{ talk.title }}</h2>
-    <h4>Submitted by <a href="{{ site.url }}/admin/speakers/{{ talk.user_id }}">{{ speaker.first_name }} {{ speaker.last_name }}</a></h4>
+    <h4><strong>Submitted by:</strong> <a href="{{ site.url }}/admin/speakers/{{ talk.user_id }}">{{ speaker.first_name }} {{ speaker.last_name }}</a></h4>
+
     <p>{{ talk.description|raw }}</p>
+    {% if talk.other is defined %}
+    <p><strong>Other Info:</strong> {{ talk.other }}</p>
+    {% endif %}
+
+    <p>
+        <strong>Slides:</strong> {% if talk.slides is defined %}{{ talk.slides }}{% endif %}<br />
+        <strong>Type:</strong> {{ talk.type }}<br />
+        <strong>Level:</strong> {% if talk.level is defined %}{{ talk.level }}{% endif %}<br />
+        <strong>Category:</strong> {% if talk.category is defined %}{{ talk.category }}{% endif %}<br />
+        <strong>Desired:</strong> {% if talk.desired is defined %}{{ talk.desired ? 'Yes' : 'No' }}{% endif %}<br />
+        <strong>Sponsor:</strong> {% if talk.sponsor is defined %}{{ talk.sponsor ? 'Yes' : 'No' }}{% endif %}<br />
+
+    </p>
 
     {% if otherTalks | length > 0 %}
-        <h4>Other talks by this speaker</h4>
+        <h4><strong>Other talks by this speaker:</strong></h4>
         {% for talk in otherTalks %}
             <a href="{{ site.url}}/admin/talks/{{ talk.id }}">{{ talk.title }}</a><br>
         {% endfor %}

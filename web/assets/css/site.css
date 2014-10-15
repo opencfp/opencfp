@@ -1,5 +1,5 @@
 body {
-	background: #FFF url('../img/bg/texture.png') repeat;
+	background: #FFF;
 	font-size: 1.6rem;
 	padding: 40px 0;
 }
@@ -121,8 +121,6 @@ a:hover {
 .profile-photo {
   border: 6px solid #eee;
   margin: 1rem 0;
-  width: 250px;
-  height: 250px;
 }
 
 /**

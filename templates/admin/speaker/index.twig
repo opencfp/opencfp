@@ -19,8 +19,9 @@
                     <td>{{ speaker.company }}</td>
                     <td>{{ speaker.twitter }}</td>
                     <td><a href="mailto:{{ speaker.email }}">{{ speaker.email }}</a></td>
-                    <td><a href="https://www.google.com/flights/#search;f={{ speaker.airport|upper }};t={{ airport|upper }};d={{ arrival }};r={{ departure }}">View Flight Cost ({{ speaker.airport }})</a></td>
+                    <td><a href="https://www.google.com/flights/#search;f={{ speaker.airport|upper }};t={{ airport|upper }};d={{ arrival }};r={{ departure }}" target="_blank">View Flight Cost ({{ speaker.airport }})</a></td>
                     <td>{{ speaker.created_at|date("F jS \\a\\t g:ia T") }}</td>
+                    <td><a href="{{ site.url }}/admin/speakers/delete/{{ speaker.id }}" onClick="return confirm('Are you sure you want to delete this user');">Delete</a></td>
                 </tr>
             {% endfor %}
         </tbody>

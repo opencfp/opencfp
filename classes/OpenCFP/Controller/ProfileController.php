@@ -4,7 +4,6 @@ namespace OpenCFP\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Form\SignupForm;
-use OpenCFP\Model\Speaker;
 use Intervention\Image\Image;
 
 class ProfileController
@@ -38,9 +37,10 @@ class ProfileController
             ));
             return $app->redirect($app['url'] . '/dashboard');
         }
-        
-        $speaker = new Speaker($app['db']);
-        $speaker_data = $speaker->getDetailsByUserId($user->getId());
+
+        $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+        $speaker_data = $mapper->get($user->getId())->toArray();
+
         $form_data = array(
             'email' => $user->getLogin(),
             'first_name' => $speaker_data['first_name'],
@@ -52,10 +52,11 @@ class ProfileController
             'speaker_photo' => $speaker_data['photo_path'],
             'preview_photo' => $app['uploadPath'] . $speaker_data['photo_path'],
             'airport' => $speaker_data['airport'],
+            'transportation' => $speaker_data['transportation'],
+            'hotel' => $speaker_data['hotel'],
             'id' => $user->getId(),
             'formAction' => '/profile/edit',
             'buttonInfo' => 'Update Profile',
-            'user' => $user,
         );
 
         return $template->render($form_data) ;
@@ -86,6 +87,8 @@ class ProfileController
             'company' => $req->get('company'),
             'twitter' => $req->get('twitter'),
             'airport' => $req->get('airport'),
+            'transportation' => $req->get('transportation'),
+            'hotel' => $req->get('hotel'),
             'speaker_info' => $req->get('speaker_info') ?: null,
             'speaker_bio' => $req->get('speaker_bio') ?: null,
         );
@@ -96,19 +99,18 @@ class ProfileController
         }
 
         $form = new SignupForm($form_data, $app['purifier']);
+        $isValid = $form->validateAll('update');
 
-        $flash = array();
-        if ($form->validateAll('update') == true) {
+        if ($isValid) {
             $sanitized_data = $form->getCleanData();
 
             // Remove leading @ for twitter
-            if ($sanitized_data['twitter'][0] === "@") {
-                $sanitized_data['twitter'] = substr($sanitized_data['twitter'], 1);
-            }
+            $sanitized_data['twitter'] = preg_replace('/^@/', '', $sanitized_data['twitter']);
 
             if (isset($form_data['speaker_photo'])) {
+
                 // Move file into uploads directory
-                $fileName = $form_data['speaker_photo']->getClientOriginalName();
+                $fileName = uniqid() . '_' . $form_data['speaker_photo']->getClientOriginalName();
                 $form_data['speaker_photo']->move(APP_DIR . '/web/' . $app['uploadPath'], $fileName);
 
                 // Resize Photo
@@ -122,47 +124,55 @@ class ProfileController
 
                 $speakerPhoto->crop(250, 250);
 
-
                 // Give photo a unique name
                 $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $speakerPhoto->extension;
 
                 // Resize image and destroy original
                 if ($speakerPhoto->save(APP_DIR . '/web/' . $app['uploadPath'] . $sanitized_data['speaker_photo'])) {
-                    unlink($app['uploadPath'] . $fileName);
+                    unlink(APP_DIR . '/web/' . $app['uploadPath'] . $fileName);
                 }
             }
 
-            $speaker = new Speaker($app['db']);
-            $response = $speaker->update($sanitized_data);
+            $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+            $user = $mapper->get($user->getId());
+            $user->email = $sanitized_data['email'];
+            $user->first_name = $sanitized_data['first_name'];
+            $user->last_name = $sanitized_data['last_name'];
+            $user->company = $sanitized_data['company'];
+            $user->twitter = $sanitized_data['twitter'];
+            $user->airport = $sanitized_data['airport'];
+            $user->transportation = $sanitized_data['transportation'];
+            $user->hotel = $sanitized_data['hotel'];
+            $user->info = $sanitized_data['speaker_info'];
+            $user->bio = $sanitized_data['speaker_bio'];
 
-            if ($response == true) {
-                $flash['message'] = "Successfully updated your information!";
-                $flash['type'] = 'success';
+            if (isset($sanitized_data['speaker_photo'])) {
+                $user->photo_path = $sanitized_data['speaker_photo'];
             }
 
-            if ($response == false) {
-                $flash['message'] = "We were unable to update your information. Please try again";
-                $flash['type'] = 'error';
+            /** @var $response number of affected rows */
+            $response = $mapper->save($user);
+
+            if ($response >= 0) {
+                $app['session']->set('flash', array(
+                    'type' => 'success',
+                    'short' => 'Success',
+                    'ext' => "Successfully updated your information!"
+                ));
+
+                return $app->redirect($app['url'] . '/profile/edit/' . $form_data['user_id']);
             }
         } else {
-            $flash['message'] = implode('<br>', $form->getErrorMessages());
-            $flash['type'] = 'error';
-        }
-
-        $app['session']->set('flash', array(
-            'type' => $flash['type'],
-            'short' => ucfirst($flash['type']),
-            'ext' => $flash['message'],
-        ));
-
-        // Update was successful
-        if ($response) {
-            return $app->redirect($app['url'] . '/profile/edit/' . $form_data['user_id']);
+            $app['session']->set('flash', array(
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => implode('<br>', $form->getErrorMessages())
+                ));
         }
 
         $form_data['formAction'] = '/profile/edit';
         $form_data['buttonInfo'] = 'Update Profile';
-        $form_data['id'] = $user->getId();
+        $form_data['id'] = $user->id;
         $form_data['user'] = $user;
         $form_data['flash'] = $this->getFlash($app);
         $template = $app['twig']->loadTemplate('user/edit.twig');
@@ -179,7 +189,7 @@ class ProfileController
 
         $template = $app['twig']->loadTemplate('user/change_password.twig');
 
-        return $template->render(array('user' => $user));
+        return $template->render(array());
     }
 
     public function passwordProcessAction(Request $req, Application $app)
@@ -210,10 +220,14 @@ class ProfileController
             return $app->redirect($app['url'] . '/profile/change_password');
         }
 
+        /**
+         * Resetting passwords looks weird because we need to use Sentry's
+         * own built-in password reset functionality to do it
+         */
         $sanitized_data = $form->getCleanData();
-        $speaker = new Speaker($app['db']);
+        $reset_code = $user->getResetPasswordCode();
 
-        if ($speaker->changePassword($sanitized_data['password'], $user) === false) {
+        if (!$user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
             $app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
@@ -229,7 +243,31 @@ class ProfileController
         ));
 
         return $app->redirect($app['url'] . '/profile/change_password');
+    }
 
+    /**
+     * Method that saves user info using sanitized data and an Entity mapper
+     *
+     * @param Application $app
+     * @param array $sanitized_data
+     * @return boolean
+     */
+    protected function saveUser($app, $sanitized_data)
+    {
+        $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+        $user = $mapper->get($sanitized_data['user_id']);
+        $user->email = $sanitized_data['email'];
+        $user->first_name = $sanitized_data['first_name'];
+        $user->last_name = $sanitized_data['last_name'];
+        $user->company = $sanitized_data['company'];
+        $user->twitter = $sanitized_data['twitter'];
+        $user->airport = $sanitized_data['airport'];
+        $user->transportation = $sanitized_data['transportation'];
+        $user->hotel = $sanitized_data['hotel'];
+        $user->info = $sanitized_data['speaker_info'];
+        $user->bio = $sanitized_data['speaker_bio'];
+
+        return $mapper->save($user);
     }
 }
 

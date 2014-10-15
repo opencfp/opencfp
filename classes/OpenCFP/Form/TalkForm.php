@@ -68,11 +68,6 @@ class TalkForm extends Form
 
         $title = $this->_cleanData['title'];
 
-        if ($title !== $this->_taintedData['title']) {
-            $this->_addErrorMessage("You had invalid characters in your talk title");
-            return false;
-        }
-
         if (strlen($title) > 100) {
             $this->_addErrorMessage("Your talk title has to be 100 characters or less");
             return false;
@@ -155,8 +150,8 @@ class TalkForm extends Form
             'javascript',
             'uiux',
             'other',
-        	'continuousdelivery',
-        	'ibmi'
+            'continuousdelivery',
+            'ibmi'
         );
 
         if (empty($this->_cleanData['category']) || !isset($this->_cleanData['category'])) {
@@ -189,25 +184,6 @@ class TalkForm extends Form
 
     public function validateSponsor()
     {
-        return true;
-    }
-
-    /**
-     * Method that validates we have a valid user_id
-     *
-     * @param Speaker $speaker
-     * @return boolean
-     */
-    public function validateSpeakerId(Speaker $speaker)
-    {
-        $userId = $this->_cleanData['user_id'];
-        $thisSpeaker = $speaker->findByUserId($userId);
-
-        if (!$thisSpeaker) {
-            $this->_addErrorMessage("Your talk does not seem to belong to a valid speaker");
-            return false;
-        }
-
         return true;
     }
 }

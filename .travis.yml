@@ -1,0 +1,27 @@
+language: php
+
+php:
+  - 5.6
+  - 5.5
+  - 5.4
+
+# cache composer downloads so installing is quicker
+cache:
+  directories:
+    - $HOME/.composer
+
+addons:
+  code_climate:
+    repo_token: 3df25819765c78c9f1eaa02232d42362033703ef645e54703dff3ab4c636aae5
+
+before_script:
+  - composer self-update
+  - composer install
+  - cp config/config.travis.ini.dist config/config.development.ini
+
+script:
+    - phpunit --coverage-clover build/logs/clover.xml
+
+after_script:
+  - vendor/bin/test-reporter --stdout > codeclimate.json
+  - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"

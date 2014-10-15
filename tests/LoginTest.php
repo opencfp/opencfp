@@ -47,7 +47,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase {
             $this->credentials['email'],
             $this->credentials['password']
         );
-        $this->assertTrue(!!$authenticated, "User is authenticated");
+        $this->assertTrue($authenticated, "User is authenticated");
         $this->assertEmpty($login->getAuthenticationMessage());
     }
 

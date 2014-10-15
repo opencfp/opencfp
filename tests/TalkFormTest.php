@@ -100,11 +100,9 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
         return array(
             array(substr($faker->text(90), 0, 90), true),
             array(null, false),
-            array($faker->text(), false),
-            array("<script>alert('XSS')</script>", false),
-            array("<b>you suck</b>", false)
+            array("This is a string that could be more than 100 characters long but will we really know for sure until I check it out?", false),
         );
-    } 
+    }
 
     /**
      * Test that description data is being properly validated
@@ -179,49 +177,6 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             array(false, false),
             array(1, false),
             array(true, false)
-        );
-    }
-
-    /**
-     * Test that validates that we have a speaker ID for the talk
-     *
-     * @test
-     * @dataProvider speakerIdProvider
-     * @param integer $speakerId
-     * @param mixed $speakerInfo
-     * @param boolean $expectedResponse
-     */
-    public function speakerIdValidates($speakerId, $speakerResponse, $expectedResponse)
-    {
-        /**
-         * Created a mocked speaker object that returns our expected
-         * data set
-         */
-        $stmt = $this->getMockBuilder('StdClass')
-                ->setMethods(array('execute', 'fetch'))
-                ->getMock();
-        $stmt->expects($this->any())
-                ->method('execute');
-        $stmt->expects($this->any())
-                ->method('fetch')
-                ->will($this->returnValue($speakerResponse));
-
-        $db = $this->getMockBuilder('PDOMock')
-                ->setMethods(array('prepare'))
-                ->getMock();
-        $db->expects($this->any())
-                ->method('prepare')
-                ->will($this->returnValue($stmt));
-
-        $speaker = new \OpenCFP\Model\Speaker($db);
-        $data['user_id'] = $speakerId;
-        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
-        $form->sanitize();
-
-        $this->assertEquals(
-            $expectedResponse,
-            $form->validateSpeakerId($speaker),
-            '\OpenCFP\Form\TalkForm::validateSpeakerId() did not apply validation rules correctly'
         );
     }
 

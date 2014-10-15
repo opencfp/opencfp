@@ -2,6 +2,7 @@
 {% block content %}
 <div class="row">
     {% if speaker.photo_path is not empty %}
+        <br />
     <div class="col-md-4">
         <img src="{{ photo_path }}{{ speaker.photo_path }}" alt="profile photo">
     </div>
@@ -13,7 +14,6 @@
         </blockquote>
         <p>
           <i class="fa fa-envelope"></i> <a href="mailto:{{ speaker.email }}">{{ speaker.email }}</a><br>
-          {% if speaker.url is not empty %}<i class="fa fa-globe"></i> <a href="{{ speaker.url }}" target="_blank" rel="external">{{ speaker.url }}</a><br>{% endif %}
           {% if speaker.twitter is not empty %}<i class="fa fa-twitter-square"></i> <a href="http://twitter.com/{{ speaker.twitter }}" target="_blank" rel="external">{{ speaker.twitter }}</a>{% endif %}
         </p>
         <h3>Speaker Bio</h3>
@@ -21,6 +21,18 @@
 
         <h3>Speaker Additional Information</h3>
         <p>{{ speaker.info|raw }}</p>
+
+        <h3>Other Information</h3>
+        <strong>Need Transportation:</strong> {% if speaker.transportation == '1' %} Yes {% else %} No {% endif %}<br />
+        <strong>Need Hotel:</strong> {% if speaker.hotel == '1' %} Yes {% else %} No {% endif %}
+
+        {% if talks | length > 0 %}
+            <h3>Talk Submissions</h3>
+        
+            {% for talk in talks %}
+                <a href="{{ site.url}}/admin/talks/{{ talk.id }}">{{ talk.title }}</a><br />
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

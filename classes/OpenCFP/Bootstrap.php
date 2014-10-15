@@ -1,6 +1,9 @@
 <?php
 namespace OpenCFP;
 
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Swift_Mailer;
+use Swift_SmtpTransport;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenCFP\Config\ConfigINIFileLoader;
@@ -37,6 +40,12 @@ class Bootstrap
         // Initialize out Silex app and let's do it
         $app = new \Silex\Application();
 
+        $app['config'] = $this->getConfigContainer();
+
+        if ($this->getConfig('twig.debug')) {
+            $app['debug'] = $this->getConfig('twig.debug');
+        }
+
         // Register our session provider
         $app->register(new \Silex\Provider\SessionServiceProvider());
         $app->before(function ($request) use ($app) {
@@ -52,7 +61,12 @@ class Bootstrap
         // Register the Twig provider and lazy-load the global values
         $app->register(
             new \Silex\Provider\TwigServiceProvider(),
-            array('twig.path' => APP_DIR . $this->getConfig('twig.template_dir'))
+            array(
+                'twig.path' => APP_DIR . $this->getConfig('twig.template_dir'),
+                'twig.options' => array(
+                    'cache' => $this->getConfig('cache.enabled') ? $this->getTwigCacheDirectory() : false
+                )
+            )
         );
         $that = $this;
         $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) use ($that) {
@@ -75,8 +89,9 @@ class Bootstrap
         ));
 
         $app['db'] = $this->getDb();
-
+        $app['spot'] = $this->getSpot();
         $app['purifier'] = $this->getPurifier();
+        $app['mailer'] = $this->getSwiftMailer();
 
         // We're using Sentry, so make it available to app
         $app['sentry'] = $app->share(function() use ($app) {
@@ -100,6 +115,14 @@ class Bootstrap
             return $sentry;
         });
 
+        $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+            if ($app['sentry']->check()) {
+                $twig->addGlobal('user', $app['sentry']->getUser());
+            }
+
+            return $twig;
+        }));
+
         // Configure our flash messages functionality
         $app->before(function() use ($app) {
             $flash = $app['session']->get('flash');
@@ -116,25 +139,29 @@ class Bootstrap
         });
 
         // Define error template paths
-        $app->error(function (\Exception $e, $code) use ($app) {
-            switch ($code) {
-                case 401:
-                    $message = $app['twig']->render('error/401.twig');
-                    break;
-                case 403:
-                    $message = $app['twig']->render('error/403.twig');
-                    break;
-                case 404:
-                    $message = $app['twig']->render('error/404.twig');
-                    break;
-                default:
-                    $message = $app['twig']->render('error/500.twig');
-            }
-            return new Response($message, $code);
-        });
+        if (!$app['debug']) {
+            $app->error(function (\Exception $e, $code) use ($app) {
+                switch ($code) {
+                    case 401:
+                        $message = $app['twig']->render('error/401.twig');
+                        break;
+                    case 403:
+                        $message = $app['twig']->render('error/403.twig');
+                        break;
+                    case 404:
+                        $message = $app['twig']->render('error/404.twig');
+                        break;
+                    default:
+                        $message = $app['twig']->render('error/500.twig');
+                }
+                return new Response($message, $code);
+            });
+        }
 
         $app = $this->defineRoutes($app);
 
+        // Add the starting date for submissions
+        $app['cfpdate'] = $this->getConfig('application.cfpdate');
 
         return $app;
     }
@@ -157,7 +184,7 @@ class Bootstrap
         // Secondary Pages
         $app->get('/package', 'OpenCFP\Controller\DashboardController::packageAction');
         $app->get('/ideas', 'OpenCFP\Controller\DashboardController::ideasAction');
-        
+
         // User Dashboard
         $app->get('/dashboard', 'OpenCFP\Controller\DashboardController::indexAction');
 
@@ -167,6 +194,7 @@ class Bootstrap
         $app->post('/talk/create', 'OpenCFP\Controller\TalkController::processCreateAction');
         $app->post('/talk/update', 'OpenCFP\Controller\TalkController::updateAction');
         $app->post('/talk/delete', 'OpenCFP\Controller\TalkController::deleteAction');
+        $app->get('/talk/{id}', 'OpenCFP\Controller\TalkController::viewAction');
 
         // Login/Logout
         $app->get('/login', 'OpenCFP\Controller\SecurityController::indexAction');
@@ -204,6 +232,12 @@ class Bootstrap
         // Admin::Speakers
         $app->get('/admin/speakers', 'OpenCFP\Controller\Admin\SpeakersController::indexAction');
         $app->get('/admin/speakers/{id}', 'OpenCFP\Controller\Admin\SpeakersController::viewAction');
+        $app->get('/admin/speakers/delete/{id}', 'OpenCFP\Controller\Admin\SpeakersController::deleteAction');
+        $app->get('/admin/admins', 'OpenCFP\Controller\Admin\AdminsController::indexAction');
+        $app->get('/admin/admins/{id}', 'OpenCFP\Controller\Admin\AdminsController::removeAction');
+
+        // Admin::Review
+        $app->get('/admin/review', 'OpenCFP\Controller\Admin\ReviewController::indexAction');
 
         return $app;
     }
@@ -233,7 +267,7 @@ class Bootstrap
         $configData = $loader->load();
 
         // Place our info into Pimple
-        $this->_config = new Pimple();
+        $this->_config = new \Pimple();
 
         foreach ($configData as $category => $info) {
             foreach ($info as $key => $value) {
@@ -247,6 +281,21 @@ class Bootstrap
     public function getConfigPath()
     {
         return APP_DIR . "/config/config." . APP_ENV . ".ini";
+    }
+
+    private function getTwigCacheDirectory()
+    {
+        return APP_DIR . $this->getCacheDirectory() . '/twig';
+    }
+
+    private function getPurifierCacheDirectory()
+    {
+        return APP_DIR . $this->getCacheDirectory() . '/htmlpurifier';
+    }
+
+    private function getCacheDirectory()
+    {
+        return $this->getConfig('cache.directory') ?: '/cache';
     }
 
     public function getTwig()
@@ -269,9 +318,14 @@ class Bootstrap
     public function getPurifier() {
         if (!isset($this->_purifier)) {
             $config = \HTMLPurifier_Config::createDefault();
-            if ($cachedir = $this->getConfig('htmlpurifier.cachedir')) {
-                $config->set('Cache.SerializerPath', $cachedir);
+
+            if ($this->getConfig('cache.enabled')) {
+                if (!is_dir($this->getPurifierCacheDirectory())) {
+                    mkdir($this->getPurifierCacheDirectory(), 0755, true);
+                }
+                $config->set('Cache.SerializerPath', $this->getPurifierCacheDirectory());
             }
+
             $this->_purifier = new \HTMLPurifier($config);
         }
 
@@ -291,12 +345,46 @@ class Bootstrap
         );
     }
 
+    public function getSpot()
+    {
+        $cfg = new \Spot\Config();
+        $cfg->addConnection('mysql', [
+            'dbname' => $this->getConfig('database.database'),
+            'user' => $this->getConfig('database.user'),
+            'password' => $this->getConfig('database.password'),
+            'host' => $this->getConfig('database.host'),
+            'driver' => 'pdo_mysql'
+        ]);
+        return new \Spot\Locator($cfg);
+    }
+
     private function initializeAutoLoader()
     {
         if (!file_exists(APP_DIR . '/vendor/autoload.php')) {
-            throw new Exception('Autoload file does not exist.  Did you run composer install?');
+            throw new \Exception('Autoload file does not exist.  Did you run composer install?');
         }
 
         require APP_DIR . '/vendor/autoload.php';
     }
+
+    private function getSwiftMailer()
+    {
+        // Create our Mailer object
+        $transport = new Swift_SmtpTransport(
+            $this->getConfig('smtp.host'),
+            $this->getConfig('smtp.port')
+        );
+
+        if ($this->getConfig('smtp.user') !== '') {
+            $transport->setUsername($this->getConfig('smtp.user'))
+            ->setPassword($this->getConfig('smtp.password'));
+        }
+
+        if ($this->getConfig('smtp.encryption') !== '') {
+            $transport->setEncryption($this->getConfig('smtp.encryption'));
+        }
+
+        return new Swift_Mailer($transport);
+    }
+
 }

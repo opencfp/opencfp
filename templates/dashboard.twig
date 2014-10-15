@@ -23,7 +23,30 @@ function deleteTalk(tid) {
 {% endblock %}
 {% block content %}
 <div class="module">
-    <span class="pull-right">Welcome <strong>{{ user.login }}</strong></span>
+    <span class="pull-right">Welcome <strong>{{ user.email }}</strong></span>
+
+    <h2 class="headline">My Profile</h2>
+    <div class="row">
+        <div class="col-md-3">
+            {% if speaker_photo is defined and speaker_photo is not empty %}
+                <img src="{{ preview_photo }}" class="profile-photo img-responsive" />
+            {% else %}
+                <img src="/uploads/dummyphoto.jpg" class="profile-photo img-responsive" />
+            {% endif %}
+        </div>
+        <div class="col-md-9">
+            <br />
+            <strong>Name:</strong> {{ first_name }} {{ last_name }} <a href="https://twitter.com/@{{ twitter }}" title="{{ first_name }} {{ last_name }} on Twitter">@{{ twitter }}</a><br />
+            <strong>Company:</strong> {{ company }}<br />
+            <strong>Airport:</strong> {{ airport }}<br />
+            <strong>Bio:</strong> {{ speaker_bio }}<br /><br />
+            <strong>Other Info:</strong> {{ speaker_info }}<br /><br />
+            
+            <strong>Need Transportation:</strong> {% if transportation == '1' %} Yes {% else %} No {% endif %}<br />
+            <strong>Need Hotel:</strong> {% if hotel == '1' %} Yes {% else %} No {% endif %}
+        </div>
+    </div>
+    
     <h2 class="headline">My Talks</h2>
     {% if myTalks is defined %}
     <table class="table table-striped">
@@ -40,7 +63,7 @@ function deleteTalk(tid) {
         <tbody>
         {% for talk in myTalks %}
             <tr id="talk-{{ talk.id }}">
-                <td><b>{{ talk.title }}</b></td>
+                <td><b>{{ talk.title|raw }}</b></td>
                 <td>{{ talk.type }}</td>
                 <td>{{ talk.category }}</td>
                 <td>{{ talk.created_at|date("F jS \\a\\t g:ia T") }}</td>
