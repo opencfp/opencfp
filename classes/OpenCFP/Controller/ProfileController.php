@@ -108,29 +108,14 @@ class ProfileController
             $sanitized_data['twitter'] = preg_replace('/^@/', '', $sanitized_data['twitter']);
 
             if (isset($form_data['speaker_photo'])) {
+                /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+                $file = $form_data['speaker_photo'];
+                /** @var \OpenCFP\ProfileImageProcessor $processor */
+                $processor = $app['profile_image_processor'];
 
-                // Move file into uploads directory
-                $fileName = uniqid() . '_' . $form_data['speaker_photo']->getClientOriginalName();
-                $form_data['speaker_photo']->move(APP_DIR . '/web/' . $app['uploadPath'], $fileName);
+                $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $file->getClientOriginalExtension();
 
-                // Resize Photo
-                $speakerPhoto = Image::make(APP_DIR . '/web/' . $app['uploadPath'] . '/' . $fileName);
-
-                if ($speakerPhoto->height > $speakerPhoto->width) {
-                    $speakerPhoto->resize(250, null, true);
-                } else {
-                    $speakerPhoto->resize(null, 250, true);
-                }
-
-                $speakerPhoto->crop(250, 250);
-
-                // Give photo a unique name
-                $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $speakerPhoto->extension;
-
-                // Resize image and destroy original
-                if ($speakerPhoto->save(APP_DIR . '/web/' . $app['uploadPath'] . $sanitized_data['speaker_photo'])) {
-                    unlink(APP_DIR . '/web/' . $app['uploadPath'] . $fileName);
-                }
+                $processor->process($file, $sanitized_data['speaker_photo']);
             }
 
             $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
@@ -141,8 +126,8 @@ class ProfileController
             $user->company = $sanitized_data['company'];
             $user->twitter = $sanitized_data['twitter'];
             $user->airport = $sanitized_data['airport'];
-            $user->transportation = $sanitized_data['transportation'];
-            $user->hotel = $sanitized_data['hotel'];
+            $user->transportation = (int) $sanitized_data['transportation'];
+            $user->hotel = (int) $sanitized_data['hotel'];
             $user->info = $sanitized_data['speaker_info'];
             $user->bio = $sanitized_data['speaker_bio'];
 
