@@ -80,7 +80,6 @@ class SignupController
         }
 
         $form = new SignupForm($form_data, $app['purifier']);
-        $form->sanitize();
         $isValid = $form->validateAll();
 
         if ($isValid) {
