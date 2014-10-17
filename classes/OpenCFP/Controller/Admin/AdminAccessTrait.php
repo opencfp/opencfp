@@ -20,6 +20,7 @@ trait AdminAccessTrait
             if (!$this->userHasAccess($app)) {
                 return $app->redirect($app['url'] . '/dashboard');
             }
+            return call_user_func_array(array($this, $method), $arguments);
         }
     }
 
