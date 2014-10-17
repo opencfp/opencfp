@@ -7,28 +7,10 @@ use Pagerfanta\View\TwitterBootstrap3View;
 
 class TalksController
 {
-    protected function userHasAccess($app)
+    use AdminAccessTrait;
+
+    private function indexAction(Request $req, Application $app)
     {
-        if (!$app['sentry']->check()) {
-            return false;
-        }
-
-        $user = $app['sentry']->getUser();
-
-        if (!$user->hasPermission('admin')) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function indexAction(Request $req, Application $app)
-    {
-        // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
         $admin_user_id = $app['sentry']->getUser()->getId();
         $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
         $pager_formatted_talks = $mapper->getAllPagerFormatted($admin_user_id);
@@ -68,11 +50,6 @@ class TalksController
 
     public function viewAction(Request $req, Application $app)
     {
-        // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
         // Get info about the talks
         $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
         $talk_id = $req->get('id');
@@ -109,13 +86,8 @@ class TalksController
      * @param Request $req Request Object
      * @param Application $app Silex Application Object
      */
-    public function favoriteAction(Request $req, Application $app)
+    private function favoriteAction(Request $req, Application $app)
     {
-        // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
         $admin_user_id = (int)$app['sentry']->getUser()->getId();
         $status = true;
 
@@ -155,13 +127,8 @@ class TalksController
      * @param Request $req Request Object
      * @param Application $app Silex Application Object
      */
-    public function selectAction(Request $req, Application $app)
+    private function selectAction(Request $req, Application $app)
     {
-        // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
         $status = true;
 
         if ($req->get('delete') !== null) {
