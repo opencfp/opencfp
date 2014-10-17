@@ -8,17 +8,7 @@ use Intervention\Image\Image;
 
 class ProfileController
 {
-    public function getFlash(Application $app)
-    {
-        $flash = $app['session']->get('flash');
-        $this->clearFlash($app);
-        return $flash;
-    }
-
-    public function clearFlash(Application $app)
-    {
-        $app['session']->set('flash', null);
-    }
+    use FlashableTrait;
 
     public function editAction(Request $req, Application $app)
     {
