@@ -101,6 +101,9 @@ class SpeakersController
         // Build and render the template
         $template = $app['twig']->loadTemplate('admin/speaker/view.twig');
         $templateData = array(
+            'airport' => $app['confAirport'],
+            'arrival' => $app['arrival'],
+            'departure' => $app['departure'],
             'speaker' => $speaker_details,
             'talks' => $talks,
             'photo_path' => $app['uploadPath'],
