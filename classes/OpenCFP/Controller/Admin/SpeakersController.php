@@ -120,7 +120,7 @@ class SpeakersController
         $speaker = $mapper->get($req->get('id'));
         $response = $mapper->delete($speaker);
 
-        $ext = "Succesfully deleted the requested user";
+        $ext = "Successfully deleted the requested user";
         $type = 'success';
         $short = 'Success';
 
