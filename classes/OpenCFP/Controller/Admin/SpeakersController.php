@@ -10,7 +10,7 @@ class SpeakersController
 {
     public function getFlash(Application $app)
     {
-        $flasg = $app['session']->get('flash');
+        $flash = $app['session']->get('flash');
         $this->clearFlash($app);
 
         return $flash;
@@ -101,6 +101,9 @@ class SpeakersController
         // Build and render the template
         $template = $app['twig']->loadTemplate('admin/speaker/view.twig');
         $templateData = array(
+            'airport' => $app['confAirport'],
+            'arrival' => $app['arrival'],
+            'departure' => $app['departure'],
             'speaker' => $speaker_details,
             'talks' => $talks,
             'photo_path' => $app['uploadPath'],
@@ -120,7 +123,7 @@ class SpeakersController
         $speaker = $mapper->get($req->get('id'));
         $response = $mapper->delete($speaker);
 
-        $ext = "Succesfully deleted the requested user";
+        $ext = "Successfully deleted the requested user";
         $type = 'success';
         $short = 'Success';
 
