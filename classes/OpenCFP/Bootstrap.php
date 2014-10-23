@@ -7,6 +7,7 @@ use Swift_SmtpTransport;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenCFP\Config\ConfigINIFileLoader;
+use OpenCFP\ProfileImageProcessor;
 use Pimple;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
@@ -162,6 +163,11 @@ class Bootstrap
 
         // Add the starting date for submissions
         $app['cfpdate'] = $this->getConfig('application.cfpdate');
+
+        // Profile image processor
+        $app['profile_image_processor'] = $app->share(function () use ($app) {
+            return new ProfileImageProcessor(APP_DIR . '/web/' . $app['uploadPath']);
+        });
 
         return $app;
     }
