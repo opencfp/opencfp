@@ -21,6 +21,6 @@ environments:
     testing:
         adapter: mysql
         host: localhost
-        name: cfp
+        name: cfp_travis
         user: root
         pass: ''

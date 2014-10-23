@@ -1,0 +1,17 @@
+default:
+  suites:
+    default:
+      paths: [ %paths.base%/features ]
+      contexts: [ FeatureContext ]
+  gherkin:
+    filters:
+      tags: "~@wip&&~@proposed"
+  extensions:
+    Behat\MinkExtension:
+      base_url: "http://localhost"
+      sessions:
+        default:
+          goutte: ~
+        javascript:
+          selenium2:
+            wd_host: "http://localhost:4444"

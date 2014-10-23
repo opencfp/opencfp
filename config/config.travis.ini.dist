@@ -1,19 +1,25 @@
 [application]
 title = "OpenCFP"
-url = "http://cfp.dev"
+url = "http://localhost"
 email = "contact@openconf.com"
-eventurl = "http://myevent.com"
-enddate = "Oct. 14th, 9999"
+eventurl = "http://localhost"
+enddate = "Oct. 14th, 2014"
 airport = "MIA"
 arrival = "2014-10-26"
 departure = "2014-10-31"
+
+[cache]
+enabled = false
+directory = "/cache"
 
 [upload]
 ; This will be appended to the main app/web directory
 path = "/uploads/"
 
 [database]
-dsn = "sqlite::memory:"
+host = "127.0.0.1"
+database = "cfp_travis"
+dsn = "mysql:dbname=cfp_travis;host=127.0.0.1"
 user = "root"
 password = ""
 
@@ -29,7 +35,7 @@ password = ""
 host = "localhost"
 
 ; for Gmail set port = "465", SMTP is "110", STARTLS is "587"
-port = "2525"
+port = "2500"
 
 ; uncomment if your smtp server requires encryption
 ; available options are "tls", "ssl"
