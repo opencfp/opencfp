@@ -10,17 +10,7 @@ use OpenCFP\Config\ConfigINIFileLoader;
 
 class SignupController
 {
-    public function getFlash(Application $app)
-    {
-        $flash = $app['session']->get('flash');
-        $this->clearFlash($app);
-        return $flash;
-    }
-
-    public function clearFlash(Application $app)
-    {
-        $app['session']->set('flash', null);
-    }
+    use FlashableTrait;
 
     public function indexAction(Request $req, Application $app)
     {
@@ -80,7 +70,6 @@ class SignupController
         }
 
         $form = new SignupForm($form_data, $app['purifier']);
-        $form->sanitize();
         $isValid = $form->validateAll();
 
         if ($isValid) {
@@ -89,12 +78,6 @@ class SignupController
             // process the speaker photo
             $this->processSpeakerPhoto($form_data, $app);
 
-            // Remove leading @ for twitter
-            $sanitized_data['twitter'] = preg_replace(
-                '/^@/',
-                '',
-                $sanitized_data['twitter']
-            );
             // Create account using Sentry
             try {
                 $user_data = array(

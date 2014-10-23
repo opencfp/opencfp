@@ -7,28 +7,10 @@ use Pagerfanta\View\TwitterBootstrap3View;
 
 class ReviewController
 {
-    protected function userHasAccess($app)
+    use AdminAccessTrait;
+
+    private function indexAction(Request $req, Application $app)
     {
-        if (!$app['sentry']->check()) {
-            return false;
-        }
-
-        $user = $app['sentry']->getUser();
-
-        if (!$user->hasPermission('admin')) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function indexAction(Request $req, Application $app)
-    {
-        // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
         $user = $app['sentry']->getUser();
 
         // How many admins make for a majority?

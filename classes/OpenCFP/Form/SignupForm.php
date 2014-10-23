@@ -287,6 +287,15 @@ class SignupForm extends Form
         if (isset($this->_taintedData['password2'])) {
             $this->_cleanData['password2'] = $this->_taintedData['password2'];
         }
+
+        // Remove leading @ for twitter
+        if (isset($this->_taintedData['twitter'])) {
+            $this->_cleanData['twitter'] = preg_replace(
+                '/^@/',
+                '',
+                $this->_taintedData['twitter']
+            );
+        }
     }
 
 }

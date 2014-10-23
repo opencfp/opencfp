@@ -5,9 +5,13 @@ use OpenCFP\Model\Talk;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Pagerfanta\View\TwitterBootstrap3View;
+use OpenCFP\Controller\FlashableTrait;
 
 class SpeakersController
 {
+    use AdminAccessTrait;
+    use FlashableTrait;
+
     public function getFlash(Application $app)
     {
         $flash = $app['session']->get('flash');
@@ -21,28 +25,8 @@ class SpeakersController
         $app['session']->set('flash', null);
     }
 
-    protected function userHasAccess($app)
+    private function indexAction(Request $req, Application $app)
     {
-        if (!$app['sentry']->check()) {
-            return false;
-        }
-
-        $user = $app['sentry']->getUser();
-
-        if (!$user->hasPermission('admin')) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function indexAction(Request $req, Application $app)
-    {
-        // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
         $rawSpeakers = $app['spot']
             ->mapper('\OpenCFP\Entity\User')
             ->all()
@@ -83,7 +67,7 @@ class SpeakersController
         return $template->render($templateData);
     }
 
-    public function viewAction(Request $req, Application $app)
+    private function viewAction(Request $req, Application $app)
     {
         // Check if user is an logged in and an Admin
         if (!$this->userHasAccess($app)) {
@@ -112,7 +96,7 @@ class SpeakersController
         return $template->render($templateData);
     }
 
-    public function deleteAction(Request $req, Application $app)
+    private function deleteAction(Request $req, Application $app)
     {
         // Check if user is an logged in and an Admin
         if (!$this->userHasAccess($app)) {
@@ -144,5 +128,3 @@ class SpeakersController
     }
 
 }
-
-
