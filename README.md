@@ -47,8 +47,8 @@ NOTE: May need to download composer.phar first from http://getcomposer.org
 5. Rename the /config/config.development.ini.dist file to /config/config.development.ini.
 
     ```bash
-    $ mv /config/config.development.ini.dist /config/config.development.ini
-    $ mv /config/config.production.ini.dist /config/config.production.ini
+    $ cp /config/config.development.ini.dist /config/config.development.ini
+    $ cp /config/config.production.ini.dist /config/config.production.ini
     ```
 NOTE: Use development or production naming as appropriate.
 
