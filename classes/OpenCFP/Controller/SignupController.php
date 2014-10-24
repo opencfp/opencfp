@@ -24,6 +24,10 @@ class SignupController
 
     public function indexAction(Request $req, Application $app)
     {
+        if ($app['sentry']->check()) {
+            return $app->redirect('/dashboard');
+        }
+
         // Nobody can login after CFP deadline
         $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.' . APP_ENV . '.ini');
         $config_data = $loader->load();
@@ -37,11 +41,6 @@ class SignupController
                 ));
 
             return $app->redirect($app['url']);
-        }
-
-        // Reset our user to make sure nothing weird happens
-        if ($app['sentry']->check()) {
-            $app['sentry']->logout();
         }
 
         $template = $app['twig']->loadTemplate('user/create.twig');
