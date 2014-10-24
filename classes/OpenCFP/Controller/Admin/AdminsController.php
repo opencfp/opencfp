@@ -7,29 +7,11 @@ use Pagerfanta\View\TwitterBootstrap3View;
 
 class AdminsController
 {
-    protected function userHasAccess($app)
+    use AdminAccessTrait;
+
+    private function indexAction(Request $req, Application $app)
     {
-        if (!$app['sentry']->check()) {
-            return false;
-        }
-
-        $user = $app['sentry']->getUser();
-
-        if (!$user->hasPermission('admin')) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function indexAction(Request $req, Application $app)
-    {
-        // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
-        $adminGroup = $app['sentry']->getGroupProvider()->findByName('Admin');
+        $adminGroup = $app['sentry']->getGroupProvider()->findByName('admin');
         $adminUsers = $app['sentry']->findAllUsersInGroup($adminGroup);
 
         // Set up our page stuff
@@ -63,13 +45,8 @@ class AdminsController
         return $template->render($templateData);
     }
 
-    public function removeAction(Request $req, Application $app)
+    private function removeAction(Request $req, Application $app)
     {
-        // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
-        }
-
         $admin = $app['sentry']->getUser();
 
         if ($admin->getId() == $req->get('id')) {

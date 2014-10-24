@@ -4,6 +4,7 @@
     <div class="module__body">
         <div class="row">
             {% if speaker.photo_path is not empty %}
+                <br />
             <div class="col-md-4">
                 <img src="{{ photo_path }}{{ speaker.photo_path }}" alt="profile photo">
             </div>
@@ -11,7 +12,7 @@
             <div class="col-md-8">
                 <blockquote>
                     <h2>{{ speaker.first_name }} {{ speaker.last_name }}</h2>
-                    <p>{{ speaker.airport }} <i class="fa fa-plane"></i></p>
+                    <p><a href="https://www.google.com/flights/#search;f={{ speaker.airport|upper }};t={{ airport|upper }};d={{ arrival }};r={{ departure }}" target="_blank">{{ speaker.airport }} </a><i class="fa fa-plane"></i></p>
                 </blockquote>
                 <p>
                   <i class="fa fa-envelope"></i> <a href="mailto:{{ speaker.email }}">{{ speaker.email }}</a><br>
@@ -19,9 +20,6 @@
                 </p>
                 <h3>Speaker Bio</h3>
                 <p>{{ speaker.bio|raw }}</p>
-
-                <h3>Speaker Additional Information</h3>
-                <p>{{ speaker.info|raw }}</p>
 
                 <h3>Other Information</h3>
                 <strong>Need Transportation:</strong> {% if speaker.transportation == '1' %} Yes {% else %} No {% endif %}<br />

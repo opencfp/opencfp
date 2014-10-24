@@ -4,9 +4,9 @@
         <title>{% block title %}{{ site.title }}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
-        <link href="{{ site.url }}/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="{{ site.url }}/assets/css/site.css" rel="stylesheet" media="screen">
-        <link href="{{ site.url }}/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/site.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
         <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro|Roboto:400,700,300' rel='stylesheet' type='text/css'>
     </head>
     <body{% if "/" == current_page %} class="home-page"{% endif %}>
@@ -35,11 +35,14 @@
                 {% endblock %}
             </div>
         </div>
-        <div class="module">
             {% include "_header.twig" %}
             {% include "_flash.twig" %}
             {% block content %}
             {% endblock %}
+        <div class="section container">
+            <div class="small pull-right">
+                Powered by <a href="https://github.com/chartjes/opencfp" title="OpenCFP">OpenCFP</a>
+            </div>
         </div>
         {% block scripts %}
             <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>

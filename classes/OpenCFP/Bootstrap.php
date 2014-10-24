@@ -7,6 +7,7 @@ use Swift_SmtpTransport;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenCFP\Config\ConfigINIFileLoader;
+use OpenCFP\ProfileImageProcessor;
 use Pimple;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
@@ -52,7 +53,7 @@ class Bootstrap
             $app['session']->start();
         });
 
-		$app['url'] = $this->getConfig('application.url');
+        $app['url'] = $this->getConfig('application.url') . $this->getPort();
         $app['uploadPath'] = $this->getConfig('upload.path');
         $app['confAirport'] = $this->getConfig('application.airport');
         $app['arrival'] = $this->getConfig('application.arrival');
@@ -71,7 +72,7 @@ class Bootstrap
         $that = $this;
         $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) use ($that) {
             $twig->addGlobal('site', array(
-                'url' => $that->getConfig('application.url'),
+                'url' => $app['url'],
                 'title' => $that->getConfig('application.title'),
                 'email' => $that->getConfig('application.email'),
                 'eventurl' => $that->getConfig('application.eventurl'),
@@ -162,6 +163,11 @@ class Bootstrap
 
         // Add the starting date for submissions
         $app['cfpdate'] = $this->getConfig('application.cfpdate');
+
+        // Profile image processor
+        $app['profile_image_processor'] = $app->share(function () use ($app) {
+            return new ProfileImageProcessor(APP_DIR . '/web/' . $app['uploadPath']);
+        });
 
         return $app;
     }
@@ -385,6 +391,18 @@ class Bootstrap
         }
 
         return new Swift_Mailer($transport);
+    }
+
+    /**
+     * @return string
+     */
+    private function getPort()
+    {
+        if (isset($_SERVER['SERVER_PORT']) && !in_array($_SERVER['SERVER_PORT'], array(80, 443))) {
+            return ':' . $_SERVER['SERVER_PORT'];
+        }
+
+        return '';
     }
 
 }

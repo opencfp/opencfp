@@ -32,10 +32,14 @@
         "psr-0": {"OpenCFP": "classes/"}
     },
     "require-dev": {
-        "fzaninotto/faker": "1.2.*",
         "phpunit/phpunit": "3.7.*",
+        "phpunit/dbunit": "1.3.*@dev",
         "mockery/mockery": "dev-master@dev",
-        "codeclimate/php-test-reporter": "dev-master",
-	"phpunit/dbunit": "1.3.*@dev"
+        "behat/behat": "~3.0,>=3.0.5",
+        "behat/mink-extension": "~2.0@dev",
+        "behat/mink-selenium2-driver": "*",
+        "behat/mink-goutte-driver": "*",
+        "fzaninotto/faker": "1.2.*",
+        "codeclimate/php-test-reporter": "dev-master"
     }
 }

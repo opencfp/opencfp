@@ -8,28 +8,7 @@ use OpenCFP\Config\ConfigINIFileLoader;
 
 class TalkController
 {
-    /**
-     * Get the flash value from inside our session object
-     *
-     * @param Application $app
-     * @return array
-     */
-    public function getFlash(Application $app)
-    {
-        $flash = $app['session']->get('flash');
-        $this->clearFlash($app);
-        return $flash;
-    }
-
-    /**
-     * Clear the flash value inside the session
-     *
-     * @param Application $app
-     */
-    public function clearFlash(Application $app)
-    {
-        $app['session']->set('flash', null);
-    }
+    use FlashableTrait;
 
     /**
      * Check to see if the CfP for this app is still open

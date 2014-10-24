@@ -10,17 +10,7 @@ use OpenCFP\Config\ConfigINIFileLoader;
 
 class SignupController
 {
-    public function getFlash(Application $app)
-    {
-        $flash = $app['session']->get('flash');
-        $this->clearFlash($app);
-        return $flash;
-    }
-
-    public function clearFlash(Application $app)
-    {
-        $app['session']->set('flash', null);
-    }
+    use FlashableTrait;
 
     public function indexAction(Request $req, Application $app)
     {
@@ -79,21 +69,22 @@ class SignupController
         }
 
         $form = new SignupForm($form_data, $app['purifier']);
-        $form->sanitize();
         $isValid = $form->validateAll();
 
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
 
-            // process the speaker photo
-            $this->processSpeakerPhoto($form_data, $app);
+            if (isset($form_data['speaker_photo'])) {
+                /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+                $file = $form_data['speaker_photo'];
+                /** @var \OpenCFP\ProfileImageProcessor $processor */
+                $processor = $app['profile_image_processor'];
 
-            // Remove leading @ for twitter
-            $sanitized_data['twitter'] = preg_replace(
-                '/^@/',
-                '',
-                $sanitized_data['twitter']
-            );
+                $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                $processor->process($file, $sanitized_data['speaker_photo']);
+            }
+
             // Create account using Sentry
             try {
                 $user_data = array(
@@ -118,10 +109,13 @@ class SignupController
                 // Add in the extra speaker information
                 $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
 
+
                 $speaker = $mapper->get($user->id);
                 $speaker->info = $sanitized_data['speaker_info'];
                 $speaker->bio = $sanitized_data['speaker_bio'];
                 $speaker->photo_path = $sanitized_data['speaker_photo'];
+                $speaker->transportation = (int) $sanitized_data['transportation'];
+                $speaker->hotel = (int) $sanitized_data['hotel'];
                 $mapper->save($speaker);
 
                 // Set Success Flash Message
@@ -154,45 +148,4 @@ class SignupController
         $form_data['flash'] = $this->getFlash($app);
         return $template->render($form_data);
     }
-
-    /**
-     * Process any speaker photos that we might have
-     *
-     * @param array $form_data
-     * @param Application $app
-     */
-    protected function processSpeakerPhoto($form_data, Application $app)
-    {
-        if (!isset($form_data['speaker_photo'])) {
-            return false;
-        }
-
-        // Move file into uploads directory
-        $fileName = uniqid() . '_' . $form_data['speaker_photo']->getClientOriginalName();
-        $form_data['speaker_photo']->move(APP_DIR . '/web/' . $app['uploadPath'], $fileName);
-
-        // Resize Photo
-        $speakerPhoto = Image::make(APP_DIR . '/web/' . $app['uploadPath'] . '/' . $fileName);
-
-        if ($speakerPhoto->height > $speakerPhoto->width) {
-            $speakerPhoto->resize(250, null, true);
-        } else {
-            $speakerPhoto->resize(null, 250, true);
-        }
-
-        $speakerPhoto->crop(250, 250);
-
-        // Give photo a unique name
-        $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $speakerPhoto->extension;
-
-        // Resize image, save, and destroy original
-        if (!$speakerPhoto->save(APP_DIR . '/web/' . $app['uploadPath'] . $sanitized_data['speaker_photo'])) {
-            return false;
-        }
-
-        unlink(APP_DIR . '/web/' . $app['uploadPath'] . $fileName);
-
-        return true;
-    }
-
 }

@@ -15,12 +15,16 @@ addons:
     repo_token: 3df25819765c78c9f1eaa02232d42362033703ef645e54703dff3ab4c636aae5
 
 before_script:
+  - sh tools/travis/setup-webserver.sh
+  - sh tools/travis/setup-mail.sh
   - composer self-update
   - composer install
   - cp config/config.travis.ini.dist config/config.development.ini
+  - phantomjs --webdriver 4444 &
+  - sleep 3
 
 script:
-    - phpunit --coverage-clover build/logs/clover.xml
+  - sh tools/travis/build.sh
 
 after_script:
   - vendor/bin/test-reporter --stdout > codeclimate.json
