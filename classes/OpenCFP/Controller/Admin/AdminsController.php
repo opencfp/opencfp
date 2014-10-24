@@ -11,7 +11,7 @@ class AdminsController
 
     private function indexAction(Request $req, Application $app)
     {
-        $adminGroup = $app['sentry']->getGroupProvider()->findByName('admin');
+        $adminGroup = $app['sentry']->getGroupProvider()->findByName('Admin');
         $adminUsers = $app['sentry']->findAllUsersInGroup($adminGroup);
 
         // Set up our page stuff
