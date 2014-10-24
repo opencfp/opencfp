@@ -1,6 +1,6 @@
-{% extends "layouts/default.twig" %}
+{% extends "layouts/dashboard.twig" %}
 {% block content %}
-  <h2 class="headline">Create your {{ site.title }} speaker profile below</h2>
-    <div>A complete profile improves your chances of being selected.</div>
-  {% include 'forms/_user.twig' %}
+    <h2 class="headline">Create your {{ site.title }} speaker profile below</h2>
+    <p>A complete profile improves your chances of being selected.</p>
+    {% include 'forms/_user.twig' %}
 {% endblock %}

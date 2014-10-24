@@ -1,7 +1,11 @@
-{% extends "layouts/default.twig" %}
+{% extends "layouts/dashboard.twig" %}
 {% block content %}
-    <h2 class="headline">Login</h2>
-    {% include "forms/_login.twig" %}
+  <div class="module module--constrained">
+    <div class="module__header">Login</div>
+    <div class="module__body">
+      {% include "forms/_login.twig" %}
+    </div>
+  </div>
 {% endblock %}
 {% block js %}
     <script src="js/login.js"></script>
