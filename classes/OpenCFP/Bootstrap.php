@@ -88,7 +88,6 @@ class Bootstrap
         // Twig Markdown Extension
         $markdown = new Ciconia();
         $markdown->addExtension(new CiconiaExtension\InlineStyleExtension());
-        $markdown->addExtension(new CiconiaExtension\UrlAutoLinkExtension());
         $markdown->addExtension(new CiconiaExtension\WhiteSpaceExtension());
 
         $engine = new \OpenCFP\Markdown\CiconiaEngine($markdown);
