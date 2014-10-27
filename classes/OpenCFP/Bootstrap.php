@@ -11,6 +11,9 @@ use OpenCFP\ProfileImageProcessor;
 use Pimple;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
+use Aptoma\Twig\Extension\MarkdownExtension;
+use Ciconia\Ciconia;
+use Ciconia\Extension\Gfm as CiconiaExtension;
 
 $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'development';
 // $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'production';
@@ -81,6 +84,15 @@ class Bootstrap
 
             return $twig;
         }));
+
+        // Twig Markdown Extension
+        $markdown = new Ciconia();
+        $markdown->addExtension(new CiconiaExtension\InlineStyleExtension());
+        $markdown->addExtension(new CiconiaExtension\UrlAutoLinkExtension());
+        $markdown->addExtension(new CiconiaExtension\WhiteSpaceExtension());
+
+        $engine = new \OpenCFP\Markdown\CiconiaEngine($markdown);
+        $app['twig']->addExtension(new MarkdownExtension($engine));
 
         // Register our use of the Form Service Provider
         $app->register(new \Silex\Provider\FormServiceProvider());

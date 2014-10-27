@@ -26,7 +26,9 @@
         "symfony/css-selector": "~2.3",
         "intervention/image": "1.5.*",
         "robmorgan/phinx": "*",
-        "vlucas/spot2": "dev-master"
+        "vlucas/spot2": "dev-master",
+        "kzykhys/ciconia": "~1.0",
+        "aptoma/twig-markdown": "0.2.*"
     },
     "autoload": {
         "psr-0": {"OpenCFP": "classes/"}
