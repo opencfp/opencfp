@@ -7,7 +7,7 @@ Feature: Show conference information
   Scenario: Visitor comes to site during call for papers
     Given I am on the homepage
     Then I should see "Create My Profile"
-    And I should see that the call for papers ends on "Oct. 14th, 2014"
+    And I should see that the call for papers ends on "Oct. 14th, 2016"
 
   @proposed
   Scenario: Visitor comes to site before the call for papers has begun

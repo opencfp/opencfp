@@ -15,7 +15,7 @@ trait FlashableTrait
 {
     public function getFlash(Application $app)
     {
-        $flasg = $app['session']->get('flash');
+        $flash = $app['session']->get('flash');
         $this->clearFlash($app);
 
         return $flash;
