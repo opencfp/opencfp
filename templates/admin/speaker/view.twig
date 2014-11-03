@@ -29,7 +29,7 @@
                     <h3>Talk Submissions</h3>
 
                     {% for talk in talks %}
-                        <a href="{{ site.url}}/admin/talks/{{ talk.id }}">{{ talk.title }}</a><br />
+                        <a href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title }}</a><br />
                     {% endfor %}
                 {% endif %}
             </div>

@@ -4,14 +4,14 @@
         <title>{% block title %}{{ site.title }}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
-        <link href="{{ site.url }}/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="{{ site.url }}/assets/css/site.css" rel="stylesheet" media="screen">
-        <link href="{{ site.url }}/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/site.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
         <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Roboto:400,700,300' rel='stylesheet' type='text/css'>
     </head>
     <body class="dashboard">
         <div class="navbar navbar-opencfp navbar-fixed-top section--full" role="navigation">
-            <a href="{{ site.url }}/" class="logo pull-left"><img data-src="/assets/img/logo.svg" class="svg-inject" alt="Open CFP"></a>
+            <a href="/" class="logo pull-left"><img data-src="/assets/img/logo.svg" class="svg-inject" alt="Open CFP"></a>
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -23,17 +23,17 @@
             <div class="collapse navbar-collapse">
                 {% block navigation %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ site.url }}/dashboard">Dashboard</a></li>
-                        <li><a href="{{ site.url }}/logout">Logout</a></li>
+                        <li><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                        <li><a href="{{ url('logout') }}">Logout</a></li>
                     </ul>
                 {% endblock %}
             </div>
         </div>
         <aside class="sidebar col-sm-3 col-md-2">
             <ul class="nav nav-sidebar">
-                <li><a href="/admin"><img data-src="/assets/img/icons/home.svg" alt="Home Dashboard" class="svg-inject nav-icon icon-12"> Admin Dashboard</a></li>
-                <li><a href="/admin/speakers"><img data-src="/assets/img/icons/people.svg" alt="Speakers" class="svg-inject nav-icon icon-12"> Speakers</a></li>
-                <li><a href="/admin/talks"><img data-src="/assets/img/icons/microphone.svg" alt="Talks" class="svg-inject nav-icon icon-12"> Talks</a></li>
+                <li><a href="{{ url('admin') }}"><img data-src="/assets/img/icons/home.svg" alt="Home Dashboard" class="svg-inject nav-icon icon-12"> Admin Dashboard</a></li>
+                <li><a href="{{ url('admin_speakers') }}"><img data-src="/assets/img/icons/people.svg" alt="Speakers" class="svg-inject nav-icon icon-12"> Speakers</a></li>
+                <li><a href="{{ url('admin_talks') }}"><img data-src="/assets/img/icons/microphone.svg" alt="Talks" class="svg-inject nav-icon icon-12"> Talks</a></li>
             </ul>
         </aside>
         <div class="admin-content col-sm-offset-3 col-md-offset-2 col-sm-9 col-md-10">
@@ -43,8 +43,8 @@
         </div>
 
         {% block scripts %}
-            <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-            <script src="{{ site.url }}/assets/js/bootstrap.min.js"></script>
+            <script src="//code.jquery.com/jquery-1.10.0.min.js"></script>
+            <script src="/assets/js/bootstrap.min.js"></script>
             <script src="/assets/js/svg-injector.min.js"></script>
             <script>
               // Elements to inject

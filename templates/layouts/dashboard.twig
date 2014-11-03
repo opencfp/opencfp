@@ -1,23 +1,17 @@
-{% if user is defined and user is not empty %}
-    {% set profile_edit_url = '/profile/edit/' ~ user.id %}
-    {% set navigation_bar = [['/dashboard', 'Dashboard'], ['/profile/change_password', 'Change Password'], [profile_edit_url, 'Edit Profile']] %}
-{% else %}
-    {% set navigation_bar = [] %}
-{% endif %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title>{% block title %}{{ site.title }}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
-        <link href="{{ site.url }}/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="{{ site.url }}/assets/css/site.css" rel="stylesheet" media="screen">
-        <link href="{{ site.url }}/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/site.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
         <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Roboto:400,700,300' rel='stylesheet' type='text/css'>
     </head>
     <body class="dashboard">
         <div class="navbar navbar-opencfp navbar-fixed-top section--full" role="navigation">
-            <a href="{{ site.url }}/" class="logo pull-left"><img data-src="/assets/img/logo.svg" class="svg-inject" alt="Open CFP"></a>
+            <a href="/" class="logo pull-left"><img data-src="/assets/img/logo.svg" class="svg-inject" alt="Open CFP"></a>
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -29,12 +23,12 @@
             <div class="collapse navbar-collapse">
                 {% block navigation %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li{% if "/package" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/package">Speaker Package</a></li>
-                        <li{% if "/ideas" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/ideas">Talk Ideas</a></li>
-                        {% if permissions is defined and permissions.admin == true %}
-                            <li><a href="{{ site.url }}/admin">Admin</a></li>
+                        <li{% if path('speaker_package') == current_page %} class="active"{% endif %}><a href="{{ url('speaker_package') }}">Speaker Package</a></li>
+                        <li{% if path('talk_ideas') == current_page %} class="active"{% endif %}><a href="{{ url('talk_ideas') }}">Talk Ideas</a></li>
+                        {% if user.permissions is defined and user.permissions.admin == true %}
+                            <li><a href="{{ url('admin') }}">Admin</a></li>
                         {% endif %}
-                        <li><a href="{{ site.url }}/logout">Logout</a></li>
+                        <li><a href="{{ url('logout') }}">Logout</a></li>
                     </ul>
                 {% endblock %}
             </div>
@@ -42,11 +36,11 @@
         <div class="section">
             <div class="container">
                 <ul class="nav nav-tabs" role="tablist">
-                {% for item in navigation_bar %}
-                    <li{% if item[0] == current_page %} class="active"{% endif %}>
-                        <a href="{{ site.url }}{{ item[0] }}">{{item[1]}}</a>
-                    </li>
-                {% endfor %}
+                    {% if user is defined and user is not empty %}
+                        <li{% if path('dashboard') == current_page %} class="active"{% endif %}><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                        <li{% if path('password_edit') == current_page %} class="active"{% endif %}><a href="{{ url('password_edit') }}">Change Password</a></li>
+                        <li{% if path('user_edit', { id: user.id }) == current_page %} class="active"{% endif %}><a href="{{ url('user_edit', { id: user.id }) }}">Edit Profile</a></li>
+                    {% endif %}
                 </ul>
                 <div class="module">
                     <div class="module__body">
@@ -58,7 +52,7 @@
             </div>
         </div>
         {% block scripts %}
-            <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+            <script src="//code.jquery.com/jquery-1.10.0.min.js"></script>
             <script src="/assets/js/bootstrap.min.js"></script>
             <script src="/assets/js/svg-injector.min.js"></script>
             <script>

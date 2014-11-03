@@ -3,7 +3,7 @@
     <div class="module">
         <div class="module__body">
             <h2 class="headline">{{ talk.title }}</h2>
-            <h4><strong>Submitted by:</strong> <a href="{{ site.url }}/admin/speakers/{{ talk.user_id }}">{{ speaker.first_name }} {{ speaker.last_name }}</a></h4>
+            <h4><strong>Submitted by:</strong> <a href="{{ url('admin_speaker_view', { id: talk.user_id }) }}">{{ speaker.first_name }} {{ speaker.last_name }}</a></h4>
 
             <p>{{ talk.description|markdown }}</p>
             {% if talk.other is defined %}
@@ -23,11 +23,11 @@
             {% if otherTalks | length > 0 %}
                 <h4><strong>Other talks by this speaker:</strong></h4>
                 {% for talk in otherTalks %}
-                    <a href="{{ site.url}}/admin/talks/{{ talk.id }}">{{ talk.title }}</a><br>
+                    <a href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title }}</a><br>
                 {% endfor %}
             {% endif %}
 
-            <p><a href="{{ site.url}}/admin/talks" class="btn btn-primary">Return to viewing all talks</a></p>
+            <p><a href="{{ url('admin_talks') }}" class="btn btn-primary">Return to viewing all talks</a></p>
         </div>
     </div>
 {% endblock %}

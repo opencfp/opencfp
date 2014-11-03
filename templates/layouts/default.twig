@@ -11,7 +11,7 @@
     </head>
     <body{% if "/" == current_page %} class="home-page"{% endif %}>
         <div class="navbar navbar-opencfp navbar-fixed-top section--full" role="navigation">
-            <a href="{{ site.url }}/" class="logo pull-left"><img data-src="/assets/img/logo.svg" class="svg-inject" alt="Open CFP"></a>
+            <a href="/" class="logo pull-left"><img data-src="/assets/img/logo.svg" class="svg-inject" alt="Open CFP"></a>
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -23,13 +23,13 @@
             <div class="collapse navbar-collapse">
                 {% block navigation %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li{% if "/package" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/package">Speaker Package</a></li>
-                        <li{% if "/ideas" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/ideas">Talk Ideas</a></li>
+                        <li{% if path('speaker_package') == current_page %} class="active"{% endif %}><a href="{{ url('speaker_package') }}">Speaker Package</a></li>
+                        <li{% if path('talk_ideas') == current_page %} class="active"{% endif %}><a href="{{ url('talk_ideas') }}">Talk Ideas</a></li>
                         {% if user is defined and user is not empty %}
-                            <li><a href="{{ site.url }}/dashboard">Dashboard</a></li>
-                            <li><a href="{{ site.url }}/logout">Logout</a></li>
+                            <li><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                            <li><a href="{{ url('logout') }}">Logout</a></li>
                         {% else %}
-                            <li><a href="{{ site.url }}/login">Login</a></li>
+                            <li><a href="{{ url('login') }}">Login</a></li>
                         {% endif %}
                     </ul>
                 {% endblock %}
@@ -45,8 +45,8 @@
             </div>
         </div>
         {% block scripts %}
-            <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-            <script src="{{ site.url }}/assets/js/bootstrap.min.js"></script>
+            <script src="//code.jquery.com/jquery-1.10.0.min.js"></script>
+            <script src="/assets/js/bootstrap.min.js"></script>
             <script src="/assets/js/svg-injector.min.js"></script>
             <script>
               // Elements to inject

@@ -34,7 +34,7 @@ function deleteTalk(tid) {
                     <img src="/uploads/dummyphoto.jpg" class="profile-photo img-responsive" />
                 {% endif %}
             </p>
-            <p><a href="/profile/edit/{{ user.id }}" class="btn btn-success btn-block">Edit Profile</a></p>
+            <p><a href="{{ url('user_edit', { id: user.id }) }}" class="btn btn-success btn-block">Edit Profile</a></p>
         </div>
         <div class="col-md-9">
             <br />
@@ -69,7 +69,7 @@ function deleteTalk(tid) {
                 <td>{{ talk.type }}</td>
                 <td>{{ talk.category }}</td>
                 <td>{{ talk.created_at|date("F jS \\a\\t g:ia T") }}</td>
-                <td><a href="{{ site.url }}/talk/edit/{{ talk.id}}">Edit</a></td>
+                <td><a href="{{ url('talk_edit', { id: talk.id }) }}">Edit</a></td>
                 <td><a href="#" onClick="deleteTalk('{{ talk.id }}');return false;">Delete</a></td>
             </tr>
         {% endfor %}
@@ -78,5 +78,5 @@ function deleteTalk(tid) {
     {% else %}
         You currently have no talks submitted.
     {% endif %}
-    <p><a class="btn btn-success" href="{{ site.url }}/talk/create">Submit a talk</a></p>
+    <p><a class="btn btn-success" href="{{ url('talk_new') }}">Submit a talk</a></p>
 {% endblock %}

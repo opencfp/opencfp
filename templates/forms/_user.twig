@@ -1,4 +1,4 @@
-<form action="{{ site.url }}{{ formAction }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+<form action="{{ formAction }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
     {% if id is defined %}
         <input name="id" type="hidden" value="{{ id }}">
     {% endif %}

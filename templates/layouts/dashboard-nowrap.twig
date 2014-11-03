@@ -4,9 +4,9 @@
         <title>{% block title %}{{ site.title }}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
-        <link href="{{ site.url }}/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="{{ site.url }}/assets/css/site.css" rel="stylesheet" media="screen">
-        <link href="{{ site.url }}/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/site.css" rel="stylesheet" media="screen">
+        <link href="/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
         <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Roboto:400,700,300' rel='stylesheet' type='text/css'>
     </head>
     <body class="dashboard">
@@ -23,15 +23,15 @@
             <div class="collapse navbar-collapse">
                 {% block navigation %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li{% if "/package" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/package">Speaker Package</a></li>
-                        <li{% if "/ideas" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/ideas">Talk Ideas</a></li>
+                        <li{% if path('speaker_package') == current_page %} class="active"{% endif %}><a href="{{ url('speaker_package') }}">Speaker Package</a></li>
+                        <li{% if path('talk_ideas') == current_page %} class="active"{% endif %}><a href="{{ url('talk_ideas') }}">Talk Ideas</a></li>
                         {% if permissions is defined and permissions.admin == true %}
-                            <li><a href="{{ site.url }}/admin">Admin</a></li>
+                            <li><a href="{{ url('admin') }}">Admin</a></li>
                         {% endif %}
                         {% if user is defined and user is not empty %}
-                            <li><a href="{{ site.url }}/logout">Logout</a></li>
+                            <li><a href="{{ url('logout') }}">Logout</a></li>
                         {% else %}
-                            <li{% if "/login" == current_page %} class="active"{% endif %}><a href="{{ site.url }}/login">Login</a></li>
+                            <li><a href="{{ url('login') }}">Login</a></li>
                         {% endif %}
                     </ul>
                 {% endblock %}
@@ -45,7 +45,7 @@
             </div>
         </div>
         {% block scripts %}
-            <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+            <script src="//code.jquery.com/jquery-1.10.0.min.js"></script>
             <script src="/assets/js/bootstrap.min.js"></script>
             <script src="/assets/js/svg-injector.min.js"></script>
             <script>
