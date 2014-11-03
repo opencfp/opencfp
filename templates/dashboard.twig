@@ -41,8 +41,8 @@ function deleteTalk(tid) {
             <strong>Name:</strong> {{ first_name }} {{ last_name }} <a href="https://twitter.com/@{{ twitter }}" title="{{ first_name }} {{ last_name }} on Twitter">@{{ twitter }}</a><br />
             <strong>Company:</strong> {{ company }}<br />
             <strong>Airport:</strong> {{ airport }}<br />
-            <strong>Bio:</strong> {{ speaker_bio|markdown }}<br /><br />
-            <strong>Other Info:</strong> {{ speaker_info|markdown }}<br /><br />
+            <strong>Bio:</strong> {{ speaker_bio|striptags|markdown }}<br /><br />
+            <strong>Other Info:</strong> {{ speaker_info|striptags|markdown }}<br /><br />
 
             <strong>Need Transportation:</strong> {% if transportation == '1' %} Yes {% else %} No {% endif %}<br />
             <strong>Need Hotel:</strong> {% if hotel == '1' %} Yes {% else %} No {% endif %}
