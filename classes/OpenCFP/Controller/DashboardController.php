@@ -19,8 +19,6 @@ class DashboardController
         $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
         $my_talks = $talk_mapper->getByUser($user->getId());
 
-        $permissions['admin'] = $user->hasPermission('admin');
-
         // Load our template and RENDER
         $template = $app['twig']->loadTemplate('dashboard.twig');
         $template_data = array(
@@ -37,7 +35,6 @@ class DashboardController
             'speaker_photo' => $user_info['photo_path'],
             'preview_photo' => $app['uploadPath'] . $user_info['photo_path'],
             'airport' => $user_info['airport'],
-            'permissions' => $permissions,
             'current_page' => '/dashboard'
         );
 
