@@ -74,6 +74,14 @@ class Bootstrap
         );
         $that = $this;
         $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) use ($that) {
+            // Twig Markdown Extension
+            $markdown = new Ciconia();
+            $markdown->addExtension(new CiconiaExtension\InlineStyleExtension());
+            $markdown->addExtension(new CiconiaExtension\WhiteSpaceExtension());
+
+            $engine = new \OpenCFP\Markdown\CiconiaEngine($markdown);
+            $twig->addExtension(new MarkdownExtension($engine));
+
             $twig->addGlobal('site', array(
                 'url' => $app['url'],
                 'title' => $that->getConfig('application.title'),
@@ -84,14 +92,6 @@ class Bootstrap
 
             return $twig;
         }));
-
-        // Twig Markdown Extension
-        $markdown = new Ciconia();
-        $markdown->addExtension(new CiconiaExtension\InlineStyleExtension());
-        $markdown->addExtension(new CiconiaExtension\WhiteSpaceExtension());
-
-        $engine = new \OpenCFP\Markdown\CiconiaEngine($markdown);
-        $app['twig']->addExtension(new MarkdownExtension($engine));
 
         // Register our use of the Form Service Provider
         $app->register(new \Silex\Provider\FormServiceProvider());
