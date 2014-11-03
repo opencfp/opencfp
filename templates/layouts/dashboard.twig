@@ -25,7 +25,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li{% if path('speaker_package') == current_page %} class="active"{% endif %}><a href="{{ url('speaker_package') }}">Speaker Package</a></li>
                         <li{% if path('talk_ideas') == current_page %} class="active"{% endif %}><a href="{{ url('talk_ideas') }}">Talk Ideas</a></li>
-                        {% if user.permissions is defined and user.permissions.admin == true %}
+                        {% if user.permissions.admin is defined and user.permissions.admin == true %}
                             <li><a href="{{ url('admin') }}">Admin</a></li>
                         {% endif %}
                         <li><a href="{{ url('logout') }}">Logout</a></li>
