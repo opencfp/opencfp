@@ -71,7 +71,7 @@ class SpeakersController
     {
         // Check if user is an logged in and an Admin
         if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         // Get info about the speaker
@@ -100,7 +100,7 @@ class SpeakersController
     {
         // Check if user is an logged in and an Admin
         if (!$this->userHasAccess($app)) {
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         $mapper = $app['spot']->mapper('OpenCFP\Entity\User');
@@ -124,7 +124,7 @@ class SpeakersController
             'ext' => $ext
         ));
 
-        return $app->redirect($app['url'] . '/admin/speakers');
+        return $app->redirect($app->url('admin_speakers'));
     }
 
 }

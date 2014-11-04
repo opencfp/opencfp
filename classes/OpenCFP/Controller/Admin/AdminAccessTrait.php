@@ -38,4 +38,4 @@ trait AdminAccessTrait
 
         return true;
     }
-} 
+}

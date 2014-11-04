@@ -42,7 +42,7 @@ class Bootstrap
         }
 
         // Initialize out Silex app and let's do it
-        $app = new \Silex\Application();
+        $app = new Application();
 
         $app['config'] = $this->getConfigContainer();
 

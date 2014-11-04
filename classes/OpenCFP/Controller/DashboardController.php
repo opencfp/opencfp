@@ -9,7 +9,7 @@ class DashboardController
     public function indexAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         $user = $app['sentry']->getUser();

@@ -26,7 +26,7 @@ class SecurityController
             $page = new \OpenCFP\Login($app['sentry']);
 
             if ($page->authenticate($req->get('email'), $req->get('password'))) {
-                return $app->redirect($app['url'] . '/dashboard');
+                return $app->redirect($app->url('dashboard'));
             }
 
             $errorMessage = $page->getAuthenticationMessage();
@@ -59,6 +59,6 @@ class SecurityController
     {
         $app['sentry']->logout();
 
-        return $app->redirect($app['url'] . '/');
+        return $app->redirect('/');
     }
 }
