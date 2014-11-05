@@ -8,7 +8,7 @@
             <input id="form-user-email" type="email" name="email" class="form-control" placeholder="you@domain.com" value="{{ email | default('') }}">
         </div>
     </div>
-    {% if formAction == '/signup' %}
+    {% if user is not defined %}
         <div class="form-group">
             <label for="form-user-password" class="col-sm-2 control-label">Password</label>
             <div class="col-sm-10">
