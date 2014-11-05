@@ -214,8 +214,7 @@ class Bootstrap
         $secureRoutes[] = $app->get('/talk/edit/{id}', 'OpenCFP\Controller\TalkController::editAction')
             ->bind('talk_edit');
         $secureRoutes[] = $app->get('/talk/create', 'OpenCFP\Controller\TalkController::createAction')
-            ->bind('talk_new')
-            ->requireHttps();
+            ->bind('talk_new');
         $secureRoutes[] = $app->post('/talk/create', 'OpenCFP\Controller\TalkController::processCreateAction')
             ->bind('talk_create');
         $secureRoutes[] = $app->post('/talk/update', 'OpenCFP\Controller\TalkController::updateAction')
