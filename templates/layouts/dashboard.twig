@@ -28,7 +28,11 @@
                         {% if user.permissions.admin is defined and user.permissions.admin == true %}
                             <li><a href="{{ url('admin') }}">Admin</a></li>
                         {% endif %}
-                        <li><a href="{{ url('logout') }}">Logout</a></li>
+                        {% if user is defined and user is not empty %}
+                            <li><a href="{{ url('logout') }}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{ url('login') }}">Login</a></li>
+                        {% endif %}
                     </ul>
                 {% endblock %}
             </div>
