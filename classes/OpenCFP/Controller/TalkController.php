@@ -13,13 +13,16 @@ class TalkController
     /**
      * Check to see if the CfP for this app is still open
      *
-     * @param Application $app Current application used to get enddate from config
      * @param integer $current_time
      * @return boolean
      */
-    public function isCfpOpen(Application $app, $current_time)
+    public function isCfpOpen($current_time)
     {
-        $end_date = $app->getConfig('application.enddate') . ' 11:59 PM';
+        $loader = new ConfigINIFileLoader(
+            APP_DIR . '/config/config.' . APP_ENV . '.ini'
+        );
+        $config_data = $loader->load();
+        $end_date = $config_data['application']['enddate'] . ' 11:59 PM';
 
         if ($current_time < strtotime($end_date)) {
             return true;
@@ -80,7 +83,7 @@ class TalkController
 
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
-        if (!$this->isCfpOpen($app, strtotime('now'))) {
+        if (!$this->isCfpOpen(strtotime('now'))) {
             $app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Read Only',
@@ -136,7 +139,7 @@ class TalkController
         }
 
         // You can only create talks while the CfP is open
-        if (!$this->isCfpOpen($app, strtotime('now'))) {
+        if (!$this->isCfpOpen(strtotime('now'))) {
             $app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -181,7 +184,7 @@ class TalkController
         }
 
         // You can only create talks while the CfP is open
-        if (!$this->isCfpOpen($app, strtotime('now'))) {
+        if (!$this->isCfpOpen(strtotime('now'))) {
             $app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -362,7 +365,7 @@ class TalkController
         }
 
         // You can only delete talks while the CfP is open
-        if (!$this->isCfpOpen($app, strtotime('now'))) {
+        if (!$this->isCfpOpen(strtotime('now'))) {
             return $app->json(['delete' => 'no']);
         }
 
