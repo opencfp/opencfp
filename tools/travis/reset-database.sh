@@ -13,5 +13,4 @@ mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
 
 # Run Phinx migrations.
 echo "Running migrations..."
-mysql -uroot $TRAVIS_DB < "$PROJECT_ROOT/migrations/schema.sql"
 $PROJECT_ROOT/vendor/bin/phinx --configuration="$PROJECT_ROOT/phinx.yml" migrate -e testing
