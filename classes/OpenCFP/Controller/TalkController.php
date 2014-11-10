@@ -259,10 +259,10 @@ class TalkController
             );
 
             $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error',
-                    'ext' => implode("<br>", $form->getErrorMessages())
-                ));
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => implode("<br>", $form->getErrorMessages())
+            ));
         }
 
         $data['flash'] = $this->getFlash($app);
