@@ -63,7 +63,6 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
             'slides' => 'slides',
             'other' => 'other',
             'sponsor' => 1,
-            'favorite' => 0,
             'selected' => 0,
         ]);
         $talk_mapper->save($talk);
