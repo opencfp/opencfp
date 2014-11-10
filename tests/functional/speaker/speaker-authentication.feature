@@ -12,7 +12,7 @@ Feature: Speaker authentication
     When I provide my correct credentials
     And I press "Login"
     Then I should see "My profile"
-    And I should see "speaker@opencfp.org"
+    And I should see "Sample User"
 
   Scenario: Fails to authenticate due to incorrect credentials
     Given I am on the login page
@@ -22,7 +22,7 @@ Feature: Speaker authentication
 
   Scenario: Speaker forgets their password
     Given I am on the login page
-    When I follow "Forgot password"
+    When I follow "Forgot your password?"
     And I fill in "forgot[email]" with "speaker@opencfp.org"
     And I press "Reset my password"
     Then the forgot password email should be sent
