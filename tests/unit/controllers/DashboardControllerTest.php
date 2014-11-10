@@ -35,15 +35,6 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
             'hotel' => 0,
         ]);
         $user_mapper->save($user);
-        $speaker_mapper = $app['spot']->mapper('OpenCFP\Entity\Speaker');
-        $speaker_mapper->migrate();
-        $speaker = $speaker_mapper->build([
-            'user_id' => $user->id,
-            'photo_path' => '/path/to/photo',
-            'bio' => "This is speaker bio information",
-            'info' => "This is additional speaker infi"
-        ]);
-        $speaker_mapper->save($speaker);
 
         // Create the favorite table
         $favorite_mapper = $app['spot']->mapper('OpenCFP\Entity\Favorite');
