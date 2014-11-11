@@ -17,7 +17,7 @@
         "silex/silex": "1.*",
         "symfony/form": "~2.3",
         "symfony/validator": "~2.3",
-        "symfony/config": "dev-master",
+        "symfony/config": "~2.3",
         "symfony/translation": "~2.3",
         "symfony/twig-bridge": "~2.3",
         "symfony/locale": "~2.3",
