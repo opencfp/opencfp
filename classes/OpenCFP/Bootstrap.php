@@ -11,6 +11,9 @@ use OpenCFP\ProfileImageProcessor;
 use Pimple;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
+use Aptoma\Twig\Extension\MarkdownExtension;
+use Ciconia\Ciconia;
+use Ciconia\Extension\Gfm as CiconiaExtension;
 
 $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'development';
 // $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'production';
@@ -39,7 +42,7 @@ class Bootstrap
         }
 
         // Initialize out Silex app and let's do it
-        $app = new \Silex\Application();
+        $app = new Application();
 
         $app['config'] = $this->getConfigContainer();
 
@@ -71,6 +74,14 @@ class Bootstrap
         );
         $that = $this;
         $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) use ($that) {
+            // Twig Markdown Extension
+            $markdown = new Ciconia();
+            $markdown->addExtension(new CiconiaExtension\InlineStyleExtension());
+            $markdown->addExtension(new CiconiaExtension\WhiteSpaceExtension());
+
+            $engine = new \OpenCFP\Markdown\CiconiaEngine($markdown);
+            $twig->addExtension(new MarkdownExtension($engine));
+
             $twig->addGlobal('site', array(
                 'url' => $app['url'],
                 'title' => $that->getConfig('application.title'),
@@ -85,6 +96,7 @@ class Bootstrap
         // Register our use of the Form Service Provider
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Silex\Provider\ValidatorServiceProvider());
+        $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $app->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'translator.messages' => array()
         ));
@@ -188,62 +200,105 @@ class Bootstrap
         });
 
         // Secondary Pages
-        $app->get('/package', 'OpenCFP\Controller\DashboardController::packageAction');
-        $app->get('/ideas', 'OpenCFP\Controller\DashboardController::ideasAction');
+        $app->get('/package', 'OpenCFP\Controller\DashboardController::packageAction')
+            ->bind('speaker_package');
+        $app->get('/ideas', 'OpenCFP\Controller\DashboardController::ideasAction')
+            ->bind('talk_ideas');
 
+        $secureRoutes = [];
         // User Dashboard
-        $app->get('/dashboard', 'OpenCFP\Controller\DashboardController::indexAction');
+        $secureRoutes[] = $app->get('/dashboard', 'OpenCFP\Controller\DashboardController::indexAction')
+            ->bind('dashboard');
 
         // Talks
-        $app->get('/talk/edit/{id}', 'OpenCFP\Controller\TalkController::editAction');
-        $app->get('/talk/create', 'OpenCFP\Controller\TalkController::createAction');
-        $app->post('/talk/create', 'OpenCFP\Controller\TalkController::processCreateAction');
-        $app->post('/talk/update', 'OpenCFP\Controller\TalkController::updateAction');
-        $app->post('/talk/delete', 'OpenCFP\Controller\TalkController::deleteAction');
-        $app->get('/talk/{id}', 'OpenCFP\Controller\TalkController::viewAction');
+        $secureRoutes[] = $app->get('/talk/edit/{id}', 'OpenCFP\Controller\TalkController::editAction')
+            ->bind('talk_edit');
+        $secureRoutes[] = $app->get('/talk/create', 'OpenCFP\Controller\TalkController::createAction')
+            ->bind('talk_new');
+        $secureRoutes[] = $app->post('/talk/create', 'OpenCFP\Controller\TalkController::processCreateAction')
+            ->bind('talk_create');
+        $secureRoutes[] = $app->post('/talk/update', 'OpenCFP\Controller\TalkController::updateAction')
+            ->bind('talk_update');
+        $secureRoutes[] = $app->post('/talk/delete', 'OpenCFP\Controller\TalkController::deleteAction')
+            ->bind('talk_delete');
+        $secureRoutes[] = $app->get('/talk/{id}', 'OpenCFP\Controller\TalkController::viewAction')
+            ->bind('talk_view');
 
         // Login/Logout
-        $app->get('/login', 'OpenCFP\Controller\SecurityController::indexAction');
-        $app->post('/login', 'OpenCFP\Controller\SecurityController::processAction');
-        $app->get('/logout', 'OpenCFP\Controller\SecurityController::outAction');
+        $secureRoutes[] = $app->get('/login', 'OpenCFP\Controller\SecurityController::indexAction')
+            ->bind('login');
+        $secureRoutes[] = $app->post('/login', 'OpenCFP\Controller\SecurityController::processAction')
+            ->bind('login_check');
+        $secureRoutes[] = $app->get('/logout', 'OpenCFP\Controller\SecurityController::outAction')
+            ->bind('logout');
 
         // Create Account
-        $app->get('/signup', 'OpenCFP\Controller\SignupController::indexAction');
-        $app->post('/signup', 'OpenCFP\Controller\SignupController::processAction');
-        $app->get('/signup/success', 'OpenCFP\Controller\SignupController::successAction');
+        $secureRoutes[] = $app->get('/signup', 'OpenCFP\Controller\SignupController::indexAction')
+            ->bind('user_new');
+        $secureRoutes[] = $app->post('/signup', 'OpenCFP\Controller\SignupController::processAction')
+            ->bind('user_create');
+        $secureRoutes[] = $app->get('/signup/success', 'OpenCFP\Controller\SignupController::successAction')
+            ->bind('user_success');
 
         // Edit Profile/Account
-        $app->get('/profile/edit/{id}', 'OpenCFP\Controller\ProfileController::editAction');
-        $app->post('/profile/edit', 'OpenCFP\Controller\ProfileController::processAction');
+        $secureRoutes[] = $app->get('/profile/edit/{id}', 'OpenCFP\Controller\ProfileController::editAction')
+            ->bind('user_edit');
+        $secureRoutes[] = $app->post('/profile/edit', 'OpenCFP\Controller\ProfileController::processAction')
+            ->bind('user_update');
 
         // Change/forgot Password
-        $app->get('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordAction');
-        $app->post('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordProcessAction');
-        $app->get('/forgot', 'OpenCFP\Controller\ForgotController::indexAction');
-        $app->post('/forgot', 'OpenCFP\Controller\ForgotController::sendResetAction');
-        $app->get('/forgot_success', 'OpenCFP\Controller\ForgotController::successAction');
-        $app->post('/reset', 'OpenCFP\Controller\ForgotController::resetAction');
-        $app->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Controller\ForgotController::processResetAction');
-        $app->post('/updatepassword', 'OpenCFP\Controller\ForgotController::updatePasswordAction');
+        $secureRoutes[] = $app->get('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordAction')
+            ->bind('password_edit');
+        $secureRoutes[] = $app->post('/profile/change_password', 'OpenCFP\Controller\ProfileController::passwordProcessAction')
+            ->bind('password_update');
+        $secureRoutes[] = $app->get('/forgot', 'OpenCFP\Controller\ForgotController::indexAction')
+            ->bind('forgot_password');
+        $secureRoutes[] = $app->post('/forgot', 'OpenCFP\Controller\ForgotController::sendResetAction')
+            ->bind('forgot_password_create');
+        $secureRoutes[] = $app->get('/forgot_success', 'OpenCFP\Controller\ForgotController::successAction')
+            ->bind('forgot_password_success');
+        $secureRoutes[] = $app->post('/reset', 'OpenCFP\Controller\ForgotController::resetAction')
+            ->bind('reset_password_create');
+        $secureRoutes[] = $app->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Controller\ForgotController::processResetAction')
+            ->bind('reset_password');
+        $secureRoutes[] = $app->post('/updatepassword', 'OpenCFP\Controller\ForgotController::updatePasswordAction')
+            ->bind('password_update');
 
         // Admin Routes
-        $app->get('/admin', 'OpenCFP\Controller\Admin\DashboardController::indexAction');
+        $secureRoutes[] = $app->get('/admin', 'OpenCFP\Controller\Admin\DashboardController::indexAction')
+            ->bind('admin');
 
         // Admin::Talks
-        $app->get('/admin/talks', 'OpenCFP\Controller\Admin\TalksController::indexAction');
-        $app->get('/admin/talks/{id}', 'OpenCFP\Controller\Admin\TalksController::viewAction');
-        $app->post('/admin/talks/{id}/favorite', 'OpenCFP\Controller\Admin\TalksController::favoriteAction');
-        $app->post('/admin/talks/{id}/select', 'OpenCFP\Controller\Admin\TalksController::selectAction');
+        $secureRoutes[] = $app->get('/admin/talks', 'OpenCFP\Controller\Admin\TalksController::indexAction')
+            ->bind('admin_talks');
+        $secureRoutes[] = $app->get('/admin/talks/{id}', 'OpenCFP\Controller\Admin\TalksController::viewAction')
+            ->bind('admin_talk_view');
+        $secureRoutes[] = $app->post('/admin/talks/{id}/favorite', 'OpenCFP\Controller\Admin\TalksController::favoriteAction')
+            ->bind('admin_talk_favorite');
+        $secureRoutes[] = $app->post('/admin/talks/{id}/select', 'OpenCFP\Controller\Admin\TalksController::selectAction')
+            ->bind('admin_talk_select');
 
         // Admin::Speakers
-        $app->get('/admin/speakers', 'OpenCFP\Controller\Admin\SpeakersController::indexAction');
-        $app->get('/admin/speakers/{id}', 'OpenCFP\Controller\Admin\SpeakersController::viewAction');
-        $app->get('/admin/speakers/delete/{id}', 'OpenCFP\Controller\Admin\SpeakersController::deleteAction');
-        $app->get('/admin/admins', 'OpenCFP\Controller\Admin\AdminsController::indexAction');
-        $app->get('/admin/admins/{id}', 'OpenCFP\Controller\Admin\AdminsController::removeAction');
+        $secureRoutes[] = $app->get('/admin/speakers', 'OpenCFP\Controller\Admin\SpeakersController::indexAction')
+            ->bind('admin_speakers');
+        $secureRoutes[] = $app->get('/admin/speakers/{id}', 'OpenCFP\Controller\Admin\SpeakersController::viewAction')
+            ->bind('admin_speaker_view');
+        $secureRoutes[] = $app->get('/admin/speakers/delete/{id}', 'OpenCFP\Controller\Admin\SpeakersController::deleteAction')
+            ->bind('admin_speaker_delete');
+        $secureRoutes[] = $app->get('/admin/admins', 'OpenCFP\Controller\Admin\AdminsController::indexAction')
+            ->bind('admin_admins');
+        $secureRoutes[] = $app->get('/admin/admins/{id}', 'OpenCFP\Controller\Admin\AdminsController::removeAction')
+            ->bind('admin_admin_delete');
 
         // Admin::Review
-        $app->get('/admin/review', 'OpenCFP\Controller\Admin\ReviewController::indexAction');
+        $secureRoutes[] = $app->get('/admin/review', 'OpenCFP\Controller\Admin\ReviewController::indexAction')
+            ->bind('admin_reviews');
+
+        if ($this->getConfig('application.secure_ssl')) {
+            foreach ($secureRoutes as $route) {
+                $route->requireHttps();
+            }
+        }
 
         return $app;
     }

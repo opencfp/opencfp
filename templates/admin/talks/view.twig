@@ -1,29 +1,33 @@
 {% extends "layouts/admin.twig" %}
 {% block content %}
-    <h2 class="headline">{{ talk.title }}</h2>
-    <h4><strong>Submitted by:</strong> <a href="{{ site.url }}/admin/speakers/{{ talk.user_id }}">{{ speaker.first_name }} {{ speaker.last_name }}</a></h4>
+    <div class="module">
+        <div class="module__body">
+            <h2 class="headline">{{ talk.title }}</h2>
+            <h4><strong>Submitted by:</strong> <a href="{{ url('admin_speaker_view', { id: talk.user_id }) }}">{{ speaker.first_name }} {{ speaker.last_name }}</a></h4>
 
-    <p>{{ talk.description|raw }}</p>
-    {% if talk.other is defined %}
-    <p><strong>Other Info:</strong> {{ talk.other }}</p>
-    {% endif %}
+            <p>{{ talk.description|striptags|markdown }}</p>
+            {% if talk.other is defined %}
+            <p><strong>Other Info:</strong> {{ talk.other|striptags|markdown }}</p>
+            {% endif %}
 
-    <p>
-        <strong>Slides:</strong> {% if talk.slides is defined %}{{ talk.slides }}{% endif %}<br />
-        <strong>Type:</strong> {{ talk.type }}<br />
-        <strong>Level:</strong> {% if talk.level is defined %}{{ talk.level }}{% endif %}<br />
-        <strong>Category:</strong> {% if talk.category is defined %}{{ talk.category }}{% endif %}<br />
-        <strong>Desired:</strong> {% if talk.desired is defined %}{{ talk.desired ? 'Yes' : 'No' }}{% endif %}<br />
-        <strong>Sponsor:</strong> {% if talk.sponsor is defined %}{{ talk.sponsor ? 'Yes' : 'No' }}{% endif %}<br />
+            <p>
+                <strong>Slides:</strong> {% if talk.slides is defined %}{{ talk.slides }}{% endif %}<br />
+                <strong>Type:</strong> {{ talk.type }}<br />
+                <strong>Level:</strong> {% if talk.level is defined %}{{ talk.level }}{% endif %}<br />
+                <strong>Category:</strong> {% if talk.category is defined %}{{ talk.category }}{% endif %}<br />
+                <strong>Desired:</strong> {% if talk.desired is defined %}{{ talk.desired ? 'Yes' : 'No' }}{% endif %}<br />
+                <strong>Sponsor:</strong> {% if talk.sponsor is defined %}{{ talk.sponsor ? 'Yes' : 'No' }}{% endif %}<br />
 
-    </p>
+            </p>
 
-    {% if otherTalks | length > 0 %}
-        <h4><strong>Other talks by this speaker:</strong></h4>
-        {% for talk in otherTalks %}
-            <a href="{{ site.url}}/admin/talks/{{ talk.id }}">{{ talk.title }}</a><br>
-        {% endfor %}
-    {% endif %}
+            {% if otherTalks | length > 0 %}
+                <h4><strong>Other talks by this speaker:</strong></h4>
+                {% for talk in otherTalks %}
+                    <a href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title }}</a><br>
+                {% endfor %}
+            {% endif %}
 
-    <p><a href="{{ site.url}}/admin/talks" class="btn btn-primary">Return to viewing all talks</a></p>
+            <p><a href="{{ url('admin_talks') }}" class="btn btn-primary">Return to viewing all talks</a></p>
+        </div>
+    </div>
 {% endblock %}

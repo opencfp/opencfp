@@ -44,5 +44,6 @@
     {% include "admin/talks/_table.twig" %}
 {% endblock %}
 {% block scripts %}
+    {{ parent() }}
     <script src="/assets/js/admin/talk.js"></script>
 {% endblock %}

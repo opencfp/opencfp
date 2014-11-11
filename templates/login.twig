@@ -1,7 +1,21 @@
-{% extends "layouts/default.twig" %}
+{% extends "layouts/dashboard-nowrap.twig" %}
 {% block content %}
-    <h2 class="headline">Login</h2>
-    {% include "forms/_login.twig" %}
+  <div class="module module--constrained">
+    <div class="module__header">Login</div>
+    <div class="module__body">
+      {% include "forms/_login.twig" %}
+    </div>
+    <div class="module__footer">
+      <div class="row">
+        <div class="col-md-8">
+          <h4 class="headline--beta">Don't have an account yet?</h4>
+        </div>
+        <div class="col-md-4 text-right">
+          <a href="{{ url('user_new') }}" class="btn-opencfp btn-opencfp-small btn-success">Register Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 {% block js %}
     <script src="js/login.js"></script>

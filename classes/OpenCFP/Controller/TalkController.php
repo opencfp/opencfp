@@ -41,7 +41,7 @@ class TalkController
     public function viewAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         $id = $req->get('id');
@@ -53,7 +53,7 @@ class TalkController
         $user = $app['sentry']->getUser();
 
         if ($talk_info['user_id'] !== $user->getId()) {
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         $template = $app['twig']->loadTemplate('talk/view.twig');
@@ -75,7 +75,7 @@ class TalkController
     public function editAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         $id = $req->get('id');
@@ -90,11 +90,11 @@ class TalkController
                 'ext' => 'You cannot edit talks once the call for papers has ended']
             );
 
-            return $app->redirect($app['url'] . '/talk/'.$talk_id);
+            return $app->redirect($app->url('talk_view', ['id' => $talk_id]));
         }
 
         if (empty($talk_id)) {
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         $user = $app['sentry']->getUser();
@@ -103,12 +103,12 @@ class TalkController
         $talk_info = $talk_mapper->get($talk_id)->toArray();
 
         if ($talk_info['user_id'] !== (int)$user->getId()) {
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         $template = $app['twig']->loadTemplate('talk/edit.twig');
         $data = array(
-            'formAction' => '/talk/update',
+            'formAction' => $app->url('talk_update'),
             'id' => $talk_id,
             'title' => html_entity_decode($talk_info['title']),
             'description' => html_entity_decode($talk_info['description']),
@@ -135,7 +135,7 @@ class TalkController
     public function createAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         // You can only create talks while the CfP is open
@@ -146,14 +146,14 @@ class TalkController
                 'ext' => 'You cannot create talks once the call for papers has ended']
             );
 
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         $user = $app['sentry']->getUser();
 
         $template = $app['twig']->loadTemplate('talk/create.twig');
         $data = array(
-            'formAction' => '/talk/create',
+            'formAction' => $app->url('talk_create'),
             'title' => $req->get('title'),
             'description' => $req->get('description'),
             'type' => $req->get('type'),
@@ -180,7 +180,7 @@ class TalkController
     public function processCreateAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         // You can only create talks while the CfP is open
@@ -191,7 +191,7 @@ class TalkController
                 'ext' => 'You cannot create talks once the call for papers has ended']
             );
 
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         $user = $app['sentry']->getUser();
@@ -239,13 +239,13 @@ class TalkController
             // send email to speaker showing submission
             $this->sendSubmitEmail($app, $user->getLogin(), $talk->id);
 
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         if (!$isValid) {
             $template = $app['twig']->loadTemplate('talk/edit.twig');
             $data = array(
-                'formAction' => '/talk/create',
+                'formAction' => $app->url('talk_create'),
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
@@ -272,7 +272,7 @@ class TalkController
     public function updateAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         $user = $app['sentry']->getUser();
@@ -326,13 +326,13 @@ class TalkController
                 'ext' => 'Successfully updated talk.',
             ));
 
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         if (!$isValid) {
             $template = $app['twig']->loadTemplate('talk/edit.twig');
             $data = array(
-                'formAction' => '/talk/update',
+                'formAction' => $app->url('talk_update'),
                 'id' => $req->get('id'),
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),

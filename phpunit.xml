@@ -1,10 +1,10 @@
-<phpunit backupGlobals="true" bootstrap="tests/bootstrap.php">
+<phpunit backupGlobals="true" bootstrap="tests/unit/bootstrap.php">
     <filter>
         <blacklist>
             <directory>vendor</directory>
         </blacklist>
     </filter>
     <testsuite>
-        <directory>tests</directory>
+        <directory>tests/unit</directory>
     </testsuite>
 </phpunit>

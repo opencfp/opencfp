@@ -13,7 +13,7 @@ class ProfileController
     public function editAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         $template = $app['twig']->loadTemplate('user/edit.twig');
@@ -25,7 +25,7 @@ class ProfileController
                 'short' => 'Error',
                 'ext' => "You cannot edit someone else's profile"
             ));
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
@@ -45,7 +45,7 @@ class ProfileController
             'transportation' => $speaker_data['transportation'],
             'hotel' => $speaker_data['hotel'],
             'id' => $user->getId(),
-            'formAction' => '/profile/edit',
+            'formAction' => $app->url('user_update'),
             'buttonInfo' => 'Update Profile',
         );
 
@@ -55,7 +55,7 @@ class ProfileController
     public function processAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         $user = $app['sentry']->getUser();
@@ -66,7 +66,7 @@ class ProfileController
                 'short' => 'Error',
                 'ext' => "You cannot edit someone else's profile"
             ));
-            return $app->redirect($app['url'] . '/dashboard');
+            return $app->redirect($app->url('dashboard'));
         }
 
         $form_data = array(
@@ -135,7 +135,7 @@ class ProfileController
                     'ext' => "Successfully updated your information!"
                 ));
 
-                return $app->redirect($app['url'] . '/profile/edit/' . $form_data['user_id']);
+                return $app->redirect($app->url('user_edit', ['id' => $form_data['user_id']]));
             }
         } else {
             $app['session']->set('flash', array(
@@ -145,7 +145,7 @@ class ProfileController
                 ));
         }
 
-        $form_data['formAction'] = '/profile/edit';
+        $form_data['formAction'] = $app->url('user_edit');
         $form_data['buttonInfo'] = 'Update Profile';
         $form_data['id'] = $user->id;
         $form_data['user'] = $user;
@@ -158,7 +158,7 @@ class ProfileController
     public function passwordAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
         $user = $app['sentry']->getUser();
 
@@ -170,7 +170,7 @@ class ProfileController
     public function passwordProcessAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         $user = $app['sentry']->getUser();
@@ -192,7 +192,7 @@ class ProfileController
                 'short' => 'Error',
                 'ext' => implode("<br>", $form->getErrorMessages())
             ));
-            return $app->redirect($app['url'] . '/profile/change_password');
+            return $app->redirect($app->url('password_edit'));
         }
 
         /**
@@ -208,7 +208,7 @@ class ProfileController
                 'short' => 'Error',
                 'ext' => "Unable to update your password in the database. Please try again."
             ));
-            return $app->redirect($app['url'] . '/profile/change_password');
+            return $app->redirect($app->url('password_edit'));
         }
 
         $app['session']->set('flash', array(
@@ -217,7 +217,7 @@ class ProfileController
             'ext' => "Changed your password."
         ));
 
-        return $app->redirect($app['url'] . '/profile/change_password');
+        return $app->redirect($app->url('password_edit'));
     }
 
     /**

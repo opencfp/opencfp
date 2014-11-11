@@ -35,7 +35,7 @@ class ForgotController
                 'ext' => "Please enter a properly formatted email address"
             ));
 
-            return $app->redirect($app['url'] . '/forgot');
+            return $app->redirect($app->url('forgot_password'));
         }
 
         // Check to make sure they actually exist in the system...
@@ -50,7 +50,7 @@ class ForgotController
                 'ext' => "We couldn't find a user with that email"
             ));
 
-            return $app->redirect($app['url'] . '/forgot');
+            return $app->redirect($app->url('forgot_password'));
         }
 
         // Create a reset code and email the URL to our user
@@ -64,7 +64,7 @@ class ForgotController
                 'ext' => "We were unable to send your password reset request. Please try again"
             ));
 
-            return $app->redirect($app['url'] . '/forgot');
+            return $app->redirect($app->url('forgot_password'));
         }
 
         $app['session']->set('flash', array(
@@ -73,7 +73,7 @@ class ForgotController
                 'ext' => "An email giving you a link to reset your password has been sent."
         ));
 
-        return $app->redirect($app['url'] . '/login');
+        return $app->redirect($app->url('login'));
     }
 
 
@@ -151,23 +151,23 @@ class ForgotController
             ));
         }
 
-        return $app->redirect($app['url'] . '/forgot');
+        return $app->redirect($app->url('forgot_password'));
     }
-    
+
     public function updatePasswordAction(Request $req, Application $app)
     {
         $postArray = $req->request->all();
         $user_id = $postArray['reset']['user_id'];
         $reset_code = $postArray['reset']['reset_code'];
         $password = $postArray['reset']['password']['password'];
-        
+
         try {
             $user = $app['sentry']->getUserProvider()->findById($user_id);
         } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
             echo $e;
             die();
         }
-        
+
         /**
          * Can't let people replace their passwords with one they have
          * already
@@ -178,7 +178,7 @@ class ForgotController
                     'short' => 'Error',
                     'ext' => "Please select a different password than your current one.",
                 ));
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         // Everything looks good, let's actually reset their password
@@ -188,7 +188,7 @@ class ForgotController
                     'short' => 'Success',
                     'ext' => "You've successfully reset your password.",
                 ));
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         // user may have tried using the recovery twice
@@ -197,7 +197,7 @@ class ForgotController
                 'short' => 'Error',
                 'ext' => "Password reset failed, please contact the administrator.",
             ));
-        return $app->redirect($app['url'] . '/');
+        return $app->redirect('/');
     }
 
     protected function sendResetEmail(Application $app, $user_id, $email, $reset_code)
@@ -220,17 +220,17 @@ class ForgotController
             'email' => $config['application.email'],
             'title' => $config['application.title']
         );
-        
+
         try {
             $mailer = $app['mailer'];
             $message = new \Swift_Message();
-            
+
             $message->setTo($email);
             $message->setFrom(
                 $template->renderBlock('from', $parameters),
                 $template->renderBlock('from_name', $parameters)
             );
-            
+
             $message->setSubject($template->renderBlock('subject', $parameters));
             $message->setBody($template->renderBlock('body_text', $parameters));
             $message->addPart(

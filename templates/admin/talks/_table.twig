@@ -12,14 +12,14 @@
     <tbody>
         {% for talk in talks %}
             <tr>
-                <td><a href="{{ site.url }}/admin/talks/{{ talk.id }}">{{ talk.title|raw }}</a></td>
+                <td><a href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a></td>
                 <td>{{ talk.type }}</td>
                 <td>{{ talk.category }}</td>
                 <td>{{ talk.created_at|date("F jS Y \\a\\t g:ia T") }}</td>
                 {% if false == talk.user %}
                 <td><em>Unknown User</em></td>
                 {% else %}
-                <td><a href="{{ site.url }}/admin/speakers/{{ talk.user.id }}">{{ talk.user.first_name }} {{ talk.user.last_name }}</a></td>
+                <td><a href="{{ url('admin_speaker_view', { id: talk.user.id }) }}">{{ talk.user.first_name }} {{ talk.user.last_name }}</a></td>
                 {% endif %}
                 <td>
                     <a href="#" id="talk-favorite-{{ talk.id }}" class="js-talk-favorite" data-id="{{ talk.id }}"><i class="fa fa-star star-favorite{% if talk.favorite == 1 %} star-favorite--selected{% endif %}"></i></a>

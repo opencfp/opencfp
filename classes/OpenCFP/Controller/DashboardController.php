@@ -9,7 +9,7 @@ class DashboardController
     public function indexAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app['url'] . '/login');
+            return $app->redirect($app->url('login'));
         }
 
         $user = $app['sentry']->getUser();
@@ -18,8 +18,6 @@ class DashboardController
 
         $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
         $my_talks = $talk_mapper->getByUser($user->getId());
-
-        $permissions['admin'] = $user->hasPermission('admin');
 
         // Load our template and RENDER
         $template = $app['twig']->loadTemplate('dashboard.twig');
@@ -37,7 +35,6 @@ class DashboardController
             'speaker_photo' => $user_info['photo_path'],
             'preview_photo' => $app['uploadPath'] . $user_info['photo_path'],
             'airport' => $user_info['airport'],
-            'permissions' => $permissions,
             'current_page' => '/dashboard'
         );
 

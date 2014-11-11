@@ -1,0 +1,26 @@
+<header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <img data-src="/assets/img/logo_round.svg" class="svg-inject event-logo" alt="Event Logo">
+                </div>
+                <div class="col-md-9">
+                    <h1 class="headline headline-alpha">Call For Papers Now Open!</h1>
+                    <h3 class="headline headline-alpha">Submissions accepted until {{ site.enddate }}</h3>
+                    <p>
+                        <a class="btn-opencfp btn-opencfp-medium btn-opencfp--outlined" href="{{ url('user_new') }}">Register Now</a>
+                        <a class="btn-opencfp btn-opencfp-medium btn-opencfp--primary" href="{{ url('dashboard') }}">View Submissions</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="section section--light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8"><h3 class="headline headline--alpha">For More Information About The Conference</h3></div>
+            <div class="col-md-4 text-right"><a href="{{ site.eventurl }}" class="btn-opencfp btn-opencfp-medium btn-opencfp--light">Visit Conference Site</a></div>
+        </div>
+    </div>
+</section>

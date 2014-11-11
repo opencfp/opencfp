@@ -1,4 +1,4 @@
-<form action="{{ site.url }}{{ formAction }}" method="POST" class="form-horizontal">
+<form action="{{ formAction }}" method="POST" class="form-horizontal">
     {% if id is defined %}
         <input name="id" type="hidden" value="{{ id }}">
     {% endif %}
@@ -12,6 +12,7 @@
         <label for="form-talk-description" class="col-sm-2 control-label">Description/Abstract</label>
         <div class="col-sm-10">
             <textarea id="form-talk-description" name="description" class="form-control" placeholder="Give a description of your talk (Abstract)" rows="10">{{ description }}</textarea>
+            <p class="help-block">Speaker abstract can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
     <div class="form-group">
@@ -23,7 +24,7 @@
     <div class="form-group">
         <label for="form-talk-type" class="col-sm-2 control-label">Talk Type</label>
         <div class="col-sm-10">
-            <select id="form-talk-type" name="type">
+            <select id="form-talk-type" name="type" class="form-control">
                 <option value="regular" {% if type == 'regular' %}selected {% endif %}>Regular</option>
                 <option value="tutorial" {% if type == 'tutorial' %}selected {% endif %}>Tutorial</option>
             </select>
@@ -32,7 +33,7 @@
     <div class="form-group">
         <label for="form-talk-category" class="col-sm-2 control-label">Talk Category</label>
         <div class="col-sm-10">
-            <select id="form-talk-category" name="category">
+            <select id="form-talk-category" name="category" class="form-control">
                 <option value="api" {% if category == 'api' %}selected {% endif %}>APIs (REST, SOAP, etc.)</option>
                 <option value="continuousdelivery" {% if category == 'continuousdelivery' %}selected {% endif %}>Continuous Delivery</option>
                 <option value="database" {% if category == 'database' %}selected {% endif %}>Database</option>
@@ -51,7 +52,7 @@
     <div class="form-group">
         <label for="form-talk-level" class="col-sm-2 control-label">Talk Level</label>
         <div class="col-sm-10">
-            <select id="form-talk-level" name="level">
+            <select id="form-talk-level" name="level" class="form-control">
                 <option value="entry" {% if level == 'entry' %}selected {% endif %}>Entry level</option>
                 <option value="mid" {% if level == 'mid' %}selected {% endif %}>Mid-level</option>
                 <option value="advanced" {% if level == 'advanced' %}selected {% endif %}>Advanced</option>
@@ -62,18 +63,27 @@
         <label for="form-talk-other" class="col-sm-2 control-label">Additional Talk Information</label>
         <div class="col-sm-10">
             <textarea id="form-talk-other" name="other" class="form-control" placeholder="Other Considerations, such as Joind.In, Lanyrd, local user group, etc." rows="10">{{ other }}</textarea>
+            <p class="help-block">Talk additional information can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
     <div class="form-group">
         <label for="form-sponsor" class="col-sm-2 control-label">Company Sponsorship</label>
-        <div class="col-sm-10 checkbox">
-            <input id="form-sponsor" name="sponsor" type="checkbox" value="1" class="checkbox" {% if sponsor == '1' %}checked{% endif %}> Is your company sponsoring, or would they like to?
+        <div class="col-sm-10">
+            <div class="checkbox">
+                <label for="form-sponsor">
+                    <input id="form-sponsor" name="sponsor" type="checkbox" value="1" {% if sponsor == '1' %}checked{% endif %}> Is your company sponsoring, or would they like to?
+                </label>
+            </div>
         </div>
     </div>
     <div class="form-group">
         <label for="form-desired" class="col-sm-2 control-label">Most Desired</label>
-        <div class="col-sm-10 checkbox">
-            <input id="form-desired" name="desired" type="checkbox" value="1" class="checkbox" {% if desired == '1' %}checked{% endif %}> Of your submissions, is this your best?
+        <div class="col-sm-10">
+            <div class="checkbox">
+                <label for="form-desired">
+                    <input id="form-desired" name="desired" type="checkbox" value="1" {% if desired == '1' %}checked{% endif %}> Of your submissions, is this your best?
+                </label>
+            </div>
         </div>
     </div>
     <div class="form-group">

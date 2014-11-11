@@ -38,6 +38,36 @@ class User extends \Spot\Entity
     {
         return [
             'talks' => $mapper->hasMany($entity, 'OpenCFP\Entity\Talk', 'user_id'),
+            'groups' => $mapper->hasManyThrough($entity, '\OpenCFP\Entity\Group', '\OpenCFP\Entity\UserGroup', 'group_id', 'user_id'),
         ];
+    }
+
+    /**
+     * Getter for permissions property
+     * @return array
+     */
+    protected function getPermissions()
+    {
+        return json_decode($this->_data['permissions']);
+    }
+
+    /**
+     * Setter for permissions property
+     * @param string|array $permissions JSON string or an array of permissions
+     * @return string JSON
+     */
+    protected function setPermissions($permissions)
+    {
+        $json = $permissions;
+
+        if (is_string($permissions) && json_decode($permissions) === null) {
+            return "{}";
+        }
+
+        if (is_array($permissions)) {
+            $json = json_encode($permissions);
+        }
+
+        return $json;
     }
 }

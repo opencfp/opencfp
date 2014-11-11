@@ -1,20 +1,26 @@
-<form id="login" class="form-horizontal" method="post" action="{{ site.url }}/login">
+<form id="login" class="form-horizontal" method="post" action="{{ url('login_check') }}">
     <div class="form-group">
         <label for="form-login-email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
-            <input id="form-login-email" type="email" name="email" class="form-control" placeholder="you@domain.com">
+            <div class="input-group">
+                <div class="input-group-addon"><img src="/assets/img/icons/envelope-closed.svg" class="svg-inject icon-12" alt="Email"></div>
+                <input id="form-login-email" type="email" name="email" class="form-control" placeholder="you@domain.com">
+            </div>
         </div>
     </div>
     <div class="form-group">
         <label for="form-login-password" class="col-sm-2 control-label">Password</label>
         <div class="col-sm-10">
-            <input id="form-login-password" type="password" name="password" class="form-control" placeholder="Password">
+            <div class="input-group">
+                <div class="input-group-addon"><img src="/assets/img/icons/lock-locked.svg" class="svg-inject icon-12" alt="Password"></div>
+                <input id="form-login-password" type="password" name="password" class="form-control" placeholder="Password">
+            </div>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-success">Login</button> or 
-            <a href="/forgot" class="btn btn-warning">Forgot password</a>
+            <p><a href="{{ url('forgot_password') }}">Forgot your password?</a></p>
+            <button type="submit" class="btn-opencfp btn-opencfp--light btn-opencfp--wide">Login</button>
         </div>
     </div>
 </form>

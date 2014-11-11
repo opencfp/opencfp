@@ -1,16 +1,15 @@
-{% extends "layouts/default.twig" %}
+{% extends "layouts/dashboard.twig" %}
 {% block content %}
-    <h2 class="headline">{{ talk.title }}</h2>
+  <h2 class="headline">{{ talk.title }}</h2>
 
-    <p>{{ talk.description|raw|nl2br }}</p>
+  <p>{{ talk.description|markdown }}</p>
 
-    <p><strong>Other Info:</strong> {{ talk.other|nl2br }}</p>
+  <p><strong>Other Info:</strong> {{ talk.other|markdown }}</p>
 
-    <p><strong>Slides:</strong> <a href="{{ talk.slides }}">{{ talk.slides }}</a></p>
-    <p><strong>Type:</strong> {{ talk.type }}</p>
-    <p><strong>Level:</strong> {{ talk.level }}</p>
-    <p><strong>Category:</strong> {{ talk.category }}</p>
-    <p><strong>Desired:</strong> {{ talk.desired ? 'true' : 'false' }}</p>
-    <p><strong>Sponsor:</strong> {{ talk.sponsor ? 'true' : 'false' }}</p>
-
+  <p><strong>Slides:</strong> <a href="{{ talk.slides }}">{{ talk.slides }}</a></p>
+  <p><strong>Type:</strong> {{ talk.type }}</p>
+  <p><strong>Level:</strong> {{ talk.level }}</p>
+  <p><strong>Category:</strong> {{ talk.category }}</p>
+  <p><strong>Desired:</strong> {{ talk.desired ? 'true' : 'false' }}</p>
+  <p><strong>Sponsor:</strong> {{ talk.sponsor ? 'true' : 'false' }}</p>
 {% endblock %}

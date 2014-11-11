@@ -1,4 +1,4 @@
-<form action="{{ site.url }}{{ formAction }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+<form action="{{ formAction }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
     {% if id is defined %}
         <input name="id" type="hidden" value="{{ id }}">
     {% endif %}
@@ -8,7 +8,7 @@
             <input id="form-user-email" type="email" name="email" class="form-control" placeholder="you@domain.com" value="{{ email | default('') }}">
         </div>
     </div>
-    {% if formAction == '/signup' %}
+    {% if user is not defined %}
         <div class="form-group">
             <label for="form-user-password" class="col-sm-2 control-label">Password</label>
             <div class="col-sm-10">
@@ -50,6 +50,7 @@
         <label for="form-user-bio" class="col-sm-2 control-label">Speaker Bio</label>
         <div class="col-sm-10">
             <textarea id="form-user-bio" name="speaker_bio" class="form-control" placeholder="Information About You" rows="5">{{ speaker_bio | default('') }}</textarea>
+            <p class="help-block">Speaker bio can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
     <div class="form-group">
@@ -62,18 +63,27 @@
         <label for="form-user-notes" class="col-sm-2 control-label">Additional Notes</label>
         <div class="col-sm-10">
             <textarea id="form-user-notes" name="speaker_info" class="form-control" placeholder="Other information you feel the organizers should be aware of" rows="5">{{ speaker_info | default('') }}</textarea>
+            <p class="help-block">Speaker notes can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
     <div class="form-group">
         <label for="form-transportation" class="col-sm-2 control-label">Airfare?</label>
-        <div class="col-sm-10 checkbox">
-            <input id="form-transportation" name="transportation" type="checkbox" value="1" class="checkbox" {% if transportation == '1' %}checked{% endif %}> I need help with flight cost.
+        <div class="col-sm-10">
+            <div class="checkbox">
+                <label for="form-transportation">
+                    <input id="form-transportation" name="transportation" type="checkbox" value="1" {% if transportation == '1' %}checked{% endif %}> I need help with flight cost.
+                </label>
+            </div>
         </div>
     </div>
     <div class="form-group">
         <label for="form-hotel" class="col-sm-2 control-label">Hotel?</label>
-        <div class="col-sm-10 checkbox">
-            <input id="form-hotel" name="hotel" type="checkbox" value="1" class="checkbox" {% if hotel == '1' %}checked{% endif %}> I need help with hotel cost.
+        <div class="col-sm-10">
+            <div class="checkbox">
+                <label for="form-hotel">
+                    <input id="form-hotel" name="hotel" type="checkbox" value="1" {% if hotel == '1' %}checked{% endif %}> I need help with hotel cost.
+                </label>
+            </div>
         </div>
     </div>
     <div class="form-group">
@@ -81,7 +91,7 @@
         <div class="col-sm-10">
             <input type="file" id="form-user-photo" name="speaker_photo" class="form-control" placeholder="Photo at least 300px wide by 300px high" accept="image/jpg, image/jpeg, image/png">
             <p class="help-block">Photo should be square, and must be at least 300px wide by 300px high. JPG and PNG are the only accepted formats.</p>
-            {% if preview_photo is defined and preview_photo is not empty %}
+            {% if speaker_photo is defined and speaker_photo is not empty %}
                 <img src="{{ preview_photo }}" class="profile-photo">
             {% endif %}
         </div>

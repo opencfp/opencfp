@@ -10,13 +10,13 @@
     <tbody>
         {% for talk in talks %}
             <tr>
-                <td><a href="{{ site.url }}/admin/talks/{{ talk.id }}" target="new">{{ talk.title|raw }}</a></td>
+                <td><a href="{{ url('admin_talk_view', { id: talk.id }) }}" target="new">{{ talk.title|raw }}</a></td>
                 <td>{{ talk.category }}</td>
                 <td>{{ talk.created_at|date("F jS Y \\a\\t g:ia T") }}</td>
                 {% if false == talk.user %}
                 <td><em>Unknown User</em></td>
                 {% else %}
-                <td><a href="{{ site.url }}/admin/speakers/{{ talk.user.id }}">{{ talk.user.first_name }} {{ talk.user.last_name }}</a></td>
+                <td><a href="{{ url('admin_speaker_view', { id: talk.user.id }) }}">{{ talk.user.first_name }} {{ talk.user.last_name }}</a></td>
                 {% endif %}
             </tr>
         {% endfor %}

@@ -1,17 +1,33 @@
-<div class="row marketing">
-    <div class="col-md-6">
-        <h4 class="headline">Got a talk idea? We want to see it!</h4>
-        <p>
-            We’re pleased to announce our conference, {{ site.title }} should be
-            one of the best PHP conferences where community members from around
-            the world come together to learn and share information about the latest
-            trends and technologies in professional PHP development.
-        </p>
-        
-        <h4 class="headline">Diversity Matters!</h4>
+<div class="container">
+    <div class="section row">
+        <div class="col-md-6">
+            <h3 class="headline headline--beta">Got a talk idea? We want to see it!</h3>
+            <p>
+                We’re pleased to announce our conference, {{ site.title }} should be
+                one of the best PHP conferences where community members from around
+                the world come together to learn and share information about the latest
+                trends and technologies in professional PHP development.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <h3 class="headline headline--beta">Speaker Package</h3>
+            <p>
+                We know speakers are key to the success of a conference and hope
+                you will submit a talk.  In appreciation of your efforts, our speaker
+                compensation package includes:
+
+                <p><a href="{{ url('speaker_package') }}">View Full Speaker Package</a></p>
+            </p>
+        </div>
+    </div>
+</div>
+
+<section class="section section--primary">
+    <div class="container">
+        <h2 class="headline headline--beta headline--centered">Diversity Matters!</h2>
         <p>
             {{ site.title }} is committed to creating a conference that is as inclusive as possible.
-            We want to showcase talent available around the U.S. and welcome international submissions as well. 
+            We want to showcase talent available around the U.S. and welcome international submissions as well.
         </p>
         <p>
             We are also committed to ensuring the conference is a place
@@ -20,34 +36,5 @@
             professional and courteous to each other. We reserve the right to remove, without refund,
             ANY attendee (speaker or otherwise) who is unable to adhere to this policy.
         </p>
-        
-        
     </div>
-    <div class="col-md-6">
-    	<h4 class="headline">Speaker Package</h4>
-        <p>
-            We know speakers are key to the success of a conference and hope 
-            you will submit a talk.  In appreciation of your efforts, our speaker 
-            compensation package includes:
-                
-            <ul>
-                <li>Full conference pass</li>
-                <li>Access to conference tutorials (lunch not included)</li>
-                <li>For speakers remote to the Area:</li>
-                <ul>
-                	<li>Complimentary airfare/travel (according to conference policy)</li>
-                	<li>2 complimentary hotel nights (additional hotel night for speakers presenting a tutorial)</li>
-                </ul>
-            <li>Lunch, receptions and activities included in regular conference</li>
-            <li>We will pick speakers up and drop them off to/from the airport so they don't have to worry about it.</li>
-            </ul>
-        </p>
-        
-        <h4 class="headline">Don't wait, Submit now!</h4>
-        <p>
-            We look forward to all of the great submissions for this year's event! Remember, you can
-            submit more than one session idea too! This year's submission deadline is <strong>{{ site.enddate }}</strong>
-            so don't put it off!
-        </p>
-    </div>
-</div>
+</section>

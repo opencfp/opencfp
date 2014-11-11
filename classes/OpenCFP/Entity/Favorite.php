@@ -19,7 +19,7 @@ class Favorite extends \Spot\Entity
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'talk' => $mapper->hasOne($entity, 'OpenCFP\Entity\Talk', 'talk_id')
+            'talk' => $mapper->belongsTo($entity, 'OpenCFP\Entity\Talk', 'talk_id')
         ];
     }
 }

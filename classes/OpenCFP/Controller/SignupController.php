@@ -14,6 +14,10 @@ class SignupController
 
     public function indexAction(Request $req, Application $app)
     {
+        if ($app['sentry']->check()) {
+            return $app->redirect($app->url('dashboard'));
+        }
+
         // Nobody can login after CFP deadline
         $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.' . APP_ENV . '.ini');
         $config_data = $loader->load();
@@ -26,19 +30,14 @@ class SignupController
                     'ext' => 'Sorry, the call for papers has ended.',
                 ));
 
-            return $app->redirect($app['url']);
-        }
-
-        // Reset our user to make sure nothing weird happens
-        if ($app['sentry']->check()) {
-            $app['sentry']->logout();
+            return $app->redirect('/');
         }
 
         $template = $app['twig']->loadTemplate('user/create.twig');
         $form_data = array();
         $form_data['transportation'] = 0;
         $form_data['hotel'] = 0;
-        $form_data['formAction'] = '/signup';
+        $form_data['formAction'] = $app->url('user_create');
         $form_data['buttonInfo'] = 'Create my speaker profile';
 
         return $template->render($form_data);
@@ -48,7 +47,7 @@ class SignupController
     public function processAction(Request $req, Application $app)
     {
         $form_data = array(
-            'formAction' => '/signup',
+            'formAction' => $app->url('user_create'),
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
             'company' => $req->get('company'),
@@ -126,7 +125,7 @@ class SignupController
                     'ext' => "You've successfully created your account!",
                 ));
 
-                return $app->redirect($app['url'] . '/login');
+                return $app->redirect($app->url('login'));
             } catch (UserExistsException $e) {
                 $app['session']->set('flash', array(
                         'type' => 'error',

@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Entity;
 
-class Favorite extends \Spot\Entity
+class Group extends \Spot\Entity
 {
     protected static $table = 'groups';
 
@@ -14,6 +14,13 @@ class Favorite extends \Spot\Entity
             'permissions' => ['type' => 'text'],
             'created_at' => ['type' => 'datetime', 'value' => new \DateTime()],
             'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()]
+        ];
+    }
+
+    public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
+    {
+        return [
+            'users' => $mapper->hasManyThrough($entity, '\OpenCFP\Entity\User', '\OpenCFP\Entity\UserGroup', 'user_id', 'group_id'),
         ];
     }
 }
