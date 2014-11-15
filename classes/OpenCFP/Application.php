@@ -15,6 +15,8 @@ final class Application extends SilexApplication
         $this['env'] = $environment;
 
         $this->bindPathsInApplicationContainer();
+
+
     }
 
     /**
