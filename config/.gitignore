@@ -1,4 +1,3 @@
-config.development.ini
-config.production.ini
 development.yml
 production.yml
+testing.yml
