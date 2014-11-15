@@ -2,8 +2,8 @@
 
 namespace OpenCFP;
 
-use Igorw\Silex\ConfigServiceProvider;
 use Silex\Application as SilexApplication;
+use Igorw\Silex\ConfigServiceProvider;
 
 final class Application extends SilexApplication
 {
@@ -16,8 +16,7 @@ final class Application extends SilexApplication
         $this['env'] = $environment;
 
         $this->bindPathsInApplicationContainer();
-
-        $this->register(new ConfigServiceProvider($this->configPath()));
+        $this->bindConfiguration();
     }
 
     /**
@@ -27,6 +26,18 @@ final class Application extends SilexApplication
     {
         foreach (['config', 'upload'] as $slug) {
             $this["paths.{$slug}"] = $this->{$slug . 'Path'}();
+        }
+    }
+
+    /**
+     * Loads configuration and puts application in debug-mode if not in production environment.
+     */
+    private function bindConfiguration()
+    {
+        $this->register(new ConfigServiceProvider($this->configPath(), [], null, 'config'));
+
+        if ( ! $this->isProduction()) {
+            $this['debug'] = true;
         }
     }
 
@@ -66,16 +77,28 @@ final class Application extends SilexApplication
         return $this->basePath() . "/templates";
     }
 
+    /**
+     * Tells if application is in production environment.
+     * @return boolean
+     */
     public function isProduction()
     {
         return $this['env']->equals(Environment::production());
     }
 
+    /**
+     * Tells if application is in development environment.
+     * @return boolean
+     */
     public function isDevelopment()
     {
         return $this['env']->equals(Environment::development());
     }
 
+    /**
+     * Tells if application is in testing environment.
+     * @return boolean
+     */
     public function isTesting()
     {
         return $this['env']->equals(Environment::testing());

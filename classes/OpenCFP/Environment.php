@@ -18,27 +18,43 @@ final class Environment
         $this->slug = (string) $slug;
     }
 
+    /**
+     * @return Environment
+     */
     public static function production()
     {
         return new self('production');
     }
 
+    /**
+     * @return Environment
+     */
     public static function development()
     {
         return new self('development');
     }
 
+    /**
+     * @return Environment
+     */
     public static function testing()
     {
         return new self('testing');
     }
 
+    /**
+     * @return Environment
+     */
     public static function fromEnvironmentVariable()
     {
         $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'development';
         return new self($environment);
     }
 
+    /**
+     * @param Environment $environment
+     * @return bool
+     */
     public function equals(Environment $environment)
     {
         return $this->slug === (string)$environment;
