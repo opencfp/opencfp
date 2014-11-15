@@ -33,5 +33,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->sut->isTesting());
         $this->assertContains('testing.yml', $this->sut->configPath());
     }
+
+
 }
  

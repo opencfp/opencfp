@@ -2,6 +2,7 @@
 
 namespace OpenCFP;
 
+use Igorw\Silex\ConfigServiceProvider;
 use Silex\Application as SilexApplication;
 
 final class Application extends SilexApplication
@@ -16,7 +17,7 @@ final class Application extends SilexApplication
 
         $this->bindPathsInApplicationContainer();
 
-
+        $this->register(new ConfigServiceProvider($this->configPath()));
     }
 
     /**
@@ -24,7 +25,7 @@ final class Application extends SilexApplication
      */
     protected function bindPathsInApplicationContainer()
     {
-        foreach (['config'] as $slug) {
+        foreach (['config', 'upload'] as $slug) {
             $this["paths.{$slug}"] = $this->{$slug . 'Path'}();
         }
     }
@@ -39,12 +40,30 @@ final class Application extends SilexApplication
     }
 
     /**
-     * Get the base configuration path.
+     * Get the configuration path.
      * @return string
      */
     public function configPath()
     {
         return $this->basePath() . "/config/{$this['env']}.yml";
+    }
+
+    /**
+     * Get the uploads path.
+     * @return string
+     */
+    public function uploadPath()
+    {
+        return $this->basePath() . "/web/uploads";
+    }
+
+    /**
+     * Get the templates path.
+     * @return string
+     */
+    public function templatesPath()
+    {
+        return $this->basePath() . "/templates";
     }
 
     public function isProduction()

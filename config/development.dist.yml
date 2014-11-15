@@ -1,0 +1,35 @@
+application:
+  title: OpenCFP
+  url: http://localhost
+  email: contact@openconf.com
+  eventurl: http://localhost
+  enddate: Oct. 14th, 2016
+  airport: MIA
+  arrival: 2014-10-26
+  departure: 2014-10-31
+
+cache:
+  enabled: false
+  directory: /cache
+
+database:
+  host: 127.0.0.1
+  database: cfp_travis
+  dsn: mysql:dbname=cfp_travis;host=127.0.0.1
+  user: root
+  password: ""
+
+#[smtp]
+#user = ""
+#password = ""
+#
+#; for Gmail set host = "smtp.gmail.com"
+#host = "localhost"
+#
+#; for Gmail set port = "465", SMTP is "110", STARTLS is "587"
+#port = "2500"
+#
+#; uncomment if your smtp server requires encryption
+#; available options are "tls", "ssl"
+#; for Gmail set encryption = "ssl"
+#;encryption = "ssl"

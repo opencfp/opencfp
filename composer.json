@@ -29,7 +29,8 @@
         "vlucas/spot2": "dev-master",
         "kzykhys/ciconia": "~1.0",
         "aptoma/twig-markdown": "0.2.*",
-        "igorw/config-service-provider": "~1.2"
+        "igorw/config-service-provider": "~1.2",
+        "symfony/yaml": "~2.5"
     },
     "autoload": {
         "psr-0": {"OpenCFP": "classes/"}
