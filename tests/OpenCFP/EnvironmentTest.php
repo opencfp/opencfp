@@ -1,5 +1,8 @@
-<?php namespace OpenCFP; 
+<?php namespace OpenCFP;
 
+/**
+ * @covers OpenCFP\Environment
+ */
 class EnvironmentTest extends \PHPUnit_Framework_TestCase 
 {
     /** @test */

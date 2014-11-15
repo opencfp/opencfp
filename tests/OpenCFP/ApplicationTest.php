@@ -30,7 +30,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $this->sut = new Application('', Environment::testing());
 
-        $this->assertEquals('testing', $this->sut->environment());
+        $this->assertTrue($this->sut->isTesting());
         $this->assertContains('testing.yml', $this->sut->configPath());
     }
 }

@@ -9,7 +9,7 @@ final class Environment
     protected $slug;
 
     private function __construct($slug) {
-        $this->slug = $slug;
+        $this->slug = (string) $slug;
     }
 
     public static function production()
@@ -27,8 +27,13 @@ final class Environment
         return new self('testing');
     }
 
+    public function equals(Environment $environment)
+    {
+        return $this->slug === (string)$environment;
+    }
+
     public function __toString()
     {
-        return (string) $this->slug;
+        return $this->slug;
     }
 } 

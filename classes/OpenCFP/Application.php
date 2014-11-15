@@ -12,7 +12,7 @@ final class Application extends SilexApplication
         parent::__construct();
 
         $this['path'] = $basePath;
-        $this['env'] = (string)$environment;
+        $this['env'] = $environment;
 
         $this->bindPathsInApplicationContainer();
     }
@@ -45,8 +45,18 @@ final class Application extends SilexApplication
         return $this->basePath() . "/config/{$this['env']}.yml";
     }
 
-    public function environment()
+    public function isProduction()
     {
-        return $this['env'];
+        return $this['env']->equals(Environment::production());
+    }
+
+    public function isDevelopment()
+    {
+        return $this['env']->equals(Environment::development());
+    }
+
+    public function isTesting()
+    {
+        return $this['env']->equals(Environment::testing());
     }
 }
