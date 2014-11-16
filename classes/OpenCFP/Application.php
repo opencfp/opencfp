@@ -14,6 +14,7 @@ use OpenCFP\Provider\RouteServiceProvider;
 use OpenCFP\Provider\TemplatingEngineServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 
@@ -43,9 +44,15 @@ final class Application extends SilexApplication
         $this->register(new HtmlPurifierServiceProvider);
         $this->register(new SpotServiceProvider);
         $this->register(new SessionServiceProvider);
-        $this->register(new ImageProcessorProvider());
-        $this->register(new TranslationServiceProvider(), [
-            'translator.messages' => []
+        $this->register(new ImageProcessorProvider);
+        $this->register(new TranslationServiceProvider);
+        $this->register(new SwiftmailerServiceProvider, [
+            'host' => $this->config('mail.host'),
+            'port' => $this->config('mail.port'),
+            'username' => $this->config('mail.username'),
+            'password' => $this->config('mail.password'),
+            'encryption' => $this->config('mail.encryption'),
+            'auth_mode' => $this->config('mail.auth_mode')
         ]);
 
         // Routes...
