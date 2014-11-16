@@ -2,77 +2,79 @@
 
 namespace OpenCFP\Http\Controller;
 
+use Cartalyst\Sentry\Users\UserNotFoundException;
+use OpenCFP\Http\Form\ResetForm;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use OpenCFP\Http\Form\ForgotForm;
 
 class ForgotController extends BaseController
 {
     use FlashableTrait;
 
-    public function indexAction(Request $req, Application $app)
+    public function indexAction()
     {
-        $form = $app['form.factory']->create(new \OpenCFP\Form\ForgotForm());
-        $template = $app['twig']->loadTemplate('user/forgot_password.twig');
+        $form = $this->app['form.factory']->create(new ForgotForm());
 
         $data = array(
             'form' => $form->createView(),
             'current_page' => "Forgot Password"
         );
 
-        return $template->render($data);
+        return $this->render('user/forgot_password.twig', $data);
     }
 
-    public function sendResetAction(Request $req, Application $app)
+    public function sendResetAction(Request $req)
     {
-        $form = $app['form.factory']->create(new \OpenCFP\Form\ForgotForm());
+        $form = $this->app['form.factory']->create(new ForgotForm());
         $form->bind($req);
 
         if (!$form->isValid()) {
-            $app['session']->set('flash', array(
+            $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "Please enter a properly formatted email address"
             ));
 
-            return $app->redirect($app->url('forgot_password'));
+            return $this->redirectTo('forgot_password');
         }
 
         // Check to make sure they actually exist in the system...
         $data = $form->getData();
 
         try {
-            $user = $app['sentry']->getUserProvider()->findByLogin($data['email']);
-        } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-            $app['session']->set('flash', array(
+            $user = $this->app['sentry']->getUserProvider()->findByLogin($data['email']);
+        } catch (UserNotFoundException $e) {
+            $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "We couldn't find a user with that email"
             ));
 
-            return $app->redirect($app->url('forgot_password'));
+            return $this->redirectTo('forgot_password');
         }
 
         // Create a reset code and email the URL to our user
         $reset_code = $user->getResetPasswordCode();
-        $response = $this->sendResetEmail($app, $user->getId(), $data['email'], $reset_code);
+        $response = $this->sendResetEmail($this->app, $user->getId(), $data['email'], $reset_code);
 
         if ($response == false) {
-            $app['session']->set('flash', array(
+            $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "We were unable to send your password reset request. Please try again"
             ));
 
-            return $app->redirect($app->url('forgot_password'));
+            return $this->redirectTo('forgot_password');
         }
 
-        $app['session']->set('flash', array(
+        $this->app['session']->set('flash', array(
                 'type' => 'success',
                 'short' => 'Success',
                 'ext' => "An email giving you a link to reset your password has been sent."
         ));
 
-        return $app->redirect($app->url('login'));
+        return $this->redirectTo('login');
     }
 
     public function resetAction(Request $req, Application $app)
@@ -80,17 +82,17 @@ class ForgotController extends BaseController
         $errorMessage = "The reset you have requested appears to be invalid, please try again.";
         $error = 0;
         try {
-            $user = $app['sentry']->getUserProvider()->findById($req->get('user_id'));
+            $user = $this->app['sentry']->getUserProvider()->findById($req->get('user_id'));
 
             if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
                 $error++;
             }
-        } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+        } catch (UserNotFoundException $e) {
             $error++;
         }
 
         if ($error > 0) {
-            $app['session']->set('flash', array(
+            $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => $errorMessage,
@@ -102,16 +104,15 @@ class ForgotController extends BaseController
             'user_id' => $req->get('user_id'),
             'reset_code' => $req->get('reset_code')
         );
-        $form = $app['form.factory']->create(new \OpenCFP\Form\ResetForm(), $form_options);
-        $template = $app['twig']->loadTemplate('user/forgot_password.twig');
+        $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
         $data['form'] = $form->createView();
         $data['flash'] = $this->getFlash($app);
 
-        return $template->render($data);
+        return $this->render('user/forgot_password.twig', $data);
     }
 
-    public function processResetAction(Request $req, Application $app)
+    public function processResetAction(Request $req)
     {
         $user_id = $req->get('user_id');
         $reset_code = $req->get('reset_code');
@@ -119,49 +120,47 @@ class ForgotController extends BaseController
             'user_id' => $user_id,
             'reset_code' => $reset_code
         );
-        $form = $app['form.factory']->create(new \OpenCFP\Form\ResetForm(), $form_options);
+        $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
-        if (!$form->isValid()) {
-            $template = $app['twig']->loadTemplate('user/reset_password.twig');
-
-            return $template->render(array('form' => $form->createView()));
+        if ( ! $form->isValid()) {
+            return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
         }
-
-//        $data = $form->getData();
 
         $errorMessage = "The reset you have requested appears to be invalid, please try again.";
         $error = 0;
+
         try {
-            $user = $app['sentry']->getUserProvider()->findById($req->get('user_id'));
-        } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+            $user = $this->app['sentry']->getUserProvider()->findById($req->get('user_id'));
+        } catch (UserNotFoundException $e) {
             $error++;
         }
 
-        if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
+        if ( ! $user->checkResetPasswordCode($req->get('reset_code'))) {
             $error++;
         }
 
         if ($error > 0) {
-            $app['session']->set('flash', array(
+            $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => $errorMessage,
             ));
         }
 
-        return $app->redirect($app->url('forgot_password'));
+        return $this->redirectTo('forgot_password');
     }
 
-    public function updatePasswordAction(Request $req, Application $app)
+    public function updatePasswordAction(Request $req)
     {
         $postArray = $req->request->all();
+        
         $user_id = $postArray['reset']['user_id'];
         $reset_code = $postArray['reset']['reset_code'];
         $password = $postArray['reset']['password']['password'];
 
         try {
-            $user = $app['sentry']->getUserProvider()->findById($user_id);
-        } catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
+            $user = $this->app['sentry']->getUserProvider()->findById($user_id);
+        } catch (UserNotFoundException $e) {
             echo $e;
             die();
         }
@@ -171,34 +170,34 @@ class ForgotController extends BaseController
          * already
          */
         if ($user->checkPassword($password) === true) {
-            $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error',
-                    'ext' => "Please select a different password than your current one.",
-                ));
+            $this->app['session']->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => "Please select a different password than your current one.",
+            ]);
 
-            return $app->redirect($app->url('login'));
+            return $this->redirectTo('login');
         }
 
         // Everything looks good, let's actually reset their password
         if ($user->attemptResetPassword($reset_code, $password)) {
-            $app['session']->set('flash', array(
-                    'type' => 'success',
-                    'short' => 'Success',
-                    'ext' => "You've successfully reset your password.",
-                ));
+            $this->app['session']->set('flash', [
+                'type' => 'success',
+                'short' => 'Success',
+                'ext' => "You've successfully reset your password.",
+            ]);
 
-            return $app->redirect($app->url('login'));
+            return $this->redirectTo('login');
         }
 
         // user may have tried using the recovery twice
-        $app['session']->set('flash', array(
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => "Password reset failed, please contact the administrator.",
-            ));
+        $this->app['session']->set('flash', [
+            'type' => 'error',
+            'short' => 'Error',
+            'ext' => "Password reset failed, please contact the administrator.",
+        ]);
 
-        return $app->redirect('/');
+        return $this->redirectTo('homepage');
     }
 
     protected function sendResetEmail(Application $app, $user_id, $email, $reset_code)
@@ -215,8 +214,7 @@ class ForgotController extends BaseController
             'reset_code' => $reset_code,
             'method' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
                 ? 'https' : 'http',
-            'host' => !empty($_SERVER['HTTP_HOST'])
-            ? $_SERVER['HTTP_HOST'] : 'localhost',
+            'host' => !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost',
             'user_id' => $user_id,
             'email' => $config['application.email'],
             'title' => $config['application.title']
