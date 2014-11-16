@@ -1,10 +1,11 @@
 <?php
-namespace OpenCFP\Controller;
+
+namespace OpenCFP\Http\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class DashboardController
+class DashboardController extends BaseController
 {
     public function indexAction(Request $req, Application $app)
     {

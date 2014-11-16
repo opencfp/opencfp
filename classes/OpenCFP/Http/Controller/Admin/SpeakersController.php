@@ -1,13 +1,15 @@
 <?php
-namespace OpenCFP\Controller\Admin;
 
+namespace OpenCFP\Http\Controller\Admin;
+
+use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Model\Talk;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Pagerfanta\View\TwitterBootstrap3View;
 use OpenCFP\Controller\FlashableTrait;
 
-class SpeakersController
+class SpeakersController extends BaseController
 {
     use AdminAccessTrait;
     use FlashableTrait;

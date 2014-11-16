@@ -1,5 +1,6 @@
 <?php
-namespace OpenCFP\Controller;
+
+namespace OpenCFP\Http\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -7,7 +8,7 @@ use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Form\SignupForm;
 use OpenCFP\Config\ConfigINIFileLoader;
 
-class SignupController
+class SignupController extends BaseController
 {
     use FlashableTrait;
 

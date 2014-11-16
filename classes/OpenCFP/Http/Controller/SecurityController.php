@@ -1,10 +1,12 @@
-<?php namespace OpenCFP\Http\Controller;
+<?php
+
+namespace OpenCFP\Http\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SecurityController extends BaseCon
+class SecurityController extends BaseController
 {
     use FlashableTrait;
 

@@ -1,12 +1,13 @@
 <?php
-namespace OpenCFP\Controller;
+
+namespace OpenCFP\Http\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Form\SignupForm;
 use Intervention\Image\Image;
 
-class ProfileController
+class ProfileController extends BaseController
 {
     use FlashableTrait;
 

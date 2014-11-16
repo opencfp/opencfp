@@ -1,12 +1,12 @@
 <?php
-namespace OpenCFP\Controller;
+
+namespace OpenCFP\Http\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Form\TalkForm;
-use OpenCFP\Config\ConfigINIFileLoader;
 
-class TalkController
+class TalkController extends BaseController
 {
     use FlashableTrait;
 

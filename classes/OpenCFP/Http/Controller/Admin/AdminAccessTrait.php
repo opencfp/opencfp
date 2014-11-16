@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kayladnls
- * Date: 10/16/14
- * Time: 10:46 PM
- */
 
 namespace OpenCFP\Controller\Admin;
 

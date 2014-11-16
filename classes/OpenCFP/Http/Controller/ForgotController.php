@@ -1,11 +1,11 @@
 <?php
-namespace OpenCFP\Controller;
 
-//use OpenCFP\Model\User;
+namespace OpenCFP\Http\Controller;
+
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class ForgotController
+class ForgotController extends BaseController
 {
     use FlashableTrait;
 
