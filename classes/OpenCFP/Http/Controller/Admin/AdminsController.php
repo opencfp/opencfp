@@ -25,7 +25,7 @@ class AdminsController
         }
 
         // Create our default view for the navigation options
-        $routeGenerator = function($page) {
+        $routeGenerator = function ($page) {
             return '/admin/admins?page=' . $page;
         };
         $view = new TwitterBootstrap3View();
@@ -86,5 +86,3 @@ class AdminsController
         return $app->redirect($app['url'] . '/admin/admins');
     }
 }
-
-

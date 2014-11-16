@@ -26,7 +26,7 @@ class TalksController
         }
 
         // Create our default view for the navigation options
-        $routeGenerator = function($page) {
+        $routeGenerator = function ($page) {
             return '/admin/talks?page=' . $page;
         };
         $view = new TwitterBootstrap3View();
@@ -64,7 +64,7 @@ class TalksController
 
         // Grab all the other talks and filter out the one we have
         $otherTalks = array_filter($all_talks, function ($talk) use ($talk_id) {
-            if ((int)$talk['id'] == (int)$talk_id) {
+            if ((int) $talk['id'] == (int) $talk_id) {
                 return false;
             }
 
@@ -78,17 +78,18 @@ class TalksController
             'speaker' => $speaker,
             'otherTalks' => $otherTalks
         );
+
         return $template->render($templateData);
     }
 
     /**
      * Set Favorited Talk [POST]
-     * @param Request $req Request Object
+     * @param Request     $req Request Object
      * @param Application $app Silex Application Object
      */
     private function favoriteAction(Request $req, Application $app)
     {
-        $admin_user_id = (int)$app['sentry']->getUser()->getId();
+        $admin_user_id = (int) $app['sentry']->getUser()->getId();
         $status = true;
 
         if ($req->get('delete') !== null) {
@@ -101,20 +102,21 @@ class TalksController
             // Delete the record that matches
             $favorite = $mapper->first([
                 'admin_user_id' => $admin_user_id,
-                'talk_id' => (int)$req->get('id')
+                'talk_id' => (int) $req->get('id')
             ]);
+
             return $mapper->delete($favorite);
         }
 
         $previous_favorite = $mapper->where([
             'admin_user_id' => $admin_user_id,
-            'talk_id' => (int)$req->get('id')
+            'talk_id' => (int) $req->get('id')
         ]);
 
         if ($previous_favorite->count() == 0) {
             $favorite = $mapper->get();
             $favorite->admin_user_id = $admin_user_id;
-            $favorite->talk_id = (int)$req->get('id');
+            $favorite->talk_id = (int) $req->get('id');
 
             return $mapper->insert($favorite);
         }
@@ -124,7 +126,7 @@ class TalksController
 
     /**
      * Set Selected Talk [POST]
-     * @param Request $req Request Object
+     * @param Request     $req Request Object
      * @param Application $app Silex Application Object
      */
     private function selectAction(Request $req, Application $app)
@@ -143,5 +145,3 @@ class TalksController
         return true;
     }
 }
-
-

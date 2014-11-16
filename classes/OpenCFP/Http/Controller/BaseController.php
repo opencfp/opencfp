@@ -1,4 +1,4 @@
-<?php namespace OpenCFP\Http\Controller; 
+<?php namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,7 +11,7 @@ abstract class BaseController
      */
     protected $app;
 
-    function __construct(Application $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
@@ -32,8 +32,8 @@ abstract class BaseController
     /**
      * Returns a rendered Twig response.
      *
-     * @param string $name Twig template name
-     * @param array $context
+     * @param string $name    Twig template name
+     * @param array  $context
      *
      * @return mixed
      */
@@ -43,8 +43,8 @@ abstract class BaseController
     }
 
     /**
-     * @param string $route Route name to redirect to
-     * @param int $status
+     * @param string $route  Route name to redirect to
+     * @param int    $status
      *
      * @return RedirectResponse
      */

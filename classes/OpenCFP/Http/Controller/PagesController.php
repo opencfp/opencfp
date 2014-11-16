@@ -1,4 +1,4 @@
-<?php namespace OpenCFP\Http\Controller; 
+<?php namespace OpenCFP\Http\Controller;
 
 class PagesController extends BaseController
 {
@@ -17,4 +17,4 @@ class PagesController extends BaseController
     {
         return $this->render('ideas.twig');
     }
-} 
+}

@@ -1,18 +1,17 @@
-<?php
-namespace OpenCFP\Controller;
+<?php namespace OpenCFP\Http\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use OpenCFP\Config\ConfigINIFileLoader;
 
-class SecurityController
+class SecurityController extends BaseCon
 {
     use FlashableTrait;
 
     public function indexAction(Request $req, Application $app)
     {
         $template = $app['twig']->loadTemplate('login.twig');
+
         return $template->render(array());
     }
 

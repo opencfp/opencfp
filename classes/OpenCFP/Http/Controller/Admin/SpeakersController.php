@@ -44,7 +44,7 @@ class SpeakersController
         }
 
         // Create our default view for the navigation options
-        $routeGenerator = function($page) {
+        $routeGenerator = function ($page) {
             return '/admin/speakers?page=' . $page;
         };
         $view = new TwitterBootstrap3View();
@@ -93,6 +93,7 @@ class SpeakersController
             'photo_path' => $app['uploadPath'],
             'page' => $req->get('page'),
         );
+
         return $template->render($templateData);
     }
 

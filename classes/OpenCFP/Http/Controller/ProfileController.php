@@ -25,6 +25,7 @@ class ProfileController
                 'short' => 'Error',
                 'ext' => "You cannot edit someone else's profile"
             ));
+
             return $app->redirect($app->url('dashboard'));
         }
 
@@ -66,6 +67,7 @@ class ProfileController
                 'short' => 'Error',
                 'ext' => "You cannot edit someone else's profile"
             ));
+
             return $app->redirect($app->url('dashboard'));
         }
 
@@ -192,6 +194,7 @@ class ProfileController
                 'short' => 'Error',
                 'ext' => implode("<br>", $form->getErrorMessages())
             ));
+
             return $app->redirect($app->url('password_edit'));
         }
 
@@ -208,6 +211,7 @@ class ProfileController
                 'short' => 'Error',
                 'ext' => "Unable to update your password in the database. Please try again."
             ));
+
             return $app->redirect($app->url('password_edit'));
         }
 
@@ -223,8 +227,8 @@ class ProfileController
     /**
      * Method that saves user info using sanitized data and an Entity mapper
      *
-     * @param Application $app
-     * @param array $sanitized_data
+     * @param  Application $app
+     * @param  array       $sanitized_data
      * @return boolean
      */
     protected function saveUser($app, $sanitized_data)
@@ -245,4 +249,3 @@ class ProfileController
         return $mapper->save($user);
     }
 }
-

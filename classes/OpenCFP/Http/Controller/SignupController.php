@@ -5,7 +5,6 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Form\SignupForm;
-use Intervention\Image\Image;
 use OpenCFP\Config\ConfigINIFileLoader;
 
 class SignupController
@@ -42,7 +41,6 @@ class SignupController
 
         return $template->render($form_data);
     }
-
 
     public function processAction(Request $req, Application $app)
     {
@@ -109,7 +107,6 @@ class SignupController
                 // Add in the extra speaker information
                 $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
 
-
                 $speaker = $mapper->get($user->id);
                 $speaker->info = $sanitized_data['speaker_info'];
                 $speaker->bio = $sanitized_data['speaker_bio'];
@@ -146,6 +143,7 @@ class SignupController
 
         $template = $app['twig']->loadTemplate('user/create.twig');
         $form_data['flash'] = $this->getFlash($app);
+
         return $template->render($form_data);
     }
 }

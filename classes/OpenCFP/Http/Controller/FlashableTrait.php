@@ -29,7 +29,7 @@ trait FlashableTrait
     /**
      * Clear Session Flash Message
      *
-     * @param  Application $app OpenCFP Application
+     * @param Application $app OpenCFP Application
      */
     public function clearFlash(Application $app)
     {

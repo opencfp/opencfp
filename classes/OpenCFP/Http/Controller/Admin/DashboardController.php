@@ -3,7 +3,6 @@ namespace OpenCFP\Controller\Admin;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Pagerfanta\View\TwitterBootstrap3View;
 
 class DashboardController
 {
@@ -30,5 +29,3 @@ class DashboardController
         return $template->render($templateData);
     }
 }
-
-

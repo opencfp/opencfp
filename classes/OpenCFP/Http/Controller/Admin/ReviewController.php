@@ -18,7 +18,7 @@ class ReviewController
         $admin_count = $mapper->all()
             ->where(['permissions' => '{"admin":1}'])
             ->count();
-        $admin_majority = (int)($admin_count * .501) + 1;
+        $admin_majority = (int) ($admin_count * .501) + 1;
 
         // Get list of talks where majority of admins 'favorited' them
         $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
@@ -35,7 +35,7 @@ class ReviewController
         }
 
         // Create our default view for the navigation options
-        $routeGenerator = function($page) {
+        $routeGenerator = function ($page) {
             return '/admin/review?page=' . $page;
         };
         $view = new TwitterBootstrap3View();
@@ -56,5 +56,3 @@ class ReviewController
         return $template->render($template_data);
     }
 }
-
-

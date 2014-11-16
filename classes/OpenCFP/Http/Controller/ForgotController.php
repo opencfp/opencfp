@@ -1,7 +1,6 @@
 <?php
 namespace OpenCFP\Controller;
 
-use OpenCFP\Config\ConfigINIFileLoader;
 //use OpenCFP\Model\User;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,7 +74,6 @@ class ForgotController
 
         return $app->redirect($app->url('login'));
     }
-
 
     public function resetAction(Request $req, Application $app)
     {
@@ -178,6 +176,7 @@ class ForgotController
                     'short' => 'Error',
                     'ext' => "Please select a different password than your current one.",
                 ));
+
             return $app->redirect($app->url('login'));
         }
 
@@ -188,6 +187,7 @@ class ForgotController
                     'short' => 'Success',
                     'ext' => "You've successfully reset your password.",
                 ));
+
             return $app->redirect($app->url('login'));
         }
 
@@ -197,6 +197,7 @@ class ForgotController
                 'short' => 'Error',
                 'ext' => "Password reset failed, please contact the administrator.",
             ));
+
         return $app->redirect('/');
     }
 
@@ -244,4 +245,3 @@ class ForgotController
         }
     }
 }
-

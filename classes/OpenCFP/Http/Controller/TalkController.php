@@ -13,7 +13,7 @@ class TalkController
     /**
      * Check to see if the CfP for this app is still open
      *
-     * @param integer $current_time
+     * @param  integer $current_time
      * @return boolean
      */
     public function isCfpOpen($current_time)
@@ -34,8 +34,8 @@ class TalkController
     /**
      * Controller action for viewing a specific talk
      *
-     * @param Request $req
-     * @param Application $app
+     * @param  Request     $req
+     * @param  Application $app
      * @return mixed
      */
     public function viewAction(Request $req, Application $app)
@@ -68,8 +68,8 @@ class TalkController
     /**
      * Controller action for displaying the form to edit an existing talk
      *
-     * @param Request $req
-     * @param Application $app
+     * @param  Request     $req
+     * @param  Application $app
      * @return mixed
      */
     public function editAction(Request $req, Application $app)
@@ -102,7 +102,7 @@ class TalkController
         $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
         $talk_info = $talk_mapper->get($talk_id)->toArray();
 
-        if ($talk_info['user_id'] !== (int)$user->getId()) {
+        if ($talk_info['user_id'] !== (int) $user->getId()) {
             return $app->redirect($app->url('dashboard'));
         }
 
@@ -128,8 +128,8 @@ class TalkController
     /**
      * Action for displaying the form to create a new talk
      *
-     * @param Request $req
-     * @param Application $app
+     * @param  Request     $req
+     * @param  Application $app
      * @return mixed
      */
     public function createAction(Request $req, Application $app)
@@ -173,8 +173,8 @@ class TalkController
      * Controller action the processes the POST request to try and create
      * a new talk
      *
-     * @param Request $req
-     * @param Application $app
+     * @param  Request     $req
+     * @param  Application $app
      * @return mixed
      */
     public function processCreateAction(Request $req, Application $app)
@@ -224,7 +224,7 @@ class TalkController
                 'slides' => $sanitized_data['slides'],
                 'other' => $sanitized_data['other'],
                 'sponsor' => $sanitized_data['sponsor'],
-                'user_id' => (int)$user->getId(),
+                'user_id' => (int) $user->getId(),
             );
 
             $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
@@ -266,6 +266,7 @@ class TalkController
         }
 
         $data['flash'] = $this->getFlash($app);
+
         return $template->render($data);
     }
 
@@ -298,7 +299,7 @@ class TalkController
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
             $data = array(
-                'id' => (int)$sanitized_data['id'],
+                'id' => (int) $sanitized_data['id'],
                 'title' => $sanitized_data['title'],
                 'description' => $sanitized_data['description'],
                 'type' => $sanitized_data['type'],
@@ -308,7 +309,7 @@ class TalkController
                 'slides' => $sanitized_data['slides'],
                 'other' => $sanitized_data['other'],
                 'sponsor' => $sanitized_data['sponsor'],
-                'user_id' => (int)$user->getId()
+                'user_id' => (int) $user->getId()
             );
 
             $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
@@ -373,7 +374,7 @@ class TalkController
         $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
         $talk = $talk_mapper->get($req->get('tid'));
 
-        if ($talk->user_id !== (int)$user->getId()) {
+        if ($talk->user_id !== (int) $user->getId()) {
             return $app->json(['delete' => 'no']);
         }
 
@@ -385,9 +386,9 @@ class TalkController
     /**
      * Method that sends an email when a talk is created
      *
-     * @param Application $app
-     * @param string $email
-     * @param integer $talk_id
+     * @param  Application $app
+     * @param  string      $email
+     * @param  integer     $talk_id
      * @return mixed
      */
     protected function sendSubmitEmail(Application $app, $email, $talk_id)
