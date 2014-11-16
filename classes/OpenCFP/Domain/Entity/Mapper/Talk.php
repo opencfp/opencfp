@@ -11,7 +11,7 @@ class Talk extends Mapper
      * value in the favorite based on whether or not the current admin
      * user has favourited this talk
      *
-     * @param integer $admin_user_id
+     * @param  integer $admin_user_id
      * @return array
      */
     public function getAllPagerFormatted($admin_user_id)
@@ -31,8 +31,8 @@ class Talk extends Mapper
     /**
      * Return an array of recent talks
      *
-     * @param integer $admin_user_id
-     * @param integer $limt
+     * @param  integer $admin_user_id
+     * @param  integer $limt
      * @return array
      */
     public function getRecent($admin_user_id, $limit = 10)
@@ -53,7 +53,7 @@ class Talk extends Mapper
     /**
      * Return a collection of talks that a majority of the admins have liked
      *
-     * @param integer $admin_majority
+     * @param  integer $admin_majority
      * @return array
      */
     public function getAdminFavorites($admin_user_id, $admin_majority)
@@ -83,7 +83,7 @@ class Talk extends Mapper
      * Return a collection of entities representing talks that belong to a
      * specific user
      *
-     * @param integer $user_id
+     * @param  integer $user_id
      * @return array
      */
     public function getByUser($user_id)
@@ -94,8 +94,8 @@ class Talk extends Mapper
     /**
      * Iterates over DBAL objects and returns a formatted result set
      *
-     * @param mixed $talk
-     * @param integer $admin_user_id
+     * @param  mixed   $talk
+     * @param  integer $admin_user_id
      * @return array
      */
     protected function createdFormattedOutput($talk, $admin_user_id)

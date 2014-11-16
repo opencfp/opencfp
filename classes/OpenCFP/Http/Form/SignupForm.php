@@ -25,7 +25,7 @@ class SignupForm extends Form
     /**
      * Validate all methods by calling all our validation methods
      *
-     * @param string $action
+     * @param  string  $action
      * @return boolean
      */
     public function validateAll($action = 'create')
@@ -83,12 +83,14 @@ class SignupForm extends Form
         // Check if uploaded file is greater than 5MB
         if ($this->_taintedData['speaker_photo']->getClientSize() > (5 * 1048576)) {
             $this->_addErrorMessage("Speaker photo can not be larger than 5MB");
+
             return false;
         }
 
         // Check if photo is in the mime-type white list
         if (!in_array($this->_taintedData['speaker_photo']->getMimeType(), $allowedMimeTypes)) {
             $this->_addErrorMessage("Speaker photo must be a jpg or png");
+
             return false;
         }
 
@@ -105,6 +107,7 @@ class SignupForm extends Form
     {
         if (!isset($this->_taintedData['email']) || $this->_taintedData['email'] == '') {
             $this->_addErrorMessage("Missing email");
+
             return false;
         }
 
@@ -112,6 +115,7 @@ class SignupForm extends Form
 
         if (!$response) {
             $this->_addErrorMessage("Invalid email address format");
+
             return false;
         }
 
@@ -130,21 +134,25 @@ class SignupForm extends Form
 
         if ($passwd == '' || $passwd2 == '') {
             $this->_addErrorMessage("Missing passwords");
+
             return false;
         }
 
         if ($passwd !== $passwd2) {
             $this->_addErrorMessage("The submitted passwords do not match");
+
             return false;
         }
 
         if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
             $this->_addErrorMessage("The submitted password must be at least 5 characters long");
+
             return false;
         }
 
         if ($passwd !== str_replace(" ", "", $passwd)) {
             $this->_addErrorMessage("The submitted password contains invalid characters");
+
             return false;
         }
 
@@ -183,7 +191,6 @@ class SignupForm extends Form
         return $validation_response;
     }
 
-
     /**
      * Method that applies vaidation rules to user-submitted first names
      *
@@ -195,16 +202,19 @@ class SignupForm extends Form
 
         if (empty($last_name)) {
             $this->_addErrorMessage("Last name was blank or contained unwanted characters");
+
             return false;
         }
 
         if (strlen($last_name) > 255) {
             $this->_addErrorMessage("Last name cannot be longer than 255 characters");
+
             return false;
         }
 
         if ($last_name !== $this->_taintedData['last_name']) {
             $this->_addErrorMessage("Last name data did not match after sanitizing");
+
             return false;
         }
 
@@ -214,14 +224,12 @@ class SignupForm extends Form
     public function validateCompany()
     {
         // $company = $this->_cleanData['company'];
-
         return true;
     }
 
     public function validateTwitter()
     {
         // $twitter = $this->_cleanData['twitter'];
-
         return true;
     }
 

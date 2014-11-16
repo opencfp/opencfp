@@ -1,4 +1,4 @@
-<?php namespace OpenCFP\Provider; 
+<?php namespace OpenCFP\Provider;
 
 use HTMLPurifier;
 use HTMLPurifier_Config;
@@ -12,7 +12,7 @@ class HtmlPurifierServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['purifier'] = $app->share(function($app){
+        $app['purifier'] = $app->share(function ($app) {
             $config = HTMLPurifier_Config::createDefault();
 
             if ($app->config('cache.enabled')) {

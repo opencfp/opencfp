@@ -63,7 +63,7 @@ final class Application extends SilexApplication
     {
         $parts = explode('.', $slug);
 
-        $parts = array_map(function($value){
+        $parts = array_map(function ($value) {
             return ucfirst($value);
         }, $parts);
 

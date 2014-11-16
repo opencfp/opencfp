@@ -1,4 +1,4 @@
-<?php namespace OpenCFP\Provider; 
+<?php namespace OpenCFP\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -83,4 +83,4 @@ class RouteServiceProvider  implements ServiceProviderInterface
     public function boot(Application $app)
     {
     }
-} 
+}

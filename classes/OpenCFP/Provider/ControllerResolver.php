@@ -1,4 +1,4 @@
-<?php namespace OpenCFP\Provider; 
+<?php namespace OpenCFP\Provider;
 
 use OpenCFP\Application;
 
@@ -18,7 +18,7 @@ class ControllerResolver extends \Silex\ControllerResolver
      * We're overriding this protected method to auto-inject the application container
      * into our controllers.
      *
-     * @param string $controller
+     * @param  string      $controller
      * @return array|mixed
      */
     protected function createController($controller)

@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Form;
 
-use OpenCFP\Model\Speaker;
 /**
  * Class representing the form that speakers fill out when they want
  * to submit a talk
@@ -31,7 +30,7 @@ class TalkForm extends Form
     {
         parent::sanitize();
 
-        foreach($this->_cleanData as $key => $value) {
+        foreach ($this->_cleanData as $key => $value) {
             $this->_cleanData[$key] = strip_tags($value);
         }
     }
@@ -64,6 +63,7 @@ class TalkForm extends Form
     {
         if (empty($this->_taintedData['title'])) {
             $this->_addErrorMessage("Please fill in the title");
+
             return false;
         }
 
@@ -71,6 +71,7 @@ class TalkForm extends Form
 
         if (strlen($title) > 100) {
             $this->_addErrorMessage("Your talk title has to be 100 characters or less");
+
             return false;
         }
 
@@ -86,6 +87,7 @@ class TalkForm extends Form
     {
         if (empty($this->_cleanData['description'])) {
             $this->_addErrorMessage("Your description was missing");
+
             return false;
         }
 
@@ -106,11 +108,13 @@ class TalkForm extends Form
 
         if (empty($this->_cleanData['type']) || !isset($this->_cleanData['type'])) {
             $this->_addErrorMessage("You must choose what type of talk you are submitting");
+
             return false;
         }
 
         if (!in_array($this->_cleanData['type'], $validTalkTypes)) {
             $this->_addErrorMessage("You did not choose a valid talk type");
+
             return false;
         }
 
@@ -127,11 +131,13 @@ class TalkForm extends Form
 
         if (empty($this->_cleanData['level']) || !isset($this->_cleanData['level'])) {
             $this->_addErrorMessage("You must choose what level of talk you are submitting");
+
             return false;
         }
 
         if (!in_array($this->_cleanData['level'], $validLevels)) {
             $this->_addErrorMessage("You did not choose a valid talk level");
+
             return false;
         }
 
@@ -157,11 +163,13 @@ class TalkForm extends Form
 
         if (empty($this->_cleanData['category']) || !isset($this->_cleanData['category'])) {
             $this->_addErrorMessage("You must choose what category of talk you are submitting");
+
             return false;
         }
 
         if (!in_array($this->_cleanData['category'], $validCategories)) {
             $this->_addErrorMessage("You did not choose a valid talk category");
+
             return false;
         }
 

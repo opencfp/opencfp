@@ -1,7 +1,6 @@
-<?php namespace OpenCFP\Provider; 
+<?php namespace OpenCFP\Provider;
 
 use Cartalyst\Sentry\Facades\Native\Sentry;
-use Cartalyst\Sentry\Sessions\NativeSession;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -32,7 +31,7 @@ class SentryServiceProvider implements ServiceProviderInterface
         // Boots Eloquent to be used by Sentry.
         $database->bootEloquent();
 
-        $app['sentry'] = $app->share(function() {
+        $app['sentry'] = $app->share(function () {
             $sentry = Sentry::instance();
             $sentry->getThrottleProvider()->disable();
 

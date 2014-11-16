@@ -4,14 +4,13 @@ namespace OpenCFP\Domain\Services;
 
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;
-use Mockery\Exception;
 
 class Login
 {
     private $sentry;
     private $authenticationMessage = '';
 
-    function __construct($sentry)
+    public function __construct($sentry)
     {
         $this->sentry = $sentry;
     }
@@ -20,6 +19,7 @@ class Login
     {
         if (empty($user) || empty($password)) {
             $this->authenticationMessage = "Missing Email or Password";
+
             return false;
         }
 
@@ -33,9 +33,11 @@ class Login
             );
         } catch (UserNotFoundException $e) {
             $this->authenticationMessage = "Invalid Email or Password";
+
             return false;
         } catch (UserNotActivatedException $e) {
             $this->authenticationMessage = "Your account hasn't been activated. Did you get the activation email?";
+
             return false;
         }
 
@@ -53,6 +55,7 @@ class Login
                 $variables['redirect'] = '/dashboard';
             }
         }
+
         return $variables;
     }
 

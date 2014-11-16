@@ -15,7 +15,7 @@ class SpotServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['spot'] = $app->share(function($app) {
+        $app['spot'] = $app->share(function ($app) {
             $config = new SpotConfig();
 
             $config->addConnection('mysql', [

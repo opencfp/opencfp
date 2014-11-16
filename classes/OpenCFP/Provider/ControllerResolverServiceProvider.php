@@ -1,4 +1,4 @@
-<?php namespace OpenCFP\Provider; 
+<?php namespace OpenCFP\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
