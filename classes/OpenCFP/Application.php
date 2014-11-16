@@ -4,6 +4,9 @@ namespace OpenCFP;
 
 use Silex\Application as SilexApplication;
 use Igorw\Silex\ConfigServiceProvider;
+use OpenCFP\Provider\ControllerResolverServiceProvider;
+use OpenCFP\Provider\RouteServiceProvider;
+use OpenCFP\Provider\TemplatingEngineServiceProvider;
 
 final class Application extends SilexApplication
 {
@@ -17,6 +20,12 @@ final class Application extends SilexApplication
 
         $this->bindPathsInApplicationContainer();
         $this->bindConfiguration();
+
+        $this->register(new ControllerResolverServiceProvider);
+        $this->register(new TemplatingEngineServiceProvider);
+
+        // Routes...
+        $this->register(new RouteServiceProvider);
     }
 
     /**
@@ -24,7 +33,7 @@ final class Application extends SilexApplication
      */
     protected function bindPathsInApplicationContainer()
     {
-        foreach (['config', 'upload'] as $slug) {
+        foreach (['config', 'upload', 'templates', 'public', 'assets'] as $slug) {
             $this["paths.{$slug}"] = $this->{$slug . 'Path'}();
         }
     }
@@ -32,13 +41,35 @@ final class Application extends SilexApplication
     /**
      * Loads configuration and puts application in debug-mode if not in production environment.
      */
-    private function bindConfiguration()
+    protected function bindConfiguration()
     {
         $this->register(new ConfigServiceProvider($this->configPath(), [], null, 'config'));
 
         if ( ! $this->isProduction()) {
             $this['debug'] = true;
         }
+    }
+
+    /**
+     * Retrieve a configuration value.
+     *
+     * @param string $path the configuration key in dot-notation
+     *
+     * @return string|null the configuration value
+     */
+    public function config($path)
+    {
+        $cursor = $this['config'];
+
+        foreach (explode('.', $path) as $part) {
+            if ( ! isset($cursor[$part])) {
+                return null;
+            }
+
+            $cursor = $cursor[$part];
+        }
+
+        return $cursor;
     }
 
     /**
@@ -75,6 +106,24 @@ final class Application extends SilexApplication
     public function templatesPath()
     {
         return $this->basePath() . "/templates";
+    }
+
+    /**
+     * Get the public path.
+     * @return string
+     */
+    public function publicPath()
+    {
+        return $this->basePath() . "/web";
+    }
+
+    /**
+     * Get the assets path.
+     * @return string
+     */
+    public function assetsPath()
+    {
+        return $this->basePath() . "/web/assets";
     }
 
     /**
