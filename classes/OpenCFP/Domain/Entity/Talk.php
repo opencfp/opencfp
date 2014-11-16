@@ -1,8 +1,10 @@
 <?php
 
-namespace OpenCFP\Entity;
+namespace OpenCFP\Domain\Entity;
 
-class Talk extends \Spot\Entity
+use Spot\Entity;
+
+class Talk extends Entity
 {
     protected static $table = 'talks';
     protected static $mapper = 'OpenCFP\Entity\Mapper\Talk';

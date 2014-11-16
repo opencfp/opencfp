@@ -1,5 +1,6 @@
 <?php
-namespace OpenCFP;
+
+namespace OpenCFP\Domain\Services;
 
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;

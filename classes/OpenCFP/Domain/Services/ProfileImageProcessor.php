@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP;
+namespace OpenCFP\Domain\Services;
 
 use Intervention\Image\Image;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

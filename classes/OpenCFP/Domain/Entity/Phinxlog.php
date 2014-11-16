@@ -1,8 +1,10 @@
 <?php
 
-namespace OpenCFP\Entity;
+namespace OpenCFP\Domain\Entity;
 
-class Phinxlog extends \Spot\Entity
+use Spot\Entity;
+
+class Phinxlog extends Entity
 {
     protected static $table = 'phinxlog';
 

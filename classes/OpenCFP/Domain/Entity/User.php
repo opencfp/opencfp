@@ -1,8 +1,10 @@
 <?php
 
-namespace OpenCFP\Entity;
+namespace OpenCFP\Domain\Entity;
 
-class User extends \Spot\Entity
+use Spot\Entity;
+
+class User extends Entity
 {
     protected static $table = 'users';
 

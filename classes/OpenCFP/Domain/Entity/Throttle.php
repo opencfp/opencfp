@@ -1,8 +1,10 @@
 <?php
 
-namespace OpenCFP\Entity;
+namespace OpenCFP\Domain\Entity;
 
-class Throttle extends \Spot\Entity
+use Spot\Entity;
+
+class Throttle extends Entity
 {
     protected static $table = 'throttle';
 

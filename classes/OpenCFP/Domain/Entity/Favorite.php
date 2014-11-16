@@ -1,8 +1,10 @@
 <?php
 
-namespace OpenCFP\Entity;
+namespace OpenCFP\Domain\Entity;
 
-class Favorite extends \Spot\Entity
+use Spot\Entity;
+
+class Favorite extends Entity
 {
     protected static $table = 'favorites';
 

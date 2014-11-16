@@ -1,8 +1,10 @@
 <?php
 
-namespace OpenCFP\Entity;
+namespace OpenCFP\Domain\Entity;
 
-class UserGroup extends \Spot\Entity
+use Spot\Entity;
+
+class UserGroup extends Entity
 {
     protected static $table = 'users_groups';
 
