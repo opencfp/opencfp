@@ -1,8 +1,8 @@
 <?php
-namespace OpenCFP\Markdown;
+namespace OpenCFP\Http\Markdown;
 
-use \Aptoma\Twig\Extension\MarkdownEngineInterface;
 use Ciconia\Ciconia;
+use Aptoma\Twig\Extension\MarkdownEngineInterface;
 
 class CiconiaEngine implements MarkdownEngineInterface
 {
