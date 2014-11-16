@@ -2,11 +2,12 @@
 
 namespace OpenCFP;
 
+use Silex\Application as SilexApplication;
+use Igorw\Silex\ConfigServiceProvider;
 use OpenCFP\Provider\DatabaseServiceProvider;
 use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\SentryServiceProvider;
-use Silex\Application as SilexApplication;
-use Igorw\Silex\ConfigServiceProvider;
+use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
 use OpenCFP\Provider\RouteServiceProvider;
 use OpenCFP\Provider\TemplatingEngineServiceProvider;
@@ -23,11 +24,13 @@ final class Application extends SilexApplication
         $this->bindPathsInApplicationContainer();
         $this->bindConfiguration();
 
+        // Services...
         $this->register(new ControllerResolverServiceProvider);
         $this->register(new TemplatingEngineServiceProvider);
         $this->register(new DatabaseServiceProvider);
         $this->register(new SentryServiceProvider);
         $this->register(new HtmlPurifierServiceProvider);
+        $this->register(new SpotServiceProvider);
 
         // Routes...
         $this->register(new RouteServiceProvider);

@@ -2,51 +2,43 @@
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Cartalyst\Sentry\Users\UserExistsException;
-use OpenCFP\Form\SignupForm;
-use OpenCFP\Config\ConfigINIFileLoader;
 
 class SignupController extends BaseController
 {
     use FlashableTrait;
 
-    public function indexAction(Request $req, Application $app)
+    public function indexAction(Request $req)
     {
-        if ($app['sentry']->check()) {
-            return $app->redirect($app->url('dashboard'));
+        if ($this->app['sentry']->check()) {
+            return $this->redirectTo('dashboard');
         }
 
-        // Nobody can login after CFP deadline
-        $loader = new ConfigINIFileLoader(APP_DIR . '/config/config.' . APP_ENV . '.ini');
-        $config_data = $loader->load();
+        if (strtotime($this->app->config('application.enddate') . ' 11:59 PM') < strtotime('now')) {
+            $this->app['session']->set('flash', array(
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'Sorry, the call for papers has ended.',
+            ));
 
-        if (strtotime($config_data['application']['enddate'] . ' 11:59 PM') < strtotime('now')) {
-
-            $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error',
-                    'ext' => 'Sorry, the call for papers has ended.',
-                ));
-
-            return $app->redirect('/');
+            return $this->redirectTo('homepage');
         }
 
-        $template = $app['twig']->loadTemplate('user/create.twig');
-        $form_data = array();
-        $form_data['transportation'] = 0;
-        $form_data['hotel'] = 0;
-        $form_data['formAction'] = $app->url('user_create');
-        $form_data['buttonInfo'] = 'Create my speaker profile';
-
-        return $template->render($form_data);
+        return $this->render('user/create.twig', [
+            'transportation' => 0,
+            'hotel' => 0,
+            'formAction' => $this->url('user_create'),
+            'buttonInfo' => 'Create my speaker profile'
+        ]);
     }
 
     public function processAction(Request $req, Application $app)
     {
         $form_data = array(
-            'formAction' => $app->url('user_create'),
+            'formAction' => $this->url('user_create'),
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
             'company' => $req->get('company'),
@@ -126,10 +118,10 @@ class SignupController extends BaseController
                 return $app->redirect($app->url('login'));
             } catch (UserExistsException $e) {
                 $app['session']->set('flash', array(
-                        'type' => 'error',
-                        'short' => 'Error',
-                        'ext' => 'A user already exists with that email address'
-                    ));
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => 'A user already exists with that email address'
+                ));
             }
         }
 
