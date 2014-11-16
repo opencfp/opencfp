@@ -40,7 +40,7 @@ class ProfileController extends BaseController
             'speaker_info' => $speaker_data['info'],
             'speaker_bio' => $speaker_data['bio'],
             'speaker_photo' => $speaker_data['photo_path'],
-            'preview_photo' => $this->app->uploadPath() . '/' . $speaker_data['photo_path'],
+            'preview_photo' => '/uploads/' . $speaker_data['photo_path'],
             'airport' => $speaker_data['airport'],
             'transportation' => $speaker_data['transportation'],
             'hotel' => $speaker_data['hotel'],

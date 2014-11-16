@@ -33,7 +33,7 @@ class DashboardController extends BaseController
             'transportation' => $user_info['transportation'],
             'hotel' => $user_info['hotel'],
             'speaker_photo' => $user_info['photo_path'],
-            'preview_photo' => 'uploads/' . $user_info['photo_path'],
+            'preview_photo' => '/uploads/' . $user_info['photo_path'],
             'airport' => $user_info['airport'],
             'current_page' => '/dashboard'
         );
