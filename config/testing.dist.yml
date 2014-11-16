@@ -19,3 +19,11 @@ database:
   dsn: mysql:dbname=cfp_travis;host=127.0.0.1
   user: root
   password: ""
+
+mail:
+  host: localhost
+  port: 25
+  username: ~
+  password: ~
+  encryption: ~
+  auth_mode: ~
