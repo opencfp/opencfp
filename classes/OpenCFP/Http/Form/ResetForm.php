@@ -1,5 +1,5 @@
 <?php
-namespace OpenCFP\Form;
+namespace OpenCFP\Http\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

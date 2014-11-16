@@ -1,5 +1,6 @@
 <?php
-namespace OpenCFP\Form;
+
+namespace OpenCFP\Http\Form;
 
 /**
  * Form object for our signup & profile pages, handles validation of form data

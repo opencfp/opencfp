@@ -1,5 +1,5 @@
 <?php
-namespace OpenCFP\Form;
+namespace OpenCFP\Http\Form;
 
 abstract class Form
 {

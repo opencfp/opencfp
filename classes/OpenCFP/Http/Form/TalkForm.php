@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Form;
+namespace OpenCFP\Http\Form;
 
 use OpenCFP\Model\Speaker;
 /**
