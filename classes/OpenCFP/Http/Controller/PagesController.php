@@ -6,7 +6,6 @@ class PagesController extends BaseController
 {
     public function showHomepage()
     {
-        return $this->redirectTo('talk_ideas');
         return $this->render('home.twig');
     }
 
