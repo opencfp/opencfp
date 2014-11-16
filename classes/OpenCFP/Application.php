@@ -2,6 +2,9 @@
 
 namespace OpenCFP;
 
+use OpenCFP\Provider\DatabaseServiceProvider;
+use OpenCFP\Provider\HtmlPurifierServiceProvider;
+use OpenCFP\Provider\SentryServiceProvider;
 use Silex\Application as SilexApplication;
 use Igorw\Silex\ConfigServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
@@ -10,7 +13,6 @@ use OpenCFP\Provider\TemplatingEngineServiceProvider;
 
 final class Application extends SilexApplication
 {
-
     public function __construct($basePath, Environment $environment)
     {
         parent::__construct();
@@ -23,6 +25,9 @@ final class Application extends SilexApplication
 
         $this->register(new ControllerResolverServiceProvider);
         $this->register(new TemplatingEngineServiceProvider);
+        $this->register(new DatabaseServiceProvider);
+        $this->register(new SentryServiceProvider);
+        $this->register(new HtmlPurifierServiceProvider);
 
         // Routes...
         $this->register(new RouteServiceProvider);
@@ -33,9 +38,35 @@ final class Application extends SilexApplication
      */
     protected function bindPathsInApplicationContainer()
     {
-        foreach (['config', 'upload', 'templates', 'public', 'assets'] as $slug) {
-            $this["paths.{$slug}"] = $this->{$slug . 'Path'}();
+        foreach ($this->getConfigSlugs() as $slug) {
+            $this["paths.{$slug}"] = $this->{$this->camelCaseFrom($slug) . 'Path'}();
         }
+    }
+
+    private function getConfigSlugs()
+    {
+        return ['config', 'upload', 'templates', 'public', 'assets', 'cache.twig', 'cache.purifier'];
+    }
+
+    /**
+     * Converts dot-separated configuration slugs to camel-case for use in
+     * method calls.
+     *
+     * @param $slug
+     *
+     * @return string
+     */
+    private function camelCaseFrom($slug)
+    {
+        $parts = explode('.', $slug);
+
+        $parts = array_map(function($value){
+            return ucfirst($value);
+        }, $parts);
+
+        $parts[0] = strtolower($parts[0]);
+
+        return implode('', $parts);
     }
 
     /**
@@ -124,6 +155,24 @@ final class Application extends SilexApplication
     public function assetsPath()
     {
         return $this->basePath() . "/web/assets";
+    }
+
+    /**
+     * Get the Twig cache path.
+     * @return string
+     */
+    public function cacheTwigPath()
+    {
+        return $this->basePath() . "/cache/twig";
+    }
+
+    /**
+     * Get the HTML Purifier cache path.
+     * @return string
+     */
+    public function cachePurifierPath()
+    {
+        return $this->basePath() . "/cache/htmlpurifier";
     }
 
     /**
