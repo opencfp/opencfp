@@ -11,9 +11,14 @@ use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
 use OpenCFP\Provider\RouteServiceProvider;
 use OpenCFP\Provider\TemplatingEngineServiceProvider;
+use Silex\Provider\SessionServiceProvider;
 
 final class Application extends SilexApplication
 {
+    /**
+     * @param array       $basePath
+     * @param Environment $environment
+     */
     public function __construct($basePath, Environment $environment)
     {
         parent::__construct();
@@ -31,6 +36,7 @@ final class Application extends SilexApplication
         $this->register(new SentryServiceProvider);
         $this->register(new HtmlPurifierServiceProvider);
         $this->register(new SpotServiceProvider);
+        $this->register(new SessionServiceProvider);
 
         // Routes...
         $this->register(new RouteServiceProvider);

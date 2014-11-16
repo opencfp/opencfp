@@ -30,7 +30,7 @@ class ProfileController extends BaseController
             return $app->redirect($app->url('dashboard'));
         }
 
-        $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+        $mapper = $app['spot']->mapper('\OpenCFP\Domain\Entity\User');
         $speaker_data = $mapper->get($user->getId())->toArray();
 
         $form_data = array(
@@ -111,7 +111,7 @@ class ProfileController extends BaseController
                 $processor->process($file, $sanitized_data['speaker_photo']);
             }
 
-            $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+            $mapper = $app['spot']->mapper('\OpenCFP\Domain\Entity\User');
             $user = $mapper->get($user->getId());
             $user->email = $sanitized_data['email'];
             $user->first_name = $sanitized_data['first_name'];
@@ -234,7 +234,7 @@ class ProfileController extends BaseController
      */
     protected function saveUser($app, $sanitized_data)
     {
-        $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+        $mapper = $app['spot']->mapper('\OpenCFP\Domain\Entity\User');
         $user = $mapper->get($sanitized_data['user_id']);
         $user->email = $sanitized_data['email'];
         $user->first_name = $sanitized_data['first_name'];

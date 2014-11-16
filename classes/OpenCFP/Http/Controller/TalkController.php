@@ -47,7 +47,7 @@ class TalkController extends BaseController
         $id = $req->get('id');
         $talk_id = filter_var($id, FILTER_VALIDATE_INT);
 
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talk_info = $talk_mapper->get($talk_id);
 
         $user = $app['sentry']->getUser();
@@ -99,7 +99,7 @@ class TalkController extends BaseController
 
         $user = $app['sentry']->getUser();
 
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talk_info = $talk_mapper->get($talk_id)->toArray();
 
         if ($talk_info['user_id'] !== (int) $user->getId()) {
@@ -227,7 +227,7 @@ class TalkController extends BaseController
                 'user_id' => (int) $user->getId(),
             );
 
-            $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+            $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
             $talk = $talk_mapper->create($data);
 
             $app['session']->set('flash', array(
@@ -312,7 +312,7 @@ class TalkController extends BaseController
                 'user_id' => (int) $user->getId()
             );
 
-            $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+            $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
             $talk = $mapper->get($data['id']);
 
             foreach ($data as $field => $value) {
@@ -371,7 +371,7 @@ class TalkController extends BaseController
         }
 
         $user = $app['sentry']->getUser();
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talk = $talk_mapper->get($req->get('tid'));
 
         if ($talk->user_id !== (int) $user->getId()) {
@@ -393,7 +393,7 @@ class TalkController extends BaseController
      */
     protected function sendSubmitEmail(Application $app, $email, $talk_id)
     {
-        $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talk = $mapper->get($talk_id);
 
         $config = $app['config'];

@@ -16,14 +16,14 @@ class ReviewController extends BaseController
         $user = $app['sentry']->getUser();
 
         // How many admins make for a majority?
-        $mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $admin_count = $mapper->all()
             ->where(['permissions' => '{"admin":1}'])
             ->count();
         $admin_majority = (int) ($admin_count * .501) + 1;
 
         // Get list of talks where majority of admins 'favorited' them
-        $mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $favorite_talks = $mapper->getAdminFavorites($user->id, $admin_majority);
 
         // Set up our page stuff

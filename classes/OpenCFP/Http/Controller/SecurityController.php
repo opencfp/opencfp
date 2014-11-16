@@ -3,31 +3,28 @@
 namespace OpenCFP\Http\Controller;
 
 use Silex\Application;
+use OpenCFP\Domain\Services\Login;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class SecurityController extends BaseController
 {
     use FlashableTrait;
 
-    public function indexAction(Request $req, Application $app)
+    public function indexAction()
     {
-        $template = $app['twig']->loadTemplate('login.twig');
-
-        return $template->render(array());
+        return $this->render('login.twig');
     }
 
     public function processAction(Request $req, Application $app)
     {
-        $template = $app['twig']->loadTemplate('login.twig');
         $template_data = array();
         $code = 200;
 
         try {
-            $page = new \OpenCFP\Login($app['sentry']);
+            $page = new Login($app['sentry']);
 
             if ($page->authenticate($req->get('email'), $req->get('password'))) {
-                return $app->redirect($app->url('dashboard'));
+                return $this->redirectTo('dashboard');
             }
 
             $errorMessage = $page->getAuthenticationMessage();
@@ -45,7 +42,7 @@ class SecurityController extends BaseController
         }
 
         // Set Success Flash Message
-        $app['session']->set('flash', array(
+        $this->app['session']->set('flash', array(
             'type' => 'error',
             'short' => 'Error',
             'ext' => $errorMessage,
@@ -53,13 +50,12 @@ class SecurityController extends BaseController
 
         $template_data['flash'] = $this->getFlash($app);
 
-        return new Response($template->render($template_data), $code);
+        return $this->render('login.twig', $template_data, $code);
     }
 
-    public function outAction(Request $req, Application $app)
+    public function outAction()
     {
-        $app['sentry']->logout();
-
-        return $app->redirect('/');
+        $this->app['sentry']->logout();
+        return $this->redirectTo('homepage');
     }
 }

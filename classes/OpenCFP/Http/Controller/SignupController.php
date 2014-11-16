@@ -98,7 +98,7 @@ class SignupController extends BaseController
                 );
 
                 // Add in the extra speaker information
-                $mapper = $app['spot']->mapper('\OpenCFP\Entity\User');
+                $mapper = $app['spot']->mapper('\OpenCFP\Domain\Entity\User');
 
                 $speaker = $mapper->get($user->id);
                 $speaker->info = $sanitized_data['speaker_info'];
@@ -115,7 +115,7 @@ class SignupController extends BaseController
                     'ext' => "You've successfully created your account!",
                 ));
 
-                return $app->redirect($app->url('login'));
+                return $this->redirectTo('login');
             } catch (UserExistsException $e) {
                 $app['session']->set('flash', array(
                     'type' => 'error',
@@ -128,15 +128,14 @@ class SignupController extends BaseController
         if (!$isValid) {
             // Set Error Flash Message
             $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error',
-                    'ext' => implode("<br>", $form->getErrorMessages())
-                ));
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => implode("<br>", $form->getErrorMessages())
+            ));
         }
 
-        $template = $app['twig']->loadTemplate('user/create.twig');
         $form_data['flash'] = $this->getFlash($app);
 
-        return $template->render($form_data);
+        return $this->render('user/create.twig', $form_data);
     }
 }

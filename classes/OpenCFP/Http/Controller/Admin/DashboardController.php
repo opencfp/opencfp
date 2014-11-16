@@ -12,11 +12,11 @@ class DashboardController extends BaseController
 
     private function indexAction(Request $req, Application $app)
     {
-        $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $user_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $speaker_total = $user_mapper->all()->count();
 
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
-        $favorite_mapper = $app['spot']->mapper('OpenCFP\Entity\Favorite');
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $favorite_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
         $recent_talks = $talk_mapper->getRecent($app['sentry']->getUser()->getId());
 
         $template = $app['twig']->loadTemplate('admin/index.twig');

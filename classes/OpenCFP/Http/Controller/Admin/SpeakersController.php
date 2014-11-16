@@ -77,11 +77,11 @@ class SpeakersController extends BaseController
         }
 
         // Get info about the speaker
-        $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $user_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $speaker_details = $user_mapper->get($req->get('id'))->toArray();
 
         // Get info about the talks
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $talk_mapper->getByUser($req->get('id'))->toArray();
 
         // Build and render the template
@@ -106,7 +106,7 @@ class SpeakersController extends BaseController
             return $app->redirect($app->url('dashboard'));
         }
 
-        $mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $speaker = $mapper->get($req->get('id'));
         $response = $mapper->delete($speaker);
 

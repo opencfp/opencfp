@@ -14,10 +14,10 @@ class DashboardController extends BaseController
         }
 
         $user = $app['sentry']->getUser();
-        $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $user_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $user_info = $user_mapper->get($user->getId())->toArray();
 
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $my_talks = $talk_mapper->getByUser($user->getId());
 
         // Load our template and RENDER

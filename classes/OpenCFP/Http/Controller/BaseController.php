@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class BaseController
@@ -34,14 +35,15 @@ abstract class BaseController
     /**
      * Returns a rendered Twig response.
      *
-     * @param string $name    Twig template name
+     * @param string $name Twig template name
      * @param array  $context
+     * @param int    $status
      *
      * @return mixed
      */
-    public function render($name, array $context = [])
+    public function render($name, array $context = [], $status = 200)
     {
-        return $this->app['twig']->render($name, $context);
+        return new Response($this->app['twig']->render($name, $context), $status);
     }
 
     /**

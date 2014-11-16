@@ -62,7 +62,7 @@ class AdminsController extends BaseController
             return $app->redirect($app['url'] . '/admin/admins');
         }
 
-        $mapper = $app['spot']->mapper('OpenCFP\Entity\User');
+        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $user_data = $mapper->get($req->get('id'))->toArray();
         $user = $app['sentry']->getUserProvider()->findByLogin($user_data['email']);
 

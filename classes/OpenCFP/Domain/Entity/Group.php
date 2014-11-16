@@ -22,7 +22,7 @@ class Group extends Entity
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'users' => $mapper->hasManyThrough($entity, '\OpenCFP\Entity\User', '\OpenCFP\Entity\UserGroup', 'user_id', 'group_id'),
+            'users' => $mapper->hasManyThrough($entity, 'OpenCFP\Domain\Entity\User', 'OpenCFP\Domain\Entity\UserGroup', 'user_id', 'group_id'),
         ];
     }
 }
