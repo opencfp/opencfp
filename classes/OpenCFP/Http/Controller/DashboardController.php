@@ -22,20 +22,20 @@ class DashboardController extends BaseController
 
         // Load our template and RENDER
         $template_data = array(
-        'myTalks' => $my_talks,
-        'first_name' => $user_info['first_name'],
-        'last_name' => $user_info['last_name'],
-        'user' => $user_info,
-        'company' => $user_info['company'] ?: null,
-        'twitter' => $user_info['twitter'],
-        'speaker_info' => $user_info['info'],
-        'speaker_bio' => $user_info['bio'],
-        'transportation' => $user_info['transportation'],
-        'hotel' => $user_info['hotel'],
-        'speaker_photo' => $user_info['photo_path'],
-        'preview_photo' => $this->app->uploadPath() . '/' . $user_info['photo_path'],
-        'airport' => $user_info['airport'],
-        'current_page' => '/dashboard'
+            'myTalks' => $my_talks,
+            'first_name' => $user_info['first_name'],
+            'last_name' => $user_info['last_name'],
+            'user' => $user_info,
+            'company' => $user_info['company'] ?: null,
+            'twitter' => $user_info['twitter'],
+            'speaker_info' => $user_info['info'],
+            'speaker_bio' => $user_info['bio'],
+            'transportation' => $user_info['transportation'],
+            'hotel' => $user_info['hotel'],
+            'speaker_photo' => $user_info['photo_path'],
+            'preview_photo' => 'uploads/' . $user_info['photo_path'],
+            'airport' => $user_info['airport'],
+            'current_page' => '/dashboard'
         );
 
         return $this->render('dashboard.twig', $template_data);

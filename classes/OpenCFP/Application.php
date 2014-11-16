@@ -2,6 +2,7 @@
 
 namespace OpenCFP;
 
+use OpenCFP\Provider\ImageProcessorProvider;
 use Silex\Application as SilexApplication;
 use Igorw\Silex\ConfigServiceProvider;
 use OpenCFP\Provider\DatabaseServiceProvider;
@@ -42,6 +43,7 @@ final class Application extends SilexApplication
         $this->register(new HtmlPurifierServiceProvider);
         $this->register(new SpotServiceProvider);
         $this->register(new SessionServiceProvider);
+        $this->register(new ImageProcessorProvider());
         $this->register(new TranslationServiceProvider(), [
             'translator.messages' => []
         ]);
