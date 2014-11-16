@@ -11,7 +11,10 @@ use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
 use OpenCFP\Provider\RouteServiceProvider;
 use OpenCFP\Provider\TemplatingEngineServiceProvider;
+use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
 
 final class Application extends SilexApplication
 {
@@ -32,11 +35,16 @@ final class Application extends SilexApplication
         // Services...
         $this->register(new ControllerResolverServiceProvider);
         $this->register(new TemplatingEngineServiceProvider);
+        $this->register(new FormServiceProvider());
+        $this->register(new ValidatorServiceProvider());
         $this->register(new DatabaseServiceProvider);
         $this->register(new SentryServiceProvider);
         $this->register(new HtmlPurifierServiceProvider);
         $this->register(new SpotServiceProvider);
         $this->register(new SessionServiceProvider);
+        $this->register(new TranslationServiceProvider(), [
+            'translator.messages' => []
+        ]);
 
         // Routes...
         $this->register(new RouteServiceProvider);

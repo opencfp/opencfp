@@ -37,6 +37,11 @@ class TemplatingEngineServiceProvider implements ServiceProviderInterface
 
         $app->before(function (Request $request, Application $app) {
             $app['twig']->addGlobal('current_page', $request->getRequestUri());
+
+            if ($app['session']->has('flash')) {
+                $app['twig']->addGlobal('flash', $app['session']->get('flash'));
+                $app['session']->set('flash', null);
+            }
         });
 
         // Twig Markdown Extension

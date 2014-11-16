@@ -2,35 +2,33 @@
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use OpenCFP\Form\SignupForm;
-use Intervention\Image\Image;
 
 class ProfileController extends BaseController
 {
     use FlashableTrait;
 
-    public function editAction(Request $req, Application $app)
+    public function editAction(Request $req)
     {
-        if (!$app['sentry']->check()) {
-            return $app->redirect($app->url('login'));
+        if (!$this->app['sentry']->check()) {
+            return $this->redirectTo('login');
         }
 
-        $template = $app['twig']->loadTemplate('user/edit.twig');
-        $user = $app['sentry']->getUser();
+        $user = $this->app['sentry']->getUser();
 
-        if ($user->getId() !== $req->get('id')) {
-            $app['session']->set('flash', array(
+        if ((string)$user->getId() !== $req->get('id')) {
+            $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "You cannot edit someone else's profile"
             ));
 
-            return $app->redirect($app->url('dashboard'));
+            return $this->redirectTo('dashboard');
         }
 
-        $mapper = $app['spot']->mapper('\OpenCFP\Domain\Entity\User');
+        $mapper = $this->app['spot']->mapper('\OpenCFP\Domain\Entity\User');
         $speaker_data = $mapper->get($user->getId())->toArray();
 
         $form_data = array(
@@ -42,34 +40,34 @@ class ProfileController extends BaseController
             'speaker_info' => $speaker_data['info'],
             'speaker_bio' => $speaker_data['bio'],
             'speaker_photo' => $speaker_data['photo_path'],
-            'preview_photo' => $app['uploadPath'] . $speaker_data['photo_path'],
+            'preview_photo' => $this->app->uploadPath() . '/' . $speaker_data['photo_path'],
             'airport' => $speaker_data['airport'],
             'transportation' => $speaker_data['transportation'],
             'hotel' => $speaker_data['hotel'],
             'id' => $user->getId(),
-            'formAction' => $app->url('user_update'),
+            'formAction' => $this->url('user_update'),
             'buttonInfo' => 'Update Profile',
         );
 
-        return $template->render($form_data) ;
+        return $this->render('user/edit.twig', $form_data) ;
     }
 
-    public function processAction(Request $req, Application $app)
+    public function processAction(Request $req)
     {
-        if (!$app['sentry']->check()) {
-            return $app->redirect($app->url('login'));
+        if (!$this->app['sentry']->check()) {
+            return $this->redirectTo('login');
         }
 
-        $user = $app['sentry']->getUser();
+        $user = $this->app['sentry']->getUser();
 
-        if ($user->getId() !== $req->get('id')) {
-            $app['session']->set('flash', array(
+        if ((string)$user->getId() !== $req->get('id')) {
+            $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "You cannot edit someone else's profile"
             ));
 
-            return $app->redirect($app->url('dashboard'));
+            return $this->redirectTo('dashboard');
         }
 
         $form_data = array(
@@ -91,7 +89,7 @@ class ProfileController extends BaseController
             $form_data['speaker_photo'] = $req->files->get('speaker_photo');
         }
 
-        $form = new SignupForm($form_data, $app['purifier']);
+        $form = new SignupForm($form_data, $this->app['purifier']);
         $isValid = $form->validateAll('update');
 
         if ($isValid) {
@@ -104,14 +102,14 @@ class ProfileController extends BaseController
                 /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
                 $file = $form_data['speaker_photo'];
                 /** @var \OpenCFP\ProfileImageProcessor $processor */
-                $processor = $app['profile_image_processor'];
+                $processor = $this->app['profile_image_processor'];
 
                 $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $file->getClientOriginalExtension();
 
                 $processor->process($file, $sanitized_data['speaker_photo']);
             }
 
-            $mapper = $app['spot']->mapper('\OpenCFP\Domain\Entity\User');
+            $mapper = $this->app['spot']->mapper('\OpenCFP\Domain\Entity\User');
             $user = $mapper->get($user->getId());
             $user->email = $sanitized_data['email'];
             $user->first_name = $sanitized_data['first_name'];
@@ -132,71 +130,67 @@ class ProfileController extends BaseController
             $response = $mapper->save($user);
 
             if ($response >= 0) {
-                $app['session']->set('flash', array(
+                $this->app['session']->set('flash', array(
                     'type' => 'success',
                     'short' => 'Success',
                     'ext' => "Successfully updated your information!"
                 ));
 
-                return $app->redirect($app->url('user_edit', ['id' => $form_data['user_id']]));
+                return $this->redirectTo('dashboard');
             }
         } else {
-            $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error',
-                    'ext' => implode('<br>', $form->getErrorMessages())
-                ));
+            $this->app['session']->set('flash', array(
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => implode('<br>', $form->getErrorMessages())
+            ));
         }
 
-        $form_data['formAction'] = $app->url('user_edit');
+        $form_data['formAction'] = $this->url('user_edit', ['id' => $user->id]);
         $form_data['buttonInfo'] = 'Update Profile';
         $form_data['id'] = $user->id;
         $form_data['user'] = $user;
-        $form_data['flash'] = $this->getFlash($app);
-        $template = $app['twig']->loadTemplate('user/edit.twig');
+        $form_data['flash'] = $this->getFlash($this->app);
 
-        return $template->render($form_data);
+        return $this->render('user/edit.twig', $form_data);
     }
 
-    public function passwordAction(Request $req, Application $app)
+    public function passwordAction(Request $req)
     {
-        if (!$app['sentry']->check()) {
-            return $app->redirect($app->url('login'));
+        if (!$this->app['sentry']->check()) {
+            return $this->redirectTo('login');
         }
-        $user = $app['sentry']->getUser();
 
-        $template = $app['twig']->loadTemplate('user/change_password.twig');
-
-        return $template->render(array());
+        return $this->render('user/change_password.twig');
     }
 
-    public function passwordProcessAction(Request $req, Application $app)
+    public function passwordProcessAction(Request $req)
     {
-        if (!$app['sentry']->check()) {
-            return $app->redirect($app->url('login'));
+        if (!$this->app['sentry']->check()) {
+            return $this->redirectTo('login');
         }
 
-        $user = $app['sentry']->getUser();
+        $user = $this->app['sentry']->getUser();
 
         /**
-         * Okay, the logic is kind of weird but we can use the SignupFOrm
+         * Okay, the logic is kind of weird but we can use the SignupForm
          * validation code to make sure our password changes are good
          */
         $formData = array(
             'password' => $req->get('password'),
             'password2' => $req->get('password_confirm')
         );
-        $form = new SignupForm($formData, $app['purifier']);
+        $form = new SignupForm($formData, $this->app['purifier']);
         $form->sanitize();
 
         if ($form->validatePasswords() === false) {
-            $app['session']->set('flash', array(
+            $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => implode("<br>", $form->getErrorMessages())
             ));
 
-            return $app->redirect($app->url('password_edit'));
+            return $this->redirectTo('password_edit');
         }
 
         /**
@@ -206,23 +200,23 @@ class ProfileController extends BaseController
         $sanitized_data = $form->getCleanData();
         $reset_code = $user->getResetPasswordCode();
 
-        if (!$user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
-            $app['session']->set('flash', array(
+        if ( ! $user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
+            $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "Unable to update your password in the database. Please try again."
             ));
 
-            return $app->redirect($app->url('password_edit'));
+            return $this->redirectTo('password_edit');
         }
 
-        $app['session']->set('flash', array(
+        $this->app['session']->set('flash', array(
             'type' => 'success',
             'short' => 'Success',
             'ext' => "Changed your password."
         ));
 
-        return $app->redirect($app->url('password_edit'));
+        return $this->redirectTo('password_edit');
     }
 
     /**
@@ -234,7 +228,7 @@ class ProfileController extends BaseController
      */
     protected function saveUser($app, $sanitized_data)
     {
-        $mapper = $app['spot']->mapper('\OpenCFP\Domain\Entity\User');
+        $mapper = $this->app['spot']->mapper('\OpenCFP\Domain\Entity\User');
         $user = $mapper->get($sanitized_data['user_id']);
         $user->email = $sanitized_data['email'];
         $user->first_name = $sanitized_data['first_name'];

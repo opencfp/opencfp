@@ -43,7 +43,7 @@ class RouteServiceProvider  implements ServiceProviderInterface
 
         // Change/forgot Password
         $secureRoutes[] = $app->get('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordAction')->bind('password_edit');
-        $secureRoutes[] = $app->post('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordProcessAction')->bind('password_update');
+        $secureRoutes[] = $app->post('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordProcessAction')->bind('password_change');
         $secureRoutes[] = $app->get('/forgot', 'OpenCFP\Http\Controller\ForgotController::indexAction')->bind('forgot_password');
         $secureRoutes[] = $app->post('/forgot', 'OpenCFP\Http\Controller\ForgotController::sendResetAction')->bind('forgot_password_create');
         $secureRoutes[] = $app->get('/forgot_success', 'OpenCFP\Http\Controller\ForgotController::successAction')->bind('forgot_password_success');

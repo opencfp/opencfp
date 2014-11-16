@@ -153,7 +153,7 @@ class ForgotController extends BaseController
     public function updatePasswordAction(Request $req)
     {
         $postArray = $req->request->all();
-        
+
         $user_id = $postArray['reset']['user_id'];
         $reset_code = $postArray['reset']['reset_code'];
         $password = $postArray['reset']['password']['password'];
