@@ -10,7 +10,7 @@ class DashboardController extends BaseController
     public function indexAction(Request $req, Application $app)
     {
         if (!$app['sentry']->check()) {
-            return $app->redirect($app->url('login'));
+            return $this->redirectTo('login');
         }
 
         $user = $app['sentry']->getUser();
@@ -21,42 +21,23 @@ class DashboardController extends BaseController
         $my_talks = $talk_mapper->getByUser($user->getId());
 
         // Load our template and RENDER
-        $template = $app['twig']->loadTemplate('dashboard.twig');
         $template_data = array(
-            'myTalks' => $my_talks,
-            'first_name' => $user_info['first_name'],
-            'last_name' => $user_info['last_name'],
-            'user' => $user_info,
-            'company' => $user_info['company'] ?: null,
-            'twitter' => $user_info['twitter'],
-            'speaker_info' => $user_info['info'],
-            'speaker_bio' => $user_info['bio'],
-            'transportation' => $user_info['transportation'],
-            'hotel' => $user_info['hotel'],
-            'speaker_photo' => $user_info['photo_path'],
-            'preview_photo' => $app['uploadPath'] . $user_info['photo_path'],
-            'airport' => $user_info['airport'],
-            'current_page' => '/dashboard'
+        'myTalks' => $my_talks,
+        'first_name' => $user_info['first_name'],
+        'last_name' => $user_info['last_name'],
+        'user' => $user_info,
+        'company' => $user_info['company'] ?: null,
+        'twitter' => $user_info['twitter'],
+        'speaker_info' => $user_info['info'],
+        'speaker_bio' => $user_info['bio'],
+        'transportation' => $user_info['transportation'],
+        'hotel' => $user_info['hotel'],
+        'speaker_photo' => $user_info['photo_path'],
+        'preview_photo' => $this->app->uploadPath() . '/' . $user_info['photo_path'],
+        'airport' => $user_info['airport'],
+        'current_page' => '/dashboard'
         );
 
-        return $template->render($template_data);
-    }
-
-    public function ideasAction(Request $req, Application $app)
-    {
-        // Load our template and RENDER
-        $template = $app['twig']->loadTemplate('ideas.twig');
-        $template_data = array();
-
-        return $template->render($template_data);
-    }
-
-    public function packageAction(Request $req, Application $app)
-    {
-        // Load our template and RENDER
-        $template = $app['twig']->loadTemplate('package.twig');
-        $template_data = array();
-
-        return $template->render($template_data);
+        return $this->render('dashboard.twig', $template_data);
     }
 }

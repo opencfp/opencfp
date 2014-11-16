@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Entity\Mapper;
+namespace OpenCFP\Domain\Entity\Mapper;
 
 use Spot\Mapper;
 
