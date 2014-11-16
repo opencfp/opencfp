@@ -18,13 +18,7 @@ class TalkController extends BaseController
      */
     public function isCfpOpen($current_time)
     {
-        $loader = new ConfigINIFileLoader(
-            APP_DIR . '/config/config.' . APP_ENV . '.ini'
-        );
-        $config_data = $loader->load();
-        $end_date = $config_data['application']['enddate'] . ' 11:59 PM';
-
-        if ($current_time < strtotime($end_date)) {
+        if ($current_time < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
             return true;
         }
 
