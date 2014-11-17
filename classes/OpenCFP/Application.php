@@ -3,6 +3,7 @@
 namespace OpenCFP;
 
 use OpenCFP\Provider\ImageProcessorProvider;
+use OpenCFP\Provider\TwigServiceProvider;
 use Silex\Application as SilexApplication;
 use Igorw\Silex\ConfigServiceProvider;
 use OpenCFP\Provider\DatabaseServiceProvider;
@@ -11,7 +12,6 @@ use OpenCFP\Provider\SentryServiceProvider;
 use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
 use OpenCFP\Provider\RouteServiceProvider;
-use OpenCFP\Provider\TemplatingEngineServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
@@ -36,9 +36,9 @@ final class Application extends SilexApplication
 
         // Services...
         $this->register(new ControllerResolverServiceProvider);
-        $this->register(new TemplatingEngineServiceProvider);
-        $this->register(new FormServiceProvider());
-        $this->register(new ValidatorServiceProvider());
+        $this->register(new TwigServiceProvider);
+        $this->register(new FormServiceProvider);
+        $this->register(new ValidatorServiceProvider);
         $this->register(new DatabaseServiceProvider);
         $this->register(new SentryServiceProvider);
         $this->register(new HtmlPurifierServiceProvider);

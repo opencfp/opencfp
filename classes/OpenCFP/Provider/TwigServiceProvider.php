@@ -3,21 +3,21 @@
 use Silex\Application;
 use Ciconia\Ciconia;
 use Silex\ServiceProviderInterface;
-use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Aptoma\Twig\Extension\MarkdownExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
 use Silex\Provider\UrlGeneratorServiceProvider;
 
-class TemplatingEngineServiceProvider implements ServiceProviderInterface
+class TwigServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}
      */
     public function register(Application $app)
     {
-        $app->register(new TwigServiceProvider(), [
+        $app->register(new SilexTwigServiceProvider(), [
             'twig.path' => $app->templatesPath(),
             'options' => [
                 'debug' => !$app->isProduction()
