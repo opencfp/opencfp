@@ -18,11 +18,11 @@ database:
   database: cfp
   dsn: mysql:dbname=cfp;host=127.0.0.1
   user: root
-  password: ""
+  password: ~
 
 mail:
-  host: localhost
-  port: 25
+  host: ~
+  port: ~
   username: ~
   password: ~
   encryption: ~

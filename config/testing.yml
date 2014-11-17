@@ -21,8 +21,8 @@ database:
   password: ""
 
 mail:
-  host: localhost
-  port: 25
+  host: ~
+  port: ~
   username: ~
   password: ~
   encryption: ~
