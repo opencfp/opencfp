@@ -4,7 +4,6 @@ use Silex\Application;
 use Ciconia\Ciconia;
 use Silex\ServiceProviderInterface;
 use Silex\Provider\TwigServiceProvider;
-use OpenCFP\Http\Markdown\CiconiaEngine;
 use Aptoma\Twig\Extension\MarkdownExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;

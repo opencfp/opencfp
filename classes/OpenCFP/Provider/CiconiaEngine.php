@@ -1,5 +1,5 @@
 <?php
-namespace OpenCFP\Http\Markdown;
+namespace OpenCFP\Provider;
 
 use Ciconia\Ciconia;
 use Aptoma\Twig\Extension\MarkdownEngineInterface;
