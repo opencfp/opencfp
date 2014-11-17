@@ -10,16 +10,15 @@ class DashboardController extends BaseController
 {
     use AdminAccessTrait;
 
-    private function indexAction(Request $req, Application $app)
+    private function indexAction(Request $req)
     {
-        $user_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $speaker_total = $user_mapper->all()->count();
 
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
-        $favorite_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
-        $recent_talks = $talk_mapper->getRecent($app['sentry']->getUser()->getId());
+        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $favorite_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
+        $recent_talks = $talk_mapper->getRecent($this->app['sentry']->getUser()->getId());
 
-        $template = $app['twig']->loadTemplate('admin/index.twig');
         $templateData = array(
             'speakerTotal' => $speaker_total,
             'talkTotal' => $talk_mapper->all()->count(),
@@ -28,6 +27,6 @@ class DashboardController extends BaseController
             'talks' => $recent_talks
         );
 
-        return $template->render($templateData);
+        return $this->render('admin/index.twig', $templateData);
     }
 }

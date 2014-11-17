@@ -2,12 +2,13 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\Http\Controller\BaseController;
-use OpenCFP\Model\Talk;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Pagerfanta\View\TwitterBootstrap3View;
-use OpenCFP\Controller\FlashableTrait;
+use OpenCFP\Http\Controller\BaseController;
+use OpenCFP\Http\Controller\FlashableTrait;
 
 class SpeakersController extends BaseController
 {
@@ -30,14 +31,14 @@ class SpeakersController extends BaseController
     private function indexAction(Request $req, Application $app)
     {
         $rawSpeakers = $app['spot']
-            ->mapper('\OpenCFP\Entity\User')
+            ->mapper('OpenCFP\Domain\Entity\User')
             ->all()
             ->order(['last_name' => 'ASC'])
             ->toArray();
 
         // Set up our page stuff
-        $adapter = new \Pagerfanta\Adapter\ArrayAdapter($rawSpeakers);
-        $pagerfanta = new \Pagerfanta\Pagerfanta($adapter);
+        $adapter = new ArrayAdapter($rawSpeakers);
+        $pagerfanta = new Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage(20);
         $pagerfanta->getNbResults();
 
@@ -58,9 +59,9 @@ class SpeakersController extends BaseController
 
         $template = $app['twig']->loadTemplate('admin/speaker/index.twig');
         $templateData = array(
-            'airport' => $app['confAirport'],
-            'arrival' => $app['arrival'],
-            'departure' => $app['departure'],
+            'airport' => $this->app->config('application.airport'),
+            'arrival' => $this->app->config('application.arrival'),
+            'departure' => $this->app->config('application.departure'),
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage()
