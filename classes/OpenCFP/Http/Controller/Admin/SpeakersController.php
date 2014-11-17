@@ -15,9 +15,9 @@ class SpeakersController extends BaseController
     use AdminAccessTrait;
     use FlashableTrait;
 
-    private function indexAction(Request $req, Application $app)
+    private function indexAction(Request $req)
     {
-        $rawSpeakers = $app['spot']
+        $rawSpeakers = $this->app['spot']
             ->mapper('OpenCFP\Domain\Entity\User')
             ->all()
             ->order(['last_name' => 'ASC'])
@@ -44,7 +44,6 @@ class SpeakersController extends BaseController
             array('proximity' => 3)
         );
 
-        $template = $app['twig']->loadTemplate('admin/speaker/index.twig');
         $templateData = array(
             'airport' => $this->app->config('application.airport'),
             'arrival' => $this->app->config('application.arrival'),
@@ -54,47 +53,46 @@ class SpeakersController extends BaseController
             'page' => $pagerfanta->getCurrentPage()
         );
 
-        return $template->render($templateData);
+        return $this->render('admin/speaker/index.twig', $templateData);
     }
 
-    private function viewAction(Request $req, Application $app)
+    private function viewAction(Request $req)
     {
         // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app->url('dashboard'));
+        if (!$this->userHasAccess($this->app)) {
+            return $this->redirectTo('dashboard');
         }
 
         // Get info about the speaker
-        $user_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $speaker_details = $user_mapper->get($req->get('id'))->toArray();
 
         // Get info about the talks
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $talk_mapper->getByUser($req->get('id'))->toArray();
 
         // Build and render the template
-        $template = $app['twig']->loadTemplate('admin/speaker/view.twig');
         $templateData = array(
-            'airport' => $app['confAirport'],
-            'arrival' => $app['arrival'],
-            'departure' => $app['departure'],
+            'airport' => $this->app->config('application.airport'),
+            'arrival' => $this->app->config('application.arrival'),
+            'departure' => $this->app->config('application.departure'),
             'speaker' => $speaker_details,
             'talks' => $talks,
-            'photo_path' => $app['uploadPath'],
+            'photo_path' => '/uploads/',
             'page' => $req->get('page'),
         );
 
-        return $template->render($templateData);
+        return $this->render('admin/speaker/view.twig', $templateData);
     }
 
-    private function deleteAction(Request $req, Application $app)
+    private function deleteAction(Request $req)
     {
         // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($app)) {
-            return $app->redirect($app->url('dashboard'));
+        if ( ! $this->userHasAccess($this->app)) {
+            return $this->redirectTo('dashboard');
         }
 
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $speaker = $mapper->get($req->get('id'));
         $response = $mapper->delete($speaker);
 
@@ -109,13 +107,13 @@ class SpeakersController extends BaseController
         }
 
         // Set flash message
-        $app['session']->set('flash', array(
+        $this->app['session']->set('flash', array(
             'type' => $type,
             'short' => $short,
             'ext' => $ext
         ));
 
-        return $app->redirect($app->url('admin_speakers'));
+        return $this->redirectTo('admin_speakers');
     }
 
 }
