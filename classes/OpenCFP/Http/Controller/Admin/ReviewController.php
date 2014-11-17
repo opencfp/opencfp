@@ -11,19 +11,19 @@ class ReviewController extends BaseController
 {
     use AdminAccessTrait;
 
-    private function indexAction(Request $req, Application $app)
+    private function indexAction(Request $req)
     {
-        $user = $app['sentry']->getUser();
+        $user = $this->app['sentry']->getUser();
 
         // How many admins make for a majority?
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $admin_count = $mapper->all()
             ->where(['permissions' => '{"admin":1}'])
             ->count();
         $admin_majority = (int) ($admin_count * .501) + 1;
 
         // Get list of talks where majority of admins 'favorited' them
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $favorite_talks = $mapper->getAdminFavorites($user->id, $admin_majority);
 
         // Set up our page stuff
@@ -47,7 +47,6 @@ class ReviewController extends BaseController
             array('proximity' => 3)
         );
 
-        $template = $app['twig']->loadTemplate('admin/review/index.twig');
         $template_data = [
             'pagination' => $pagination,
             'talks' => $pagerfanta,
@@ -55,6 +54,6 @@ class ReviewController extends BaseController
             'totalRecords' => count($favorite_talks)
         ];
 
-        return $template->render($template_data);
+        return $this->render('admin/review/index.twig', $template_data);
     }
 }

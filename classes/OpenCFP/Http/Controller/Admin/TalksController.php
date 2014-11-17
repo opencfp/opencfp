@@ -11,10 +11,10 @@ class TalksController extends BaseController
 {
     use AdminAccessTrait;
 
-    private function indexAction(Request $req, Application $app)
+    private function indexAction(Request $req)
     {
-        $admin_user_id = $app['sentry']->getUser()->getId();
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $admin_user_id = $this->app['sentry']->getUser()->getId();
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $pager_formatted_talks = $mapper->getAllPagerFormatted($admin_user_id);
 
         // Set up our page stuff
@@ -38,7 +38,6 @@ class TalksController extends BaseController
             array('proximity' => 3)
         );
 
-        $template = $app['twig']->loadTemplate('admin/talks/index.twig');
         $templateData = array(
             'pagination' => $pagination,
             'talks' => $pagerfanta,
@@ -47,13 +46,13 @@ class TalksController extends BaseController
             'totalRecords' => count($pager_formatted_talks)
         );
 
-        return $template->render($templateData);
+        return $this->render('admin/talks/index.twig', $templateData);
     }
 
-    public function viewAction(Request $req, Application $app)
+    public function viewAction(Request $req)
     {
         // Get info about the talks
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talk_id = $req->get('id');
         $talk = $talk_mapper->get($talk_id);
         $all_talks = $talk_mapper->all()
@@ -61,7 +60,7 @@ class TalksController extends BaseController
             ->toArray();
 
         // Get info about our speaker
-        $user_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $speaker = $user_mapper->get($talk->user_id)->toArray();;
 
         // Grab all the other talks and filter out the one we have
@@ -74,31 +73,31 @@ class TalksController extends BaseController
         });
 
         // Build and render the template
-        $template = $app['twig']->loadTemplate('admin/talks/view.twig');
         $templateData = array(
             'talk' => $talk,
             'speaker' => $speaker,
             'otherTalks' => $otherTalks
         );
 
-        return $template->render($templateData);
+        return $this->render('admin/talks/view.twig', $templateData);
     }
 
     /**
      * Set Favorited Talk [POST]
-     * @param Request     $req Request Object
-     * @param Application $app Silex Application Object
+     *
+     * @param Request $req Request Object
+     * @return bool
      */
-    private function favoriteAction(Request $req, Application $app)
+    private function favoriteAction(Request $req)
     {
-        $admin_user_id = (int) $app['sentry']->getUser()->getId();
+        $admin_user_id = (int) $this->app['sentry']->getUser()->getId();
         $status = true;
 
         if ($req->get('delete') !== null) {
             $status = false;
         }
 
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
 
         if ($status == false) {
             // Delete the record that matches
@@ -128,10 +127,11 @@ class TalksController extends BaseController
 
     /**
      * Set Selected Talk [POST]
+     *
      * @param Request     $req Request Object
-     * @param Application $app Silex Application Object
+     * @return bool
      */
-    private function selectAction(Request $req, Application $app)
+    private function selectAction(Request $req)
     {
         $status = true;
 
@@ -139,7 +139,7 @@ class TalksController extends BaseController
             $status = false;
         }
 
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talk = $mapper->get($req->get('id'));
         $talk->selected = $status;
         $mapper->save($talk);

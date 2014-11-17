@@ -11,10 +11,10 @@ class AdminsController extends BaseController
 {
     use AdminAccessTrait;
 
-    private function indexAction(Request $req, Application $app)
+    private function indexAction(Request $req)
     {
-        $adminGroup = $app['sentry']->getGroupProvider()->findByName('Admin');
-        $adminUsers = $app['sentry']->findAllUsersInGroup($adminGroup);
+        $adminGroup = $this->app['sentry']->getGroupProvider()->findByName('Admin');
+        $adminUsers = $this->app['sentry']->findAllUsersInGroup($adminGroup);
 
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($adminUsers->toArray());
@@ -37,54 +37,52 @@ class AdminsController extends BaseController
             array('proximity' => 3)
         );
 
-        $template = $app['twig']->loadTemplate('admin/admins/index.twig');
         $templateData = array(
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage()
         );
 
-        return $template->render($templateData);
+        return $this->render('admin/admins/index.twig', $templateData);
     }
 
-    private function removeAction(Request $req, Application $app)
+    private function removeAction(Request $req)
     {
-        $admin = $app['sentry']->getUser();
+        $admin = $this->app['sentry']->getUser();
 
         if ($admin->getId() == $req->get('id')) {
+            $this->app['session']->set('flash', array(
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'Sorry, you cannot remove yourself as Admin.',
+            ));
 
-            $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error',
-                    'ext' => 'Sorry, you cannot remove yourself as Admin.',
-                ));
-
-            return $app->redirect($app['url'] . '/admin/admins');
+            return $this->redirectTo('admin_admins');
         }
 
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $user_data = $mapper->get($req->get('id'))->toArray();
-        $user = $app['sentry']->getUserProvider()->findByLogin($user_data['email']);
+        $user = $this->app['sentry']->getUserProvider()->findByLogin($user_data['email']);
 
-        $adminGroup = $app['sentry']->getGroupProvider()->findByName('Admin');
+        $adminGroup = $this->app['sentry']->getGroupProvider()->findByName('Admin');
         $response = $user->removeGroup($adminGroup);
 
         if ($response == true) {
-            $app['session']->set('flash', array(
-                    'type' => 'success',
-                    'short' => 'Success',
-                    'ext' => 'Successfully removed the Admin!',
-                ));
+            $this->app['session']->set('flash', array(
+                'type' => 'success',
+                'short' => 'Success',
+                'ext' => 'Successfully removed the Admin!',
+            ));
         }
 
         if ($response == false) {
-            $app['session']->set('flash', array(
-                    'type' => 'error',
-                    'short' => 'Error',
-                    'ext' => 'We were unable to remove the Admin. Please try again.',
-                ));
+            $this->app['session']->set('flash', array(
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'We were unable to remove the Admin. Please try again.',
+            ));
         }
 
-        return $app->redirect($app['url'] . '/admin/admins');
+        return $this->redirectTo('admin_admins');
     }
 }
