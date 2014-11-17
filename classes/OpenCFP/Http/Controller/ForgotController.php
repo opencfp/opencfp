@@ -77,7 +77,7 @@ class ForgotController extends BaseController
         return $this->redirectTo('login');
     }
 
-    public function resetAction(Request $req, Application $app)
+    public function resetAction(Request $req)
     {
         $errorMessage = "The reset you have requested appears to be invalid, please try again.";
         $error = 0;
@@ -205,9 +205,6 @@ class ForgotController extends BaseController
         // Here to cover possible errors from refactor. Should be substituted appropriately below.
         $twig = $app['twig'];
 
-        // Bring in config
-        $config = $app['config'];
-
         // Build our email that we will send
         $template = $twig->loadTemplate('emails/reset_password.twig');
         $parameters = array(
@@ -216,8 +213,8 @@ class ForgotController extends BaseController
                 ? 'https' : 'http',
             'host' => !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost',
             'user_id' => $user_id,
-            'email' => $config['application.email'],
-            'title' => $config['application.title']
+            'email' => $app->config('application.email'),
+            'title' => $app->config('application.title')
         );
 
         try {
