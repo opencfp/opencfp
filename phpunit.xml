@@ -1,4 +1,4 @@
-<phpunit backupGlobals="true" bootstrap="tests/unit/bootstrap.php">
+<phpunit backupGlobals="true" bootstrap="tests/bootstrap.php">
     <filter>
         <blacklist>
             <directory>vendor</directory>
