@@ -39,6 +39,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 
             if ($app['sentry']->check()) {
                 $app['twig']->addGlobal('user', $app['sentry']->getUser());
+                $app['twig']->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));
             }
 
             if ($app['session']->has('flash')) {

@@ -23,7 +23,10 @@
             <div class="collapse navbar-collapse">
                 {% block navigation %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                        <li{% if path('speaker_package') == current_page %} class="active"{% endif %}><a href="{{ url('speaker_package') }}">Speaker Package</a></li>
+                        <li{% if path('talk_ideas') == current_page %} class="active"{% endif %}><a href="{{ url('talk_ideas') }}">Talk Ideas</a></li>
+                        <li{% if path('dashboard') == current_page %} class="active"{% endif %}><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                        <li{% if path('admin') == current_page %} class="active"{% endif %}><a href="{{ url('admin') }}">Admin</a></li>
                         <li><a href="{{ url('logout') }}">Logout</a></li>
                     </ul>
                 {% endblock %}

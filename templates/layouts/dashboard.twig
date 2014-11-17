@@ -25,15 +25,17 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li{% if path('speaker_package') == current_page %} class="active"{% endif %}><a href="{{ url('speaker_package') }}">Speaker Package</a></li>
                         <li{% if path('talk_ideas') == current_page %} class="active"{% endif %}><a href="{{ url('talk_ideas') }}">Talk Ideas</a></li>
-                        {% if user.permissions.admin is defined and user.permissions.admin == true %}
-                            <li><a href="{{ url('admin') }}">Admin</a></li>
-                        {% endif %}
+
                         {% if user is defined and user is not empty %}
                             <li{% if path('dashboard') == current_page %} class="active"{% endif %}><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                            {% if user_is_admin %}
+                                <li><a href="{{ url('admin') }}">Admin</a></li>
+                            {% endif %}
                             <li><a href="{{ url('logout') }}">Logout</a></li>
                         {% else %}
                             <li><a href="{{ url('login') }}">Login</a></li>
                         {% endif %}
+
                     </ul>
                 {% endblock %}
             </div>
