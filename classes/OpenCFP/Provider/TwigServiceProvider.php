@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 
 class TwigServiceProvider implements ServiceProviderInterface
 {
@@ -20,11 +21,32 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app->register(new SilexTwigServiceProvider(), [
             'twig.path' => $app->templatesPath(),
             'options' => [
-                'debug' => !$app->isProduction()
+                'debug' => !$app->isProduction(),
+                'cache' => $app->config('cache.enabled') ? $app->cacheTwigPath() : false
             ]
         ]);
 
         $app->register(new UrlGeneratorServiceProvider());
+
+        if ( ! $app->isProduction()) {
+            $app->error(function (\Exception $e, $code) use ($app) {
+                switch ($code) {
+                    case 401:
+                        $message = $app['twig']->render('error/401.twig');
+                        break;
+                    case 403:
+                        $message = $app['twig']->render('error/403.twig');
+                        break;
+                    case 404:
+                        $message = $app['twig']->render('error/404.twig');
+                        break;
+                    default:
+                        $message = $app['twig']->render('error/500.twig');
+                }
+
+                return new Response($message, $code);
+            });
+        }
     }
 
     /**
