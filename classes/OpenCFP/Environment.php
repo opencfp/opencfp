@@ -54,6 +54,16 @@ final class Environment
     }
 
     /**
+     * @param $environmentString
+     *
+     * @return Environment
+     */
+    public static function fromString($environmentString)
+    {
+        return new self($environmentString);
+    }
+
+    /**
      * @param  Environment $environment
      * @return bool
      */
