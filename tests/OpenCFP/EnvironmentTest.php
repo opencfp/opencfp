@@ -21,5 +21,11 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         $_SERVER['CFP_ENV'] = 'testing';
         $this->assertEquals('testing', Environment::fromEnvironmentVariable());
     }
+
+    /** @test */
+    public function it_should_be_resolvable_from_string()
+    {
+        $this->assertEquals('testing', Environment::fromString('testing'));
+    }
 }
  
