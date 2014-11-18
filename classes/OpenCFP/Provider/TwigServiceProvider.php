@@ -20,7 +20,7 @@ class TwigServiceProvider implements ServiceProviderInterface
     {
         $app->register(new SilexTwigServiceProvider(), [
             'twig.path' => $app->templatesPath(),
-            'options' => [
+            'twig.options' => [
                 'debug' => !$app->isProduction(),
                 'cache' => $app->config('cache.enabled') ? $app->cacheTwigPath() : false
             ]
