@@ -36,11 +36,13 @@ class ClearCacheCommand extends BaseCommand
         $output->writeln('Clearing all caches...');
 
         $purifierPath = $this->app->cachePurifierPath();
-        $output->writeln(sprintf('  - %s', $purifierPath));
-        passthru('rm -rf %s/*', $purifierPath);
+        $output->writeln(sprintf('  <info>✓</info> %s', $purifierPath));
+        passthru(sprintf('rm -rf %s/*', $purifierPath));
 
         $twigPath = $this->app->cacheTwigPath();
-        $output->writeln(sprintf('  - %s', $twigPath));
-        passthru('rm -rf %s/*', $twigPath);
+        $output->writeln(sprintf('  <info>✓</info> %s', $twigPath));
+        passthru(sprintf('rm -rf %s/*', $twigPath));
+
+        $output->writeln('Done!');
     }
 } 
