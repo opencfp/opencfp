@@ -7,17 +7,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends BaseController
 {
-    public function indexAction(Request $req, Application $app)
+
+
+    public function indexAction(Request $req)
     {
-        if (!$app['sentry']->check()) {
+        if (!$this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
 
-        $user = $app['sentry']->getUser();
-        $user_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $user = $this->app['sentry']->getUser();
+        $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $user_info = $user_mapper->get($user->getId())->toArray();
 
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $my_talks = $talk_mapper->getByUser($user->getId());
 
         // Load our template and RENDER
@@ -34,8 +36,7 @@ class DashboardController extends BaseController
             'hotel' => $user_info['hotel'],
             'speaker_photo' => $user_info['photo_path'],
             'preview_photo' => '/uploads/' . $user_info['photo_path'],
-            'airport' => $user_info['airport'],
-            'current_page' => '/dashboard'
+            'airport' => $user_info['airport']
         );
 
         return $this->render('dashboard.twig', $template_data);
