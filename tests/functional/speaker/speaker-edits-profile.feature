@@ -8,5 +8,3 @@ Feature: Edit speaker profile
     Given I have authenticated with correct credentials
 
   Scenario: Speaker updates their name and speaker bio
-
-  Scenario: Speaker creates profile without profile picture and updates it later
