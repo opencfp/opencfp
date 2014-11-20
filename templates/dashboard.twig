@@ -22,35 +22,35 @@ function deleteTalk(tid) {
 </script>
 {% endblock %}
 {% block content %}
-    <span class="pull-right">Welcome <strong>{{ user.first_name }} {{ user.last_name }}</strong></span>
+    <span class="pull-right">Welcome <strong>{{ profile.name }}</strong></span>
 
     <h2 class="headline">My Profile</h2>
     <div class="row">
         <div class="col-md-3">
             <p>
-                {% if speaker_photo is defined and speaker_photo is not empty %}
-                    <img src="{{ preview_photo }}" class="profile-photo img-responsive" />
+                {% if profile.photo is not empty %}
+                    <img src="{{ uploads(profile.photo) }}" class="profile-photo img-responsive" />
                 {% else %}
-                    <img src="/assets/img/dummyphoto.jpg" class="profile-photo img-responsive" />
+                    <img src="{{ assets('img/dummyphoto.jpg') }}" class="profile-photo img-responsive" />
                 {% endif %}
             </p>
             <p><a href="{{ url('user_edit', { id: user.id }) }}" class="btn btn-success btn-block">Edit Profile</a></p>
         </div>
         <div class="col-md-9">
             <br />
-            <strong>Name:</strong> {{ first_name }} {{ last_name }} <a href="https://twitter.com/@{{ twitter }}" title="{{ first_name }} {{ last_name }} on Twitter">@{{ twitter }}</a><br />
-            <strong>Company:</strong> {{ company }}<br />
-            <strong>Airport:</strong> {{ airport }}<br />
-            <strong>Bio:</strong> {{ speaker_bio|striptags|markdown }}<br /><br />
-            <strong>Other Info:</strong> {{ speaker_info|striptags|markdown }}<br /><br />
+            <strong>Name:</strong> {{ profile.name }} <a href="https://twitter.com/@{{ profile.twitter }}" title="{{ profile.name }} on Twitter">@{{ profile.twitter }}</a><br />
+            <strong>Company:</strong> {{ profile.company }}<br />
+            <strong>Airport:</strong> {{ profile.airport }}<br />
+            <strong>Bio:</strong> {{ profile.bio|striptags|markdown }}<br /><br />
+            <strong>Other Info:</strong> {{ profile.info|striptags|markdown }}<br /><br />
 
-            <strong>Need Transportation:</strong> {% if transportation == '1' %} Yes {% else %} No {% endif %}<br />
-            <strong>Need Hotel:</strong> {% if hotel == '1' %} Yes {% else %} No {% endif %}
+            <strong>Need Transportation:</strong> {% if profile.transportation == '1' %} Yes {% else %} No {% endif %}<br />
+            <strong>Need Hotel:</strong> {% if profile.hotel == '1' %} Yes {% else %} No {% endif %}
         </div>
     </div>
 
     <h2 class="headline">My Talks</h2>
-    {% if myTalks is defined %}
+    {% if profile.talks is not empty %}
     <table class="table table-striped">
         <thead>
             <tr>
@@ -63,7 +63,7 @@ function deleteTalk(tid) {
             </tr>
         </thead>
         <tbody>
-        {% for talk in myTalks %}
+        {% for talk in profile.talks %}
             <tr id="talk-{{ talk.id }}">
                 <td><b>{{ talk.title|raw }}</b></td>
                 <td>{{ talk.type }}</td>

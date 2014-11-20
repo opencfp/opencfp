@@ -17,7 +17,7 @@ class RouteServiceProvider  implements ServiceProviderInterface
         $secureRoutes = [];
 
         // User Dashboard
-        $secureRoutes[] = $app->get('/dashboard', 'OpenCFP\Http\Controller\DashboardController::indexAction')->bind('dashboard');
+        $secureRoutes[] = $app->get('/dashboard', 'OpenCFP\Http\Controller\DashboardController::showSpeakerProfile')->bind('dashboard');
 
         // Talks
         $secureRoutes[] = $app->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')->bind('talk_edit');

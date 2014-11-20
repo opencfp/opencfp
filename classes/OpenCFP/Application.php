@@ -2,6 +2,7 @@
 
 namespace OpenCFP;
 
+use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use Silex\Application as SilexApplication;
@@ -13,6 +14,7 @@ use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
 use OpenCFP\Provider\RouteServiceProvider;
 use Silex\Provider\FormServiceProvider;
+use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
@@ -35,7 +37,10 @@ final class Application extends SilexApplication
         $this->bindConfiguration();
 
         // Services...
+
         $this->register(new ControllerResolverServiceProvider);
+        $this->register(new ServiceControllerServiceProvider);
+
         $this->register(new TwigServiceProvider);
         $this->register(new FormServiceProvider);
         $this->register(new ValidatorServiceProvider);
@@ -54,6 +59,9 @@ final class Application extends SilexApplication
             'encryption' => $this->config('mail.encryption'),
             'auth_mode' => $this->config('mail.auth_mode')
         ]);
+
+        // Application Services...
+        $this->register(new ApplicationServiceProvider);
 
         // Routes...
         $this->register(new RouteServiceProvider);

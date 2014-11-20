@@ -2,43 +2,35 @@
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\Application\Speakers;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends BaseController
 {
-
-
-    public function indexAction(Request $req)
+    public function showSpeakerProfile(Request $req)
     {
+        /**
+         * Local reference to speakers application service.
+         *
+         * This should be injected instead of using service location but there's currently a
+         * "conflict" between Controller as Services and our custom ControllerResolver that injects the Application
+         * container.
+         *
+         * @var Speakers $speakers
+         */
+        $speakers = $this->app['application.speakers'];
+
+        /////////
         if (!$this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
 
         $user = $this->app['sentry']->getUser();
-        $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
-        $user_info = $user_mapper->get($user->getId())->toArray();
+        /////////
 
-        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
-        $my_talks = $talk_mapper->getByUser($user->getId());
+        $profile = $speakers->findProfile($user->getId());
 
-        // Load our template and RENDER
-        $template_data = array(
-            'myTalks' => $my_talks,
-            'first_name' => $user_info['first_name'],
-            'last_name' => $user_info['last_name'],
-            'user' => $user_info,
-            'company' => $user_info['company'] ?: null,
-            'twitter' => $user_info['twitter'],
-            'speaker_info' => $user_info['info'],
-            'speaker_bio' => $user_info['bio'],
-            'transportation' => $user_info['transportation'],
-            'hotel' => $user_info['hotel'],
-            'speaker_photo' => $user_info['photo_path'],
-            'preview_photo' => '/uploads/' . $user_info['photo_path'],
-            'airport' => $user_info['airport']
-        );
-
-        return $this->render('dashboard.twig', $template_data);
+        return $this->render('dashboard.twig', ['profile' => $profile]);
     }
 }
