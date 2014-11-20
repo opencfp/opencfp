@@ -10,6 +10,7 @@ use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
+use Twig_SimpleFunction;
 
 class TwigServiceProvider implements ServiceProviderInterface
 {
@@ -28,7 +29,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 
         $app->register(new UrlGeneratorServiceProvider());
 
-        if ( ! $app->isProduction()) {
+        if ($app->isProduction()) {
             $app->error(function (\Exception $e, $code) use ($app) {
                 switch ($code) {
                     case 401:
@@ -68,6 +69,14 @@ class TwigServiceProvider implements ServiceProviderInterface
                 $app['twig']->addGlobal('flash', $app['session']->get('flash'));
                 $app['session']->set('flash', null);
             }
+
+            $app['twig']->addFunction(new Twig_SimpleFunction('uploads', function($path) use ($app) {
+                return '/uploads/' . $path;
+            }));
+
+            $app['twig']->addFunction(new Twig_SimpleFunction('assets', function($path) use ($app) {
+                return '/assets/' . $path;
+            }));
         });
 
         // Twig Markdown Extension
