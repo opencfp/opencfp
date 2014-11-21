@@ -2,24 +2,11 @@
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class ForgotControllerTest extends PHPUnit_Framework_TestCase
 {
-    public $app;
-    public $req;
-
-    public function setup()
-    {
-        $this->app = new Application(BASE_PATH, Environment::testing());
-
-        $session = m::mock('Symfony\Component\HttpFoundation\Session\Session');
-        $session->shouldReceive('start')->andReturn(true);
-        $session->shouldReceive('getId')->andReturn(uniqid());
-        $session->shouldReceive('get');
-
-        $this->app['session'] = $session;
-        $this->req = m::mock('Symfony\Component\HttpFoundation\Request');
-    }
     /**
      * Test that index action displays a form that allows the user to reset
      * their password
@@ -29,7 +16,9 @@ class ForgotControllerTest extends PHPUnit_Framework_TestCase
      */
     public function indexDisplaysCorrectForm()
     {
-        $controller = new OpenCFP\Http\Controller\ForgotController($this->app);
+        $app = new Application(BASE_PATH, Environment::testing());
+
+        $controller = new OpenCFP\Http\Controller\ForgotController($app);
         $response = $controller->indexAction();
 
         // Get the form object and verify things look correct

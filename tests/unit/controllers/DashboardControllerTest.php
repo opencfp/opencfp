@@ -2,6 +2,8 @@
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class DashboardControllerTest extends PHPUnit_Framework_TestCase
 {
@@ -10,11 +12,11 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
      * with a specific user and information about that user as well
      *
      * @test
-     * @runInSeparateProcess
      */
     public function indexDisplaysUserAndTalks()
     {
         $app = new Application(BASE_PATH, Environment::testing());
+        $app['session'] = new Session(new MockFileSessionStorage());
 
         // Set things up so Sentry believes we're logged in
         $user = m::mock('StdClass');
