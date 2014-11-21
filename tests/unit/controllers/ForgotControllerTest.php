@@ -2,6 +2,7 @@
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
+use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
@@ -12,11 +13,12 @@ class ForgotControllerTest extends PHPUnit_Framework_TestCase
      * their password
      *
      * @test
-     * @runInSeparateProcess
      */
     public function indexDisplaysCorrectForm()
     {
         $app = new Application(BASE_PATH, Environment::testing());
+        $app['session'] = new Session(new MockFileSessionStorage());
+        $app['form.csrf_provider'] = new SessionCsrfProvider($app['session'], 'secret');
 
         $controller = new OpenCFP\Http\Controller\ForgotController($app);
         $response = $controller->indexAction();
