@@ -1,5 +1,7 @@
 <?php
 use Mockery as m;
+use OpenCFP\Application;
+use OpenCFP\Environment;
 
 class ForgotControllerTest extends PHPUnit_Framework_TestCase
 {
@@ -8,8 +10,8 @@ class ForgotControllerTest extends PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $bootstrap = new OpenCFP\Bootstrap();
-        $this->app = $bootstrap->getApp();
+        $this->app = new Application(BASE_PATH, Environment::testing());
+
         $session = m::mock('Symfony\Component\HttpFoundation\Session\Session');
         $session->shouldReceive('start')->andReturn(true);
         $session->shouldReceive('getId')->andReturn(uniqid());
@@ -26,21 +28,21 @@ class ForgotControllerTest extends PHPUnit_Framework_TestCase
      */
     public function indexDisplaysCorrectForm()
     {
-        $controller = new OpenCFP\Controller\ForgotController();
-        $response = $controller->indexAction($this->req, $this->app);
+        $controller = new OpenCFP\Http\Controller\ForgotController($this->app);
+        $response = $controller->indexAction();
 
         // Get the form object and verify things look correct
         $this->assertContains(
             '<form id="forgot"',
-            $response
+            (string)$response
         );
         $this->assertContains(
             '<input type="hidden" id="forgot__token"',
-            $response
+            (string)$response
         );
         $this->assertContains(
             '<input id="form-forgot-email"',
-            $response
+            (string)$response
         );
     }
 }

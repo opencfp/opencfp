@@ -27,8 +27,6 @@ class TwigServiceProvider implements ServiceProviderInterface
             ]
         ]);
 
-        $app->register(new UrlGeneratorServiceProvider());
-
         if ($app->isProduction()) {
             $app->error(function (\Exception $e, $code) use ($app) {
                 switch ($code) {
@@ -48,36 +46,16 @@ class TwigServiceProvider implements ServiceProviderInterface
                 return new Response($message, $code);
             });
         }
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
+        $app['twig']->addFunction(new Twig_SimpleFunction('uploads', function($path) {
+            return '/uploads/' . $path;
+        }));
+
+        $app['twig']->addFunction(new Twig_SimpleFunction('assets', function($path) {
+            return '/assets/' . $path;
+        }));
+
         $app['twig']->addGlobal('site', $app->config('application'));
-
-        $app->before(function (Request $request, Application $app) {
-            $app['twig']->addGlobal('current_page', $request->getRequestUri());
-
-            if ($app['sentry']->check()) {
-                $app['twig']->addGlobal('user', $app['sentry']->getUser());
-                $app['twig']->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));
-            }
-
-            if ($app['session']->has('flash')) {
-                $app['twig']->addGlobal('flash', $app['session']->get('flash'));
-                $app['session']->set('flash', null);
-            }
-
-            $app['twig']->addFunction(new Twig_SimpleFunction('uploads', function($path) use ($app) {
-                return '/uploads/' . $path;
-            }));
-
-            $app['twig']->addFunction(new Twig_SimpleFunction('assets', function($path) use ($app) {
-                return '/assets/' . $path;
-            }));
-        });
 
         // Twig Markdown Extension
         $markdown = new Ciconia();
@@ -86,5 +64,25 @@ class TwigServiceProvider implements ServiceProviderInterface
         $engine = new CiconiaEngine($markdown);
 
         $app['twig']->addExtension(new MarkdownExtension($engine));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(Application $app)
+    {
+        $app->before(function (Request $request, Application $app) {
+            $app['twig']->addGlobal('current_page', $request->getRequestUri());
+        });
+
+        if ($app['sentry']->check()) {
+            $app['twig']->addGlobal('user', $app['sentry']->getUser());
+            $app['twig']->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));
+        }
+
+        if ($app['session']->has('flash')) {
+            $app['twig']->addGlobal('flash', $app['session']->get('flash'));
+            $app['session']->set('flash', null);
+        }
     }
 }

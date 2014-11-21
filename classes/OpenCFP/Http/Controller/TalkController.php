@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller;
 
 use Silex\Application;
+use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Http\Form\TalkForm;
 
@@ -391,7 +392,7 @@ class TalkController extends BaseController
 
         try {
             $mailer = $app['mailer'];
-            $message = new \Swift_Message();
+            $message = new Swift_Message();
 
             $message->setTo($email);
             $message->setFrom(

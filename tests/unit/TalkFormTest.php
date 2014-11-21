@@ -25,7 +25,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function correctlyDetectsRequiredFields($rawData, $response)
     {
         $data = unserialize($rawData);
-        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
 
         $this->assertEquals(
             $response,
@@ -78,7 +78,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function titleValidatesCorrectly($title, $expectedResponse)
     {
         $data = array('title' => $title);
-        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
@@ -115,7 +115,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function descriptionValidatesCorrectly($description, $expectedResponse)
     {
         $data = array('description' => $description);
-        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
@@ -152,7 +152,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function typeValidatesCorrectly($type, $expectedResponse)
     {
         $data = array('type' => $type);
-        $form = new \OpenCFP\Form\TalkForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
         
         $this->assertEquals(

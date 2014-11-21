@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends BaseController
 {
-    public function showSpeakerProfile(Request $req)
+    public function showSpeakerProfile()
     {
         /**
          * Local reference to speakers application service.
@@ -31,6 +31,8 @@ class DashboardController extends BaseController
 
         $profile = $speakers->findProfile($user->getId());
 
-        return $this->render('dashboard.twig', ['profile' => $profile]);
+        return $this->render('dashboard.twig', [
+            'profile' => $profile
+        ]);
     }
 }

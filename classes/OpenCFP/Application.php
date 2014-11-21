@@ -18,7 +18,9 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 final class Application extends SilexApplication
 {
@@ -36,20 +38,22 @@ final class Application extends SilexApplication
         $this->bindPathsInApplicationContainer();
         $this->bindConfiguration();
 
-        // Services...
+        // Routes...
+        $this->register(new RouteServiceProvider);
 
+        // Services...
+        $this->register(new SessionServiceProvider);
+
+        if ($this->isTesting()) {
+            $this['session.test'] = true;
+        }
+
+        $this->register(new FormServiceProvider);
+        $this->register(new UrlGeneratorServiceProvider);
         $this->register(new ControllerResolverServiceProvider);
         $this->register(new ServiceControllerServiceProvider);
-
-        $this->register(new TwigServiceProvider);
-        $this->register(new FormServiceProvider);
-        $this->register(new ValidatorServiceProvider);
         $this->register(new DatabaseServiceProvider);
-        $this->register(new SentryServiceProvider);
-        $this->register(new HtmlPurifierServiceProvider);
-        $this->register(new SpotServiceProvider);
-        $this->register(new SessionServiceProvider);
-        $this->register(new ImageProcessorProvider);
+        $this->register(new ValidatorServiceProvider);
         $this->register(new TranslationServiceProvider);
         $this->register(new SwiftmailerServiceProvider, [
             'host' => $this->config('mail.host'),
@@ -60,11 +64,14 @@ final class Application extends SilexApplication
             'auth_mode' => $this->config('mail.auth_mode')
         ]);
 
+        $this->register(new SentryServiceProvider);
+        $this->register(new TwigServiceProvider);
+        $this->register(new HtmlPurifierServiceProvider);
+        $this->register(new SpotServiceProvider);
+        $this->register(new ImageProcessorProvider);
+
         // Application Services...
         $this->register(new ApplicationServiceProvider);
-
-        // Routes...
-        $this->register(new RouteServiceProvider);
     }
 
     /**

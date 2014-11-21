@@ -1,5 +1,7 @@
 <?php
 use Mockery as m;
+use OpenCFP\Application;
+use OpenCFP\Environment;
 
 class DashboardControllerTest extends PHPUnit_Framework_TestCase
 {
@@ -11,72 +13,45 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
      */
     public function indexDisplaysUserAndTalks()
     {
-        $bootstrap = new \OpenCFP\Bootstrap();
-        $app = $bootstrap->getApp();
-
-        // Create an in-memory database for the test
-        $cfg = new \Spot\Config;
-        $cfg->addConnection('sqlite', [
-            'dbname' => 'sqlite::memory',
-            'driver' => 'pdo_sqlite'
-        ]);
-        $app['spot'] = new \Spot\Locator($cfg);
-
-        // Create a test user
-        $user_mapper = $app['spot']->mapper('OpenCFP\Entity\User');
-        $user_mapper->migrate();
-        $user = $user_mapper->build([
-            'email' => 'test@test.com',
-            'password' => 'randompasswordhashed',
-            'first_name' => 'Test',
-            'last_name' => 'User',
-            'activated' => 1,
-            'transportation' => 0,
-            'hotel' => 0,
-        ]);
-        $user_mapper->save($user);
-
-        // Create the favorite table
-        $favorite_mapper = $app['spot']->mapper('OpenCFP\Entity\Favorite');
-        $favorite_mapper->migrate();
-
-        // Create a talk to display
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Entity\Talk');
-        $talk_mapper->migrate();
-        $talk = $talk_mapper->build([
-            'title' => 'Test Title',
-            'description' => 'Test title description',
-            'user_id' => 1,
-            'type' => 'regular',
-            'category' => 'testing',
-            'level' => 'beginner',
-            'desired' => 1,
-            'slides' => 'slides',
-            'other' => 'other',
-            'sponsor' => 1,
-            'selected' => 0,
-        ]);
-        $talk_mapper->save($talk);
+        $app = new Application(BASE_PATH, Environment::testing());
 
         // Set things up so Sentry believes we're logged in
-        $user_mock = m::mock('StdClass');
-        $user_mock->shouldReceive('hasPermission')->with('admin')->andReturn(true);
-        $user_mock->shouldReceive('getId')->andReturn(1);
+        $user = m::mock('StdClass');
+        $user->shouldReceive('id')->andReturn(1);
+        $user->shouldReceive('getId')->andReturn(1);
+        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
 
         // Create a test double for Sentry
         $sentry = m::mock('StdClass');
-        $sentry->shouldReceive('check')->andReturn(true);
-        $sentry->shouldReceive('getUser')->andReturn($user_mock);
+        $sentry->shouldReceive('check')->times(3)->andReturn(true);
+        $sentry->shouldReceive('getUser')->andReturn($user);
         $app['sentry'] = $sentry;
 
-        // Create a fake request object
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
-        $req->shouldReceive('get')->with('page')->andReturn($user->id);
+        // Create a test double for a talk in profile
+        $talk = m::mock('StdClass');
+        $talk->shouldReceive('title')->andReturn('Test Title');
+        $talk->shouldReceive('id')->andReturn(1);
+        $talk->shouldReceive('type', 'category', 'created_at');
+
+        // Create a test double for profile
+        $profile = m::mock('StdClass');
+        $profile->shouldReceive('name')->andReturn('Test User');
+        $profile->shouldReceive('photo', 'company', 'twitter', 'airport', 'bio', 'info', 'transportation', 'hotel');
+        $profile->shouldReceive('talks')->andReturn([$talk]);
+
+        $speakerService = m::mock('StdClass');
+        $speakerService->shouldReceive('findProfile')->andReturn($profile);
+
+        $app['application.speakers'] = $speakerService;
+
+        ob_start();
+        $app->run();  // Fire before handlers... boot...
+        ob_clean();
 
         // Instantiate the controller and run the indexAction
-        $controller = new \OpenCFP\Controller\DashboardController();
-        $response = $controller->indexAction($req, $app);
-        $this->assertContains('Test Title', $response);
-        $this->assertContains('Test User', $response);
+        $controller = new \OpenCFP\Http\Controller\DashboardController($app);
+        $response = $controller->showSpeakerProfile();
+        $this->assertContains('Test Title', (string)$response);
+        $this->assertContains('Test User', (string)$response);
     }
 }

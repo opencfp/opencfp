@@ -3,6 +3,7 @@ namespace OpenCFP;
 
 use Cartalyst\Sentry\Users\UserNotFoundException;
 use \Mockery as m;
+use OpenCFP\Domain\Services\Login;
 
 class LoginTest extends \PHPUnit_Framework_TestCase {
     private $credentials;

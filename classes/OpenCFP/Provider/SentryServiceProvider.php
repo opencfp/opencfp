@@ -31,9 +31,24 @@ class SentryServiceProvider implements ServiceProviderInterface
         // Boots Eloquent to be used by Sentry.
         $database->bootEloquent();
 
-        $app['sentry'] = $app->share(function () {
-            $sentry = Sentry::instance();
-            $sentry->getThrottleProvider()->disable();
+        $app['sentry'] = $app->share(function($app) {
+            $hasher = new \Cartalyst\Sentry\Hashing\NativeHasher;
+            $userProvider = new \Cartalyst\Sentry\Users\Eloquent\Provider($hasher);
+            $groupProvider = new \Cartalyst\Sentry\Groups\Eloquent\Provider;
+            $throttleProvider = new \Cartalyst\Sentry\Throttling\Eloquent\Provider($userProvider);
+            $session = new SymfonySentrySession($app['session']);
+            $cookie = new \Cartalyst\Sentry\Cookies\NativeCookie(array());
+
+            $sentry = new \Cartalyst\Sentry\Sentry(
+                $userProvider,
+                $groupProvider,
+                $throttleProvider,
+                $session,
+                $cookie
+            );
+
+            Sentry::setupDatabaseResolver($app['db']);
+            $throttleProvider->disable();
 
             return $sentry;
         });
