@@ -44,10 +44,6 @@ final class Application extends SilexApplication
         // Services...
         $this->register(new SessionServiceProvider);
 
-        if ($this->isTesting()) {
-            $this['session.test'] = true;
-        }
-
         $this->register(new FormServiceProvider);
         $this->register(new UrlGeneratorServiceProvider);
         $this->register(new ControllerResolverServiceProvider);

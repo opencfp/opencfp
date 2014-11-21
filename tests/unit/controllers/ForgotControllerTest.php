@@ -25,6 +25,7 @@ class ForgotControllerTest extends PHPUnit_Framework_TestCase
      * their password
      *
      * @test
+     * @runInSeparateProcess
      */
     public function indexDisplaysCorrectForm()
     {

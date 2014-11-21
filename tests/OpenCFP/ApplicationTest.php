@@ -11,7 +11,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     /** @var Application */
     protected $sut;
 
-    /** @test */
+    /**
+     * @test
+     * @runInSeparateProcess
+     */
     public function it_should_run_and_have_output()
     {
         $this->sut = new Application(BASE_PATH, Environment::testing());

@@ -10,6 +10,7 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
      * with a specific user and information about that user as well
      *
      * @test
+     * @runInSeparateProcess
      */
     public function indexDisplaysUserAndTalks()
     {
