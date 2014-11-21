@@ -62,7 +62,8 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     private function getSpeaker()
     {
         return new User([
-            'email' => self::SPEAKER_ID,
+            'id' => self::SPEAKER_ID,
+            'email' => 'speaker@opencfp.org',
             'first_name' => 'Fake',
             'last_name' => 'Speaker'
         ]);
