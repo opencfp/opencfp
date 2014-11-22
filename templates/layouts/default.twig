@@ -11,7 +11,7 @@
     </head>
     <body{% if "/" == current_page %} class="home-page"{% endif %}>
         <div class="navbar navbar-opencfp navbar-fixed-top section--full" role="navigation">
-            <a href="/" class="logo pull-left"><img data-src="/assets/img/logo.svg" class="svg-inject" alt="Open CFP"></a>
+            <a href="{{ url('homepage') }}" class="logo pull-left"><img data-src="/assets/img/logo.svg" class="svg-inject" alt="Open CFP"></a>
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -27,6 +27,9 @@
                         <li{% if path('talk_ideas') == current_page %} class="active"{% endif %}><a href="{{ url('talk_ideas') }}">Talk Ideas</a></li>
                         {% if user is defined and user is not empty %}
                             <li><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                            {% if user_is_admin %}
+                                <li><a href="{{ url('admin') }}">Admin</a></li>
+                            {% endif %}
                             <li><a href="{{ url('logout') }}">Logout</a></li>
                         {% else %}
                             <li><a href="{{ url('login') }}">Login</a></li>

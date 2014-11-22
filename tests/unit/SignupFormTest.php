@@ -21,7 +21,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'email' => 'test@domain.com',
             'notrequired' => 'test'
         );
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $response = $form->hasRequiredFields();
         $this->assertFalse($response);
     }
@@ -37,7 +37,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     public function emailsAreBeingValidatedCorrectly($email, $expectedResponse)
     {
         $data = array('email' => $email);
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $this->assertEquals(
             $form->validateEmail(),
             $expectedResponse,
@@ -54,7 +54,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     public function emailValidationShouldFailWithoutEmail()
     {
         $data = array();
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $this->assertFalse(
             $form->validateEmail(),
             "Validating empty email did not fail"
@@ -106,7 +106,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password' => $passwd,
             'password2' => $passwd
         );
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertTrue(
@@ -132,7 +132,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password2' => $passwd2
         );
 
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
         $testResponse = $form->validatePasswords();
 
@@ -170,7 +170,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     public function firstNameIsValidatedCorrectly($firstName, $expectedResponse)
     {
         $data['first_name'] = $firstName;
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
@@ -213,7 +213,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     public function lastNameIsValidatedCorrectly($lastName, $expectedResponse)
     {
         $data['last_name'] = $lastName;
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
@@ -256,7 +256,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function validateAllWorksCorrectly($data, $expectedResponse)
     {
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $this->assertEquals(
             $expectedResponse,
             $form->validateAll(),
@@ -298,7 +298,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     public function speakerInfoValidatedCorrectly($speakerInfo, $expectedResponse)
     {
         $data['speaker_info'] = $speakerInfo;
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
@@ -319,7 +319,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     public function speakerBioValidatedCorrectly($speakerBio, $expectedResponse)
     {
         $data['speaker_bio'] = $speakerBio;
-        $form = new \OpenCFP\Form\SignupForm($data, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
         $this->assertEquals(
             $expectedResponse,
@@ -351,7 +351,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function dataGetsSanitizedCorrectly($inputData, $expectedData)
     {
-        $form = new \OpenCFP\Form\SignupForm($inputData, $this->purifier);
+        $form = new \OpenCFP\Http\Form\SignupForm($inputData, $this->purifier);
         $form->sanitize();
         $sanitizedData = $form->getCleanData();
         $this->assertEquals(

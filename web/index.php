@@ -1,12 +1,13 @@
 <?php
-require_once '../classes/OpenCFP/Bootstrap.php';
 
-// define('APP_DIR', dirname(dirname(__DIR__)));
-//define('APP_DIR', dirname(__DIR__));
+require_once '../vendor/autoload.php';
 
-$bootstrap = new \OpenCFP\Bootstrap();
-$app = $bootstrap->getApp();
+use OpenCFP\Application;
+use OpenCFP\Environment;
 
-define('UPLOAD_PATH', $app['uploadPath']);
+$basePath = realpath(dirname(__DIR__));
+$environment = Environment::fromEnvironmentVariable();
+
+$app = new Application($basePath, $environment);
 
 $app->run();

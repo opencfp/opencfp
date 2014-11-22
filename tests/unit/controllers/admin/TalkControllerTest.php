@@ -1,6 +1,8 @@
 <?php
 
 use Mockery as m;
+use OpenCFP\Application;
+use OpenCFP\Environment;
 
 class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
 {
@@ -12,8 +14,7 @@ class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
      */
     public function indexPageDisplaysTalksCorrectly()
     {
-        $bootstrap = new \OpenCFP\Bootstrap();
-        $app = $bootstrap->getApp();
+        $app = new Application(BASE_PATH, Environment::testing());
 
         // Create a pretend user
         $user = m::mock('StdClass');
@@ -40,15 +41,15 @@ class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
         $req->shouldReceive('getRequestUri')->andReturn('foo');
 
         $this->createTestData($app['spot']);
-        $controller = new \OpenCFP\Controller\Admin\TalksController();
+        $controller = new \OpenCFP\Http\Controller\Admin\TalksController($app);
         $response = $controller->indexAction($req, $app);
-        $this->assertContains('Test Title', $response);
-        $this->assertContains('Test User', $response);
+        $this->assertContains('Test Title', (string)$response);
+        $this->assertContains('Test User', (string)$response);
     }
 
     protected function createTestData($spot)
     {
-        $user_mapper = $spot->mapper('OpenCFP\Entity\User');
+        $user_mapper = $spot->mapper('OpenCFP\Domain\Entity\User');
         $user_mapper->migrate();
         $user = $user_mapper->build([
             'email' => 'test@test.com',
@@ -61,10 +62,10 @@ class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
         ]);
         $user_mapper->save($user);
 
-        $favorite_mapper = $spot->mapper('OpenCFP\Entity\Favorite');
+        $favorite_mapper = $spot->mapper('OpenCFP\Domain\Entity\Favorite');
         $favorite_mapper->migrate();
 
-        $talk_mapper = $spot->mapper('OpenCFP\Entity\Talk');
+        $talk_mapper = $spot->mapper('OpenCFP\Domain\Entity\Talk');
         $talk_mapper->migrate();
         $talk = $talk_mapper->build([
             'title' => 'Test Title',

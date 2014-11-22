@@ -1,6 +1,8 @@
 <?php
 
 use Mockery as m;
+use OpenCFP\Application;
+use OpenCFP\Environment;
 
 class TalkControllerTest extends PHPUnit_Framework_TestCase
 {
@@ -9,8 +11,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $bs = new OpenCFP\Bootstrap();
-        $this->app = $bs->getApp();
+        $this->app = new Application(BASE_PATH, Environment::testing());
 
         // Override things so that Spot2 is using in-memory tables
         $cfg = new \Spot\Config;
@@ -21,7 +22,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
         $this->app['spot'] = new \Spot\Locator($cfg);
 
         // Initialize the talk table in the sqlite database
-        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Entity\Talk');
+        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talk_mapper->migrate();
 
         // Set things up so Sentry believes we're logged in
@@ -50,7 +51,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
      */
     public function ampersandsAcceptableCharacterForTalks()
     {
-        $controller = new OpenCFP\Controller\TalkController();
+        $controller = new OpenCFP\Http\Controller\TalkController($this->app);
 
         // Create a test double for SwiftMailer
         $swiftmailer = m::mock('StdClass');
