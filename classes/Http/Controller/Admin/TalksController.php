@@ -104,6 +104,38 @@ class TalksController extends BaseController
         return $this->render('admin/talks/view.twig', $templateData);
     }
 
+    private function rateAction(Request $req, Application $app)
+    {
+        $admin_user_id = (int)$app['sentry']->getUser()->getId();
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\TalkMeta');
+
+        $talk_rating = (int)$req->get('rating');
+        var_dump($talk_rating);
+        $talk_id = (int)$req->get('id');
+
+        // Check for invalid rating range
+        if ($talk_rating < -1 || $talk_rating > 1) {
+            return false;
+        }
+
+        $talk_meta = $mapper->where([
+                'admin_user_id' => $admin_user_id,
+                'talk_id' => (int)$req->get('id')
+            ])
+            ->first();
+
+        if (!$talk_meta) {
+            $talk_meta = $mapper->get();
+            $talk_meta->admin_user_id = $admin_user_id;
+            $talk_meta->talk_id = $talk_id;
+        }
+
+        $talk_meta->rating = $talk_rating;
+        $mapper->save($talk_meta);
+
+        return true;
+    }
+
     /**
      * Set Favorited Talk [POST]
      *
@@ -175,5 +207,28 @@ class TalksController extends BaseController
         $mapper->save($talk);
 
         return true;
+    }
+
+    private function commentCreateAction(Request $req, Application $app)
+    {
+        $talk_id = (int)$req->get('id');
+        $admin_user_id = (int)$app['sentry']->getUser()->getId();
+
+        $mapper = $app['spot']->mapper('OpenCFP\Entity\TalkComment');
+        $comment = $mapper->get();
+
+        $comment->talk_id = $talk_id;
+        $comment->user_id = $admin_user_id;
+        $comment->message = $req->get('comment');
+
+        $mapper->save($comment);
+
+        $app['session']->set('flash', [
+                'type' => 'success',
+                'short' => 'Success',
+                'ext' => "Comment Added!"
+            ]);
+
+        return $app->redirect($app->url('admin_talk_view', ['id' => $talk_id]));
     }
 }
