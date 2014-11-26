@@ -74,8 +74,30 @@ class TalksController extends BaseController
 
         // Get info about the talks
         $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $meta_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\TalkMeta');
         $talk_id = $req->get('id');
-        $talk = $talk_mapper->get($talk_id);
+
+        // Mark talk as viewed by admin
+        $talk_meta = $meta_mapper->where([
+                'admin_user_id' => $app['sentry']->getUser()->getId(),
+                'talk_id' => (int)$req->get('id'),
+            ])
+            ->first();
+
+        if (!$talk_meta) {
+            $talk_meta = $meta_mapper->get();
+        }
+
+        if (!$talk_meta->viewed) {
+            $talk_meta->viewed = true;
+            $talk_meta->admin_user_id = $app['sentry']->getUser()->getId();
+            $talk_meta->talk_id = $talk_id;
+            $meta_mapper->save($talk_meta);
+        }
+
+        $talk = $talk_mapper->where(['id' => $talk_id])
+            ->with(['comments'])
+            ->first();
         $all_talks = $talk_mapper->all()
             ->where(['user_id' => $talk->user_id])
             ->toArray();
@@ -108,7 +130,7 @@ class TalksController extends BaseController
     private function rateAction(Request $req, Application $app)
     {
         $admin_user_id = (int)$app['sentry']->getUser()->getId();
-        $mapper = $app['spot']->mapper('OpenCFP\Entity\TalkMeta');
+        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\TalkMeta');
 
         $talk_rating = (int)$req->get('rating');
         var_dump($talk_rating);
@@ -215,7 +237,7 @@ class TalksController extends BaseController
         $talk_id = (int)$req->get('id');
         $admin_user_id = (int)$app['sentry']->getUser()->getId();
 
-        $mapper = $app['spot']->mapper('OpenCFP\Entity\TalkComment');
+        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\TalkComment');
         $comment = $mapper->get();
 
         $comment->talk_id = $talk_id;

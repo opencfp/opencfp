@@ -39,7 +39,7 @@ class Talk extends Mapper
     {
         $talks = $this->all()
             ->order(['created_at' => 'DESC'])
-            ->with(['favorites', 'speaker'])
+            ->with(['favorites'])
             ->limit($limit);
         $formatted = [];
 
@@ -108,6 +108,10 @@ class Talk extends Mapper
             }
         }
 
+        $mapper = $this->getMapper('OpenCFP\Entity\TalkMeta');
+        $talk_meta = $mapper->where(['talk_id' => $talk->id, 'admin_user_id' => $admin_user_id])
+            ->first();
+
         $output = [
             'id' => $talk->id,
             'title' => $talk->title,
@@ -115,7 +119,8 @@ class Talk extends Mapper
             'category' => $talk->category,
             'created_at' => $talk->created_at,
             'selected' => $talk->selected,
-            'favorite' => $talk->favorite
+            'favorite' => $talk->favorite,
+            'meta' => ($talk_meta) ? $talk_meta : $mapper->get(),
         ];
 
         if ($talk->speaker) {
