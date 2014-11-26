@@ -17,8 +17,8 @@ class Talk extends Mapper
     public function getAllPagerFormatted($admin_user_id, $sort)
     {
         $talks = $this->all()
-            ->order($sort)
-            ->with(['favorites']);
+            ->order(['created_at' => 'DESC'])
+            ->with(['favorites', 'comments']);
         $formatted = array();
 
         foreach ($talks as $talk) {

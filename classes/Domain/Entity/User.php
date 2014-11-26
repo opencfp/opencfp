@@ -40,7 +40,8 @@ class User extends Entity
     {
         return [
             'talks' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\Talk', 'user_id'),
-            'groups' => $mapper->hasManyThrough($entity, '\OpenCFP\Domain\Entity\Group', '\OpenCFP\Domain\Entity\UserGroup', 'group_id', 'user_id'),
+            'groups' => $mapper->hasManyThrough($entity, 'OpenCFP\Domain\Entity\Group', '\OpenCFP\Domain\Entity\UserGroup', 'group_id', 'user_id'),
+            'comments' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\TalkComment', 'user_id'),
         ];
     }
 
