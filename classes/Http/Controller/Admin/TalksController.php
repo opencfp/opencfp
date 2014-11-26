@@ -97,8 +97,9 @@ class TalksController extends BaseController
         // Build and render the template
         $templateData = array(
             'talk' => $talk,
+            'talk_meta' => $talk_meta,
             'speaker' => $speaker,
-            'otherTalks' => $otherTalks
+            'otherTalks' => $otherTalks,
         );
 
         return $this->render('admin/talks/view.twig', $templateData);
