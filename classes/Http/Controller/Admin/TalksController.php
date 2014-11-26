@@ -5,10 +5,12 @@ namespace OpenCFP\Http\Controller\Admin;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Pagerfanta\View\TwitterBootstrap3View;
+use OpenCFP\Controller\FlashableTrait;
 
 class TalksController extends BaseController
 {
     use AdminAccessTrait;
+    use FlashableTrait;
 
     public function indexAction(Request $req)
     {
