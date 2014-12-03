@@ -17,6 +17,7 @@ addons:
 before_script:
   - sh tools/travis/setup-webserver.sh
   - sh tools/travis/setup-mail.sh
+  - cp phinx.yml.dist phinx.yml
   - composer self-update
   - composer install
   - phantomjs --webdriver 4444 &

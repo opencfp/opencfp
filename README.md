@@ -144,8 +144,8 @@ to consider:
 <a name="run-migrations" />
 ### Run Migrations
 
-This project uses [Phinx](http://phinx.org) to handle migrations. Be sure to edit the `phinx.yml` file that is in the
-root directory for the project to match your own database settings.
+This project uses [Phinx](http://phinx.org) to handle migrations. Be sure to copy the `phinx.yml.dist` file that is in the
+root directory for the project to `phinx.yml` and edit it to match your own database settings.
 
 To run migrations, make sure you are in the root directory for the project and run the following:
 
