@@ -37,9 +37,9 @@ OpenCFP is a PHP-based conference talk submission system.
  * JSON-API for selected use-cases. (Coming Soon!)
 
 <a name="screenshots" />
-[![Front page](http://i.imgur.com/GDhX1lD.png)]
-[![Login screen](http://i.imgur.com/VfNNch9.png)]
-[![Speaker page](http://i.imgur.com/uw1qmbS.png)]
+![Front page](http://i.imgur.com/GDhX1lD.png)
+![Login screen](http://i.imgur.com/VfNNch9.png)
+![Speaker page](http://i.imgur.com/uw1qmbS.png)]
 
 <a name="contributing" />
 ## Contributing
