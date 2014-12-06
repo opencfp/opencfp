@@ -80,6 +80,31 @@ class Talk extends Mapper
     }
 
     /**
+     * Return a collection of top rated talks ordered by rating
+     * the talk rating must be above 0 to show on list
+     *
+     * @param  integer $admin_user_id
+     * @return array
+     */
+    public function getTopRatedTalks($admin_user_id)
+    {
+        $talks = $this->query(
+            "SELECT t.*, SUM(m.rating) FROM talks t "
+            . "LEFT JOIN talk_meta m ON t.id = m.talk_id "
+            . "WHERE rating > 0 "
+            . "GROUP BY m.`talk_id` "
+            . "ORDER BY rating DESC"
+        );
+
+        $formatted = [];
+        foreach ($talks as $talk) {
+            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id);
+        }
+
+        return $formatted;
+    }
+
+    /**
      * Return a collection of entities representing talks that belong to a
      * specific user
      *
