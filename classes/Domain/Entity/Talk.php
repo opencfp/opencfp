@@ -32,11 +32,11 @@ class Talk extends Entity
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'speaker' => $mapper->belongsTo($entity, 'OpenCFP\Entity\User', 'user_id'),
-            'favorites' => $mapper->hasMany($entity, 'OpenCFP\Entity\Favorite', 'talk_id'),
-            'comments' => $mapper->hasMany($entity, 'OpenCFP\Entity\TalkComment', 'talk_id')
+            'speaker' => $mapper->belongsTo($entity, 'OpenCFP\Domain\Entity\User', 'user_id'),
+            'favorites' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\Favorite', 'talk_id'),
+            'comments' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\TalkComment', 'talk_id')
                 ->order(['created' => 'ASC']),
-            'meta' => $mapper->hasMany($entity, 'OpenCFP\Entity\TalkMeta', 'talk_id'),
+            'meta' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\TalkMeta', 'talk_id'),
         ];
     }
 
