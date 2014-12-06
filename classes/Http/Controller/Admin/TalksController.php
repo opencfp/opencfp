@@ -5,7 +5,7 @@ namespace OpenCFP\Http\Controller\Admin;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Pagerfanta\View\TwitterBootstrap3View;
-use OpenCFP\Controller\FlashableTrait;
+use OpenCFP\Http\Controller\FlashableTrait;
 
 class TalksController extends BaseController
 {
@@ -81,7 +81,7 @@ class TalksController extends BaseController
 
         // Mark talk as viewed by admin
         $talk_meta = $meta_mapper->where([
-                'admin_user_id' => $app['sentry']->getUser()->getId(),
+                'admin_user_id' => $this->app['sentry']->getUser()->getId(),
                 'talk_id' => (int)$req->get('id'),
             ])
             ->first();
@@ -92,7 +92,7 @@ class TalksController extends BaseController
 
         if (!$talk_meta->viewed) {
             $talk_meta->viewed = true;
-            $talk_meta->admin_user_id = $app['sentry']->getUser()->getId();
+            $talk_meta->admin_user_id = $this->app['sentry']->getUser()->getId();
             $talk_meta->talk_id = $talk_id;
             $meta_mapper->save($talk_meta);
         }
