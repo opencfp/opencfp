@@ -19,7 +19,7 @@ class SignupController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        if (strtotime($this->app->config('application.enddate') . ' 11:59 PM') < strtotime('now')) {
+        if (strtotime($this->app->config('application.enddate')) < strtotime('now')) {
             $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
