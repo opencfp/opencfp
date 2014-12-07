@@ -16,7 +16,7 @@ class ReviewController extends BaseController
 
         // Get list of talks where majority of admins 'favorited' them
         $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
-        $talks = $mapper->getTopRatedTalks($user->id);
+        $talks = $mapper->getTopRatedTalksByUserId($user->id);
 
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($talks);
