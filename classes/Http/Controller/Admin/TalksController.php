@@ -83,19 +83,19 @@ class TalksController extends BaseController
 
         switch(strtolower($filter)) {
             case "notviewed":
-                return $talk_mapper->getNotViewedTalksByUserId($admin_user_id, $options);
+                return $talk_mapper->getNotViewedByUserId($admin_user_id, $options);
                 break;
 
             case "notrated":
-                return $talk_mapper->getNotRatedTalksByUserId($admin_user_id, $options);
+                return $talk_mapper->getNotRatedByUserId($admin_user_id, $options);
                 break;
 
             case "rated":
-                return $talk_mapper->getRatedTalksByUserId($admin_user_id, $options);
+                return $talk_mapper->getRatedByUserId($admin_user_id, $options);
                 break;
 
             case "viewed":
-                return $talk_mapper->getViewedTalksByUserId($admin_user_id, $options);
+                return $talk_mapper->getViewedByUserId($admin_user_id, $options);
                 break;
 
             case "favorited":
