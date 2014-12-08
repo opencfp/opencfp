@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Entity;
+namespace OpenCFP\Domain\Entity;
 
 class TalkMeta extends \Spot\Entity
 {
@@ -21,7 +21,7 @@ class TalkMeta extends \Spot\Entity
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'talk' => $mapper->belongsTo($entity, 'OpenCFP\Entity\Talk', 'talk_id')
+            'talk' => $mapper->belongsTo($entity, 'OpenCFP\Domain\Entity\Talk', 'talk_id')
         ];
     }
 }
