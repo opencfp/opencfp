@@ -4,6 +4,8 @@ function Talk(id, $el) {
   this.baseUrl = '/admin/talks/';
 };
 
+var queryParams = queryString.parse(location.search);
+
 Talk.prototype.favorite = function() {
   var _this = this;
   var url = this.baseUrl + this.id + '/favorite';
@@ -90,4 +92,32 @@ $('.js-talk-select').on('click', function(e) {
     var talk = new Talk($(this).data('id'), $(this));
     e.preventDefault();
     talk.select();
+});
+
+$('.sort').on('click', function(e) {
+    var $cell = $(this);
+    var sort;
+
+    if (!queryParams.hasOwnProperty('sort')) {
+      sort = 'DESC';
+    }
+
+    if (queryParams.sort == 'ASC') {
+      sort = 'DESC';
+    }
+
+    if (queryParams.sort == 'DESC') {
+      sort = 'ASC';
+    }
+
+    queryParams.sort = sort;
+    queryParams.order_by = $cell.data('field');
+
+    location.href = location.pathname + '?' + queryString.stringify(queryParams);
+});
+
+$(function() {
+  if (queryParams.hasOwnProperty('sort') && queryParams.hasOwnProperty('order_by')) {
+    $('.sort[data-field="' + queryParams.order_by + '"]').addClass('sort--' + queryParams.sort.toLowerCase());
+  }
 });
