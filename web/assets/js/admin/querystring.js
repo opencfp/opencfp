@@ -64,3 +64,33 @@
         window.queryString = queryString;
     }
 })();
+
+var queryParams = queryString.parse(location.search);
+
+$('.sort').on('click', function(e) {
+    var $cell = $(this);
+    var sort;
+
+    if (!queryParams.hasOwnProperty('sort')) {
+      sort = 'DESC';
+    }
+
+    if (queryParams.sort == 'ASC') {
+      sort = 'DESC';
+    }
+
+    if (queryParams.sort == 'DESC') {
+      sort = 'ASC';
+    }
+
+    queryParams.sort = sort;
+    queryParams.order_by = $cell.data('field');
+
+    location.href = location.pathname + '?' + queryString.stringify(queryParams);
+});
+
+$(function() {
+  if (queryParams.hasOwnProperty('sort') && queryParams.hasOwnProperty('order_by')) {
+    $('.sort[data-field="' + queryParams.order_by + '"]').addClass('sort--' + queryParams.sort.toLowerCase());
+  }
+});
