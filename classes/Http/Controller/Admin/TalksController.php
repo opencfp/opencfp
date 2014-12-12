@@ -39,10 +39,12 @@ class TalksController extends BaseController
             $options
         );
 
+        $per_page = (int) $req->get('per_page') ?: 20;
+
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($pager_formatted_talks);
         $pagerfanta = new \Pagerfanta\Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage(20);
+        $pagerfanta->setMaxPerPage($per_page);
         $pagerfanta->getNbResults();
 
         if ($req->get('page') !== null) {
@@ -68,7 +70,8 @@ class TalksController extends BaseController
             'page' => $pagerfanta->getCurrentPage(),
             'current_page' => $req->getRequestUri(),
             'totalRecords' => count($pager_formatted_talks),
-            'filter' => $req->get('filter')
+            'filter' => $req->get('filter'),
+            'per_page' => $per_page,
         );
 
         return $this->render('admin/talks/index.twig', $templateData);
