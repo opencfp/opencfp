@@ -64,7 +64,7 @@ class TalksController extends BaseController
             array('proximity' => 3)
         );
 
-        $templateData = array(
+        $templateData = [
             'pagination' => $pagination,
             'talks' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage(),
@@ -72,7 +72,9 @@ class TalksController extends BaseController
             'totalRecords' => count($pager_formatted_talks),
             'filter' => $req->get('filter'),
             'per_page' => $per_page,
-        );
+            'sort' => $req->get('sort'),
+            'order_by' => $req->get('order_by'),
+        ];
 
         return $this->render('admin/talks/index.twig', $templateData);
     }

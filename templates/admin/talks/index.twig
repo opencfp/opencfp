@@ -2,6 +2,8 @@
 {% block content %}
     <h2 class="headline">Submitted Talks</h2>
     <form method="get" class="form-inline" role="form">
+        <input type="hidden" name="order_by" value="{{ order_by }}">
+        <input type="hidden" name="sort" value="{{ sort }}">
         <div class="form-group">
             <label>Max Per Page:</label>
             <select name="per_page" class="form-control">
