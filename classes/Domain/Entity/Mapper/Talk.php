@@ -126,12 +126,18 @@ class Talk extends Mapper
             ]
         );
 
+        $additionalOrderBy = '';
+        if ($options['order_by'] !== 'total_rating') {
+            $additionalOrderBy = ", total_rating DESC";
+        }
+
         $talks = $this->query(
             "SELECT t.*, SUM(m.rating) FROM talks t "
             . "LEFT JOIN talk_meta m ON t.id = m.talk_id "
             . "WHERE rating > 0 "
             . "GROUP BY m.`talk_id` "
-            . "ORDER BY {$options['order_by']} {$options['sort']}",
+            . "ORDER BY {$options['order_by']} {$options['sort']}"
+            . $additionalOrderBy,
             ['user_id' => $admin_user_id]
         );
 
