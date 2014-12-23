@@ -52,6 +52,36 @@ class Talk extends Mapper
     }
 
     /**
+     * Return a collection of talks that have been selected
+     *
+     * @param integer $admin_user_id
+     * @param array $options Ordery By and Sorting Options
+     * @return array
+     */
+    public function getSelected($admin_user_id, $options = [])
+    {
+        // Merge options with default options
+        $options = $this->getSortOptions(
+            $options,
+            [
+                'order_by' => 'created_at',
+                'sort' => 'DESC',
+            ]
+        );
+
+        $talks = $this->all()
+            ->where(['selected' => 1])
+            ->order([$options['order_by'] => $options['sort']]);
+
+        $formatted = [];
+        foreach ($talks as $talk) {
+            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id);
+        }
+
+        return $formatted;
+    }
+
+    /**
      * Return an array of recent talks
      *
      * @param  integer $admin_user_id

@@ -23,6 +23,7 @@
                 <option value="notrated"{% if filter|lower == 'notrated' %} SELECTED{% endif %}>Not Rated Talks</option>
                 <option value="viewed"{% if filter|lower == 'viewed' %} SELECTED{% endif %}>Viewed Talks</option>
                 <option value="notviewed"{% if filter|lower == 'notviewed' %} SELECTED{% endif %}>Not Viewed Talks</option>
+                <option value="selected"{% if filter|lower == 'selected' %} SELECTED{% endif %}>Selected Talks</option>
             </select>
         </div>
         <button type="submit" class="btn btn-default">Go</button>

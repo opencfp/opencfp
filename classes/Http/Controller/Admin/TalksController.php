@@ -87,6 +87,10 @@ class TalksController extends BaseController
         }
 
         switch(strtolower($filter)) {
+            case "selected":
+                return $talk_mapper->getSelected($admin_user_id, $options);
+                break;
+
             case "notviewed":
                 return $talk_mapper->getNotViewedByUserId($admin_user_id, $options);
                 break;
