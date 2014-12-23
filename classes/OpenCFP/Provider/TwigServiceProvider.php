@@ -10,6 +10,7 @@ use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
+use Twig_Extension_Debug;
 use Twig_SimpleFunction;
 
 class TwigServiceProvider implements ServiceProviderInterface
@@ -45,6 +46,8 @@ class TwigServiceProvider implements ServiceProviderInterface
 
                 return new Response($message, $code);
             });
+        } else {
+            $app['twig']->addExtension(new Twig_Extension_Debug);
         }
 
         $app['twig']->addFunction(new Twig_SimpleFunction('uploads', function($path) {
