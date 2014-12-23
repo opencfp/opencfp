@@ -38,7 +38,7 @@ class ReviewController extends BaseController
         // Create our default view for the navigation options
         $routeGenerator = function ($page) use ($queryParams) {
             $queryParams['page'] = $page;
-            return '/admin/talks?' . http_build_query($queryParams);
+            return '/admin/review?' . http_build_query($queryParams);
         };
 
         $view = new TwitterBootstrap3View();
