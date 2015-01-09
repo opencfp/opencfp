@@ -11,8 +11,12 @@ class TalksController extends BaseController
 {
     use AdminAccessTrait;
 
-    private function indexAction(Request $req)
+    public function indexAction(Request $req)
     {
+        if (!$this->userHasAccess($this->app)) {
+            return $this->redirectTo('login');
+        }
+
         $admin_user_id = $this->app['sentry']->getUser()->getId();
         $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $pager_formatted_talks = $mapper->getAllPagerFormatted($admin_user_id);
@@ -51,6 +55,10 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
+        if (!$this->userHasAccess($this->app)) {
+            return $this->redirectTo('login');
+        }
+
         // Get info about the talks
         $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talk_id = $req->get('id');
@@ -90,6 +98,10 @@ class TalksController extends BaseController
      */
     private function favoriteAction(Request $req)
     {
+        if (!$this->userHasAccess($this->app)) {
+            return false;
+        }
+
         $admin_user_id = (int) $this->app['sentry']->getUser()->getId();
         $status = true;
 
@@ -133,6 +145,10 @@ class TalksController extends BaseController
      */
     private function selectAction(Request $req)
     {
+        if (!$this->userHasAccess($this->app)) {
+            return false;
+        }
+
         $status = true;
 
         if ($req->get('delete') !== null) {
