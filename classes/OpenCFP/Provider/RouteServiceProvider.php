@@ -70,6 +70,10 @@ class RouteServiceProvider  implements ServiceProviderInterface
         // Admin::Review
         $secureRoutes[] = $app->get('/admin/review', 'OpenCFP\Http\Controller\Admin\ReviewController::indexAction')->bind('admin_reviews');
 
+        // API end points
+        $secureRoutes[] = $app->post('/api/talk/add', 'OpenCFP\Http\Controller\Api\TalksController::addAction')->bind('api_talk_add');
+        $secureRoutes[] = $app->get('/api/talk/edit/{id}', 'OpenCFP\Http\Controller\Api\TalksController::editAction')->bind('api_talk_edit');
+        $secureRoutes[] = $app->post('/api/talk/delete/{$id}', 'OpenCFP\Http\Controller\Api\TalksController::deleteAction')->bind('api_talk_delete');
         if ($app->config('application.secure_ssl')) {
             foreach ($secureRoutes as $route) {
                 $route->requireHttps();

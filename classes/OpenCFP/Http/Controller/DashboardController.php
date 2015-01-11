@@ -30,7 +30,6 @@ class DashboardController extends BaseController
         /////////
 
         $profile = $speakers->findProfile($user->getId());
-
         return $this->render('dashboard.twig', [
             'profile' => $profile
         ]);

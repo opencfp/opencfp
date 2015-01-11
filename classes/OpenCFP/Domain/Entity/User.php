@@ -7,6 +7,7 @@ use Spot\Entity;
 class User extends Entity
 {
     protected static $table = 'users';
+    protected static $mapper = 'OpenCFP\Domain\Entity\Mapper\User';
 
     public static function fields()
     {
@@ -32,7 +33,8 @@ class User extends Entity
             'transportation' => ['type' => 'smallint', 'value' => 0],
             'info' => ['type' => 'text'],
             'bio' => ['type' => 'text'],
-            'photo_path' => ['type' => 'string', 'length' => 255]
+            'photo_path' => ['type' => 'string', 'length' => 255],
+            'api_token' => ['type' => 'string', 'length' => 32],
         ];
     }
 
@@ -71,5 +73,15 @@ class User extends Entity
         }
 
         return $json;
+    }
+
+    public function getApiToken()
+    {
+        return $this->_data['api_token'];
+    }
+
+    public function getId()
+    {
+        return $this->_data['id'];
     }
 }
