@@ -39,7 +39,7 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
         // Create a test double for profile
         $profile = m::mock('StdClass');
         $profile->shouldReceive('name')->andReturn('Test User');
-        $profile->shouldReceive('photo', 'company', 'twitter', 'airport', 'bio', 'info', 'transportation', 'hotel');
+        $profile->shouldReceive('photo', 'company', 'twitter', 'airport', 'bio', 'info', 'transportation', 'hotel', 'token');
         $profile->shouldReceive('talks')->andReturn([$talk]);
 
         $speakerService = m::mock('StdClass');
