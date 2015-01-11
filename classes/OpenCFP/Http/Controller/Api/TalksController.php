@@ -72,6 +72,6 @@ class TalksController extends \OpenCFP\Http\Controller\BaseController
         $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talk = $talk_mapper->create($data);
 
-        return new Response(json_encode(['msg' => 'Talk created']), 200);
+        return new Response(json_encode(['msg' => 'Talk created']), 201);
     }
 }
