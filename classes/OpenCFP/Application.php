@@ -52,12 +52,14 @@ final class Application extends SilexApplication
         $this->register(new ValidatorServiceProvider);
         $this->register(new TranslationServiceProvider);
         $this->register(new SwiftmailerServiceProvider, [
-            'host' => $this->config('mail.host'),
-            'port' => $this->config('mail.port'),
-            'username' => $this->config('mail.username'),
-            'password' => $this->config('mail.password'),
-            'encryption' => $this->config('mail.encryption'),
-            'auth_mode' => $this->config('mail.auth_mode')
+            'swiftmailer.options' => [
+                'host' => $this->config('mail.host'),
+                'port' => $this->config('mail.port'),
+                'username' => $this->config('mail.username'),
+                'password' => $this->config('mail.password'),
+                'encryption' => $this->config('mail.encryption'),
+                'auth_mode' => $this->config('mail.auth_mode'),
+            ],
         ]);
 
         $this->register(new SentryServiceProvider);
