@@ -17,9 +17,18 @@ class TalksController extends BaseController
             return $this->redirectTo('login');
         }
 
+        $sort = [ "created_at" => "DESC" ];
+        if ($req->get('sort') !== null) {
+            switch ($req->get('sort')) {
+                case "title": $sort = [ "title" => "ASC" ]; break;
+                case "category": $sort = [ "category" => "ASC", "title" => "ASC" ]; break;
+                case "type": $sort = [ "type" => "ASC", "category" => "ASC", "title" => "ASC" ]; break;
+            }
+        }
+
         $admin_user_id = $this->app['sentry']->getUser()->getId();
         $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
-        $pager_formatted_talks = $mapper->getAllPagerFormatted($admin_user_id);
+        $pager_formatted_talks = $mapper->getAllPagerFormatted($admin_user_id, $sort);
 
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($pager_formatted_talks);
