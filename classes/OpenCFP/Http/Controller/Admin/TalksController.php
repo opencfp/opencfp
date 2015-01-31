@@ -42,7 +42,11 @@ class TalksController extends BaseController
 
         // Create our default view for the navigation options
         $routeGenerator = function ($page) {
-            return '/admin/talks?page=' . $page;
+            $uri = '/admin/talks?page=' . $page;
+            if ($req->get('sort') !== null) {
+                $uri .= '&sort=' . $req->get('sort');
+            }
+            return $uri;
         };
         $view = new TwitterBootstrap3View();
         $pagination = $view->render(
