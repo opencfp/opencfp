@@ -14,10 +14,10 @@ class Talk extends Mapper
      * @param  integer $admin_user_id
      * @return array
      */
-    public function getAllPagerFormatted($admin_user_id)
+    public function getAllPagerFormatted($admin_user_id, $sort)
     {
         $talks = $this->all()
-            ->order(['created_at' => 'DESC'])
+            ->order($sort)
             ->with(['favorites']);
         $formatted = array();
 
