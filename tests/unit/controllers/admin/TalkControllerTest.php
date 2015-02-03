@@ -38,6 +38,7 @@ class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
         // Create a fake request
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
         $req->shouldReceive('get')->with('page')->andReturn(1);
+		$req->shouldReceive('get')->with('sort')->andReturn('title');
         $req->shouldReceive('getRequestUri')->andReturn('foo');
 
         $this->createTestData($app['spot']);
