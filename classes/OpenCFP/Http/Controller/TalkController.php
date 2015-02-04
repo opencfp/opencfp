@@ -229,7 +229,7 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        if ( ! $isValid) {
+        if (!$isValid) {
             $data = array(
                 'formAction' => $this->url('talk_create'),
                 'title' => $req->get('title'),
