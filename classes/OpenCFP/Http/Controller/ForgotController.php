@@ -46,9 +46,9 @@ class ForgotController extends BaseController
             $user = $this->app['sentry']->getUserProvider()->findByLogin($data['email']);
         } catch (UserNotFoundException $e) {
             $this->app['session']->set('flash', array(
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => "We couldn't find a user with that email"
+                'type' => 'success',
+                'short' => 'Success',
+                'ext' => "If your email was valid, we sent a link to reset your password to {$data['email']}"
             ));
 
             return $this->redirectTo('forgot_password');
