@@ -22,7 +22,7 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
-final class Application extends SilexApplication
+class Application extends SilexApplication
 {
     /**
      * @param array       $basePath
