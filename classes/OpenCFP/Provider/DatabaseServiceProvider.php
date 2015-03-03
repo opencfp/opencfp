@@ -10,12 +10,11 @@ class DatabaseServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $pdo = new \PDO(
-            $app->config('database.dsn'),
-            $app->config('database.user'),
-            $app->config('database.password'),
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
-        );
+        try {
+            $pdo = $this->makePDOInstance($app);
+        } catch (\PDOException $e) {
+            $this->raiseDatabaseConnectionIssue();
+        }
 
         $this->checkConnection($pdo);
 
@@ -33,9 +32,28 @@ class DatabaseServiceProvider implements ServiceProviderInterface
     {
         $check = $pdo->query('select database() as db')->fetch(\PDO::FETCH_ASSOC);
 
-        if ( ! $check['db']) {
-            throw new \Exception('There was a problem connecting to the database. Make
-                sure to use proper DSN format. See: http://php.net/manual/en/pdo.connections.php');
+        if (!$check['db']) {
+            $this->raiseDatabaseConnectionIssue();
         }
+    }
+
+    /**
+     * @param Application $app
+     *
+     * @return \PDO
+     */
+    private function makePDOInstance(Application $app)
+    {
+        return new \PDO(
+            $app->config('database.dsn'),
+            $app->config('database.user'),
+            $app->config('database.password'),
+            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+        );
+    }
+
+    private function raiseDatabaseConnectionIssue()
+    {
+        throw new \Exception('There was a problem connecting to the database. Make sure to use proper DSN format. See: http://php.net/manual/en/pdo.connections.php');
     }
 }
