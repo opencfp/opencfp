@@ -76,6 +76,7 @@ class TwigServiceProvider implements ServiceProviderInterface
     {
         $app->before(function (Request $request, Application $app) {
             $app['twig']->addGlobal('current_page', $request->getRequestUri());
+            $app['twig']->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
         });
 
         if ($app['sentry']->check()) {
