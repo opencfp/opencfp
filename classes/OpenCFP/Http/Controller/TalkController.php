@@ -2,6 +2,8 @@
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\Application\NotAuthorizedException;
+use OpenCFP\Application\Speakers;
 use Silex\Application;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,28 +36,25 @@ class TalkController extends BaseController
      */
     public function viewAction(Request $req)
     {
-        if ( ! $this->app['sentry']->check()) {
+        /* @var Speakers $speakers */
+        $speakers = $this->app['application.speakers'];
+
+        /////////
+        if (!$this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
 
-        $id = $req->get('id');
-        $talk_id = filter_var($id, FILTER_VALIDATE_INT);
-
-        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
-        $talk_info = $talk_mapper->get($talk_id);
-
         $user = $this->app['sentry']->getUser();
+        /////////
 
-        if ($talk_info['user_id'] !== $user->getId()) {
+        try {
+            $id = filter_var($req->get('id'), FILTER_VALIDATE_INT);
+            $talk = $speakers->getTalk($user->getId(), $id);
+        } catch (NotAuthorizedException $e) {
             return $this->redirectTo('dashboard');
         }
 
-        $data = array(
-            'id' => $talk_id,
-            'talk' => $talk_info,
-        );
-
-        return $this->render('talk/view.twig', $data);
+        return $this->render('talk/view.twig', compact('id', 'talk'));
     }
 
     /**
