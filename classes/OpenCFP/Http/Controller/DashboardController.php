@@ -32,7 +32,28 @@ class DashboardController extends BaseController
         $profile = $speakers->findProfile($user->getId());
 
         return $this->render('dashboard.twig', [
-            'profile' => $profile
+            'profile' => $profile,
+            'cfp_open' => $this->isCfpOpen()
         ]);
+    }
+
+    /**
+     * Check to see if the CfP for this app is still open
+     *
+     * @param  integer $currentTime
+     *
+     * @return boolean
+     */
+    public function isCfpOpen($currentTime = null)
+    {
+        if (!$currentTime) {
+            $currentTime = strtotime('now');
+        }
+
+        if ($currentTime < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
+            return true;
+        }
+
+        return false;
     }
 }
