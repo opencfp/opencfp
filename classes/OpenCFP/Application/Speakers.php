@@ -26,4 +26,31 @@ final class Speakers
         $speaker = $this->speakerRepository->findById($speakerId);
         return new SpeakerProfile($speaker);
     }
+
+    /**
+     * Retrieves a talk owned by a speaker.
+     *
+     * @param $speakerId
+     * @param $talkId
+     *
+     * @return Talk
+     * @throws NotAuthorizedException
+     */
+    public function getTalk($speakerId, $talkId)
+    {
+        $speaker = $this->speakerRepository->findById($speakerId);
+        $talk = $speaker->talks->where(['id' => $talkId])->execute()->first();
+
+        // If it can't grab by relation, it's likely not their talk.
+        if (!$talk) {
+            throw new NotAuthorizedException;
+        }
+
+        // Do an explicit check of ownership because why not.
+        if ($talk->user_id !== $speaker->id) {
+            throw new NotAuthorizedException;
+        }
+
+        return $talk;
+    }
 }
