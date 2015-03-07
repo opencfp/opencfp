@@ -5,10 +5,21 @@
                     <img data-src="/assets/img/logo_round.svg" class="svg-inject event-logo" alt="Event Logo">
                 </div>
                 <div class="col-md-9">
-                    <h1 class="headline headline-alpha">Call For Papers Now Open!</h1>
-                    <h3 class="headline headline-alpha">Submissions accepted until {{ site.enddate }}</h3>
+                    {% if cfp_open %}
+                        <h1 class="headline headline-alpha">Call For Papers Now Open!</h1>
+                        <h3 class="headline headline-alpha">Submissions accepted until {{ site.enddate }}</h3>
+                    {% else %}
+                        <h1 class="headline headline-alpha">
+                            {% if site.show_submission_count %}
+                                Call for Papers ended with {{ number_of_talks }} Submissions!
+                            {% else %}
+                                Call for Papers has ended!
+                            {% endif %}
+                        </h1>
+                        <h3 class="headline headline-alpha">Submissions were accepted until {{ site.enddate }}</h3>
+                    {% endif %}
                     <p>
-                        <a class="btn-opencfp btn-opencfp-medium btn-opencfp--outlined" href="{{ url('user_new') }}">Register Now</a>
+                        {% if cfp_open %}<a class="btn-opencfp btn-opencfp-medium btn-opencfp--outlined" href="{{ url('user_new') }}">Register Now</a>{% endif %}
                         <a class="btn-opencfp btn-opencfp-medium btn-opencfp--primary" href="{{ url('dashboard') }}">View Submissions</a>
                     </p>
                 </div>
