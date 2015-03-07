@@ -1,5 +1,5 @@
 {
-    "name": "chartjes/opencfp",
+    "name": "opencfp/opencfp",
     "require": {
         "php": ">=5.4",
         "twig/twig": "1.*",

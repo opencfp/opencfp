@@ -75,7 +75,7 @@ Clone this project into your working directory.
 Example:
 
 ```
-$ git clone git@github.com:chartjes/opencfp.git
+$ git clone git@github.com:opencfp/opencfp.git
 Cloning into 'opencfp'...
 remote: Counting objects: 4794, done.
 remote: Total 4794 (delta 0), reused 0 (delta 0)
