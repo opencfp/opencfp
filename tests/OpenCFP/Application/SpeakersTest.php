@@ -50,6 +50,11 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_retrieves_a_specific_talk_owned_by_speaker()
     {
+        $this->trainStudentRepositoryToReturnSampleSpeaker($this->getSpeakerWithOneTalk());
+
+        $talk = $this->sut->getTalk(self::SPEAKER_ID, 1);
+
+        $this->assertEquals('Testy Talk', $talk->title);
     }
 
     /** @test */
@@ -120,6 +125,25 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
                 'id' => 1,
                 'title' => 'Testy Talk',
                 'user_id' => self::SPEAKER_ID + 1 // Not the speaker!
+            ])
+        );
+
+        return $stub;
+    }
+
+    private function getSpeakerWithOneTalk()
+    {
+        // Set up stub speaker.
+        $stub = m::mock('stdClass');
+        $stub->id = self::SPEAKER_ID;
+
+        // Set up talks.
+        $stub->talks = m::mock('stdClass');
+        $stub->talks->shouldReceive('where->execute->first')->andReturn(
+            new Talk([
+                'id' => 1,
+                'title' => 'Testy Talk',
+                'user_id' => self::SPEAKER_ID
             ])
         );
 
