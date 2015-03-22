@@ -46,8 +46,8 @@ class SpeakersController extends BaseController
 
         $templateData = array(
             'airport' => $this->app->config('application.airport'),
-            'arrival' => $this->app->config('application.arrival'),
-            'departure' => $this->app->config('application.departure'),
+            'arrival' => date('Y-m-d',$this->app->config('application.arrival')),
+            'departure' => date('Y-m-d',$this->app->config('application.departure')),
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage()
@@ -74,8 +74,8 @@ class SpeakersController extends BaseController
         // Build and render the template
         $templateData = array(
             'airport' => $this->app->config('application.airport'),
-            'arrival' => $this->app->config('application.arrival'),
-            'departure' => $this->app->config('application.departure'),
+            'arrival' => date('Y-m-d',$this->app->config('application.arrival')),
+            'departure' => date('Y-m-d',$this->app->config('application.departure')),
             'speaker' => $speaker_details,
             'talks' => $talks,
             'photo_path' => '/uploads/',
