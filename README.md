@@ -131,6 +131,8 @@ Add the following to the Apache `.htaccess` file at `/web/.htaccess` to specify 
 SetEnv CFP_ENV production
 ```
 
+Note: `.htaccess` already pre-set for development. Alter as needed.
+
 <a name="configure-environment" />
 ### Configure Environment
 
@@ -164,6 +166,8 @@ To run migrations, make sure you are in the root directory for the project and r
 ```
 $ vendor/bin/phinx migrate --environment=production
 ```
+
+Note: For updating previously installed instances only run migrations as needed.
 
 <a name="final-touches" />
 ### Final Touches
