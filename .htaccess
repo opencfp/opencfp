@@ -3,3 +3,5 @@
    RewriteRule    ^$ web/    [L]
    RewriteRule    (.*) web/$1 [L]
 </IfModule>
+
+SetEnv CFP_ENV development
