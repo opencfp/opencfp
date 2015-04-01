@@ -12,21 +12,7 @@ use OpenCFP\Http\Form\TalkForm;
 class TalkController extends BaseController
 {
     use FlashableTrait;
-
-    /**
-     * Check to see if the CfP for this app is still open
-     *
-     * @param  integer $current_time
-     * @return boolean
-     */
-    public function isCfpOpen($current_time)
-    {
-        if ($current_time < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
-            return true;
-        }
-
-        return false;
-    }
+    use LoggedInTrait;
 
     /**
      * Controller action for viewing a specific talk
@@ -40,9 +26,7 @@ class TalkController extends BaseController
         $speakers = $this->app['application.speakers'];
 
         /////////
-        if (!$this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         $user = $this->app['sentry']->getUser();
         /////////
@@ -65,9 +49,7 @@ class TalkController extends BaseController
      */
     public function editAction(Request $req)
     {
-        if (!$this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         $id = $req->get('id');
         $talk_id = filter_var($id, FILTER_VALIDATE_INT);
@@ -123,9 +105,7 @@ class TalkController extends BaseController
      */
     public function createAction(Request $req)
     {
-        if ( ! $this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         // You can only create talks while the CfP is open
         if ( ! $this->isCfpOpen(strtotime('now'))) {
@@ -164,9 +144,7 @@ class TalkController extends BaseController
      */
     public function processCreateAction(Request $req)
     {
-        if ( ! $this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         // You can only create talks while the CfP is open
         if ( ! $this->isCfpOpen(strtotime('now'))) {
@@ -257,9 +235,7 @@ class TalkController extends BaseController
 
     public function updateAction(Request $req)
     {
-        if ( ! $this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         $user = $this->app['sentry']->getUser();
 

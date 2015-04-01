@@ -9,12 +9,11 @@ use Symfony\Component\HttpFoundation\Request;
 class ProfileController extends BaseController
 {
     use FlashableTrait;
+    use LoggedInTrait;
 
     public function editAction(Request $req)
     {
-        if (!$this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         $user = $this->app['sentry']->getUser();
 
@@ -54,9 +53,7 @@ class ProfileController extends BaseController
 
     public function processAction(Request $req)
     {
-        if (!$this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         $user = $this->app['sentry']->getUser();
 
@@ -157,18 +154,14 @@ class ProfileController extends BaseController
 
     public function passwordAction(Request $req)
     {
-        if (!$this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         return $this->render('user/change_password.twig');
     }
 
     public function passwordProcessAction(Request $req)
     {
-        if (!$this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         $user = $this->app['sentry']->getUser();
 

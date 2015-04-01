@@ -17,14 +17,19 @@ class SecurityController extends BaseController
 
     public function processAction(Request $req, Application $app)
     {
-        $template_data = array();
-        $code = 200;
-
         try {
             $page = new Login($app['sentry']);
 
             if ($page->authenticate($req->get('email'), $req->get('password'))) {
-                return $this->redirectTo('dashboard');
+
+                $user = $app['sentry']->getUser();
+
+                if ($user->hasPermission('admin')) {
+                    return $this->redirectTo('admin');
+                }
+                else{
+                    return $this->redirectTo('dashboard');
+                }
             }
 
             $errorMessage = $page->getAuthenticationMessage();
@@ -56,6 +61,7 @@ class SecurityController extends BaseController
     public function outAction()
     {
         $this->app['sentry']->logout();
+
         return $this->redirectTo('homepage');
     }
 }

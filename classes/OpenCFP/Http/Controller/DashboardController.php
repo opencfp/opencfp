@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends BaseController
 {
+    use LoggedInTrait;
+
     public function showSpeakerProfile()
     {
         /**
@@ -22,9 +24,7 @@ class DashboardController extends BaseController
         $speakers = $this->app['application.speakers'];
 
         /////////
-        if (!$this->app['sentry']->check()) {
-            return $this->redirectTo('login');
-        }
+        $this->enforceUserIsLoggedIn();
 
         $user = $this->app['sentry']->getUser();
         /////////
@@ -35,25 +35,5 @@ class DashboardController extends BaseController
             'profile' => $profile,
             'cfp_open' => $this->isCfpOpen()
         ]);
-    }
-
-    /**
-     * Check to see if the CfP for this app is still open
-     *
-     * @param  integer $currentTime
-     *
-     * @return boolean
-     */
-    public function isCfpOpen($currentTime = null)
-    {
-        if (!$currentTime) {
-            $currentTime = strtotime('now');
-        }
-
-        if ($currentTime < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
-            return true;
-        }
-
-        return false;
     }
 }
