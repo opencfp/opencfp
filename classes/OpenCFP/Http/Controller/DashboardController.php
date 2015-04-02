@@ -36,24 +36,4 @@ class DashboardController extends BaseController
             'cfp_open' => $this->isCfpOpen()
         ]);
     }
-
-    /**
-     * Check to see if the CfP for this app is still open
-     *
-     * @param  integer $currentTime
-     *
-     * @return boolean
-     */
-    public function isCfpOpen($currentTime = null)
-    {
-        if (!$currentTime) {
-            $currentTime = strtotime('now');
-        }
-
-        if ($currentTime < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
-            return true;
-        }
-
-        return false;
-    }
 }

@@ -13,20 +13,6 @@ class TalkController extends BaseController
 {
     use FlashableTrait;
 
-    /**
-     * Check to see if the CfP for this app is still open
-     *
-     * @param  integer $current_time
-     * @return boolean
-     */
-    public function isCfpOpen($current_time)
-    {
-        if ($current_time < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * Controller action for viewing a specific talk
