@@ -14,21 +14,6 @@ class TalkController extends BaseController
     use FlashableTrait;
 
     /**
-     * Check to see if the CfP for this app is still open
-     *
-     * @param  integer $current_time
-     * @return boolean
-     */
-    public function isCfpOpen($current_time)
-    {
-        if ($current_time < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Controller action for viewing a specific talk
      *
      * @param  Request $req
@@ -36,13 +21,24 @@ class TalkController extends BaseController
      */
     public function viewAction(Request $req)
     {
-        /* @var Speakers $speakers */
-        $speakers = $this->app['application.speakers'];
-
         /////////
         if (!$this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
+
+        if ($this->isAdmin()){
+
+            $this->app['session']->set('flash', [
+                    'type' => 'error',
+                    'short' => 'Admin Error',
+                    'ext' => 'You cannot submit talks as an Admin']
+            );
+
+            return $this->redirectTo('dashboard');
+        }
+
+        /* @var Speakers $speakers */
+        $speakers = $this->app['application.speakers'];
 
         $user = $this->app['sentry']->getUser();
         /////////
@@ -68,6 +64,18 @@ class TalkController extends BaseController
         if (!$this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
+
+        if ($this->isAdmin()){
+
+            $this->app['session']->set('flash', [
+                    'type' => 'error',
+                    'short' => 'Admin Error',
+                    'ext' => 'You cannot submit talks as an Admin']
+            );
+
+            return $this->redirectTo('dashboard');
+        }
+
 
         $id = $req->get('id');
         $talk_id = filter_var($id, FILTER_VALIDATE_INT);
@@ -127,6 +135,17 @@ class TalkController extends BaseController
             return $this->redirectTo('login');
         }
 
+        if ($this->isAdmin()){
+
+            $this->app['session']->set('flash', [
+                    'type' => 'error',
+                    'short' => 'Admin Error',
+                    'ext' => 'You cannot submit talks as an Admin']
+            );
+
+            return $this->redirectTo('dashboard');
+        }
+
         // You can only create talks while the CfP is open
         if ( ! $this->isCfpOpen(strtotime('now'))) {
             $this->app['session']->set('flash', [
@@ -166,6 +185,17 @@ class TalkController extends BaseController
     {
         if ( ! $this->app['sentry']->check()) {
             return $this->redirectTo('login');
+        }
+
+        if ($this->isAdmin()){
+
+            $this->app['session']->set('flash', [
+                    'type' => 'error',
+                    'short' => 'Admin Error',
+                    'ext' => 'You cannot submit talks as an Admin']
+            );
+
+            return $this->redirectTo('dashboard');
         }
 
         // You can only create talks while the CfP is open
@@ -260,6 +290,18 @@ class TalkController extends BaseController
         if ( ! $this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
+
+        if ($this->isAdmin()){
+
+            $this->app['session']->set('flash', [
+                    'type' => 'error',
+                    'short' => 'Admin Error',
+                    'ext' => 'You cannot submit talks as an Admin']
+            );
+
+            return $this->redirectTo('dashboard');
+        }
+
 
         $user = $this->app['sentry']->getUser();
 
@@ -410,5 +452,10 @@ class TalkController extends BaseController
         } catch (\Exception $e) {
             echo $e;die();
         }
+    }
+
+    private function isAdmin()
+    {
+        return ($this->app['sentry']->getUser()->hasPermission('admin'));
     }
 }

@@ -49,6 +49,7 @@ function deleteTalk(tid) {
         </div>
     </div>
 
+    {% if can_submit %}
     <h2 class="headline">My Talks</h2>
     {% if profile.talks is not empty %}
     <table class="table table-striped">
@@ -83,4 +84,5 @@ function deleteTalk(tid) {
         You currently have no talks submitted.
     {% endif %}
     <p><a class="btn btn-success" href="{{ url('talk_new') }}">Submit a talk</a></p>
+    {%  endif %}
 {% endblock %}
