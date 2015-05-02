@@ -12,7 +12,6 @@ opencfp.iml
 .project
 .settings
 composer.phar
-composer.lock
 deployment.properties
 deployment.xml
 /scripts
