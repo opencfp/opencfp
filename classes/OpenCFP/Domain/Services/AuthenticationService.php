@@ -4,7 +4,6 @@ namespace OpenCFP\Domain\Services;
 
 interface AuthenticationService
 {
-
     /**
      * Given valid credentials, authenticate the user.
      *

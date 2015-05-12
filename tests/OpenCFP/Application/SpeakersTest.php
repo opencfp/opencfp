@@ -4,9 +4,12 @@ namespace OpenCFP\Application;
 
 use Mockery as m;
 use Mockery\MockInterface;
-use OpenCFP\Domain\Entity\SpeakerRepository;
+use OpenCFP\Domain\Services\IdentityProvider;
+use OpenCFP\Domain\Speaker\SpeakerRepository;
+use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Entity\User;
+use OpenCFP\Domain\Talk\TalkSubmission;
 
 class SpeakersTest extends \PHPUnit_Framework_TestCase 
 {
@@ -18,12 +21,31 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     /** @var SpeakerRepository | MockInterface */
     private $speakerRepository;
 
+    /** @var TalkRepository | MockInterface */
+    private $talkRepository;
+
+    /** @var IdentityProvider | MockInterface */
+    private $identityProvider;
+
     protected function setUp(){
         parent::setUp();
 
+        $this->identityProvider = m::mock('OpenCFP\Domain\Services\IdentityProvider');
         $this->speakerRepository = m::mock('OpenCFP\Domain\Speaker\SpeakerRepository');
-        $this->sut = new Speakers($this->speakerRepository);
+        $this->talkRepository = m::mock('OpenCFP\Domain\Talk\TalkRepository');
+
+        $this->sut = new Speakers($this->identityProvider, $this->speakerRepository, $this->talkRepository);
     }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        m::close();
+    }
+
+    //
+    // Speaker Profiles & Such
+    //
 
     /** @test */
     public function it_provides_the_right_speaker_profile_when_asked()
@@ -76,6 +98,42 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('OpenCFP\Application\NotAuthorizedException');
         $this->sut->getTalk(self::SPEAKER_ID, 1);
     }
+
+    //
+    // Talk Submission
+    //
+
+    /** @test */
+    public function it_should_allow_authenticated_speakers_to_submit_talks()
+    {
+        $this->identityProvider->shouldReceive('getCurrentUser')
+            ->once()
+            ->andReturn($this->getSpeaker());
+
+        $this->talkRepository->shouldReceive('persist')
+            ->with(m::type('OpenCFP\Domain\Entity\Talk'))
+            ->once();
+
+        $submission = TalkSubmission::fromNative([
+            'title' => 'Sample Talk',
+            'description' => 'Some example talk for our submission',
+            'type' => 'regular',
+            'category' => 'api',
+            'level' => 'mid'
+        ]);
+
+        /**
+         * This should determine the current authenticated speaker, create a Talk from
+         * the data in the TalkSubmission and then persist that Talk. It should dispatch
+         * an event when a talk is submitted.
+         */
+        $this->sut->submitTalk($submission);
+
+    }
+
+    //
+    // Test Double Helpers
+    //
 
     private function trainStudentRepositoryToReturnSampleSpeaker($speaker)
     {

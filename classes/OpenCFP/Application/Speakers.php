@@ -2,17 +2,33 @@
 
 namespace OpenCFP\Application;
 
+use OpenCFP\Domain\Entity\Talk;
+use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
+use OpenCFP\Domain\Talk\TalkRepository;
+use OpenCFP\Domain\Talk\TalkSubmission;
 
 final class Speakers
 {
-    /** @var SpeakerRepository */
-    protected $speakerRepository;
+    /**
+     * @var IdentityProvider
+     */
+    protected $identityProvider;
 
-    function __construct(SpeakerRepository $speakerRepository)
+    /** @var SpeakerRepository */
+    protected $speakers;
+
+    /**
+     * @var TalkRepository
+     */
+    protected $talks;
+
+    function __construct(IdentityProvider $identityProvider, SpeakerRepository $speakers, TalkRepository $talks)
     {
-        $this->speakerRepository = $speakerRepository;
+        $this->speakers = $speakers;
+        $this->identityProvider = $identityProvider;
+        $this->talks = $talks;
     }
 
     /**
@@ -23,7 +39,7 @@ final class Speakers
      */
     public function findProfile($speakerId)
     {
-        $speaker = $this->speakerRepository->findById($speakerId);
+        $speaker = $this->speakers->findById($speakerId);
         return new SpeakerProfile($speaker);
     }
 
@@ -38,7 +54,7 @@ final class Speakers
      */
     public function getTalk($speakerId, $talkId)
     {
-        $speaker = $this->speakerRepository->findById($speakerId);
+        $speaker = $this->speakers->findById($speakerId);
         $talk = $speaker->talks->where(['id' => $talkId])->execute()->first();
 
         // If it can't grab by relation, it's likely not their talk.
@@ -52,5 +68,25 @@ final class Speakers
         }
 
         return $talk;
+    }
+
+    /**
+     * Orchestrates the use-case of a speaker submitting a talk.
+     *
+     * @param TalkSubmission $submission
+     */
+    public function submitTalk(TalkSubmission $submission)
+    {
+        $speaker = $this->identityProvider->getCurrentUser();
+
+        $talk = new Talk([
+            'title' => 'Sample Talk',
+            'description' => 'Some example talk for our submission'
+        ]);
+
+        // Own the talk to the speaker.
+        $talk->user_id = $speaker->id;
+
+        $this->talks->persist($talk);
     }
 }
