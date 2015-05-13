@@ -2,11 +2,11 @@
 
 namespace OpenCFP\Domain\Talk;
 
-class TalkSubmission 
+use OpenCFP\Domain\Entity\Talk;
+
+class TalkSubmission
 {
-    public $title;
-    public $description;
-    public $type;
+    private $data;
 
     public static function fromNative(array $data)
     {
@@ -18,26 +18,14 @@ class TalkSubmission
         $instance->guardLevelIsValid($data);
         $instance->guardCategoryIsValid($data);
 
-        $instance->title = $data['title'];
-        $instance->description = $data['description'];
-        $instance->type = $data['type'];
+        $instance->data = $data;
 
         return $instance;
     }
 
     public function toTalk()
     {
-        return new Talk([
-            'title' => $this->title,
-            'description' => $this->description,
-            'type' => $this->type,
-            'level' => $this->level,
-            'category' => $this->category,
-            'desired' => $this->desired,
-            'slides' => $this->slides,
-            'other' => $this->other,
-            'sponsor' => $this->sponsor
-        ]);
+        return new Talk($this->data);
     }
 
     private function guardTitleIsAppropriateLength($data)

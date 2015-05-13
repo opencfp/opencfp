@@ -11,7 +11,24 @@ class TalkSubmissionTest extends PHPUnit_Framework_TestCase
         // There is an assumption that any inputs have been cleaned previously. This class
         // represents the TalkSubmission only.
 
+        $submission = TalkSubmission::fromNative([
+            'title' => 'Happy Path Submission',
+            'description' => 'I play by the rules.',
+            'type' => 'regular',
+            'level' => 'entry',
+            'category' => 'api'
+        ]);
 
+        // Factory method for talk out of submission.
+        // Responsible for creating data-mapper Talk entity from cleaned inputs.
+        $talk = $submission->toTalk();
+
+        $this->assertEquals('Happy Path Submission', $talk->title);
+        $this->assertEquals('I play by the rules.', $talk->description);
+        $this->assertEquals('regular', $talk->type);
+        $this->assertEquals('entry', $talk->level);
+        $this->assertEquals('api', $talk->category);
+        $this->assertEmpty($talk->slides);
     }
 
     /**
