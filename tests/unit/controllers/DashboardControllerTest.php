@@ -49,7 +49,7 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
 
         ob_start();
         $app->run();  // Fire before handlers... boot...
-        ob_clean();
+        ob_end_clean();
 
         // Instantiate the controller and run the indexAction
         $controller = new \OpenCFP\Http\Controller\DashboardController($app);
