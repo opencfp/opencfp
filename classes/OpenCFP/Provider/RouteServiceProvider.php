@@ -22,7 +22,7 @@ class RouteServiceProvider  implements ServiceProviderInterface
         // Talks
         $secureRoutes[] = $app->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')->bind('talk_edit');
         $secureRoutes[] = $app->get('/talk/create', 'OpenCFP\Http\Controller\TalkController::createAction')->bind('talk_new');
-        $secureRoutes[] = $app->post('/talk/create', 'OpenCFP\Http\Controller\TalkController::processCreateAction')->bind('talk_create');
+        $secureRoutes[] = $app->post('/talk/create', 'http.web.talks:handleSubmitTalk')->bind('talk_create');
         $secureRoutes[] = $app->post('/talk/update', 'OpenCFP\Http\Controller\TalkController::updateAction')->bind('talk_update');
         $secureRoutes[] = $app->post('/talk/delete', 'OpenCFP\Http\Controller\TalkController::deleteAction')->bind('talk_delete');
         $secureRoutes[] = $app->get('/talk/{id}', 'OpenCFP\Http\Controller\TalkController::viewAction')->bind('talk_view');
