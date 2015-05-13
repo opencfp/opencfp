@@ -8,6 +8,7 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
+use OpenCFP\Domain\ValidationException;
 
 final class Speakers
 {
@@ -79,10 +80,8 @@ final class Speakers
     {
         $user = $this->identityProvider->getCurrentUser();
 
-        $talk = new Talk([
-            'title' => 'Sample Talk',
-            'description' => 'Some example talk for our submission'
-        ]);
+        // Create talk from submission.
+        $talk = $submission->toTalk();
 
         // Own the talk to the speaker.
         $talk->user_id = $user->id;
