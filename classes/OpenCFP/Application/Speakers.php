@@ -77,7 +77,7 @@ final class Speakers
      */
     public function submitTalk(TalkSubmission $submission)
     {
-        $speaker = $this->identityProvider->getCurrentUser();
+        $user = $this->identityProvider->getCurrentUser();
 
         $talk = new Talk([
             'title' => 'Sample Talk',
@@ -85,7 +85,7 @@ final class Speakers
         ]);
 
         // Own the talk to the speaker.
-        $talk->user_id = $speaker->id;
+        $talk->user_id = $user->id;
 
         $this->talks->persist($talk);
     }
