@@ -184,6 +184,13 @@ Note: For updating previously installed instances only run migrations as needed.
 OpenCFP has a JSON API that can be used by third-party applications to take advantage of a set of features on behalf
 of a user. The API is enabled by default, but can be disabled if not needed for your instance of OpenCFP.
 
+<a name="json-api-configuration" />
+### API Configuration
+
+Configuration for the API is stored under the `api` namespace of your configuration YAML file. Currently, there is only
+one available configuration setting: whether or not the api is `enabled`.
+
+<a name="json-api-authorization" />
 ### Authorization
 
 In order to use any of the available APIs in order to do work on a OpenCFP user's behalf, an OAuth2 token must be
@@ -204,6 +211,7 @@ With all of that out of the way, here are some nuts and bolts about our implemen
 - Bearer tokens have a time-to-live (TTL) of `3600` seconds (1 hour). Expired tokens will be rejected and you have the option of refreshing or requesting a new token. This may be configurable in the future.
 - Authorization endpoints are described below.
 
+<a name="json-api-endpoints" />
 ### Endpoints
 
 This serves as a high-level overview of the OpenCFP API.
@@ -242,12 +250,9 @@ The Talks API allows you to manage the collection of submitted talks for the cur
 <a name="api-usage-scenario" />
 ### Usage Scenario
 
+> In this scenario, we will submit talks on behalf of a user and we make a few assumptions: we assume that you have **not** registered as a Client Application yet and that the user you are submitting talks on behalf of does **not** have an account on the target instance of OpenCFP.
 
 
-### API Configuration
-
-Configuration for the API is stored under the `api` namespace of your configuration YAML file. Currently, there is only
-one available configuration setting: whether or not the api is `enabled`.
 
 <a name="command-line-utilities" />
 ## Command-line Utilities
