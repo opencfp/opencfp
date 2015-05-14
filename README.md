@@ -250,9 +250,17 @@ The Talks API allows you to manage the collection of submitted talks for the cur
 <a name="api-usage-scenario" />
 ### Usage Scenario
 
-> In this scenario, we will submit talks on behalf of a user and we make a few assumptions: we assume that you have **not** registered as a Client Application yet and that the user you are submitting talks on behalf of does **not** have an account on the target instance of OpenCFP.
+> In this scenario, we will submit talks on behalf of a user and we make a few assumptions: we assume that you have **NOT** registered as a Client Application yet and that the user you are submitting talks on behalf of does **NOT** have an account on the target instance of OpenCFP.
 
-
+**1. Redirect your user to request OpenCFP access**
+2. **User authenticates or creates new account**
+3. **User authorizes access**
+4. **OpenCFP redirects back to your site with Authorization Code**
+5. **Trade Authorization Code for Access Token**
+6. **View speaker's profile**
+7. **Submit a talk**
+8. **Verify talk was submitted**
+9. **Delete talk**
 
 <a name="command-line-utilities" />
 ## Command-line Utilities
