@@ -26,11 +26,17 @@ final class Speakers
      */
     protected $talks;
 
+    /**
+     * @var CallForProposal
+     */
+    protected $callForProposal;
+
     function __construct(CallForProposal $callForProposal, IdentityProvider $identityProvider, SpeakerRepository $speakers, TalkRepository $talks)
     {
         $this->speakers = $speakers;
         $this->identityProvider = $identityProvider;
         $this->talks = $talks;
+        $this->callForProposal = $callForProposal;
     }
 
     /**
@@ -76,9 +82,15 @@ final class Speakers
      * Orchestrates the use-case of a speaker submitting a talk.
      *
      * @param TalkSubmission $submission
+     *
+     * @throws \Exception
      */
     public function submitTalk(TalkSubmission $submission)
     {
+        if (!$this->callForProposal->isOpen()) {
+            throw new \Exception('You cannot create talks once the call for papers has ended.');
+        }
+
         $user = $this->identityProvider->getCurrentUser();
 
         // Create talk from submission.

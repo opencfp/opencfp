@@ -140,6 +140,26 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /** @test */
+    public function it_doesnt_allow_talk_submissions_after_cfp_has_ended()
+    {
+        $this->callForProposal->shouldReceive('isOpen')
+            ->once()
+            ->andReturn(false);
+
+        $this->setExpectedException('Exception', 'has ended');
+
+        $submission = TalkSubmission::fromNative([
+            'title' => 'Sample Talk',
+            'description' => 'Some example talk for our submission',
+            'type' => 'regular',
+            'category' => 'api',
+            'level' => 'mid'
+        ]);
+
+        $this->sut->submitTalk($submission);
+    }
+
     //
     // Test Double Helpers
     //
