@@ -4,6 +4,12 @@ namespace OpenCFP\Domain;
 
 use DateTime;
 
+/**
+ * This object is responsible for representing behaviour around the call
+ * for proposal process. Today it is only responsible for reporting whether or not the
+ * CFP is open. This is useful in service-layer testing as you can easily modify the temporal
+ * aspect.
+ */
 class CallForProposal
 {
     /**
