@@ -232,6 +232,7 @@ described for convenience below.
 | --- | --- | --- |
 | `GET` | `/oauth/authorize` | Starts the authorization flow. |
 | `POST` | `/oauth/access_token` | Used to trade an Authorization Code for an Access Token. |
+| `POST` | `/oauth/register` | Client registration endpoint for web application to register as a Client Application. |
 
 **Speaker Profile API**
 
@@ -248,9 +249,10 @@ The Talks API allows you to manage the collection of submitted talks for the cur
 
 | Method | Route | Description |
 | --- | --- | --- |
-| `POST` | `/api/talks` | Given JSON payload representing a talk, creates talk for authenticated user and issues a 201 Created upon success, appropriate error otherwise |
-| `GET` | `/api/talks` | Returns JSON collection of all talks for authenticated user |
-| `GET` | `/api/talks/{id}` | Returns a particular talk for authenticated user. Returns appropriate responses for unauthorized or non-existent talks |
+| `POST` | `/api/talks` | Given JSON payload representing a talk, creates talk for authenticated user and issues a 201 Created upon success, appropriate error otherwise. |
+| `GET` | `/api/talks` | Returns JSON collection of all talks for authenticated user. |
+| `GET` | `/api/talks/{id}` | Returns a particular talk for authenticated user. Returns appropriate responses for unauthorized or non-existent talks. |
+| `PUT` | `/api/talks/{id}` | Updates a particular talk. Partial updates are supported through `PUT`. You are not required to send entire object representation. |
 | `DELETE` | `/api/talks/{id}` | Removes a talk. |
 
 <a name="json-api-usage" />
@@ -260,12 +262,34 @@ In this scenario, we will submit talks on behalf of a user and we make a few ass
 
 #### Register your app as a Client Application with target OpenCFP instance
 
-TODO
+In order to allow third-party clients to register with a target OpenCFP instance as a Client Application, we support a partial
+implementation of the [OAuth 2.0 Dynamic Registration Draft](https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-23). Specifically,
+we implement the ability for an arbitrary client to register itself as a Client Application without any pre-arranged authentication
+process (Software Statements / pre-arranged initial Access Token).
+
+If you haven't previously registered a client application and received a `client_id` and `client_secret`, you will need to either
+do so manually or have your application do so dynamically before being able to redirect users for authorization. Developers using
+the client registration endpoint **should only register once**. It's not going to break anything if you create a new client application
+for every single request... but don't do that. It's mean.
+
+To register your application as a Client Application, you will need to send the following request:
+
+```
+POST /oauth/register HTTP/1.1
+Host: someopencfp.com
+Accept: application/json
+Content-Type: application/json
+
+{
+	"client_name": "Some Custom Web Application"
+	"redirect_uri": "https://yourwebapp.com/callback"
+}
+```
 
 #### Redirect your user to request OpenCFP access
 
 ```
-GET https://youropencfp.com/oauth/authorize
+GET https://someopencfp.com/oauth/authorize
 ```
 
 **Parameters**
@@ -331,7 +355,7 @@ Access tokens MUST be sent in an `Authorization` header as follows from our exam
 
 ```
 GET /api/me HTTP/1.1
-Host: youropencfp.com
+Host: someopencfp.com
 Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 ```
 
@@ -341,7 +365,7 @@ Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 
 ```
 GET /api/me HTTP/1.1
-Host: youropencfp.com
+Host: someopencfp.com
 Accept: application/json
 Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 ```
@@ -349,11 +373,11 @@ Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 ```
 HTTP/1.1 200 OK
 Content-type: application/json
---
+
 {
 	"first_name": "Ham",
 	"last_name": "Burglar",
-	"email": "hamburglar@youropencfp.com
+	"email": "hamburglar@someopencfp.com
 	"company": "ACME Corporation",
 	"twitter": "@hamburglar",
 	"bio": "..."
@@ -364,10 +388,11 @@ Content-type: application/json
 
 ```
 POST /api/talks HTTP/1.1
-Host: youropencfp.com
+Host: someopencfp.com
 Accept: application/json
+Content-Type: application/json
 Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
---
+
 {
 	"title": "Sample Talk",
 	"description": "...",
@@ -380,7 +405,7 @@ Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 ```
 HTTP/1.1 201 Created
 Content-type: application/json
---
+
 {
 	"id": "1"
 	"title": "Sample Talk",
@@ -395,7 +420,7 @@ Content-type: application/json
 
 ```
 GET /api/talks/1 HTTP/1.1
-Host: youropencfp.com
+Host: someopencfp.com
 Accept: application/json
 Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 ```
@@ -403,7 +428,7 @@ Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 ```
 HTTP/1.1 200 OK
 Content-type: application/json
---
+
 {
 	"id": "1"
 	"title": "Sample Talk",
@@ -418,7 +443,7 @@ Content-type: application/json
 
 ```
 DELETE /api/talks/1 HTTP/1.1
-Host: youropencfp.com
+Host: someopencfp.com
 Accept: application/json
 Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 ```
@@ -435,17 +460,17 @@ You'll basically send a request that looks similar to this:
 
 ```
 POST /oauth/access_token HTTP/1.1
-Host: youropencfp.com
+Host: someopencfp.com
 Accept: application/json
 Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
---
+
 grant_type=refresh_token&refresh_token=24710c8316c7c2ee42fa1ae7ae178b292834769e
 ```
 
 ```
 HTTP/1.1 200 OK
 Content-type: application/json
---
+
 {
 	"access_token": "2ee42f710c8316c7a12834769e4ae7ae178b292c",
 	"refresh_token": "1ae7ae178b292834769e24710c8316c7c2ee42fa",
