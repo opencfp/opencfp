@@ -38,7 +38,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                 $talkMapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
 
                 return new Speakers(
-                    new CallForProposal($app->config('application.enddate')),
+                    new CallForProposal(new \DateTime($app->config('application.enddate'))),
                     new SentryIdentityProvider($app['sentry']),
                     new SpotSpeakerRepository($userMapper),
                     new SpotTalkRepository($talkMapper)

@@ -4,7 +4,15 @@ namespace OpenCFP\Http\API;
 
 class TalkController extends ApiController
 {
+    /**
+     * @var Speakers
+     */
+    private $speakers;
 
+    public function __construct(Speakers $speakers)
+    {
+        $this->speakers = $speakers;
+    }
 
     public function handleSubmitTalk(Request $request)
     {
