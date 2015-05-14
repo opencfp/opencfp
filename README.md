@@ -184,10 +184,10 @@ Note: For updating previously installed instances only run migrations as needed.
 OpenCFP has a JSON API that can be used by third-party applications to take advantage of a set of features on behalf
 of a user. The API is enabled by default, but can be disabled if not needed for your instance of OpenCFP.
 
-### Authentication
+### Authorization
 
 In order to use any of the available APIs in order to do work on a OpenCFP user's behalf, an OAuth2 token must be
-provided and must have an appropriate OAuth2 scope associated with it. Interacting with the authorization endpoints
+provided and must have appropriate OAuth2 scope(s) associated with it. Interacting with the authorization endpoints
 is very much the same as any other OAuth2 implementation; You'll register your custom web application as a Client Application
 with OpenCFP and from there, you can start to send folks through the [Authorization Code Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.1)
 in order to eventually obtain a bearer token to act on their behalf.
