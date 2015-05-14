@@ -310,6 +310,7 @@ If the user accepts your request, OpenCFP redirects to your site with a `code` q
 ``` json
 {
 	"access_token": "a12834769e4ae7ae178b292c2ee42f710c8316c7",
+	"refresh_token": "24710c8316c7c2ee42fa1ae7ae178b292834769e",
 	"token_type": "bearer",
 	"scope": "public,talks",
 	"expires_in": 3600
@@ -325,46 +326,133 @@ otherwise, we're sending credentials in cleartext.
 Access tokens MUST be sent in an `Authorization` header as follows from our example access token above:
 
 ```
-> GET /api/me HTTP/1.1
-> Host: youropencfp.com
-> Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
+GET /api/me HTTP/1.1
+Host: youropencfp.com
+Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 ```
-
-The following examples assume you are correctly attaching your access token as part of the request header. We make this
-assumption for brevity of documentation.
 
 > The examples that follow are subject to change. API endpoints and behaviour are still in flux. This should serve more as an example of what to expect as far as interacting with the API, not specifically how the endpoints will work.
 
 **View speaker's profile**
 
-*Request*
 ```
-> GET /api/me HTTP/1.1
-> Host: youropencfp.com
-> Accept: application/json
-> Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
+GET /api/me HTTP/1.1
+Host: youropencfp.com
+Accept: application/json
+Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
 ```
 
-*Response*
 ```
-< HTTP/1.1 200 OK
-< Content-type: application/json
-< --
-< {
-<   "first_name": "Ham",
-<   "last_name": "Burglar",
-<   "email": "hamburglar@youropencfp.com
-<   "company": "ACME Corporation",
-<   "twitter": "@hamburglar",
-<   "bio": "..."
-< }
+HTTP/1.1 200 OK
+Content-type: application/json
+--
+{
+	"first_name": "Ham",
+	"last_name": "Burglar",
+	"email": "hamburglar@youropencfp.com
+	"company": "ACME Corporation",
+	"twitter": "@hamburglar",
+	"bio": "..."
+}
 ```
 
 **Submit a talk**
+
+```
+POST /api/talks HTTP/1.1
+Host: youropencfp.com
+Accept: application/json
+Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
+--
+{
+	"title": "Sample Talk",
+	"description": "...",
+	"type": "regular",
+	"level": "mid",
+	"category": "api"
+}
+```
+
+```
+HTTP/1.1 201 Created
+Content-type: application/json
+--
+{
+	"id": "1"
+	"title": "Sample Talk",
+	"description": "...",
+	"type": "regular",
+	"level": "mid",
+	"category": "api"
+}
+```
+
 **Verify talk was submitted**
+
+```
+GET /api/talks/1 HTTP/1.1
+Host: youropencfp.com
+Accept: application/json
+Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
+```
+
+```
+HTTP/1.1 200 OK
+Content-type: application/json
+--
+{
+	"id": "1"
+	"title": "Sample Talk",
+	"description": "...",
+	"type": "regular",
+	"level": "mid",
+	"category": "api"
+}
+```
+
 **Delete talk**
 
+```
+DELETE /api/talks/1 HTTP/1.1
+Host: youropencfp.com
+Accept: application/json
+Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
+```
+
+```
+HTTP/1.1 200 OK
+```
+
 #### Refresh an access token after it expires
+
+Access tokens have a TTL of one hour. Once expired, you will need to either request another access token or we give you
+the ability to refresh access tokens through use of the Refresh Token Grant. Taking advantage of this is actually pretty simple.
+You'll basically send a request that looks similar to this:
+
+```
+POST /oauth/access_token HTTP/1.1
+Host: youropencfp.com
+Accept: application/json
+Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
+--
+grant_type=refresh_token&refresh_token=24710c8316c7c2ee42fa1ae7ae178b292834769e
+```
+
+```
+HTTP/1.1 200 OK
+Content-type: application/json
+--
+{
+	"access_token": "2ee42f710c8316c7a12834769e4ae7ae178b292c",
+	"refresh_token": "1ae7ae178b292834769e24710c8316c7c2ee42fa",
+	"token_type": "bearer",
+	"scope": "public,talks",
+	"expires_in": 3600
+}
+```
+
+After refreshing the access token, you'll obviously want to update the previous token you've associated with your user.
+Also note that **refresh tokens are rotated** in addition to the access token. You'll want to keep track of this per-user.
 
 <a name="command-line-utilities" />
 ## Command-line Utilities
