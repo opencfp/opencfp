@@ -1,7 +1,7 @@
 <?php namespace OpenCFP\Provider; 
 
 use OpenCFP\Application\Speakers;
-use OpenCFP\Http\Controller\NeoTalkController;
+use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
@@ -38,6 +38,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                 $talkMapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
 
                 return new Speakers(
+                    new CallForProposal($app->config('application.enddate')),
                     new SentryIdentityProvider($app['sentry']),
                     new SpotSpeakerRepository($userMapper),
                     new SpotTalkRepository($talkMapper)
@@ -48,6 +49,6 @@ class ApplicationServiceProvider implements ServiceProviderInterface
 
     private function bindControllersAsServices($app)
     {
-        
+
     }
 }

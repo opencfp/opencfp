@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Application;
 
+use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
@@ -25,7 +26,7 @@ final class Speakers
      */
     protected $talks;
 
-    function __construct(IdentityProvider $identityProvider, SpeakerRepository $speakers, TalkRepository $talks)
+    function __construct(CallForProposal $callForProposal, IdentityProvider $identityProvider, SpeakerRepository $speakers, TalkRepository $talks)
     {
         $this->speakers = $speakers;
         $this->identityProvider = $identityProvider;

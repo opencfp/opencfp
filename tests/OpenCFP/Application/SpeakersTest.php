@@ -4,6 +4,7 @@ namespace OpenCFP\Application;
 
 use Mockery as m;
 use Mockery\MockInterface;
+use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
@@ -27,14 +28,18 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     /** @var IdentityProvider | MockInterface */
     private $identityProvider;
 
+    /** @var CallForProposal | MockInterface */
+    private $callForProposal;
+
     protected function setUp(){
         parent::setUp();
 
         $this->identityProvider = m::mock('OpenCFP\Domain\Services\IdentityProvider');
         $this->speakerRepository = m::mock('OpenCFP\Domain\Speaker\SpeakerRepository');
         $this->talkRepository = m::mock('OpenCFP\Domain\Talk\TalkRepository');
+        $this->callForProposal = m::mock('OpenCFP\Domain\CallForProposal');
 
-        $this->sut = new Speakers($this->identityProvider, $this->speakerRepository, $this->talkRepository);
+        $this->sut = new Speakers($this->callForProposal, $this->identityProvider, $this->speakerRepository, $this->talkRepository);
     }
 
     public function tearDown()
@@ -106,6 +111,10 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_should_allow_authenticated_speakers_to_submit_talks()
     {
+        $this->callForProposal->shouldReceive('isOpen')
+            ->once()
+            ->andReturn(true);
+
         $this->identityProvider->shouldReceive('getCurrentUser')
             ->once()
             ->andReturn($this->getSpeaker());
