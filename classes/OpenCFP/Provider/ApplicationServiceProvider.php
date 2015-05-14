@@ -48,8 +48,6 @@ class ApplicationServiceProvider implements ServiceProviderInterface
 
     private function bindControllersAsServices($app)
     {
-        $app['http.web.talks'] = $app->share(function ($app) {
-            return new NeoTalkController($app, $app['application.speakers']);
-        });
+        
     }
 }
