@@ -181,8 +181,8 @@ Note: For updating previously installed instances only run migrations as needed.
 <a name="json-api" />
 ## JSON API
 
-OpenCFP has a JSON API that can be used by third-party applications to take advantage of a set of OpenCFP features on behalf
-of an OpenCFP user. The API is enabled by default, but can be disabled if not needed for your instance of OpenCFP.
+OpenCFP has a JSON API that can be used by third-party applications to take advantage of a set of features on behalf
+of a user. The API is enabled by default, but can be disabled if not needed for your instance of OpenCFP.
 
 ### Authentication
 
