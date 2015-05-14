@@ -5,6 +5,7 @@ namespace OpenCFP\Http\API;
 class TalkController extends ApiController
 {
 
+
     public function handleSubmitTalk(Request $request)
     {
         return 'not implemented';

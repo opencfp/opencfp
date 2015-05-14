@@ -49,7 +49,7 @@ class TalkController extends BaseController
 
         try {
             $id = filter_var($req->get('id'), FILTER_VALIDATE_INT);
-            $talk = $speakers->getTalk($user->getId(), $id);
+            $talk = $speakers->getTalk($id);
         } catch (NotAuthorizedException $e) {
             return $this->redirectTo('dashboard');
         }

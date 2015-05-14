@@ -79,7 +79,11 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     {
         $this->trainStudentRepositoryToReturnSampleSpeaker($this->getSpeakerWithOneTalk());
 
-        $talk = $this->sut->getTalk(self::SPEAKER_ID, 1);
+        $this->identityProvider->shouldReceive('getCurrentUser')
+            ->once()
+            ->andReturn($this->getSpeakerWithOneTalk());
+
+        $talk = $this->sut->getTalk(1);
 
         $this->assertEquals('Testy Talk', $talk->title);
     }
@@ -91,8 +95,12 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         // something screwy attempting to get a talk they should be able to.
         $this->trainStudentRepositoryToReturnSampleSpeaker($this->getSpeakerWithNoTalks());
 
+        $this->identityProvider->shouldReceive('getCurrentUser')
+            ->once()
+            ->andReturn($this->getSpeakerWithNoTalks());
+
         $this->setExpectedException('OpenCFP\Application\NotAuthorizedException');
-        $this->sut->getTalk(self::SPEAKER_ID, 1);
+        $this->sut->getTalk(1);
     }
 
     /** @test */
@@ -100,8 +108,12 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     {
         $this->trainStudentRepositoryToReturnSampleSpeaker($this->getSpeakerFromMisbehavingSpot());
 
+        $this->identityProvider->shouldReceive('getCurrentUser')
+            ->once()
+            ->andReturn($this->getSpeakerFromMisbehavingSpot());
+
         $this->setExpectedException('OpenCFP\Application\NotAuthorizedException');
-        $this->sut->getTalk(self::SPEAKER_ID, 1);
+        $this->sut->getTalk(1);
     }
 
     //

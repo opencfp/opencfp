@@ -54,15 +54,14 @@ final class Speakers
     /**
      * Retrieves a talk owned by a speaker.
      *
-     * @param $speakerId
      * @param $talkId
      *
      * @return Talk
      * @throws NotAuthorizedException
      */
-    public function getTalk($speakerId, $talkId)
+    public function getTalk($talkId)
     {
-        $speaker = $this->speakers->findById($speakerId);
+        $speaker = $this->identityProvider->getCurrentUser();
         $talk = $speaker->talks->where(['id' => $talkId])->execute()->first();
 
         // If it can't grab by relation, it's likely not their talk.
