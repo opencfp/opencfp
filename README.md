@@ -206,20 +206,31 @@ With all of that out of the way, here are some nuts and bolts about our implemen
 
 ### Endpoints
 
-*Authorization*
+This serves as a high-level overview of the OpenCFP API.
+
+**Authorization**
+
+Authorization endpoints are used as part of the process for obtaining and renewing an Access Token representing a user's
+authorization for you (as a client developer) to act on their behalf. A step-by-step [usage scenario](#api-usage-scenario) is
+described for convenience below.
 
 | method | route | description |
 | --- | --- | --- |
-| `GET` | `/oauth/authorize` | Starts the authorization flow described in-depth in our [Usage Scenario](#api-usage-scenario). |
+| `GET` | `/oauth/authorize` | Starts the authorization flow. |
 | `POST` | `/oauth/access_token` | Used to trade an Authorization Code for an Access Token. |
 
-*Speaker Profile API*
+**Speaker Profile API**
+
+The Speaker Profile API allows you to look up information about the currently authenticated user. You might use this to
+populate attributes in your own custom application based on a user's profile in a target instance of OpenCFP.
 
 | method | route | description |
 | --- | --- | --- |
 | `GET` | `/api/me` | Returns JSON body representing information about the authenticated user. |
 
-*Talks API*
+**Talks API**
+
+The Talks API allows you to manage the collection of submitted talks for the currently authenticated user.
 
 | method | route | description |
 | --- | --- | --- |
