@@ -22,6 +22,10 @@ OpenCFP is a PHP-based conference talk submission system.
    * [Run Migrations](#run-migrations)
    * [Final Touches](#final-touches)
  * [JSON API](#json-api)
+   * [Configuration](#json-api-configuration)
+   * [Authorization](#json-api-authorization)
+   * [Endpoints](#json-api-endpoints)
+   * [Using the API](#json-api-usage)
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
    * [Clear Caches](#clear-caches)
@@ -249,7 +253,7 @@ The Talks API allows you to manage the collection of submitted talks for the cur
 | `GET` | `/api/talks/{id}` | Returns a particular talk for authenticated user. Returns appropriate responses for unauthorized or non-existent talks |
 | `DELETE` | `/api/talks/{id}` | Removes a talk. |
 
-<a name="api-usage" />
+<a name="json-api-usage" />
 ### Using the API
 
 In this scenario, we will submit talks on behalf of a user and we make a few assumptions: we assume that you have **NOT** registered as a Client Application yet and that the user you are submitting talks on behalf of does **NOT** have an account on the target instance of OpenCFP.
