@@ -21,6 +21,7 @@ OpenCFP is a PHP-based conference talk submission system.
    * [Configure Environment](#configure-environment)
    * [Run Migrations](#run-migrations)
    * [Final Touches](#final-touches)
+ * [JSON API](#json-api)
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
    * [Clear Caches](#clear-caches)
@@ -176,6 +177,66 @@ Note: For updating previously installed instances only run migrations as needed.
  * You may need to alter the `memory_limit` of the web server to allow image processing of head-shots. This is largely
    dictated by the size of the images people upload. Typically 512M works.
  * Customize templates and `/web/assets/css/site.css` to your heart's content.
+
+<a name="json-api" />
+## JSON API
+
+OpenCFP has a JSON API that can be used by third-party applications to take advantage of a set of OpenCFP features on behalf
+of an OpenCFP user. The API is enabled by default, but can be disabled if not needed for your instance of OpenCFP.
+
+### Authentication
+
+In order to use any of the available APIs in order to do work on a OpenCFP user's behalf, an OAuth2 token must be
+provided and must have an appropriate OAuth2 scope associated with it. Interacting with the authorization endpoints
+is very much the same as any other OAuth2 implementation; You'll register your custom web application as a Client Application
+with OpenCFP and from there, you can start to send folks through the [Authorization Code Grant Flow](https://tools.ietf.org/html/rfc6749#section-4.1)
+in order to eventually obtain a bearer token to act on their behalf.
+
+There are some caveats to the above description that may differ from what you're used to in interacting with the typical
+OAuth2 implementation:
+
+- Some users **you** send through the OAuth2 process will **not** have an account on the target instance of OpenCFP. We take care of that ([described below](#api-usage-scenario)).
+- You will not have to create an account on the target OpenCFP process to register your custom web application as an OAuth2 Client Application. We implement a subset of the [OAuth 2.0 Dynamic Client Registration Protocol](https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-23) draft to allow applications to dynamically register themselves as Client Applications.
+
+With all of that out of the way, here are some nuts and bolts about our implementation of OAuth2:
+
+- We only support two grant types: Authorization Code & Refresh Token. This allows you to do work on behalf of any OpenCFP user (if authorized) and renew that authorization (bearer token) when it expires.
+- Bearer tokens have a time-to-live (TTL) of `3600` seconds (1 hour). Expired tokens will be rejected and you have the option of refreshing or requesting a new token. This may be configurable in the future.
+- Authorization endpoints are described below.
+
+### Endpoints
+
+*Authorization*
+
+| method | route | description |
+| --- | --- | --- |
+| `GET` | `/oauth/authorize` | Starts the authorization flow described in-depth in our [Usage Scenario](#api-usage-scenario). |
+| `POST` | `/oauth/access_token` | Used to trade an Authorization Code for an Access Token. |
+
+*Speaker Profile API*
+
+| method | route | description |
+| --- | --- | --- |
+| `GET` | `/api/me` | Returns JSON body representing information about the authenticated user. |
+
+*Talks API*
+
+| method | route | description |
+| --- | --- | --- |
+| `POST` | `/api/talks` | Given JSON payload representing a talk, creates talk for authenticated user and issues a 201 Created upon success, appropriate error otherwise |
+| `GET` | `/api/talks` | Returns JSON collection of all talks for authenticated user |
+| `GET` | `/api/talks/{id}` | Returns a particular talk for authenticated user. Returns appropriate responses for unauthorized or non-existent talks |
+| `DELETE` | `/api/talks/{id}` | Removes a talk. |
+
+<a name="api-usage-scenario" />
+### Usage Scenario
+
+
+
+### API Configuration
+
+Configuration for the API is stored under the `api` namespace of your configuration YAML file. Currently, there is only
+one available configuration setting: whether or not the api is `enabled`.
 
 <a name="command-line-utilities" />
 ## Command-line Utilities
