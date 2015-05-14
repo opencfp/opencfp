@@ -181,8 +181,9 @@ Note: For updating previously installed instances only run migrations as needed.
 <a name="json-api" />
 ## JSON API
 
-OpenCFP has a JSON API that can be used by third-party applications to take advantage of a set of features on behalf
-of a user. The API is enabled by default, but can be disabled if not needed for your instance of OpenCFP.
+OpenCFP has a JSON API (not to be confused with the [json-api specification](http://jsonapi.org/)) that can be used by
+third-party applications to take advantage of a set of features on behalf of a user. The API is enabled by default, but
+can be disabled if not needed for your instance of OpenCFP.
 
 <a name="json-api-configuration" />
 ### API Configuration
@@ -209,6 +210,7 @@ With all of that out of the way, here are some nuts and bolts about our implemen
 
 - We only support two grant types: Authorization Code & Refresh Token. This allows you to do work on behalf of any OpenCFP user (if authorized) and renew that authorization (bearer token) when it expires.
 - Bearer tokens have a time-to-live (TTL) of `3600` seconds (1 hour). Expired tokens will be rejected and you have the option of refreshing or requesting a new token. This may be configurable in the future.
+- It is **highly recommended** to only enable this API if you have a valid SSL certificate. OAuth2's security mechanisms are 100% reliant on TLS.
 - Authorization endpoints are described below.
 
 <a name="json-api-endpoints" />
@@ -222,7 +224,7 @@ Authorization endpoints are used as part of the process for obtaining and renewi
 authorization for you (as a client developer) to act on their behalf. A step-by-step [usage scenario](#api-usage-scenario) is
 described for convenience below.
 
-| method | route | description |
+| Method | Route | Description |
 | --- | --- | --- |
 | `GET` | `/oauth/authorize` | Starts the authorization flow. |
 | `POST` | `/oauth/access_token` | Used to trade an Authorization Code for an Access Token. |
@@ -232,7 +234,7 @@ described for convenience below.
 The Speaker Profile API allows you to look up information about the currently authenticated user. You might use this to
 populate attributes in your own custom application based on a user's profile in a target instance of OpenCFP.
 
-| method | route | description |
+| Method | Route | Description |
 | --- | --- | --- |
 | `GET` | `/api/me` | Returns JSON body representing information about the authenticated user. |
 
@@ -240,27 +242,129 @@ populate attributes in your own custom application based on a user's profile in 
 
 The Talks API allows you to manage the collection of submitted talks for the currently authenticated user.
 
-| method | route | description |
+| Method | Route | Description |
 | --- | --- | --- |
 | `POST` | `/api/talks` | Given JSON payload representing a talk, creates talk for authenticated user and issues a 201 Created upon success, appropriate error otherwise |
 | `GET` | `/api/talks` | Returns JSON collection of all talks for authenticated user |
 | `GET` | `/api/talks/{id}` | Returns a particular talk for authenticated user. Returns appropriate responses for unauthorized or non-existent talks |
 | `DELETE` | `/api/talks/{id}` | Removes a talk. |
 
-<a name="api-usage-scenario" />
-### Usage Scenario
+<a name="api-usage" />
+### Using the API
 
-> In this scenario, we will submit talks on behalf of a user and we make a few assumptions: we assume that you have **NOT** registered as a Client Application yet and that the user you are submitting talks on behalf of does **NOT** have an account on the target instance of OpenCFP.
+In this scenario, we will submit talks on behalf of a user and we make a few assumptions: we assume that you have **NOT** registered as a Client Application yet and that the user you are submitting talks on behalf of does **NOT** have an account on the target instance of OpenCFP.
 
-**1. Redirect your user to request OpenCFP access**
-2. **User authenticates or creates new account**
-3. **User authorizes access**
-4. **OpenCFP redirects back to your site with Authorization Code**
-5. **Trade Authorization Code for Access Token**
-6. **View speaker's profile**
-7. **Submit a talk**
-8. **Verify talk was submitted**
-9. **Delete talk**
+#### Register your app as a Client Application with target OpenCFP instance
+
+TODO
+
+#### Redirect your user to request OpenCFP access
+
+```
+GET https://youropencfp.com/oauth/authorize
+```
+
+**Parameters**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `client_id` | `string` | **Required.** The client identifier you received as part of the client application registration process. |
+| `redirect_uri` | `string` | The URL in your application where users will be sent after authorizing access. |
+| `scope` | `string` | A comma-separated list of scopes. If not provided, `scope` defaults to an empty list; basically allowing you to authenticate as the user with no authorization to the user's protected resources. |
+| `state` | `string` | An unguessable random string used to protect against CSRF attacks. You will send this back when you trade authorization code for access token. |
+
+#### User authenticates or creates new account
+
+A user must authenticate to the target instance of OpenCFP before authorizing access to a Client Application. For users
+that do not have a previously created account, they will have the option of creating a new account. When they complete
+the account creation process, they will be automatically authenticated into that account and proceed.
+
+**[Example Interface Here]**
+
+#### User authorizes access
+
+After the user authenticates, they are presented with an authorization interface where they can either approve or deny
+a Client Application's access to their protected resources. They will see the name of your Client Application in addition
+to the OAuth2 scopes you have requested. If the user approves, the flow proceeds to the next step. Otherwise, they are still
+redirected to your application without an Authorization Code and you would need to implement some way of handling that.
+
+**[Example Interface Here]**
+
+#### OpenCFP redirects back to your site with Authorization Code
+
+If the user accepts your request, OpenCFP redirects to your site with a `code` query parameter as well as the `state` you provided. If the states do not match, the process should be aborted.
+
+#### Trade Authorization Code for Access Token
+
+**Parameters**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `client_id` | `string` | **Required.** The client identifier you received as part of the client application registration process. |
+| `client_secret` | `string` | **Required.** The client secret you received as part of the client application registration process. |
+| `code` | `string` | **Required.** The code you received as a response when requesting the authorization code. |
+| `redirect_url` | `string` | The URL in your application where users will be sent after authorizing access. |
+
+**Response**
+
+``` json
+{
+	"access_token": "a12834769e4ae7ae178b292c2ee42f710c8316c7",
+	"token_type": "bearer",
+	"scope": "public,talks",
+	"expires_in": 3600
+}
+```
+
+#### Use the token to do work on behalf of an OpenCFP user
+
+Once you have obtained an access token, you can do stuff! You will need to provide that access token for every request
+you make to restricted API endpoints. All requests **SHOULD** be sent using TLS (if the OpenCFP instance supports it) because
+otherwise, we're sending credentials in cleartext.
+
+Access tokens MUST be sent in an `Authorization` header as follows from our example access token above:
+
+```
+> GET /api/me HTTP/1.1
+> Host: youropencfp.com
+> Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
+```
+
+The following examples assume you are correctly attaching your access token as part of the request header. We make this
+assumption for brevity of documentation.
+
+> The examples that follow are subject to change. API endpoints and behaviour are still in flux. This should serve more as an example of what to expect as far as interacting with the API, not specifically how the endpoints will work.
+
+**View speaker's profile**
+
+*Request*
+```
+> GET /api/me HTTP/1.1
+> Host: youropencfp.com
+> Accept: application/json
+> Authorization: Bearer a12834769e4ae7ae178b292c2ee42f710c8316c7
+```
+
+*Response*
+```
+< HTTP/1.1 200 OK
+< Content-type: application/json
+< --
+< {
+<   "first_name": "Ham",
+<   "last_name": "Burglar",
+<   "email": "hamburglar@youropencfp.com
+<   "company": "ACME Corporation",
+<   "twitter": "@hamburglar",
+<   "bio": "..."
+< }
+```
+
+**Submit a talk**
+**Verify talk was submitted**
+**Delete talk**
+
+#### Refresh an access token after it expires
 
 <a name="command-line-utilities" />
 ## Command-line Utilities
