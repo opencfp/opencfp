@@ -103,8 +103,13 @@ class ProfileController extends BaseController
                 $file = $form_data['speaker_photo'];
                 /** @var \OpenCFP\ProfileImageProcessor $processor */
                 $processor = $this->app['profile_image_processor'];
+                /** @var PseudoRandomStringGenerator $generator */
+                $generator = $this->app['security.random'];
 
-                $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $file->getClientOriginalExtension();
+                /**
+                 * The extension technically is not required. We guess the extension using a trusted method.
+                 */
+                $sanitized_data['speaker_photo'] = $generator->generate(40) . '.' . $file->guessExtension();
 
                 $processor->process($file, $sanitized_data['speaker_photo']);
             }
