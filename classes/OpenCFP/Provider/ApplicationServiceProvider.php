@@ -1,7 +1,9 @@
 <?php namespace OpenCFP\Provider; 
 
 use OpenCFP\Application\Speakers;
+use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
+use RandomLib\Factory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -19,6 +21,10 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             return new Speakers(
                 new SpotSpeakerRepository($mapper)
             );
+        });
+
+        $app['security.random'] = $app->share(function($app) {
+            return new PseudoRandomStringGenerator(new Factory());
         });
     }
 
