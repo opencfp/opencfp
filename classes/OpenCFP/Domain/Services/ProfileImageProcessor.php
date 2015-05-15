@@ -57,7 +57,7 @@ class ProfileImageProcessor
 
         try {
             $file->move($this->publishDir, $tempFilename);
-
+            
             $speakerPhoto = Image::make($this->publishDir . '/' . $tempFilename);
 
             if ($speakerPhoto->height > $speakerPhoto->width) {
