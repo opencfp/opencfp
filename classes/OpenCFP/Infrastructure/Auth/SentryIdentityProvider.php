@@ -29,6 +29,11 @@ class SentryIdentityProvider implements IdentityProvider
     public function getCurrentUser()
     {
         $sentryUser = $this->sentry->getUser();
+
+        if (!$sentryUser) {
+            throw new NotAuthenticatedException();
+        }
+
         return $this->speakerRepository->findById($sentryUser->getId());
     }
 }

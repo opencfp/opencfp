@@ -35,6 +35,10 @@ class UhhhmIdentityProvider implements IdentityProvider
      */
     public function getCurrentUser()
     {
-        return $this->repository->findById($this->request->get('auth'));
+        try {
+            return $this->repository->findById($this->request->get('auth'));
+        } catch (\Exception $e) {
+            throw new NotAuthenticatedException();
+        }
     }
 }
