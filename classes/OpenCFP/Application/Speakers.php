@@ -11,7 +11,7 @@ use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Domain\ValidationException;
 
-final class Speakers
+class Speakers
 {
     /**
      * @var IdentityProvider
@@ -82,6 +82,7 @@ final class Speakers
      *
      * @param TalkSubmission $submission
      *
+     * @return Talk
      * @throws \Exception
      */
     public function submitTalk(TalkSubmission $submission)
@@ -99,5 +100,7 @@ final class Speakers
         $talk->user_id = $user->id;
 
         $this->talks->persist($talk);
+
+        return $talk;
     }
 }
