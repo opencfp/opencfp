@@ -43,7 +43,7 @@ class TalkController extends ApiController
         } catch (InvalidTalkSubmissionException $e) {
             return $this->setStatusCode(400)->respondWithError($e->getMessage());
         } catch (NotAuthenticatedException $e) {
-            return $this->respondUnauthorized($e->getMessage());
+            return $this->respondUnauthorized();
         } catch (Exception $e) {
             return $this->respondInternalError($e->getMessage());
         }
@@ -51,7 +51,21 @@ class TalkController extends ApiController
 
     public function handleViewAllTalks(Request $request)
     {
-        return 'not implemented';
+        try {
+            $talks = $this->speakers->getTalks();
+
+            $output = [];
+            foreach($talks as $talk) {
+                $output[] = $talk->toArrayForApi();
+            }
+
+            return $this
+                ->setStatusCode(Response::HTTP_OK)
+                ->respond($output);
+
+        } catch (NotAuthenticatedException $e) {
+            return $this->respondUnauthorized();
+        }
     }
 
     public function handleViewTalk(Request $request)

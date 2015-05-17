@@ -104,6 +104,20 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function it_retrieves_all_talks_for_authenticated_speaker()
+    {
+        $this->identityProvider->shouldReceive('getCurrentUser')
+            ->once()
+            ->andReturn($this->getSpeakerWithManyTalks());
+
+        $talks = $this->sut->getTalks();
+
+        $this->assertEquals('Testy Talk', $talks[0]->title);
+        $this->assertEquals('Another Talk', $talks[1]->title);
+        $this->assertEquals('Yet Another Talk', $talks[2]->title);
+    }
+
+    /** @test */
     public function it_guards_if_spot_relation_ever_returns_talks_that_arent_owned_by_speaker()
     {
         $this->trainStudentRepositoryToReturnSampleSpeaker($this->getSpeakerFromMisbehavingSpot());
@@ -245,6 +259,35 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
                 'user_id' => self::SPEAKER_ID
             ])
         );
+
+        return $stub;
+    }
+
+    private function getSpeakerWithManyTalks()
+    {
+        // Set up stub speaker.
+        $stub = m::mock('stdClass');
+        $stub->id = self::SPEAKER_ID;
+
+        // Set up talks.
+        $stub->talks = m::mock('stdClass');
+        $stub->talks->shouldReceive('execute')->andReturn([
+            new Talk([
+                'id' => 1,
+                'title' => 'Testy Talk',
+                'user_id' => self::SPEAKER_ID
+            ]),
+            new Talk([
+                'id' => 2,
+                'title' => 'Another Talk',
+                'user_id' => self::SPEAKER_ID
+            ]),
+            new Talk([
+                'id' => 3,
+                'title' => 'Yet Another Talk',
+                'user_id' => self::SPEAKER_ID
+            ])
+        ]);
 
         return $stub;
     }

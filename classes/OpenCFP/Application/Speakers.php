@@ -78,6 +78,15 @@ class Speakers
     }
 
     /**
+     *
+     */
+    public function getTalks()
+    {
+        $speaker = $this->identityProvider->getCurrentUser();
+        return $speaker->talks->execute();
+    }
+
+    /**
      * Orchestrates the use-case of a speaker submitting a talk.
      *
      * @param TalkSubmission $submission
