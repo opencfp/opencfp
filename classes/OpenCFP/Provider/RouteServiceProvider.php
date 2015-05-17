@@ -123,14 +123,16 @@ class RouteServiceProvider  implements ServiceProviderInterface
         /* @var $api ControllerCollection */
         $api = $app['controllers_factory'];
         $api->before($this->clean);
+        $api->before(function (Request $request) {
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $data = json_decode($request->getContent(), true);
+                $request->request->replace(is_array($data) ? $data : array());
+            }
+        });
 
         if ($app->config('application.secure_ssl')) {
             $api->requireHttps();
         }
-
-        $api->get('/', function(Request $request) {
-            return new JsonResponse($request->query->all());
-        });
 
         $app->mount('/api', $api);
     }
