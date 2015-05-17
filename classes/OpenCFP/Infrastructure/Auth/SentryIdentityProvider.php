@@ -6,13 +6,17 @@ use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
+use OpenCFP\Domain\Speaker\SpeakerRepository;
+use Spot\Mapper;
 
 class SentryIdentityProvider implements IdentityProvider
 {
     private $sentry;
+    private $speakerRepository;
 
-    public function __construct(Sentry $sentry){
+    public function __construct(Sentry $sentry, SpeakerRepository $mapper){
         $this->sentry = $sentry;
+        $this->speakerRepository = $mapper;
     }
 
     /**
@@ -24,6 +28,7 @@ class SentryIdentityProvider implements IdentityProvider
      */
     public function getCurrentUser()
     {
-        return $this->sentry->getUser();
+        $sentryUser = $this->sentry->getUser();
+        return $this->speakerRepository->findById($sentryUser->getId());
     }
 }
