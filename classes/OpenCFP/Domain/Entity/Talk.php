@@ -48,7 +48,8 @@ class Talk extends Entity
             'category' => $this->category,
             'desired' => $this->desired,
             'slides' => $this->slides,
-            'other' => $this->other
+            'other' => $this->other,
+            'sponsor' => $this->sponsor
         ];
     }
 }

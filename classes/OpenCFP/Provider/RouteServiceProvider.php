@@ -134,6 +134,8 @@ class RouteServiceProvider  implements ServiceProviderInterface
             $api->requireHttps();
         }
 
+        $api->get('/talks', 'controller.api.talk:handleViewAllTalks');
+
         $app->mount('/api', $api);
     }
 
