@@ -3,6 +3,7 @@
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
+use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Http\API\TalkController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,6 +70,23 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->sut->handleSubmitTalk($request);
 
         $this->assertEquals(401, $response->getStatusCode());
+    }
+
+    /** @test */
+    public function it_should_respond_with_multiple_talks()
+    {
+        $this->speakers->shouldReceive('getTalks')->once()->andReturn([
+            new Talk(['title' => 'Testy Talk']),
+            new Talk(['title' => 'Another Talk']),
+            new Talk(['title' => 'Yet Another Talk'])
+        ]);
+
+        $response = $this->sut->handleViewAllTalks($this->getValidRequest());
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Testy Talk', $response->getContent());
+        $this->assertContains('Another Talk', $response->getContent());
+        $this->assertContains('Yet Another Talk', $response->getContent());
     }
 
     private function getRequest(array $data = [])
