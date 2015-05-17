@@ -70,9 +70,18 @@ class TalkController extends ApiController
         }
     }
 
-    public function handleViewTalk(Request $request)
+    public function handleViewTalk(Request $request, $id)
     {
-        return 'not implemented';
+        try {
+            $talk = $this->speakers->getTalk($id);
+
+            return $this
+                ->setStatusCode(200)
+                ->respond($talk->toArrayForApi());
+
+        } catch (NotAuthenticatedException $e) {
+            return $this->respondUnauthorized();
+        }
     }
 
     public function handleChangeTalk(Request $request)

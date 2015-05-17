@@ -73,6 +73,19 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function it_should_respond_with_single_talk()
+    {
+        $this->speakers->shouldReceive('getTalk')->once()->andReturn(
+            new Talk(['title' => 'Testy Talk'])
+        );
+
+        $response = $this->sut->handleViewTalk($this->getValidRequest(), 1);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Testy Talk', $response->getContent());
+    }
+
+    /** @test */
     public function it_should_respond_with_multiple_talks()
     {
         $this->speakers->shouldReceive('getTalks')->once()->andReturn([
