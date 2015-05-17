@@ -34,11 +34,16 @@ class ApiController
      * @param array $data
      * @param array $headers
      *
-     * @return mixed
+     * @return Reponse
      */
     public function respond(array $data, array $headers = [])
     {
         return new Response($data, $this->getStatusCode(), $headers);
+    }
+
+    public function respondBadRequest($message = 'Bad request')
+    {
+        return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respondWithError($message);
     }
 
     /**
