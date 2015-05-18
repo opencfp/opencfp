@@ -1,4 +1,4 @@
-<?php namespace OpenCFP\Provider;
+<?php namespace OpenCFP\Provider\Endpoints;
 
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -34,7 +34,6 @@ class RouteServiceProvider  implements ServiceProviderInterface
 
         $this->mountWebRoutes($app);
         $this->mountApiRoutes($app);
-        $this->mountOAuth2Routes($app);
     }
 
     /**
@@ -137,18 +136,5 @@ class RouteServiceProvider  implements ServiceProviderInterface
         $api->get('/talks', 'controller.api.talk:handleViewAllTalks');
 
         $app->mount('/api', $api);
-    }
-
-    private function mountOAuth2Routes($app)
-    {
-        /* @var $oauth ControllerCollection */
-        $oauth = $app['controllers_factory'];
-        $oauth->before($this->clean);
-
-        if ($app->config('application.secure_ssl')) {
-            $oauth->requireHttps();
-        }
-
-        $app->mount('/oauth', $oauth);
     }
 }
