@@ -7,8 +7,10 @@ use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Http\API\TalkController;
 use OpenCFP\Http\OAuth\AuthorizationController;
+use OpenCFP\Http\OAuth\ClientRegistrationController;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Infrastructure\Auth\UhhhmIdentityProvider;
+use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
 use OpenCFP\Infrastructure\OAuth\AuthCodeStorage;
 use OpenCFP\Infrastructure\OAuth\ClientStorage;
@@ -17,6 +19,7 @@ use OpenCFP\Infrastructure\OAuth\ScopeStorage;
 use OpenCFP\Infrastructure\OAuth\SessionStorage;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
+use RandomLib\Factory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -60,6 +63,10 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['security.random'] = $app->share(function($app) {
+            return new PseudoRandomStringGenerator(new Factory());
+        });
+
         $app['application.speakers.api'] = $app->share(
             function ($app) {
                 $userMapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
@@ -97,6 +104,14 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             $server->addGrantType(new RefreshTokenGrant);
 
             return new AuthorizationController($server);
+        });
+
+        $app['controller.oauth.clients'] = $app->share(function($app) {
+            return new ClientRegistrationController(
+                $app['spot']->mapper('OpenCFP\Domain\OAuth\Client'),
+                $app['spot']->mapper('OpenCFP\Domain\OAuth\Endpoint'),
+                $app['security.random']
+            );
         });
     }
 }

@@ -39,10 +39,6 @@ class OAuthRouteServiceProvider  implements ServiceProviderInterface
             }
         });
 
-
-        $api->before(function (Request $request) {
-        });
-
         if ($app->config('application.secure_ssl')) {
             $oauth->requireHttps();
         }
