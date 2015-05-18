@@ -4,39 +4,45 @@ namespace OpenCFP\Application;
 
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Entity\Talk;
+use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
+use OpenCFP\Domain\Talk\TalkWasSubmitted;
 use OpenCFP\Domain\ValidationException;
 
 class Speakers
 {
-    /**
-     * @var IdentityProvider
-     */
+
+    /** @var CallForProposal */
+    protected $callForProposal;
+
+    /** @var IdentityProvider */
     protected $identityProvider;
 
     /** @var SpeakerRepository */
     protected $speakers;
 
-    /**
-     * @var TalkRepository
-     */
+    /** @var TalkRepository */
     protected $talks;
 
-    /**
-     * @var CallForProposal
-     */
-    protected $callForProposal;
+    /** @var EventDispatcher */
+    private $dispatcher;
 
-    function __construct(CallForProposal $callForProposal, IdentityProvider $identityProvider, SpeakerRepository $speakers, TalkRepository $talks)
-    {
+    function __construct(
+        CallForProposal $callForProposal,
+        IdentityProvider $identityProvider,
+        SpeakerRepository $speakers,
+        TalkRepository $talks,
+        EventDispatcher $dispatcher
+    ) {
         $this->speakers = $speakers;
         $this->identityProvider = $identityProvider;
         $this->talks = $talks;
         $this->callForProposal = $callForProposal;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -109,6 +115,8 @@ class Speakers
         $talk->user_id = $user->id;
 
         $this->talks->persist($talk);
+
+        $this->dispatcher->dispatch('opencfp.talk.submit', new TalkWasSubmitted($talk));
 
         return $talk;
     }

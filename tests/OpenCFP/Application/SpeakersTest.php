@@ -5,6 +5,7 @@ namespace OpenCFP\Application;
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
@@ -31,6 +32,9 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     /** @var CallForProposal | MockInterface */
     private $callForProposal;
 
+    /** @var EventDispatcher | MockInterface */
+    private $dispatcher;
+
     protected function setUp(){
         parent::setUp();
 
@@ -38,8 +42,9 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         $this->speakerRepository = m::mock('OpenCFP\Domain\Speaker\SpeakerRepository');
         $this->talkRepository = m::mock('OpenCFP\Domain\Talk\TalkRepository');
         $this->callForProposal = m::mock('OpenCFP\Domain\CallForProposal');
+        $this->dispatcher = m::mock('OpenCFP\Domain\Services\EventDispatcher');
 
-        $this->sut = new Speakers($this->callForProposal, $this->identityProvider, $this->speakerRepository, $this->talkRepository);
+        $this->sut = new Speakers($this->callForProposal, $this->identityProvider, $this->speakerRepository, $this->talkRepository, $this->dispatcher);
     }
 
     public function tearDown()
@@ -147,6 +152,10 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
 
         $this->talkRepository->shouldReceive('persist')
             ->with(m::type('OpenCFP\Domain\Entity\Talk'))
+            ->once();
+
+        $this->dispatcher->shouldReceive('dispatch')
+            ->with('opencfp.talk.submit', m::type('OpenCFP\Domain\Talk\TalkWasSubmitted'))
             ->once();
 
         $submission = TalkSubmission::fromNative([
