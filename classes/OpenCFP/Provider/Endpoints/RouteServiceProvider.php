@@ -28,7 +28,7 @@ class RouteServiceProvider  implements ServiceProviderInterface
                 $request->query->set($key, $app['purifier']->purify($value));
             }
             foreach ($request->request as $key => $value) {
-                $request->query->set($key, $app['purifier']->purify($value));
+                $request->request->set($key, $app['purifier']->purify($value));
             }
         };
 

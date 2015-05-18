@@ -21,6 +21,7 @@ class OAuthRouteServiceProvider  implements ServiceProviderInterface
 
         $oauth->get('/authorize', 'controller.oauth.authorization:authorize');
         $oauth->post('/access_token', 'controller.oauth.authorization:issueAccessToken');
+        $oauth->post('/clients', 'controller.oauth.clients:registerClient');
 
         ///////////////////////////////////////////////////////////////
 
@@ -29,8 +30,17 @@ class OAuthRouteServiceProvider  implements ServiceProviderInterface
                 $request->query->set($key, $app['purifier']->purify($value));
             }
             foreach ($request->request as $key => $value) {
-                $request->query->set($key, $app['purifier']->purify($value));
+                $request->request->set($key, $app['purifier']->purify($value));
             }
+
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $data = json_decode($request->getContent(), true);
+                $request->request->replace(is_array($data) ? $data : array());
+            }
+        });
+
+
+        $api->before(function (Request $request) {
         });
 
         if ($app->config('application.secure_ssl')) {
