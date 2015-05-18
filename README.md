@@ -232,7 +232,7 @@ described for convenience below.
 | --- | --- | --- |
 | `GET` | `/oauth/authorize` | Starts the authorization flow. |
 | `POST` | `/oauth/access_token` | Used to trade an Authorization Code for an Access Token. |
-| `POST` | `/oauth/register` | Client registration endpoint for web application to register as a Client Application. |
+| `POST` | `/oauth/clients` | Client registration endpoint for web application to register as a Client Application. |
 
 **Speaker Profile API**
 
