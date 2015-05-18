@@ -44,7 +44,8 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                     new CallForProposal(new \DateTime($app->config('application.enddate'))),
                     new SentryIdentityProvider($app['sentry'], $speakerRepository),
                     $speakerRepository,
-                    new SpotTalkRepository($talkMapper)
+                    new SpotTalkRepository($talkMapper),
+                    $app['dispatcher']
                 );
             }
         );
@@ -59,7 +60,8 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                     new CallForProposal(new \DateTime($app->config('application.enddate'))),
                     new UhhhmIdentityProvider($app['request'], $speakerRepository),
                     $speakerRepository,
-                    new SpotTalkRepository($talkMapper)
+                    new SpotTalkRepository($talkMapper),
+                    $app['dispatcher']
                 );
             }
         );
@@ -69,6 +71,10 @@ class ApplicationServiceProvider implements ServiceProviderInterface
     {
         $app['controller.api.talk'] = $app->share(function ($app) {
             return new TalkController($app['application.speakers.api']);
+        });
+
+        $app['controller.oauth'] = $app->share(function($app) {
+            
         });
     }
 }
