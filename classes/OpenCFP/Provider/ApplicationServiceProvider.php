@@ -1,10 +1,20 @@
 <?php namespace OpenCFP\Provider; 
 
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Grant\AuthCodeGrant;
+use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Http\API\TalkController;
+use OpenCFP\Http\OAuth\AuthorizationController;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Infrastructure\Auth\UhhhmIdentityProvider;
+use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
+use OpenCFP\Infrastructure\OAuth\AuthCodeStorage;
+use OpenCFP\Infrastructure\OAuth\ClientStorage;
+use OpenCFP\Infrastructure\OAuth\RefreshTokenStorage;
+use OpenCFP\Infrastructure\OAuth\ScopeStorage;
+use OpenCFP\Infrastructure\OAuth\SessionStorage;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
 use Silex\Application;
@@ -73,8 +83,20 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             return new TalkController($app['application.speakers.api']);
         });
 
-        $app['controller.oauth'] = $app->share(function($app) {
-            
+        $app['controller.oauth.authorization'] = $app->share(function($app) {
+            $server = new AuthorizationServer();
+
+            $server->setSessionStorage(new SessionStorage());
+            $server->setAccessTokenStorage(new AccessTokenStorage());
+            $server->setRefreshTokenStorage(new RefreshTokenStorage());
+            $server->setClientStorage(new ClientStorage());
+            $server->setScopeStorage(new ScopeStorage());
+            $server->setAuthCodeStorage(new AuthCodeStorage());
+
+            $server->addGrantType(new AuthCodeGrant);
+            $server->addGrantType(new RefreshTokenGrant);
+
+            return new AuthorizationController($server);
         });
     }
 }

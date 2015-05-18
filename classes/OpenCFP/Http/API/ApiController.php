@@ -34,7 +34,7 @@ class ApiController
      * @param array $data
      * @param array $headers
      *
-     * @return Reponse
+     * @return Response
      */
     public function respond(array $data, array $headers = [])
     {

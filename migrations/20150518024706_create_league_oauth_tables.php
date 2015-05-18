@@ -29,7 +29,7 @@ class CreateLeagueOauthTables extends AbstractMigration
             ->addColumn('owner_type', 'string')
             ->addColumn('owner_id', 'string')
             ->addColumn('client_id', 'string')
-            ->addColumn('client_redirect_url', 'string', ['null' => true])
+            ->addColumn('client_redirect_uri', 'string', ['null' => true])
             ->addForeignKey('client_id', 'oauth_clients', 'id', ['delete' => 'cascade'])
             ->create();
 
@@ -58,8 +58,8 @@ class CreateLeagueOauthTables extends AbstractMigration
         $this->table('oauth_access_token_scopes')
             ->addColumn('access_token', 'string')
             ->addColumn('scope', 'string')
-            #->addForeignKey('access_token', 'oauth_access_tokens', 'access_token', ['delete' => 'cascade'])
-            #->addForeignKey('scope', 'oauth_scopes', 'id', ['delete' => 'cascade'])
+            ->addForeignKey('access_token', 'oauth_access_tokens', 'access_token', ['delete' => 'cascade'])
+            ->addForeignKey('scope', 'oauth_scopes', 'id', ['delete' => 'cascade'])
             ->create();
 
         $this->table('oauth_auth_code_scopes')
