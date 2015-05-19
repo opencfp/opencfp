@@ -214,6 +214,7 @@ With all of that out of the way, here are some nuts and bolts about our implemen
 
 - We only support two grant types: Authorization Code & Refresh Token. This allows you to do work on behalf of any OpenCFP user (if authorized) and renew that authorization (bearer token) when it expires.
 - Bearer tokens have a time-to-live (TTL) of `3600` seconds (1 hour). Expired tokens will be rejected and you have the option of refreshing or requesting a new token. This may be configurable in the future.
+- Refresh tokens have a TTL of `604800` seconds (1 week). If you do not want to put users through the authorization code grant flow weekly, have automation rotate you access tokens.
 - It is **highly recommended** to only enable this API if you have a valid SSL certificate. OAuth2's security mechanisms are 100% reliant on TLS.
 - Authorization endpoints are described below.
 
@@ -252,8 +253,8 @@ The Talks API allows you to manage the collection of submitted talks for the cur
 | `POST` | `/api/talks` | Given JSON payload representing a talk, creates talk for authenticated user and issues a 201 Created upon success, appropriate error otherwise. |
 | `GET` | `/api/talks` | Returns JSON collection of all talks for authenticated user. |
 | `GET` | `/api/talks/{id}` | Returns a particular talk for authenticated user. Returns appropriate responses for unauthorized or non-existent talks. |
-| `PUT` | `/api/talks/{id}` | Updates a particular talk. Partial updates are supported through `PUT`. You are not required to send entire object representation. |
-| `DELETE` | `/api/talks/{id}` | Removes a talk. |
+| `PUT` | `/api/talks/{id}` | **Not Implemented** Updates a particular talk. Partial updates are supported through `PUT`. You are not required to send entire object representation. |
+| `DELETE` | `/api/talks/{id}` | **Not Implemented** Removes a talk. |
 
 <a name="json-api-usage" />
 ### Using the API
