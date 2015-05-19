@@ -87,4 +87,14 @@ final class SpeakerProfile
     {
         return $this->speaker->photo_path;
     }
+
+    public function toArrayForApi()
+    {
+        return [
+            'name' => $this->getName(),
+            'email' => $this->getEmail(),
+            'twitter' => $this->getTwitter(),
+            'bio' => $this->getBio()
+        ];
+    }
 }
