@@ -14,6 +14,10 @@ class OAuthRouteServiceProvider  implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        if (!$app->config('api.enabled')) {
+            return;
+        }
+
         /* @var $oauth ControllerCollection */
         $oauth = $app['controllers_factory'];
 

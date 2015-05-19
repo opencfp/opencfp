@@ -10,6 +10,9 @@ application:
   departure: 2014-10-31
   secure_ssl: true
 
+api:
+  enabled: true
+
 cache:
   enabled: false
 

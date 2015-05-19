@@ -3,7 +3,6 @@
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class RouteServiceProvider  implements ServiceProviderInterface
@@ -33,7 +32,10 @@ class RouteServiceProvider  implements ServiceProviderInterface
         };
 
         $this->mountWebRoutes($app);
-        $this->mountApiRoutes($app);
+
+        if ($app->config('api.enabled')) {
+            $this->mountApiRoutes($app);
+        }
     }
 
     /**
