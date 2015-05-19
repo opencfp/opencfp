@@ -61,7 +61,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     public function it_provides_the_right_speaker_profile_when_asked()
     {
         $speaker = $this->getSpeaker();
-        $this->trainStudentRepositoryToReturnSampleSpeaker($speaker);
+        $this->trainIdentityProviderToReturnSampleSpeaker($speaker);
 
         $profile = $this->sut->findProfile(self::SPEAKER_ID);
 
@@ -82,11 +82,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_retrieves_a_specific_talk_owned_by_speaker()
     {
-        $this->trainStudentRepositoryToReturnSampleSpeaker($this->getSpeakerWithOneTalk());
-
-        $this->identityProvider->shouldReceive('getCurrentUser')
-            ->once()
-            ->andReturn($this->getSpeakerWithOneTalk());
+        $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerWithOneTalk());
 
         $talk = $this->sut->getTalk(1);
 
@@ -98,11 +94,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     {
         // We use relation to grab speakers talks. So if they have none, someone is doing
         // something screwy attempting to get a talk they should be able to.
-        $this->trainStudentRepositoryToReturnSampleSpeaker($this->getSpeakerWithNoTalks());
-
-        $this->identityProvider->shouldReceive('getCurrentUser')
-            ->once()
-            ->andReturn($this->getSpeakerWithNoTalks());
+        $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerWithNoTalks());
 
         $this->setExpectedException('OpenCFP\Application\NotAuthorizedException');
         $this->sut->getTalk(1);
@@ -125,11 +117,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_guards_if_spot_relation_ever_returns_talks_that_arent_owned_by_speaker()
     {
-        $this->trainStudentRepositoryToReturnSampleSpeaker($this->getSpeakerFromMisbehavingSpot());
-
-        $this->identityProvider->shouldReceive('getCurrentUser')
-            ->once()
-            ->andReturn($this->getSpeakerFromMisbehavingSpot());
+        $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerFromMisbehavingSpot());
 
         $this->setExpectedException('OpenCFP\Application\NotAuthorizedException');
         $this->sut->getTalk(1);
@@ -199,16 +187,16 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     // Test Double Helpers
     //
 
-    private function trainStudentRepositoryToReturnSampleSpeaker($speaker)
+    private function trainIdentityProviderToReturnSampleSpeaker($speaker)
     {
-        $this->speakerRepository->shouldReceive('findById')
-            ->with(self::SPEAKER_ID)
+        $this->identityProvider->shouldReceive('getCurrentUser')
+            ->once()
             ->andReturn($speaker);
     }
 
     private function trainStudentRepositoryToThrowEntityNotFoundException()
     {
-        $this->speakerRepository->shouldReceive('findById')
+        $this->identityProvider->shouldReceive('getCurrentUser')
             ->andThrow('OpenCFP\Domain\EntityNotFoundException');
     }
 
