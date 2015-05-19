@@ -4,6 +4,7 @@ namespace OpenCFP\Http\OAuth;
 
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\AccessDeniedException;
+use League\OAuth2\Server\Exception\OAuthException;
 use League\OAuth2\Server\Util\RedirectUri;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
@@ -50,22 +51,19 @@ class AuthorizationController extends ApiController
             $this->service('session')->set('redirectTo', $request->getUri());
 
             // Grab currently authenticated user, if authenticated.
-            $user = $this->identityProvider->getCurrentUser();
+            $this->identityProvider->getCurrentUser();
 
             // Show authorization interface
             return $this->service('twig')->render('oauth/authorize.twig', ['authParams' => $authParams]);
         } catch (NotAuthenticatedException $e) {
             // Authenticate user and come back here.
             return $this->redirectTo('login');
-        } catch (\Twig_Error $e) {
-            return $this->respond(['message' => $e->getMessage()]);
-        } catch (\Exception $e) {
+        } catch (OAuthException $e) {
             return $this->setStatusCode($e->httpStatusCode)->respond([
                 'error' => $e->errorType,
                 'message' => $e->getMessage()
             ], $e->getHttpHeaders());
         }
-
     }
 
     public function issueAuthCode(Request $request)
@@ -106,7 +104,6 @@ class AuthorizationController extends ApiController
             $response = $this->server->issueAccessToken();
             return $this->respond($response);
         } catch (\Exception $e) {
-            var_dump($e);
             return $this->setStatusCode($e->httpStatusCode)->respond([
                 'error' => $e->errorType,
                 'message' => $e->getMessage()
