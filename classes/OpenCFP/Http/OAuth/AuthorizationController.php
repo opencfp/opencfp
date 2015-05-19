@@ -70,13 +70,14 @@ class AuthorizationController extends ApiController
     {
         $authParams = $this->service('session')->get('authParams');
 
+        $this->service('session')->remove('authParams');
+        $this->service('session')->remove('redirectTo');
+
         if ($request->get('authorization') === 'Approve') {
             $user = $this->identityProvider->getCurrentUser();
 
             $redirectUri = $this->server->getGrantType('authorization_code')
                 ->newAuthorizeRequest('user', $user->id, $authParams);
-
-            $this->service('session')->remove('authParams');
 
             return $this->setStatusCode(302)->respond('', ['Location' => $redirectUri]);
         } else {
