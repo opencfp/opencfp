@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TalkController extends ApiController
+class ProfileController extends ApiController
 {
     /**
      * @var Speakers

@@ -8,11 +8,11 @@ use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Http\API\TalkController;
+use OpenCFP\Http\API\ProfileController;
 use OpenCFP\Http\OAuth\AuthorizationController;
 use OpenCFP\Http\OAuth\ClientRegistrationController;
 use OpenCFP\Infrastructure\Auth\OAuthIdentityProvider;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
-use OpenCFP\Infrastructure\Auth\UhhhmIdentityProvider;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
 use OpenCFP\Infrastructure\OAuth\AuthCodeStorage;
@@ -107,6 +107,10 @@ class ApplicationServiceProvider implements ServiceProviderInterface
     {
         $app['controller.api.talk'] = $app->share(function ($app) {
             return new TalkController($app['application.speakers.api']);
+        });
+
+        $app['controller.api.profile'] = $app->share(function ($app) {
+            return new ProfileController($app['application.speakers.api']);
         });
 
         $app['controller.oauth.authorization'] = $app->share(function($app) {
