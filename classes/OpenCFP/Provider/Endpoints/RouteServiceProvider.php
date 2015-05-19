@@ -9,33 +9,35 @@ class RouteServiceProvider  implements ServiceProviderInterface
 {
 
     /**
-     * This is a before middleware used to clean inputs of malicious HTML
-     * that could be used for XSS attacks and more. Cleans both the $_GET and
-     * $_POST super-globals.
-     *
-     * @var Callable
-     */
-    private $clean;
-
-    /**
      * {@inheritdoc}
      */
     public function register(Application $app)
     {
-        $this->clean = function(Request $request, Application $app) {
-            foreach ($request->query as $key => $value) {
-                $request->query->set($key, $app['purifier']->purify($value));
-            }
-            foreach ($request->request as $key => $value) {
-                $request->request->set($key, $app['purifier']->purify($value));
-            }
-        };
-
         $this->mountWebRoutes($app);
 
         if ($app->config('api.enabled')) {
             $this->mountApiRoutes($app);
         }
+    }
+
+    public function cleanRequest(Request $request, Application $application)
+    {
+        $request->query->replace($this->clean($request->query->all(), $application['purifier']));
+        $request->request->replace($this->clean($request->request->all(), $application['purifier']));
+    }
+
+    public function clean(array $data, \HTMLPurifier $purifier){
+        $sanitized = [];
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $sanitized[$key] = $this->clean($value, $purifier);
+            } else {
+                $sanitized[$key] = $purifier->purify($value);;
+            }
+        }
+
+        return $sanitized;
     }
 
     /**
@@ -52,7 +54,7 @@ class RouteServiceProvider  implements ServiceProviderInterface
     {
         /* @var $web ControllerCollection */
         $web = $app['controllers_factory'];
-        $web->before($this->clean);
+        $web->before([$this, 'cleanRequest']);
 
         $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')->bind('homepage');
         $web->get('/package', 'OpenCFP\Http\Controller\PagesController::showSpeakerPackage')->bind('speaker_package');
@@ -123,7 +125,7 @@ class RouteServiceProvider  implements ServiceProviderInterface
     {
         /* @var $api ControllerCollection */
         $api = $app['controllers_factory'];
-        $api->before($this->clean);
+        $api->before([$this, 'cleanRequest']);
         $api->before(function (Request $request) {
             if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
                 $data = json_decode($request->getContent(), true);
