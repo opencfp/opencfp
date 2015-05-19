@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Cartalyst\Sentry\Users\UserExistsException;
 
@@ -107,6 +108,15 @@ class SignupController extends BaseController
                 $speaker->transportation = (int) $sanitized_data['transportation'];
                 $speaker->hotel = (int) $sanitized_data['hotel'];
                 $mapper->save($speaker);
+
+                // This is for redirecting to OAuth endpoint if we arrived
+                // as part of the Authorization Code Grant flow.
+                if ($this->app['session']->has('redirectTo')) {
+                    $url = $this->app['session']->remove('redirectTo');
+                    $this->app['sentry']->login($user);
+
+                    return new RedirectResponse($url);
+                }
 
                 // Set Success Flash Message
                 $app['session']->set('flash', array(

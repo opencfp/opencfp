@@ -3,20 +3,35 @@
 namespace OpenCFP\Http\OAuth;
 
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Exception\AccessDeniedException;
+use League\OAuth2\Server\Util\RedirectUri;
+use OpenCFP\Domain\Services\IdentityProvider;
+use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Http\API\ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorizationController extends ApiController
 {
+
     /**
      * @var AuthorizationServer
      */
     private $server;
 
-    public function __construct(AuthorizationServer $server)
+    /**
+     * @var IdentityProvider
+     */
+    private $identityProvider;
+
+    /**
+     * @param AuthorizationServer $server
+     * @param IdentityProvider    $identityProvider
+     */
+    public function __construct(AuthorizationServer $server, IdentityProvider $identityProvider)
     {
         $this->server = $server;
+        $this->identityProvider = $identityProvider;
     }
 
     /**
@@ -30,6 +45,20 @@ class AuthorizationController extends ApiController
     {
         try {
             $authParams = $this->server->getGrantType('authorization_code')->checkAuthorizeParams();
+
+            $this->service('session')->set('authParams', $authParams);
+            $this->service('session')->set('redirectTo', $request->getUri());
+
+            // Grab currently authenticated user, if authenticated.
+            $user = $this->identityProvider->getCurrentUser();
+
+            // Show authorization interface
+            return $this->service('twig')->render('oauth/authorize.twig', ['authParams' => $authParams]);
+        } catch (NotAuthenticatedException $e) {
+            // Authenticate user and come back here.
+            return $this->redirectTo('login');
+        } catch (\Twig_Error $e) {
+            return $this->respond(['message' => $e->getMessage()]);
         } catch (\Exception $e) {
             return $this->setStatusCode($e->httpStatusCode)->respond([
                 'error' => $e->errorType,
@@ -37,22 +66,31 @@ class AuthorizationController extends ApiController
             ], $e->getHttpHeaders());
         }
 
-        // Normally at this point you would show the user a sign-in screen and ask them to authorize the requested scopes
-        // ...
+    }
 
-        // Show the sign-in / register screen.
-        // If they have an account, they will sign in and we will have a credential to move forward to authorization.
-        // If they do not have an account, they will leave towards the account creation flow and redirect back here to continue authorization.
-        // ...
-        // If they deny, we redirect back to client application
-        // If they approve, we issue authorization code
+    public function issueAuthCode(Request $request)
+    {
+        $authParams = $this->service('session')->get('authParams');
 
-        // ...
-        // Create a new authorize request which will respond with a redirect URI that the user will be redirected to
+        if ($request->get('authorization') === 'Approve') {
+            $user = $this->identityProvider->getCurrentUser();
 
-        $redirectUri = $this->server->getGrantType('authorization_code')->newAuthorizeRequest('user', 1, $authParams);
+            $redirectUri = $this->server->getGrantType('authorization_code')
+                ->newAuthorizeRequest('user', $user->id, $authParams);
 
-        return $this->respond([], ['Location' => $redirectUri]);
+            $this->service('session')->remove('authParams');
+
+            return $this->setStatusCode(302)->respond('', ['Location' => $redirectUri]);
+        } else {
+            $error = new AccessDeniedException;
+
+            $redirectUri = RedirectUri::make($authParams['redirect_uri'], [
+                'error' => $error->errorType,
+                'message' => $error->getMessage()
+            ]);
+
+            return $this->setStatusCode(302)->respond('', ['Location' => $redirectUri]);
+        }
     }
 
     /**
