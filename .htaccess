@@ -1,7 +1,13 @@
 <IfModule mod_rewrite.c>
-   RewriteEngine on
-   RewriteRule    ^$ web/    [L]
-   RewriteRule    (.*) web/$1 [L]
+    Options -MultiViews
+
+    RewriteEngine On
+
+    RewriteCond %{HTTP:Authorization} ^(.*)
+    RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+    RewriteRule ^$ web/ [L]
+    RewriteRule (.*) web/$1 [L]
 </IfModule>
 
 SetEnv CFP_ENV development
