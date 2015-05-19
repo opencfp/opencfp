@@ -3,10 +3,15 @@
 namespace OpenCFP\Http\API;
 
 use OpenCFP\Application;
+use OpenCFP\ContainerAware;
 use Symfony\Component\HttpFoundation\JsonResponse as Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ApiController 
 {
+
+    use ContainerAware;
+
     protected $statusCode = Response::HTTP_OK;
 
     /**
@@ -29,14 +34,12 @@ class ApiController
     }
 
     /**
-     * Returns a rendered Twig response.
-     *
-     * @param array $data
+     * @param mixed $data
      * @param array $headers
      *
      * @return Response
      */
-    public function respond(array $data, array $headers = [])
+    public function respond($data, array $headers = [])
     {
         return new Response($data, $this->getStatusCode(), $headers);
     }
@@ -102,5 +105,29 @@ class ApiController
         return $this->respond([
             'message' => $message,
         ]);
+    }
+
+    /**
+     * Generate an absolute url from a route name.
+     *
+     * @param string $route
+     * @param array  $parameters
+     *
+     * @return string the generated URL
+     */
+    public function url($route, $parameters = array())
+    {
+        return $this->app['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    /**
+     * @param string $route  Route name to redirect to
+     * @param int    $status
+     *
+     * @return RedirectResponse
+     */
+    public function redirectTo($route, $status = 302)
+    {
+        return $this->app->redirect($this->url($route), $status);
     }
 } 
