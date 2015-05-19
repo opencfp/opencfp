@@ -25,7 +25,20 @@ class TalkSubmission
 
     public function toTalk()
     {
-        return new Talk($this->data);
+        $data = array_merge([
+            'title' => '',
+            'description' => '',
+            'type' => '',
+            'level' => '',
+            'category' => '',
+            'desired' => '',
+            'slides' => '',
+            'other' => '',
+            'sponsor' => '',
+            'user_id' => ''
+        ], $this->data);
+
+        return new Talk($data);
     }
 
     private function guardTitleIsAppropriateLength($data)
