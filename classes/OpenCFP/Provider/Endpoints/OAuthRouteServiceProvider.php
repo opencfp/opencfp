@@ -20,8 +20,13 @@ class OAuthRouteServiceProvider  implements ServiceProviderInterface
         ///////////////////////////////////////////////////////////////
 
         $oauth->get('/authorize', 'controller.oauth.authorization:authorize');
+        $oauth->post('/authorize', 'controller.oauth.authorization:issueAuthCode');
         $oauth->post('/access_token', 'controller.oauth.authorization:issueAccessToken');
         $oauth->post('/clients', 'controller.oauth.clients:registerClient');
+
+        $oauth->get('/callback', function (Request $request) {
+            return new JsonResponse($request->query->all());
+        });
 
         ///////////////////////////////////////////////////////////////
 

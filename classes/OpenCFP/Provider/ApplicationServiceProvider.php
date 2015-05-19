@@ -5,6 +5,7 @@ use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Http\API\TalkController;
 use OpenCFP\Http\OAuth\AuthorizationController;
 use OpenCFP\Http\OAuth\ClientRegistrationController;
@@ -78,7 +79,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                     new UhhhmIdentityProvider($app['request'], $speakerRepository),
                     $speakerRepository,
                     new SpotTalkRepository($talkMapper),
-                    $app['dispatcher']
+                    new EventDispatcher()
                 );
             }
         );
@@ -103,7 +104,13 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             $server->addGrantType(new AuthCodeGrant);
             $server->addGrantType(new RefreshTokenGrant);
 
-            return new AuthorizationController($server);
+            $userMapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
+            $speakerRepository = new SpotSpeakerRepository($userMapper);
+
+            $controller = new AuthorizationController($server, new SentryIdentityProvider($app['sentry'], $speakerRepository));
+            $controller->setApplication($app);
+
+            return $controller;
         });
 
         $app['controller.oauth.clients'] = $app->share(function($app) {
