@@ -46,14 +46,13 @@ class Speakers
     }
 
     /**
-     * Retrieves the speaker profile from their speaker identifier.
-     *
-     * @param string $speakerId
+     * Retrieves the speaker profile for currently authenticated speaker.
+     *d
      * @return SpeakerProfile
      */
-    public function findProfile($speakerId)
+    public function findProfile()
     {
-        $speaker = $this->speakers->findById($speakerId);
+        $speaker = $this->identityProvider->getCurrentUser();
         return new SpeakerProfile($speaker);
     }
 
