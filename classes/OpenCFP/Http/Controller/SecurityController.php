@@ -28,8 +28,7 @@ class SecurityController extends BaseController
                 // This is for redirecting to OAuth endpoint if we arrived
                 // as part of the Authorization Code Grant flow.
                 if ($this->app['session']->has('redirectTo')) {
-                    $url = $this->app['session']->remove('redirectTo');
-                    return new RedirectResponse($url);
+                    return new RedirectResponse($this->app['session']->get('redirectTo'));
                 }
 
                 return $this->redirectTo('dashboard');

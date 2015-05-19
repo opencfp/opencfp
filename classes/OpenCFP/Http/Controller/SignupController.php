@@ -112,10 +112,8 @@ class SignupController extends BaseController
                 // This is for redirecting to OAuth endpoint if we arrived
                 // as part of the Authorization Code Grant flow.
                 if ($this->app['session']->has('redirectTo')) {
-                    $url = $this->app['session']->remove('redirectTo');
                     $this->app['sentry']->login($user);
-
-                    return new RedirectResponse($url);
+                    return new RedirectResponse($this->app['session']->get('redirectTo'));
                 }
 
                 // Set Success Flash Message

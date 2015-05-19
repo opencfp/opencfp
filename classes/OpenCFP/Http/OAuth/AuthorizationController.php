@@ -48,7 +48,7 @@ class AuthorizationController extends ApiController
             $authParams = $this->server->getGrantType('authorization_code')->checkAuthorizeParams();
 
             $this->service('session')->set('authParams', $authParams);
-            $this->service('session')->set('redirectTo', $request->getUri());
+            $this->service('session')->remove('redirectTo');
 
             // Grab currently authenticated user, if authenticated.
             $this->identityProvider->getCurrentUser();
@@ -57,6 +57,7 @@ class AuthorizationController extends ApiController
             return $this->service('twig')->render('oauth/authorize.twig', ['authParams' => $authParams]);
         } catch (NotAuthenticatedException $e) {
             // Authenticate user and come back here.
+            $this->service('session')->set('redirectTo', $request->getUri());
             return $this->redirectTo('login');
         } catch (OAuthException $e) {
             return $this->setStatusCode($e->httpStatusCode)->respond([
