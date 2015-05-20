@@ -136,11 +136,11 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
     private function getValidRequest()
     {
         return $this->getRequest([
-            'title' => 'Happy Path Submission',
-            'description' => 'I play by the rules.',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'api'
+        'title' => 'Happy Path Submission',
+        'description' => 'I play by the rules.',
+        'type' => 'regular',
+        'level' => 'entry',
+        'category' => 'api'
         ]);
     }
 }
