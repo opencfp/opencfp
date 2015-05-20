@@ -44,6 +44,11 @@ class ApiController
         return new Response($data, $this->getStatusCode(), $headers);
     }
 
+    /**
+     * @param string $message
+     *
+     * @return Response
+     */
     public function respondBadRequest($message = 'Bad request')
     {
         return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respondWithError($message);
@@ -52,7 +57,7 @@ class ApiController
     /**
      * @param string $message
      *
-     * @return mixed
+     * @return Response
      */
     public function respondUnauthorized($message = 'Unauthorized')
     {
@@ -62,7 +67,7 @@ class ApiController
     /**
      * @param string $message
      *
-     * @return mixed
+     * @return Response
      */
     public function respondForbidden($message = 'Forbidden')
     {
@@ -72,7 +77,7 @@ class ApiController
     /**
      * @param string $message
      *
-     * @return mixed
+     * @return Response
      */
     public function respondNotFound($message = 'Resource not found')
     {
@@ -82,7 +87,7 @@ class ApiController
     /**
      * @param string $message
      *
-     * @return mixed
+     * @return Response
      */
     public function respondInternalError($message = 'Internal server error')
     {
@@ -92,7 +97,7 @@ class ApiController
     /**
      * @param $message
      *
-     * @return mixed
+     * @return Response
      */
     public function respondWithError($message)
     {
