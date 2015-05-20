@@ -20,8 +20,6 @@ before_script:
   - cp phinx.yml.dist phinx.yml
   - composer self-update
   - composer install
-  - phantomjs --webdriver 4444 &
-  - sleep 3
 
 script:
   - sh tools/travis/build.sh
