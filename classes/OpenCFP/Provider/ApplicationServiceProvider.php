@@ -1,4 +1,6 @@
-<?php namespace OpenCFP\Provider; 
+<?php
+
+namespace OpenCFP\Provider;
 
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
