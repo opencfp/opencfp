@@ -220,8 +220,11 @@ $ bin/opencfp cache:clear
 There is a test suite that uses PHPUnit in the /tests directory. The recommended way to run the tests is:
 
 ```
-$ ./vendor/bin/phpunit -c tests/phpunit.xml
+$ ./vendor/bin/phpunit
 ```
+
+The phpunit.xml file is in the root directory for the project.
+
 
 <a name="troubleshooting" />
 ## Troubleshooting
