@@ -10,7 +10,7 @@ use OpenCFP\Domain\Entity\User;
  * a combined "profile". It is to be used to aide in rendering of views facing the speaker themselves.
  * It is a speaker's individual profile.
  */
-final class SpeakerProfile
+class SpeakerProfile
 {
     /**
      * @var User

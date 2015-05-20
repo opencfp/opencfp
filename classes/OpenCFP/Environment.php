@@ -2,7 +2,7 @@
 
 use InvalidArgumentException;
 
-final class Environment
+class Environment
 {
     /**
      * The specified environment.

@@ -9,12 +9,12 @@ trait ContainerAware
      */
     private $app;
 
-    final public function setApplication(Application $application)
+    public function setApplication(Application $application)
     {
         $this->app = $application;
     }
 
-    final protected function service($slug)
+    protected function service($slug)
     {
         return $this->app[$slug];
     }
