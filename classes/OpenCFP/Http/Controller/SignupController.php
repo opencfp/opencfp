@@ -93,7 +93,8 @@ class SignupController extends BaseController
                     'email' => $sanitized_data['email'],
                     'password' => $sanitized_data['password'],
                     'airport' => $sanitized_data['airport'],
-                    'activated' => 1
+                    'activated' => 1,
+                    'api_token' => md5(time() . $sanitized_data['email'])
                 );
 
                 $user = $app['sentry']->getUserProvider()->create($user_data);

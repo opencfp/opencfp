@@ -45,7 +45,8 @@ function deleteTalk(tid) {
             <strong>Other Info:</strong> {{ profile.info|striptags|markdown }}<br /><br />
 
             <strong>Need Transportation:</strong> {% if profile.transportation == '1' %} Yes {% else %} No {% endif %}<br />
-            <strong>Need Hotel:</strong> {% if profile.hotel == '1' %} Yes {% else %} No {% endif %}
+            <strong>Need Hotel:</strong> {% if profile.hotel == '1' %} Yes {% else %} No {% endif %}<br />
+            <strong>API Token:</strong> {{ profile.token }}<br />
         </div>
     </div>
 

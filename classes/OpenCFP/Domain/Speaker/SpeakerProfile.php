@@ -87,4 +87,9 @@ final class SpeakerProfile
     {
         return $this->speaker->photo_path;
     }
+
+    public function getToken()
+    {
+        return $this->speaker->api_token;
+    }
 }

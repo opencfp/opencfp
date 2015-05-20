@@ -19,4 +19,12 @@ class User extends Mapper
 
         return $user;
     }
+
+    public function getByEmail($email)
+    {
+        $response = $this->where(['email' => $email])->first();
+
+        return $response;
+
+    }
 }
