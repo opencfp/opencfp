@@ -12,7 +12,7 @@ cache:
 
 addons:
   code_climate:
-    repo_token: 3df25819765c78c9f1eaa02232d42362033703ef645e54703dff3ab4c636aae5
+    repo_token: 9deb249b01a414d979959cfd05a4c351b19a5959858653b20276454d4189edc3 
 
 before_script:
   - sh tools/travis/setup-webserver.sh
