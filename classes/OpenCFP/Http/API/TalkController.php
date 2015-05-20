@@ -83,14 +83,4 @@ class TalkController extends ApiController
             return $this->respondUnauthorized();
         }
     }
-
-    public function handleChangeTalk(Request $request)
-    {
-        return 'not implemented';
-    }
-
-    public function handleDeleteTalk(Request $request)
-    {
-        return 'not implemented';
-    }
 } 

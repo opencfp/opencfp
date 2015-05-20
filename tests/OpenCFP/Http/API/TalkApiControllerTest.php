@@ -86,6 +86,18 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function it_responds_unauthorized_when_viewing_single_talk_while_not_authenticated()
+    {
+        $this->speakers->shouldReceive('getTalk')
+        ->andThrow('OpenCFP\Domain\Services\NotAuthenticatedException');
+
+        $response = $this->sut->handleViewTalk($this->getValidRequest(), 1);
+
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertContains('Unauthorized', $response->getContent());
+    }
+
+    /** @test */
     public function it_should_respond_with_multiple_talks()
     {
         $this->speakers->shouldReceive('getTalks')->once()->andReturn([
@@ -100,6 +112,18 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
         $this->assertContains('Testy Talk', $response->getContent());
         $this->assertContains('Another Talk', $response->getContent());
         $this->assertContains('Yet Another Talk', $response->getContent());
+    }
+
+    /** @test */
+    public function it_should_respond_unauthorized_when_no_authentication_provided()
+    {
+        $this->speakers->shouldReceive('getTalks')
+            ->andThrow('OpenCFP\Domain\Services\NotAuthenticatedException');
+
+        $response = $this->sut->handleViewAllTalks($this->getValidRequest());
+
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertContains('Unauthorized', $response->getContent());
     }
 
     private function getRequest(array $data = [])
