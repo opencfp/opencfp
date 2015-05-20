@@ -3,6 +3,8 @@
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Http\Form\SignupForm;
+use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
+use OpenCFP\ProfileImageProcessor;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Cartalyst\Sentry\Users\UserExistsException;
@@ -68,10 +70,15 @@ class SignupController extends BaseController
             if (isset($form_data['speaker_photo'])) {
                 /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
                 $file = $form_data['speaker_photo'];
-                /** @var \OpenCFP\ProfileImageProcessor $processor */
+                /** @var ProfileImageProcessor $processor */
                 $processor = $app['profile_image_processor'];
+                /** @var PseudoRandomStringGenerator $generator */
+                $generator = $app['security.random'];
 
-                $sanitized_data['speaker_photo'] = $form_data['first_name'] . '.' . $form_data['last_name'] . uniqid() . '.' . $file->getClientOriginalExtension();
+                /**
+                 * The extension technically is not required. We guess the extension using a trusted method.
+                 */
+                $sanitized_data['speaker_photo'] = $generator->generate(40) . '.' . $file->guessExtension();
 
                 $processor->process($file, $sanitized_data['speaker_photo']);
             }
