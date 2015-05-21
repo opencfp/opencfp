@@ -11,6 +11,7 @@
     <filter>
         <blacklist>
             <directory>vendor</directory>
+            <directory>classes/OpenCFP/Provider</directory>
         </blacklist>
     </filter>
 
