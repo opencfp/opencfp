@@ -1,0 +1,9 @@
+{% extends "layouts/dashboard.twig" %}
+{% block content %}
+    <h2 class="headline">{{ authParams.client.name }} would like to access your OpenCFP information.</h2>
+
+    <form method="post">
+        <input type="submit" value="Approve" name="authorization">
+        <input type="submit" value="Deny" name="authorization">
+    </form>
+{% endblock %}

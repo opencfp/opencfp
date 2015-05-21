@@ -32,6 +32,7 @@
         "aptoma/twig-markdown": "0.2.*",
         "igorw/config-service-provider": "~1.2",
         "symfony/yaml": "~2.5",
+        "league/oauth2-server": "^4.1",
         "ircmaxell/random-lib": "^1.1"
     },
     "autoload": {

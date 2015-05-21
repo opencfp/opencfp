@@ -7,7 +7,7 @@ use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use Spot\Mapper;
 
-final class SpotSpeakerRepository implements SpeakerRepository
+class SpotSpeakerRepository implements SpeakerRepository
 {
     /**
      * @var Mapper

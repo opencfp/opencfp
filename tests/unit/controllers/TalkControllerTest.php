@@ -51,7 +51,8 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
      */
     public function ampersandsAcceptableCharacterForTalks()
     {
-        $controller = new OpenCFP\Http\Controller\TalkController($this->app);
+        $controller = new OpenCFP\Http\Controller\TalkController();
+        $controller->setApplication($this->app);
 
         // Create a test double for SwiftMailer
         $swiftmailer = m::mock('StdClass');
@@ -78,7 +79,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
          * If the talk was successfully created, a success value is placed
          * into the session flash area for display
          */
-        $create_response = $controller->processCreateAction($this->req, $this->app);
+        $create_response = $controller->processCreateAction($this->req);
         $create_flash = $this->app['session']->get('flash');
         $this->assertEquals($create_flash['type'], 'success');
 

@@ -36,4 +36,20 @@ class Talk extends Entity
             'favorites' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\Favorite', 'talk_id'),
         ];
     }
+
+    public function toArrayForApi()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'type' => $this->type,
+            'level' => $this->level,
+            'category' => $this->category,
+            'desired' => $this->desired,
+            'slides' => $this->slides,
+            'other' => $this->other,
+            'sponsor' => $this->sponsor
+        ];
+    }
 }

@@ -1,7 +1,17 @@
-<phpunit backupGlobals="true" bootstrap="tests/bootstrap.php">
+<phpunit bootstrap="tests/bootstrap.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
     <filter>
         <blacklist>
             <directory>vendor</directory>
+            <directory>classes/OpenCFP/Provider</directory>
         </blacklist>
     </filter>
 

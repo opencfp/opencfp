@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Infrastructure\Crypto; 
+namespace OpenCFP\Infrastructure\Crypto;
 
 use OpenCFP\Domain\Services\RandomStringGenerator;
 use RandomLib\Factory;

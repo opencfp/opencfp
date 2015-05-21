@@ -42,7 +42,8 @@ class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
         $req->shouldReceive('getRequestUri')->andReturn('foo');
 
         $this->createTestData($app['spot']);
-        $controller = new \OpenCFP\Http\Controller\Admin\TalksController($app);
+        $controller = new \OpenCFP\Http\Controller\Admin\TalksController();
+        $controller->setApplication($app);
         $response = $controller->indexAction($req, $app);
         $this->assertContains('Test Title', (string)$response);
         $this->assertContains('Test User', (string)$response);

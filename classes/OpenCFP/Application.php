@@ -3,6 +3,7 @@
 namespace OpenCFP;
 
 use OpenCFP\Provider\ApplicationServiceProvider;
+use OpenCFP\Provider\Endpoints\OAuthRouteServiceProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use Silex\Application as SilexApplication;
@@ -12,7 +13,7 @@ use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\SentryServiceProvider;
 use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
-use OpenCFP\Provider\RouteServiceProvider;
+use OpenCFP\Provider\Endpoints\RouteServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
@@ -40,14 +41,13 @@ class Application extends SilexApplication
 
         // Routes...
         $this->register(new RouteServiceProvider);
+        $this->register(new OAuthRouteServiceProvider);
 
         // Services...
         $this->register(new SessionServiceProvider);
-
         $this->register(new FormServiceProvider);
         $this->register(new UrlGeneratorServiceProvider);
         $this->register(new ControllerResolverServiceProvider);
-        $this->register(new ServiceControllerServiceProvider);
         $this->register(new DatabaseServiceProvider);
         $this->register(new ValidatorServiceProvider);
         $this->register(new TranslationServiceProvider);

@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application\Speakers;
+use OpenCFP\Domain\Services\NotAuthenticatedException;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,20 +22,17 @@ class DashboardController extends BaseController
          */
         $speakers = $this->app['application.speakers'];
 
-        /////////
-        if (!$this->app['sentry']->check()) {
+        try {
+            $profile = $speakers->findProfile();
+
+            return $this->render('dashboard.twig', [
+                'profile' => $profile,
+                'cfp_open' => $this->isCfpOpen()
+            ]);
+        } catch (NotAuthenticatedException $e) {
             return $this->redirectTo('login');
         }
 
-        $user = $this->app['sentry']->getUser();
-        /////////
-
-        $profile = $speakers->findProfile($user->getId());
-
-        return $this->render('dashboard.twig', [
-            'profile' => $profile,
-            'cfp_open' => $this->isCfpOpen()
-        ]);
     }
 
     /**

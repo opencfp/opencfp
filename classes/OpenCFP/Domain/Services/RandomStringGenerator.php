@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Domain\Services; 
+namespace OpenCFP\Domain\Services;
 
 interface RandomStringGenerator
 {

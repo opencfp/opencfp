@@ -15,15 +15,6 @@ interface AuthenticationService
     public function authenticate($username, $password);
 
     /**
-     * Retrieves the currently authenticate user's username.
-     *
-     * @return string the unique username of the current authenticated user.
-     *
-     * @throws NotAuthenticatedException
-     */
-    public function getAuthenticatedUser();
-
-    /**
      * Destroys the user's active authenticated session.
      *
      * @return void

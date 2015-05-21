@@ -10,7 +10,7 @@ use OpenCFP\Domain\Entity\User;
  * a combined "profile". It is to be used to aide in rendering of views facing the speaker themselves.
  * It is a speaker's individual profile.
  */
-final class SpeakerProfile
+class SpeakerProfile
 {
     /**
      * @var User
@@ -86,5 +86,15 @@ final class SpeakerProfile
     public function getPhoto()
     {
         return $this->speaker->photo_path;
+    }
+
+    public function toArrayForApi()
+    {
+        return [
+            'name' => $this->getName(),
+            'email' => $this->getEmail(),
+            'twitter' => $this->getTwitter(),
+            'bio' => $this->getBio()
+        ];
     }
 }
