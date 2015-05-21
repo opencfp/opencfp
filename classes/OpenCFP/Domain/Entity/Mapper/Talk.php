@@ -98,7 +98,7 @@ class Talk extends Mapper
      * @param  integer $admin_user_id
      * @return array
      */
-    protected function createdFormattedOutput($talk, $admin_user_id)
+    public function createdFormattedOutput($talk, $admin_user_id)
     {
         if ($talk->favorites) {
             foreach ($talk->favorites as $favorite) {
