@@ -45,11 +45,9 @@ class Application extends SilexApplication
 
         // Services...
         $this->register(new SessionServiceProvider);
-
         $this->register(new FormServiceProvider);
         $this->register(new UrlGeneratorServiceProvider);
         $this->register(new ControllerResolverServiceProvider);
-        $this->register(new ServiceControllerServiceProvider);
         $this->register(new DatabaseServiceProvider);
         $this->register(new ValidatorServiceProvider);
         $this->register(new TranslationServiceProvider);

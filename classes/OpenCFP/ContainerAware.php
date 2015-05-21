@@ -5,9 +5,9 @@ namespace OpenCFP;
 trait ContainerAware
 {
     /**
-     * @var Application
+     * @var \Silex\Application
      */
-    private $app;
+    public $app;
 
     public function setApplication(Application $application)
     {

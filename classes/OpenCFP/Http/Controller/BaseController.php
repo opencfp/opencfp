@@ -3,21 +3,14 @@
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application;
+use OpenCFP\ContainerAware;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class BaseController
 {
-    /**
-     * @var Application
-     */
-    protected $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
+    use ContainerAware;
 
     /**
      * Generate an absolute url from a route name.

@@ -20,7 +20,8 @@ class ForgotControllerTest extends PHPUnit_Framework_TestCase
         $app['session'] = new Session(new MockFileSessionStorage());
         $app['form.csrf_provider'] = new SessionCsrfProvider($app['session'], 'secret');
 
-        $controller = new OpenCFP\Http\Controller\ForgotController($app);
+        $controller = new OpenCFP\Http\Controller\ForgotController();
+        $controller->setApplication($app);
         $response = $controller->indexAction();
 
         // Get the form object and verify things look correct
