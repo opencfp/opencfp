@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Infrastructure\Auth; 
+namespace OpenCFP\Infrastructure\Auth;
 
 use League\OAuth2\Server\Exception\AccessDeniedException;
 use League\OAuth2\Server\Exception\InvalidRequestException;

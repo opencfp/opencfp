@@ -130,6 +130,7 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
     {
         $request = Request::create('');
         $request->request->replace($data);
+
         return $request;
     }
 
@@ -144,4 +145,3 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
         ]);
     }
 }
- 

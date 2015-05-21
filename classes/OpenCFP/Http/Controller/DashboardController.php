@@ -5,7 +5,6 @@ namespace OpenCFP\Http\Controller;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends BaseController
 {
@@ -38,7 +37,7 @@ class DashboardController extends BaseController
     /**
      * Check to see if the CfP for this app is still open
      *
-     * @param  integer $currentTime
+     * @param integer $currentTime
      *
      * @return boolean
      */

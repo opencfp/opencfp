@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Domain\Talk; 
+namespace OpenCFP\Domain\Talk;
 
 use OpenCFP\Domain\Entity\Talk;
 use Symfony\Component\EventDispatcher\Event;
@@ -19,4 +19,4 @@ class TalkWasSubmitted extends Event
     {
         return $this->talk;
     }
-} 
+}

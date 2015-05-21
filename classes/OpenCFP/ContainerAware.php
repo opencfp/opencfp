@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP; 
+namespace OpenCFP;
 
 trait ContainerAware
 {
@@ -18,4 +18,4 @@ trait ContainerAware
     {
         return $this->app[$slug];
     }
-} 
+}

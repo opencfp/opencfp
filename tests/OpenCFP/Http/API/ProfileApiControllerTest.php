@@ -25,7 +25,7 @@ class ProfileApiControllerTest extends PHPUnit_Framework_TestCase
         $this->speakers = m::mock('OpenCFP\Application\Speakers');
         $this->sut = new ProfileController($this->speakers);
     }
-    
+
     /** @test */
     public function it_shows_a_speaker_profile()
     {
@@ -66,6 +66,7 @@ class ProfileApiControllerTest extends PHPUnit_Framework_TestCase
     {
         $request = Request::create('');
         $request->request->replace($data);
+
         return $request;
     }
 
@@ -74,4 +75,3 @@ class ProfileApiControllerTest extends PHPUnit_Framework_TestCase
         return new SpeakerProfile(new User(['first_name' => 'Hamburglar']));
     }
 }
- 

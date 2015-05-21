@@ -8,17 +8,17 @@ interface SpeakerRepository
     /**
      * Retrieves a speaker with associated talks.
      *
-     * @param string $speakerId
+     * @param  string                  $speakerId
      * @throws EntityNotFoundException
-     * @return User the speaker that matches given identifier.
+     * @return User                    the speaker that matches given identifier.
      */
     public function findById($speakerId);
 
     /**
      * Saves a speaker and their talks.
      *
-     * @param User $speaker
+     * @param  User  $speaker
      * @return mixed
      */
     public function persist(User $speaker);
-} 
+}

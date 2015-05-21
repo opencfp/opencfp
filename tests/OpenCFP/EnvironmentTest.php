@@ -3,7 +3,7 @@
 /**
  * @covers OpenCFP\Environment
  */
-class EnvironmentTest extends \PHPUnit_Framework_TestCase 
+class EnvironmentTest extends \PHPUnit_Framework_TestCase
 {
     /** @test */
     public function it_should_encapsulate_valid_environments()
@@ -36,4 +36,3 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         Environment::fromString('foo');
     }
 }
- 

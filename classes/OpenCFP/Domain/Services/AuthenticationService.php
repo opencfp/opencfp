@@ -23,4 +23,4 @@ interface AuthenticationService
      */
     public function logout();
 
-} 
+}

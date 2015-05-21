@@ -95,4 +95,3 @@ class TalkSubmissionTest extends PHPUnit_Framework_TestCase
         ]);
     }
 }
- 

@@ -31,7 +31,7 @@ class SentryServiceProvider implements ServiceProviderInterface
         // Boots Eloquent to be used by Sentry.
         $database->bootEloquent();
 
-        $app['sentry'] = $app->share(function($app) {
+        $app['sentry'] = $app->share(function ($app) {
             $hasher = new \Cartalyst\Sentry\Hashing\NativeHasher;
             $userProvider = new \Cartalyst\Sentry\Users\Eloquent\Provider($hasher);
             $groupProvider = new \Cartalyst\Sentry\Groups\Eloquent\Provider;

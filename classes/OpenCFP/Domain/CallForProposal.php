@@ -17,7 +17,8 @@ class CallForProposal
      */
     private $endDate;
 
-    public function __construct(DateTime $end){
+    public function __construct(DateTime $end)
+    {
         $this->endDate = $end;
     }
 
@@ -30,4 +31,4 @@ class CallForProposal
 
         return $now < $this->endDate;
     }
-} 
+}

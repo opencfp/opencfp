@@ -1,4 +1,4 @@
-<?php namespace OpenCFP\Console; 
+<?php namespace OpenCFP\Console;
 
 use OpenCFP\Console\Command\ClearCacheCommand;
 use Symfony\Component\Console\Application as ConsoleApplication;

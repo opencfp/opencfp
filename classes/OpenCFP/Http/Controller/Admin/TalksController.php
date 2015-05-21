@@ -3,7 +3,6 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Http\Controller\BaseController;
-use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Pagerfanta\View\TwitterBootstrap3View;
 
@@ -46,6 +45,7 @@ class TalksController extends BaseController
             if ($req->get('sort') !== null) {
                 $uri .= '&sort=' . $req->get('sort');
             }
+
             return $uri;
         };
         $view = new TwitterBootstrap3View();
@@ -106,7 +106,7 @@ class TalksController extends BaseController
     /**
      * Set Favorited Talk [POST]
      *
-     * @param Request $req Request Object
+     * @param  Request $req Request Object
      * @return bool
      */
     private function favoriteAction(Request $req)
@@ -153,7 +153,7 @@ class TalksController extends BaseController
     /**
      * Set Selected Talk [POST]
      *
-     * @param Request     $req Request Object
+     * @param  Request $req Request Object
      * @return bool
      */
     private function selectAction(Request $req)

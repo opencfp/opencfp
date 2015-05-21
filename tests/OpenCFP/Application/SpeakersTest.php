@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace OpenCFP\Application;
 
@@ -13,7 +13,7 @@ use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Talk\TalkSubmission;
 
-class SpeakersTest extends \PHPUnit_Framework_TestCase 
+class SpeakersTest extends \PHPUnit_Framework_TestCase
 {
     const SPEAKER_ID = '1';
 
@@ -35,7 +35,8 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     /** @var EventDispatcher | MockInterface */
     private $dispatcher;
 
-    protected function setUp(){
+    protected function setUp()
+    {
         parent::setUp();
 
         $this->identityProvider = m::mock('OpenCFP\Domain\Services\IdentityProvider');
@@ -289,4 +290,3 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         return $stub;
     }
 }
- 

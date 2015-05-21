@@ -14,7 +14,8 @@ class SentryIdentityProvider implements IdentityProvider
     private $sentry;
     private $speakerRepository;
 
-    public function __construct(Sentry $sentry, SpeakerRepository $mapper){
+    public function __construct(Sentry $sentry, SpeakerRepository $mapper)
+    {
         $this->sentry = $sentry;
         $this->speakerRepository = $mapper;
     }

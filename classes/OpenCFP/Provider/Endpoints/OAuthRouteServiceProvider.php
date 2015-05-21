@@ -34,7 +34,7 @@ class OAuthRouteServiceProvider  implements ServiceProviderInterface
 
         ///////////////////////////////////////////////////////////////
 
-        $oauth->before(function(Request $request, Application $app) {
+        $oauth->before(function (Request $request, Application $app) {
             foreach ($request->query as $key => $value) {
                 $request->query->set($key, $app['purifier']->purify($value));
             }

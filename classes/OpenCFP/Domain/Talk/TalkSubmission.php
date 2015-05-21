@@ -107,7 +107,7 @@ class TalkSubmission
         if (!isset($data['category']) or empty($data['category'])) {
             throw new InvalidTalkSubmissionException('You must choose what category of talk you are submitting.');
         }
-        
+
         if (!$this->isValidCategory($data['category'])) {
             throw new InvalidTalkSubmissionException('You did not choose a valid talk category.');
         }
@@ -131,4 +131,4 @@ class TalkSubmission
         ]);
     }
 
-} 
+}

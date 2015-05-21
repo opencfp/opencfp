@@ -3,7 +3,6 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Http\Controller\BaseController;
-use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends BaseController

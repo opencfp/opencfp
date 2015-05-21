@@ -1,6 +1,5 @@
 <?php
 
-
 use OpenCFP\Domain\CallForProposal;
 
 class CallForProposalTest extends PHPUnit_Framework_TestCase
@@ -19,4 +18,3 @@ class CallForProposalTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($cfp->isOpen());
     }
 }
- 

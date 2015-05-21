@@ -58,6 +58,7 @@ class AuthorizationController extends ApiController
         } catch (NotAuthenticatedException $e) {
             // Authenticate user and come back here.
             $this->service('session')->set('redirectTo', $request->getUri());
+
             return $this->redirectTo('login');
         } catch (OAuthException $e) {
             return $this->setStatusCode($e->httpStatusCode)->respond([
@@ -104,6 +105,7 @@ class AuthorizationController extends ApiController
     {
         try {
             $response = $this->server->issueAccessToken();
+
             return $this->respond($response);
         } catch (\Exception $e) {
             return $this->setStatusCode($e->httpStatusCode)->respond([
@@ -112,4 +114,4 @@ class AuthorizationController extends ApiController
             ], $e->getHttpHeaders());
         }
     }
-} 
+}

@@ -8,7 +8,6 @@ use Aptoma\Twig\Extension\MarkdownExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
-use Silex\Provider\UrlGeneratorServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
@@ -50,11 +49,11 @@ class TwigServiceProvider implements ServiceProviderInterface
             $app['twig']->addExtension(new Twig_Extension_Debug);
         }
 
-        $app['twig']->addFunction(new Twig_SimpleFunction('uploads', function($path) {
+        $app['twig']->addFunction(new Twig_SimpleFunction('uploads', function ($path) {
             return '/uploads/' . $path;
         }));
 
-        $app['twig']->addFunction(new Twig_SimpleFunction('assets', function($path) {
+        $app['twig']->addFunction(new Twig_SimpleFunction('assets', function ($path) {
             return '/assets/' . $path;
         }));
 

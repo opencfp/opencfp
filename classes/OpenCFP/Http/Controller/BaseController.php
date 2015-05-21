@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller;
 
-use OpenCFP\Application;
 use OpenCFP\ContainerAware;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +27,7 @@ abstract class BaseController
     /**
      * Returns a rendered Twig response.
      *
-     * @param string $name Twig template name
+     * @param string $name    Twig template name
      * @param array  $context
      * @param int    $status
      *

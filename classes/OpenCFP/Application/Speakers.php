@@ -11,7 +11,6 @@ use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Domain\Talk\TalkWasSubmitted;
-use OpenCFP\Domain\ValidationException;
 
 class Speakers
 {
@@ -31,7 +30,7 @@ class Speakers
     /** @var EventDispatcher */
     private $dispatcher;
 
-    function __construct(
+    public function __construct(
         CallForProposal $callForProposal,
         IdentityProvider $identityProvider,
         SpeakerRepository $speakers,
@@ -53,6 +52,7 @@ class Speakers
     public function findProfile()
     {
         $speaker = $this->identityProvider->getCurrentUser();
+
         return new SpeakerProfile($speaker);
     }
 
@@ -88,6 +88,7 @@ class Speakers
     public function getTalks()
     {
         $speaker = $this->identityProvider->getCurrentUser();
+
         return $speaker->talks->execute();
     }
 

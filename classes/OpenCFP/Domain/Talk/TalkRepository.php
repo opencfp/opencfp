@@ -10,4 +10,4 @@ interface TalkRepository
      * @return mixed
      */
     public function persist(Talk $talk);
-} 
+}

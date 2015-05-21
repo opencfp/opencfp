@@ -98,7 +98,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
      * Method for setting the values that would be posted to a controller
      * action
      *
-     * @param mixed $data
+     * @param  mixed $data
      * @return void
      */
     protected function setPost($data)

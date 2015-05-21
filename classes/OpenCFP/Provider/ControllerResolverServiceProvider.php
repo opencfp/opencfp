@@ -10,7 +10,7 @@ class ControllerResolverServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['resolver'] = $app->share(function() use ($app) {
+        $app['resolver'] = $app->share(function () use ($app) {
             return new ControllerResolver($app);
         });
     }

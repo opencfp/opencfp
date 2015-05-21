@@ -24,4 +24,4 @@ class BaseCommand extends Command
         // Probably okay.
         $this->app = $this->getApplication()->getContainer();
     }
-} 
+}

@@ -2,12 +2,11 @@
 
 namespace OpenCFP\Http\API;
 
-use OpenCFP\Application;
 use OpenCFP\ContainerAware;
 use Symfony\Component\HttpFoundation\JsonResponse as Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ApiController 
+class ApiController
 {
 
     use ContainerAware;
@@ -22,6 +21,7 @@ class ApiController
     public function setStatusCode($status)
     {
         $this->statusCode = $status;
+
         return $this;
     }
 
@@ -107,6 +107,7 @@ class ApiController
                 E_USER_WARNING
             );
         }
+
         return $this->respond([
             'message' => $message,
         ]);
@@ -135,4 +136,4 @@ class ApiController
     {
         return $this->app->redirect($this->url($route), $status);
     }
-} 
+}

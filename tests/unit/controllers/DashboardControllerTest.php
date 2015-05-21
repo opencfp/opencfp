@@ -56,7 +56,7 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
         $controller->setApplication($app);
 
         $response = $controller->showSpeakerProfile();
-        $this->assertContains('Test Title', (string)$response);
-        $this->assertContains('Test User', (string)$response);
+        $this->assertContains('Test Title', (string) $response);
+        $this->assertContains('Test User', (string) $response);
     }
 }

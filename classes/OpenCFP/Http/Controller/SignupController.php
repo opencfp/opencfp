@@ -120,6 +120,7 @@ class SignupController extends BaseController
                 // as part of the Authorization Code Grant flow.
                 if ($this->app['session']->has('redirectTo')) {
                     $this->app['sentry']->login($user);
+
                     return new RedirectResponse($this->app['session']->get('redirectTo'));
                 }
 
