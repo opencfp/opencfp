@@ -63,6 +63,7 @@ class SecurityController extends BaseController
     public function outAction()
     {
         $this->app['sentry']->logout();
+
         return $this->redirectTo('homepage');
     }
 }

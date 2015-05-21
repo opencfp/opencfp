@@ -60,7 +60,7 @@ class TalkController extends BaseController
     /**
      * Controller action for displaying the form to edit an existing talk
      *
-     * @param  Request     $req
+     * @param  Request $req
      * @return mixed
      */
     public function editAction(Request $req)
@@ -118,7 +118,7 @@ class TalkController extends BaseController
     /**
      * Action for displaying the form to create a new talk
      *
-     * @param  Request     $req
+     * @param  Request $req
      * @return mixed
      */
     public function createAction(Request $req)
@@ -159,7 +159,7 @@ class TalkController extends BaseController
      * Controller action the processes the POST request to try and create
      * a new talk
      *
-     * @param  Request     $req
+     * @param  Request $req
      * @return mixed
      */
     public function processCreateAction(Request $req)
@@ -315,7 +315,7 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        if ( ! $isValid) {
+        if (! $isValid) {
             $data = array(
                 'formAction' => $this->url('talk_update'),
                 'id' => $req->get('id'),

@@ -17,7 +17,7 @@ class SpeakerProfile
      */
     protected $speaker;
 
-    function __construct($speaker)
+    public function __construct($speaker)
     {
         $this->speaker = $speaker;
     }

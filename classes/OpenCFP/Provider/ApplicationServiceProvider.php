@@ -68,11 +68,11 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['security.random'] = $app->share(function($app) {
+        $app['security.random'] = $app->share(function ($app) {
             return new PseudoRandomStringGenerator(new Factory());
         });
 
-        $app['oauth.resource'] = $app->share(function($app) {
+        $app['oauth.resource'] = $app->share(function ($app) {
             $sessionStorage = new SessionStorage();
             $accessTokenStorage = new AccessTokenStorage();
             $clientStorage = new ClientStorage();
@@ -115,7 +115,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             return new ProfileController($app['application.speakers.api']);
         });
 
-        $app['controller.oauth.authorization'] = $app->share(function($app) {
+        $app['controller.oauth.authorization'] = $app->share(function ($app) {
             $server = new AuthorizationServer();
 
             $server->setSessionStorage(new SessionStorage());
@@ -137,7 +137,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             return $controller;
         });
 
-        $app['controller.oauth.clients'] = $app->share(function($app) {
+        $app['controller.oauth.clients'] = $app->share(function ($app) {
             return new ClientRegistrationController(
                 $app['spot']->mapper('OpenCFP\Domain\OAuth\Client'),
                 $app['spot']->mapper('OpenCFP\Domain\OAuth\Endpoint'),

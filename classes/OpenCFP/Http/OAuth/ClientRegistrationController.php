@@ -58,4 +58,4 @@ class ClientRegistrationController extends ApiController
             return $this->respondBadRequest();
         }
     }
-} 
+}

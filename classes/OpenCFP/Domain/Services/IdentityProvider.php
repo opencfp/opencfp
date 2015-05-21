@@ -15,4 +15,4 @@ interface IdentityProvider
      */
     public function getCurrentUser();
 
-} 
+}

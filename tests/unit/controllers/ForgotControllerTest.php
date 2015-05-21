@@ -1,5 +1,4 @@
 <?php
-use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
@@ -27,15 +26,15 @@ class ForgotControllerTest extends PHPUnit_Framework_TestCase
         // Get the form object and verify things look correct
         $this->assertContains(
             '<form id="forgot"',
-            (string)$response
+            (string) $response
         );
         $this->assertContains(
             '<input type="hidden" id="forgot__token"',
-            (string)$response
+            (string) $response
         );
         $this->assertContains(
             '<input id="form-forgot-email"',
-            (string)$response
+            (string) $response
         );
     }
 }

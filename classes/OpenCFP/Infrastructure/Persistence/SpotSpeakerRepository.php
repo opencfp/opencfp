@@ -14,7 +14,7 @@ class SpotSpeakerRepository implements SpeakerRepository
      */
     protected $mapper;
 
-    function __construct(Mapper $mapper)
+    public function __construct(Mapper $mapper)
     {
         $this->mapper = $mapper;
     }

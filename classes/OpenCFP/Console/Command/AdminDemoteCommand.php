@@ -38,8 +38,8 @@ EOF
     /**
      * Execute the command.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @param  \Symfony\Component\Console\Input\InputInterface   $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -62,8 +62,7 @@ EOF
             $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
             $user->removeGroup($adminGroup);
             $output->writeln(sprintf('  Removed <info>%s</info> from the Admin group', $email));
-        }
-        catch (UserNotFoundException $e) {
+        } catch (UserNotFoundException $e) {
             $output->writeln(sprintf('<error>Error:</error> Could not find user by %s', $email));
             exit(1);
         }
@@ -71,4 +70,4 @@ EOF
         $output->writeln('Done!');
         exit(0);
     }
-} 
+}

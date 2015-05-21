@@ -18,7 +18,7 @@ class ProfileController extends BaseController
 
         $user = $this->app['sentry']->getUser();
 
-        if ((string)$user->getId() !== $req->get('id')) {
+        if ((string) $user->getId() !== $req->get('id')) {
             $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',
@@ -60,7 +60,7 @@ class ProfileController extends BaseController
 
         $user = $this->app['sentry']->getUser();
 
-        if ((string)$user->getId() !== $req->get('id')) {
+        if ((string) $user->getId() !== $req->get('id')) {
             $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',

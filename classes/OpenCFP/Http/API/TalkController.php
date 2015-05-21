@@ -57,7 +57,7 @@ class TalkController extends ApiController
             // TODO Replace this crap with an object responsible for
             // the "Talk Resource" to/from json.
             $output = [];
-            foreach($talks as $talk) {
+            foreach ($talks as $talk) {
                 $output[] = $talk->toArrayForApi();
             }
 
@@ -83,4 +83,4 @@ class TalkController extends ApiController
             return $this->respondUnauthorized();
         }
     }
-} 
+}

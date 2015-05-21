@@ -16,7 +16,7 @@ class PseudoRandomStringGeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    function it_should_generate_a_random_string_of_given_length()
+    public function it_should_generate_a_random_string_of_given_length()
     {
         $this->assertEquals(10, strlen($this->sut->generate(10)));
         $this->assertEquals(18, strlen($this->sut->generate(18)));
@@ -24,4 +24,3 @@ class PseudoRandomStringGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(40, strlen($this->sut->generate(40)));
     }
 }
- 

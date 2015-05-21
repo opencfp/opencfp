@@ -5,11 +5,8 @@ namespace OpenCFP\Http\API;
 use Exception;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
-use OpenCFP\Domain\Talk\InvalidTalkSubmissionException;
-use OpenCFP\Domain\Talk\TalkSubmission;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends ApiController
 {
@@ -40,4 +37,4 @@ class ProfileController extends ApiController
             return $this->respondInternalError($e->getMessage());
         }
     }
-} 
+}

@@ -13,7 +13,7 @@ class SpotTalkRepository implements TalkRepository
      */
     protected $mapper;
 
-    function __construct(Mapper $mapper)
+    public function __construct(Mapper $mapper)
     {
         $this->mapper = $mapper;
     }

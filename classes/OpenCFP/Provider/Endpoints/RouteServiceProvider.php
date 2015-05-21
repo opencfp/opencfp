@@ -26,7 +26,8 @@ class RouteServiceProvider  implements ServiceProviderInterface
         $request->request->replace($this->clean($request->request->all(), $application['purifier']));
     }
 
-    public function clean(array $data, \HTMLPurifier $purifier){
+    public function clean(array $data, \HTMLPurifier $purifier)
+    {
         $sanitized = [];
 
         foreach ($data as $key => $value) {
