@@ -1,0 +1,64 @@
+---
+- hosts: all
+  sudo: true
+  gather_facts: false
+  vars:
+    code_path: /var/www/opencfp
+    cfp_domain: opencfp.dev
+    db_name: opencfp
+  tasks:
+    - name: Install opencfp packages
+      apt: name={{item}} state=installed
+      with_items:
+        - apache2
+        - php5
+        - php5-mysql
+        - php5-intl
+        - mysql-server-5.5
+        - python-mysqldb
+
+    - name: Install mailcatcher packages
+      apt: name={{item}} state=installed
+      with_items:
+        - build-essential
+        - ruby-dev
+        - libsqlite3-dev
+
+    - name: Create our virtualhost
+      template: src=templates/virtualhost.conf dest=/etc/apache2/sites-enabled/000-default.conf
+      notify:
+        - reload apache
+
+    - name: Create DB
+      mysql_db: name={{db_name}} state=present
+
+    - name: Install mailcatcher
+      gem: name=mailcatcher state=present
+
+    - name: Is Mailcatcher running?
+      shell: "ps aux | grep [m]ailcat"
+      register: mailcatcher_running
+      failed_when: false
+      changed_when: false
+
+    # I'm not sure why this isn't in the path. For now, this works
+    - name: Start Mailcatcher
+      shell: /root/.gem/ruby/1.9.1/gems/mailcatcher-0.6.1/bin/mailcatcher --ip 0.0.0.0
+      when: mailcatcher_running.rc == 1
+
+    - name: Copy the app config
+      template: src=templates/config-development.yml dest={{code_path}}/config/development.yml
+
+    - name: Copy the phinx config
+      template: src=templates/phinx.yml dest={{code_path}}/phinx.yml
+
+    - name: Run DB migrations
+      shell: "{{code_path}}/vendor/bin/phinx migrate --environment=development -c {{code_path}}/phinx.yml"
+      register: run_migrations
+      changed_when: run_migrations.stdout.find('migrated') > 1
+
+  handlers:
+    - name: reload apache
+      service: name=apache2 state=reloaded
+
+

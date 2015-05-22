@@ -1,0 +1,32 @@
+application:
+  title: OpenCFP
+  url: http://{{cfp_domain}}
+  email: contact@{{cfp_domain}}
+  eventurl: http://{{cfp_domain}}
+  enddate: Oct. 14th, 2016
+  show_submission_count: false
+  airport: MIA
+  arrival: 2014-10-26
+  departure: 2014-10-31
+  secure_ssl: false
+
+api:
+  enabled: true
+
+cache:
+  enabled: false
+
+database:
+  host: 127.0.0.1
+  database: {{db_name}}
+  dsn: mysql:dbname={{db_name}};host=127.0.0.1
+  user: root
+  password: ~
+
+mail:
+  host: localhost
+  port: 1025
+  username: ~
+  password: ~
+  encryption: ~
+  auth_mode: ~
