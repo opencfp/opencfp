@@ -4,7 +4,9 @@ namespace OpenCFP;
 
 use League\OAuth2\Server\Exception\OAuthException;
 use OpenCFP\Provider\ApplicationServiceProvider;
-use OpenCFP\Provider\Endpoints\OAuthRouteServiceProvider;
+use OpenCFP\Provider\Gateways\ApiGatewayProvider;
+use OpenCFP\Provider\Gateways\OAuthGatewayProvider;
+use OpenCFP\Provider\Gateways\WebGatewayProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use Silex\Application as SilexApplication;
@@ -14,7 +16,6 @@ use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\SentryServiceProvider;
 use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
-use OpenCFP\Provider\Endpoints\RouteServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
@@ -42,9 +43,10 @@ class Application extends SilexApplication
         $this->bindPathsInApplicationContainer();
         $this->bindConfiguration();
 
-        // Routes...
-        $this->register(new RouteServiceProvider);
-        $this->register(new OAuthRouteServiceProvider);
+        // Register Gateways...
+        $this->register(new WebGatewayProvider);
+        $this->register(new ApiGatewayProvider);
+        $this->register(new OAuthGatewayProvider);
 
         // Services...
         $this->register(new SessionServiceProvider);

@@ -1,62 +1,21 @@
-<?php namespace OpenCFP\Provider\Endpoints;
+<?php
+
+namespace OpenCFP\Provider\Gateways;
 
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class RouteServiceProvider  implements ServiceProviderInterface
+class WebGatewayProvider implements ServiceProviderInterface
 {
 
-    /**
-     * {@inheritdoc}
-     */
     public function register(Application $app)
-    {
-        $this->mountWebRoutes($app);
-
-        if ($app->config('api.enabled')) {
-            $this->mountApiRoutes($app);
-        }
-    }
-
-    public function cleanRequest(Request $request, Application $application)
-    {
-        $request->query->replace($this->clean($request->query->all(), $application['purifier']));
-        $request->request->replace($this->clean($request->request->all(), $application['purifier']));
-    }
-
-    public function clean(array $data, \HTMLPurifier $purifier)
-    {
-        $sanitized = [];
-
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $sanitized[$key] = $this->clean($value, $purifier);
-            } else {
-                $sanitized[$key] = $purifier->purify($value);;
-            }
-        }
-
-        return $sanitized;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
-    }
-
-    /**
-     * @param Application $app
-     */
-    private function mountWebRoutes(Application $app)
     {
         /* @var $web ControllerCollection */
         $web = $app['controllers_factory'];
-        $web->before([$this, 'cleanRequest']);
 
+        $web->before([$this, 'cleanRequest']);
         $app->before(function (Request $request, Application $app) {
             $app['twig']->addGlobal('current_page', $request->getRequestUri());
             $app['twig']->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
@@ -71,6 +30,10 @@ class RouteServiceProvider  implements ServiceProviderInterface
                 $app['session']->set('flash', null);
             }
         });
+
+        if ($app->config('application.secure_ssl')) {
+            $web->requireHttps();
+        }
 
         $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')->bind('homepage');
         $web->get('/package', 'OpenCFP\Http\Controller\PagesController::showSpeakerPackage')->bind('speaker_package');
@@ -130,36 +93,31 @@ class RouteServiceProvider  implements ServiceProviderInterface
         // Admin::Review
         $web->get('/admin/review', 'OpenCFP\Http\Controller\Admin\ReviewController::indexAction')->bind('admin_reviews');
 
-        if ($app->config('application.secure_ssl')) {
-            $web->requireHttps();
-        }
-
         $app->mount('/', $web);
     }
 
-    private function mountApiRoutes($app)
+    public function cleanRequest(Request $request, Application $app)
     {
-        /* @var $api ControllerCollection */
-        $api = $app['controllers_factory'];
-        $api->before([$this, 'cleanRequest']);
-        $api->before(function (Request $request) {
-            $request->headers->set('Accept', 'application/json');
+        $request->query->replace($this->clean($request->query->all(), $app['purifier']));
+        $request->request->replace($this->clean($request->request->all(), $app['purifier']));
+    }
 
-            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-                $data = json_decode($request->getContent(), true);
-                $request->request->replace(is_array($data) ? $data : array());
+    public function clean(array $data, \HTMLPurifier $purifier)
+    {
+        $sanitized = [];
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $sanitized[$key] = $this->clean($value, $purifier);
+            } else {
+                $sanitized[$key] = $purifier->purify($value);;
             }
-        });
-
-        if ($app->config('application.secure_ssl')) {
-            $api->requireHttps();
         }
 
-        $api->get('/me', 'controller.api.profile:handleShowSpeakerProfile');
-        $api->get('/talks', 'controller.api.talk:handleViewAllTalks');
-        $api->post('/talks', 'controller.api.talk:handleSubmitTalk');
-        $api->get('/talks/{id}', 'controller.api.talk:handleViewTalk');
+        return $sanitized;
+    }
 
-        $app->mount('/api', $api);
+    public function boot(Application $app)
+    {
     }
 }
