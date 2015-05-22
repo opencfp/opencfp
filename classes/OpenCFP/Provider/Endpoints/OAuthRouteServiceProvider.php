@@ -42,6 +42,8 @@ class OAuthRouteServiceProvider  implements ServiceProviderInterface
                 $request->request->set($key, $app['purifier']->purify($value));
             }
 
+            $request->headers->set('Accept', 'application/json');
+
             if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
                 $data = json_decode($request->getContent(), true);
                 $request->request->replace(is_array($data) ? $data : array());

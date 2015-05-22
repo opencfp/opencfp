@@ -143,6 +143,8 @@ class RouteServiceProvider  implements ServiceProviderInterface
         $api = $app['controllers_factory'];
         $api->before([$this, 'cleanRequest']);
         $api->before(function (Request $request) {
+            $request->headers->set('Accept', 'application/json');
+
             if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
                 $data = json_decode($request->getContent(), true);
                 $request->request->replace(is_array($data) ? $data : array());
