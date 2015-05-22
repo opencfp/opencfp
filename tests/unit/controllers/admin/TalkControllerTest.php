@@ -15,6 +15,9 @@ class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
     public function indexPageDisplaysTalksCorrectly()
     {
         $app = new Application(BASE_PATH, Environment::testing());
+        ob_start();
+        $app->run();
+        ob_end_clean();
 
         // Create a pretend user
         $user = m::mock('StdClass');
