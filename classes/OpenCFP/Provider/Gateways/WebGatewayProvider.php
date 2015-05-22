@@ -12,11 +12,15 @@ class WebGatewayProvider implements ServiceProviderInterface
 
     public function register(Application $app)
     {
+    }
+
+    public function boot(Application $app)
+    {
         /* @var $web ControllerCollection */
         $web = $app['controllers_factory'];
 
-        $web->before([$this, 'cleanRequest']);
-        $app->before(function (Request $request, Application $app) {
+        $web->before(new RequestCleaner($app['purifier']));
+        $web->before(function (Request $request, Application $app) {
             $app['twig']->addGlobal('current_page', $request->getRequestUri());
             $app['twig']->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
 
@@ -94,30 +98,5 @@ class WebGatewayProvider implements ServiceProviderInterface
         $web->get('/admin/review', 'OpenCFP\Http\Controller\Admin\ReviewController::indexAction')->bind('admin_reviews');
 
         $app->mount('/', $web);
-    }
-
-    public function cleanRequest(Request $request, Application $app)
-    {
-        $request->query->replace($this->clean($request->query->all(), $app['purifier']));
-        $request->request->replace($this->clean($request->request->all(), $app['purifier']));
-    }
-
-    public function clean(array $data, \HTMLPurifier $purifier)
-    {
-        $sanitized = [];
-
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $sanitized[$key] = $this->clean($value, $purifier);
-            } else {
-                $sanitized[$key] = $purifier->purify($value);;
-            }
-        }
-
-        return $sanitized;
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

@@ -12,10 +12,14 @@ class ApiGatewayProvider implements ServiceProviderInterface
 
     public function register(Application $app)
     {
+    }
+
+    public function boot(Application $app)
+    {
         /* @var $api ControllerCollection */
         $api = $app['controllers_factory'];
 
-        $api->before([$this, 'cleanRequest']);
+        $api->before(new RequestCleaner($app['purifier']));
         $api->before(function (Request $request) {
             $request->headers->set('Accept', 'application/json');
 
@@ -35,30 +39,5 @@ class ApiGatewayProvider implements ServiceProviderInterface
         $api->get('/talks/{id}', 'controller.api.talk:handleViewTalk');
 
         $app->mount('/api', $api);
-    }
-
-    public function cleanRequest(Request $request, Application $app)
-    {
-        $request->query->replace($this->clean($request->query->all(), $app['purifier']));
-        $request->request->replace($this->clean($request->request->all(), $app['purifier']));
-    }
-
-    public function clean(array $data, \HTMLPurifier $purifier)
-    {
-        $sanitized = [];
-
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $sanitized[$key] = $this->clean($value, $purifier);
-            } else {
-                $sanitized[$key] = $purifier->purify($value);;
-            }
-        }
-
-        return $sanitized;
-    }
-
-    public function boot(Application $app)
-    {
     }
 }

@@ -3,6 +3,8 @@
 namespace OpenCFP\Provider\Gateways;
 
 use HTMLPurifier;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 class RequestCleaner
 {
