@@ -2,6 +2,7 @@
 
 namespace OpenCFP;
 
+use League\OAuth2\Server\Exception\OAuthException;
 use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\Endpoints\OAuthRouteServiceProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
@@ -20,7 +21,10 @@ use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class Application extends SilexApplication
 {
@@ -242,9 +246,22 @@ class Application extends SilexApplication
         return $this['env']->equals(Environment::testing());
     }
 
-    private function registerGlobalErrorHandler($app)
+    private function registerGlobalErrorHandler(Application $app)
     {
         $app->error(function (\Exception $e, $code) use ($app) {
+            /** @var Request $request */
+            $request = $app['request'];
+
+            if (in_array('application/json', $request->getAcceptableContentTypes())) {
+                if ($e instanceof OAuthException) {
+                    $code = $e->httpStatusCode;
+                }
+
+                return new JsonResponse([
+                    'error' => $e->getMessage()
+                ], $code);
+            }
+
             switch ($code) {
                 case 401:
                     $message = $app['twig']->render('error/401.twig');
