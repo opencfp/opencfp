@@ -17,6 +17,14 @@
         - mysql-server-5.5
         - python-mysqldb
 
+    - name: Enable mod_rewrite
+      apache2_module: state=present name=rewrite
+
+    - name: Copy Apache config
+      template: src=templates/apache2.conf dest=/etc/apache2/apache2.conf
+      notify:
+        - reload apache
+
     - name: Install mailcatcher packages
       apt: name={{item}} state=installed
       with_items:
