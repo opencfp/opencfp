@@ -20,6 +20,7 @@ use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 
 class Application extends SilexApplication
 {
@@ -68,6 +69,8 @@ class Application extends SilexApplication
 
         // Application Services...
         $this->register(new ApplicationServiceProvider);
+
+        $this->registerGlobalErrorHandler($this);
     }
 
     /**
@@ -237,5 +240,26 @@ class Application extends SilexApplication
     public function isTesting()
     {
         return $this['env']->equals(Environment::testing());
+    }
+
+    private function registerGlobalErrorHandler($app)
+    {
+        $app->error(function (\Exception $e, $code) use ($app) {
+            switch ($code) {
+                case 401:
+                    $message = $app['twig']->render('error/401.twig');
+                    break;
+                case 403:
+                    $message = $app['twig']->render('error/403.twig');
+                    break;
+                case 404:
+                    $message = $app['twig']->render('error/404.twig');
+                    break;
+                default:
+                    $message = $app['twig']->render('error/500.twig');
+            }
+
+            return new Response($message, $code);
+        });
     }
 }

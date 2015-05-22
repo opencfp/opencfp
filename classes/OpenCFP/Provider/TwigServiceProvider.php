@@ -27,25 +27,7 @@ class TwigServiceProvider implements ServiceProviderInterface
             ]
         ]);
 
-        if ($app->isProduction()) {
-            $app->error(function (\Exception $e, $code) use ($app) {
-                switch ($code) {
-                    case 401:
-                        $message = $app['twig']->render('error/401.twig');
-                        break;
-                    case 403:
-                        $message = $app['twig']->render('error/403.twig');
-                        break;
-                    case 404:
-                        $message = $app['twig']->render('error/404.twig');
-                        break;
-                    default:
-                        $message = $app['twig']->render('error/500.twig');
-                }
-
-                return new Response($message, $code);
-            });
-        } else {
+        if (!$app->isProduction()) {
             $app['twig']->addExtension(new Twig_Extension_Debug);
         }
 
