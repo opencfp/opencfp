@@ -73,19 +73,5 @@ class TwigServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-        $app->before(function (Request $request, Application $app) {
-            $app['twig']->addGlobal('current_page', $request->getRequestUri());
-            $app['twig']->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
-        });
-
-        if ($app['sentry']->check()) {
-            $app['twig']->addGlobal('user', $app['sentry']->getUser());
-            $app['twig']->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));
-        }
-
-        if ($app['session']->has('flash')) {
-            $app['twig']->addGlobal('flash', $app['session']->get('flash'));
-            $app['session']->set('flash', null);
-        }
     }
 }
