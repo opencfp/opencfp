@@ -12,6 +12,13 @@ class ApiGatewayProvider implements ServiceProviderInterface
 
     public function register(Application $app)
     {
+        $app['controller.api.profile'] = $app->share(function ($app) {
+            return new ProfileController($app['application.speakers.api']);
+        });
+
+        $app['controller.api.talk'] = $app->share(function ($app) {
+            return new TalkController($app['application.speakers.api']);
+        });
     }
 
     public function boot(Application $app)
