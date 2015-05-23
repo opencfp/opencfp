@@ -253,13 +253,21 @@ class Application extends SilexApplication
             $request = $app['request'];
 
             if (in_array('application/json', $request->getAcceptableContentTypes())) {
+                $headers = [];
+
+                if ($e instanceof HttpExceptionInterface) {
+                    $code = $e->getStatusCode();
+                    $headers = $e->getHeaders();
+                }
+
                 if ($e instanceof OAuthException) {
                     $code = $e->httpStatusCode;
+                    $headers = $e->getHttpHeaders();
                 }
 
                 return new JsonResponse([
                     'error' => $e->getMessage()
-                ], $code);
+                ], $code, $headers);
             }
 
             switch ($code) {
