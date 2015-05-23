@@ -5,7 +5,6 @@ namespace OpenCFP\Provider\Gateways;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class OAuthGatewayProvider implements ServiceProviderInterface

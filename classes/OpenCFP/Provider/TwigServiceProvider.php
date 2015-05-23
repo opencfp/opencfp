@@ -5,10 +5,8 @@ use Ciconia\Ciconia;
 use Silex\ServiceProviderInterface;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Aptoma\Twig\Extension\MarkdownExtension;
-use Symfony\Component\HttpFoundation\Request;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
-use Symfony\Component\HttpFoundation\Response;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
 

@@ -2,24 +2,15 @@
 
 namespace OpenCFP\Provider;
 
-use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\Grant\AuthCodeGrant;
-use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Services\EventDispatcher;
-use OpenCFP\Http\API\TalkController;
-use OpenCFP\Http\API\ProfileController;
-use OpenCFP\Http\OAuth\AuthorizationController;
-use OpenCFP\Http\OAuth\ClientRegistrationController;
 use OpenCFP\Infrastructure\Auth\OAuthIdentityProvider;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
-use OpenCFP\Infrastructure\OAuth\AuthCodeStorage;
 use OpenCFP\Infrastructure\OAuth\ClientStorage;
-use OpenCFP\Infrastructure\OAuth\RefreshTokenStorage;
 use OpenCFP\Infrastructure\OAuth\ScopeStorage;
 use OpenCFP\Infrastructure\OAuth\SessionStorage;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;

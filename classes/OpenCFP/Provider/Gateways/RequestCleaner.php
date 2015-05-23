@@ -18,7 +18,8 @@ class RequestCleaner
         $this->purifier = $purifier;
     }
 
-    public function __invoke(Request $request, Application $app){
+    public function __invoke(Request $request, Application $app)
+    {
         $request->query->replace($this->clean($request->query->all()));
         $request->request->replace($this->clean($request->request->all()));
     }
