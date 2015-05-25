@@ -2,6 +2,8 @@
 
 namespace OpenCFP\Provider\Gateways;
 
+use OpenCFP\Http\API\ProfileController;
+use OpenCFP\Http\API\TalkController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
