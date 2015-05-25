@@ -5,10 +5,8 @@ use Ciconia\Ciconia;
 use Silex\ServiceProviderInterface;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Aptoma\Twig\Extension\MarkdownExtension;
-use Symfony\Component\HttpFoundation\Request;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
-use Symfony\Component\HttpFoundation\Response;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
 
@@ -27,25 +25,7 @@ class TwigServiceProvider implements ServiceProviderInterface
             ]
         ]);
 
-        if ($app->isProduction()) {
-            $app->error(function (\Exception $e, $code) use ($app) {
-                switch ($code) {
-                    case 401:
-                        $message = $app['twig']->render('error/401.twig');
-                        break;
-                    case 403:
-                        $message = $app['twig']->render('error/403.twig');
-                        break;
-                    case 404:
-                        $message = $app['twig']->render('error/404.twig');
-                        break;
-                    default:
-                        $message = $app['twig']->render('error/500.twig');
-                }
-
-                return new Response($message, $code);
-            });
-        } else {
+        if (!$app->isProduction()) {
             $app['twig']->addExtension(new Twig_Extension_Debug);
         }
 
@@ -73,19 +53,5 @@ class TwigServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-        $app->before(function (Request $request, Application $app) {
-            $app['twig']->addGlobal('current_page', $request->getRequestUri());
-            $app['twig']->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
-        });
-
-        if ($app['sentry']->check()) {
-            $app['twig']->addGlobal('user', $app['sentry']->getUser());
-            $app['twig']->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));
-        }
-
-        if ($app['session']->has('flash')) {
-            $app['twig']->addGlobal('flash', $app['session']->get('flash'));
-            $app['session']->set('flash', null);
-        }
     }
 }

@@ -2,8 +2,11 @@
 
 namespace OpenCFP;
 
+use League\OAuth2\Server\Exception\OAuthException;
 use OpenCFP\Provider\ApplicationServiceProvider;
-use OpenCFP\Provider\Endpoints\OAuthRouteServiceProvider;
+use OpenCFP\Provider\Gateways\ApiGatewayProvider;
+use OpenCFP\Provider\Gateways\OAuthGatewayProvider;
+use OpenCFP\Provider\Gateways\WebGatewayProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use Silex\Application as SilexApplication;
@@ -13,13 +16,16 @@ use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\SentryServiceProvider;
 use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
-use OpenCFP\Provider\Endpoints\RouteServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class Application extends SilexApplication
 {
@@ -37,9 +43,10 @@ class Application extends SilexApplication
         $this->bindPathsInApplicationContainer();
         $this->bindConfiguration();
 
-        // Routes...
-        $this->register(new RouteServiceProvider);
-        $this->register(new OAuthRouteServiceProvider);
+        // Register Gateways...
+        $this->register(new WebGatewayProvider);
+        $this->register(new ApiGatewayProvider);
+        $this->register(new OAuthGatewayProvider);
 
         // Services...
         $this->register(new SessionServiceProvider);
@@ -68,6 +75,8 @@ class Application extends SilexApplication
 
         // Application Services...
         $this->register(new ApplicationServiceProvider);
+
+        $this->registerGlobalErrorHandler($this);
     }
 
     /**
@@ -237,5 +246,47 @@ class Application extends SilexApplication
     public function isTesting()
     {
         return $this['env']->equals(Environment::testing());
+    }
+
+    private function registerGlobalErrorHandler(Application $app)
+    {
+        $app->error(function (\Exception $e, $code) use ($app) {
+            /** @var Request $request */
+            $request = $app['request'];
+
+            if (in_array('application/json', $request->getAcceptableContentTypes())) {
+                $headers = [];
+
+                if ($e instanceof HttpExceptionInterface) {
+                    $code = $e->getStatusCode();
+                    $headers = $e->getHeaders();
+                }
+
+                if ($e instanceof OAuthException) {
+                    $code = $e->httpStatusCode;
+                    $headers = $e->getHttpHeaders();
+                }
+
+                return new JsonResponse([
+                    'error' => $e->getMessage()
+                ], $code, $headers);
+            }
+
+            switch ($code) {
+                case 401:
+                    $message = $app['twig']->render('error/401.twig');
+                    break;
+                case 403:
+                    $message = $app['twig']->render('error/403.twig');
+                    break;
+                case 404:
+                    $message = $app['twig']->render('error/404.twig');
+                    break;
+                default:
+                    $message = $app['twig']->render('error/500.twig');
+            }
+
+            return new Response($message, $code);
+        });
     }
 }

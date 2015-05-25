@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Console\Command;
 
-use Cartalyst\Sentry\Sentry;
 use OpenCFP\Console\BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

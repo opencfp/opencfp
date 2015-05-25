@@ -12,6 +12,9 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
     public function setup()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
+        ob_start();
+        $this->app->run();
+        ob_end_clean();
 
         // Override things so that Spot2 is using in-memory tables
         $cfg = new \Spot\Config;
@@ -80,6 +83,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
          * into the session flash area for display
          */
         $create_response = $controller->processCreateAction($this->req);
+
         $create_flash = $this->app['session']->get('flash');
         $this->assertEquals($create_flash['type'], 'success');
 
