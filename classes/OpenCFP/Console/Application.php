@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
 use OpenCFP\Console\Command\AdminPromoteCommand;
 use OpenCFP\Console\Command\AdminDemoteCommand;
+use Symfony\Component\Console\Input\InputOption;
 
 class Application extends ConsoleApplication
 {
@@ -18,6 +19,9 @@ class Application extends ConsoleApplication
     public function __construct(ApplicationContainer $app)
     {
         parent::__construct('OpenCFP');
+
+        $this->getDefinition()->addOption(new InputOption('env', '', InputOption::VALUE_REQUIRED, 'The environment the command should run in'));
+
         $this->app = $app;
     }
 
