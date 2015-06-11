@@ -23,8 +23,7 @@ class AdminPromoteCommand extends BaseCommand
         $this
             ->setName('admin:promote')
             ->setDefinition([
-                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to promote to admin'),
-                new InputOption('env', '', InputOption::VALUE_REQUIRED, 'The environment the command should run in')
+                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to promote to admin')
             ])
             ->setDescription('Promote an existing (or new) user to be an admin')
             ->setHelp(<<<EOF
