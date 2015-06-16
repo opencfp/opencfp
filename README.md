@@ -131,13 +131,12 @@ OpenCFP can be configured to run in multiple environments. The application envir
 as an environment variable. If not specified, the default is `development`.
 
 An example Apache configuration is provided at `/web/htaccess.dist`. Copy this file to `/web/.htaccess` or otherwise
-configure your web server in the same way and change the `CFP_ENV` value to speicify a different environment.
+configure your web server in the same way and change the `CFP_ENV` value to specify a different environment. The
+default has been pre-set for development.
 
 ```
 SetEnv CFP_ENV production
 ```
-
-Note: `.htaccess` already pre-set for development. Alter as needed.
 
 <a name="configure-environment" />
 ### Configure Environment
