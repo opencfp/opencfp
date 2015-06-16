@@ -8,7 +8,7 @@ application:
   airport: MIA
   arrival: 2014-10-26
   departure: 2014-10-31
-  secure_ssl: true
+  secure_ssl: false
 
 api:
   enabled: true
