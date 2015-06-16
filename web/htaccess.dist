@@ -6,8 +6,8 @@
     RewriteCond %{HTTP:Authorization} ^(.*)
     RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 
-    RewriteRule ^$ web/ [L]
-    RewriteRule (.*) web/$1 [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
 </IfModule>
 
 SetEnv CFP_ENV development
