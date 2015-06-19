@@ -30,6 +30,8 @@ OpenCFP is a PHP-based conference talk submission system.
    * [Admin Group Management](#admin-group-management)
    * [Clear Caches](#clear-caches)
  * [Testing](#testing)
+ * [Developer Environment](#developer-environment)
+   * [PHP Built-in Web Server](#php-built-in-web-server)
  * [Troubleshooting](#troubleshooting)
 
 <a name="features" />
@@ -531,6 +533,22 @@ $ ./vendor/bin/phpunit
 ```
 
 The phpunit.xml file is in the root directory for the project.
+
+
+<a name="developer-environment" />
+## Developer Environment
+
+<a name="php-built-in-web-server" />
+### PHP Built-in Web Server
+
+To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/features.commandline.webserver.php) the
+following command can be run:
+
+```
+$ php -S localhost:8000 -t web web/index_dev.php
+```
+
+You can choose a port other than `8000`. This is a quick way to get started doing development on OpenCFP itself.
 
 
 <a name="troubleshooting" />
