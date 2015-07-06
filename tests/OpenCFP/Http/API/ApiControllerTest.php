@@ -9,7 +9,7 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase
      */
     private $sut;
 
-    public function setup()
+    protected function setup()
     {
         $this->sut = new StubApiController();
     }
