@@ -2,6 +2,10 @@
 
 namespace OpenCFP;
 
+use Igorw\Silex\ChainConfigDriver;
+use Igorw\Silex\JsonConfigDriver;
+use Igorw\Silex\PhpConfigDriver;
+use Igorw\Silex\TomlConfigDriver;
 use League\OAuth2\Server\Exception\OAuthException;
 use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\Gateways\ApiGatewayProvider;
@@ -9,6 +13,7 @@ use OpenCFP\Provider\Gateways\OAuthGatewayProvider;
 use OpenCFP\Provider\Gateways\WebGatewayProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\TwigServiceProvider;
+use OpenCFP\Provider\YamlConfigDriver;
 use Silex\Application as SilexApplication;
 use Igorw\Silex\ConfigServiceProvider;
 use OpenCFP\Provider\DatabaseServiceProvider;
@@ -120,7 +125,20 @@ class Application extends SilexApplication
      */
     protected function bindConfiguration()
     {
-        $this->register(new ConfigServiceProvider($this->configPath(), [], null, 'config'));
+        /**
+         * Replace reference to `ChainConfigDriver` with `null` when PR below is merged.
+         * Symfony's YAML package deprecated allowing a path to be passed to `parse` method.
+         * This was causing our test-suite to fail. When this is merged, we can upgrade and
+         * all will be well again.
+         *
+         * @see https://github.com/igorw/ConfigServiceProvider/pull/46
+         */
+        $this->register(new ConfigServiceProvider($this->configPath(), [], new ChainConfigDriver([
+            new PhpConfigDriver(),
+            new YamlConfigDriver(), // This is ours; in OpenCFP/Provider/YamlConfigDriver.
+            new JsonConfigDriver(),
+            new TomlConfigDriver(),
+        ]), 'config'));
 
         if ( ! $this->isProduction()) {
             $this['debug'] = true;
