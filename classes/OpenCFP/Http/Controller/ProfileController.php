@@ -101,7 +101,7 @@ class ProfileController extends BaseController
             if (isset($form_data['speaker_photo'])) {
                 /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
                 $file = $form_data['speaker_photo'];
-                /** @var \OpenCFP\ProfileImageProcessor $processor */
+                /** @var \OpenCFP\Domain\Services\ProfileImageProcessor $processor */
                 $processor = $this->app['profile_image_processor'];
                 /** @var PseudoRandomStringGenerator $generator */
                 $generator = $this->app['security.random'];
