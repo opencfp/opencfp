@@ -4,7 +4,6 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Http\Form\SignupForm;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
-use OpenCFP\ProfileImageProcessor;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
