@@ -63,6 +63,10 @@ to your event. However, anything you are willing to push back should be updated 
 keep the master branch generic for future event organizers that choose to use the system. You would then be able to
 merge master to your private branch and get updates when desired!
 
+### Vagrant
+
+For those of you that want to dive in and start contributing quickly, we provide a Vagrant box to get you started. You'll need [Vagrant](https://www.vagrantup.com/) and [Ansible](http://www.ansible.com/home) installed. Once you have those, run `vagrant up` and get hacking!
+
 <a name="requirements" />
 ## Requirements
 
