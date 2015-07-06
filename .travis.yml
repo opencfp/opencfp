@@ -8,7 +8,7 @@ php:
 # cache composer downloads so installing is quicker
 cache:
   directories:
-    - $HOME/.composer
+    - $HOME/.composer/cache
 
 addons:
   code_climate:
