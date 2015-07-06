@@ -7,7 +7,7 @@ class TalkEntityTest extends \PHPUnit_Framework_TestCase
     public $app;
     public $mapper;
 
-    public function setup()
+    protected function setup()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
         // Create an in-memory database

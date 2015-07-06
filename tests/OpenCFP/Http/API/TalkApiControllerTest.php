@@ -20,7 +20,7 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
      */
     private $speakers;
 
-    public function setup()
+    protected function setup()
     {
         $this->speakers = m::mock('OpenCFP\Application\Speakers');
         $this->sut = new TalkController($this->speakers);

@@ -7,7 +7,7 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
 {
     public $app;
 
-    public function setup()
+    protected function setup()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
         $cfp = new \Spot\Config;

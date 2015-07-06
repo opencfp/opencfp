@@ -48,7 +48,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         $this->sut = new Speakers($this->callForProposal, $this->identityProvider, $this->speakerRepository, $this->talkRepository, $this->dispatcher);
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
         m::close();
