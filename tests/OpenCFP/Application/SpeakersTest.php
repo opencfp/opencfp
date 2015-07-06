@@ -64,7 +64,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         $speaker = $this->getSpeaker();
         $this->trainIdentityProviderToReturnSampleSpeaker($speaker);
 
-        $profile = $this->sut->findProfile(self::SPEAKER_ID);
+        $profile = $this->sut->findProfile();
 
         $this->assertInstanceOf('OpenCFP\Domain\Speaker\SpeakerProfile', $profile);
         $this->assertEquals($speaker->email, $profile->getEmail());
@@ -77,7 +77,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         $this->trainStudentRepositoryToThrowEntityNotFoundException();
 
         $this->setExpectedException('OpenCFP\Domain\EntityNotFoundException');
-        $this->sut->findProfile('does not exist');
+        $this->sut->findProfile();
     }
 
     /** @test */

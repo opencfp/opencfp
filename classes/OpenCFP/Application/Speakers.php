@@ -46,7 +46,7 @@ class Speakers
 
     /**
      * Retrieves the speaker profile for currently authenticated speaker.
-     *d
+     *
      * @return SpeakerProfile
      */
     public function findProfile()
