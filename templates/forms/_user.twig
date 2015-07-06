@@ -91,7 +91,7 @@
         <div class="col-sm-10">
             <input type="file" id="form-user-photo" name="speaker_photo" class="form-control" placeholder="Photo at least 300px wide by 300px high" accept="image/jpg, image/jpeg, image/png">
             <p class="help-block">Photo should be square, and must be at least 300px wide by 300px high. JPG and PNG are the only accepted formats.</p>
-            {% if speaker_photo is defined and speaker_photo is not empty %}
+            {% if preview_photo is defined and preview_photo is not empty %}
                 <img src="{{ preview_photo }}" class="profile-photo">
             {% endif %}
         </div>
