@@ -526,13 +526,25 @@ $ bin/opencfp cache:clear
 <a name="testing" />
 ## Testing
 
-There is a test suite that uses PHPUnit in the /tests directory. The recommended way to run the tests is:
+There is a test suite that uses PHPUnit in the /tests directory. To set up
+your environment for testing:
+
+1. Create a testing database, and update the name and credentials in
+   /config/testing.yml
+1. Copy the default `phinx.xml.dist` to `phinx.xml`
+1. Prepare the test database:
+
+```shell
+sh ./tools/travis/reset-database.sh
+```
+
+Once you are set up, the recommended way to run the tests is:
 
 ```
 $ ./vendor/bin/phpunit
 ```
 
-The phpunit.xml file is in the root directory for the project.
+The default phpunit.xml.dist file is in the root directory for the project.
 
 
 <a name="developer-environment" />

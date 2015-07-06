@@ -5,4 +5,4 @@ PROJECT_ROOT=$(git rev-parse --show-toplevel)
 
 sh $PROJECT_ROOT/tools/travis/reset-database.sh
 
-phpunit -c "$PROJECT_ROOT/phpunit.xml" --coverage-clover build/logs/clover.xml
+phpunit --coverage-clover build/logs/clover.xml
