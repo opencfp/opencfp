@@ -7,6 +7,9 @@ php:
   - 5.5
   - 5.4
 
+env:
+  - TRAVIS_DB=cfp_travis
+
 # cache composer downloads so installing is quicker
 cache:
   directories:

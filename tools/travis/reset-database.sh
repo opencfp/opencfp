@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Note that this is also specified in the Phinx testing environment.
-TRAVIS_DB="cfp_travis"
-
 # Get a path to the project's root.
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 
