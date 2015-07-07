@@ -31,7 +31,7 @@ before_script:
   - vendor/bin/phinx --configuration=phinx.yml.dist migrate -e testing
 
 script:
-  - sh tools/travis/build.sh
+  - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
   - vendor/bin/test-reporter --stdout > codeclimate.json
