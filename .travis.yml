@@ -22,14 +22,13 @@ addons:
 before_install:
   - composer self-update
 
-
 install:
   - composer install
 
 before_script:
   - sh tools/travis/setup-mail.sh
-  - cp phinx.yml.dist phinx.yml
   - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
+  - vendor/bin/phinx --configuration=phinx.yml.dist migrate -e testing
 
 script:
   - sh tools/travis/build.sh
