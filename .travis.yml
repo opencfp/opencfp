@@ -15,14 +15,16 @@ cache:
 addons:
   code_climate:
     repo_token: 9deb249b01a414d979959cfd05a4c351b19a5959858653b20276454d4189edc3
-    
+
 before_install:
   - composer self-update
-  
+
+install:
+  - composer install
+
 before_script:
   - sh tools/travis/setup-mail.sh
   - cp phinx.yml.dist phinx.yml
-  - composer install
 
 script:
   - sh tools/travis/build.sh
