@@ -21,6 +21,7 @@ addons:
 
 before_install:
   - composer self-update
+  - composer validate --no-check-publish
 
 install:
   - composer install
