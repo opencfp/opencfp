@@ -45,11 +45,7 @@ class ForgotController extends BaseController
         try {
             $user = $this->app['sentry']->getUserProvider()->findByLogin($data['email']);
         } catch (UserNotFoundException $e) {
-            $this->app['session']->set('flash', array(
-                'type' => 'success',
-                'short' => 'Success',
-                'ext' => "If your email was valid, we sent a link to reset your password to {$data['email']}"
-            ));
+            $this->app['session']->set('flash', $this->successfulSendFlashParameters($data['email']));
 
             return $this->redirectTo('forgot_password');
         }
@@ -68,11 +64,7 @@ class ForgotController extends BaseController
             return $this->redirectTo('forgot_password');
         }
 
-        $this->app['session']->set('flash', array(
-                'type' => 'success',
-                'short' => 'Success',
-                'ext' => "An email giving you a link to reset your password has been sent."
-        ));
+        $this->app['session']->set('flash', $this->successfulSendFlashParameters($data['email']));
 
         return $this->redirectTo('login');
     }
@@ -238,5 +230,14 @@ class ForgotController extends BaseController
         } catch (\Exception $e) {
             echo $e;die();
         }
+    }
+
+    protected function successfulSendFlashParameters($email)
+    {
+        return array(
+            'type' => 'success',
+            'short' => 'Success',
+            'ext' => "If your email was valid, we sent a link to reset your password to $email"
+        );
     }
 }
