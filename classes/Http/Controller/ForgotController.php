@@ -3,8 +3,9 @@
 namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Users\UserNotFoundException;
+use OpenCFP\Domain\Services\ResetEmailer;
 use OpenCFP\Http\Form\ResetForm;
-use Silex\Application;
+use OpenCFP\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Http\Form\ForgotForm;
 
@@ -51,8 +52,7 @@ class ForgotController extends BaseController
         }
 
         // Create a reset code and email the URL to our user
-        $reset_code = $user->getResetPasswordCode();
-        $response = $this->sendResetEmail($this->app, $user->getId(), $data['email'], $reset_code);
+        $response = $this->app['reset_emailer']->send($user->getId(), $data['email'], $user->getResetPasswordCode());
 
         if ($response == false) {
             $this->app['session']->set('flash', array(
@@ -190,46 +190,6 @@ class ForgotController extends BaseController
         ]);
 
         return $this->redirectTo('homepage');
-    }
-
-    protected function sendResetEmail(Application $app, $user_id, $email, $reset_code)
-    {
-        // Here to cover possible errors from refactor. Should be substituted appropriately below.
-        $twig = $app['twig'];
-
-        // Build our email that we will send
-        $template = $twig->loadTemplate('emails/reset_password.twig');
-        $parameters = array(
-            'reset_code' => $reset_code,
-            'method' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
-                ? 'https' : 'http',
-            'host' => !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost',
-            'user_id' => $user_id,
-            'email' => $app->config('application.email'),
-            'title' => $app->config('application.title')
-        );
-
-        try {
-            $mailer = $app['mailer'];
-            $message = new \Swift_Message();
-
-            $message->setTo($email);
-            $message->setFrom(
-                $template->renderBlock('from', $parameters),
-                $template->renderBlock('from_name', $parameters)
-            );
-
-            $message->setSubject($template->renderBlock('subject', $parameters));
-            $message->setBody($template->renderBlock('body_text', $parameters));
-            $message->addPart(
-                $template->renderBlock('body_html', $parameters),
-                'text/html'
-            );
-
-            return $mailer->send($message);
-        } catch (\Exception $e) {
-            echo $e;die();
-        }
     }
 
     protected function successfulSendFlashParameters($email)
