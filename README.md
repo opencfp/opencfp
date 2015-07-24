@@ -531,11 +531,11 @@ your environment for testing:
 
 1. Create a testing database, and update the name and credentials in
    /config/testing.yml
-1. Copy the default `phinx.xml.dist` to `phinx.xml`
+1. Copy the default `phinx.yml.dist` to `phinx.yml`
 1. Prepare the test database:
 
 ```shell
-sh ./tools/travis/reset-database.sh
+php ./vendor/bin/phinx --configuration=phinx.yml migrate -e testing
 ```
 
 Once you are set up, the recommended way to run the tests is:
