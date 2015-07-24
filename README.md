@@ -31,6 +31,7 @@ OpenCFP is a PHP-based conference talk submission system.
    * [Clear Caches](#clear-caches)
  * [Testing](#testing)
  * [Developer Environment](#developer-environment)
+   * [Vagrant Installation](#vagrant-installation)
    * [PHP Built-in Web Server](#php-built-in-web-server)
  * [Troubleshooting](#troubleshooting)
 
@@ -549,6 +550,36 @@ The default phpunit.xml.dist file is in the root directory for the project.
 
 <a name="developer-environment" />
 ## Developer Environment
+
+<a name="vagrant-installation" />
+### Vagrant Installation
+
+The project includes an Ubuntu-based Vagrant virtual machine installation. Configuration is provided via Puppet, in the `puppet/` directory that is in the root directory of the project.
+
+You will need to have installed on your host machine:
+
+* A supporting virtualization environment such as [VirtualBox](https://www.virtualbox.org/)
+* [Vagrant](https://www.vagrantup.com/)
+
+To set up your OpenCFP Vagrant box:
+
+```shell
+$ vagrant up
+```
+
+Vagrant will download and provision the virtual machine and create the development database. It will run all migrations each time it is provisioned using:
+
+```shell
+$ vagrant provision
+```
+
+You will need to set the host name `opencfp.dev` to point to the local address for the virtual machine, `192.168.33.67`, in your `/etc/hosts` or equivalent. You will then be able to browse your OpenCFP installation at `http://opencfp.dev/`
+
+To log into your virtual machine:
+
+```shell
+$ vagrant ssh
+```
 
 <a name="php-built-in-web-server" />
 ### PHP Built-in Web Server

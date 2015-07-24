@@ -18,8 +18,8 @@ cache:
 
 database:
   host: 127.0.0.1
-  database: cfp_travis
-  dsn: mysql:dbname=cfp_travis;host=127.0.0.1
+  database: cfp
+  dsn: mysql:dbname=cfp;host=127.0.0.1
   user: root
   password: ~
 

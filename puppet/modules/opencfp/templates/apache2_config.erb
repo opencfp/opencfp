@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+    DocumentRoot /vagrant/web
+    ServerName opencfp.dev
+
+    <Directory /vagrant/web>
+        Require all granted
+        AllowOverride all
+    </Directory>
+</VirtualHost>
