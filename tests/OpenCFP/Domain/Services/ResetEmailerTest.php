@@ -8,8 +8,8 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
 {
     private $mailer;
     private $template;
-    private $configEmail;
-    private $configTitle;
+    private $config_email;
+    private $config_title;
 
     private $user_id;
     private $user_email;
@@ -21,14 +21,14 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
             ->with(\Mockery::on($this->validateEmail()))->getMock();
 
         $this->template = \Mockery::mock('template')->shouldIgnoreMissing();
-        $this->configEmail = 'admin@example.com';
-        $this->configTitle = 'Reset';
+        $this->config_email = 'admin@example.com';
+        $this->config_title = 'Reset';
 
         $this->user_email = 'user@example.com';
         $this->user_id = 123;
         $this->reset_code = '987abc';
 
-        $this->mailer = new ResetEmailer($this->mailer, $this->template, $this->configEmail, $this->configTitle);
+        $this->mailer = new ResetEmailer($this->mailer, $this->template, $this->config_email, $this->config_title);
     }
 
     public function tearDown()
