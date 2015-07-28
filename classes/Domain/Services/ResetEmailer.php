@@ -17,9 +17,9 @@ class ResetEmailer
         $this->config_title = $configTitle;
     }
 
-    public function send($user_id, $email, $reset_code)
+    public function send($userId, $email, $resetCode)
     {
-        $parameters = $this->parameters($user_id, $reset_code);
+        $parameters = $this->parameters($userId, $resetCode);
 
         try {
             $message = $this->preparedMessage($email, $parameters);
@@ -29,14 +29,14 @@ class ResetEmailer
         }
     }
 
-    private function parameters($user_id, $reset_code)
+    private function parameters($userId, $resetCode)
     {
         return array(
-            'reset_code' => $reset_code,
+            'reset_code' => $resetCode,
             'method' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
                 ? 'https' : 'http',
             'host' => !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost',
-            'user_id' => $user_id,
+            'user_id' => $userId,
             'email' => $this->config_email,
             'title' => $this->config_title
         );
