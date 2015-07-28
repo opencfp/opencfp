@@ -14,11 +14,11 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
     private $user_id;
     private $user_email;
     private $reset_code;
-    private $mailer;
+    private $reset_mailer;
 
     public function setUp()
     {
-        $this->swift_mailer = \Mockery::mock('mailer')->shouldReceive('send')->once()
+        $this->swift_mailer = \Mockery::mock('swift_mailer')->shouldReceive('send')->once()
             ->with(\Mockery::on($this->validateEmail()))->getMock();
 
         $this->template = \Mockery::mock('template')->shouldIgnoreMissing();
@@ -29,7 +29,7 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
         $this->user_id = 123;
         $this->reset_code = '987abc';
 
-        $this->mailer = new ResetEmailer($this->swift_mailer, $this->template, $this->config_email, $this->config_title);
+        $this->reset_mailer = new ResetEmailer($this->swift_mailer, $this->template, $this->config_email, $this->config_title);
     }
 
     public function tearDown()
@@ -40,7 +40,7 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_sends_the_expected_email()
     {
-        $this->mailer->send($this->user_id, $this->user_email, $this->reset_code);
+        $this->reset_mailer->send($this->user_id, $this->user_email, $this->reset_code);
     }
 
     private function validateEmail()
