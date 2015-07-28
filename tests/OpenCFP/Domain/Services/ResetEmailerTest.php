@@ -6,7 +6,7 @@ use OpenCFP\Domain\Services\ResetEmailer;
 
 class EmailerTest extends \PHPUnit_Framework_TestCase
 {
-    private $mailer;
+    private $swift_mailer;
     private $template;
     private $config_email;
     private $config_title;
@@ -14,10 +14,11 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
     private $user_id;
     private $user_email;
     private $reset_code;
+    private $mailer;
 
     public function setUp()
     {
-        $this->mailer = \Mockery::mock('mailer')->shouldReceive('send')->once()
+        $this->swift_mailer = \Mockery::mock('mailer')->shouldReceive('send')->once()
             ->with(\Mockery::on($this->validateEmail()))->getMock();
 
         $this->template = \Mockery::mock('template')->shouldIgnoreMissing();
@@ -28,7 +29,7 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
         $this->user_id = 123;
         $this->reset_code = '987abc';
 
-        $this->mailer = new ResetEmailer($this->mailer, $this->template, $this->config_email, $this->config_title);
+        $this->mailer = new ResetEmailer($this->swift_mailer, $this->template, $this->config_email, $this->config_title);
     }
 
     public function tearDown()
