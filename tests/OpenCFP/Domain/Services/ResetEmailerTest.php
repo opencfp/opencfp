@@ -18,10 +18,10 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->swift_mailer = \Mockery::mock('swift_mailer')->shouldReceive('send')->once()
+        $this->swift_mailer = \Mockery::mock('Swift_Mailer')->shouldReceive('send')->once()
             ->with(\Mockery::on($this->validateEmail()))->getMock();
 
-        $this->template = \Mockery::mock('template')->shouldIgnoreMissing();
+        $this->template = \Mockery::mock('Twig_Template')->shouldIgnoreMissing();
         $this->config_email = 'admin@example.com';
         $this->config_title = 'Reset';
 

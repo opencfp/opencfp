@@ -4,14 +4,14 @@ namespace OpenCFP\Domain\Services;
 
 class ResetEmailer
 {
-    private $mailer;
+    private $swift_mailer;
     private $template;
     private $config_email;
     private $config_title;
 
-    public function __construct($mailer, $template, $configEmail, $configTitle)
+    public function __construct(\Swift_Mailer $swiftMailer, \Twig_Template $template, $configEmail, $configTitle)
     {
-        $this->mailer = $mailer;
+        $this->swift_mailer = $swiftMailer;
         $this->template = $template;
         $this->config_email = $configEmail;
         $this->config_title = $configTitle;
@@ -23,7 +23,7 @@ class ResetEmailer
 
         try {
             $message = $this->preparedMessage($email, $parameters);
-            return $this->mailer->send($message);
+            return $this->swift_mailer->send($message);
         } catch (\Exception $e) {
             echo $e;die();
         }
