@@ -99,7 +99,7 @@ class ForgotController extends BaseController
         $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
         $data['form'] = $form->createView();
-        $data['flash'] = $this->getFlash($app);
+        $data['flash'] = $this->getFlash($this->app);
 
         return $this->render('user/forgot_password.twig', $data);
     }

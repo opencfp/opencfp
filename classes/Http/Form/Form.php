@@ -152,6 +152,8 @@ abstract class Form
      * Method that adds error message to our class attribute, making sure to
      * not add anything that is in there already
      *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
+     *
      * @param string $message The error messages to add to the list
      */
     protected function _addErrorMessage($message)
@@ -172,6 +174,8 @@ abstract class Form
 
     /**
      * Sanitizes all fields that were submitted.
+     *
+     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      *
      * @param  array $taintedData The tainted data
      * @return array Sanitized data

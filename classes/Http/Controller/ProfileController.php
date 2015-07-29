@@ -52,6 +52,10 @@ class ProfileController extends BaseController
         return $this->render('user/edit.twig', $form_data) ;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
     public function processAction(Request $req)
     {
         if (!$this->app['sentry']->check()) {

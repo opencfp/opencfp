@@ -43,8 +43,6 @@ class TalkController extends BaseController
         if (!$this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
-
-        $user = $this->app['sentry']->getUser();
         /////////
 
         try {

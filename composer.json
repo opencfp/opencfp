@@ -45,6 +45,7 @@
         "fzaninotto/faker": "1.2.*",
         "codeclimate/php-test-reporter": "dev-master",
         "johnkary/phpunit-speedtrap": "~1.0@dev",
-        "fabpot/php-cs-fixer": "^1.10"
+        "fabpot/php-cs-fixer": "^1.10",
+        "phpmd/phpmd": "^2.2"
     }
 }
