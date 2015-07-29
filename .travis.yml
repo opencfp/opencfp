@@ -32,7 +32,8 @@ before_script:
   - vendor/bin/phinx --configuration=phinx.yml.dist migrate -e testing
 
 script:
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - ./vendor/bin/php-cs-fixer fix classes/  --verbose --level=psr2 --dry-run
 
 after_script:
   - vendor/bin/test-reporter --stdout > codeclimate.json

@@ -8,7 +8,6 @@ use OpenCFP\Domain\Services\ProfileImageProcessor;
 
 class ImageProcessorProvider implements ServiceProviderInterface
 {
-
     /**
      * {@inheritdoc}
      */

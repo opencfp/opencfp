@@ -140,7 +140,7 @@ class Application extends SilexApplication
             new TomlConfigDriver(),
         ]), 'config'));
 
-        if ( ! $this->isProduction()) {
+        if (! $this->isProduction()) {
             $this['debug'] = true;
         }
     }
@@ -157,7 +157,7 @@ class Application extends SilexApplication
         $cursor = $this['config'];
 
         foreach (explode('.', $path) as $part) {
-            if ( ! isset($cursor[$part])) {
+            if (! isset($cursor[$part])) {
                 return null;
             }
 

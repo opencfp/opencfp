@@ -4,11 +4,11 @@ namespace OpenCFP\Http\Controller\Admin;
 
 trait AdminAccessTrait
 {
-    public function __call($method,$arguments)
+    public function __call($method, $arguments)
     {
         if (method_exists($this, $method)) {
             // Check if user is an logged in and an Admin
-            if ( ! $this->userHasAccess($this->app)) {
+            if (! $this->userHasAccess($this->app)) {
                 return $this->redirectTo('dashboard');
             }
 

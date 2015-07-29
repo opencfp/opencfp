@@ -32,7 +32,8 @@ class RequestCleaner
             if (is_array($value)) {
                 $sanitized[$key] = $this->clean($value);
             } else {
-                $sanitized[$key] = $this->purifier->purify($value);;
+                $sanitized[$key] = $this->purifier->purify($value);
+                ;
             }
         }
 
