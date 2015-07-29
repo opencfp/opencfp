@@ -34,6 +34,8 @@ before_script:
 script:
   - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
   - ./vendor/bin/php-cs-fixer fix classes/  --verbose --level=psr2 --dry-run
+  - ./vendor/bin/php-cs-fixer fix tests/  --verbose --level=psr2 --dry-run
+  - ./vendor/bin/phpmd classes/ text phpmd.xml.dist
 
 after_script:
   - vendor/bin/test-reporter --stdout > codeclimate.json
