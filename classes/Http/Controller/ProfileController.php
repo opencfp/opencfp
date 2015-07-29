@@ -151,7 +151,7 @@ class ProfileController extends BaseController
             ));
         }
 
-        $form_data['formAction'] = $this->url('user_edit', ['id' => $user->id]);
+        $form_data['formAction'] = $this->url('user_update');
         $form_data['buttonInfo'] = 'Update Profile';
         $form_data['id'] = $user->id;
         $form_data['user'] = $user;
