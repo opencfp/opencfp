@@ -8,6 +8,9 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Http\Form\ForgotForm;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCaseParameterName)
+ */
 class ForgotController extends BaseController
 {
     use FlashableTrait;

@@ -24,7 +24,9 @@
 </rule>
 <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity"/>
 <rule ref="rulesets/controversial.xml/CamelCaseClassName"/>
+<rule ref="rulesets/controversial.xml/CamelCasePropertyName"/>
 <rule ref="rulesets/controversial.xml/CamelCaseMethodName"/>
+<rule ref="rulesets/controversial.xml/CamelCaseParameterName"/>
 <rule ref="rulesets/design.xml/EvalExpression"/>
 <rule ref="rulesets/design.xml/GotoStatement"/>
 <rule ref="rulesets/design.xml/NumberOfChildren"/>

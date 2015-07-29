@@ -9,6 +9,9 @@ use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Http\Form\TalkForm;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCaseParameterName)
+ */
 class TalkController extends BaseController
 {
     use FlashableTrait;

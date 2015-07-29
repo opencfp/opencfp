@@ -1,6 +1,9 @@
 <?php
 namespace OpenCFP\Http\Form;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ */
 abstract class Form
 {
     protected $_options;

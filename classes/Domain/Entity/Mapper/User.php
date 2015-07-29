@@ -9,12 +9,12 @@ class User extends Mapper
     /**
      * Return an array that grabs info from the User and Speaker entities
      *
-     * @param  integer $user_id
+     * @param  integer $userId
      * @return array
      */
-    public function getDetails($user_id)
+    public function getDetails($userId)
     {
-        $user = $this->where(['id' => $user_id])
+        $user = $this->where(['id' => $userId])
             ->first();
 
         return $user;

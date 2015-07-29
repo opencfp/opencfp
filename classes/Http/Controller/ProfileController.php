@@ -6,6 +6,9 @@ use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCaseParameterName)
+ */
 class ProfileController extends BaseController
 {
     use FlashableTrait;
