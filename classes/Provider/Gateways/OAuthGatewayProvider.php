@@ -7,11 +7,9 @@ use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 class OAuthGatewayProvider implements ServiceProviderInterface
 {
+
     public function register(Application $app)
     {
         $app['controller.oauth.authorization'] = $app->share(function ($app) {

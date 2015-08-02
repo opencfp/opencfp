@@ -32,10 +32,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- * @SuppressWarnings(PHPMD.TooManyMethods)
- */
 class Application extends SilexApplication
 {
     /**
@@ -144,7 +140,7 @@ class Application extends SilexApplication
             new TomlConfigDriver(),
         ]), 'config'));
 
-        if (! $this->isProduction()) {
+        if ( ! $this->isProduction()) {
             $this['debug'] = true;
         }
     }
@@ -161,7 +157,7 @@ class Application extends SilexApplication
         $cursor = $this['config'];
 
         foreach (explode('.', $path) as $part) {
-            if (! isset($cursor[$part])) {
+            if ( ! isset($cursor[$part])) {
                 return null;
             }
 

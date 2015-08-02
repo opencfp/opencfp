@@ -22,4 +22,5 @@ interface AuthenticationService
      * @throws NotAuthenticatedException
      */
     public function logout();
+
 }

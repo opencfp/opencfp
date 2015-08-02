@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
  */
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
+
     /** @var Application */
     protected $sut;
 
@@ -38,4 +39,5 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->sut->isTesting());
         $this->assertContains('testing.yml', $this->sut->configPath());
     }
+
 }

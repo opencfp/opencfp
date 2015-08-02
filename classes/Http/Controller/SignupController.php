@@ -37,10 +37,6 @@ class SignupController extends BaseController
         ]);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
     public function processAction(Request $req, Application $app)
     {
         $form_data = array(

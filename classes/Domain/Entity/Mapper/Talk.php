@@ -11,10 +11,10 @@ class Talk extends Mapper
      * value in the favorite based on whether or not the current admin
      * user has favourited this talk
      *
-     * @param  integer $adminUserId
+     * @param  integer $admin_user_id
      * @return array
      */
-    public function getAllPagerFormatted($adminUserId, $sort)
+    public function getAllPagerFormatted($admin_user_id, $sort)
     {
         $talks = $this->all()
             ->order($sort)
@@ -22,7 +22,7 @@ class Talk extends Mapper
         $formatted = array();
 
         foreach ($talks as $talk) {
-            $formatted[] = $this->createdFormattedOutput($talk, $adminUserId);
+            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id);
         }
 
         return $formatted;
@@ -31,11 +31,11 @@ class Talk extends Mapper
     /**
      * Return an array of recent talks
      *
-     * @param  integer $adminUserId
-     * @param  integer $limit
+     * @param  integer $admin_user_id
+     * @param  integer $limt
      * @return array
      */
-    public function getRecent($adminUserId, $limit = 10)
+    public function getRecent($admin_user_id, $limit = 10)
     {
         $talks = $this->all()
             ->order(['created_at' => 'DESC'])
@@ -44,7 +44,7 @@ class Talk extends Mapper
         $formatted = [];
 
         foreach ($talks as $talk) {
-            $formatted[] = $this->createdFormattedOutput($talk, $adminUserId);
+            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id);
         }
 
         return $formatted;
@@ -53,11 +53,10 @@ class Talk extends Mapper
     /**
      * Return a collection of talks that a majority of the admins have liked
      *
-     * @param integer $adminUserId
-     * @param  integer $adminMajority
+     * @param  integer $admin_majority
      * @return array
      */
-    public function getAdminFavorites($adminUserId, $adminMajority)
+    public function getAdminFavorites($admin_user_id, $admin_majority)
     {
         $talks = $this->all()
             ->order(['created_at' => 'DESC'])
@@ -66,7 +65,7 @@ class Talk extends Mapper
         $favorite_talks = [];
 
         foreach ($talks as $talk) {
-            if ($talk->favorites->count() >= $adminMajority) {
+            if ($talk->favorites->count() >= $admin_majority) {
                 $favorite_talks[] = $talk;
             }
         }
@@ -74,7 +73,7 @@ class Talk extends Mapper
         $formatted = [];
 
         foreach ($favorite_talks as $talk) {
-            $formatted[] = $this->createdFormattedOutput($talk, $adminUserId);
+            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id);
         }
 
         return $formatted;
@@ -84,26 +83,26 @@ class Talk extends Mapper
      * Return a collection of entities representing talks that belong to a
      * specific user
      *
-     * @param  integer $userId
+     * @param  integer $user_id
      * @return array
      */
-    public function getByUser($userId)
+    public function getByUser($user_id)
     {
-        return $this->where(['user_id' => $userId]);
+        return $this->where(['user_id' => $user_id]);
     }
 
     /**
      * Iterates over DBAL objects and returns a formatted result set
      *
      * @param  mixed   $talk
-     * @param  integer $adminUserId
+     * @param  integer $admin_user_id
      * @return array
      */
-    public function createdFormattedOutput($talk, $adminUserId)
+    public function createdFormattedOutput($talk, $admin_user_id)
     {
         if ($talk->favorites) {
             foreach ($talk->favorites as $favorite) {
-                if ($favorite->admin_user_id == $adminUserId) {
+                if ($favorite->admin_user_id == $admin_user_id) {
                     $talk->favorite = 1;
                 }
             }
@@ -129,4 +128,5 @@ class Talk extends Mapper
 
         return $output;
     }
+
 }

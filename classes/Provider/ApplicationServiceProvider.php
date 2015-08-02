@@ -19,11 +19,9 @@ use RandomLib\Factory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
+
     /**
      * {@inheritdoc}
      */

@@ -130,4 +130,5 @@ class TalkSubmission
             'ibmi'
         ]);
     }
+
 }

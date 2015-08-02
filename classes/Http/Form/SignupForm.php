@@ -4,8 +4,6 @@ namespace OpenCFP\Http\Form;
 
 /**
  * Form object for our signup & profile pages, handles validation of form data
- *
- * @SuppressWarnings(PHPMD.CamelCasePropertyName)
  */
 class SignupForm extends Form
 {
@@ -308,4 +306,5 @@ class SignupForm extends Form
             );
         }
     }
+
 }

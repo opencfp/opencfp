@@ -31,6 +31,7 @@ class DashboardController extends BaseController
         } catch (NotAuthenticatedException $e) {
             return $this->redirectTo('login');
         }
+
     }
 
     /**

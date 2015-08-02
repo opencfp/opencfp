@@ -39,6 +39,7 @@ class TalkController extends ApiController
             return $this
                 ->setStatusCode(Response::HTTP_CREATED)
                 ->respond($talk->toArrayForApi());
+
         } catch (InvalidTalkSubmissionException $e) {
             return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respondWithError($e->getMessage());
         } catch (NotAuthenticatedException $e) {
@@ -63,6 +64,7 @@ class TalkController extends ApiController
             return $this
                 ->setStatusCode(Response::HTTP_OK)
                 ->respond($output);
+
         } catch (NotAuthenticatedException $e) {
             return $this->respondUnauthorized();
         }
@@ -76,6 +78,7 @@ class TalkController extends ApiController
             return $this
                 ->setStatusCode(Response::HTTP_OK)
                 ->respond($talk->toArrayForApi());
+
         } catch (NotAuthenticatedException $e) {
             return $this->respondUnauthorized();
         }

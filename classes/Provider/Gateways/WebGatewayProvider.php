@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class WebGatewayProvider implements ServiceProviderInterface
 {
+
     public function register(Application $app)
     {
     }

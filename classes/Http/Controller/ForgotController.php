@@ -8,9 +8,6 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Http\Form\ForgotForm;
 
-/**
- * @SuppressWarnings(PHPMD.CamelCaseParameterName)
- */
 class ForgotController extends BaseController
 {
     use FlashableTrait;
@@ -102,7 +99,7 @@ class ForgotController extends BaseController
         $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
         $data['form'] = $form->createView();
-        $data['flash'] = $this->getFlash($this->app);
+        $data['flash'] = $this->getFlash($app);
 
         return $this->render('user/forgot_password.twig', $data);
     }
@@ -117,7 +114,7 @@ class ForgotController extends BaseController
         );
         $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
-        if (! $form->isValid()) {
+        if ( ! $form->isValid()) {
             return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
         }
 
@@ -130,7 +127,7 @@ class ForgotController extends BaseController
             $error++;
         }
 
-        if (! $user->checkResetPasswordCode($req->get('reset_code'))) {
+        if ( ! $user->checkResetPasswordCode($req->get('reset_code'))) {
             $error++;
         }
 
@@ -231,8 +228,7 @@ class ForgotController extends BaseController
 
             return $mailer->send($message);
         } catch (\Exception $e) {
-            echo $e;
-            die();
+            echo $e;die();
         }
     }
 

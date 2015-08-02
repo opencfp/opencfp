@@ -6,9 +6,6 @@ use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @SuppressWarnings(PHPMD.CamelCaseParameterName)
- */
 class ProfileController extends BaseController
 {
     use FlashableTrait;
@@ -55,10 +52,6 @@ class ProfileController extends BaseController
         return $this->render('user/edit.twig', $form_data) ;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
     public function processAction(Request $req)
     {
         if (!$this->app['sentry']->check()) {
@@ -212,7 +205,7 @@ class ProfileController extends BaseController
         $sanitized_data = $form->getCleanData();
         $reset_code = $user->getResetPasswordCode();
 
-        if (! $user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
+        if ( ! $user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
             $this->app['session']->set('flash', array(
                 'type' => 'error',
                 'short' => 'Error',

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AuthorizationController extends ApiController
 {
+
     /**
      * @var AuthorizationServer
      */

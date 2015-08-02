@@ -9,9 +9,6 @@ use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Http\Form\TalkForm;
 
-/**
- * @SuppressWarnings(PHPMD.CamelCaseParameterName)
- */
 class TalkController extends BaseController
 {
     use FlashableTrait;
@@ -46,6 +43,8 @@ class TalkController extends BaseController
         if (!$this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
+
+        $user = $this->app['sentry']->getUser();
         /////////
 
         try {
@@ -75,7 +74,7 @@ class TalkController extends BaseController
 
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
-        if (! $this->isCfpOpen(strtotime('now'))) {
+        if ( ! $this->isCfpOpen(strtotime('now'))) {
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Read Only',
@@ -124,12 +123,12 @@ class TalkController extends BaseController
      */
     public function createAction(Request $req)
     {
-        if (! $this->app['sentry']->check()) {
+        if ( ! $this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
 
         // You can only create talks while the CfP is open
-        if (! $this->isCfpOpen(strtotime('now'))) {
+        if ( ! $this->isCfpOpen(strtotime('now'))) {
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -165,12 +164,12 @@ class TalkController extends BaseController
      */
     public function processCreateAction(Request $req)
     {
-        if (! $this->app['sentry']->check()) {
+        if ( ! $this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
 
         // You can only create talks while the CfP is open
-        if (! $this->isCfpOpen(strtotime('now'))) {
+        if ( ! $this->isCfpOpen(strtotime('now'))) {
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -258,7 +257,7 @@ class TalkController extends BaseController
 
     public function updateAction(Request $req)
     {
-        if (! $this->app['sentry']->check()) {
+        if ( ! $this->app['sentry']->check()) {
             return $this->redirectTo('login');
         }
 
@@ -346,12 +345,12 @@ class TalkController extends BaseController
 
     public function deleteAction(Request $req, Application $app)
     {
-        if (! $app['sentry']->check()) {
+        if ( ! $app['sentry']->check()) {
             return $app->json(['delete' => 'no-user']);
         }
 
         // You can only delete talks while the CfP is open
-        if (! $this->isCfpOpen(strtotime('now'))) {
+        if ( ! $this->isCfpOpen(strtotime('now'))) {
             return $app->json(['delete' => 'no']);
         }
 
@@ -409,8 +408,7 @@ class TalkController extends BaseController
 
             return $mailer->send($message);
         } catch (\Exception $e) {
-            echo $e;
-            die();
+            echo $e;die();
         }
     }
 }

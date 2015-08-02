@@ -9,6 +9,7 @@ use Spot\Locator as SpotLocator;
 
 class SpotServiceProvider implements ServiceProviderInterface
 {
+
     /**
      * {@inheritdoc}
      */

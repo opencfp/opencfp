@@ -46,8 +46,8 @@ class SpeakersController extends BaseController
 
         $templateData = array(
             'airport' => $this->app->config('application.airport'),
-            'arrival' => date('Y-m-d', $this->app->config('application.arrival')),
-            'departure' => date('Y-m-d', $this->app->config('application.departure')),
+            'arrival' => date('Y-m-d',$this->app->config('application.arrival')),
+            'departure' => date('Y-m-d',$this->app->config('application.departure')),
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage()
@@ -74,8 +74,8 @@ class SpeakersController extends BaseController
         // Build and render the template
         $templateData = array(
             'airport' => $this->app->config('application.airport'),
-            'arrival' => date('Y-m-d', $this->app->config('application.arrival')),
-            'departure' => date('Y-m-d', $this->app->config('application.departure')),
+            'arrival' => date('Y-m-d',$this->app->config('application.arrival')),
+            'departure' => date('Y-m-d',$this->app->config('application.departure')),
             'speaker' => $speaker_details,
             'talks' => $talks,
             'photo_path' => '/uploads/',
@@ -88,7 +88,7 @@ class SpeakersController extends BaseController
     private function deleteAction(Request $req)
     {
         // Check if user is an logged in and an Admin
-        if (! $this->userHasAccess($this->app)) {
+        if ( ! $this->userHasAccess($this->app)) {
             return $this->redirectTo('dashboard');
         }
 
@@ -115,4 +115,5 @@ class SpeakersController extends BaseController
 
         return $this->redirectTo('admin_speakers');
     }
+
 }

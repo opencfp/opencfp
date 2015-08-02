@@ -14,6 +14,7 @@ use OpenCFP\Domain\Talk\TalkWasSubmitted;
 
 class Speakers
 {
+
     /** @var CallForProposal */
     protected $callForProposal;
 
