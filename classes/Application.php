@@ -12,6 +12,7 @@ use OpenCFP\Provider\Gateways\ApiGatewayProvider;
 use OpenCFP\Provider\Gateways\OAuthGatewayProvider;
 use OpenCFP\Provider\Gateways\WebGatewayProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
+use OpenCFP\Provider\ResetEmailerServiceProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use OpenCFP\Provider\YamlConfigDriver;
 use Silex\Application as SilexApplication;
@@ -77,6 +78,7 @@ class Application extends SilexApplication
         $this->register(new HtmlPurifierServiceProvider);
         $this->register(new SpotServiceProvider);
         $this->register(new ImageProcessorProvider);
+        $this->register(new ResetEmailerServiceProvider());
 
         // Application Services...
         $this->register(new ApplicationServiceProvider);
