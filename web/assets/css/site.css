@@ -138,14 +138,10 @@ a:hover {
  * @tags ^button
  * @extends btn
  */
-.btn-opencfp--primary {
-  background: #FFF;
-  color: rgb(27,117,187);
-}
-
-.btn-opencfp--primary:hover {
-  background: #F7F7F7;
-  color: rgb(27,117,187);
+.btn-opencfp--primary,
+.btn-opencfp--primary:hover{
+  background: rgb(27,117,187);
+  color: #FFF;
 }
 
 .btn-opencfp--light {
