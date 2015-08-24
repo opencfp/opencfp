@@ -1,0 +1,19 @@
+---
+engines:
+  phpmd:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
+    config:
+      file_extensions: "php"
+ratings:
+  paths:
+  - "**.js"
+  - "**.jsx"
+  - "**.css"
+  - "**.php"
+  - "**.module"
+  - "**.inc"
+exclude_paths:
+- config/**/*
+
