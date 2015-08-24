@@ -85,6 +85,12 @@ class SpeakersController extends BaseController
         return $this->render('admin/speaker/view.twig', $templateData);
     }
 
+    private function someHelperMethod()
+    {
+      $foo = 2;
+      return 1;
+    }
+
     private function deleteAction(Request $req)
     {
         // Check if user is an logged in and an Admin
