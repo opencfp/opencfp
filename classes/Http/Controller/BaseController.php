@@ -33,7 +33,7 @@ abstract class BaseController
      *
      * @return mixed
      */
-    public function render($name, array $context = [], $status = 200)
+    public function render($name, array $context = [], $status = Response::HTTP_OK)
     {
         return new Response($this->app['twig']->render($name, $context), $status);
     }
@@ -44,7 +44,7 @@ abstract class BaseController
      *
      * @return RedirectResponse
      */
-    public function redirectTo($route, $status = 302)
+    public function redirectTo($route, $status = Response::HTTP_FOUND)
     {
         return $this->app->redirect($this->url($route), $status);
     }

@@ -11,6 +11,7 @@ use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Http\API\ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthorizationController extends ApiController
 {
@@ -81,7 +82,7 @@ class AuthorizationController extends ApiController
             $redirectUri = $this->server->getGrantType('authorization_code')
                 ->newAuthorizeRequest('user', $user->id, $authParams);
 
-            return $this->setStatusCode(302)->respond('', ['Location' => $redirectUri]);
+            return $this->setStatusCode(Response::HTTP_FOUND)->respond('', ['Location' => $redirectUri]);
         } else {
             $error = new AccessDeniedException;
 
@@ -90,7 +91,7 @@ class AuthorizationController extends ApiController
                 'message' => $error->getMessage()
             ]);
 
-            return $this->setStatusCode(302)->respond('', ['Location' => $redirectUri]);
+            return $this->setStatusCode(Response::HTTP_FOUND)->respond('', ['Location' => $redirectUri]);
         }
     }
 
