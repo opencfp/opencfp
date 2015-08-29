@@ -7,7 +7,7 @@ trait ContainerAware
     /**
      * @var \Silex\Application
      */
-    public $app;
+    protected $app;
 
     public function setApplication(Application $application)
     {
