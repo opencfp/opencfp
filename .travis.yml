@@ -33,6 +33,7 @@ before_script:
 
 script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - vendor/bin/php-cs-fixer fix --diff --dry-run --verbose
 
 after_script:
   - vendor/bin/test-reporter --stdout > codeclimate.json
