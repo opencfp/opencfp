@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ApiGatewayProvider implements ServiceProviderInterface
 {
-
     public function register(Application $app)
     {
         $app['controller.api.profile'] = $app->share(function ($app) {

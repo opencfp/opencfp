@@ -15,7 +15,6 @@ class AddIdToSpeakerTable extends AbstractMigration
      */
     public function up()
     {
-    
     }
 
     /**
@@ -23,6 +22,5 @@ class AddIdToSpeakerTable extends AbstractMigration
      */
     public function down()
     {
-
     }
 }

@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class OAuthGatewayProvider implements ServiceProviderInterface
 {
-
     public function register(Application $app)
     {
         $app['controller.oauth.authorization'] = $app->share(function ($app) {
