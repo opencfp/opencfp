@@ -9,6 +9,7 @@
 .DS_Store
 opencfp.iml
 .buildpath
+.php_cs.cache
 .project
 .settings
 composer.phar
