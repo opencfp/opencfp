@@ -20,7 +20,7 @@ class SpeakersController extends BaseController
         $rawSpeakers = $this->app['spot']
             ->mapper('OpenCFP\Domain\Entity\User')
             ->all()
-            ->order(['last_name' => 'ASC'])
+            ->order(['first_name' => 'ASC'])
             ->toArray();
 
         // Set up our page stuff
