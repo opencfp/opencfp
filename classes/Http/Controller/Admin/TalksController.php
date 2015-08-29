@@ -12,7 +12,7 @@ class TalksController extends BaseController
 
     public function indexAction(Request $req)
     {
-        if (!$this->userHasAccess($this->app)) {
+        if (!$this->userHasAccess()) {
             return $this->redirectTo('login');
         }
 
@@ -68,7 +68,7 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        if (!$this->userHasAccess($this->app)) {
+        if (!$this->userHasAccess()) {
             return $this->redirectTo('login');
         }
 
@@ -111,7 +111,7 @@ class TalksController extends BaseController
      */
     private function favoriteAction(Request $req)
     {
-        if (!$this->userHasAccess($this->app)) {
+        if (!$this->userHasAccess()) {
             return false;
         }
 
@@ -158,7 +158,7 @@ class TalksController extends BaseController
      */
     private function selectAction(Request $req)
     {
-        if (!$this->userHasAccess($this->app)) {
+        if (!$this->userHasAccess()) {
             return false;
         }
 
