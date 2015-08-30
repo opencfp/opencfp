@@ -23,6 +23,6 @@ class AdminAccessTraitFake
      */
     public function hasAdminAccess()
     {
-        return $this->userHasAccess(null);
+        return $this->userHasAccess();
     }
 }

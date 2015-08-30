@@ -4,7 +4,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 trait AdminAccessTrait
 {
-    protected function userHasAccess($app)
+    protected function userHasAccess()
     {
         if (!$this->app['sentry']->check()) {
             return false;
