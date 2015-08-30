@@ -25,4 +25,9 @@ class AdminAccessTraitFake
     {
         return $this->userHasAccess($this->app);
     }
+
+    public function callMe()
+    {
+
+    }
 }

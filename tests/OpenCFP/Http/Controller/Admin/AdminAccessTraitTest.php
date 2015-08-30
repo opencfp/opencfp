@@ -87,6 +87,24 @@ class AdminAccessTraitTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testCanNeverInterceptCallToExistingMethod()
+    {
+        $sentry = $this->getSentryMock();
+
+        $sentry
+            ->expects($this->never())
+            ->method($this->anything())
+        ;
+
+        $application = $this->getApplicationMock([
+            'sentry' => $sentry,
+        ]);
+
+        $adminAccess = new AdminAccessTraitFake($application);
+
+        $adminAccess->callMe();
+    }
+
     /**
      * @param array $items
      * @return Application|\PHPUnit_Framework_MockObject_MockObject
