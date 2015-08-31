@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class ResetPhotoPaths extends AbstractMigration
 {
-
-
     /**
      * Migrate Up.
      */
@@ -50,7 +48,9 @@ class ResetPhotoPaths extends AbstractMigration
         // If filename is not registered, flag it for removal.
         $iterator = new DirectoryIterator(__DIR__ . '/../web/uploads');
         foreach ($iterator as $file) {
-            if ($file->isDot() || in_array($file->getFilename(), ['dummyphoto.jpg'])) continue;
+            if ($file->isDot() || in_array($file->getFilename(), ['dummyphoto.jpg'])) {
+                continue;
+            }
 
             if (!in_array($file->getFilename(), $registeredPhotos)) {
                 $fileNamesFlaggedForRemoval[] = $file->getRealPath();

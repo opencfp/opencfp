@@ -77,4 +77,6 @@ class ApiControllerTest extends PHPUnit_Framework_TestCase
     }
 }
 
-class StubApiController extends ApiController {}
+class StubApiController extends ApiController
+{
+}

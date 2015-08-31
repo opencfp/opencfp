@@ -18,7 +18,6 @@ class Favorites extends AbstractMigration
      */
     public function up()
     {
-
     }
 
     /**
@@ -26,6 +25,5 @@ class Favorites extends AbstractMigration
      */
     public function down()
     {
-
     }
 }
