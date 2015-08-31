@@ -84,7 +84,6 @@ class AdminAccessTraitTest extends \PHPUnit_Framework_TestCase
         $adminAccess = new AdminAccessTraitFake($application);
 
         $this->assertTrue($adminAccess->hasAdminAccess());
-
     }
 
     /**
