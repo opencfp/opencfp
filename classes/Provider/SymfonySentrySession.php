@@ -7,7 +7,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface as SymfonySessionI
 
 class SymfonySentrySession implements SentrySessionInterface
 {
+    /**
+     * @var SymfonySessionInterface
+     */
     private $session;
+
+    /**
+     * @var string
+     */
     private $key;
 
     public function __construct(SymfonySessionInterface $session, $key = null)
@@ -16,16 +23,25 @@ class SymfonySentrySession implements SentrySessionInterface
         $this->key = $key ?: 'cartalyst_sentry';
     }
 
+    /**
+     * @return string
+     */
     public function getKey()
     {
         return $this->key;
     }
 
+    /**
+     * @param mixed $value
+     */
     public function put($value)
     {
         $this->session->set($this->key, $value);
     }
 
+    /**
+     * @return mixed
+     */
     public function get()
     {
         return $this->session->get($this->key);
