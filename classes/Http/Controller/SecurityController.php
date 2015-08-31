@@ -6,6 +6,7 @@ use Silex\Application;
 use OpenCFP\Domain\Services\Login;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SecurityController extends BaseController
 {
@@ -19,7 +20,7 @@ class SecurityController extends BaseController
     public function processAction(Request $req, Application $app)
     {
         $template_data = array();
-        $code = 200;
+        $code = Response::HTTP_OK;
 
         try {
             $page = new Login($app['sentry']);
@@ -39,13 +40,13 @@ class SecurityController extends BaseController
             $template_data = array(
                 'email' => $req->get('email'),
             );
-            $code = 400;
+            $code = Response::HTTP_BAD_REQUEST;
         } catch (Exception $e) {
             $errorMessage = $e->getMessage();
             $template_data = array(
                 'email' => $req->get('email'),
             );
-            $code = 400;
+            $code = Response::HTTP_BAD_REQUEST;
         }
 
         // Set Success Flash Message

@@ -132,7 +132,7 @@ class ApiController
      *
      * @return RedirectResponse
      */
-    public function redirectTo($route, $status = 302)
+    public function redirectTo($route, $status = Response::HTTP_FOUND)
     {
         return $this->app->redirect($this->url($route), $status);
     }
