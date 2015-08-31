@@ -12,7 +12,7 @@ class TalksController extends BaseController
 
     public function indexAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
+        if (!$this->userHasAccess($this->app)) {
             return $this->redirectTo('login');
         }
 
