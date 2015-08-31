@@ -161,7 +161,6 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
          * an event when a talk is submitted.
          */
         $this->sut->submitTalk($submission);
-
     }
 
     /** @test */

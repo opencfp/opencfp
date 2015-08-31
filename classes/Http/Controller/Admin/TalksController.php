@@ -82,7 +82,8 @@ class TalksController extends BaseController
 
         // Get info about our speaker
         $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
-        $speaker = $user_mapper->get($talk->user_id)->toArray();;
+        $speaker = $user_mapper->get($talk->user_id)->toArray();
+        ;
 
         // Grab all the other talks and filter out the one we have
         $otherTalks = array_filter($all_talks, function ($talk) use ($talk_id) {

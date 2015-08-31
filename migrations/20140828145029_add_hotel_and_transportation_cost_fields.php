@@ -17,7 +17,6 @@ class AddHotelAndTransportationCostFields extends AbstractMigration
      */
     public function up()
     {
-    
     }
 
     /**
@@ -25,6 +24,5 @@ class AddHotelAndTransportationCostFields extends AbstractMigration
      */
     public function down()
     {
-
     }
 }

@@ -52,7 +52,7 @@ EOF
             $user = $sentry->getUserProvider()->findByLogin($email);
             $output->writeln('  Found account...');
 
-            if ( ! $user->hasAccess('admin')) {
+            if (! $user->hasAccess('admin')) {
                 $output->writeln(sprintf('The account <info>%s</info> is not in the Admin group', $email));
                 exit(1);
             }

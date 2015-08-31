@@ -21,7 +21,6 @@ use Silex\ServiceProviderInterface;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
-
     /**
      * {@inheritdoc}
      */

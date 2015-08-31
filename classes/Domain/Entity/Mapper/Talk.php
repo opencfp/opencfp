@@ -128,5 +128,4 @@ class Talk extends Mapper
 
         return $output;
     }
-
 }

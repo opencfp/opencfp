@@ -2,4 +2,6 @@
 
 namespace OpenCFP\Application;
 
-class NotAuthorizedException extends \Exception {}
+class NotAuthorizedException extends \Exception
+{
+}

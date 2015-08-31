@@ -22,7 +22,6 @@ class ResetForm extends AbstractType
             ->add('user_id', 'hidden')
             ->add('reset_code', 'hidden')
             ->getForm();
-
     }
 
     public function getName()

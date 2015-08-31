@@ -12,7 +12,7 @@ class Environment
 
     private function __construct($slug)
     {
-        if ( ! in_array($slug, ['production', 'development', 'testing'])) {
+        if (! in_array($slug, ['production', 'development', 'testing'])) {
             throw new InvalidArgumentException('Invalid environment specified.');
         }
 

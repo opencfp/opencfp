@@ -113,7 +113,7 @@ class ForgotController extends BaseController
         );
         $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
-        if ( ! $form->isValid()) {
+        if (! $form->isValid()) {
             return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
         }
 
@@ -126,7 +126,7 @@ class ForgotController extends BaseController
             $error++;
         }
 
-        if ( ! $user->checkResetPasswordCode($req->get('reset_code'))) {
+        if (! $user->checkResetPasswordCode($req->get('reset_code'))) {
             $error++;
         }
 
