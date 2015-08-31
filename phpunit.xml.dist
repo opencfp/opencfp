@@ -2,6 +2,7 @@
          backupGlobals="false"
          backupStaticAttributes="false"
          colors="true"
+         columns="max"
          verbose="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
