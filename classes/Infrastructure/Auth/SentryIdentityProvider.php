@@ -7,7 +7,6 @@ use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
-use Spot\Mapper;
 
 class SentryIdentityProvider implements IdentityProvider
 {
