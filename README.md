@@ -66,7 +66,7 @@ merge master to your private branch and get updates when desired!
 <a name="requirements" />
 ## Requirements
 
- * PHP 5.4+
+ * PHP 5.5+
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block.
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php5-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
