@@ -77,7 +77,7 @@ class TalksController extends BaseController
             return $talk_mapper->getAllPagerFormatted($admin_user_id, $options);
         }
 
-        switch(strtolower($filter)) {
+        switch (strtolower($filter)) {
             case "selected":
                 return $talk_mapper->getSelected($admin_user_id, $options);
                 break;
@@ -109,7 +109,7 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
+        if (!$this->userHasAccess($this->app)) {
             return $this->redirectTo('login');
         }
 
@@ -146,7 +146,6 @@ class TalksController extends BaseController
         // Get info about our speaker
         $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $speaker = $user_mapper->get($talk->user_id)->toArray();
-        ;
 
         // Grab all the other talks and filter out the one we have
         $otherTalks = array_filter($all_talks, function ($talk) use ($talk_id) {
@@ -168,13 +167,16 @@ class TalksController extends BaseController
         return $this->render('admin/talks/view.twig', $templateData);
     }
 
-    private function rateAction(Request $req, Application $app)
+    private function rateAction(Request $req)
     {
-        $admin_user_id = (int)$app['sentry']->getUser()->getId();
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\TalkMeta');
+        if (!$this->userHasAccess($this->app)) {
+            return false;
+        }
+
+        $admin_user_id = (int)$this->app['sentry']->getUser()->getId();
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\TalkMeta');
 
         $talk_rating = (int)$req->get('rating');
-        var_dump($talk_rating);
         $talk_id = (int)$req->get('id');
 
         // Check for invalid rating range
@@ -208,7 +210,7 @@ class TalksController extends BaseController
      */
     private function favoriteAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
+        if (!$this->userHasAccess($this->app)) {
             return false;
         }
 
@@ -255,7 +257,7 @@ class TalksController extends BaseController
      */
     private function selectAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
+        if (!$this->userHasAccess($this->app)) {
             return false;
         }
 
@@ -273,12 +275,16 @@ class TalksController extends BaseController
         return true;
     }
 
-    private function commentCreateAction(Request $req, Application $app)
+    private function commentCreateAction(Request $req)
     {
-        $talk_id = (int)$req->get('id');
-        $admin_user_id = (int)$app['sentry']->getUser()->getId();
+        if (!$this->userHasAccess($this->app)) {
+            return false;
+        }
 
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\TalkComment');
+        $talk_id = (int)$req->get('id');
+        $admin_user_id = (int)$this->app['sentry']->getUser()->getId();
+
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\TalkComment');
         $comment = $mapper->get();
 
         $comment->talk_id = $talk_id;
@@ -293,6 +299,6 @@ class TalksController extends BaseController
                 'ext' => "Comment Added!"
             ]);
 
-        return $app->redirect($app->url('admin_talk_view', ['id' => $talk_id]));
+        return $this->app->redirect($this->url('admin_talk_view', ['id' => $talk_id]));
     }
 }
