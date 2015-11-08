@@ -423,11 +423,11 @@ class Talk extends Mapper
      */
     protected function getSortOptions(array $options, array $defaultOptions)
     {
-        if (!in_array($options['order_by'], $this->order_by_whitelist)) {
+        if (!isset($options['order_by']) || !in_array($options['order_by'], $this->order_by_whitelist)) {
             $options['order_by'] = $defaultOptions['order_by'];
         }
 
-        if (!in_array($options['sort'], ['ASC', 'DESC'])) {
+        if (!isset($options['sort']) || !in_array($options['sort'], ['ASC', 'DESC'])) {
             $options['sort'] = $defaultOptions['sort'];
         }
 
