@@ -87,6 +87,13 @@ class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
 
         $talk_mapper = $spot->mapper('OpenCFP\Domain\Entity\Talk');
         $talk_mapper->migrate();
+
+        $talk_comment_mapper = $spot->mapper('OpenCFP\Domain\Entity\TalkComment');
+        $talk_comment_mapper->migrate();
+
+        $talk_meta_mapper = $spot->mapper('OpenCFP\Domain\Entity\TalkMeta');
+        $talk_meta_mapper->migrate();
+
         $talk = $talk_mapper->build([
             'title' => 'Test Title',
             'description' => 'Test title description',
