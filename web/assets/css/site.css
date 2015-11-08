@@ -328,6 +328,33 @@ a:hover {
   color: #852b99;
 }
 
+.sort {
+  color: rgba(44, 44, 44, 0.6);
+  cursor: pointer;
+  position: relative;
+}
+.sort:before {
+  font-family: 'FontAwesome';
+  position: absolute;
+  right: 10px;
+  height: 24px;
+  height: 24px;
+  content: "\f0dc";
+}
+
+.sort--asc:before {
+  content: "\f0de";
+}
+
+.sort--desc:before {
+  content: "\f0dd";
+}
+
+.sort--asc,
+.sort--desc {
+  color: #000;
+}
+
 .talk-viewed {
   opacity: 0.5;
 }
