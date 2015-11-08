@@ -6,19 +6,23 @@ class TalkEntityTest extends \PHPUnit_Framework_TestCase
 {
     public $app;
     public $mapper;
+    private $entities = ['Talk', 'TalkMeta', 'User', 'Favorite'];
 
     protected function setup()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
-        // Create an in-memory database
         $cfg = new \Spot\Config;
         $cfg->addConnection('sqlite', [
             'dbname' => 'sqlite::memory',
             'driver' => 'pdo_sqlite'
         ]);
         $this->app['spot'] = new \Spot\Locator($cfg);
+
         $this->mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
-        $this->mapper->migrate();
+
+        foreach ($this->entities as $entity) {
+            $this->app['spot']->mapper('OpenCFP\Domain\Entity\\' . $entity)->migrate();
+        }
     }
 
     /**
