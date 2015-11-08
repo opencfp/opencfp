@@ -50,13 +50,12 @@
             {% if talk.get('comments')|length > 0 %}
                 <ul class="comment-list">
                 {% for comment in talk.comments %}
+                    <li>
+                        <img src="{{ comment.user.photo_path ? '/uploads/' ~ comment.user.photo_path : '/assets/img/dummyphoto.jpg' }}" class="comment-photo" alt="{{ comment.user.first_name }} {{ comment.user.last_name }}">
+                        <p>{{ comment.message }}</p>
+                        <span class="comment-list__meta">{{ comment.created|date("F jS \\a\\t g:ia") }}</span>
 
-                        <li>
-                            <img src="/uploads/{{ comment.user.photo_path }}" class="comment-photo" alt="{{ comment.user.first_name }} {{ comment.user.last_name }}">
-                            <p>{{ comment.message }}</p>
-                            <span class="comment-list__meta">{{ comment.created|date("F jS \\a\\t g:ia") }}</span>
-
-                        </li>
+                    </li>
                 {% endfor %}
                 </ul>
             {% endif %}
