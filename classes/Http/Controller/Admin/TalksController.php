@@ -293,7 +293,7 @@ class TalksController extends BaseController
 
         $mapper->save($comment);
 
-        $app['session']->set('flash', [
+        $this->app['session']->set('flash', [
                 'type' => 'success',
                 'short' => 'Success',
                 'ext' => "Comment Added!"
