@@ -7,6 +7,7 @@ use Spot\Entity;
 class User extends Entity
 {
     protected static $table = 'users';
+    protected static $mapper = 'OpenCFP\Domain\Entity\Mapper\User';
 
     public static function fields()
     {
