@@ -14,15 +14,25 @@ class Talk extends Mapper
      * @param  integer $admin_user_id
      * @return array
      */
-    public function getAllPagerFormatted($admin_user_id, $sort)
+    public function getAllPagerFormatted($admin_user_id, $sort, $userData = true, $where = null)
     {
-        $talks = $this->all()
-            ->order($sort)
-            ->with(['favorites']);
         $formatted = array();
 
+        if ($where)
+        {
+            $talks = $this->all()
+                ->order($sort)
+                ->where($where);
+        }
+        else
+        {
+            $talks = $this->all()
+                ->order($sort)
+                ->with(['favorites']);
+        }
+
         foreach ($talks as $talk) {
-            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id);
+            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id, $userData);
         }
 
         return $formatted;
@@ -98,7 +108,7 @@ class Talk extends Mapper
      * @param  integer $admin_user_id
      * @return array
      */
-    public function createdFormattedOutput($talk, $admin_user_id)
+    public function createdFormattedOutput($talk, $admin_user_id, $userData = true)
     {
         if ($talk->favorites) {
             foreach ($talk->favorites as $favorite) {
@@ -124,7 +134,7 @@ class Talk extends Mapper
             'sponsor' => $talk->sponsor
         ];
 
-        if ($talk->speaker) {
+        if ($talk->speaker && $userData) {
             $output['user'] = [
                 'id' => $talk->speaker->id,
                 'first_name' => $talk->speaker->first_name,

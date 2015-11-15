@@ -96,7 +96,11 @@ class WebGatewayProvider implements ServiceProviderInterface
         // Admin::Review
         $web->get('/admin/review', 'OpenCFP\Http\Controller\Admin\ReviewController::indexAction')->bind('admin_reviews');
 
-        $web->get('/admin/csv', 'OpenCFP\Http\Controller\Admin\TalksController::csvAction')->bind('admin_csv');
+        // CSV Exports
+        $web->get('/admin/csv', 'OpenCFP\Http\Controller\Admin\ExportsController::attributedTalksExportAction')->bind('admin_csv');
+        $web->get('/admin/csv/anon', 'OpenCFP\Http\Controller\Admin\ExportsController::anonymousTalksExportAction')->bind('admin_csv_anon');
+        $web->get('/admin/csv/selected', 'OpenCFP\Http\Controller\Admin\ExportsController::selectedTalksExportAction')->bind('admin_csv_selected');
+        $web->get('/admin/csv/emails', 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction')->bind('admin_csv_emails');
 
         $app->mount('/', $web);
     }
