@@ -96,6 +96,8 @@ class WebGatewayProvider implements ServiceProviderInterface
         // Admin::Review
         $web->get('/admin/review', 'OpenCFP\Http\Controller\Admin\ReviewController::indexAction')->bind('admin_reviews');
 
+        $web->get('/admin/csv', 'OpenCFP\Http\Controller\Admin\TalksController::csvAction')->bind('admin_csv');
+
         $app->mount('/', $web);
     }
 }

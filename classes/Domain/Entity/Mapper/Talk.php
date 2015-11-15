@@ -115,7 +115,13 @@ class Talk extends Mapper
             'category' => $talk->category,
             'created_at' => $talk->created_at,
             'selected' => $talk->selected,
-            'favorite' => $talk->favorite
+            'favorite' => $talk->favorite,
+            'description' => $talk->description,
+            'slides' => $talk->slides,
+            'other' => $talk->other,
+            'level' => $talk->level,
+            'desired' => $talk->desired,
+            'sponsor' => $talk->sponsor
         ];
 
         if ($talk->speaker) {
@@ -123,6 +129,20 @@ class Talk extends Mapper
                 'id' => $talk->speaker->id,
                 'first_name' => $talk->speaker->first_name,
                 'last_name' => $talk->speaker->last_name
+            ];
+
+            $output += [
+                'speaker_id' => $talk->speaker->id,
+                'speaker_first_name' => $talk->speaker->first_name,
+                'speaker_last_name' => $talk->speaker->last_name,
+                'speaker_email' => $talk->speaker->email,
+                'speaker_company' => $talk->speaker->company,
+                'speaker_twitter' => $talk->speaker->twitter,
+                'speaker_airport' => $talk->speaker->airport,
+                'speaker_hotel' => $talk->speaker->hotel,
+                'speaker_transportation' => $talk->speaker->transportation,
+                'speaker_info' => $talk->speaker->info,
+                'speaker_bio' => $talk->speaker->bio
             ];
         }
 

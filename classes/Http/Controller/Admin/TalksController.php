@@ -105,6 +105,46 @@ class TalksController extends BaseController
     }
 
     /**
+     * Export talks to CSV
+     *
+     * @param  Request $req Request Object
+     */
+    public function csvAction(Request $req)
+    {
+        if (!$this->userHasAccess($this->app)) {
+            return $this->redirectTo('login');
+        }
+
+        $sort = [ "created_at" => "DESC" ];
+        $admin_user_id = $this->app['sentry']->getUser()->getId();
+
+        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $talks = $mapper->getAllPagerFormatted($admin_user_id, $sort);
+
+        foreach ($talks as $talk => $info) {
+            $talks[$talk]['created_at'] = $info['created_at']->format('Y-m-d H:i:s');
+            unset($talks[$talk]['user']);
+        }
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=data.csv');
+        header('Content-Transfer-Encoding: binary');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
+        $output = fopen('php://output', 'w');
+
+        fputcsv($output, (array_keys($talks[0])));
+
+        foreach ($talks as $i => $talk) {
+            fputcsv($output, (array_values($talk)));
+        }
+
+        fclose($output);
+        exit();
+    }
+
+    /**
      * Set Favorited Talk [POST]
      *
      * @param  Request $req Request Object
