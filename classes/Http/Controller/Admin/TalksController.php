@@ -112,7 +112,7 @@ class TalksController extends BaseController
      */
     private function favoriteAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
+        if (!$this->userHasAccess($this->app)) {
             return false;
         }
 
@@ -159,7 +159,7 @@ class TalksController extends BaseController
      */
     private function selectAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
+        if (!$this->userHasAccess($this->app)) {
             return false;
         }
 
