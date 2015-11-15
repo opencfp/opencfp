@@ -59,7 +59,7 @@ class SpeakersController extends BaseController
     private function viewAction(Request $req)
     {
         // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess()) {
+        if (!$this->userHasAccess($this->app)) {
             return $this->redirectTo('dashboard');
         }
 

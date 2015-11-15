@@ -1,25 +1,31 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th align='left'><b>Title</b></th>
-            <th align='left'><b>Category</b></th>
-            <th align='left'><b>Created On</b></th>
-            <th align='left'><b>Submitted by</b></th>
+            <th class="sort" data-field="title">Title</th>
+            <th class="sort" data-field="type">Type</th>
+            <th class="sort" data-field="category">Category</th>
+            <th class="sort" data-field="total_rating">Rating</th>
+            <th class="sort" data-field="created_at">Created On</th>
+            <th>Submitted by</th>
+            <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody>
         {% for talk in talks %}
-            <tr>
-                <td><a href="{{ url('admin_talk_view', { id: talk.id }) }}" target="new">{{ talk.title|raw }}</a></td>
+            <tr{% if talk.meta.viewed == true %} class="talk-viewed"{% endif %}>
+                <td><a href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a></td>
+                <td>{{ talk.type }}</td>
                 <td>{{ talk.category }}</td>
+                <td><span class="label {% if talk.total_rating <= 2 %}label-warning{% endif %}{% if talk.total_rating > 2 %}label-success{% endif %}">{{ talk.total_rating }}</span></td>
                 <td>{{ talk.created_at|date("F jS Y \\a\\t g:ia T") }}</td>
-                {% if false == talk.user %}
-                <td><em>Unknown User</em></td>
-                {% else %}
-                <td><a href="{{ url('admin_speaker_view', { id: talk.user.id }) }}">{{ talk.user.first_name }} {{ talk.user.last_name }}</a></td>
-                {% endif %}
+                <td><a href="{{ url('admin_speaker_view', { id: talk.speaker.id }) }}">{{ talk.speaker.first_name }} {{ talk.speaker.last_name }}</a></td>
+                <td>
+                    <a href="#" id="talk-upvote-{{ talk.id }}" class="js-talk-rating" data-id="{{ talk.id }}" data-rating="1"><i class="fa fa-thumbs-up admin-icon{% if talk.meta.rating == 1 %} admin-icon--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-downvote-{{ talk.id }}" class="js-talk-rating" data-id="{{ talk.id }}" data-rating="-1"><i class="fa fa-thumbs-down admin-icon{% if talk.meta.rating == -1 %} admin-icon--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-favorite-{{ talk.id }}" class="js-talk-favorite" data-id="{{ talk.id }}"><i class="fa fa-star admin-icon{% if talk.favorite == 1 %} admin-icon--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-select-{{ talk.id }}" class="js-talk-select" data-id="{{ talk.id }}"><i class="fa fa-check-square admin-icon{% if talk.selected == 1 %} admin-icon--selected{% endif %}"></i></a>
+                </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
-

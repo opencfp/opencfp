@@ -34,6 +34,9 @@ class Talk extends Entity
         return [
             'speaker' => $mapper->belongsTo($entity, 'OpenCFP\Domain\Entity\User', 'user_id'),
             'favorites' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\Favorite', 'talk_id'),
+            'comments' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\TalkComment', 'talk_id')
+                ->order(['created' => 'ASC']),
+            'meta' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\TalkMeta', 'talk_id'),
         ];
     }
 
@@ -49,7 +52,7 @@ class Talk extends Entity
             'desired' => $this->desired,
             'slides' => $this->slides,
             'other' => $this->other,
-            'sponsor' => $this->sponsor
+            'sponsor' => $this->sponsor,
         ];
     }
 }
