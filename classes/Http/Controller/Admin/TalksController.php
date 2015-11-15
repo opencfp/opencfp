@@ -68,7 +68,7 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
+        if (!$this->userHasAccess($this->app)) {
             return $this->redirectTo('login');
         }
 
