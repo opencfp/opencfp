@@ -7,6 +7,7 @@ use Spot\Entity;
 class User extends Entity
 {
     protected static $table = 'users';
+    protected static $mapper = 'OpenCFP\Domain\Entity\Mapper\User';
 
     public static function fields()
     {
@@ -40,7 +41,8 @@ class User extends Entity
     {
         return [
             'talks' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\Talk', 'user_id'),
-            'groups' => $mapper->hasManyThrough($entity, '\OpenCFP\Domain\Entity\Group', '\OpenCFP\Domain\Entity\UserGroup', 'group_id', 'user_id'),
+            'groups' => $mapper->hasManyThrough($entity, 'OpenCFP\Domain\Entity\Group', '\OpenCFP\Domain\Entity\UserGroup', 'group_id', 'user_id'),
+            'comments' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\TalkComment', 'user_id'),
         ];
     }
 

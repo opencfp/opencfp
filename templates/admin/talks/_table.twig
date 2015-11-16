@@ -1,17 +1,17 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th align='left'><b><a href="/admin/talks?sort=title">Title</a></b></th>
-            <th align='left'><b><a href="/admin/talks?sort=type">Type</a></b></th>
-            <th align='left'><b><a href="/admin/talks?sort=category">Category</a></b></th>
-            <th align='left'><b><a href="/admin/talks">Created On</a></b></th>
-            <th align='left'><b>Submitted by</b></th>
+            <th class="sort" data-field="title">Title</th>
+            <th class="sort" data-field="type">Type</th>
+            <th class="sort" data-field="category">Category</th>
+            <th class="sort" data-field="created_at">Created On</th>
+            <th>Submitted by</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody>
         {% for talk in talks %}
-            <tr>
+            <tr{% if talk.meta.viewed == true %} class="talk-viewed"{% endif %}>
                 <td><a href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a></td>
                 <td>{{ talk.type }}</td>
                 <td>{{ talk.category }}</td>
@@ -22,8 +22,10 @@
                 <td><a href="{{ url('admin_speaker_view', { id: talk.user.id }) }}">{{ talk.user.first_name }} {{ talk.user.last_name }}</a></td>
                 {% endif %}
                 <td>
-                    <a href="#" id="talk-favorite-{{ talk.id }}" class="js-talk-favorite" data-id="{{ talk.id }}"><i class="fa fa-star star-favorite{% if talk.favorite == 1 %} star-favorite--selected{% endif %}"></i></a>
-                    <a href="#" id="talk-select-{{ talk.id }}" class="js-talk-select" data-id="{{ talk.id }}"><i class="fa fa-check-square check-select{% if talk.selected == 1 %} check-select--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-upvote-{{ talk.id }}" class="js-talk-rating" data-id="{{ talk.id }}" data-rating="1"><i class="fa fa-thumbs-up admin-icon{% if talk.meta.rating == 1 %} admin-icon--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-downvote-{{ talk.id }}" class="js-talk-rating" data-id="{{ talk.id }}" data-rating="-1"><i class="fa fa-thumbs-down admin-icon{% if talk.meta.rating == -1 %} admin-icon--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-favorite-{{ talk.id }}" class="js-talk-favorite" data-id="{{ talk.id }}"><i class="fa fa-star admin-icon{% if talk.favorite == 1 %} admin-icon--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-select-{{ talk.id }}" class="js-talk-select" data-id="{{ talk.id }}"><i class="fa fa-check-square admin-icon{% if talk.selected == 1 %} admin-icon--selected{% endif %}"></i></a>
                 </td>
             </tr>
         {% endfor %}
