@@ -6,17 +6,23 @@ use OpenCFP\Environment;
 class TalkMapperTest extends \PHPUnit_Framework_TestCase
 {
     public $app;
+    public $mapper;
+    private $entities = ['Talk', 'TalkMeta', 'User', 'Favorite'];
 
     protected function setup()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
-        $cfp = new \Spot\Config;
         $cfg = new \Spot\Config;
         $cfg->addConnection('sqlite', [
             'dbname' => 'sqlite::memory',
-            'driver' => 'pdo_sqlite'
+            'driver' => 'pdo_sqlite',
         ]);
         $this->app['spot'] = new \Spot\Locator($cfg);
+        $this->mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+
+        foreach ($this->entities as $entity) {
+            $this->app['spot']->mapper('OpenCFP\Domain\Entity\\' . $entity)->migrate();
+        }
     }
 
     /**
@@ -28,40 +34,62 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
         $admin_user_id = 1;
         $admin_majority = 3;
         $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
-        $mapper->migrate();
+
         $talk_data = [
             'title' => 'Admin Favorite Talk',
             'description' => "This talk has {$admin_majority} favorites!",
-            'user_id' => 1
+            'user_id' => $admin_user_id,
+            'type' => 'regular',
+            'category' => 'api',
+            'level' => 'entry',
         ];
         $talk = $mapper->create($talk_data);
 
-        $this->createAdminFavoredTalks($mapper, $admin_majority, $talk);
+        $this->createAdminFavoredTalks($admin_user_id, $admin_majority, $talk);
         $expected_admin_favorite = $mapper->createdFormattedOutput($talk, $admin_user_id);
-        $admin_favorite_collection = $mapper->getAdminFavorites($admin_user_id, $admin_majority);
+        $admin_favorite_collection = $mapper->getFavoritesByUserId($admin_user_id);
         $admin_favorite = $admin_favorite_collection[0];
 
         $this->assertEquals(
-            $expected_admin_favorite,
-            $admin_favorite,
+            $talk->id,
+            $admin_favorite['id'],
             "Did not get expected list of admin-favorited talks"
         );
     }
 
-    private function createAdminFavoredTalks($mapper, $admin_majority, $talk)
+    private function createViewedTalks($talk_data, $total)
+    {
+        $meta_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\TalkMeta');
+        for ($i = 0; $i <= $total; $i++) {
+            $talk = $this->mapper->create($talk_data);
+            $meta_mapper->create([
+                'admin_user_id' => 1,
+                'talk_id' => $talk->id,
+                'viewed' => true,
+            ]);
+        }
+    }
+
+    private function createAdminFavoredTalks($admin_user_id, $admin_majority, $talk)
     {
         // Create a test user
         $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
-        $user_mapper->migrate();
+        $user_mapper->create([
+            'id' => $admin_user_id,
+            'email' => 'test@test.com',
+            'password' => 'supersecret',
+            'first_name' => 'Testy',
+            'last_name' => 'McTesterson',
+        ]);
 
         // Create $admin_majority favorite records linked to that talk
         $favorite_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
-        $favorite_mapper->migrate();
+        $favorite_mapper->create(['admin_user_id' => $admin_user_id, 'talk_id' => $talk->id]);
 
         for ($x = 1; $x <= $admin_majority; $x++) {
-            $admin_id = rand();
+            $random_admin_id = rand();
             $favorite_data = [
-                'admin_user_id' => $admin_id,
+                'admin_user_id' => $random_admin_id,
                 'talk_id' => $talk->id
             ];
             $favorite = $favorite_mapper->create($favorite_data);

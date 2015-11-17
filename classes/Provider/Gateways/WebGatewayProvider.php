@@ -85,6 +85,8 @@ class WebGatewayProvider implements ServiceProviderInterface
         $web->get('/admin/talks/{id}', 'OpenCFP\Http\Controller\Admin\TalksController::viewAction')->bind('admin_talk_view');
         $web->post('/admin/talks/{id}/favorite', 'OpenCFP\Http\Controller\Admin\TalksController::favoriteAction')->bind('admin_talk_favorite');
         $web->post('/admin/talks/{id}/select', 'OpenCFP\Http\Controller\Admin\TalksController::selectAction')->bind('admin_talk_select');
+        $web->post('/admin/talks/{id}/comment', 'OpenCFP\Http\Controller\Admin\TalksController::commentCreateAction')->bind('admin_talk_comment_create');
+        $web->post('/admin/talks/{id}/rate', 'OpenCFP\Http\Controller\Admin\TalksController::rateAction')->bind('admin_talk_rate');
 
         // Admin::Speakers
         $web->get('/admin/speakers', 'OpenCFP\Http\Controller\Admin\SpeakersController::indexAction')->bind('admin_speakers');

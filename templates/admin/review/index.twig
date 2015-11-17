@@ -1,7 +1,26 @@
 {% extends "layouts/admin.twig" %}
 {% block content %}
-    <h2 class="headline">Favorite Talks</h2>
+    <h2 class="headline">Top Rated Talks</h2>
+    <form method="get" class="form-inline" role="form">
+        <input type="hidden" name="order_by" value="{{ order_by }}">
+        <input type="hidden" name="sort" value="{{ sort }}">
+        <div class="form-group">
+            <label>Max Per Page:</label>
+            <select name="per_page" class="form-control">
+                <option value="20">20</option>
+                <option value="40"{% if per_page == 40 %} SELECTED{% endif %}>40</option>
+                <option value="60"{% if per_page == 60 %} SELECTED{% endif %}>60</option>
+                <option value="80"{% if per_page == 80 %} SELECTED{% endif %}>80</option>
+                <option value="100"{% if per_page == 100 %} SELECTED{% endif %}>100</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default">Go</button>
+    </form>
     {% include "admin/review/_table.twig" %}
     {{ pagination|raw }}
 {% endblock %}
-
+{% block scripts %}
+  {{ parent() }}
+  <script src="/assets/js/admin/querystring.js"></script>
+  <script src="/assets/js/admin/talk.js"></script>
+{% endblock %}

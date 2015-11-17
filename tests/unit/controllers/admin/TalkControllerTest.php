@@ -40,8 +40,23 @@ class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
 
         // Create a fake request
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
-        $req->shouldReceive('get')->with('page')->andReturn(1);
-        $req->shouldReceive('get')->with('sort')->andReturn('title');
+        $paramBag = m::mock('Symfony\Component\HttpFoundation\ParameterBag');
+
+        $queryParams = [
+            'page' => 1,
+            'per_page' => 20,
+            'sort' => 'ASC',
+            'order_by' => 'title',
+            'filter' => null,
+        ];
+        $paramBag->shouldReceive('all')->andReturn($queryParams);
+
+        $req->shouldReceive('get')->with('page')->andReturn($queryParams['page']);
+        $req->shouldReceive('get')->with('per_page')->andReturn($queryParams['per_page']);
+        $req->shouldReceive('get')->with('sort')->andReturn($queryParams['sort']);
+        $req->shouldReceive('get')->with('order_by')->andReturn($queryParams['order_by']);
+        $req->shouldReceive('get')->with('filter')->andReturn($queryParams['filter']);
+        $req->query = $paramBag;
         $req->shouldReceive('getRequestUri')->andReturn('foo');
 
         $this->createTestData($app['spot']);
@@ -72,6 +87,13 @@ class AdminTalkControllerTest extends PHPUnit_Framework_TestCase
 
         $talk_mapper = $spot->mapper('OpenCFP\Domain\Entity\Talk');
         $talk_mapper->migrate();
+
+        $talk_comment_mapper = $spot->mapper('OpenCFP\Domain\Entity\TalkComment');
+        $talk_comment_mapper->migrate();
+
+        $talk_meta_mapper = $spot->mapper('OpenCFP\Domain\Entity\TalkMeta');
+        $talk_meta_mapper->migrate();
+
         $talk = $talk_mapper->build([
             'title' => 'Test Title',
             'description' => 'Test title description',
