@@ -284,7 +284,12 @@ a:hover {
   background: #374146;
 }
 
-.navbar-opencfp .navbar-nav > li > a {
+.navbar-collapse {
+  max-height: none;
+}
+
+.navbar-opencfp .navbar-nav > li > a,
+.navbar-opencfp .navbar-nav .dropdown-menu > li > a{
   border-top: 3px solid transparent;
   color: #FFF;
   -webkit-transition: border .2s ease-in-out;
@@ -293,7 +298,13 @@ a:hover {
 .navbar-opencfp .navbar-nav > li > a:hover,
 .navbar-opencfp .navbar-nav > .active > a,
 .navbar-opencfp .navbar-nav > .active > a:hover,
-.navbar-opencfp .navbar-nav > .active > a:focus {
+.navbar-opencfp .navbar-nav > .active > a:focus,
+.navbar-opencfp .navbar-nav .dropdown-menu>li>a:hover,
+.navbar-opencfp .navbar-nav .dropdown-menu>li>a:focus,
+.navbar-opencfp .nav .open>a,
+.navbar-opencfp .nav .open>a:hover,
+.navbar-opencfp .nav .open>a:focus
+{
   background: none;
   border-color: #e24b3b;
 }
