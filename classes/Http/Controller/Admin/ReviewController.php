@@ -22,7 +22,7 @@ class ReviewController extends BaseController
         ];
 
         $per_page = (int) $req->get('per_page') ?: 20;
-        $talks = $mapper->getTopRatedByUserId($user->id, $options);
+        $talks = $mapper->getTopRatedByUserId($user->getId(), $options);
 
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($talks);

@@ -162,7 +162,7 @@ class Talk extends Mapper
         }
 
         $talks = $this->query(
-            "SELECT t.*, SUM(m.rating) FROM talks t "
+            "SELECT t.*, SUM(m.rating) AS total_rating FROM talks t "
             . "LEFT JOIN talk_meta m ON t.id = m.talk_id "
             . "WHERE rating > 0 "
             . "GROUP BY m.`talk_id` "
