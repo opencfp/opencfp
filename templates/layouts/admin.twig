@@ -26,13 +26,25 @@
                         <li{% if path('speaker_package') == current_page %} class="active"{% endif %}><a href="{{ url('speaker_package') }}">Speaker Package</a></li>
                         <li{% if path('talk_ideas') == current_page %} class="active"{% endif %}><a href="{{ url('talk_ideas') }}">Talk Ideas</a></li>
                         <li{% if path('dashboard') == current_page %} class="active"{% endif %}><a href="{{ url('dashboard') }}">Dashboard</a></li>
-                        <li{% if path('admin') == current_page %} class="active"{% endif %}><a href="{{ url('admin') }}">Admin</a></li>
+                        <li class="{% if path('admin') == current_page %}active{% endif %} hidden-xs">
+                            <a href="{{ url('admin') }}">Admin</a>
+                        </li>
+                        <li class="dropdown visible-xs">
+                            <a href="#" class="{% if path('admin') == current_page %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('admin') }}">Admin</a></li>
+                                <li><a href="{{ url('admin_speakers') }}">Speakers</a></li>
+                                <li><a href="{{ url('admin_admins') }}">Admins</a></li>
+                                <li><a href="{{ url('admin_talks') }}">Talks</a></li>
+                                <li><a href="{{ url('admin_reviews') }}">Review Talks</a></li>
+                            </ul>
+                        </li>
                         <li><a href="{{ url('logout') }}">Logout</a></li>
                     </ul>
                 {% endblock %}
             </div>
         </div>
-        <aside class="sidebar col-sm-3 col-md-2">
+        <aside class="sidebar col-sm-3 col-md-2 hidden-xs">
             <ul class="nav nav-sidebar">
                 <li><a href="{{ url('admin') }}"><img data-src="/assets/img/icons/home.svg" alt="Home Dashboard" class="svg-inject nav-icon icon-12"> Admin Dashboard</a></li>
                 <li><a href="{{ url('admin_speakers') }}"><img data-src="/assets/img/icons/people.svg" alt="Speakers" class="svg-inject nav-icon icon-12"> Speakers</a></li>
