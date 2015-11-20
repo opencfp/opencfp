@@ -53,12 +53,14 @@
             <p class="help-block">Speaker bio can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
+    {% if site.online_conference == false %}
     <div class="form-group">
         <label for="form-user-airport" class="col-sm-2 control-label">Departing Airport Code</label>
         <div class="col-sm-10">
             <input id="form-user-airport" type="text" name="airport" class="form-control" placeholder="3 Characters" value="{{ airport | default('') }}">
         </div>
     </div>
+    {% endif %}
     <div class="form-group">
         <label for="form-user-notes" class="col-sm-2 control-label">Additional Notes</label>
         <div class="col-sm-10">
@@ -66,6 +68,7 @@
             <p class="help-block">Speaker notes can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
+    {% if site.online_conference  == false %}
     <div class="form-group">
         <label for="form-transportation" class="col-sm-2 control-label">Airfare?</label>
         <div class="col-sm-10">
@@ -86,6 +89,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <div class="form-group">
         <label for="form-user-photo" class="col-sm-2 control-label">Photo</label>
         <div class="col-sm-10">
