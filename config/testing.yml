@@ -22,7 +22,7 @@ database:
   database: cfp_travis
   dsn: mysql:dbname=cfp_travis;host=127.0.0.1
   user: root
-  password: "123"
+  password:
 
 mail:
   host: ~
