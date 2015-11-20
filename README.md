@@ -63,6 +63,14 @@ to your event. However, anything you are willing to push back should be updated 
 keep the master branch generic for future event organizers that choose to use the system. You would then be able to
 merge master to your private branch and get updates when desired!
 
+Here are some issues that we would love to see contributions for:
+
+(Last updated November 19, 2015)
+
+* [Remind users with no talks submitted to send something](https://github.com/opencfp/opencfp/issues/159)
+* [Transition from Sentry to Silex Security](https://github.com/opencfp/opencfp/issues/163)
+* [Allow users to specify length of workshops](https://github.com/opencfp/opencfp/issues/254)
+
 <a name="requirements" />
 ## Requirements
 
