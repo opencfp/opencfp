@@ -9,6 +9,7 @@ application:
   arrival: 2014-10-26
   departure: 2014-10-31
   secure_ssl: false
+  online_conference: false
 
 api:
   enabled: true
@@ -21,7 +22,7 @@ database:
   database: cfp_travis
   dsn: mysql:dbname=cfp_travis;host=127.0.0.1
   user: root
-  password: ""
+  password:
 
 mail:
   host: ~
