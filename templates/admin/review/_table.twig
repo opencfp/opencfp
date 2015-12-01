@@ -5,6 +5,8 @@
             <th align='left'><b>Category</b></th>
             <th align='left'><b>Created On</b></th>
             <th align='left'><b>Submitted by</b></th>
+            <th align='left'><b>Rating</b></th>
+            <th align='left'><b># of Reviews</b></th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +20,8 @@
                 {% else %}
                 <td><a href="{{ url('admin_speaker_view', { id: talk.user.id }) }}">{{ talk.user.first_name }} {{ talk.user.last_name }}</a></td>
                 {% endif %}
+                <td>{{ talk.total_rating }}</td>
+                <td>{{ talk.review_count }}</td>
             </tr>
         {% endfor %}
     </tbody>

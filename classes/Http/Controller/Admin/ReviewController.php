@@ -55,7 +55,6 @@ class ReviewController extends BaseController
             'totalRecords' => count($talks),
             'per_page' => $per_page,
             'filter' => $req->get('filter'),
-            'per_page' => $per_page,
             'sort' => $req->get('sort'),
             'order_by' => $req->get('order_by'),
         ];
