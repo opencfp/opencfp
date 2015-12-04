@@ -67,6 +67,7 @@ class TalksController extends BaseController
             'order_by' => $req->get('order_by'),
         ];
 
+
         return $this->render('admin/talks/index.twig', $templateData);
     }
 
