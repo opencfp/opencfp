@@ -23,10 +23,10 @@ class Talk extends Mapper
      * user has favourited this talk
      *
      * @param integer $admin_user_id
-     * @param string $order_by
-     * @param string $sort Sort Direction
-     * @throws InvalidArgumentException If order by is not in white list
-     * @return array
+     * @param array $options
+     * @return array If order by is not in white list
+     * @internal param string $order_by
+     * @internal param string $sort Sort Direction
      */
     public function getAllPagerFormatted($admin_user_id, $options = [])
     {
@@ -85,8 +85,9 @@ class Talk extends Mapper
      * Return an array of recent talks
      *
      * @param  integer $admin_user_id
-     * @param  integer $limt
+     * @param int $limit
      * @return array
+     * @internal param int $limt
      */
     public function getRecent($admin_user_id, $limit = 10)
     {
@@ -162,7 +163,7 @@ class Talk extends Mapper
         }
 
         $talks = $this->query(
-            "SELECT t.*, SUM(m.rating) AS total_rating FROM talks t "
+            "SELECT t.*, SUM(m.rating) AS total_rating, COUNT(m.rating) as review_count FROM talks t "
             . "LEFT JOIN talk_meta m ON t.id = m.talk_id "
             . "WHERE rating > 0 "
             . "GROUP BY m.`talk_id` "
@@ -322,8 +323,8 @@ class Talk extends Mapper
      * @param mixed $value Column value
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
-     * @throws If column is not in the column white list
-     * @return array
+     * @return array column is not in the column white list
+     * @throws InvalidArgumentException
      */
     public function getTalksFilteredBy($column, $value, $admin_user_id, $options = [])
     {
@@ -409,6 +410,11 @@ class Talk extends Mapper
                 'first_name' => $talk->speaker->first_name,
                 'last_name' => $talk->speaker->last_name
             ];
+        }
+
+        if ($talk->total_rating) {
+            $output['total_rating'] = $talk->total_rating;
+            $output['review_count'] = $talk->review_count;
         }
 
         return $output;
