@@ -40,7 +40,7 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
     {
         $userId = $this->app['user']->getId();
 
-        // Crate our fake talk
+        // Create our fake talk
         $talk = m::mock('OpenCFP\Domain\Entity\Talk');
         $talk->shouldReceive('save');
         $talk->shouldReceive('set')
