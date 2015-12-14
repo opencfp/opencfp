@@ -35,7 +35,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 'created_at',
-                'sort' => 'DESC',
+                'sort' => 'ASC',
             ]
         );
 
