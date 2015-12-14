@@ -23,7 +23,7 @@ class AdminPromoteCommand extends BaseCommand
             ->setDefinition([
                 new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to promote to admin')
             ])
-            ->setDescription('Promote an existing (or new) user to be an admin')
+            ->setDescription('Promote an existing user to be an admin')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command promotes a user to the admin group for a given environment:
 
