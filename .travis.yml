@@ -8,16 +8,14 @@ php:
   - 5.5
 
 env:
-  - TRAVIS_DB=cfp_travis
+  global:
+    - TRAVIS_DB=cfp_travis
+    - CODECLIMATE_REPO_TOKEN=9deb249b01a414d979959cfd05a4c351b19a5959858653b20276454d4189edc3
 
 # cache composer downloads so installing is quicker
 cache:
   directories:
     - $HOME/.composer/cache
-
-addons:
-  code_climate:
-    repo_token: 9deb249b01a414d979959cfd05a4c351b19a5959858653b20276454d4189edc3
 
 before_install:
   - composer self-update
