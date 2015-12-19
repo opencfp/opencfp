@@ -1,12 +1,12 @@
 <?php namespace OpenCFP\Console;
 
+use OpenCFP\Application as ApplicationContainer;
+use OpenCFP\Console\Command\AdminDemoteCommand;
+use OpenCFP\Console\Command\AdminPromoteCommand;
 use OpenCFP\Console\Command\ClearCacheCommand;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use OpenCFP\Application as ApplicationContainer;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
-use OpenCFP\Console\Command\AdminPromoteCommand;
-use OpenCFP\Console\Command\AdminDemoteCommand;
 use Symfony\Component\Console\Input\InputOption;
 
 class Application extends ConsoleApplication

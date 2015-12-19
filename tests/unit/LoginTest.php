@@ -1,8 +1,8 @@
 <?php
 namespace OpenCFP;
 
-use Cartalyst\Sentry\Users\UserNotFoundException;
 use \Mockery as m;
+use Cartalyst\Sentry\Users\UserNotFoundException;
 use OpenCFP\Domain\Services\Login;
 
 class LoginTest extends \PHPUnit_Framework_TestCase

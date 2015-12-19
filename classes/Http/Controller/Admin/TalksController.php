@@ -3,9 +3,9 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Http\Controller\BaseController;
-use Symfony\Component\HttpFoundation\Request;
-use Pagerfanta\View\TwitterBootstrap3View;
 use OpenCFP\Http\Controller\FlashableTrait;
+use Pagerfanta\View\TwitterBootstrap3View;
+use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends BaseController
 {

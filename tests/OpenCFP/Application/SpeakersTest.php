@@ -5,12 +5,12 @@ namespace OpenCFP\Application;
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Entity\Talk;
+use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
-use OpenCFP\Domain\Entity\Talk;
-use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Talk\TalkSubmission;
 
 class SpeakersTest extends \PHPUnit_Framework_TestCase
