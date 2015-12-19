@@ -44,7 +44,7 @@
         }
     },
     "require-dev": {
-        "codeclimate/php-test-reporter": "dev-master",
+        "codeclimate/php-test-reporter": "0.2.0",
         "fabpot/php-cs-fixer": "^1.10",
         "fzaninotto/faker": "1.2.*",
         "johnkary/phpunit-speedtrap": "~1.0@dev",
