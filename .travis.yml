@@ -36,5 +36,4 @@ script:
   - vendor/bin/php-cs-fixer fix --verbose
 
 after_script:
-  - vendor/bin/test-reporter --stdout > codeclimate.json
-  - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"
+  - vendor/bin/test-reporter --coverage-report build/logs/clover.xml
