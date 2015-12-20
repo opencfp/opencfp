@@ -2,10 +2,12 @@ language: php
 
 sudo: false
 
-php:
-  - 7.0
-  - 5.6
-  - 5.5
+matrix:
+  include:
+    - php: 7.0
+    - php: 5.6
+      env: WITH_CS=true
+    - php: 5.5
 
 env:
   global:
@@ -31,7 +33,7 @@ before_script:
 
 script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-  - vendor/bin/php-cs-fixer fix --verbose
+  - if [[ "$WITH_CS" == "true" ]]; then vendor/bin/php-cs-fixer fix --verbose; fi
 
 after_success:
   - vendor/bin/test-reporter --coverage-report build/logs/clover.xml
