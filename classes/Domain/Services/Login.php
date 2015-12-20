@@ -25,10 +25,10 @@ class Login
 
         try {
             $this->sentry->authenticate(
-                array(
+                [
                     'email'=>$user,
                     'password'=>$password,
-                ),
+                ],
                 false
             );
         } catch (UserNotFoundException $e) {
@@ -46,7 +46,7 @@ class Login
 
     public function getViewVariables()
     {
-        $variables = array();
+        $variables = [];
         if (isset($_REQUEST['email']) && (isset($_REQUEST['passwd']))) {
             if (!$this->authenticate($_REQUEST['email'], $_REQUEST['passwd'])) {
                 $variables['errorMessage'] = $this->getAuthenticationMessage();

@@ -17,10 +17,10 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function formRejectsValidationOnMissingFields()
     {
-        $data = array(
+        $data = [
             'email' => 'test@domain.com',
             'notrequired' => 'test'
-        );
+        ];
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $response = $form->hasRequiredFields();
         $this->assertFalse($response);
@@ -36,7 +36,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function emailsAreBeingValidatedCorrectly($email, $expectedResponse)
     {
-        $data = array('email' => $email);
+        $data = ['email' => $email];
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $this->assertEquals(
             $form->validateEmail(),
@@ -53,7 +53,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function emailValidationShouldFailWithoutEmail()
     {
-        $data = array();
+        $data = [];
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $this->assertFalse(
             $form->validateEmail(),
@@ -68,13 +68,13 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function emailProvider()
     {
-        return array(
-            array('test', false),
-            array('test@domain.com', true),
-            array('', false),
-            array('test@domain', false),
-            array('test+tricky@domain.com', true)
-        );
+        return [
+            ['test', false],
+            ['test@domain.com', true],
+            ['', false],
+            ['test@domain', false],
+            ['test+tricky@domain.com', true]
+        ];
     }
 
     /**
@@ -84,12 +84,12 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function properPasswordValidator()
     {
-        return array(
-            array('acceptable'),
-            array('testing123'),
-            array('{^secur3'),
-            array('invalidChars&*$')
-        );
+        return [
+            ['acceptable'],
+            ['testing123'],
+            ['{^secur3'],
+            ['invalidChars&*$']
+        ];
     }
 
     /**
@@ -102,10 +102,10 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function properPasswordsPassValidationAndSanitization($passwd)
     {
-        $data = array(
+        $data = [
             'password' => $passwd,
             'password2' => $passwd
-        );
+        ];
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
@@ -127,10 +127,10 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function badPasswordsAreBeingCorrectlyDetected($passwd, $passwd2, $expectedMessage, $expectedResponse)
     {
-        $data = array(
+        $data = [
             'password' => $passwd,
             'password2' => $passwd2
-        );
+        ];
 
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
@@ -151,12 +151,12 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function badPasswordProvider()
     {
-        return array(
-            array('foo', 'foo', "The submitted password must be at least 5 characters long", false),
-            array('bar', 'foo', "The submitted passwords do not match", false),
-            array(null, null, "Missing passwords", false),
-            array('password with spaces', 'password with spaces', "The submitted password contains invalid characters", false),
-        );
+        return [
+            ['foo', 'foo', "The submitted password must be at least 5 characters long", false],
+            ['bar', 'foo', "The submitted passwords do not match", false],
+            [null, null, "Missing passwords", false],
+            ['password with spaces', 'password with spaces', "The submitted password contains invalid characters", false],
+        ];
     }
 
     /**
@@ -193,13 +193,13 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             $longName .= 'X';
         }
 
-        return array(
-            array('Chris', true),
-            array(null, false),
-            array('', false),
-            array(false, false),
-            array($longName, false),
-        );
+        return [
+            ['Chris', true],
+            [null, false],
+            ['', false],
+            [false, false],
+            [$longName, false],
+        ];
     }
 
     /**
@@ -236,13 +236,13 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             $longName .= 'X';
         }
 
-        return array(
-            array('Chris', true),
-            array(null, false),
-            array('', false),
-            array(false, false),
-            array($longName, false),
-        );
+        return [
+            ['Chris', true],
+            [null, false],
+            ['', false],
+            [false, false],
+            [$longName, false],
+        ];
     }
 
     /**
@@ -271,20 +271,20 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function validateAllProvider()
     {
-        $baseData = array(
+        $baseData = [
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => 'McTesterton'
-        );
+        ];
         $baseDataWithSpeakerInfo = $baseData;
         $baseDataWithSpeakerInfo['speaker_info'] = "Testing speaker info data";
 
-        return array(
-            array($baseData, true),
-            array($baseDataWithSpeakerInfo, true),
-        );
+        return [
+            [$baseData, true],
+            [$baseDataWithSpeakerInfo, true],
+        ];
     }
 
     /**
@@ -335,10 +335,10 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
       */
     public function speakerTextProvider()
     {
-        return array(
-            array('Speaker text that can go in multiple places', true),
-            array(null, false),
-        );
+        return [
+            ['Speaker text that can go in multiple places', true],
+            [null, false],
+        ];
     }
 
     /**
@@ -368,66 +368,66 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
      */
     public function sanitizationProvider()
     {
-        $badDataIn = array(
+        $badDataIn = [
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => "<script>alert('XSS')</script>"
-        );
+        ];
 
-        $badDataOut = array(
+        $badDataOut = [
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => ""
-        );
+        ];
 
-        $goodDataIn = array(
+        $goodDataIn = [
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => "McTesterton"
-        );
+        ];
 
         $goodDataOut = $goodDataIn;
 
-        $badSpeakerInfoIn = array(
+        $badSpeakerInfoIn = [
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => "McTesterton",
             'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
-        );
+        ];
 
-        $badSpeakerInfoOut = array(
+        $badSpeakerInfoOut = [
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => "McTesterton",
             'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
-        );
+        ];
 
-        $goodSpeakerInfoIn = array(
+        $goodSpeakerInfoIn = [
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => "McTesterton",
             'speaker_info' => "Find my bio at http://littlehart.net"
-        );
+        ];
 
         $goodSpeakerInfoOut = $goodSpeakerInfoIn;
 
-        return array(
-            array($badDataIn, $badDataOut),
-            array($goodDataIn, $goodDataOut),
-            array($badSpeakerInfoIn, $badSpeakerInfoOut),
-            array($goodSpeakerInfoIn, $goodSpeakerInfoOut)
-        );
+        return [
+            [$badDataIn, $badDataOut],
+            [$goodDataIn, $goodDataOut],
+            [$badSpeakerInfoIn, $badSpeakerInfoOut],
+            [$goodSpeakerInfoIn, $goodSpeakerInfoOut]
+        ];
     }
 }

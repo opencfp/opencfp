@@ -41,17 +41,17 @@ class SpeakersController extends BaseController
         $pagination = $view->render(
             $pagerfanta,
             $routeGenerator,
-            array('proximity' => 3)
+            ['proximity' => 3]
         );
 
-        $templateData = array(
+        $templateData = [
             'airport' => $this->app->config('application.airport'),
             'arrival' => date('Y-m-d', $this->app->config('application.arrival')),
             'departure' => date('Y-m-d', $this->app->config('application.departure')),
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage()
-        );
+        ];
 
         return $this->render('admin/speaker/index.twig', $templateData);
     }
@@ -72,7 +72,7 @@ class SpeakersController extends BaseController
         $talks = $talk_mapper->getByUser($req->get('id'))->toArray();
 
         // Build and render the template
-        $templateData = array(
+        $templateData = [
             'airport' => $this->app->config('application.airport'),
             'arrival' => date('Y-m-d', $this->app->config('application.arrival')),
             'departure' => date('Y-m-d', $this->app->config('application.departure')),
@@ -80,7 +80,7 @@ class SpeakersController extends BaseController
             'talks' => $talks,
             'photo_path' => '/uploads/',
             'page' => $req->get('page'),
-        );
+        ];
 
         return $this->render('admin/speaker/view.twig', $templateData);
     }
@@ -107,11 +107,11 @@ class SpeakersController extends BaseController
         }
 
         // Set flash message
-        $this->app['session']->set('flash', array(
+        $this->app['session']->set('flash', [
             'type' => $type,
             'short' => $short,
             'ext' => $ext
-        ));
+        ]);
 
         return $this->redirectTo('admin_speakers');
     }

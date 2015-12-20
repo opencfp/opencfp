@@ -33,14 +33,14 @@ class AdminsController extends BaseController
         $pagination = $view->render(
             $pagerfanta,
             $routeGenerator,
-            array('proximity' => 3)
+            ['proximity' => 3]
         );
 
-        $templateData = array(
+        $templateData = [
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage()
-        );
+        ];
 
         return $this->render('admin/admins/index.twig', $templateData);
     }
@@ -50,11 +50,11 @@ class AdminsController extends BaseController
         $admin = $this->app['sentry']->getUser();
 
         if ($admin->getId() == $req->get('id')) {
-            $this->app['session']->set('flash', array(
+            $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'Sorry, you cannot remove yourself as Admin.',
-            ));
+            ]);
 
             return $this->redirectTo('admin_admins');
         }
@@ -67,19 +67,19 @@ class AdminsController extends BaseController
         $response = $user->removeGroup($adminGroup);
 
         if ($response == true) {
-            $this->app['session']->set('flash', array(
+            $this->app['session']->set('flash', [
                 'type' => 'success',
                 'short' => 'Success',
                 'ext' => 'Successfully removed the Admin!',
-            ));
+            ]);
         }
 
         if ($response == false) {
-            $this->app['session']->set('flash', array(
+            $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'We were unable to remove the Admin. Please try again.',
-            ));
+            ]);
         }
 
         return $this->redirectTo('admin_admins');

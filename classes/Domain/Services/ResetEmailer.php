@@ -32,7 +32,7 @@ class ResetEmailer
 
     private function parameters($userId, $resetCode)
     {
-        return array(
+        return [
             'reset_code' => $resetCode,
             'method' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
                 ? 'https' : 'http',
@@ -40,7 +40,7 @@ class ResetEmailer
             'user_id' => $userId,
             'email' => $this->config_email,
             'title' => $this->config_title
-        );
+        ];
     }
 
     private function preparedMessage($email, $parameters)

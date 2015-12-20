@@ -45,7 +45,7 @@ class ReviewController extends BaseController
         $pagination = $view->render(
             $pagerfanta,
             $routeGenerator,
-            array('proximity' => 3)
+            ['proximity' => 3]
         );
 
         $template_data = [

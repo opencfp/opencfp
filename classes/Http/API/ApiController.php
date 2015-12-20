@@ -120,7 +120,7 @@ class ApiController
      *
      * @return string the generated URL
      */
-    public function url($route, $parameters = array())
+    public function url($route, $parameters = [])
     {
         return $this->app['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }

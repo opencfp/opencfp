@@ -52,7 +52,7 @@ class TalksController extends BaseController
         $pagination = $view->render(
             $pagerfanta,
             $routeGenerator,
-            array('proximity' => 3)
+            ['proximity' => 3]
         );
 
         $templateData = [
@@ -157,12 +157,12 @@ class TalksController extends BaseController
         });
 
         // Build and render the template
-        $templateData = array(
+        $templateData = [
             'talk' => $talk,
             'talk_meta' => $talk_meta,
             'speaker' => $speaker,
             'otherTalks' => $otherTalks,
-        );
+        ];
 
         return $this->render('admin/talks/view.twig', $templateData);
     }

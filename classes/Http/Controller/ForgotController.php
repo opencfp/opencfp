@@ -16,10 +16,10 @@ class ForgotController extends BaseController
     {
         $form = $this->app['form.factory']->create(new ForgotForm());
 
-        $data = array(
+        $data = [
             'form' => $form->createView(),
             'current_page' => "Forgot Password"
-        );
+        ];
 
         return $this->render('user/forgot_password.twig', $data);
     }
@@ -30,11 +30,11 @@ class ForgotController extends BaseController
         $form->bind($req);
 
         if (!$form->isValid()) {
-            $this->app['session']->set('flash', array(
+            $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "Please enter a properly formatted email address"
-            ));
+            ]);
 
             return $this->redirectTo('forgot_password');
         }
@@ -54,11 +54,11 @@ class ForgotController extends BaseController
         $response = $this->app['reset_emailer']->send($user->getId(), $data['email'], $user->getResetPasswordCode());
 
         if ($response == false) {
-            $this->app['session']->set('flash', array(
+            $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "We were unable to send your password reset request. Please try again"
-            ));
+            ]);
 
             return $this->redirectTo('forgot_password');
         }
@@ -83,18 +83,18 @@ class ForgotController extends BaseController
         }
 
         if ($error > 0) {
-            $this->app['session']->set('flash', array(
+            $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => $errorMessage,
-            ));
+            ]);
         }
 
         // Build password form and display it to the user
-        $form_options = array(
+        $form_options = [
             'user_id' => $req->get('user_id'),
             'reset_code' => $req->get('reset_code')
-        );
+        ];
         $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
         $data['form'] = $form->createView();
@@ -107,10 +107,10 @@ class ForgotController extends BaseController
     {
         $user_id = $req->get('user_id');
         $reset_code = $req->get('reset_code');
-        $form_options = array(
+        $form_options = [
             'user_id' => $user_id,
             'reset_code' => $reset_code
-        );
+        ];
         $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
         if (! $form->isValid()) {
@@ -131,11 +131,11 @@ class ForgotController extends BaseController
         }
 
         if ($error > 0) {
-            $this->app['session']->set('flash', array(
+            $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => $errorMessage,
-            ));
+            ]);
         }
 
         return $this->redirectTo('forgot_password');
@@ -193,10 +193,10 @@ class ForgotController extends BaseController
 
     protected function successfulSendFlashParameters($email)
     {
-        return array(
+        return [
             'type' => 'success',
             'short' => 'Success',
             'ext' => "If your email was valid, we sent a link to reset your password to $email"
-        );
+        ];
     }
 }
