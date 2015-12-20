@@ -20,7 +20,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
         $cfg = new \Spot\Config;
         $cfg->addConnection('sqlite', [
             'dbname' => 'sqlite::memory',
-            'driver' => 'pdo_sqlite'
+            'driver' => 'pdo_sqlite',
         ]);
         $this->app['spot'] = new \Spot\Locator($cfg);
 
@@ -73,7 +73,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
             'slides' => '',
             'other' => '',
             'sponsor' => '',
-            'user_id' => $this->app['sentry']->getUser()->getId()
+            'user_id' => $this->app['sentry']->getUser()->getId(),
         ];
 
         $this->setPost($talk_data);

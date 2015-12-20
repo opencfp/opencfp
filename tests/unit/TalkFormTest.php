@@ -43,7 +43,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     {
         $badData = [
             'title' => 'Bad Data',
-            'description' => 'Hey, why are we missing fields!'
+            'description' => 'Hey, why are we missing fields!',
         ];
         $goodData = [
             'title' => 'Talk Title',
@@ -55,7 +55,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             'other' => 'Misc comments',
             'desired' => 1,
             'sponsor' => 1,
-            'user_id' => 1
+            'user_id' => 1,
         ];
         $extendedData = $goodData;
         $extendedData['extra'] = "Extra data in \$_POST but we ignore it";
@@ -63,7 +63,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
         return [
             [serialize($badData), false],
             [serialize($goodData), true],
-            [serialize($extendedData), true]
+            [serialize($extendedData), true],
         ];
     }
 
@@ -101,7 +101,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             [substr($faker->text(90), 0, 90), true],
             [null, false],
             ["This is a string that could be more than 100 characters long but will we really know for sure until I check it out?", false],
-            ["A little bit of this & that", true]
+            ["A little bit of this & that", true],
         ];
     }
 
@@ -177,7 +177,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             [null, false],
             [false, false],
             [1, false],
-            [true, false]
+            [true, false],
         ];
     }
 
@@ -190,7 +190,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     {
         $validSpeakerInfo = [
             'user_id' => 1,
-            'info' => 'Special speaker info'
+            'info' => 'Special speaker info',
         ];
 
         return [
@@ -199,7 +199,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             [null, false, false],
             [true, false, false],
             [false, false, false],
-            ['user', false, false]
+            ['user', false, false],
         ];
     }
 }

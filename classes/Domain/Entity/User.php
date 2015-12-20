@@ -33,7 +33,7 @@ class User extends Entity
             'transportation' => ['type' => 'smallint', 'value' => 0],
             'info' => ['type' => 'text'],
             'bio' => ['type' => 'text'],
-            'photo_path' => ['type' => 'string', 'length' => 255]
+            'photo_path' => ['type' => 'string', 'length' => 255],
         ];
     }
 

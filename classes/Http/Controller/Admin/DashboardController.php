@@ -23,7 +23,7 @@ class DashboardController extends BaseController
             'talkTotal' => $talk_mapper->all()->count(),
             'favoriteTotal' => $favorite_mapper->all()->count(),
             'selectTotal' => $talk_mapper->all()->where(['selected' => 1])->count(),
-            'talks' => $recent_talks
+            'talks' => $recent_talks,
         ];
 
         return $this->render('admin/index.twig', $templateData);

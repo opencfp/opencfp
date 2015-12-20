@@ -21,7 +21,7 @@ class SpotServiceProvider implements ServiceProviderInterface
                 'user' => $app->config('database.user'),
                 'password' => $app->config('database.password'),
                 'host' => $app->config('database.host'),
-                'driver' => 'pdo_mysql'
+                'driver' => 'pdo_mysql',
             ];
 
             if ($app->config('database.port') !== null) {

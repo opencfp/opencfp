@@ -94,7 +94,7 @@ class SpeakerProfile
             'name' => $this->getName(),
             'email' => $this->getEmail(),
             'twitter' => $this->getTwitter(),
-            'bio' => $this->getBio()
+            'bio' => $this->getBio(),
         ];
     }
 }

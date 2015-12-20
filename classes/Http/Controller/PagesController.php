@@ -24,7 +24,7 @@ class PagesController extends BaseController
         $numberOfTalks = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk')->all()->count();
 
         return [
-            'number_of_talks' => $numberOfTalks
+            'number_of_talks' => $numberOfTalks,
         ];
     }
 }

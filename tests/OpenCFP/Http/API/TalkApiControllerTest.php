@@ -103,7 +103,7 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
         $this->speakers->shouldReceive('getTalks')->once()->andReturn([
             new Talk(['title' => 'Testy Talk']),
             new Talk(['title' => 'Another Talk']),
-            new Talk(['title' => 'Yet Another Talk'])
+            new Talk(['title' => 'Yet Another Talk']),
         ]);
 
         $response = $this->sut->handleViewAllTalks($this->getValidRequest());
@@ -141,7 +141,7 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
         'description' => 'I play by the rules.',
         'type' => 'regular',
         'level' => 'entry',
-        'category' => 'api'
+        'category' => 'api',
         ]);
     }
 }

@@ -152,7 +152,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
             'description' => 'Some example talk for our submission',
             'type' => 'regular',
             'category' => 'api',
-            'level' => 'mid'
+            'level' => 'mid',
         ]);
 
         /**
@@ -177,7 +177,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
             'description' => 'Some example talk for our submission',
             'type' => 'regular',
             'category' => 'api',
-            'level' => 'mid'
+            'level' => 'mid',
         ]);
 
         $this->sut->submitTalk($submission);
@@ -206,7 +206,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
             'id' => self::SPEAKER_ID,
             'email' => 'speaker@opencfp.org',
             'first_name' => 'Fake',
-            'last_name' => 'Speaker'
+            'last_name' => 'Speaker',
         ]);
     }
 
@@ -234,7 +234,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
             new Talk([
                 'id' => 1,
                 'title' => 'Testy Talk',
-                'user_id' => self::SPEAKER_ID + 1 // Not the speaker!
+                'user_id' => self::SPEAKER_ID + 1, // Not the speaker!
             ])
         );
 
@@ -253,7 +253,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
             new Talk([
                 'id' => 1,
                 'title' => 'Testy Talk',
-                'user_id' => self::SPEAKER_ID
+                'user_id' => self::SPEAKER_ID,
             ])
         );
 
@@ -272,18 +272,18 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
             new Talk([
                 'id' => 1,
                 'title' => 'Testy Talk',
-                'user_id' => self::SPEAKER_ID
+                'user_id' => self::SPEAKER_ID,
             ]),
             new Talk([
                 'id' => 2,
                 'title' => 'Another Talk',
-                'user_id' => self::SPEAKER_ID
+                'user_id' => self::SPEAKER_ID,
             ]),
             new Talk([
                 'id' => 3,
                 'title' => 'Yet Another Talk',
-                'user_id' => self::SPEAKER_ID
-            ])
+                'user_id' => self::SPEAKER_ID,
+            ]),
         ]);
 
         return $stub;

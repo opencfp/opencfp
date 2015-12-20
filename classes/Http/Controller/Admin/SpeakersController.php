@@ -50,7 +50,7 @@ class SpeakersController extends BaseController
             'departure' => date('Y-m-d', $this->app->config('application.departure')),
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
-            'page' => $pagerfanta->getCurrentPage()
+            'page' => $pagerfanta->getCurrentPage(),
         ];
 
         return $this->render('admin/speaker/index.twig', $templateData);
@@ -110,7 +110,7 @@ class SpeakersController extends BaseController
         $this->app['session']->set('flash', [
             'type' => $type,
             'short' => $short,
-            'ext' => $ext
+            'ext' => $ext,
         ]);
 
         return $this->redirectTo('admin_speakers');

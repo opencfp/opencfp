@@ -15,7 +15,7 @@ class Group extends Entity
             'name' => ['type' => 'string', 'length' => 255, 'required' => true],
             'permissions' => ['type' => 'text'],
             'created_at' => ['type' => 'datetime', 'value' => new \DateTime()],
-            'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()]
+            'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()],
         ];
     }
 

@@ -90,7 +90,7 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
             $random_admin_id = rand();
             $favorite_data = [
                 'admin_user_id' => $random_admin_id,
-                'talk_id' => $talk->id
+                'talk_id' => $talk->id,
             ];
             $favorite = $favorite_mapper->create($favorite_data);
         }

@@ -18,7 +18,7 @@ class ForgotController extends BaseController
 
         $data = [
             'form' => $form->createView(),
-            'current_page' => "Forgot Password"
+            'current_page' => "Forgot Password",
         ];
 
         return $this->render('user/forgot_password.twig', $data);
@@ -33,7 +33,7 @@ class ForgotController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Please enter a properly formatted email address"
+                'ext' => "Please enter a properly formatted email address",
             ]);
 
             return $this->redirectTo('forgot_password');
@@ -57,7 +57,7 @@ class ForgotController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "We were unable to send your password reset request. Please try again"
+                'ext' => "We were unable to send your password reset request. Please try again",
             ]);
 
             return $this->redirectTo('forgot_password');
@@ -93,7 +93,7 @@ class ForgotController extends BaseController
         // Build password form and display it to the user
         $form_options = [
             'user_id' => $req->get('user_id'),
-            'reset_code' => $req->get('reset_code')
+            'reset_code' => $req->get('reset_code'),
         ];
         $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
@@ -109,7 +109,7 @@ class ForgotController extends BaseController
         $reset_code = $req->get('reset_code');
         $form_options = [
             'user_id' => $user_id,
-            'reset_code' => $reset_code
+            'reset_code' => $reset_code,
         ];
         $form = $this->app['form.factory']->create(new ResetForm(), $form_options);
 
@@ -196,7 +196,7 @@ class ForgotController extends BaseController
         return [
             'type' => 'success',
             'short' => 'Success',
-            'ext' => "If your email was valid, we sent a link to reset your password to $email"
+            'ext' => "If your email was valid, we sent a link to reset your password to $email",
         ];
     }
 }

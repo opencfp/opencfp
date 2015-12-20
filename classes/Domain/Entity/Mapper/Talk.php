@@ -408,7 +408,7 @@ class Talk extends Mapper
             $output['user'] = [
                 'id' => $talk->speaker->id,
                 'first_name' => $talk->speaker->first_name,
-                'last_name' => $talk->speaker->last_name
+                'last_name' => $talk->speaker->last_name,
             ];
         }
 
