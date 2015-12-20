@@ -46,7 +46,7 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
     private function validateEmail()
     {
         return function ($message) {
-            return $message->getTo() === array($this->user_email => null);
+            return $message->getTo() === [$this->user_email => null];
         };
     }
 }

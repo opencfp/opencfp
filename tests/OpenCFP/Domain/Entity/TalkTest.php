@@ -31,11 +31,11 @@ class TalkEntityTest extends \PHPUnit_Framework_TestCase
     public function utf8CharactersCorrectlyEncoded()
     {
         $title = "Battle: Feature Branches VS Feature Switching (╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)";
-        $data = array(
+        $data = [
             'title' => $title,
             'description' => 'Talk with UTF-8 characters in the title',
             'user_id' => 1
-        );
+        ];
         $talk = $this->mapper->create($data);
 
         $this->assertEquals(

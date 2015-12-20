@@ -8,7 +8,7 @@ abstract class Form
     protected $_cleanData;
     protected $_taintedData;
     protected $_purifier;
-    protected $_fieldList = array();
+    protected $_fieldList = [];
 
     /**
      * Class constructor
@@ -17,13 +17,13 @@ abstract class Form
      * @param \HTMLPurifier $purifier
      * @param $options
      */
-    public function __construct($data, \HTMLPurifier $purifier, array $options = array())
+    public function __construct($data, \HTMLPurifier $purifier, array $options = [])
     {
         $this->_purifier    = $purifier;
         $this->_options     = $options;
-        $this->_messages    = array();
-        $this->_cleanData   = array();
-        $this->_taintedData = array();
+        $this->_messages    = [];
+        $this->_cleanData   = [];
+        $this->_taintedData = [];
 
         $this->populate($data);
     }
@@ -72,13 +72,13 @@ abstract class Form
      * @param  array $keys
      * @return array The cleaned data
      */
-    public function getCleanData(array $keys = array())
+    public function getCleanData(array $keys = [])
     {
         if (empty($keys)) {
             return $this->_cleanData;
         }
 
-        $data = array();
+        $data = [];
         foreach ($keys as $key) {
             if (isset($this->_cleanData[$key])) {
                 $data[$key] = $this->_cleanData[$key];

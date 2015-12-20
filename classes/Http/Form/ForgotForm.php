@@ -9,12 +9,12 @@ class ForgotForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email', 'text', array(
-            'constraints' => array(
+        $builder->add('email', 'text', [
+            'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\Email()
-            )
-        ));
+            ]
+        ]);
     }
 
     public function getName()

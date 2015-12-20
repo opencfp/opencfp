@@ -20,11 +20,11 @@ class SignupController extends BaseController
         }
 
         if (strtotime($this->app->config('application.enddate')) < strtotime('now')) {
-            $this->app['session']->set('flash', array(
+            $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'Sorry, the call for papers has ended.',
-            ));
+            ]);
 
             return $this->redirectTo('homepage');
         }
@@ -39,7 +39,7 @@ class SignupController extends BaseController
 
     public function processAction(Request $req, Application $app)
     {
-        $form_data = array(
+        $form_data = [
             'formAction' => $this->url('user_create'),
             'first_name' => $req->get('first_name'),
             'last_name' => $req->get('last_name'),
@@ -50,7 +50,7 @@ class SignupController extends BaseController
             'password2' => $req->get('password2'),
             'airport' => $req->get('airport'),
             'buttonInfo' => 'Create my speaker profile'
-        );
+        ];
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
         $form_data['transportation'] = $req->get('transportation') ?: null;
@@ -85,7 +85,7 @@ class SignupController extends BaseController
 
             // Create account using Sentry
             try {
-                $user_data = array(
+                $user_data = [
                     'first_name' => $sanitized_data['first_name'],
                     'last_name' => $sanitized_data['last_name'],
                     'company' => $sanitized_data['company'],
@@ -94,7 +94,7 @@ class SignupController extends BaseController
                     'password' => $sanitized_data['password'],
                     'airport' => $sanitized_data['airport'],
                     'activated' => 1
-                );
+                ];
 
                 $user = $app['sentry']->getUserProvider()->create($user_data);
 
@@ -124,29 +124,29 @@ class SignupController extends BaseController
                 }
 
                 // Set Success Flash Message
-                $app['session']->set('flash', array(
+                $app['session']->set('flash', [
                     'type' => 'success',
                     'short' => 'Success',
                     'ext' => "You've successfully created your account!",
-                ));
+                ]);
 
                 return $this->redirectTo('login');
             } catch (UserExistsException $e) {
-                $app['session']->set('flash', array(
+                $app['session']->set('flash', [
                     'type' => 'error',
                     'short' => 'Error',
                     'ext' => 'A user already exists with that email address'
-                ));
+                ]);
             }
         }
 
         if (!$isValid) {
             // Set Error Flash Message
-            $app['session']->set('flash', array(
+            $app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => implode("<br>", $form->getErrorMessages())
-            ));
+            ]);
         }
 
         $form_data['flash'] = $this->getFlash($app);

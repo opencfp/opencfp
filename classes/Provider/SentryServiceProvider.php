@@ -15,7 +15,7 @@ class SentryServiceProvider implements ServiceProviderInterface
         // Create a new Database connection
         $database = new Capsule;
 
-        $database->addConnection(array(
+        $database->addConnection([
             'driver'    => 'mysql',
             'host'      => $app->config('database.host'),
             'database'  => $app->config('database.database'),
@@ -23,7 +23,7 @@ class SentryServiceProvider implements ServiceProviderInterface
             'password'  => $app->config('database.password'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci'
-        ));
+        ]);
 
         // Makes the new "capsule" the global static instance.
         $database->setAsGlobal();
@@ -37,7 +37,7 @@ class SentryServiceProvider implements ServiceProviderInterface
             $groupProvider = new \Cartalyst\Sentry\Groups\Eloquent\Provider;
             $throttleProvider = new \Cartalyst\Sentry\Throttling\Eloquent\Provider($userProvider);
             $session = new SymfonySentrySession($app['session']);
-            $cookie = new \Cartalyst\Sentry\Cookies\NativeCookie(array());
+            $cookie = new \Cartalyst\Sentry\Cookies\NativeCookie([]);
 
             $sentry = new \Cartalyst\Sentry\Sentry(
                 $userProvider,

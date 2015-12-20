@@ -18,13 +18,13 @@ class DashboardController extends BaseController
         $favorite_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
         $recent_talks = $talk_mapper->getRecent($this->app['sentry']->getUser()->getId());
 
-        $templateData = array(
+        $templateData = [
             'speakerTotal' => $speaker_total,
             'talkTotal' => $talk_mapper->all()->count(),
             'favoriteTotal' => $favorite_mapper->all()->count(),
             'selectTotal' => $talk_mapper->all()->where(['selected' => 1])->count(),
             'talks' => $recent_talks
-        );
+        ];
 
         return $this->render('admin/index.twig', $templateData);
     }

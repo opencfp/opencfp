@@ -41,11 +41,11 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function hasRequiredProvider()
     {
-        $badData = array(
+        $badData = [
             'title' => 'Bad Data',
             'description' => 'Hey, why are we missing fields!'
-        );
-        $goodData = array(
+        ];
+        $goodData = [
             'title' => 'Talk Title',
             'description' => 'Description of our talk',
             'type' => 'session',
@@ -56,15 +56,15 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             'desired' => 1,
             'sponsor' => 1,
             'user_id' => 1
-        );
+        ];
         $extendedData = $goodData;
         $extendedData['extra'] = "Extra data in \$_POST but we ignore it";
 
-        return array(
-            array(serialize($badData), false),
-            array(serialize($goodData), true),
-            array(serialize($extendedData), true)
-        );
+        return [
+            [serialize($badData), false],
+            [serialize($goodData), true],
+            [serialize($extendedData), true]
+        ];
     }
 
     /**
@@ -77,7 +77,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function titleValidatesCorrectly($title, $expectedResponse)
     {
-        $data = array('title' => $title);
+        $data = ['title' => $title];
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
@@ -97,12 +97,12 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     {
         $faker = \Faker\Factory::create();
 
-        return array(
-            array(substr($faker->text(90), 0, 90), true),
-            array(null, false),
-            array("This is a string that could be more than 100 characters long but will we really know for sure until I check it out?", false),
-            array("A little bit of this & that", true)
-        );
+        return [
+            [substr($faker->text(90), 0, 90), true],
+            [null, false],
+            ["This is a string that could be more than 100 characters long but will we really know for sure until I check it out?", false],
+            ["A little bit of this & that", true]
+        ];
     }
 
     /**
@@ -115,7 +115,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function descriptionValidatesCorrectly($description, $expectedResponse)
     {
-        $data = array('description' => $description);
+        $data = ['description' => $description];
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
@@ -135,11 +135,11 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     {
         $faker = \Faker\Factory::create();
 
-        return array(
-            array($faker->text(), true),
-            array(null, false),
-            array('<script>alert("XSS");</script>', false),
-        );
+        return [
+            [$faker->text(), true],
+            [null, false],
+            ['<script>alert("XSS");</script>', false],
+        ];
     }
 
     /**
@@ -152,7 +152,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function typeValidatesCorrectly($type, $expectedResponse)
     {
-        $data = array('type' => $type);
+        $data = ['type' => $type];
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
@@ -170,15 +170,15 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function typeProvider()
     {
-        return array(
-            array('regular', true),
-            array('tutorial', true),
-            array('foo', false),
-            array(null, false),
-            array(false, false),
-            array(1, false),
-            array(true, false)
-        );
+        return [
+            ['regular', true],
+            ['tutorial', true],
+            ['foo', false],
+            [null, false],
+            [false, false],
+            [1, false],
+            [true, false]
+        ];
     }
 
     /**
@@ -188,18 +188,18 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function speakerIdProvider()
     {
-        $validSpeakerInfo = array(
+        $validSpeakerInfo = [
             'user_id' => 1,
             'info' => 'Special speaker info'
-        );
+        ];
 
-        return array(
-            array(1, $validSpeakerInfo, true),
-            array(0, false, false),
-            array(null, false, false),
-            array(true, false, false),
-            array(false, false, false),
-            array('user', false, false)
-        );
+        return [
+            [1, $validSpeakerInfo, true],
+            [0, false, false],
+            [null, false, false],
+            [true, false, false],
+            [false, false, false],
+            ['user', false, false]
+        ];
     }
 }

@@ -10,6 +10,7 @@ return Symfony\CS\Config\Config::create()
     ->fixers([
         '-psr0',
         'ordered_use',
+        'short_array_syntax',
     ])
     ->finder($finder)
 ;

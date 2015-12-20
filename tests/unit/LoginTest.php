@@ -11,10 +11,10 @@ class LoginTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->credentials = array(
+        $this->credentials = [
             'email'    => 'foo@bar.com',
             'password' => 'baz_bat',
-        );
+        ];
     }
 
     public function testAuthenticateInvalid()
