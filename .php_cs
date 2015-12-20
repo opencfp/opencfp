@@ -9,6 +9,7 @@ return Symfony\CS\Config\Config::create()
     ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
     ->fixers([
         '-psr0',
+        'multiline_array_trailing_comma',
         'ordered_use',
         'short_array_syntax',
     ])
