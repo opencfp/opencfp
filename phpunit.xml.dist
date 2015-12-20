@@ -10,10 +10,12 @@
          processIsolation="false"
          stopOnFailure="false">
     <filter>
-        <blacklist>
-            <directory>vendor</directory>
-            <directory>classes/OpenCFP/Provider</directory>
-        </blacklist>
+        <whitelist>
+            <directory>classes</directory>
+            <exclude>
+                <directory>classes/Provider</directory>
+            </exclude>
+        </whitelist>
     </filter>
 
     <testsuites>
