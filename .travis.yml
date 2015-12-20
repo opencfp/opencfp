@@ -21,6 +21,7 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
+  - if [[ "$WITH_COVERAGE" != "true" ]]; then phpenv config-rm xdebug.ini; fi
   - composer self-update
   - composer validate --no-check-publish
 
