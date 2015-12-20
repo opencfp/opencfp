@@ -3,6 +3,7 @@ language: php
 sudo: false
 
 matrix:
+  fast_finish: true
   include:
     - php: 7.0
       env: WITH_COVERAGE=true
