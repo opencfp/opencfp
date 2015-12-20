@@ -26,7 +26,7 @@ class DashboardController extends BaseController
 
             return $this->render('dashboard.twig', [
                 'profile' => $profile,
-                'cfp_open' => $this->isCfpOpen()
+                'cfp_open' => $this->isCfpOpen(),
             ]);
         } catch (NotAuthenticatedException $e) {
             return $this->redirectTo('login');

@@ -19,7 +19,7 @@ class SignupForm extends Form
         'speaker_bio',
         'transportation',
         'hotel',
-        'speaker_photo'
+        'speaker_photo',
     ];
 
     /**

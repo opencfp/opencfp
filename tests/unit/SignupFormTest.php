@@ -19,7 +19,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         $data = [
             'email' => 'test@domain.com',
-            'notrequired' => 'test'
+            'notrequired' => 'test',
         ];
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $response = $form->hasRequiredFields();
@@ -73,7 +73,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             ['test@domain.com', true],
             ['', false],
             ['test@domain', false],
-            ['test+tricky@domain.com', true]
+            ['test+tricky@domain.com', true],
         ];
     }
 
@@ -88,7 +88,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             ['acceptable'],
             ['testing123'],
             ['{^secur3'],
-            ['invalidChars&*$']
+            ['invalidChars&*$'],
         ];
     }
 
@@ -104,7 +104,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         $data = [
             'password' => $passwd,
-            'password2' => $passwd
+            'password2' => $passwd,
         ];
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
@@ -129,7 +129,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     {
         $data = [
             'password' => $passwd,
-            'password2' => $passwd2
+            'password2' => $passwd2,
         ];
 
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
@@ -276,7 +276,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
-            'last_name' => 'McTesterton'
+            'last_name' => 'McTesterton',
         ];
         $baseDataWithSpeakerInfo = $baseData;
         $baseDataWithSpeakerInfo['speaker_info'] = "Testing speaker info data";
@@ -373,7 +373,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
-            'last_name' => "<script>alert('XSS')</script>"
+            'last_name' => "<script>alert('XSS')</script>",
         ];
 
         $badDataOut = [
@@ -381,7 +381,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
-            'last_name' => ""
+            'last_name' => "",
         ];
 
         $goodDataIn = [
@@ -389,7 +389,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
-            'last_name' => "McTesterton"
+            'last_name' => "McTesterton",
         ];
 
         $goodDataOut = $goodDataIn;
@@ -400,7 +400,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => "McTesterton",
-            'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
+            'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>",
         ];
 
         $badSpeakerInfoOut = [
@@ -409,7 +409,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => "McTesterton",
-            'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>"
+            'speaker_info' => "<a href=\"http://lolcoin.com/redeem\">Speaker bio</a>",
         ];
 
         $goodSpeakerInfoIn = [
@@ -418,7 +418,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             'password2' => 'xxxxxx',
             'first_name' => 'Testy',
             'last_name' => "McTesterton",
-            'speaker_info' => "Find my bio at http://littlehart.net"
+            'speaker_info' => "Find my bio at http://littlehart.net",
         ];
 
         $goodSpeakerInfoOut = $goodSpeakerInfoIn;
@@ -427,7 +427,7 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
             [$badDataIn, $badDataOut],
             [$goodDataIn, $goodDataOut],
             [$badSpeakerInfoIn, $badSpeakerInfoOut],
-            [$goodSpeakerInfoIn, $goodSpeakerInfoOut]
+            [$goodSpeakerInfoIn, $goodSpeakerInfoOut],
         ];
     }
 }

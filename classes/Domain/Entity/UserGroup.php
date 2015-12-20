@@ -13,7 +13,7 @@ class UserGroup extends Entity
         return [
             'id' => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
             'user_id' => ['type' => 'integer'],
-            'group_id' => ['type' => 'integer']
+            'group_id' => ['type' => 'integer'],
         ];
     }
 }

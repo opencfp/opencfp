@@ -78,7 +78,7 @@ class TalkController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Read Only',
-                'ext' => 'You cannot edit talks once the call for papers has ended']
+                'ext' => 'You cannot edit talks once the call for papers has ended', ]
             );
 
             return $this->app->redirect($this->url('talk_view', ['id' => $talk_id]));
@@ -132,7 +132,7 @@ class TalkController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => 'You cannot create talks once the call for papers has ended']
+                'ext' => 'You cannot create talks once the call for papers has ended', ]
             );
 
             return $this->redirectTo('dashboard');
@@ -173,7 +173,7 @@ class TalkController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => 'You cannot create talks once the call for papers has ended']
+                'ext' => 'You cannot create talks once the call for papers has ended', ]
             );
 
             return $this->redirectTo('dashboard');
@@ -191,7 +191,7 @@ class TalkController extends BaseController
             'slides' => $req->get('slides'),
             'other' => $req->get('other'),
             'sponsor' => $req->get('sponsor'),
-            'user_id' => $req->get('user_id')
+            'user_id' => $req->get('user_id'),
         ];
 
         $form = new TalkForm($request_data, $this->app['purifier']);
@@ -246,7 +246,7 @@ class TalkController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => implode("<br>", $form->getErrorMessages())
+                'ext' => implode("<br>", $form->getErrorMessages()),
             ]);
         }
 
@@ -274,7 +274,7 @@ class TalkController extends BaseController
             'slides' => $req->get('slides'),
             'other' => $req->get('other'),
             'sponsor' => $req->get('sponsor'),
-            'user_id' => $req->get('user_id')
+            'user_id' => $req->get('user_id'),
         ];
 
         $form = new TalkForm($request_data, $this->app['purifier']);
@@ -294,7 +294,7 @@ class TalkController extends BaseController
                 'slides' => $sanitized_data['slides'],
                 'other' => $sanitized_data['other'],
                 'sponsor' => $sanitized_data['sponsor'],
-                'user_id' => (int) $user->getId()
+                'user_id' => (int) $user->getId(),
             ];
 
             $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
@@ -334,7 +334,7 @@ class TalkController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => implode("<br>", $form->getErrorMessages())
+                'ext' => implode("<br>", $form->getErrorMessages()),
             ]);
         }
 
@@ -386,7 +386,7 @@ class TalkController extends BaseController
             'email' => $this->app->config('application.email'),
             'title' => $this->app->config('application.title'),
             'talk' => $talk->title,
-            'enddate' => $this->app->config('application.enddate')
+            'enddate' => $this->app->config('application.enddate'),
         ];
 
         try {

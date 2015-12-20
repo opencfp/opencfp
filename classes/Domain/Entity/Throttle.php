@@ -19,7 +19,7 @@ class Throttle extends Entity
             'banned' => ['type' => 'smallint', 'value' => 0],
             'last_attempt_at' => ['type' => 'time', 'value' => null],
             'suspended_at' => ['type' => 'time', 'value' => null],
-            'banned_at' => ['type' => 'time', 'value' => null]
+            'banned_at' => ['type' => 'time', 'value' => null],
         ];
     }
 }

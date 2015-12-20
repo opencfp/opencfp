@@ -25,7 +25,7 @@ class Talk extends Entity
             'sponsor' => ['type' => 'smallint', 'value' => 0],
             'selected' => ['type' => 'smallint', 'value' => 0],
             'created_at' => ['type' => 'datetime', 'value' => new \DateTime()],
-            'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()]
+            'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()],
         ];
     }
 

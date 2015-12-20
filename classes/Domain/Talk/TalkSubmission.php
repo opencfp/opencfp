@@ -35,7 +35,7 @@ class TalkSubmission
             'slides' => '',
             'other' => '',
             'sponsor' => '',
-            'user_id' => ''
+            'user_id' => '',
         ], $this->data);
 
         return new Talk($data);
@@ -127,7 +127,7 @@ class TalkSubmission
             'uiux',
             'other',
             'continuousdelivery',
-            'ibmi'
+            'ibmi',
         ]);
     }
 }

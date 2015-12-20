@@ -32,7 +32,7 @@ class Application extends ConsoleApplication
             new ListCommand,
             new AdminPromoteCommand,
             new AdminDemoteCommand,
-            new ClearCacheCommand
+            new ClearCacheCommand,
         ];
     }
 

@@ -186,7 +186,7 @@ class TalksController extends BaseController
 
         $talk_meta = $mapper->where([
                 'admin_user_id' => $admin_user_id,
-                'talk_id' => (int)$req->get('id')
+                'talk_id' => (int)$req->get('id'),
             ])
             ->first();
 
@@ -227,7 +227,7 @@ class TalksController extends BaseController
             // Delete the record that matches
             $favorite = $mapper->first([
                 'admin_user_id' => $admin_user_id,
-                'talk_id' => (int) $req->get('id')
+                'talk_id' => (int) $req->get('id'),
             ]);
 
             return $mapper->delete($favorite);
@@ -235,7 +235,7 @@ class TalksController extends BaseController
 
         $previous_favorite = $mapper->where([
             'admin_user_id' => $admin_user_id,
-            'talk_id' => (int) $req->get('id')
+            'talk_id' => (int) $req->get('id'),
         ]);
 
         if ($previous_favorite->count() == 0) {
@@ -296,7 +296,7 @@ class TalksController extends BaseController
         $this->app['session']->set('flash', [
                 'type' => 'success',
                 'short' => 'Success',
-                'ext' => "Comment Added!"
+                'ext' => "Comment Added!",
             ]);
 
         return $this->app->redirect($this->url('admin_talk_view', ['id' => $talk_id]));

@@ -12,8 +12,8 @@ class ForgotForm extends AbstractType
         $builder->add('email', 'text', [
             'constraints' => [
                 new Assert\NotBlank(),
-                new Assert\Email()
-            ]
+                new Assert\Email(),
+            ],
         ]);
     }
 

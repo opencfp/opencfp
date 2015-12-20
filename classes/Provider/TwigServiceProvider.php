@@ -21,8 +21,8 @@ class TwigServiceProvider implements ServiceProviderInterface
             'twig.path' => $app->templatesPath(),
             'twig.options' => [
                 'debug' => !$app->isProduction(),
-                'cache' => $app->config('cache.enabled') ? $app->cacheTwigPath() : false
-            ]
+                'cache' => $app->config('cache.enabled') ? $app->cacheTwigPath() : false,
+            ],
         ]);
 
         if (!$app->isProduction()) {

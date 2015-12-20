@@ -39,7 +39,7 @@ class ResetEmailer
             'host' => !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost',
             'user_id' => $userId,
             'email' => $this->config_email,
-            'title' => $this->config_title
+            'title' => $this->config_title,
         ];
     }
 

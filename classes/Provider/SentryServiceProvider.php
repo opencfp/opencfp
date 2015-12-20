@@ -22,7 +22,7 @@ class SentryServiceProvider implements ServiceProviderInterface
             'username'  => $app->config('database.user'),
             'password'  => $app->config('database.password'),
             'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci'
+            'collation' => 'utf8_unicode_ci',
         ]);
 
         // Makes the new "capsule" the global static instance.

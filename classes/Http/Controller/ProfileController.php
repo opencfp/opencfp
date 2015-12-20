@@ -22,7 +22,7 @@ class ProfileController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "You cannot edit someone else's profile"
+                'ext' => "You cannot edit someone else's profile",
             ]);
 
             return $this->redirectTo('dashboard');
@@ -64,7 +64,7 @@ class ProfileController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "You cannot edit someone else's profile"
+                'ext' => "You cannot edit someone else's profile",
             ]);
 
             return $this->redirectTo('dashboard');
@@ -138,7 +138,7 @@ class ProfileController extends BaseController
                 $this->app['session']->set('flash', [
                     'type' => 'success',
                     'short' => 'Success',
-                    'ext' => "Successfully updated your information!"
+                    'ext' => "Successfully updated your information!",
                 ]);
 
                 return $this->redirectTo('dashboard');
@@ -147,7 +147,7 @@ class ProfileController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => implode('<br>', $form->getErrorMessages())
+                'ext' => implode('<br>', $form->getErrorMessages()),
             ]);
         }
 
@@ -183,7 +183,7 @@ class ProfileController extends BaseController
          */
         $formData = [
             'password' => $req->get('password'),
-            'password2' => $req->get('password_confirm')
+            'password2' => $req->get('password_confirm'),
         ];
         $form = new SignupForm($formData, $this->app['purifier']);
         $form->sanitize();
@@ -192,7 +192,7 @@ class ProfileController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => implode("<br>", $form->getErrorMessages())
+                'ext' => implode("<br>", $form->getErrorMessages()),
             ]);
 
             return $this->redirectTo('password_edit');
@@ -209,7 +209,7 @@ class ProfileController extends BaseController
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Unable to update your password in the database. Please try again."
+                'ext' => "Unable to update your password in the database. Please try again.",
             ]);
 
             return $this->redirectTo('password_edit');
@@ -218,7 +218,7 @@ class ProfileController extends BaseController
         $this->app['session']->set('flash', [
             'type' => 'success',
             'short' => 'Success',
-            'ext' => "Changed your password."
+            'ext' => "Changed your password.",
         ]);
 
         return $this->redirectTo('password_edit');

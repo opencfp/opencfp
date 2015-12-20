@@ -63,7 +63,7 @@ class AuthorizationController extends ApiController
         } catch (OAuthException $e) {
             return $this->setStatusCode($e->httpStatusCode)->respond([
                 'error' => $e->errorType,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], $e->getHttpHeaders());
         }
     }
@@ -87,7 +87,7 @@ class AuthorizationController extends ApiController
 
             $redirectUri = RedirectUri::make($authParams['redirect_uri'], [
                 'error' => $error->errorType,
-                'message' => $error->getMessage()
+                'message' => $error->getMessage(),
             ]);
 
             return $this->setStatusCode(Response::HTTP_FOUND)->respond('', ['Location' => $redirectUri]);
@@ -110,7 +110,7 @@ class AuthorizationController extends ApiController
         } catch (\Exception $e) {
             return $this->setStatusCode($e->httpStatusCode)->respond([
                 'error' => $e->errorType,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], $e->getHttpHeaders());
         }
     }

@@ -18,7 +18,7 @@ class TalkForm extends Form
         'slides',
         'other',
         'sponsor',
-        'user_id'
+        'user_id',
     ];
 
     /**
@@ -103,7 +103,7 @@ class TalkForm extends Form
     {
         $validTalkTypes = [
             'regular',
-            'tutorial'
+            'tutorial',
         ];
 
         if (empty($this->_cleanData['type']) || !isset($this->_cleanData['type'])) {
@@ -126,7 +126,7 @@ class TalkForm extends Form
         $validLevels = [
             'entry',
             'mid',
-            'advanced'
+            'advanced',
         ];
 
         if (empty($this->_cleanData['level']) || !isset($this->_cleanData['level'])) {
@@ -158,7 +158,7 @@ class TalkForm extends Form
             'uiux',
             'other',
             'continuousdelivery',
-            'ibmi'
+            'ibmi',
         ];
 
         if (empty($this->_cleanData['category']) || !isset($this->_cleanData['category'])) {

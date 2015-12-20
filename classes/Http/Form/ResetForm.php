@@ -12,13 +12,13 @@ class ResetForm extends AbstractType
         $builder->add('password', 'repeated', [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['min' => 5])],
+                    new Assert\Length(['min' => 5]), ],
                 'type' => 'password',
                 'first_options' => ['label' => 'Password (minimum 5 characters)'],
                 'second_options' => ['label' => 'Password (confirm)'],
                 'first_name' => 'password',
                 'second_name' => 'password2',
-                'invalid_message' => 'Passwords did not match'])
+                'invalid_message' => 'Passwords did not match', ])
             ->add('user_id', 'hidden')
             ->add('reset_code', 'hidden')
             ->getForm();

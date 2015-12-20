@@ -15,7 +15,7 @@ class FavoriteEntityTest extends \PHPUnit_Framework_TestCase
         $cfg = new \Spot\Config;
         $cfg->addConnection('sqlite', [
             'dbname' => 'sqlite::memory',
-            'driver' => 'pdo_sqlite'
+            'driver' => 'pdo_sqlite',
         ]);
         $this->app['spot'] = new \Spot\Locator($cfg);
         $this->mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
@@ -26,7 +26,7 @@ class FavoriteEntityTest extends \PHPUnit_Framework_TestCase
         $data = [
             'title' => 'Favorite Entity Test',
             'description' => 'This is a stubbed talk for a Favorite Entity Test',
-            'user_id' => 1
+            'user_id' => 1,
         ];
         $talk_mapper->migrate();
         $this->talk = $talk_mapper->create($data);
@@ -42,7 +42,7 @@ class FavoriteEntityTest extends \PHPUnit_Framework_TestCase
             'id' => 1,
             'admin_user_id' => 1,
             'talk_id' => $this->talk->id,
-            'created' => $created
+            'created' => $created,
         ];
         $favorite = $this->mapper->create($data);
 

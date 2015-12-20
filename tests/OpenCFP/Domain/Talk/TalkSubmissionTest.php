@@ -16,7 +16,7 @@ class TalkSubmissionTest extends PHPUnit_Framework_TestCase
             'description' => 'I play by the rules.',
             'type' => 'regular',
             'level' => 'entry',
-            'category' => 'api'
+            'category' => 'api',
         ]);
 
         // Factory method for talk out of submission.
@@ -45,7 +45,7 @@ class TalkSubmissionTest extends PHPUnit_Framework_TestCase
     {
         return [
             [''],
-            ['String over one-hundred characters long: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel placerat nulla. Nunc orci aliquam.']
+            ['String over one-hundred characters long: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel placerat nulla. Nunc orci aliquam.'],
         ];
     }
 
@@ -55,7 +55,7 @@ class TalkSubmissionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('OpenCFP\Domain\Talk\InvalidTalkSubmissionException', 'description');
         TalkSubmission::fromNative([
             'title' => 'Talk With No Description',
-            'description' => ''
+            'description' => '',
         ]);
     }
 
@@ -66,7 +66,7 @@ class TalkSubmissionTest extends PHPUnit_Framework_TestCase
         TalkSubmission::fromNative([
             'title' => 'Some off-the-wall Talk Type',
             'description' => 'I do not play by the rules.',
-            'type' => 'hamburger'
+            'type' => 'hamburger',
         ]);
     }
 
@@ -78,7 +78,7 @@ class TalkSubmissionTest extends PHPUnit_Framework_TestCase
             'title' => 'Invalid Skill Level Talk',
             'description' => 'I do not play by the rules.',
             'type' => 'regular',
-            'level' => 'over 9000'
+            'level' => 'over 9000',
         ]);
     }
 
@@ -91,7 +91,7 @@ class TalkSubmissionTest extends PHPUnit_Framework_TestCase
             'description' => 'I do not play by the rules.',
             'type' => 'regular',
             'level' => 'entry',
-            'category' => 'skylanders'
+            'category' => 'skylanders',
         ]);
     }
 }

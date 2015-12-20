@@ -39,7 +39,7 @@ class AdminsController extends BaseController
         $templateData = [
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
-            'page' => $pagerfanta->getCurrentPage()
+            'page' => $pagerfanta->getCurrentPage(),
         ];
 
         return $this->render('admin/admins/index.twig', $templateData);

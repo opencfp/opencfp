@@ -43,13 +43,13 @@ class ClientRegistrationController extends ApiController
             $client = $this->clients->create([
                 'id' => $clientIdentifier,
                 'secret' => $clientSecret,
-                'name' => $request->get('name')
+                'name' => $request->get('name'),
             ]);
 
             foreach ($request->get('redirect_uris') as $uri) {
                 $this->endpoints->create([
                     'client_id' => $clientIdentifier,
-                    'redirect_uri' => $uri
+                    'redirect_uri' => $uri,
                 ]);
             }
 

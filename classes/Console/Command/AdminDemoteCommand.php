@@ -21,7 +21,7 @@ class AdminDemoteCommand extends BaseCommand
         $this
             ->setName('admin:demote')
             ->setDefinition([
-                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to demote')
+                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to demote'),
             ])
             ->setDescription('Demote an existing user from being an admin')
             ->setHelp(<<<EOF

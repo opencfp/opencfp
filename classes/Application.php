@@ -288,7 +288,7 @@ class Application extends SilexApplication
                 }
 
                 return new JsonResponse([
-                    'error' => $e->getMessage()
+                    'error' => $e->getMessage(),
                 ], $code, $headers);
             }
 

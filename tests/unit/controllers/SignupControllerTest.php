@@ -38,7 +38,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase
             'speaker_bio' => null,
             'transportation' => null,
             'hotel' => null,
-            'buttonInfo' => 'Create my speaker profile'
+            'buttonInfo' => 'Create my speaker profile',
         ];
 
         // Set our HTMLPurifier we use for validation

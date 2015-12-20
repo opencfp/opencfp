@@ -33,7 +33,7 @@ class SignupController extends BaseController
             'transportation' => 0,
             'hotel' => 0,
             'formAction' => $this->url('user_create'),
-            'buttonInfo' => 'Create my speaker profile'
+            'buttonInfo' => 'Create my speaker profile',
         ]);
     }
 
@@ -49,7 +49,7 @@ class SignupController extends BaseController
             'password' => $req->get('password'),
             'password2' => $req->get('password2'),
             'airport' => $req->get('airport'),
-            'buttonInfo' => 'Create my speaker profile'
+            'buttonInfo' => 'Create my speaker profile',
         ];
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
@@ -93,7 +93,7 @@ class SignupController extends BaseController
                     'email' => $sanitized_data['email'],
                     'password' => $sanitized_data['password'],
                     'airport' => $sanitized_data['airport'],
-                    'activated' => 1
+                    'activated' => 1,
                 ];
 
                 $user = $app['sentry']->getUserProvider()->create($user_data);
@@ -135,7 +135,7 @@ class SignupController extends BaseController
                 $app['session']->set('flash', [
                     'type' => 'error',
                     'short' => 'Error',
-                    'ext' => 'A user already exists with that email address'
+                    'ext' => 'A user already exists with that email address',
                 ]);
             }
         }
@@ -145,7 +145,7 @@ class SignupController extends BaseController
             $app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => implode("<br>", $form->getErrorMessages())
+                'ext' => implode("<br>", $form->getErrorMessages()),
             ]);
         }
 
