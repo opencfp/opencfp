@@ -1,11 +1,11 @@
 <?php
 
+use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\API\ProfileController;
-use Mockery as m;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProfileApiControllerTest extends PHPUnit_Framework_TestCase

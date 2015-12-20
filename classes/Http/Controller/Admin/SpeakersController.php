@@ -2,13 +2,13 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use Pagerfanta\Adapter\ArrayAdapter;
-use Pagerfanta\Pagerfanta;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Pagerfanta\View\TwitterBootstrap3View;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\View\TwitterBootstrap3View;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 class SpeakersController extends BaseController
 {

@@ -2,8 +2,8 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Silex\Application;
 use OpenCFP\Domain\Services\Login;
+use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

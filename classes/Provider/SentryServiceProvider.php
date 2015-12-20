@@ -1,9 +1,9 @@
 <?php namespace OpenCFP\Provider;
 
 use Cartalyst\Sentry\Facades\Native\Sentry;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 class SentryServiceProvider implements ServiceProviderInterface
 {

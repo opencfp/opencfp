@@ -3,10 +3,10 @@
 namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Users\UserNotFoundException;
-use OpenCFP\Http\Form\ResetForm;
 use OpenCFP\Application;
-use Symfony\Component\HttpFoundation\Request;
 use OpenCFP\Http\Form\ForgotForm;
+use OpenCFP\Http\Form\ResetForm;
+use Symfony\Component\HttpFoundation\Request;
 
 class ForgotController extends BaseController
 {

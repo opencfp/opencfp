@@ -1,12 +1,12 @@
 <?php namespace OpenCFP\Provider;
 
-use Silex\Application;
-use Ciconia\Ciconia;
-use Silex\ServiceProviderInterface;
-use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Aptoma\Twig\Extension\MarkdownExtension;
-use Ciconia\Extension\Gfm\WhiteSpaceExtension;
+use Ciconia\Ciconia;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
+use Ciconia\Extension\Gfm\WhiteSpaceExtension;
+use Silex\Application;
+use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
+use Silex\ServiceProviderInterface;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
 

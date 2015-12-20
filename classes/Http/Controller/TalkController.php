@@ -4,10 +4,10 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application\NotAuthorizedException;
 use OpenCFP\Application\Speakers;
+use OpenCFP\Http\Form\TalkForm;
 use Silex\Application;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
-use OpenCFP\Http\Form\TalkForm;
 
 class TalkController extends BaseController
 {

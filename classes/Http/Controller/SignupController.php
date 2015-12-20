@@ -2,12 +2,12 @@
 
 namespace OpenCFP\Http\Controller;
 
+use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Http\Form\SignupForm;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Cartalyst\Sentry\Users\UserExistsException;
 
 class SignupController extends BaseController
 {

@@ -2,9 +2,9 @@
 
 namespace OpenCFP\Provider;
 
+use OpenCFP\Domain\Services\ProfileImageProcessor;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use OpenCFP\Domain\Services\ProfileImageProcessor;
 
 class ImageProcessorProvider implements ServiceProviderInterface
 {
