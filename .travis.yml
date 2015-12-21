@@ -22,7 +22,8 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
-  - if [[ "$WITH_COVERAGE" != "true" || "$TRAVIS_PULL_REQUEST" != "false" || "$TRAVIS_BRANCH" != "master" ]]; then phpenv config-rm xdebug.ini; fi
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then COLLECT_COVERAGE=true; else COLLECT_COVERAGE=false; fi
+  - if [[ "$COLLECT_COVERAGE" == "false" ]]; then phpenv config-rm xdebug.ini; fi
   - composer self-update
   - composer validate --no-check-publish
 
@@ -35,8 +36,8 @@ before_script:
   - vendor/bin/phinx --configuration=phinx.yml.dist migrate -e testing
 
 script:
-  - if [[ "$WITH_COVERAGE" == "true" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
+  - if [[ "$COLLECT_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
   - if [[ "$WITH_CS" == "true" ]]; then vendor/bin/php-cs-fixer fix --verbose; fi
 
 after_success:
-  - if [[ "$WITH_COVERAGE" == "true" && "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
+  - if [[ "$COLLECT_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
