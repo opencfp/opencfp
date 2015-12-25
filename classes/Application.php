@@ -23,6 +23,7 @@ use OpenCFP\Provider\TwigServiceProvider;
 use OpenCFP\Provider\YamlConfigDriver;
 use Silex\Application as SilexApplication;
 use Silex\Provider\FormServiceProvider;
+use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
@@ -62,6 +63,13 @@ class Application extends SilexApplication
         $this->register(new DatabaseServiceProvider);
         $this->register(new ValidatorServiceProvider);
         $this->register(new TranslationServiceProvider);
+        $this->register(new MonologServiceProvider, [
+            'monolog.logfile' => $this->config('log.path') ?: "{$basePath}/log/app.log",
+            'monolog.name' => 'opencfp',
+            'monlog.level' => strtoupper(
+                $this->config('log.level') ?: 'debug'
+            ),
+        ]);
         $this->register(new SwiftmailerServiceProvider, [
             'swiftmailer.options' => [
                 'host' => $this->config('mail.host'),

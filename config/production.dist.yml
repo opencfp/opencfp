@@ -24,6 +24,9 @@ database:
   user: root
   password: ~
 
+log:
+  level: 'error'
+
 mail:
   host: ~
   port: ~
