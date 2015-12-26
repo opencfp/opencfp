@@ -118,6 +118,20 @@ class TalksController extends BaseController
         $meta_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\TalkMeta');
         $talk_id = $req->get('id');
 
+        $talk = $talk_mapper->where(['id' => $talk_id])
+            ->with(['comments'])
+            ->first();
+
+        if (empty($talk)) {
+            $this->app['session']->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => "Could not find requested talk",
+            ]);
+
+            return $this->app->redirect($this->url('admin_talks'));
+        }
+
         // Mark talk as viewed by admin
         $talk_meta = $meta_mapper->where([
                 'admin_user_id' => $this->app['sentry']->getUser()->getId(),
@@ -136,9 +150,6 @@ class TalksController extends BaseController
             $meta_mapper->save($talk_meta);
         }
 
-        $talk = $talk_mapper->where(['id' => $talk_id])
-            ->with(['comments'])
-            ->first();
         $all_talks = $talk_mapper->all()
             ->where(['user_id' => $talk->user_id])
             ->toArray();
