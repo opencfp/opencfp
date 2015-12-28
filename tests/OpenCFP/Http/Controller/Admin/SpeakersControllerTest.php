@@ -7,7 +7,7 @@ use OpenCFP\Environment;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
-class TalksControllerTest extends \PHPUnit_Framework_TestCase
+class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
 {
     public $app;
 
