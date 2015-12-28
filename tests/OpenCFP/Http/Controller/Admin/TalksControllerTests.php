@@ -181,4 +181,48 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
             $response
         );
     }
+
+    /**
+     * Verify that not found talk redirects and sets flash error message
+     *
+     * @test
+     */
+    public function talkNotFoundHasFlashMessage()
+    {
+        $talkId = uniqid();
+
+        // Override our mapper with the double
+        $spot = m::mock('Spot\Locator');
+        $spot->shouldReceive('mapper')
+            ->with('OpenCFP\Domain\Entity\Talk')
+            ->andReturn([]);
+        $this->app['spot'] = $spot;
+
+        // Create a session object
+        $this->app['session'] = new Session(new MockFileSessionStorage);
+
+        // Use our pre-configured Application object
+        ob_start();
+        $this->app->run();
+        ob_end_clean();
+
+        // Create our Request object
+        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req->shouldReceive('get')->with('id')->andReturn($talkId);
+
+        // Execute the controller and capture the output
+        $controller = new \OpenCFP\Http\Controller\Admin\TalksController();
+        $controller->setApplication($this->app);
+        $response = $controller->viewAction($req);
+
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\RedirectResponse',
+            $response
+        );
+
+        $this->assertContains(
+            'Could not find requested talk',
+            $this->app['session']->get('flash')
+        );
+    }
 }

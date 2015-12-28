@@ -65,7 +65,17 @@ class SpeakersController extends BaseController
 
         // Get info about the speaker
         $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
-        $speaker_details = $user_mapper->get($req->get('id'))->toArray();
+        $speaker_details = $user_mapper->get($req->get('id'));
+
+        if (empty($speaker_details)) {
+            $this->app['session']->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => "Could not find requested speaker",
+            ]);
+
+            return $this->app->redirect($this->url('admin_speakers'));
+        }
 
         // Get info about the talks
         $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
