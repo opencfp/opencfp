@@ -40,6 +40,9 @@
         "psr-4": {"OpenCFP\\": "classes/"}
     },
     "autoload-dev": {
+        "classmap": [
+            "tests/unit"
+        ],
         "psr-4": {
             "OpenCFP\\": "tests/OpenCFP/"
         }
