@@ -53,7 +53,9 @@
                     <li>
                         <img src="{{ comment.user.photo_path ? '/uploads/' ~ comment.user.photo_path : '/assets/img/dummyphoto.jpg' }}" class="comment-photo" alt="{{ comment.user.first_name }} {{ comment.user.last_name }}">
                         <p>{{ comment.message }}</p>
-                        <span class="comment-list__meta">{{ comment.created|date("F jS \\a\\t g:ia") }}</span>
+                        <span class="comment-list__meta">
+                            <span class="comment-list__author">{{ comment.user.first_name }} {{ comment.user.last_name }}</span> - {{ comment.created|date("F jS \\a\\t g:ia") }}
+                        </span>
 
                     </li>
                 {% endfor %}
