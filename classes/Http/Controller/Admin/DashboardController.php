@@ -9,7 +9,7 @@ class DashboardController extends BaseController
 {
     use AdminAccessTrait;
 
-    private function indexAction(Request $req)
+    public function indexAction(Request $req)
     {
         $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
         $speaker_total = $user_mapper->all()->count();

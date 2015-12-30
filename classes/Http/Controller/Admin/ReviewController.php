@@ -10,7 +10,7 @@ class ReviewController extends BaseController
 {
     use AdminAccessTrait;
 
-    private function indexAction(Request $req)
+    public function indexAction(Request $req)
     {
         $user = $this->app['sentry']->getUser();
 

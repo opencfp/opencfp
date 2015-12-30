@@ -15,7 +15,7 @@ class SpeakersController extends BaseController
     use AdminAccessTrait;
     use FlashableTrait;
 
-    private function indexAction(Request $req)
+    public function indexAction(Request $req)
     {
         $rawSpeakers = $this->app['spot']
             ->mapper('OpenCFP\Domain\Entity\User')
@@ -56,7 +56,7 @@ class SpeakersController extends BaseController
         return $this->render('admin/speaker/index.twig', $templateData);
     }
 
-    private function viewAction(Request $req)
+    public function viewAction(Request $req)
     {
         // Check if user is an logged in and an Admin
         if (!$this->userHasAccess($this->app)) {
@@ -95,7 +95,7 @@ class SpeakersController extends BaseController
         return $this->render('admin/speaker/view.twig', $templateData);
     }
 
-    private function deleteAction(Request $req)
+    public function deleteAction(Request $req)
     {
         // Check if user is an logged in and an Admin
         if (!$this->userHasAccess($this->app)) {
