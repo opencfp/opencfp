@@ -1,5 +1,7 @@
 <?php
 
+use OpenCFP\Http\API\StubApiController;
+
 class ApiControllerTest extends PHPUnit_Framework_TestCase
 {
     /**
