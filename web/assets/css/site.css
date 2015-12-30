@@ -280,6 +280,11 @@ a:hover {
   font-size: 75%;
 }
 
+.comment-list__author {
+  color: #999;
+  font-weight: bold;
+}
+
 .comment-photo {
   position: absolute;
   top: 0;
