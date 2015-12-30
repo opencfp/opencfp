@@ -178,7 +178,7 @@ class TalksController extends BaseController
         return $this->render('admin/talks/view.twig', $templateData);
     }
 
-    private function rateAction(Request $req)
+    public function rateAction(Request $req)
     {
         if (!$this->userHasAccess($this->app)) {
             return false;
@@ -219,7 +219,7 @@ class TalksController extends BaseController
      * @param  Request $req Request Object
      * @return bool
      */
-    private function favoriteAction(Request $req)
+    public function favoriteAction(Request $req)
     {
         if (!$this->userHasAccess($this->app)) {
             return false;
@@ -266,7 +266,7 @@ class TalksController extends BaseController
      * @param  Request $req Request Object
      * @return bool
      */
-    private function selectAction(Request $req)
+    public function selectAction(Request $req)
     {
         if (!$this->userHasAccess($this->app)) {
             return false;
@@ -286,7 +286,7 @@ class TalksController extends BaseController
         return true;
     }
 
-    private function commentCreateAction(Request $req)
+    public function commentCreateAction(Request $req)
     {
         if (!$this->userHasAccess($this->app)) {
             return false;

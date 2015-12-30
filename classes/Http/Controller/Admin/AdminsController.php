@@ -10,7 +10,7 @@ class AdminsController extends BaseController
 {
     use AdminAccessTrait;
 
-    private function indexAction(Request $req)
+    public function indexAction(Request $req)
     {
         $adminGroup = $this->app['sentry']->getGroupProvider()->findByName('Admin');
         $adminUsers = $this->app['sentry']->findAllUsersInGroup($adminGroup);
@@ -45,7 +45,7 @@ class AdminsController extends BaseController
         return $this->render('admin/admins/index.twig', $templateData);
     }
 
-    private function removeAction(Request $req)
+    public function removeAction(Request $req)
     {
         $admin = $this->app['sentry']->getUser();
 
