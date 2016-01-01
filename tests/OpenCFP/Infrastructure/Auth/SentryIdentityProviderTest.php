@@ -4,16 +4,17 @@ namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users;
-use Faker\Factory;
-use Faker\Generator;
 use Mockery as m;
 use OpenCFP\Domain\Entity;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
+use OpenCFP\Util\Faker\GeneratorTrait;
 
 class SentryIdentityProviderTest extends \PHPUnit_Framework_TestCase
 {
+    use GeneratorTrait;
+
     public function testImplementsIdentityProvider()
     {
         $sentry = $this->getSentryMock();
@@ -88,20 +89,6 @@ class SentryIdentityProviderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame($user, $provider->getCurrentUser());
-    }
-
-    /**
-     * @return Generator
-     */
-    private function getFaker()
-    {
-        static $faker;
-
-        if ($faker === null) {
-            $faker = Factory::create();
-        }
-
-        return $faker;
     }
 
     /**
