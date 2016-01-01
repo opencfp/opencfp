@@ -16,7 +16,7 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
     private $reset_code;
     private $reset_mailer;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->swift_mailer = \Mockery::mock('Swift_Mailer')->shouldReceive('send')->once()
             ->with(\Mockery::on($this->validateEmail()))->getMock();
@@ -32,7 +32,7 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
         $this->reset_mailer = new ResetEmailer($this->swift_mailer, $this->template, $this->config_email, $this->config_title);
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         \Mockery::close();
     }
