@@ -1,6 +1,5 @@
 <?php
 use Mockery as m;
-use OpenCFP\Application;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 

@@ -1,5 +1,4 @@
 <?php
-use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 
