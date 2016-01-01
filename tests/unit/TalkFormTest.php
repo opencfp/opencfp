@@ -1,11 +1,15 @@
 <?php
 
+use OpenCFP\Util\Faker\GeneratorTrait;
+
 /**
  * Tests for our TalkForm object
  */
 
 class TalkFormTest extends \PHPUnit_Framework_TestCase
 {
+    use GeneratorTrait;
+
     private $purifier;
 
     protected function setUp()
@@ -95,7 +99,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function titleValidatesProvider()
     {
-        $faker = \Faker\Factory::create();
+        $faker = $this->getFaker();
 
         return [
             [substr($faker->text(90), 0, 90), true],
@@ -133,7 +137,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function descriptionValidatesProvider()
     {
-        $faker = \Faker\Factory::create();
+        $faker = $this->getFaker();
 
         return [
             [$faker->text(), true],
