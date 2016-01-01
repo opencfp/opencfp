@@ -8,7 +8,7 @@ class FavoriteEntityTest extends \PHPUnit_Framework_TestCase
     public $mapper;
     public $talk;
 
-    protected function setup()
+    protected function setUp()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
         // Create an in-memory database

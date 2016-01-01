@@ -11,7 +11,7 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
 {
     public $app;
 
-    protected function setup()
+    protected function setUp()
     {
         // Create our Application object
         $this->app = new Application(BASE_PATH, Environment::testing());
