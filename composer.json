@@ -1,5 +1,6 @@
 {
     "name": "opencfp/opencfp",
+    "license": "MIT",
     "require": {
         "php": ">=5.5",
         "twig/twig": "1.*",
