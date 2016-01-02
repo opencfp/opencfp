@@ -39,7 +39,7 @@ class ExportsController extends BaseController
                 'selected' => $talk->selected,
                 'first_name' => $talk->speaker->first_name,
                 'last_name' => $talk->speaker->last_name,
-                'email' => $talk->speaker->email
+                'email' => $talk->speaker->email,
             ];
         }
 
@@ -61,8 +61,7 @@ class ExportsController extends BaseController
             $talks[$talk]['created_at'] = $info['created_at']->format('Y-m-d H:i:s');
             unset($talks[$talk]['user'], $talks[$talk]['favourite']);
 
-            if (!$attributed)
-            {
+            if (!$attributed) {
                 unset($talks[$talk]['slides'], $talks[$talk]['other'], $talks[$talk]['sponsor'], $talks[$talk]['desired']);
             }
         }

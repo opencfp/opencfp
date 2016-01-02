@@ -417,7 +417,7 @@ class Talk extends Mapper
             'other' => $talk->other,
             'level' => $talk->level,
             'desired' => $talk->desired,
-            'sponsor' => $talk->sponsor
+            'sponsor' => $talk->sponsor,
         ];
 
         if ($talk->speaker && $userData) {
@@ -438,7 +438,7 @@ class Talk extends Mapper
                 'speaker_hotel' => $talk->speaker->hotel,
                 'speaker_transportation' => $talk->speaker->transportation,
                 'speaker_info' => $talk->speaker->info,
-                'speaker_bio' => $talk->speaker->bio
+                'speaker_bio' => $talk->speaker->bio,
             ];
         }
 
