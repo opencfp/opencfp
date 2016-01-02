@@ -28,7 +28,7 @@ class Talk extends Mapper
      * @internal param string $order_by
      * @internal param string $sort Sort Direction
      */
-    public function getAllPagerFormatted($admin_user_id, $options = [])
+    public function getAllPagerFormatted($admin_user_id, $sort, $userData = true, $where = null)
     {
         // Merge options with default options
         $options = $this->getSortOptions(
@@ -44,8 +44,18 @@ class Talk extends Mapper
             ->with(['favorites', 'comments']);
         $formatted = [];
 
+        if ($where) {
+            $talks = $this->all()
+                ->order($sort)
+                ->where($where);
+        } else {
+            $talks = $this->all()
+                ->order($sort)
+                ->with(['favorites']);
+        }
+
         foreach ($talks as $talk) {
-            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id);
+            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id, $userData);
         }
 
         return $formatted;
@@ -379,7 +389,7 @@ class Talk extends Mapper
      * @param  integer $admin_user_id
      * @return array
      */
-    public function createdFormattedOutput($talk, $admin_user_id)
+    public function createdFormattedOutput($talk, $admin_user_id, $userData = true)
     {
         if ($talk->favorites) {
             foreach ($talk->favorites as $favorite) {
@@ -402,13 +412,33 @@ class Talk extends Mapper
             'selected' => $talk->selected,
             'favorite' => $talk->favorite,
             'meta' => ($talk_meta) ? $talk_meta : $mapper->get(),
+            'description' => $talk->description,
+            'slides' => $talk->slides,
+            'other' => $talk->other,
+            'level' => $talk->level,
+            'desired' => $talk->desired,
+            'sponsor' => $talk->sponsor
         ];
 
-        if ($talk->speaker) {
+        if ($talk->speaker && $userData) {
             $output['user'] = [
                 'id' => $talk->speaker->id,
                 'first_name' => $talk->speaker->first_name,
                 'last_name' => $talk->speaker->last_name,
+            ];
+
+            $output += [
+                'speaker_id' => $talk->speaker->id,
+                'speaker_first_name' => $talk->speaker->first_name,
+                'speaker_last_name' => $talk->speaker->last_name,
+                'speaker_email' => $talk->speaker->email,
+                'speaker_company' => $talk->speaker->company,
+                'speaker_twitter' => $talk->speaker->twitter,
+                'speaker_airport' => $talk->speaker->airport,
+                'speaker_hotel' => $talk->speaker->hotel,
+                'speaker_transportation' => $talk->speaker->transportation,
+                'speaker_info' => $talk->speaker->info,
+                'speaker_bio' => $talk->speaker->bio
             ];
         }
 
