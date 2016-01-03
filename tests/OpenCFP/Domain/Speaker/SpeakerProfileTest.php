@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Domain\Speaker;
 
-use Mockery as m;
 use OpenCFP\Domain\Entity;
 use OpenCFP\Util\Faker\GeneratorTrait;
 
