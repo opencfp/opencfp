@@ -22,7 +22,13 @@ class SetDateTimeFieldsWithPreviousDefaultToNull extends AbstractMigration
 
     public function up()
     {
-        $this->run('UPDATE `%s` SET `%s` = NULL WHERE `%s` = "1000-01-01 00:00:00"');
+        if ($this->isNoZeroDateMode()) {
+            $sql = 'UPDATE `%s` SET `%s` = NULL WHERE `%s` = "1000-01-01 00:00:00"';
+        } else {
+            $sql = 'UPDATE `%s` SET `%s` = NULL WHERE `%s` IN ("1000-01-01 00:00:00", "0000-00-00 00:00:00")';
+        }
+
+        $this->run($sql);
     }
 
     public function down()
@@ -42,5 +48,23 @@ class SetDateTimeFieldsWithPreviousDefaultToNull extends AbstractMigration
                 ));
             });
         });
+    }
+
+    /**
+     * @return bool
+     */
+    private function isNoZeroDateMode()
+    {
+        $sql = 'SELECT @@GLOBAL.sql_mode AS modes';
+
+        /* @var PDOStatement $statement */
+        $statement = $this->query($sql);
+        $statement->execute();
+
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+        $modes = explode(',', $row['modes']);
+
+        return in_array('NO_ZERO_DATE', $modes);
     }
 }
