@@ -19,8 +19,8 @@ class AlterUserColumnDefaults extends AbstractMigration
             ->changeColumn('reset_password_code', 'string', ['null' => true])
             ->changeColumn('first_name', 'string', ['null' => true])
             ->changeColumn('last_name', 'string', ['null' => true])
-            ->changeColumn('created_at', 'datetime', ['default' => '0000-00-00 00:00:00'])
-            ->changeColumn('updated_at', 'datetime', ['default' => '0000-00-00 00:00:00'])
+            ->changeColumn('created_at', 'datetime', ['default' => '1000-01-01 00:00:00'])
+            ->changeColumn('updated_at', 'datetime', ['default' => '1000-01-01 00:00:00'])
             ->save();
     }
 
