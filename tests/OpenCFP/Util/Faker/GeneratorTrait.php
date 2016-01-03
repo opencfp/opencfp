@@ -16,6 +16,7 @@ trait GeneratorTrait
 
         if ($faker === null) {
             $faker = Factory::create();
+            $faker->seed(9000);
         }
 
         return $faker;
