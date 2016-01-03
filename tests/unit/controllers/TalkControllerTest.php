@@ -9,7 +9,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
     protected $app;
     protected $req;
 
-    protected function setup()
+    protected function setUp()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
         ob_start();
