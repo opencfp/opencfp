@@ -86,7 +86,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
@@ -115,7 +115,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
@@ -144,7 +144,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
@@ -172,7 +172,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
@@ -207,7 +207,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
