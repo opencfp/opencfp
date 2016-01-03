@@ -117,7 +117,12 @@ class SpeakerProfileTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTransportationReturnsFalseIfValueIsNotOne()
     {
-        $transportation = (string) $this->getFaker()->randomNumber(1);
+        $faker = $this->getFaker();
+
+        $transportation = $faker->randomElement([
+            0,
+            $faker->numberBetween(2),
+        ]);
 
         $speaker = new Entity\User();
 
