@@ -17,7 +17,7 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
             'driver' => 'pdo_sqlite',
         ]);
         $this->app['spot'] = new \Spot\Locator($cfg);
-        $this->mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $this->mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
 
         foreach ($this->entities as $entity) {
             $this->app['spot']->mapper('OpenCFP\Domain\Entity\\' . $entity)->migrate();
@@ -32,7 +32,7 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
         // Create a test talk
         $admin_user_id = 1;
         $admin_majority = 3;
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
 
         $talk_data = [
             'title' => 'Admin Favorite Talk',
@@ -58,7 +58,7 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
 
     private function createViewedTalks($talk_data, $total)
     {
-        $meta_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\TalkMeta');
+        $meta_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
         for ($i = 0; $i <= $total; $i++) {
             $talk = $this->mapper->create($talk_data);
             $meta_mapper->create([
@@ -72,7 +72,7 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
     private function createAdminFavoredTalks($admin_user_id, $admin_majority, $talk)
     {
         // Create a test user
-        $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $user_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_mapper->create([
             'id' => $admin_user_id,
             'email' => 'test@test.com',
@@ -82,7 +82,7 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // Create $admin_majority favorite records linked to that talk
-        $favorite_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
+        $favorite_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Favorite::class);
         $favorite_mapper->create(['admin_user_id' => $admin_user_id, 'talk_id' => $talk->id]);
 
         for ($x = 1; $x <= $admin_majority; $x++) {

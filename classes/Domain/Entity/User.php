@@ -7,7 +7,7 @@ use Spot\Entity;
 class User extends Entity
 {
     protected static $table = 'users';
-    protected static $mapper = 'OpenCFP\Domain\Entity\Mapper\User';
+    protected static $mapper = \OpenCFP\Domain\Entity\Mapper\User::class;
 
     public static function fields()
     {
@@ -40,9 +40,9 @@ class User extends Entity
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'talks' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\Talk', 'user_id'),
-            'groups' => $mapper->hasManyThrough($entity, 'OpenCFP\Domain\Entity\Group', '\OpenCFP\Domain\Entity\UserGroup', 'group_id', 'user_id'),
-            'comments' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\TalkComment', 'user_id'),
+            'talks' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\Talk::class, 'user_id'),
+            'groups' => $mapper->hasManyThrough($entity, \OpenCFP\Domain\Entity\Group::class, \OpenCFP\Domain\Entity\UserGroup::class, 'group_id', 'user_id'),
+            'comments' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\TalkComment::class, 'user_id'),
         ];
     }
 

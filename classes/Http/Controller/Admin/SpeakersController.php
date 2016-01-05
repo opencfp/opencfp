@@ -18,7 +18,7 @@ class SpeakersController extends BaseController
     public function indexAction(Request $req)
     {
         $rawSpeakers = $this->app['spot']
-            ->mapper('OpenCFP\Domain\Entity\User')
+            ->mapper(\OpenCFP\Domain\Entity\User::class)
             ->all()
             ->order(['first_name' => 'ASC'])
             ->toArray();
@@ -64,7 +64,7 @@ class SpeakersController extends BaseController
         }
 
         // Get info about the speaker
-        $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $user_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker_details = $user_mapper->get($req->get('id'));
 
         if (empty($speaker_details)) {
@@ -78,7 +78,7 @@ class SpeakersController extends BaseController
         }
 
         // Get info about the talks
-        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $talk_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talks = $talk_mapper->getByUser($req->get('id'))->toArray();
 
         // Build and render the template
@@ -102,7 +102,7 @@ class SpeakersController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker = $mapper->get($req->get('id'));
         $response = $mapper->delete($speaker);
 

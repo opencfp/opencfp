@@ -15,7 +15,7 @@ class ReviewController extends BaseController
         $user = $this->app['sentry']->getUser();
 
         // Get list of talks where majority of admins 'favorited' them
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $options = [
             'order_by' => $req->get('order_by'),
             'sort' => $req->get('sort'),

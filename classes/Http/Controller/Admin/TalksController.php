@@ -72,7 +72,7 @@ class TalksController extends BaseController
 
     private function getFilteredTalks($filter = null, $admin_user_id, $options = [])
     {
-        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $talk_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         if ($filter === null) {
             return $talk_mapper->getAllPagerFormatted($admin_user_id, $options);
         }
@@ -114,8 +114,8 @@ class TalksController extends BaseController
         }
 
         // Get info about the talks
-        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
-        $meta_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\TalkMeta');
+        $talk_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $meta_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
         $talk_id = $req->get('id');
 
         $talk = $talk_mapper->where(['id' => $talk_id])
@@ -155,7 +155,7 @@ class TalksController extends BaseController
             ->toArray();
 
         // Get info about our speaker
-        $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $user_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker = $user_mapper->get($talk->user_id)->toArray();
 
         // Grab all the other talks and filter out the one we have
@@ -185,7 +185,7 @@ class TalksController extends BaseController
         }
 
         $admin_user_id = (int)$this->app['sentry']->getUser()->getId();
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\TalkMeta');
+        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
 
         $talk_rating = (int)$req->get('rating');
         $talk_id = (int)$req->get('id');
@@ -232,7 +232,7 @@ class TalksController extends BaseController
             $status = false;
         }
 
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
+        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Favorite::class);
 
         if ($status == false) {
             // Delete the record that matches
@@ -278,7 +278,7 @@ class TalksController extends BaseController
             $status = false;
         }
 
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk = $mapper->get($req->get('id'));
         $talk->selected = $status;
         $mapper->save($talk);
@@ -295,7 +295,7 @@ class TalksController extends BaseController
         $talk_id = (int)$req->get('id');
         $admin_user_id = (int)$this->app['sentry']->getUser()->getId();
 
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\TalkComment');
+        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\TalkComment::class);
         $comment = $mapper->get();
 
         $comment->talk_id = $talk_id;

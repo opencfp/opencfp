@@ -17,7 +17,7 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
         $this->app = new Application(BASE_PATH, Environment::testing());
 
         // Create a test double for our User entity
-        $user = m::mock('OpenCFP\Domain\Entity\User');
+        $user = m::mock(\OpenCFP\Domain\Entity\User::class);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
@@ -41,12 +41,12 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
 
         // Override our mapper with the double
         $spot = m::mock('Spot\Locator');
-        $mapper = m::mock('OpenCFP\Domain\Entity\Mapper\User');
+        $mapper = m::mock(\OpenCFP\Domain\Entity\Mapper\User::class);
         $mapper->shouldReceive('get')
             ->andReturn([]);
 
         $spot->shouldReceive('mapper')
-            ->with('OpenCFP\Domain\Entity\User')
+            ->with(\OpenCFP\Domain\Entity\User::class)
             ->andReturn($mapper);
         $this->app['spot'] = $spot;
 

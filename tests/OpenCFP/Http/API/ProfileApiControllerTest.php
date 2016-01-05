@@ -22,7 +22,7 @@ class ProfileApiControllerTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->speakers = m::mock('OpenCFP\Application\Speakers');
+        $this->speakers = m::mock(\OpenCFP\Application\Speakers::class);
         $this->sut = new ProfileController($this->speakers);
     }
 
@@ -42,7 +42,7 @@ class ProfileApiControllerTest extends PHPUnit_Framework_TestCase
     public function it_responds_unauthorized_when_no_authentication_provided()
     {
         $this->speakers->shouldReceive('findProfile')
-            ->andThrow('OpenCFP\Domain\Services\NotAuthenticatedException');
+            ->andThrow(\OpenCFP\Domain\Services\NotAuthenticatedException::class);
 
         $response = $this->sut->handleShowSpeakerProfile($this->getRequest());
 

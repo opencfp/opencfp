@@ -7,7 +7,7 @@ use Spot\Entity;
 class Talk extends Entity
 {
     protected static $table = 'talks';
-    protected static $mapper = 'OpenCFP\Domain\Entity\Mapper\Talk';
+    protected static $mapper = \OpenCFP\Domain\Entity\Mapper\Talk::class;
 
     public static function fields()
     {
@@ -32,11 +32,11 @@ class Talk extends Entity
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'speaker' => $mapper->belongsTo($entity, 'OpenCFP\Domain\Entity\User', 'user_id'),
-            'favorites' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\Favorite', 'talk_id'),
-            'comments' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\TalkComment', 'talk_id')
+            'speaker' => $mapper->belongsTo($entity, \OpenCFP\Domain\Entity\User::class, 'user_id'),
+            'favorites' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\Favorite::class, 'talk_id'),
+            'comments' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\TalkComment::class, 'talk_id')
                 ->order(['created' => 'ASC']),
-            'meta' => $mapper->hasMany($entity, 'OpenCFP\Domain\Entity\TalkMeta', 'talk_id'),
+            'meta' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\TalkMeta::class, 'talk_id'),
         ];
     }
 
