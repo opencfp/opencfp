@@ -435,6 +435,13 @@ a:hover {
   background: #71738b;
 }
 
+.nav-sidebar > li li {
+  list-style: none;
+}
+.nav-sidebar > li li > a {
+  color: #bbb;
+}
+
 .nav-icon {
   display: inline-block;
   margin-right: 0.5rem;
