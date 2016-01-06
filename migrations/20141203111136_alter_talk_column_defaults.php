@@ -14,8 +14,8 @@ class AlterTalkColumnDefaults extends AbstractMigration
             ->changeColumn('favorite', 'boolean', ['default' => 0])
             ->changeColumn('sponsor', 'boolean', ['default' => 0])
             ->changeColumn('selected', 'boolean', ['default' => 0])
-            ->changeColumn('created_at', 'datetime', ['default' => 'null'])
-            ->changeColumn('updated_at', 'datetime', ['default' => 'null'])
+            ->changeColumn('created_at', 'datetime', ['default' => null])
+            ->changeColumn('updated_at', 'datetime', ['default' => null])
             ->save();
     }
 
