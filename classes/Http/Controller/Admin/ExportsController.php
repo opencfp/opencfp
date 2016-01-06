@@ -11,17 +11,17 @@ class ExportsController extends BaseController
 
     public function anonymousTalksExportAction(Request $req)
     {
-        $this->talksExportAction(false);
+        return $this->talksExportAction(false);
     }
 
     public function attributedTalksExportAction(Request $req)
     {
-        $this->talksExportAction(true);
+        return $this->talksExportAction(true);
     }
 
     public function selectedTalksExportAction(Request $req)
     {
-        $this->talksExportAction(true, ['selected' => 1]);
+        return $this->talksExportAction(true, ['selected' => 1]);
     }
 
     public function emailExportAction(Request $req)
@@ -43,7 +43,7 @@ class ExportsController extends BaseController
             ];
         }
 
-        $this->csvReturn($formatted, 'emailExports');
+        return $this->csvReturn($formatted, 'emailExports');
     }
 
     private function talksExportAction($attributed, $where = null)
@@ -68,11 +68,21 @@ class ExportsController extends BaseController
 
         $filename = $attributed ? ($where ? 'selectTalks' : 'talkList') : 'anonymousTalks';
 
-        $this->csvReturn($talks, $filename);
+        return $this->csvReturn($talks, $filename);
     }
 
     private function csvReturn($contents, $filename = 'data')
     {
+        if (count($contents) === 0) {
+            $this->app['session']->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'There were no talks that matched selected criteria.',
+            ]);
+
+            return $this->redirectTo('admin');
+        }
+
         header('Content-Disposition: attachment; filename='.$filename.'.csv');
 
         header('Content-Type: text/csv; charset=utf-8');
