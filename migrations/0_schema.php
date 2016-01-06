@@ -58,10 +58,10 @@ class Schema extends AbstractMigration
             ->addColumn('twitter', 'string')
             ->addColumn('airport', 'string')
             ->addColumn('url', 'string')
-            ->addColumn('activated_at', 'datetime')
-            ->addColumn('last_login', 'datetime')
-            ->addColumn('created_at', 'datetime')
-            ->addColumn('updated_at', 'datetime')
+            ->addColumn('activated_at', 'datetime', ['null' => true])
+            ->addColumn('last_login', 'datetime', ['null' => true])
+            ->addColumn('created_at', 'datetime', ['null' => true])
+            ->addColumn('updated_at', 'datetime', ['null' => true])
             ->addIndex(['email'], ['name' => 'users_email_unique', 'unique' => true])
             ->create();
     }
@@ -100,8 +100,8 @@ class Schema extends AbstractMigration
             ->addColumn('sponsor', 'boolean')
             ->addColumn('favorite', 'boolean')
             ->addColumn('selected', 'boolean')
-            ->addColumn('created_at', 'datetime')
-            ->addColumn('updated_at', 'datetime')
+            ->addColumn('created_at', 'datetime', ['null' => true])
+            ->addColumn('updated_at', 'datetime', ['null' => true])
             ->create();
     }
 }
