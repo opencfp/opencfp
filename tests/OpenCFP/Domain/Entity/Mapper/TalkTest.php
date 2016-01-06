@@ -1,5 +1,4 @@
 <?php
-use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 
@@ -9,7 +8,7 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
     public $mapper;
     private $entities = ['Talk', 'TalkMeta', 'User', 'Favorite'];
 
-    protected function setup()
+    protected function setUp()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
         $cfg = new \Spot\Config;

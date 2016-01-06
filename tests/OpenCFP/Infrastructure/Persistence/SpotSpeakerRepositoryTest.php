@@ -2,16 +2,17 @@
 
 namespace OpenCFP\Infrastructure\Persistence;
 
-use Faker\Factory;
-use Faker\Generator;
 use Mockery as m;
 use OpenCFP\Domain\Entity;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
+use OpenCFP\Util\Faker\GeneratorTrait;
 use Spot\Mapper;
 
 class SpotSpeakerRepositoryTest extends \PHPUnit_Framework_TestCase
 {
+    use GeneratorTrait;
+
     public function testImplementsSpeakerRepository()
     {
         $mapper = $this->getMapperMock();
@@ -74,20 +75,6 @@ class SpotSpeakerRepositoryTest extends \PHPUnit_Framework_TestCase
         $repository = new SpotSpeakerRepository($mapper);
 
         $repository->persist($speaker);
-    }
-
-    /**
-     * @return Generator
-     */
-    private function getFaker()
-    {
-        static $faker;
-
-        if ($faker === null) {
-            $faker = Factory::create();
-        }
-
-        return $faker;
     }
 
     /**

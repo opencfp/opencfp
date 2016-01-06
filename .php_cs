@@ -12,6 +12,7 @@ return Symfony\CS\Config\Config::create()
         'multiline_array_trailing_comma',
         'ordered_use',
         'short_array_syntax',
+        'unused_use',
     ])
     ->finder($finder)
 ;

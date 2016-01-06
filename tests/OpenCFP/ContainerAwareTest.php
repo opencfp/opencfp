@@ -3,7 +3,6 @@
 namespace OpenCFP;
 
 use Mockery as m;
-use OpenCFP\Application;
 
 class ContainerAwareTest extends \PHPUnit_Framework_TestCase
 {

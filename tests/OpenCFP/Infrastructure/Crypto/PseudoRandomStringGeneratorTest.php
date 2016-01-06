@@ -10,7 +10,7 @@ class PseudoRandomStringGeneratorTest extends PHPUnit_Framework_TestCase
      */
     private $sut;
 
-    protected function setup()
+    protected function setUp()
     {
         $this->sut = new PseudoRandomStringGenerator(new Factory());
     }

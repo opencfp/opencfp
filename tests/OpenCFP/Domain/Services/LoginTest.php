@@ -5,12 +5,13 @@ namespace OpenCFP\Domain\Services;
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;
-use Faker\Factory;
-use Faker\Generator;
 use Mockery as m;
+use OpenCFP\Util\Faker\GeneratorTrait;
 
 class LoginTest extends \PHPUnit_Framework_TestCase
 {
+    use GeneratorTrait;
+
     protected function tearDown()
     {
         unset($_REQUEST);
@@ -85,7 +86,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
@@ -114,7 +115,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
@@ -143,7 +144,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
@@ -171,7 +172,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
@@ -206,7 +207,7 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $faker = $this->getFaker();
 
         $email = $faker->email;
-        $password = $faker->word;
+        $password = $faker->password;
 
         $sentry = $this->getSentryMock();
 
@@ -236,20 +237,6 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->assertSame($expected, $viewVariables);
-    }
-
-    /**
-     * @return Generator
-     */
-    private function getFaker()
-    {
-        static $faker;
-
-        if ($faker === null) {
-            $faker = Factory::create();
-        }
-
-        return $faker;
     }
 
     /**
