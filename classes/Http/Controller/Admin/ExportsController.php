@@ -66,7 +66,7 @@ class ExportsController extends BaseController
             }
         }
 
-        $filename = $attributed ? ($where ? 'selectTalks' : 'attributedTalks') : 'anonymousTalks';
+        $filename = $attributed ? ($where ? 'selectTalks' : 'talkList') : 'anonymousTalks';
 
         $this->csvReturn($talks, $filename);
     }
