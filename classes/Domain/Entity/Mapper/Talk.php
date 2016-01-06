@@ -28,7 +28,7 @@ class Talk extends Mapper
      * @internal param string $order_by
      * @internal param string $sort Sort Direction
      */
-    public function getAllPagerFormatted($admin_user_id, $sort, $userData = true, $where = null)
+    public function getAllPagerFormatted($admin_user_id, $options, $userData = true, $where = null)
     {
         // Merge options with default options
         $options = $this->getSortOptions(
@@ -46,11 +46,11 @@ class Talk extends Mapper
 
         if ($where) {
             $talks = $this->all()
-                ->order($sort)
+                ->order([$options['order_by'] => $options['sort']])
                 ->where($where);
         } else {
             $talks = $this->all()
-                ->order($sort)
+                ->order([$options['order_by'] => $options['sort']])
                 ->with(['favorites']);
         }
 
