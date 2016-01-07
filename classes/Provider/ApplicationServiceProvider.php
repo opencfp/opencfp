@@ -27,8 +27,8 @@ class ApplicationServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['application.speakers'] = $app->share(function ($app) {
-            $userMapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
-            $talkMapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+            $userMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
+            $talkMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
             return new Speakers(
@@ -61,8 +61,8 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         });
 
         $app['application.speakers.api'] = $app->share(function ($app) {
-            $userMapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
-            $talkMapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+            $userMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
+            $talkMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
             return new Speakers(

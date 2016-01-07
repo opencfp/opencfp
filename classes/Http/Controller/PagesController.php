@@ -21,7 +21,7 @@ class PagesController extends BaseController
 
     private function getContextWithTalksCount()
     {
-        $numberOfTalks = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk')->all()->count();
+        $numberOfTalks = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class)->all()->count();
 
         return [
             'number_of_talks' => $numberOfTalks,

@@ -24,7 +24,7 @@ class OAuthGatewayProvider implements ServiceProviderInterface
             $server->addGrantType(new AuthCodeGrant);
             $server->addGrantType(new RefreshTokenGrant);
 
-            $userMapper = $app['spot']->mapper('OpenCFP\Domain\Entity\User');
+            $userMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
             $controller = new AuthorizationController($server, new SentryIdentityProvider($app['sentry'], $speakerRepository));
@@ -35,8 +35,8 @@ class OAuthGatewayProvider implements ServiceProviderInterface
 
         $app['controller.oauth.clients'] = $app->share(function ($app) {
             return new ClientRegistrationController(
-            $app['spot']->mapper('OpenCFP\Domain\OAuth\Client'),
-            $app['spot']->mapper('OpenCFP\Domain\OAuth\Endpoint'),
+            $app['spot']->mapper(\OpenCFP\Domain\OAuth\Client::class),
+            $app['spot']->mapper(\OpenCFP\Domain\OAuth\Endpoint::class),
             $app['security.random']
             );
         });

@@ -90,7 +90,7 @@ class TalkController extends BaseController
 
         $user = $this->app['sentry']->getUser();
 
-        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $talk_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk_info = $talk_mapper->get($talk_id)->toArray();
 
         if ($talk_info['user_id'] !== (int) $user->getId()) {
@@ -213,7 +213,7 @@ class TalkController extends BaseController
                 'user_id' => (int) $user->getId(),
             ];
 
-            $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+            $talk_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $talk = $talk_mapper->create($data);
 
             $this->app['session']->set('flash', [
@@ -297,7 +297,7 @@ class TalkController extends BaseController
                 'user_id' => (int) $user->getId(),
             ];
 
-            $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+            $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $talk = $mapper->get($data['id']);
 
             foreach ($data as $field => $value) {
@@ -355,7 +355,7 @@ class TalkController extends BaseController
         }
 
         $user = $app['sentry']->getUser();
-        $talk_mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $talk_mapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk = $talk_mapper->get($req->get('tid'));
 
         if ($talk->user_id !== (int) $user->getId()) {
@@ -377,7 +377,7 @@ class TalkController extends BaseController
      */
     protected function sendSubmitEmail(Application $app, $email, $talk_id)
     {
-        $mapper = $app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $mapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk = $mapper->get($talk_id);
 
         // Build our email that we will send

@@ -17,7 +17,7 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         $this->app = new Application(BASE_PATH, Environment::testing());
 
         // Create a test double for our User entity
-        $user = m::mock('OpenCFP\Domain\Entity\User');
+        $user = m::mock(\OpenCFP\Domain\Entity\User::class);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
@@ -41,7 +41,7 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         $userId = $this->app['user']->getId();
 
         // Create our fake talk
-        $talk = m::mock('OpenCFP\Domain\Entity\Talk');
+        $talk = m::mock(\OpenCFP\Domain\Entity\Talk::class);
         $talk->shouldReceive('save');
         $talk->shouldReceive('set')
             ->with($this->app['user'])
@@ -69,12 +69,12 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
             'favorite' => null,
             'selected' => null,
         ]];
-        $userMapper = m::mock('OpenCFP\Domain\Entity\Mapper\User');
+        $userMapper = m::mock(\OpenCFP\Domain\Entity\Mapper\User::class);
         $userMapper->shouldReceive('migrate');
         $userMapper->shouldReceive('build')->andReturn($this->app['user']);
         $userMapper->shouldReceive('save')->andReturn(true);
 
-        $talkMapper = m::mock('OpenCFP\Domain\Entity\Mapper\Talk');
+        $talkMapper = m::mock(\OpenCFP\Domain\Entity\Mapper\Talk::class);
         $talkMapper->shouldReceive('migrate');
         $talkMapper->shouldReceive('build')->andReturn($talk);
         $talkMapper->shouldReceive('save');
@@ -83,10 +83,10 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         // Overide our DB mappers to return doubles
         $spot = m::mock('Spot\Locator');
         $spot->shouldReceive('mapper')
-            ->with('OpenCFP\Domain\Entity\User')
+            ->with(\OpenCFP\Domain\Entity\User::class)
             ->andReturn($userMapper);
         $spot->shouldReceive('mapper')
-            ->with('OpenCFP\Domain\Entity\Talk')
+            ->with(\OpenCFP\Domain\Entity\Talk::class)
             ->andReturn($talkMapper);
         $this->app['spot'] = $spot;
 
@@ -139,7 +139,7 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         $comment = 'Test Comment';
 
         // Create a TalkComment and mapper, then add the mapper to $app
-        $talkComment = m::mock('OpenCFP\Domain\Entity\TalkComment');
+        $talkComment = m::mock(\OpenCFP\Domain\Entity\TalkComment::class);
         $talkComment->shouldReceive('set')
             ->andSet('talk_id', $talkId);
         $talkComment->shouldReceive('set')
@@ -147,14 +147,14 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         $talkComment->shouldReceive('set')
             ->andSet('user_id', uniqid());
 
-        $talkCommentMapper = m::mock('OpenCFP\Domain\Entity\Mapper\TalkComment');
+        $talkCommentMapper = m::mock(\OpenCFP\Domain\Entity\Mapper\TalkComment::class);
         $talkCommentMapper->shouldReceive('get')->andReturn($talkComment);
         $talkCommentMapper->shouldReceive('save');
 
         // Override our mapper with the double
         $spot = m::mock('Spot\Locator');
         $spot->shouldReceive('mapper')
-            ->with('OpenCFP\Domain\Entity\TalkComment')
+            ->with(\OpenCFP\Domain\Entity\TalkComment::class)
             ->andReturn($talkCommentMapper);
         $this->app['spot'] = $spot;
 
@@ -194,7 +194,7 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         // Override our mapper with the double
         $spot = m::mock('Spot\Locator');
         $spot->shouldReceive('mapper')
-            ->with('OpenCFP\Domain\Entity\Talk')
+            ->with(\OpenCFP\Domain\Entity\Talk::class)
             ->andReturn([]);
         $this->app['spot'] = $spot;
 

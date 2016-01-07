@@ -399,7 +399,7 @@ class Talk extends Mapper
             }
         }
 
-        $mapper = $this->getMapper('OpenCFP\Domain\Entity\TalkMeta');
+        $mapper = $this->getMapper(\OpenCFP\Domain\Entity\TalkMeta::class);
         $talk_meta = $mapper->where(['talk_id' => $talk->id, 'admin_user_id' => $admin_user_id])
             ->first();
 

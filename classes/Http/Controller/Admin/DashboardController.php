@@ -11,11 +11,11 @@ class DashboardController extends BaseController
 
     public function indexAction(Request $req)
     {
-        $user_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\User');
+        $user_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker_total = $user_mapper->all()->count();
 
-        $talk_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
-        $favorite_mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Favorite');
+        $talk_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $favorite_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Favorite::class);
         $recent_talks = $talk_mapper->getRecent($this->app['sentry']->getUser()->getId());
 
         $templateData = [

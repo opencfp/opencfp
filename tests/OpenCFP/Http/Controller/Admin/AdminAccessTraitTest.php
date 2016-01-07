@@ -92,7 +92,7 @@ class AdminAccessTraitTest extends \PHPUnit_Framework_TestCase
      */
     private function getApplicationMock(array $items = [])
     {
-        $application = $this->getMockBuilder('OpenCFP\Application')
+        $application = $this->getMockBuilder(\OpenCFP\Application::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;

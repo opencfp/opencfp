@@ -20,8 +20,8 @@ class TalkComment extends \Spot\Entity
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'talk' => $mapper->belongsTo($entity, 'OpenCFP\Domain\Entity\Talk', 'talk_id'),
-            'user' => $mapper->belongsTo($entity, 'OpenCFP\Domain\Entity\User', 'user_id'),
+            'talk' => $mapper->belongsTo($entity, \OpenCFP\Domain\Entity\Talk::class, 'talk_id'),
+            'user' => $mapper->belongsTo($entity, \OpenCFP\Domain\Entity\User::class, 'user_id'),
         ];
     }
 }

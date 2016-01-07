@@ -22,7 +22,7 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->speakers = m::mock('OpenCFP\Application\Speakers');
+        $this->speakers = m::mock(\OpenCFP\Application\Speakers::class);
         $this->sut = new TalkController($this->speakers);
     }
 
@@ -39,7 +39,7 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
 
         $this->speakers->shouldReceive('submitTalk')
             ->once()
-            ->with(m::type('OpenCFP\Domain\Talk\TalkSubmission'))
+            ->with(m::type(\OpenCFP\Domain\Talk\TalkSubmission::class))
             ->andReturn($talk);
 
         $response = $this->sut->handleSubmitTalk($request);
@@ -65,7 +65,7 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
         $request = $this->getValidRequest();
 
         $this->speakers->shouldReceive('submitTalk')
-            ->andThrow('OpenCFP\Domain\Services\NotAuthenticatedException');
+            ->andThrow(\OpenCFP\Domain\Services\NotAuthenticatedException::class);
 
         $response = $this->sut->handleSubmitTalk($request);
 
@@ -89,7 +89,7 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
     public function it_responds_unauthorized_when_viewing_single_talk_while_not_authenticated()
     {
         $this->speakers->shouldReceive('getTalk')
-        ->andThrow('OpenCFP\Domain\Services\NotAuthenticatedException');
+        ->andThrow(\OpenCFP\Domain\Services\NotAuthenticatedException::class);
 
         $response = $this->sut->handleViewTalk($this->getValidRequest(), 1);
 
@@ -118,7 +118,7 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
     public function it_should_respond_unauthorized_when_no_authentication_provided()
     {
         $this->speakers->shouldReceive('getTalks')
-            ->andThrow('OpenCFP\Domain\Services\NotAuthenticatedException');
+            ->andThrow(\OpenCFP\Domain\Services\NotAuthenticatedException::class);
 
         $response = $this->sut->handleViewAllTalks($this->getValidRequest());
 

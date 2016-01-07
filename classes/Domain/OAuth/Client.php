@@ -22,7 +22,7 @@ class Client extends Entity
     public static function relations(MapperInterface $mapper, EntityInterface $entity)
     {
         return [
-            'endpoints' => $mapper->hasMany($entity, 'OpenCFP\Domain\OAuth\Endpoint', 'client_id'),
+            'endpoints' => $mapper->hasMany($entity, \OpenCFP\Domain\OAuth\Endpoint::class, 'client_id'),
         ];
     }
 

@@ -39,11 +39,11 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->identityProvider = m::mock('OpenCFP\Domain\Services\IdentityProvider');
-        $this->speakerRepository = m::mock('OpenCFP\Domain\Speaker\SpeakerRepository');
-        $this->talkRepository = m::mock('OpenCFP\Domain\Talk\TalkRepository');
-        $this->callForProposal = m::mock('OpenCFP\Domain\CallForProposal');
-        $this->dispatcher = m::mock('OpenCFP\Domain\Services\EventDispatcher');
+        $this->identityProvider = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
+        $this->speakerRepository = m::mock(\OpenCFP\Domain\Speaker\SpeakerRepository::class);
+        $this->talkRepository = m::mock(\OpenCFP\Domain\Talk\TalkRepository::class);
+        $this->callForProposal = m::mock(\OpenCFP\Domain\CallForProposal::class);
+        $this->dispatcher = m::mock(\OpenCFP\Domain\Services\EventDispatcher::class);
 
         $this->sut = new Speakers($this->callForProposal, $this->identityProvider, $this->speakerRepository, $this->talkRepository, $this->dispatcher);
     }
@@ -66,7 +66,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
 
         $profile = $this->sut->findProfile();
 
-        $this->assertInstanceOf('OpenCFP\Domain\Speaker\SpeakerProfile', $profile);
+        $this->assertInstanceOf(\OpenCFP\Domain\Speaker\SpeakerProfile::class, $profile);
         $this->assertEquals($speaker->email, $profile->getEmail());
         $this->assertEquals($speaker->first_name . ' ' . $speaker->last_name, $profile->getName());
     }
@@ -76,7 +76,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     {
         $this->trainStudentRepositoryToThrowEntityNotFoundException();
 
-        $this->setExpectedException('OpenCFP\Domain\EntityNotFoundException');
+        $this->setExpectedException(\OpenCFP\Domain\EntityNotFoundException::class);
         $this->sut->findProfile();
     }
 
@@ -97,7 +97,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         // something screwy attempting to get a talk they should be able to.
         $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerWithNoTalks());
 
-        $this->setExpectedException('OpenCFP\Application\NotAuthorizedException');
+        $this->setExpectedException(\OpenCFP\Application\NotAuthorizedException::class);
         $this->sut->getTalk(1);
     }
 
@@ -120,7 +120,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     {
         $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerFromMisbehavingSpot());
 
-        $this->setExpectedException('OpenCFP\Application\NotAuthorizedException');
+        $this->setExpectedException(\OpenCFP\Application\NotAuthorizedException::class);
         $this->sut->getTalk(1);
     }
 
@@ -140,11 +140,11 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
             ->andReturn($this->getSpeaker());
 
         $this->talkRepository->shouldReceive('persist')
-            ->with(m::type('OpenCFP\Domain\Entity\Talk'))
+            ->with(m::type(\OpenCFP\Domain\Entity\Talk::class))
             ->once();
 
         $this->dispatcher->shouldReceive('dispatch')
-            ->with('opencfp.talk.submit', m::type('OpenCFP\Domain\Talk\TalkWasSubmitted'))
+            ->with('opencfp.talk.submit', m::type(\OpenCFP\Domain\Talk\TalkWasSubmitted::class))
             ->once();
 
         $submission = TalkSubmission::fromNative([
@@ -197,7 +197,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
     private function trainStudentRepositoryToThrowEntityNotFoundException()
     {
         $this->identityProvider->shouldReceive('getCurrentUser')
-            ->andThrow('OpenCFP\Domain\EntityNotFoundException');
+            ->andThrow(\OpenCFP\Domain\EntityNotFoundException::class);
     }
 
     private function getSpeaker()
