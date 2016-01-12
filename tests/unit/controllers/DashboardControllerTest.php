@@ -109,7 +109,7 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
             'getTransportation' => true,
             'getHotel' => true,
             'getAirport' => 'RDU',
-            'getPhoto' => ''
+            'getPhoto' => '',
         ]);
 
         $speakersDouble = m::mock(OpenCFP\Application\Speakers::class)
