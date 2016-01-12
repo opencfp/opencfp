@@ -281,7 +281,6 @@ class Application extends SilexApplication
         $app->error(function (\Exception $e, $code) use ($app) {
             /** @var Request $request */
             $request = $app['request'];
-            die($e->getMessage());
 
             if (in_array('application/json', $request->getAcceptableContentTypes())) {
                 $headers = [];
