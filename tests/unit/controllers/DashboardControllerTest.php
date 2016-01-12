@@ -1,12 +1,17 @@
 <?php
+use Cartalyst\Sentry\Sentry;
 use Mockery as m;
 use OpenCFP\Application;
+use OpenCFP\Domain\Entity\User;
+use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Environment;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class DashboardControllerTest extends PHPUnit_Framework_TestCase
 {
+    use OpenCFP\Util\Faker\GeneratorTrait;
+
     /**
      * Test that the index page returns a list of talks associated
      * with a specific user and information about that user as well
@@ -58,5 +63,80 @@ class DashboardControllerTest extends PHPUnit_Framework_TestCase
         $response = $controller->showSpeakerProfile();
         $this->assertContains('Test Title', (string) $response);
         $this->assertContains('Test User', (string) $response);
+    }
+
+    /**
+     * @test
+     */
+    public function it_hides_transportation_and_hotel_when_doing_an_online_conference()
+    {
+        $faker = $this->getFaker();
+        $app = new Application(BASE_PATH, Environment::testing());
+        $app['session'] = new Session(new MockFileSessionStorage());
+
+        // Specify configuration to enable `online_conference` settings.
+        // TODO Bake something like this as a trait. Dealing with mocking
+        // TODO services like configuration and template rending is painful.
+        $config = $app['config']['application'];
+        $config['online_conference'] = true;
+        $app['twig']->addGlobal('site', $config);
+
+        // There's some global before filters that call Sentry directly.
+        // We have to stub that behaviour here to have it think we are not admin.
+        // TODO This stuff is everywhere. Bake it into a trait for testing in the short-term.
+        $user = m::mock('stdClass');
+        $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
+        $user->shouldReceive('getId')->andReturn(1);
+        $user->shouldReceive('id')->andReturn(1);
+        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
+        $sentry = m::mock('stdClass');
+        $sentry->shouldReceive('check')->andReturn(true);
+        $sentry->shouldReceive('getUser')->andReturn($user);
+        $app['sentry'] = $sentry;
+        $app['user'] = $user;
+
+        // Create a test double for SpeakerProfile
+        // We  have benefit of being able to stub an application
+        // service for this.
+        $profile = $this->stubProfileWith([
+            'getTalks' => [],
+            'getName' => $faker->name,
+            'getEmail' => $faker->companyEmail,
+            'getCompany' => $faker->company,
+            'getTwitter' => $faker->userName,
+            'getInfo' => $faker->text,
+            'getBio' => $faker->text,
+            'getTransportation' => true,
+            'getHotel' => true,
+            'getAirport' => 'RDU',
+            'getPhoto' => '',
+        ]);
+
+        $speakersDouble = m::mock(OpenCFP\Application\Speakers::class)
+            ->shouldReceive('findProfile')
+            ->andReturn($profile)
+            ->getMock();
+
+        $app['application.speakers'] = $speakersDouble;
+
+        ob_start();
+        $app->run();  // Fire before handlers... boot...
+        ob_end_clean();
+
+        // Instantiate the controller and run the indexAction
+        $controller = new \OpenCFP\Http\Controller\DashboardController();
+        $controller->setApplication($app);
+
+        $response = (string) $controller->showSpeakerProfile();
+
+        $this->assertNotContains('Need Transportation', $response);
+        $this->assertNotContains('Need Hotel', $response);
+    }
+
+    private function stubProfileWith($stubMethods = [])
+    {
+        $speakerProfileDouble = m::mock(SpeakerProfile::class);
+        $speakerProfileDouble->shouldReceive($stubMethods);
+        return $speakerProfileDouble;
     }
 }
