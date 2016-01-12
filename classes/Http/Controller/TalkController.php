@@ -21,7 +21,7 @@ class TalkController extends BaseController
      */
     public function isCfpOpen($current_time)
     {
-        if ($currentTime < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
+        if ($current_time < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
             return true;
         }
 
