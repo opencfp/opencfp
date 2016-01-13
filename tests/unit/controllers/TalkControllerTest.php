@@ -111,4 +111,65 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
             $this->req->shouldReceive('get')->with($key)->andReturn($value);
         }
     }
+
+
+    /**
+     * @test
+     */
+    public function allowSubmissionsUntilRightBeforeMidnightDayOfClose()
+    {
+        $controller = new OpenCFP\Http\Controller\TalkController();
+        $controller->setApplication($this->app);
+
+        // Get our request object to return expected data
+        $talk_data = [
+            'title' => 'Test Submission',
+            'description' => "Make sure we can submit before end and not after.",
+            'type' => 'regular',
+            'level' => 'entry',
+            'category' => 'other',
+            'desired' => 0,
+            'slides' => '',
+            'other' => '',
+            'sponsor' => '',
+            'user_id' => $this->app['sentry']->getUser()->getId(),
+        ];
+
+        $this->setPost($talk_data);
+
+        // Set CFP end to today (whenever test is run)
+        // Previously, this fails because it checked midnight
+        // for the current date. `isCfpOpen` now uses 11:59pm current date.
+        $now = new DateTime();
+
+        $config = $this->app['config'];
+        $config['application']['enddate'] = $now->format('M. jS, Y');
+        $this->app['config'] = $config;
+
+        /*
+         * This should not have a flash message. The fact that this
+         * is true means code is working as intended. Previously this fails
+         * because the CFP incorrectly ended at 12:00am the day of, not 11:59pm.
+         */
+        $controller->createAction($this->req);
+
+        $flashMessage = $this->app['session']->get('flash');
+        $this->assertNull($flashMessage);
+
+        /*
+         * However, if I update application configuration to make
+         * the CFP end date to be "yesterday" then we get flash as expected.
+         */
+        $yesterday = new DateTime("yesterday");
+
+        $config = $this->app['config'];
+        $config['application']['enddate'] = $yesterday->format('M. jS, Y');
+        $this->app['config'] = $config;
+
+        $controller->createAction($this->req);
+
+        $flashMessage = $this->app['session']->get('flash');
+        $this->assertEquals('error', $flashMessage['type']);
+        $this->assertEquals('You cannot create talks once the call for papers has ended', $flashMessage['ext']);
+    }
 }
