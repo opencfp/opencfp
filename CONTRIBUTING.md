@@ -8,7 +8,9 @@ We accept contributions via Pull Requests on [Github](https://github.com/opencfp
 
 - **[PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)** - The easiest way to apply the conventions is to run `make cs`, which will apply all code-style fixes necessary.
 
-- **Add tests!** - Your patch probably won't be accepted if it doesn't have tests.
+- **Add tests!** - Your patch probably won't be accepted if it doesn't have tests. Any new tests must be placed in the `tests/OpenCFP` directory and properly namespaced at `OpenCFP\Tests`. There will be an ongoing effort to move remaining tests from `tests/unit` into that namespace.
+
+- **Tests must be clear in meaning** - We value clarity in meaning / purposes behind tests. If there is excessive setup required for a test, it should be hidden behind an intention-revealing (and possibly re-usable) method.
 
 - **Document any change in behaviour** - Make sure the `README.md` and any other relevant documentation are kept up-to-date.
 
