@@ -28,6 +28,10 @@ class ContainerAwareTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($service, $containerAware->getService($slug));
     }
 
+    //
+    // Factory Method
+    //
+
     /**
      * @return m\MockInterface|Application
      */
