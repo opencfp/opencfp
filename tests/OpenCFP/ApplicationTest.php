@@ -1,7 +1,9 @@
 <?php
 
-namespace OpenCFP;
+namespace OpenCFP\Test;
 
+use OpenCFP\Application;
+use OpenCFP\Environment;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
@@ -11,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Application */
-    protected $sut;
+    private $sut;
 
     /**
      * @test

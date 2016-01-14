@@ -1,9 +1,10 @@
 <?php
 
-namespace OpenCFP\Domain\Speaker;
+namespace OpenCFP\Test\Domain\Speaker;
 
 use OpenCFP\Domain\Entity;
-use OpenCFP\Util\Faker\GeneratorTrait;
+use OpenCFP\Domain\Speaker\SpeakerProfile;
+use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
 class SpeakerProfileTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Tests\Domain\Services;
+namespace OpenCFP\Test\Domain\Services;
 
 use OpenCFP\Domain\Services\ResetEmailer;
 
@@ -42,6 +42,10 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
     {
         $this->reset_mailer->send($this->user_id, $this->user_email, $this->reset_code);
     }
+
+    //
+    // Helpers
+    //
 
     private function validateEmail()
     {

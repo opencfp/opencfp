@@ -1,5 +1,7 @@
 <?php
 
+namespace OpenCFP\Test\Http\API;
+
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
@@ -8,7 +10,7 @@ use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Http\API\TalkController;
 use Symfony\Component\HttpFoundation\Request;
 
-class TalkApiControllerTest extends PHPUnit_Framework_TestCase
+class TalkApiControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var TalkController
@@ -126,6 +128,10 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
         $this->assertContains('Unauthorized', $response->getContent());
     }
 
+    //
+    // Factory Methods
+    //
+
     private function getRequest(array $data = [])
     {
         $request = Request::create('');
@@ -137,11 +143,11 @@ class TalkApiControllerTest extends PHPUnit_Framework_TestCase
     private function getValidRequest()
     {
         return $this->getRequest([
-        'title' => 'Happy Path Submission',
-        'description' => 'I play by the rules.',
-        'type' => 'regular',
-        'level' => 'entry',
-        'category' => 'api',
+            'title' => 'Happy Path Submission',
+            'description' => 'I play by the rules.',
+            'type' => 'regular',
+            'level' => 'entry',
+            'category' => 'api',
         ]);
     }
 }

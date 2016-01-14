@@ -1,12 +1,13 @@
 <?php
 
-namespace OpenCFP\Domain\Services;
+namespace OpenCFP\Test\Domain\Services;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserNotActivatedException;
 use Cartalyst\Sentry\Users\UserNotFoundException;
 use Mockery as m;
-use OpenCFP\Util\Faker\GeneratorTrait;
+use OpenCFP\Domain\Services\Login;
+use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
 class LoginTest extends \PHPUnit_Framework_TestCase
 {
@@ -238,6 +239,10 @@ class LoginTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, $viewVariables);
     }
+
+    //
+    // Factory Methods
+    //
 
     /**
      * @return m\MockInterface|Sentry

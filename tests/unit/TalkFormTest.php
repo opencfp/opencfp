@@ -1,6 +1,6 @@
 <?php
 
-use OpenCFP\Util\Faker\GeneratorTrait;
+use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
 /**
  * Tests for our TalkForm object

@@ -1,5 +1,8 @@
 <?php
 
+namespace OpenCFP\Test\Http\API;
+
+use Exception;
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
@@ -8,7 +11,7 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\API\ProfileController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProfileApiControllerTest extends PHPUnit_Framework_TestCase
+class ProfileApiControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ProfileController
@@ -61,6 +64,10 @@ class ProfileApiControllerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(500, $response->getStatusCode());
         $this->assertContains('Zomgz it blew up somehow', $response->getContent());
     }
+
+    //
+    // Factory Methods
+    //
 
     private function getRequest(array $data = [])
     {

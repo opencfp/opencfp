@@ -1,8 +1,8 @@
 <?php
 
-use OpenCFP\Http\API\StubApiController;
+namespace OpenCFP\Test\Http\API;
 
-class ApiControllerTest extends PHPUnit_Framework_TestCase
+class ApiControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var StubApiController

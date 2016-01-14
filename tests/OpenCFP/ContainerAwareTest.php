@@ -1,8 +1,9 @@
 <?php
 
-namespace OpenCFP;
+namespace OpenCFP\Test;
 
 use Mockery as m;
+use OpenCFP\Application;
 
 class ContainerAwareTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,6 +27,10 @@ class ContainerAwareTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($service, $containerAware->getService($slug));
     }
+
+    //
+    // Factory Method
+    //
 
     /**
      * @return m\MockInterface|Application

@@ -1,5 +1,6 @@
 <?php
-namespace OpenCFP\Tests\Http\Controller\Admin;
+
+namespace OpenCFP\Test\Http\Controller\Admin;
 
 use Mockery as m;
 use OpenCFP\Application;
@@ -9,7 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class TalksControllerTest extends \PHPUnit_Framework_TestCase
 {
-    public $app;
+    private $app;
 
     protected function setUp()
     {

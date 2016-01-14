@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Http\Controller;
+namespace OpenCFP\Test\Http\Controller;
 
 use OpenCFP\Application;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -59,6 +59,10 @@ class FlashableTraitTest extends \PHPUnit_Framework_TestCase
 
         $flashable->clearFlash($application);
     }
+
+    //
+    // Factory Methods
+    //
 
     /**
      * @param array $items

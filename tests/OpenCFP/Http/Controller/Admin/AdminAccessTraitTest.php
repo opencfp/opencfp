@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Http\Controller\Admin;
+namespace OpenCFP\Test\Http\Controller\Admin;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
@@ -85,6 +85,10 @@ class AdminAccessTraitTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($adminAccess->hasAdminAccess());
     }
+
+    //
+    // Factory Methods
+    //
 
     /**
      * @param array $items

@@ -1,8 +1,9 @@
 <?php
 
-namespace OpenCFP\Http\Controller\Admin;
+namespace OpenCFP\Test\Http\Controller\Admin;
 
 use OpenCFP\Application;
+use OpenCFP\Http\Controller\Admin\AdminAccessTrait;
 
 class AdminAccessTraitFake
 {

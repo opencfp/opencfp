@@ -1,8 +1,11 @@
 <?php
 
+namespace OpenCFP\Test\Domain;
+
+use DateTime;
 use OpenCFP\Domain\CallForProposal;
 
-class CallForProposalTest extends PHPUnit_Framework_TestCase
+class CallForProposalTest extends \PHPUnit_Framework_TestCase
 {
     /** @test */
     public function it_should_tell_whether_or_not_the_cfp_is_open()

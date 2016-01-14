@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Util\Faker;
+namespace OpenCFP\Test\Util\Faker;
 
 use Faker\Generator;
 

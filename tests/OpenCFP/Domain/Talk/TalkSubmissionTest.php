@@ -1,8 +1,10 @@
 <?php
 
+namespace OpenCFP\Test\Domain\Talk;
+
 use OpenCFP\Domain\Talk\TalkSubmission;
 
-class TalkSubmissionTest extends PHPUnit_Framework_TestCase
+class TalkSubmissionTest extends \PHPUnit_Framework_TestCase
 {
     /** @test */
     public function it_should_be_created_from_native_format()

@@ -1,11 +1,17 @@
 <?php
+
+namespace OpenCFP\Test\Domain\Entity;
+
 use OpenCFP\Application;
 use OpenCFP\Environment;
 
+/**
+ * @group db
+ */
 class TalkEntityTest extends \PHPUnit_Framework_TestCase
 {
-    public $app;
-    public $mapper;
+    private $app;
+    private $mapper;
     private $entities = ['Talk', 'TalkMeta', 'User', 'Favorite'];
 
     protected function setUp()
@@ -67,6 +73,10 @@ class TalkEntityTest extends \PHPUnit_Framework_TestCase
             "Talk::getRecent() did not grab 10 talks out of 11"
         );
     }
+
+    //
+    // Factory Methods
+    //
 
     private function bulkCreateTalks($numTalks)
     {
