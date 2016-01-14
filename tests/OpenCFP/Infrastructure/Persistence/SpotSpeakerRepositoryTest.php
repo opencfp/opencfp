@@ -78,6 +78,10 @@ class SpotSpeakerRepositoryTest extends \PHPUnit_Framework_TestCase
         $repository->persist($speaker);
     }
 
+    //
+    // Factory Methods
+    //
+
     /**
      * @return m\MockInterface|Mapper
      */

@@ -36,6 +36,10 @@ class SpotTalkRepositoryTest extends \PHPUnit_Framework_TestCase
         $repository->persist($talk);
     }
 
+    //
+    // Factory Methods
+    //
+
     /**
      * @return m\MockInterface|Mapper
      */

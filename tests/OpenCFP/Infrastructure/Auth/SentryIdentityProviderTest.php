@@ -92,6 +92,10 @@ class SentryIdentityProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($user, $provider->getCurrentUser());
     }
 
+    //
+    // Factory Methods
+    //
+
     /**
      * @return m\MockInterface|Sentry
      */
