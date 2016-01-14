@@ -65,6 +65,10 @@ class ProfileApiControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Zomgz it blew up somehow', $response->getContent());
     }
 
+    //
+    // Factory Methods
+    //
+
     private function getRequest(array $data = [])
     {
         $request = Request::create('');
