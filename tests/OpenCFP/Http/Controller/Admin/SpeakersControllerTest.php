@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
 {
-    public $app;
+    private $app;
 
     protected function setUp()
     {

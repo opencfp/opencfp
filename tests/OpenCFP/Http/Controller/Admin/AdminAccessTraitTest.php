@@ -86,6 +86,10 @@ class AdminAccessTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($adminAccess->hasAdminAccess());
     }
 
+    //
+    // Factory Methods
+    //
+
     /**
      * @param array $items
      * @return Application|\PHPUnit_Framework_MockObject_MockObject

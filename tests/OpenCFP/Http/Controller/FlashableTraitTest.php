@@ -60,6 +60,10 @@ class FlashableTraitTest extends \PHPUnit_Framework_TestCase
         $flashable->clearFlash($application);
     }
 
+    //
+    // Factory Methods
+    //
+
     /**
      * @param array $items
      * @return Application|\PHPUnit_Framework_MockObject_MockObject
