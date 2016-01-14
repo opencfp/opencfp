@@ -92,6 +92,10 @@ class SymfonySentrySessionTest extends \PHPUnit_Framework_TestCase
         $sentrySession->forget();
     }
 
+    //
+    // Factory Methods
+    //
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|SessionInterface
      */
