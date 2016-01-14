@@ -2,8 +2,6 @@
 
 namespace OpenCFP\Test\Http\API;
 
-use OpenCFP\Test\Http\API\StubApiController;
-
 class ApiControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
