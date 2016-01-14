@@ -240,6 +240,10 @@ class LoginTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $viewVariables);
     }
 
+    //
+    // Factory Methods
+    //
+
     /**
      * @return m\MockInterface|Sentry
      */

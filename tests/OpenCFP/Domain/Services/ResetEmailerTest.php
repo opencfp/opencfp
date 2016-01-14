@@ -43,6 +43,10 @@ class EmailerTest extends \PHPUnit_Framework_TestCase
         $this->reset_mailer->send($this->user_id, $this->user_email, $this->reset_code);
     }
 
+    //
+    // Helpers
+    //
+
     private function validateEmail()
     {
         return function ($message) {

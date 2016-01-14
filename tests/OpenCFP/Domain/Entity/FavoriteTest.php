@@ -5,11 +5,14 @@ namespace OpenCFP\Test\Domain\Entity;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 
-class FavoriteEntityTest extends \PHPUnit_Framework_TestCase
+/**
+ * @group db
+ */
+class FavoriteTest extends \PHPUnit_Framework_TestCase
 {
-    public $app;
-    public $mapper;
-    public $talk;
+    private $app;
+    private $mapper;
+    private $talk;
 
     protected function setUp()
     {
