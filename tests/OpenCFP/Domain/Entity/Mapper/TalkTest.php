@@ -2,10 +2,13 @@
 use OpenCFP\Application;
 use OpenCFP\Environment;
 
+/**
+ * @group db
+ */
 class TalkMapperTest extends \PHPUnit_Framework_TestCase
 {
-    public $app;
-    public $mapper;
+    private $app;
+    private $mapper;
     private $entities = ['Talk', 'TalkMeta', 'User', 'Favorite'];
 
     protected function setUp()
@@ -55,6 +58,10 @@ class TalkMapperTest extends \PHPUnit_Framework_TestCase
             "Did not get expected list of admin-favorited talks"
         );
     }
+
+    //
+    // Factory Methods
+    //
 
     private function createViewedTalks($talk_data, $total)
     {
