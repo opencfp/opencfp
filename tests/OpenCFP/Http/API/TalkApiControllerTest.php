@@ -1,5 +1,7 @@
 <?php
 
+namespace OpenCFP\Test\Http\API;
+
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
@@ -8,7 +10,7 @@ use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Http\API\TalkController;
 use Symfony\Component\HttpFoundation\Request;
 
-class TalkApiControllerTest extends PHPUnit_Framework_TestCase
+class TalkApiControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var TalkController

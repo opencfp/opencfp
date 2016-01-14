@@ -1,6 +1,8 @@
 <?php
 
-namespace OpenCFP\Http\Controller;
+namespace OpenCFP\Test\Http\Controller;
+
+use OpenCFP\Http\Controller\FlashableTrait;
 
 class FlashableTraitFake
 {

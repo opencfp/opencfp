@@ -1,12 +1,13 @@
 <?php
 
-namespace OpenCFP\Infrastructure\Persistence;
+namespace OpenCFP\Test\Infrastructure\Persistence;
 
 use Mockery as m;
 use OpenCFP\Domain\Entity;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
-use OpenCFP\Util\Faker\GeneratorTrait;
+use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
+use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use Spot\Mapper;
 
 class SpotSpeakerRepositoryTest extends \PHPUnit_Framework_TestCase

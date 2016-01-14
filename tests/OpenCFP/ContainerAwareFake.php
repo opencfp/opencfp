@@ -1,6 +1,8 @@
 <?php
 
-namespace OpenCFP;
+namespace OpenCFP\Test;
+
+use OpenCFP\ContainerAware;
 
 class ContainerAwareFake
 {

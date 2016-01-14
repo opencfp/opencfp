@@ -1,4 +1,8 @@
-<?php namespace OpenCFP;
+<?php
+
+namespace OpenCFP\Test;
+
+use OpenCFP\Environment;
 
 /**
  * @covers OpenCFP\Environment
@@ -8,7 +12,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_should_encapsulate_valid_environments()
     {
-        $this->assertInstanceOf(\OpenCFP\Environment::class, Environment::production());
+        $this->assertInstanceOf(Environment::class, Environment::production());
 
         $this->assertEquals('production', Environment::production());
         $this->assertEquals('development', Environment::development());

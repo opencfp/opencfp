@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Http\Controller;
+namespace OpenCFP\Test\Http\Controller;
 
 use OpenCFP\Application;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

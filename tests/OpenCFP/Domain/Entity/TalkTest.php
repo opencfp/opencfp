@@ -1,4 +1,7 @@
 <?php
+
+namespace OpenCFP\Test\Domain\Entity;
+
 use OpenCFP\Application;
 use OpenCFP\Environment;
 

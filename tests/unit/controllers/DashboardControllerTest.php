@@ -1,16 +1,18 @@
 <?php
+
 use Cartalyst\Sentry\Sentry;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Environment;
+use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class DashboardControllerTest extends PHPUnit_Framework_TestCase
 {
-    use OpenCFP\Util\Faker\GeneratorTrait;
+    use GeneratorTrait;
 
     /**
      * Test that the index page returns a list of talks associated

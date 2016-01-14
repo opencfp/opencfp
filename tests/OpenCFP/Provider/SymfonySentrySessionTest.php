@@ -1,7 +1,8 @@
 <?php
 
-namespace OpenCFP\Provider;
+namespace OpenCFP\Test\Provider;
 
+use OpenCFP\Provider\SymfonySentrySession;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SymfonySentrySessionTest extends \PHPUnit_Framework_TestCase

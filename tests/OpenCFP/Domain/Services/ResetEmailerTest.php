@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Tests\Domain\Services;
+namespace OpenCFP\Test\Domain\Services;
 
 use OpenCFP\Domain\Services\ResetEmailer;
 

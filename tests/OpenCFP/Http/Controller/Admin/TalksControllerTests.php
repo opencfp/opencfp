@@ -1,5 +1,6 @@
 <?php
-namespace OpenCFP\Tests\Http\Controller\Admin;
+
+namespace OpenCFP\Test\Http\Controller\Admin;
 
 use Mockery as m;
 use OpenCFP\Application;

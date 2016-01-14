@@ -1,6 +1,8 @@
 <?php
 
-namespace OpenCFP\Http\API;
+namespace OpenCFP\Test\Http\API;
+
+use OpenCFP\Http\API\ApiController;
 
 class StubApiController extends ApiController
 {

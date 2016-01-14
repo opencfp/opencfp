@@ -1,4 +1,7 @@
 <?php
+
+namespace OpenCFP\Test\Domain\Entity\Mapper;
+
 use OpenCFP\Application;
 use OpenCFP\Environment;
 
