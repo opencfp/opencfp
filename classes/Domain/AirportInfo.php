@@ -3,9 +3,12 @@
 namespace OpenCFP\Domain;
 
 use Exception;
+use OpenCFP\Util\Immutable;
 
 class AirportInfo
 {
+    use Immutable;
+
     /**
      * @var string IATA Airport Code
      * @see https://en.wikipedia.org/wiki/International_Air_Transport_Association_airport_code
@@ -45,15 +48,5 @@ class AirportInfo
             $name = isset($data['name']) ? $data['name'] : null,
             $country = isset($data['country']) ? $data['country'] : null
         );
-    }
-
-    public function __set($name, $value)
-    {
-        throw new Exception('AirportInfo is immutable.');
-    }
-
-    public function __get($name)
-    {
-        return $this->{$name};
     }
 }
