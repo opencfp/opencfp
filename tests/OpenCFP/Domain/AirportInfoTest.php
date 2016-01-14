@@ -30,5 +30,4 @@ class AirportInfoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Raleigh/Durham (NC)', $airport->name);
         $this->assertEquals('USA', $airport->country);
     }
-
 }
