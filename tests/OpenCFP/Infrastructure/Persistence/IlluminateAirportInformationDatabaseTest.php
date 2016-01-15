@@ -13,13 +13,19 @@ use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
  */
 class IlluminateAirportInformationDatabaseTest extends \DatabaseTestCase
 {
+    private $airports;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->airports = $this->getAirportInformationDatabase();
+    }
 
     /** @test */
     public function it_queries_airports_table_by_code()
     {
-        $airports = $this->getAirportInformationDatabase();
-
-        $airport = $airports->withCode('RDU');
+        $airport = $this->airports->withCode('RDU');
 
         $this->assertEquals('RDU', $airport->code);
         $this->assertEquals('Raleigh/Durham (NC)', $airport->name);
@@ -31,8 +37,7 @@ class IlluminateAirportInformationDatabaseTest extends \DatabaseTestCase
     {
         $this->setExpectedException(\Exception::class, 'not found');
 
-        $airports = $this->getAirportInformationDatabase();
-        $airport = $airports->withCode('foobarbaz');
+        $this->airports->withCode('foobarbaz');
     }
 
     /**
