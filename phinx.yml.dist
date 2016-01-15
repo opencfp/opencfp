@@ -24,3 +24,7 @@ environments:
         name: cfp_travis
         user: root
         pass: ''
+
+    memory:
+        adapter: sqlite
+        memory: true
