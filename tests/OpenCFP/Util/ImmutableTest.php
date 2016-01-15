@@ -4,9 +4,6 @@ namespace OpenCFP\Test\Util;
 
 use Exception;
 
-/**
- * @group wip
- */
 class ImmutableTest extends \PHPUnit_Framework_TestCase
 {
 
