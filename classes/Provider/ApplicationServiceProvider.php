@@ -5,6 +5,7 @@ namespace OpenCFP\Provider;
 use League\OAuth2\Server\ResourceServer;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Infrastructure\Auth\OAuthIdentityProvider;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
@@ -13,11 +14,13 @@ use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
 use OpenCFP\Infrastructure\OAuth\ClientStorage;
 use OpenCFP\Infrastructure\OAuth\ScopeStorage;
 use OpenCFP\Infrastructure\OAuth\SessionStorage;
+use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
 use RandomLib\Factory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
@@ -38,6 +41,25 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                 new SpotTalkRepository($talkMapper),
                 new EventDispatcher()
             );
+        });
+
+        $app[AirportInformationDatabase::class] = $app->share(function ($app) {
+            $capsule = new Capsule;
+
+            $capsule->addConnection([
+                'driver'    => 'mysql',
+                'host'      => $app->config('database.host'),
+                'database'  => $app->config('database.database'),
+                'username'  => $app->config('database.user'),
+                'password'  => $app->config('database.password'),
+                'charset'   => 'utf8',
+                'collation' => 'utf8_unicode_ci',
+                'prefix'    => '',
+            ]);
+
+            $capsule->setAsGlobal();
+
+            return new IlluminateAirportInformationDatabase($capsule);
         });
 
         $app['security.random'] = $app->share(function ($app) {
