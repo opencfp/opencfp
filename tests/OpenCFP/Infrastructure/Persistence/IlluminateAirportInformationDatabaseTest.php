@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Infrastructure\Persistence;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
 
 /**
@@ -47,5 +46,4 @@ class IlluminateAirportInformationDatabaseTest extends \DatabaseTestCase
     {
         return new IlluminateAirportInformationDatabase($this->getCapsule());
     }
-
 }

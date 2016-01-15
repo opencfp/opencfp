@@ -3,10 +3,9 @@
 
 namespace OpenCFP\Infrastructure\Persistence;
 
-
+use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Domain\AirportInfo;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 class IlluminateAirportInformationDatabase implements AirportInformationDatabase
 {
