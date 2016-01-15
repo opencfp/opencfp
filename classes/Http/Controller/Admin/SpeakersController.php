@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\Adapter\ArrayAdapter;
@@ -22,6 +23,20 @@ class SpeakersController extends BaseController
             ->all()
             ->order(['first_name' => 'ASC'])
             ->toArray();
+
+        $airports = $this->service(AirportInformationDatabase::class);
+
+        $rawSpeakers = array_map(function ($speaker) use ($airports) {
+            $airport = $airports->withCode($speaker['airport']);;
+
+            $speaker['airport'] = [
+                'code' => $airport->code,
+                'name' => $airport->name,
+                'country' => $airport->country
+            ];
+
+            return $speaker;
+        }, $rawSpeakers);
 
         // Set up our page stuff
         $adapter = new ArrayAdapter($rawSpeakers);
