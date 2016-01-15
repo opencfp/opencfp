@@ -24,14 +24,17 @@ class IlluminateAirportInformationDatabase implements AirportInformationDatabase
     /**
      * @param string $code the IATA Airport Code to get information for
      *
-     * @see https://en.wikipedia.org/wiki/International_Air_Transport_Association_airport_code
-     *
      * @return AirportInfo
+     * @throws \Exception
      */
     public function withCode($code)
     {
         $airport = $this->capsule->table('airports')
             ->where('code', $code)->first(['code', 'name', 'country']);
+
+        if (!$airport) {
+            throw new \Exception("An airport matching '{$code}' was not found.");
+        }
 
         return AirportInfo::fromData($airport);
     }
