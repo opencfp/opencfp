@@ -1,11 +1,14 @@
 <?php
+
+namespace OpenCFP\Test\Http\Controller;
+
 use OpenCFP\Application;
 use OpenCFP\Environment;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
-class ForgotControllerTest extends PHPUnit_Framework_TestCase
+class ForgotControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test that index action displays a form that allows the user to reset
@@ -22,7 +25,7 @@ class ForgotControllerTest extends PHPUnit_Framework_TestCase
         $app->run();
         ob_end_clean();
 
-        $controller = new OpenCFP\Http\Controller\ForgotController();
+        $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($app);
         $response = $controller->indexAction();
 
