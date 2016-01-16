@@ -1,5 +1,7 @@
 <?php
 
+namespace OpenCFP\Test\Http\Form;
+
 class SignupFormTest extends \PHPUnit_Framework_TestCase
 {
     private $purifier;
