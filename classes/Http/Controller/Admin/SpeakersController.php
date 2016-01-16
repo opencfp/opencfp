@@ -27,13 +27,21 @@ class SpeakersController extends BaseController
         $airports = $this->service(AirportInformationDatabase::class);
 
         $rawSpeakers = array_map(function ($speaker) use ($airports) {
-            $airport = $airports->withCode($speaker['airport']);;
+            try {
+                $airport = $airports->withCode($speaker['airport']);
 
-            $speaker['airport'] = [
-                'code' => $airport->code,
-                'name' => $airport->name,
-                'country' => $airport->country
-            ];
+                $speaker['airport'] = [
+                    'code' => $airport->code,
+                    'name' => $airport->name,
+                    'country' => $airport->country
+                ];
+            } catch (\Exception $e) {
+                $speaker['airport'] = [
+                    'code' => null,
+                    'name' => null,
+                    'country' => null,
+                ];
+            }
 
             return $speaker;
         }, $rawSpeakers);
@@ -81,6 +89,24 @@ class SpeakersController extends BaseController
         // Get info about the speaker
         $user_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker_details = $user_mapper->get($req->get('id'));
+
+        $airports = $this->service(AirportInformationDatabase::class);
+
+        try {
+            $airport = $airports->withCode($speaker_details->airport);
+
+            $speaker_details->airport = [
+                'code' => $airport->code,
+                'name' => $airport->name,
+                'country' => $airport->country,
+            ];
+        } catch (\Exception $e) {
+            $speaker_details->airport = [
+                'code' => null,
+                'name' => null,
+                'country' => null,
+            ];
+        }
 
         if (empty($speaker_details)) {
             $this->app['session']->set('flash', [
