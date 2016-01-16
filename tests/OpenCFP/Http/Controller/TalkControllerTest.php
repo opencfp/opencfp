@@ -10,8 +10,8 @@ use OpenCFP\Http\Controller\TalkController;
 
 class TalkControllerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $app;
-    protected $req;
+    private $app;
+    private $req;
 
     protected function setUp()
     {
