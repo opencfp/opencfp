@@ -1,10 +1,14 @@
 <?php
 
+namespace OpenCFP\Test\Http\Controller;
+
+use DateTime;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
+use OpenCFP\Http\Controller\TalkController;
 
-class TalkControllerTest extends PHPUnit_Framework_TestCase
+class TalkControllerTest extends \PHPUnit_Framework_TestCase
 {
     protected $app;
     protected $req;
@@ -54,7 +58,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
      */
     public function ampersandsAcceptableCharacterForTalks()
     {
-        $controller = new OpenCFP\Http\Controller\TalkController();
+        $controller = new TalkController();
         $controller->setApplication($this->app);
 
         // Create a test double for SwiftMailer
@@ -118,7 +122,7 @@ class TalkControllerTest extends PHPUnit_Framework_TestCase
      */
     public function allowSubmissionsUntilRightBeforeMidnightDayOfClose()
     {
-        $controller = new OpenCFP\Http\Controller\TalkController();
+        $controller = new TalkController();
         $controller->setApplication($this->app);
 
         // Get our request object to return expected data
