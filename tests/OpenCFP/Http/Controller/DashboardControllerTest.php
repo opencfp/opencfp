@@ -1,5 +1,7 @@
 <?php
 
+namespace OpenCFP\Test\Http\Controller;
+
 use Cartalyst\Sentry\Sentry;
 use Mockery as m;
 use OpenCFP\Application;
@@ -10,7 +12,7 @@ use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
-class DashboardControllerTest extends PHPUnit_Framework_TestCase
+class DashboardControllerTest extends \PHPUnit_Framework_TestCase
 {
     use GeneratorTrait;
 
