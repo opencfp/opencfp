@@ -43,9 +43,6 @@
         }
     },
     "autoload-dev": {
-        "classmap": [
-            "tests/unit"
-        ],
         "psr-4": {
             "OpenCFP\\Test\\": "tests/OpenCFP/"
         }
