@@ -1,6 +1,10 @@
 <?php
 
-class SessionDouble extends Symfony\Component\HttpFoundation\Session\Session
+namespace OpenCFP\Test\Http\Controller;
+
+use Symfony\Component\HttpFoundation\Session\Session;
+
+class SessionDouble extends Session
 {
     protected $flash;
 

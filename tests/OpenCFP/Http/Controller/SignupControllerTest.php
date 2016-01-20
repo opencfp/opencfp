@@ -1,9 +1,14 @@
 <?php
+
+namespace OpenCFP\Test\Http\Controller;
+
+use HTMLPurifier;
+use HTMLPurifier_Config;
 use Mockery as m;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
-class SignupControllerTest extends PHPUnit_Framework_TestCase
+class SignupControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -58,7 +63,7 @@ class SignupControllerTest extends PHPUnit_Framework_TestCase
         $app->shouldReceive('offsetGet')->with('sentry')->andReturn($sentry);
 
         // Create an instance of our database
-        $speaker = new stdClass;
+        $speaker = new \stdClass;
         $mapper = m::mock('stdClass');
         $mapper->shouldReceive('get')->andReturn($speaker);
         $mapper->shouldReceive('save');

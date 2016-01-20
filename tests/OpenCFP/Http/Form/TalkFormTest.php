@@ -1,10 +1,8 @@
 <?php
 
-use OpenCFP\Test\Util\Faker\GeneratorTrait;
+namespace OpenCFP\Test\Http\Form;
 
-/**
- * Tests for our TalkForm object
- */
+use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
 class TalkFormTest extends \PHPUnit_Framework_TestCase
 {
