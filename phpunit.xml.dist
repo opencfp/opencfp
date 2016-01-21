@@ -1,4 +1,4 @@
-<phpunit bootstrap="tests/bootstrap.php"
+<phpunit bootstrap="vendor/autoload.php"
          backupGlobals="false"
          backupStaticAttributes="false"
          colors="true"
@@ -9,6 +9,9 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false">
+    <php>
+        <const name="BASE_PATH" value="."/>
+    </php>
     <filter>
         <whitelist>
             <directory>classes</directory>
