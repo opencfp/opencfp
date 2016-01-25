@@ -27,4 +27,5 @@ environments:
 
     memory:
         adapter: sqlite
+        name: cfp
         memory: true

@@ -33,7 +33,7 @@ class SpeakersController extends BaseController
                 $speaker['airport'] = [
                     'code' => $airport->code,
                     'name' => $airport->name,
-                    'country' => $airport->country
+                    'country' => $airport->country,
                 ];
             } catch (\Exception $e) {
                 $speaker['airport'] = [
@@ -90,6 +90,16 @@ class SpeakersController extends BaseController
         $user_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker_details = $user_mapper->get($req->get('id'));
 
+        if (empty($speaker_details)) {
+            $this->app['session']->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => "Could not find requested speaker",
+            ]);
+
+            return $this->app->redirect($this->url('admin_speakers'));
+        }
+
         $airports = $this->service(AirportInformationDatabase::class);
 
         try {
@@ -106,16 +116,6 @@ class SpeakersController extends BaseController
                 'name' => null,
                 'country' => null,
             ];
-        }
-
-        if (empty($speaker_details)) {
-            $this->app['session']->set('flash', [
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => "Could not find requested speaker",
-            ]);
-
-            return $this->app->redirect($this->url('admin_speakers'));
         }
 
         // Get info about the talks

@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Provider;
 
+use Illuminate\Database\Capsule\Manager as Capsule;
 use League\OAuth2\Server\ResourceServer;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
@@ -20,7 +21,6 @@ use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
 use RandomLib\Factory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
