@@ -3,7 +3,7 @@ application:
   url: http://cfp.dev
   email: contact@openconf.com
   eventurl: http://myenvent.com
-  event_location: Swansea, UK
+  event_location: Miami, FL
   enddate: Oct. 14th, 2016
   show_submission_count: false
   airport: MIA
