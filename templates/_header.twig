@@ -30,7 +30,13 @@
 <section class="section section--light">
     <div class="container">
         <div class="row">
-            <div class="col-md-8"><h3 class="headline headline--alpha">For More Information About The Conference</h3></div>
+            {% if site.event_location is defined and site.date_format is defined %}
+            <div class="col-md-8"><h3 class="headline headline--alpha">
+                {{ site.title }} is  on {{ site.arrival|date(site.date_format) }} to {{ site.departure|date(site.date_format) }} in {{ site.event_location }}
+            </h3></div>
+            {%  else %}
+                <div class="col-md-8"><h3 class="headline headline--alpha">For More Information About The Conference</h3></div>
+            {% endif %}
             <div class="col-md-4 text-right"><a href="{{ site.eventurl }}" class="btn-opencfp btn-opencfp-medium btn-opencfp--light">Visit Conference Site</a></div>
         </div>
     </div>
