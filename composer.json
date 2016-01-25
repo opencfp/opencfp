@@ -44,7 +44,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "OpenCFP\\Test\\": "tests/OpenCFP/"
+            "OpenCFP\\Test\\": "tests/"
         }
     },
     "require-dev": {

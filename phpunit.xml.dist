@@ -23,7 +23,7 @@
 
     <testsuites>
         <testsuite name="all">
-            <directory>tests/OpenCFP</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
