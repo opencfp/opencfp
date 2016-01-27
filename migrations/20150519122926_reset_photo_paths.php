@@ -63,6 +63,10 @@ class ResetPhotoPaths extends AbstractMigration
     private function getSpeakers()
     {
         // Return structure that is collection of [id, photo_path]
+        if ($this->isSqlite()) {
+            return $this->fetchAll("SELECT id, photo_path, first_name || ' ' || last_name as name FROM users WHERE photo_path <> ''");
+        }
+
         return $this->fetchAll("SELECT id, photo_path, CONCAT(first_name, ' ', last_name) as name FROM users WHERE photo_path <> ''");
     }
 
@@ -102,5 +106,10 @@ class ResetPhotoPaths extends AbstractMigration
     private function fileExists($photoPath)
     {
         return file_exists(__DIR__ . '/../web/uploads/' . $photoPath);
+    }
+
+    private function isSqlite()
+    {
+        return $this->getAdapter()->getAdapterType() === 'sqlite';
     }
 }
