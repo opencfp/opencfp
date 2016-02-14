@@ -93,17 +93,17 @@ class SignupControllerTest extends \PHPUnit_Framework_TestCase
 
     public function badSignupDateProvider()
     {
-        return array(
-            array($close = 'Jan 1, 2000', $now = 'Jan 2, 2000'),
-        );
+        return [
+            [$close = 'Jan 1, 2000', $now = 'Jan 2, 2000'],
+        ];
     }
 
     public function goodSignupDateProvider()
     {
-        return array(
-            array($close = 'Jan 1, 2000', $now = 'Jan 1, 2000 3:00 PM'),
-            array('Jan 2, 2000', 'Jan 1, 2000'),
-        );
+        return [
+            [$close = 'Jan 1, 2000', $now = 'Jan 1, 2000 3:00 PM'],
+            ['Jan 2, 2000', 'Jan 1, 2000'],
+        ];
     }
 
     /**
