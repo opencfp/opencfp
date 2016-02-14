@@ -2,11 +2,11 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use OpenCFP\Application;
-use OpenCFP\Environment;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Mockery as m;
+use OpenCFP\Application;
+use OpenCFP\Environment;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
