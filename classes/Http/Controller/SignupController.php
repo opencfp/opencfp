@@ -13,13 +13,13 @@ class SignupController extends BaseController
 {
     use FlashableTrait;
 
-    public function indexAction(Request $req)
+    public function indexAction(Request $req, $currentTimeString = 'now')
     {
         if ($this->app['sentry']->check()) {
             return $this->redirectTo('dashboard');
         }
 
-        if (strtotime($this->app->config('application.enddate')) < strtotime('now')) {
+        if (strtotime($this->app->config('application.enddate') . ' 11:59 PM') < strtotime($currentTimeString)) {
             $this->app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',

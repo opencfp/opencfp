@@ -2,6 +2,8 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
+use OpenCFP\Application;
+use OpenCFP\Environment;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Mockery as m;
@@ -10,6 +12,100 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class SignupControllerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @test
+     * @dataProvider badSignupDateProvider
+     */
+    public function signupAfterEnddateShowsError($endDateString, $currentTimeString)
+    {
+        // report that there is no active user
+        $sentry = m::mock('stdClass');
+        $sentry->shouldReceive('check')->andReturn(false);
+
+        $app = m::mock(\OpenCFP\Application::class);
+        // Create a session
+        $app->shouldReceive('redirect');
+
+        $app->shouldReceive('offsetGet')->with('sentry')->andReturn($sentry);
+        $app->shouldReceive('config')->with('application.enddate')->andReturn($endDateString);
+
+        // Create a session
+        $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
+
+        // Create our URL generator
+        $url = 'http://opencfp/signup';
+        $url_generator = m::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
+        $url_generator->shouldReceive('generate')->andReturn($url);
+        $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
+
+        $controller = new \OpenCFP\Http\Controller\SignupController();
+        $controller->setApplication($app);
+
+        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $response = $controller->indexAction($req, $currentTimeString);
+
+        $expectedMessage = "Sorry, the call for papers has ended.";
+        $session_details = $app['session']->get('flash');
+
+        $this->assertContains(
+            $expectedMessage,
+            $session_details['ext'],
+            "Did not get cfp closed message"
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider goodSignupDateProvider
+     */
+    public function signupBeforeEnddateRendersSignupForm($endDateString, $currentTimeString)
+    {
+        $app = new Application(BASE_PATH, Environment::testing());
+
+        // set the application end date configuration
+        $config = $app['config'];
+        $config['application']['enddate'] = $endDateString;
+        $app['config'] = $config;
+
+        // report that there is no active user
+        $sentry = m::mock('stdClass');
+        $sentry->shouldReceive('check')->andReturn(false);
+        $app['sentry'] = $sentry;
+
+        //$app['session'] = new Session(new MockFileSessionStorage());
+        //$app['form.csrf_provider'] = new SessionCsrfProvider($app['session'], 'secret');
+        ob_start();
+        $app->run();
+        ob_end_clean();
+
+        $controller = new \OpenCFP\Http\Controller\SignupController();
+        $controller->setApplication($app);
+
+        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $response = $controller->indexAction($req, $currentTimeString);
+
+        // Make sure we see the signup page
+        $this->assertContains(
+            '<!-- page-id: user/create -->',
+            (string) $response
+        );
+    }
+
+    public function badSignupDateProvider()
+    {
+        return array(
+            array($close = 'Jan 1, 2000', $now = 'Jan 2, 2000'),
+        );
+    }
+
+    public function goodSignupDateProvider()
+    {
+        return array(
+            array($close = 'Jan 1, 2000', $now = 'Jan 1, 2000 3:00 PM'),
+            array('Jan 2, 2000', 'Jan 1, 2000'),
+        );
+    }
+
     /**
      * @test
      */
