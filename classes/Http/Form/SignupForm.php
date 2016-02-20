@@ -80,6 +80,13 @@ class SignupForm extends Form
             return true;
         }
 
+        // Check if the file was uploaded OK, display any error that may have occurred
+        if (!$this->_taintedData['speaker_photo']->isValid()) {
+            $this->_addErrorMessage($this->_taintedData['speaker_photo']->getErrorMessage());
+
+            return false;
+        }
+
         // Check if uploaded file is greater than 5MB
         if ($this->_taintedData['speaker_photo']->getClientSize() > (5 * 1048576)) {
             $this->_addErrorMessage("Speaker photo can not be larger than 5MB");
