@@ -7,8 +7,6 @@ use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
 /**
  * Tests integration with illuminate/database and airports table to implement
  * an AirportInfromationDatabase
- *
- * @group wip
  */
 class IlluminateAirportInformationDatabaseTest extends \DatabaseTestCase
 {

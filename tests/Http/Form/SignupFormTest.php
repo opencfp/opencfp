@@ -2,6 +2,9 @@
 
 namespace OpenCFP\Test\Http\Form;
 
+use Mockery as m;
+use OpenCFP\Http\Form\SignupForm;
+
 class SignupFormTest extends \PHPUnit_Framework_TestCase
 {
     private $purifier;
@@ -9,6 +12,24 @@ class SignupFormTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->purifier = new \HTMLPurifier();
+    }
+
+    /**
+     * @test
+     */
+    public function formRejectsValidationOnInvalidSpeakerPhoto()
+    {
+        // Mock speaker photo.
+        $photo = m::mock('stdClass');
+        $photo->shouldReceive('isValid')->andReturn(false);
+        $photo->shouldReceive('getErrorMessage')->andReturn('stubbed error message');
+
+        $form = new SignupForm(['speaker_photo' => $photo], $this->purifier);
+
+        $form->validateSpeakerPhoto();
+
+        $this->assertTrue($form->hasErrors());
+        $this->assertContains('stubbed error message', $form->getErrorMessages()[0]);
     }
 
     /**
