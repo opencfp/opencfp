@@ -170,6 +170,18 @@ to consider:
 | `database.*`          | This is the database information you collected above. |
 | `mail.*`              | This is SMTP configuration for sending mail. The application sends notifications on various system events. |
 
+For example, if you wanted to setup Mailgun as your email provider, your mail configuration would look something like this:
+
+```
+mail: 
+    host: smtp.mailgun.org 
+    port: 587 
+    username: do-not-reply@cfp.myfancyconference.com 
+    password: "a1b2c3d4" 
+    encryption: tls 
+    auth_mode: ~
+```
+
 <a name="run-migrations" />
 ### Run Migrations
 
