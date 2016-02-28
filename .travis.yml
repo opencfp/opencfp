@@ -38,7 +38,7 @@ before_script:
 
 script:
   - if [[ "$COLLECT_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
-  - if [[ "$WITH_CS" == "true" ]]; then vendor/bin/php-cs-fixer fix --verbose; fi
+  - if [[ "$WITH_CS" == "true" ]]; then vendor/bin/php-cs-fixer fix --verbose --diff; fi
 
 after_success:
   - if [[ "$COLLECT_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
