@@ -26,7 +26,7 @@ class ExportsController extends BaseController
 
     public function emailExportAction(Request $req)
     {
-        if (!$this->userHasAccess($this->app)) {
+        if (!$this->userHasAccess()) {
             return $this->redirectTo('login');
         }
 
@@ -48,7 +48,7 @@ class ExportsController extends BaseController
 
     private function talksExportAction($attributed, $where = null)
     {
-        if (!$this->userHasAccess($this->app)) {
+        if (!$this->userHasAccess()) {
             return $this->redirectTo('login');
         }
 
