@@ -19,9 +19,6 @@ class SecurityController extends BaseController
 
     public function processAction(Request $req, Application $app)
     {
-        $template_data = [];
-        $code = Response::HTTP_OK;
-
         try {
             $page = new Login($app['sentry']);
 

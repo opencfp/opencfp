@@ -39,9 +39,6 @@ class Talk extends Mapper
             ]
         );
 
-        $talks = $this->all()
-            ->order([$options['order_by'] => $options['sort']])
-            ->with(['favorites', 'comments']);
         $formatted = [];
 
         if ($where) {
