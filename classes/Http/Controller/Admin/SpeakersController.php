@@ -82,7 +82,7 @@ class SpeakersController extends BaseController
     public function viewAction(Request $req)
     {
         // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($this->app)) {
+        if (!$this->userHasAccess()) {
             return $this->redirectTo('dashboard');
         }
 
@@ -139,7 +139,7 @@ class SpeakersController extends BaseController
     public function deleteAction(Request $req)
     {
         // Check if user is an logged in and an Admin
-        if (!$this->userHasAccess($this->app)) {
+        if (!$this->userHasAccess()) {
             return $this->redirectTo('dashboard');
         }
 

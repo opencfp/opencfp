@@ -8,7 +8,7 @@ trait AdminAccessTrait
     {
         if (method_exists($this, $method)) {
             // Check if user is an logged in and an Admin
-            if (! $this->userHasAccess($this->app)) {
+            if (! $this->userHasAccess()) {
                 return $this->redirectTo('dashboard');
             }
 
@@ -16,7 +16,7 @@ trait AdminAccessTrait
         }
     }
 
-    protected function userHasAccess($app)
+    protected function userHasAccess()
     {
         if (!$this->app['sentry']->check()) {
             return false;
