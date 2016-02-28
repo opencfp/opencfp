@@ -3,17 +3,49 @@
 namespace OpenCFP\Test\Domain\Services;
 
 use OpenCFP\Domain\Services\ResetEmailer;
+use Swift_Mailer;
+use Twig_Template;
 
 class EmailerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Swift_Mailer
+     */
     private $swift_mailer;
+
+    /**
+     * @var Twig_Template
+     */
     private $template;
+
+    /**
+     * @var string
+     */
     private $config_email;
+
+    /**
+     * @var string
+     */
     private $config_title;
 
+    /**
+     * @var int
+     */
     private $user_id;
+
+    /**
+     * @var string
+     */
     private $user_email;
+
+    /**
+     * @var string
+     */
     private $reset_code;
+
+    /**
+     * @var ResetEmailer
+     */
     private $reset_mailer;
 
     protected function setUp()
