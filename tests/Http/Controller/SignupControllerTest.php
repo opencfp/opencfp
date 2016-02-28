@@ -42,7 +42,7 @@ class SignupControllerTest extends \PHPUnit_Framework_TestCase
         $controller->setApplication($app);
 
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
-        $response = $controller->indexAction($req, $currentTimeString);
+        $controller->indexAction($req, $currentTimeString);
 
         $expectedMessage = "Sorry, the call for papers has ended.";
         $session_details = $app['session']->get('flash');
@@ -182,7 +182,7 @@ class SignupControllerTest extends \PHPUnit_Framework_TestCase
         $files->shouldReceive('get')->with('speaker_photo')->andReturn(null);
         $req->files = $files;
 
-        $response = $controller->processAction($req, $app);
+        $controller->processAction($req, $app);
         $expectedMessage = "You've successfully created your account!";
         $session_details = $app['session']->get('flash');
 

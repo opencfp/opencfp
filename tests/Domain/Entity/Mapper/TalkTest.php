@@ -51,7 +51,7 @@ class TalkTest extends \PHPUnit_Framework_TestCase
         $talk = $mapper->create($talk_data);
 
         $this->createAdminFavoredTalks($admin_user_id, $admin_majority, $talk);
-        $expected_admin_favorite = $mapper->createdFormattedOutput($talk, $admin_user_id);
+        $mapper->createdFormattedOutput($talk, $admin_user_id);
         $admin_favorite_collection = $mapper->getFavoritesByUserId($admin_user_id);
         $admin_favorite = $admin_favorite_collection[0];
 
@@ -101,7 +101,7 @@ class TalkTest extends \PHPUnit_Framework_TestCase
                 'admin_user_id' => $random_admin_id,
                 'talk_id' => $talk->id,
             ];
-            $favorite = $favorite_mapper->create($favorite_data);
+            $favorite_mapper->create($favorite_data);
         }
     }
 }

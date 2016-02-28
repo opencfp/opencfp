@@ -44,7 +44,6 @@ class TalkController extends BaseController
             return $this->redirectTo('login');
         }
 
-        $user = $this->app['sentry']->getUser();
         /////////
 
         try {

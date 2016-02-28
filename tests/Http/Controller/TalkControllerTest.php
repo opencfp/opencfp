@@ -86,7 +86,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
          * If the talk was successfully created, a success value is placed
          * into the session flash area for display
          */
-        $create_response = $controller->processCreateAction($this->req);
+        $controller->processCreateAction($this->req);
 
         $create_flash = $this->app['session']->get('flash');
         $this->assertEquals($create_flash['type'], 'success');
@@ -97,7 +97,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         $talk_data['title'] = "Test Title With Ampersand & More Things";
         $this->setPost($talk_data);
 
-        $update_response = $controller->updateAction($this->req, $this->app);
+        $controller->updateAction($this->req, $this->app);
         $update_flash = $this->app['session']->get('flash');
         $this->assertEquals($update_flash['type'], 'success');
     }
