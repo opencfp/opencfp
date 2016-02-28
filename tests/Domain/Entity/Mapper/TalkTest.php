@@ -66,19 +66,6 @@ class TalkTest extends \PHPUnit_Framework_TestCase
     // Factory Methods
     //
 
-    private function createViewedTalks($talk_data, $total)
-    {
-        $meta_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
-        for ($i = 0; $i <= $total; $i++) {
-            $talk = $this->mapper->create($talk_data);
-            $meta_mapper->create([
-                'admin_user_id' => 1,
-                'talk_id' => $talk->id,
-                'viewed' => true,
-            ]);
-        }
-    }
-
     private function createAdminFavoredTalks($admin_user_id, $admin_majority, $talk)
     {
         // Create a test user
