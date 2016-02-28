@@ -1,7 +1,11 @@
 <?php
 
+namespace OpenCFP\Test;
+
 use Illuminate\Database\Capsule\Manager as Capsule;
+use PDO;
 use Phinx\Console\Command\Migrate;
+use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -25,7 +29,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase
         $input = new ArgvInput(['phinx', 'migrate', '--environment=memory']);
         $output = new NullOutput();
 
-        $phinx = new Phinx\Console\PhinxApplication();
+        $phinx = new PhinxApplication();
         $phinx->setAutoExit(false);
         $phinx->run($input, $output);
 

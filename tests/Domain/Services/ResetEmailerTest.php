@@ -6,7 +6,7 @@ use OpenCFP\Domain\Services\ResetEmailer;
 use Swift_Mailer;
 use Twig_Template;
 
-class EmailerTest extends \PHPUnit_Framework_TestCase
+class ResetEmailerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Swift_Mailer
