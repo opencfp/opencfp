@@ -8,7 +8,7 @@ use OpenCFP\Environment;
 /**
  * @group db
  */
-class TalkEntityTest extends \PHPUnit_Framework_TestCase
+class TalkTest extends \PHPUnit_Framework_TestCase
 {
     private $app;
     private $mapper;

@@ -4,7 +4,7 @@ namespace OpenCFP\Test\Domain\Services;
 
 use OpenCFP\Domain\Services\ResetEmailer;
 
-class EmailerTest extends \PHPUnit_Framework_TestCase
+class ResetEmailerTest extends \PHPUnit_Framework_TestCase
 {
     private $swift_mailer;
     private $template;

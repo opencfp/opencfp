@@ -3,12 +3,13 @@
 namespace OpenCFP\Test\Infrastructure\Persistence;
 
 use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
+use OpenCFP\Test\DatabaseTestCase;
 
 /**
  * Tests integration with illuminate/database and airports table to implement
  * an AirportInfromationDatabase
  */
-class IlluminateAirportInformationDatabaseTest extends \DatabaseTestCase
+class IlluminateAirportInformationDatabaseTest extends DatabaseTestCase
 {
     private $airports;
 
