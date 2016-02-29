@@ -93,7 +93,7 @@ class Application extends SilexApplication
 
         $this->registerGlobalErrorHandler($this);
 
-        if($timezone = $this->config('application.date_timezone')) {
+        if ($timezone = $this->config('application.date_timezone')) {
             date_default_timezone_set($timezone);
         }
     }
