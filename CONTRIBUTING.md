@@ -24,11 +24,33 @@ We accept contributions via Pull Requests on [Github](https://github.com/opencfp
 
 ## Running Tests
 
-Having installed all dependencies via `composer install`:
+Run
 
-``` bash
-$ ./vendor/bin/phpunit
 ```
+$ make test
+```
+
+to run all the tests.
+
+## Fixing Code Style issues
+
+Run
+
+```
+$ make cs
+```
+
+to detect and automatically fix code style issues.
+
+## Extra lazy?
+
+Run
+
+```
+$ make
+```
+
+to run both all the tests and to automatically fix code style issues. 
 
 ## Credit
 

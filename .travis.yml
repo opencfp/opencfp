@@ -13,7 +13,7 @@ matrix:
 
 env:
   global:
-    - TRAVIS_DB=cfp_travis
+    - TRAVIS_DB=cfp_test
     - CODECLIMATE_REPO_TOKEN=9deb249b01a414d979959cfd05a4c351b19a5959858653b20276454d4189edc3
 
 # cache composer downloads so installing is quicker
