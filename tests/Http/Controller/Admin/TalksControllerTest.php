@@ -57,6 +57,9 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
             'id' => 1,
             'title' => 'Test Title',
             'description' => "The title should contain this & that",
+            'meta' => [
+                'rating' => 5,
+            ],
             'type' => 'regular',
             'level' => 'entry',
             'category' => 'other',
