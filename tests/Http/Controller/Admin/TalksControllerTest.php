@@ -4,7 +4,9 @@ namespace OpenCFP\Test\Http\Controller\Admin;
 
 use Mockery as m;
 use OpenCFP\Application;
+use OpenCFP\Domain\Entity\Mapper;
 use OpenCFP\Environment;
+use Spot\Query;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
@@ -57,6 +59,9 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
             'id' => 1,
             'title' => 'Test Title',
             'description' => "The title should contain this & that",
+            'meta' => [
+                'rating' => 5,
+            ],
             'type' => 'regular',
             'level' => 'entry',
             'category' => 'other',
@@ -192,11 +197,21 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
     {
         $talkId = uniqid();
 
-        // Override our mapper with the double
+        $query = m::mock(Query::class);
+        $query->shouldReceive('with')->with(['comments'])->andReturnSelf();
+        $query->shouldReceive('first')->andReturnNull();
+
+        $talkMapper = m::mock(Mapper\Talk::class);
+        $talkMapper->shouldReceive('where')->with(['id' => $talkId])->andReturn($query);
+
+        $talkMetaMapper = m::mock(\Spot\Mapper::class);
+
         $spot = m::mock('Spot\Locator');
         $spot->shouldReceive('mapper')
             ->with(\OpenCFP\Domain\Entity\Talk::class)
-            ->andReturn([]);
+            ->andReturn($talkMapper);
+        $spot->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\TalkMeta::class)->andReturn($talkMetaMapper);
+
         $this->app['spot'] = $spot;
 
         // Create a session object
