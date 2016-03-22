@@ -8,6 +8,7 @@ use OpenCFP\Http\Form\TalkForm;
 use Silex\Application;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
+use Twig_Environment;
 
 class TalkController extends BaseController
 {
@@ -379,8 +380,11 @@ class TalkController extends BaseController
         $mapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk = $mapper->get($talk_id);
 
+        /* @var Twig_Environment $twig */
+        $twig = $app['twig'];
+
         // Build our email that we will send
-        $template = $app['twig']->loadTemplate('emails/talk_submit.twig');
+        $template = $twig->loadTemplate('emails/talk_submit.twig');
         $parameters = [
             'email' => $this->app->config('application.email'),
             'title' => $this->app->config('application.title'),

@@ -6,6 +6,7 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Twig_Environment;
 
 class WebGatewayProvider implements ServiceProviderInterface
 {
@@ -20,16 +21,19 @@ class WebGatewayProvider implements ServiceProviderInterface
 
         $web->before(new RequestCleaner($app['purifier']));
         $web->before(function (Request $request, Application $app) {
-            $app['twig']->addGlobal('current_page', $request->getRequestUri());
-            $app['twig']->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
+            /* @var Twig_Environment $twig */
+            $twig = $app['twig'];
+
+            $twig->addGlobal('current_page', $request->getRequestUri());
+            $twig->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
 
             if ($app['sentry']->check()) {
-                $app['twig']->addGlobal('user', $app['sentry']->getUser());
-                $app['twig']->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));
+                $twig->addGlobal('user', $app['sentry']->getUser());
+                $twig->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));
             }
 
             if ($app['session']->has('flash')) {
-                $app['twig']->addGlobal('flash', $app['session']->get('flash'));
+                $twig->addGlobal('flash', $app['session']->get('flash'));
                 $app['session']->set('flash', null);
             }
         });

@@ -9,6 +9,7 @@ use OpenCFP\Environment;
 use Spot\Query;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
+use Twig_Environment;
 
 class TalksControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -116,11 +117,13 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         $req->query = $paramBag;
         $req->shouldReceive('getRequestUri')->andReturn('foo');
 
-        $this->app['twig']
-            ->addGlobal(
-                'user_is_admin',
-                $this->app['sentry']->getUser()->hasAccess('admin')
-            );
+        /* @var Twig_Environment $twig */
+        $twig = $this->app['twig'];
+
+        $twig->addGlobal(
+            'user_is_admin',
+            $this->app['sentry']->getUser()->hasAccess('admin')
+        );
 
         ob_start();
         $this->app->run();
