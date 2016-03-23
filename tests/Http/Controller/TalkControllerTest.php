@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
+use Cartalyst\Sentry\Sentry;
 use DateTime;
 use Mockery as m;
 use OpenCFP\Application;
@@ -38,7 +39,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         $user->shouldReceive('getLogin')->andReturn(uniqid() . '@grumpy-learning.com');
 
         // Create a test double for Sentry
-        $sentry = m::mock('StdClass');
+        $sentry = m::mock(Sentry::class);
         $sentry->shouldReceive('check')->andReturn(true);
         $sentry->shouldReceive('getUser')->andReturn($user);
         $this->app['sentry'] = $sentry;
