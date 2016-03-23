@@ -42,8 +42,9 @@ EOF
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var Sentry $sentry */
+        /* @var Sentry $sentry */
         $sentry = $this->app['sentry'];
+
         $email = $input->getArgument('email');
 
         $output->writeln(sprintf('Retrieving account from <info>%s</info>...', $email));

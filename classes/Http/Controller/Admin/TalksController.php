@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use Cartalyst\Sentry\Sentry;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\View\TwitterBootstrap3View;
@@ -18,7 +19,10 @@ class TalksController extends BaseController
             return $this->redirectTo('login');
         }
 
-        $admin_user_id = $this->app['sentry']->getUser()->getId();
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        $admin_user_id = $sentry->getUser()->getId();
         $options = [
             'order_by' => $req->get('order_by'),
             'sort' => $req->get('sort'),
@@ -132,9 +136,12 @@ class TalksController extends BaseController
             return $this->app->redirect($this->url('admin_talks'));
         }
 
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
         // Mark talk as viewed by admin
         $talk_meta = $meta_mapper->where([
-                'admin_user_id' => $this->app['sentry']->getUser()->getId(),
+                'admin_user_id' => $sentry->getUser()->getId(),
                 'talk_id' => (int)$req->get('id'),
             ])
             ->first();
@@ -145,7 +152,7 @@ class TalksController extends BaseController
 
         if (!$talk_meta->viewed) {
             $talk_meta->viewed = true;
-            $talk_meta->admin_user_id = $this->app['sentry']->getUser()->getId();
+            $talk_meta->admin_user_id = $sentry->getUser()->getId();
             $talk_meta->talk_id = $talk_id;
             $meta_mapper->save($talk_meta);
         }
@@ -184,7 +191,10 @@ class TalksController extends BaseController
             return false;
         }
 
-        $admin_user_id = (int)$this->app['sentry']->getUser()->getId();
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        $admin_user_id = (int) $sentry->getUser()->getId();
         $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
 
         $talk_rating = (int)$req->get('rating');
@@ -225,7 +235,10 @@ class TalksController extends BaseController
             return false;
         }
 
-        $admin_user_id = (int) $this->app['sentry']->getUser()->getId();
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        $admin_user_id = (int) $sentry->getUser()->getId();
         $status = true;
 
         if ($req->get('delete') !== null) {
@@ -293,7 +306,11 @@ class TalksController extends BaseController
         }
 
         $talk_id = (int)$req->get('id');
-        $admin_user_id = (int)$this->app['sentry']->getUser()->getId();
+
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        $admin_user_id = (int) $sentry->getUser()->getId();
 
         $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\TalkComment::class);
         $comment = $mapper->get();

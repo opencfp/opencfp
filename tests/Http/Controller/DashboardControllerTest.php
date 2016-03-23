@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
+use Cartalyst\Sentry\Sentry;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\Speaker\SpeakerProfile;

@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use Cartalyst\Sentry\Sentry;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -53,7 +54,11 @@ class ExportsController extends BaseController
         }
 
         $sort = [ "created_at" => "DESC" ];
-        $admin_user_id = $this->app['sentry']->getUser()->getId();
+
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        $admin_user_id = $sentry->getUser()->getId();
         $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $mapper->getAllPagerFormatted($admin_user_id, $sort, $attributed, $where);
 

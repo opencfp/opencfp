@@ -2,6 +2,8 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use Cartalyst\Sentry\Sentry;
+
 trait AdminAccessTrait
 {
     public function __call($method, $arguments)
@@ -18,11 +20,14 @@ trait AdminAccessTrait
 
     protected function userHasAccess()
     {
-        if (!$this->app['sentry']->check()) {
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+        
+        if (!$sentry->check()) {
             return false;
         }
 
-        $user = $this->app['sentry']->getUser();
+        $user = $sentry->getUser();
 
         if (!$user->hasPermission('admin')) {
             return false;

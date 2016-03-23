@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use Cartalyst\Sentry\Sentry;
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\TwitterBootstrap3View;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,10 @@ class ReviewController extends BaseController
 
     public function indexAction(Request $req)
     {
-        $user = $this->app['sentry']->getUser();
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        $user = $sentry->getUser();
 
         // Get list of talks where majority of admins 'favorited' them
         $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);

@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Provider\Gateways;
 
+use Cartalyst\Sentry\Sentry;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
@@ -27,7 +28,10 @@ class OAuthGatewayProvider implements ServiceProviderInterface
             $userMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
-            $controller = new AuthorizationController($server, new SentryIdentityProvider($app['sentry'], $speakerRepository));
+            /* @var Sentry $sentry */
+            $sentry = $app['sentry'];
+            
+            $controller = new AuthorizationController($server, new SentryIdentityProvider($sentry, $speakerRepository));
             $controller->setApplication($app);
 
             return $controller;
