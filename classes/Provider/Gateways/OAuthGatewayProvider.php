@@ -5,6 +5,7 @@ namespace OpenCFP\Provider\Gateways;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
+use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class OAuthGatewayProvider implements ServiceProviderInterface
@@ -24,7 +25,10 @@ class OAuthGatewayProvider implements ServiceProviderInterface
             $server->addGrantType(new AuthCodeGrant);
             $server->addGrantType(new RefreshTokenGrant);
 
-            $userMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
+            /* @var Locator $spot */
+            $spot = $app['spot'];
+            
+            $userMapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
             $controller = new AuthorizationController($server, new SentryIdentityProvider($app['sentry'], $speakerRepository));
@@ -34,8 +38,11 @@ class OAuthGatewayProvider implements ServiceProviderInterface
         });
 
         $app['controller.oauth.clients'] = $app->share(function ($app) {
+            /* @var Locator $spot */
+            $spot = $app['spot'];
+            
             return new ClientRegistrationController(
-            $app['spot']->mapper(\OpenCFP\Domain\OAuth\Client::class),
+            $spot->mapper(\OpenCFP\Domain\OAuth\Client::class),
             $app['spot']->mapper(\OpenCFP\Domain\OAuth\Endpoint::class),
             $app['security.random']
             );

@@ -26,10 +26,12 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'dbname' => 'sqlite::memory',
             'driver' => 'pdo_sqlite',
         ]);
-        $this->app['spot'] = new \Spot\Locator($cfg);
+        $spot = new \Spot\Locator($cfg);
+        
+        $this->app['spot'] = $spot;
 
         // Initialize the talk table in the sqlite database
-        $talk_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk_mapper->migrate();
 
         // Set things up so Sentry believes we're logged in

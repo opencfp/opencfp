@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
+use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProfileController extends BaseController
@@ -28,7 +29,10 @@ class ProfileController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $mapper = $this->app['spot']->mapper('\OpenCFP\Domain\Entity\User');
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+        
+        $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
         $speaker_data = $mapper->get($user->getId())->toArray();
 
         $form_data = [
@@ -114,7 +118,10 @@ class ProfileController extends BaseController
                 $processor->process($file, $sanitized_data['speaker_photo']);
             }
 
-            $mapper = $this->app['spot']->mapper('\OpenCFP\Domain\Entity\User');
+            /* @var Locator $spot */
+            $spot = $this->app['spot'];
+            
+            $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
             $user = $mapper->get($user->getId());
             $user->email = $sanitized_data['email'];
             $user->first_name = $sanitized_data['first_name'];
@@ -233,7 +240,10 @@ class ProfileController extends BaseController
      */
     protected function saveUser($app, $sanitized_data)
     {
-        $mapper = $this->app['spot']->mapper('\OpenCFP\Domain\Entity\User');
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+        
+        $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
         $user = $mapper->get($sanitized_data['user_id']);
         $user->email = $sanitized_data['email'];
         $user->first_name = $sanitized_data['first_name'];

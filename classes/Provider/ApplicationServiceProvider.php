@@ -21,6 +21,7 @@ use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
 use RandomLib\Factory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Spot\Locator;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
@@ -30,8 +31,11 @@ class ApplicationServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['application.speakers'] = $app->share(function ($app) {
-            $userMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
-            $talkMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
+            /* @var Locator $spot */
+            $spot = $app['spot'];
+            
+            $userMapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
+            $talkMapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
             return new Speakers(
@@ -83,8 +87,11 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         });
 
         $app['application.speakers.api'] = $app->share(function ($app) {
-            $userMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
-            $talkMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
+            /* @var Locator $spot */
+            $spot = $app['spot'];
+            
+            $userMapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
+            $talkMapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
             return new Speakers(

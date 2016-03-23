@@ -9,6 +9,7 @@ use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\TwitterBootstrap3View;
 use Silex\Application;
+use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class SpeakersController extends BaseController
@@ -18,7 +19,10 @@ class SpeakersController extends BaseController
 
     public function indexAction(Request $req)
     {
-        $rawSpeakers = $this->app['spot']
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+        
+        $rawSpeakers = $spot
             ->mapper(\OpenCFP\Domain\Entity\User::class)
             ->all()
             ->order(['first_name' => 'ASC'])
@@ -86,8 +90,11 @@ class SpeakersController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+        
         // Get info about the speaker
-        $user_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
+        $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker_details = $user_mapper->get($req->get('id'));
 
         if (empty($speaker_details)) {
@@ -119,7 +126,7 @@ class SpeakersController extends BaseController
         }
 
         // Get info about the talks
-        $talk_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talks = $talk_mapper->getByUser($req->get('id'))->toArray();
 
         // Build and render the template
@@ -143,7 +150,10 @@ class SpeakersController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+        
+        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker = $mapper->get($req->get('id'));
         $response = $mapper->delete($speaker);
 

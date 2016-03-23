@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Http\Controller\BaseController;
+use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class ExportsController extends BaseController
@@ -30,7 +31,10 @@ class ExportsController extends BaseController
             return $this->redirectTo('login');
         }
 
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+
+        $mapper = $spot->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $mapper->all();
 
         foreach ($talks as $talk) {
@@ -54,7 +58,11 @@ class ExportsController extends BaseController
 
         $sort = [ "created_at" => "DESC" ];
         $admin_user_id = $this->app['sentry']->getUser()->getId();
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+        
+        $mapper = $spot->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $mapper->getAllPagerFormatted($admin_user_id, $sort, $attributed, $where);
 
         foreach ($talks as $talk => $info) {
