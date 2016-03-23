@@ -2,87 +2,50 @@
 
 namespace OpenCFP\Test\Domain\Services;
 
+use Mockery;
 use OpenCFP\Domain\Services\ResetEmailer;
 use Swift_Mailer;
+use Swift_Message;
 use Twig_Template;
 
 class ResetEmailerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var Swift_Mailer
-     */
-    private $swift_mailer;
-
-    /**
-     * @var Twig_Template
-     */
-    private $template;
-
-    /**
-     * @var string
-     */
-    private $config_email;
-
-    /**
-     * @var string
-     */
-    private $config_title;
-
-    /**
-     * @var int
-     */
-    private $user_id;
-
-    /**
-     * @var string
-     */
-    private $user_email;
-
-    /**
-     * @var string
-     */
-    private $reset_code;
-
-    /**
-     * @var ResetEmailer
-     */
-    private $reset_mailer;
-
-    protected function setUp()
-    {
-        $this->swift_mailer = \Mockery::mock('Swift_Mailer')->shouldReceive('send')->once()
-            ->with(\Mockery::on($this->validateEmail()))->getMock();
-
-        $this->template = \Mockery::mock('Twig_Template')->shouldIgnoreMissing();
-        $this->config_email = 'admin@example.com';
-        $this->config_title = 'Reset';
-
-        $this->user_email = 'user@example.com';
-        $this->user_id = 123;
-        $this->reset_code = '987abc';
-
-        $this->reset_mailer = new ResetEmailer($this->swift_mailer, $this->template, $this->config_email, $this->config_title);
-    }
-
     protected function tearDown()
     {
-        \Mockery::close();
+        Mockery::close();
     }
 
     /** @test */
     public function it_sends_the_expected_email()
     {
-        $this->reset_mailer->send($this->user_id, $this->user_email, $this->reset_code);
-    }
+        $userEmail = 'user@example.com';
 
-    //
-    // Helpers
-    //
+        /* @var Swift_Mailer $swiftMailer */
+        $swiftMailer = Mockery::mock('Swift_Mailer')
+            ->shouldReceive('send')
+            ->once()
+            ->with(Mockery::on(function (Swift_Message $message) use ($userEmail) {
+                return $message->getTo() === [
+                    $userEmail => null,
+                ];
+            }))
+            ->getMock()
+        ;
 
-    private function validateEmail()
-    {
-        return function ($message) {
-            return $message->getTo() === [$this->user_email => null];
-        };
+        /* @var Twig_Template $template */
+        $template = Mockery::mock('Twig_Template')->shouldIgnoreMissing();
+
+        $resetEmailer = new ResetEmailer(
+            $swiftMailer,
+            $template,
+            'admin@example.com',
+            'Reset'
+        );
+
+        $resetEmailer->send(
+            123,
+            $userEmail,
+            '987abc'
+        );
     }
 }
