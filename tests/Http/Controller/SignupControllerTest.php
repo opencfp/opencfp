@@ -7,6 +7,7 @@ use HTMLPurifier_Config;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
+use Spot\Locator;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
@@ -163,7 +164,7 @@ class SignupControllerTest extends \PHPUnit_Framework_TestCase
         $mapper = m::mock('stdClass');
         $mapper->shouldReceive('get')->andReturn($speaker);
         $mapper->shouldReceive('save');
-        $spot = m::mock('stdClass');
+        $spot = m::mock(Locator::class);
         $spot->shouldReceive('mapper')->andReturn($mapper);
         $app->shouldReceive('offsetGet')->with('spot')->andReturn($spot);
 
