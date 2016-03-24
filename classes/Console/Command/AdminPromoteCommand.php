@@ -54,7 +54,8 @@ EOF
 
             if ($user->hasAccess('admin')) {
                 $output->writeln(sprintf('The account <info>%s</info> already has Admin access', $email));
-                exit(1);
+
+                return 1;
             }
 
             $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
@@ -62,10 +63,10 @@ EOF
             $output->writeln(sprintf('  Added <info>%s</info> to the Admin group', $email));
         } catch (UserNotFoundException $e) {
             $output->writeln(sprintf('<error>Error:</error> Could not find user by %s', $email));
-            exit(1);
+
+            return 1;
         }
 
         $output->writeln('Done!');
-        exit(0);
     }
 }
