@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Provider;
 
+use Cartalyst\Sentry\Sentry;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use League\OAuth2\Server\ResourceServer;
 use OpenCFP\Application\Speakers;
@@ -38,9 +39,12 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             $talkMapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
+            /* @var Sentry $sentry */
+            $sentry = $app['sentry'];
+            
             return new Speakers(
                 new CallForProposal(new \DateTime($app->config('application.enddate'))),
-                new SentryIdentityProvider($app['sentry'], $speakerRepository),
+                new SentryIdentityProvider($sentry, $speakerRepository),
                 $speakerRepository,
                 new SpotTalkRepository($talkMapper),
                 new EventDispatcher()

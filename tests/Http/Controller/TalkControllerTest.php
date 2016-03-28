@@ -69,6 +69,9 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         $swiftmailer->shouldReceive('send')->andReturn(true);
         $this->app['mailer'] = $swiftmailer;
 
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
         // Get our request object to return expected data
         $talk_data = [
             'title' => 'Test Title With Ampersand',
@@ -80,7 +83,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'slides' => '',
             'other' => '',
             'sponsor' => '',
-            'user_id' => $this->app['sentry']->getUser()->getId(),
+            'user_id' => $sentry->getUser()->getId(),
         ];
 
         $this->setPost($talk_data);
@@ -128,6 +131,9 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new TalkController();
         $controller->setApplication($this->app);
 
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
         // Get our request object to return expected data
         $talk_data = [
             'title' => 'Test Submission',
@@ -139,7 +145,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'slides' => '',
             'other' => '',
             'sponsor' => '',
-            'user_id' => $this->app['sentry']->getUser()->getId(),
+            'user_id' => $sentry->getUser()->getId(),
         ];
 
         $this->setPost($talk_data);

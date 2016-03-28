@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use Cartalyst\Sentry\Sentry;
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\TwitterBootstrap3View;
 use Spot\Locator;
@@ -13,8 +14,11 @@ class AdminsController extends BaseController
 
     public function indexAction(Request $req)
     {
-        $adminGroup = $this->app['sentry']->getGroupProvider()->findByName('Admin');
-        $adminUsers = $this->app['sentry']->findAllUsersInGroup($adminGroup);
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+        
+        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
+        $adminUsers = $sentry->findAllUsersInGroup($adminGroup);
 
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($adminUsers->toArray());
@@ -48,7 +52,10 @@ class AdminsController extends BaseController
 
     public function removeAction(Request $req)
     {
-        $admin = $this->app['sentry']->getUser();
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+        
+        $admin = $sentry->getUser();
 
         if ($admin->getId() == $req->get('id')) {
             $this->app['session']->set('flash', [
@@ -65,9 +72,9 @@ class AdminsController extends BaseController
         
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_data = $mapper->get($req->get('id'))->toArray();
-        $user = $this->app['sentry']->getUserProvider()->findByLogin($user_data['email']);
+        $user = $sentry->getUserProvider()->findByLogin($user_data['email']);
 
-        $adminGroup = $this->app['sentry']->getGroupProvider()->findByName('Admin');
+        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
         $response = $user->removeGroup($adminGroup);
 
         if ($response == true) {

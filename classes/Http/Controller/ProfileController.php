@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller;
 
+use Cartalyst\Sentry\Sentry;
 use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
 use Spot\Locator;
@@ -13,11 +14,14 @@ class ProfileController extends BaseController
 
     public function editAction(Request $req)
     {
-        if (!$this->app['sentry']->check()) {
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
 
-        $user = $this->app['sentry']->getUser();
+        $user = $sentry->getUser();
 
         if ((string) $user->getId() !== $req->get('id')) {
             $this->app['session']->set('flash', [
@@ -58,11 +62,14 @@ class ProfileController extends BaseController
 
     public function processAction(Request $req)
     {
-        if (!$this->app['sentry']->check()) {
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
 
-        $user = $this->app['sentry']->getUser();
+        $user = $sentry->getUser();
 
         if ((string) $user->getId() !== $req->get('id')) {
             $this->app['session']->set('flash', [
@@ -169,7 +176,10 @@ class ProfileController extends BaseController
 
     public function passwordAction(Request $req)
     {
-        if (!$this->app['sentry']->check()) {
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
 
@@ -178,11 +188,14 @@ class ProfileController extends BaseController
 
     public function passwordProcessAction(Request $req)
     {
-        if (!$this->app['sentry']->check()) {
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
 
-        $user = $this->app['sentry']->getUser();
+        $user = $sentry->getUser();
 
         /**
          * Okay, the logic is kind of weird but we can use the SignupForm

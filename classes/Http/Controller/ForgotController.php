@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller;
 
+use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserNotFoundException;
 use OpenCFP\Http\Form\ForgotForm;
 use OpenCFP\Http\Form\ResetForm;
@@ -42,7 +43,10 @@ class ForgotController extends BaseController
         $data = $form->getData();
 
         try {
-            $user = $this->app['sentry']->getUserProvider()->findByLogin($data['email']);
+            /* @var Sentry $sentry */
+            $sentry = $this->app['sentry'];
+
+            $user = $sentry->getUserProvider()->findByLogin($data['email']);
         } catch (UserNotFoundException $e) {
             $this->app['session']->set('flash', $this->successfulSendFlashParameters($data['email']));
 
@@ -72,7 +76,10 @@ class ForgotController extends BaseController
         $errorMessage = "The reset you have requested appears to be invalid, please try again.";
         $error = 0;
         try {
-            $user = $this->app['sentry']->getUserProvider()->findById($req->get('user_id'));
+            /* @var Sentry $sentry */
+            $sentry = $this->app['sentry'];
+
+            $user = $sentry->getUserProvider()->findById($req->get('user_id'));
 
             if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
                 $error++;
@@ -120,7 +127,10 @@ class ForgotController extends BaseController
         $error = 0;
 
         try {
-            $user = $this->app['sentry']->getUserProvider()->findById($req->get('user_id'));
+            /* @var Sentry $sentry */
+            $sentry = $this->app['sentry'];
+
+            $user = $sentry->getUserProvider()->findById($req->get('user_id'));
         } catch (UserNotFoundException $e) {
             $error++;
         }
@@ -149,7 +159,10 @@ class ForgotController extends BaseController
         $password = $postArray['reset']['password']['password'];
 
         try {
-            $user = $this->app['sentry']->getUserProvider()->findById($user_id);
+            /* @var Sentry $sentry */
+            $sentry = $this->app['sentry'];
+
+            $user = $sentry->getUserProvider()->findById($user_id);
         } catch (UserNotFoundException $e) {
             echo $e;
             die();
