@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Provider\Gateways;
 
+use Cartalyst\Sentry\Sentry;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
@@ -23,9 +24,12 @@ class WebGatewayProvider implements ServiceProviderInterface
             $app['twig']->addGlobal('current_page', $request->getRequestUri());
             $app['twig']->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
 
-            if ($app['sentry']->check()) {
-                $app['twig']->addGlobal('user', $app['sentry']->getUser());
-                $app['twig']->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));
+            /* @var Sentry $sentry */
+            $sentry = $app['sentry'];
+            
+            if ($sentry->check()) {
+                $app['twig']->addGlobal('user', $sentry->getUser());
+                $app['twig']->addGlobal('user_is_admin', $sentry->getUser()->hasAccess('admin'));
             }
 
             if ($app['session']->has('flash')) {

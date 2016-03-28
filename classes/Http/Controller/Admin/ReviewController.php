@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use Cartalyst\Sentry\Sentry;
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\TwitterBootstrap3View;
 use Spot\Locator;
@@ -13,7 +14,10 @@ class ReviewController extends BaseController
 
     public function indexAction(Request $req)
     {
-        $user = $this->app['sentry']->getUser();
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        $user = $sentry->getUser();
 
         /* @var Locator $spot */
         $spot = $this->app['spot'];

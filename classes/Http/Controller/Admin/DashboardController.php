@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use Cartalyst\Sentry\Sentry;
 use OpenCFP\Http\Controller\BaseController;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,13 +15,17 @@ class DashboardController extends BaseController
     {
         /* @var Locator $spot */
         $spot = $this->app['spot'];
-        
+
         $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker_total = $user_mapper->all()->count();
 
-        $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-        $favorite_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Favorite::class);
-        $recent_talks = $talk_mapper->getRecent($this->app['sentry']->getUser()->getId());
+        $talk_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $favorite_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Favorite::class);
+
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        $recent_talks = $talk_mapper->getRecent($sentry->getUser()->getId());
 
         $templateData = [
             'speakerTotal' => $speaker_total,

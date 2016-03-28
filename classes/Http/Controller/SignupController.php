@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller;
 
+use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Http\Form\SignupForm;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
@@ -16,7 +17,10 @@ class SignupController extends BaseController
 
     public function indexAction(Request $req, $currentTimeString = 'now')
     {
-        if ($this->app['sentry']->check()) {
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        if ($sentry->check()) {
             return $this->redirectTo('dashboard');
         }
 
@@ -97,10 +101,13 @@ class SignupController extends BaseController
                     'activated' => 1,
                 ];
 
-                $user = $app['sentry']->getUserProvider()->create($user_data);
+                /* @var Sentry $sentry */
+                $sentry = $app['sentry'];
+
+                $user = $sentry->getUserProvider()->create($user_data);
 
                 // Add them to the proper group
-                $user->addGroup($app['sentry']
+                $user->addGroup($sentry
                     ->getGroupProvider()
                     ->findByName('Speakers')
                 );
@@ -122,7 +129,7 @@ class SignupController extends BaseController
                 // This is for redirecting to OAuth endpoint if we arrived
                 // as part of the Authorization Code Grant flow.
                 if ($this->app['session']->has('redirectTo')) {
-                    $this->app['sentry']->login($user);
+                    $sentry->login($user);
 
                     return new RedirectResponse($this->app['session']->get('redirectTo'));
                 }

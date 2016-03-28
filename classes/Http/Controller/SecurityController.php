@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller;
 
+use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Services\Login;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,7 +21,10 @@ class SecurityController extends BaseController
     public function processAction(Request $req, Application $app)
     {
         try {
-            $page = new Login($app['sentry']);
+            /* @var Sentry $sentry */
+            $sentry = $app['sentry'];
+
+            $page = new Login($sentry);
 
             if ($page->authenticate($req->get('email'), $req->get('password'))) {
                 // This is for redirecting to OAuth endpoint if we arrived
@@ -60,7 +64,10 @@ class SecurityController extends BaseController
 
     public function outAction()
     {
-        $this->app['sentry']->logout();
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+        
+        $sentry->logout();
 
         return $this->redirectTo('homepage');
     }
