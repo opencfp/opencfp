@@ -7,6 +7,7 @@ use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Silex\ServiceProviderInterface;
+use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
 
@@ -25,19 +26,22 @@ class TwigServiceProvider implements ServiceProviderInterface
             ],
         ]);
 
+        /* @var Twig_Environment $twig */
+        $twig = $app['twig'];
+
         if (!$app->isProduction()) {
-            $app['twig']->addExtension(new Twig_Extension_Debug);
+            $twig->addExtension(new Twig_Extension_Debug);
         }
 
-        $app['twig']->addFunction(new Twig_SimpleFunction('uploads', function ($path) {
+        $twig->addFunction(new Twig_SimpleFunction('uploads', function ($path) {
             return '/uploads/' . $path;
         }));
 
-        $app['twig']->addFunction(new Twig_SimpleFunction('assets', function ($path) {
+        $twig->addFunction(new Twig_SimpleFunction('assets', function ($path) {
             return '/assets/' . $path;
         }));
 
-        $app['twig']->addGlobal('site', $app->config('application'));
+        $twig->addGlobal('site', $app->config('application'));
 
         // Twig Markdown Extension
         $markdown = new Ciconia();
@@ -45,7 +49,7 @@ class TwigServiceProvider implements ServiceProviderInterface
         $markdown->addExtension(new WhiteSpaceExtension);
         $engine = new CiconiaEngine($markdown);
 
-        $app['twig']->addExtension(new MarkdownExtension($engine));
+        $twig->addExtension(new MarkdownExtension($engine));
     }
 
     /**

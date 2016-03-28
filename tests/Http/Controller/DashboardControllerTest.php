@@ -10,6 +10,7 @@ use OpenCFP\Environment;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
+use Twig_Environment;
 
 class DashboardControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -82,7 +83,11 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
         // TODO services like configuration and template rending is painful.
         $config = $app['config']['application'];
         $config['online_conference'] = true;
-        $app['twig']->addGlobal('site', $config);
+
+        /* @var Twig_Environment $twig */
+        $twig = $app['twig'];
+
+        $twig->addGlobal('site', $config);
 
         // There's some global before filters that call Sentry directly.
         // We have to stub that behaviour here to have it think we are not admin.
