@@ -8,11 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ClearCacheCommand extends BaseCommand
 {
-    /**
-     * Configure the command options.
-     *
-     * @return void
-     */
     protected function configure()
     {
         $this
@@ -20,13 +15,6 @@ class ClearCacheCommand extends BaseCommand
             ->setDescription('Clears the caches');
     }
 
-    /**
-     * Execute the command.
-     *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Clearing all caches...');
