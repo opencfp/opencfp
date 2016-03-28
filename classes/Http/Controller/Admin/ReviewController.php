@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\TwitterBootstrap3View;
+use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReviewController extends BaseController
@@ -14,8 +15,11 @@ class ReviewController extends BaseController
     {
         $user = $this->app['sentry']->getUser();
 
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+        
         // Get list of talks where majority of admins 'favorited' them
-        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $options = [
             'order_by' => $req->get('order_by'),
             'sort' => $req->get('sort'),

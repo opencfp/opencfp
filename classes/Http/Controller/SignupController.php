@@ -6,6 +6,7 @@ use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Http\Form\SignupForm;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use Silex\Application;
+use Spot\Locator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -104,8 +105,11 @@ class SignupController extends BaseController
                     ->findByName('Speakers')
                 );
 
+                /* @var Locator $spot */
+                $spot = $app['spot'];
+                
                 // Add in the extra speaker information
-                $mapper = $app['spot']->mapper('\OpenCFP\Domain\Entity\User');
+                $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
 
                 $speaker = $mapper->get($user->id);
                 $speaker->info = $sanitized_data['speaker_info'];

@@ -4,6 +4,7 @@ namespace OpenCFP\Test\Domain\Entity;
 
 use OpenCFP\Application;
 use OpenCFP\Environment;
+use Spot\Locator;
 
 /**
  * @group db
@@ -22,12 +23,14 @@ class TalkTest extends \PHPUnit_Framework_TestCase
             'dbname' => 'sqlite::memory',
             'driver' => 'pdo_sqlite',
         ]);
-        $this->app['spot'] = new \Spot\Locator($cfg);
+        $spot = new \Spot\Locator($cfg);
 
-        $this->mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $this->app['spot'] = $spot;
+
+        $this->mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
 
         foreach ($this->entities as $entity) {
-            $this->app['spot']->mapper('OpenCFP\Domain\Entity\\' . $entity)->migrate();
+            $spot->mapper('OpenCFP\Domain\Entity\\' . $entity)->migrate();
         }
     }
 
@@ -56,12 +59,15 @@ class TalkTest extends \PHPUnit_Framework_TestCase
      */
     public function getRecentFindsMostRecentTalks()
     {
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+        
         // Create a favorites table, can be empty
-        $favorite_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\Favorite::class);
+        $favorite_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Favorite::class);
         $favorite_mapper->migrate();
 
         // Create users entity
-        $user_mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
+        $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_mapper->migrate();
 
         // Create 11 talks

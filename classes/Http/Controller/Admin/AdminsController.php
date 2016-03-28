@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\TwitterBootstrap3View;
+use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminsController extends BaseController
@@ -59,7 +60,10 @@ class AdminsController extends BaseController
             return $this->redirectTo('admin_admins');
         }
 
-        $mapper = $this->app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+        
+        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_data = $mapper->get($req->get('id'))->toArray();
         $user = $this->app['sentry']->getUserProvider()->findByLogin($user_data['email']);
 
