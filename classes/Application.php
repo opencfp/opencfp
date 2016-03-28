@@ -33,6 +33,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Twig_Environment;
 
 class Application extends SilexApplication
 {
@@ -304,18 +305,21 @@ class Application extends SilexApplication
                 ], $code, $headers);
             }
 
+            /* @var Twig_Environment $twig */
+            $twig = $app['twig'];
+
             switch ($code) {
                 case Response::HTTP_UNAUTHORIZED:
-                    $message = $app['twig']->render('error/401.twig');
+                    $message = $twig->render('error/401.twig');
                     break;
                 case Response::HTTP_FORBIDDEN:
-                    $message = $app['twig']->render('error/403.twig');
+                    $message = $twig->render('error/403.twig');
                     break;
                 case Response::HTTP_NOT_FOUND:
-                    $message = $app['twig']->render('error/404.twig');
+                    $message = $twig->render('error/404.twig');
                     break;
                 default:
-                    $message = $app['twig']->render('error/500.twig');
+                    $message = $twig->render('error/500.twig');
             }
 
             return new Response($message, $code);
