@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
+use Cartalyst\Sentry\Sentry;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Mockery as m;
@@ -20,7 +21,7 @@ class SignupControllerTest extends \PHPUnit_Framework_TestCase
     public function signupAfterEnddateShowsError($endDateString, $currentTimeString)
     {
         // report that there is no active user
-        $sentry = m::mock('stdClass');
+        $sentry = m::mock(Sentry::class);
         $sentry->shouldReceive('check')->andReturn(false);
 
         $app = m::mock(\OpenCFP\Application::class);
@@ -148,7 +149,7 @@ class SignupControllerTest extends \PHPUnit_Framework_TestCase
         $app->shouldReceive('offsetGet')->with('purifier')->andReturn($purifier);
 
         // Create a pretend Sentry object that says everything is cool
-        $sentry = m::mock('stdClass');
+        $sentry = m::mock(Sentry::class);
         $user = m::mock(\OpenCFP\Domain\Entity\User::class);
         $user->shouldReceive('set');
         $user->shouldReceive('addGroup');

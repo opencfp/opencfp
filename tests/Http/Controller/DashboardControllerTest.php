@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
+use Cartalyst\Sentry\Sentry;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
@@ -32,7 +33,7 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
 
         // Create a test double for Sentry
-        $sentry = m::mock('StdClass');
+        $sentry = m::mock(Sentry::class);
         $sentry->shouldReceive('check')->times(3)->andReturn(true);
         $sentry->shouldReceive('getUser')->andReturn($user);
         $app['sentry'] = $sentry;
@@ -91,7 +92,7 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('id')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $sentry = m::mock('stdClass');
+        $sentry = m::mock(Sentry::class);
         $sentry->shouldReceive('check')->andReturn(true);
         $sentry->shouldReceive('getUser')->andReturn($user);
         $app['sentry'] = $sentry;
