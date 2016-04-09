@@ -13,6 +13,10 @@ class DashboardController extends BaseController
 
     public function indexAction(Request $req)
     {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
         /* @var Locator $spot */
         $spot = $this->app['spot'];
 

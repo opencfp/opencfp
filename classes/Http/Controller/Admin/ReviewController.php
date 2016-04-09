@@ -14,6 +14,10 @@ class ReviewController extends BaseController
 
     public function indexAction(Request $req)
     {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
         /* @var Sentry $sentry */
         $sentry = $this->app['sentry'];
 
@@ -21,7 +25,7 @@ class ReviewController extends BaseController
 
         /* @var Locator $spot */
         $spot = $this->app['spot'];
-        
+
         // Get list of talks where majority of admins 'favorited' them
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $options = [

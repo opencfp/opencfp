@@ -19,9 +19,13 @@ class SpeakersController extends BaseController
 
     public function indexAction(Request $req)
     {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
         /* @var Locator $spot */
         $spot = $this->app['spot'];
-        
+
         $rawSpeakers = $spot
             ->mapper(\OpenCFP\Domain\Entity\User::class)
             ->all()
@@ -85,14 +89,13 @@ class SpeakersController extends BaseController
 
     public function viewAction(Request $req)
     {
-        // Check if user is an logged in and an Admin
         if (!$this->userHasAccess()) {
             return $this->redirectTo('dashboard');
         }
 
         /* @var Locator $spot */
         $spot = $this->app['spot'];
-        
+
         // Get info about the speaker
         $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker_details = $user_mapper->get($req->get('id'));
@@ -145,14 +148,13 @@ class SpeakersController extends BaseController
 
     public function deleteAction(Request $req)
     {
-        // Check if user is an logged in and an Admin
         if (!$this->userHasAccess()) {
             return $this->redirectTo('dashboard');
         }
 
         /* @var Locator $spot */
         $spot = $this->app['spot'];
-        
+
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker = $mapper->get($req->get('id'));
         $response = $mapper->delete($speaker);

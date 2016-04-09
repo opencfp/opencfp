@@ -14,9 +14,13 @@ class AdminsController extends BaseController
 
     public function indexAction(Request $req)
     {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
         /* @var Sentry $sentry */
         $sentry = $this->app['sentry'];
-        
+
         $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
         $adminUsers = $sentry->findAllUsersInGroup($adminGroup);
 
@@ -52,9 +56,13 @@ class AdminsController extends BaseController
 
     public function removeAction(Request $req)
     {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
         /* @var Sentry $sentry */
         $sentry = $this->app['sentry'];
-        
+
         $admin = $sentry->getUser();
 
         if ($admin->getId() == $req->get('id')) {
@@ -69,7 +77,7 @@ class AdminsController extends BaseController
 
         /* @var Locator $spot */
         $spot = $this->app['spot'];
-        
+
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_data = $mapper->get($req->get('id'))->toArray();
         $user = $sentry->getUserProvider()->findByLogin($user_data['email']);

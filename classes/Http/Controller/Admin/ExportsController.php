@@ -13,23 +13,35 @@ class ExportsController extends BaseController
 
     public function anonymousTalksExportAction(Request $req)
     {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
         return $this->talksExportAction(false);
     }
 
     public function attributedTalksExportAction(Request $req)
     {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
         return $this->talksExportAction(true);
     }
 
     public function selectedTalksExportAction(Request $req)
     {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
         return $this->talksExportAction(true, ['selected' => 1]);
     }
 
     public function emailExportAction(Request $req)
     {
         if (!$this->userHasAccess()) {
-            return $this->redirectTo('login');
+            return $this->redirectTo('dashboard');
         }
 
         /* @var Locator $spot */
@@ -53,10 +65,6 @@ class ExportsController extends BaseController
 
     private function talksExportAction($attributed, $where = null)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('login');
-        }
-
         $sort = [ "created_at" => "DESC" ];
 
         /* @var Sentry $sentry */

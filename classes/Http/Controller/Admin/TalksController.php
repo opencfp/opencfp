@@ -17,7 +17,7 @@ class TalksController extends BaseController
     public function indexAction(Request $req)
     {
         if (!$this->userHasAccess()) {
-            return $this->redirectTo('login');
+            return $this->redirectTo('dashboard');
         }
 
         /* @var Sentry $sentry */
@@ -118,7 +118,7 @@ class TalksController extends BaseController
     public function viewAction(Request $req)
     {
         if (!$this->userHasAccess()) {
-            return $this->redirectTo('login');
+            return $this->redirectTo('dashboard');
         }
 
         /* @var Locator $spot */
