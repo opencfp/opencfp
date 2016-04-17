@@ -124,6 +124,38 @@ Apache 2+ Example:
 </VirtualHost>
 ```
 
+nginx Example:
+
+```
+server{
+	server_name cfp.sitename.com;
+	root /var/www/opencfp/web;
+	listen 80;
+	index index.php index.html index.htm;
+	
+	access_log /var/log/nginx/access.cfp.log;
+	error_log /var/log/nginx/error.cfp.log;
+	
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
+
+	location ~ \.php$ {
+		try_files $uri =404;
+		
+		fastcgi_param CFP_ENV production;	
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_read_timeout 150;
+		fastcgi_index index.php;
+		fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		include fastcgi_params;
+	}
+	
+}
+```
+
+
 <a name="create-a-database" />
 ### Create a Database
 
