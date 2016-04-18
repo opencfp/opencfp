@@ -120,7 +120,7 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
             'getPhoto' => '',
         ]);
 
-        $speakersDouble = m::mock(OpenCFP\Application\Speakers::class)
+        $speakersDouble = m::mock(\OpenCFP\Application\Speakers::class)
             ->shouldReceive('findProfile')
             ->andReturn($profile)
             ->getMock();
