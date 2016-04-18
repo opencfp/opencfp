@@ -39,23 +39,24 @@ EOF
 
         try {
             $user = $sentry->getUserProvider()->findByLogin($email);
-            $output->writeln('  Found account...');
-
-            if (! $user->hasAccess('admin')) {
-                $output->writeln(sprintf('The account <info>%s</info> is not in the Admin group', $email));
-
-                return 1;
-            }
-
-            $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-            $user->removeGroup($adminGroup);
-            $output->writeln(sprintf('  Removed <info>%s</info> from the Admin group', $email));
         } catch (UserNotFoundException $e) {
             $output->writeln(sprintf('<error>Error:</error> Could not find user by %s', $email));
 
             return 1;
         }
 
+        $output->writeln('  Found account...');
+
+        if (! $user->hasAccess('admin')) {
+            $output->writeln(sprintf('The account <info>%s</info> is not in the Admin group', $email));
+
+            return 1;
+        }
+
+        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
+        $user->removeGroup($adminGroup);
+
+        $output->writeln(sprintf('  Removed <info>%s</info> from the Admin group', $email));
         $output->writeln('Done!');
     }
 }
