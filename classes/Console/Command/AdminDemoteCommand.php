@@ -8,6 +8,7 @@ use OpenCFP\Console\BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class AdminDemoteCommand extends BaseCommand
 {
@@ -35,20 +36,34 @@ EOF
 
         $email = $input->getArgument('email');
 
-        $output->writeln(sprintf('Retrieving account from <info>%s</info>...', $email));
+        $io = new SymfonyStyle(
+            $input,
+            $output
+        );
+
+        $io->title('OpenCFP');
+
+        $io->section(sprintf(
+            'Demoting account with email %s from Admin',
+            $email
+        ));
 
         try {
             $user = $sentry->getUserProvider()->findByLogin($email);
         } catch (UserNotFoundException $e) {
-            $output->writeln(sprintf('<error>Error:</error> Could not find user by %s', $email));
+            $io->error(sprintf(
+                'Could not find account with email %s.',
+                $email
+            ));
 
             return 1;
         }
 
-        $output->writeln('  Found account...');
-
         if (! $user->hasAccess('admin')) {
-            $output->writeln(sprintf('The account <info>%s</info> is not in the Admin group', $email));
+            $io->error(sprintf(
+                'Account with email %s is not in the Admin group.',
+                $email
+            ));
 
             return 1;
         }
@@ -56,7 +71,9 @@ EOF
         $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
         $user->removeGroup($adminGroup);
 
-        $output->writeln(sprintf('  Removed <info>%s</info> from the Admin group', $email));
-        $output->writeln('Done!');
+        $io->success(sprintf(
+            'Removed account with email %s from the Admin group',
+            $email
+        ));
     }
 }

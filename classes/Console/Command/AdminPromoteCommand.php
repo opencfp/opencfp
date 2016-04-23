@@ -8,6 +8,7 @@ use OpenCFP\Console\BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class AdminPromoteCommand extends BaseCommand
 {
@@ -35,20 +36,34 @@ EOF
 
         $email = $input->getArgument('email');
 
-        $output->writeln(sprintf('Retrieving account from <info>%s</info>...', $email));
+        $io = new SymfonyStyle(
+            $input,
+            $output
+        );
+
+        $io->title('OpenCFP');
+
+        $io->section(sprintf(
+            'Promoting account with email %s to Admin',
+            $email
+        ));
 
         try {
             $user = $sentry->getUserProvider()->findByLogin($email);
         } catch (UserNotFoundException $e) {
-            $output->writeln(sprintf('<error>Error:</error> Could not find user by %s', $email));
+            $io->error(sprintf(
+                'Could not find account with email %s.',
+                $email
+            ));
 
             return 1;
         }
 
-        $output->writeln('  Found account...');
-
         if ($user->hasAccess('admin')) {
-            $output->writeln(sprintf('The account <info>%s</info> already has Admin access', $email));
+            $io->error(sprintf(
+                'Account with email %s already is in the Admin group.',
+                $email
+            ));
 
             return 1;
         }
@@ -56,7 +71,9 @@ EOF
         $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
         $user->addGroup($adminGroup);
 
-        $output->writeln(sprintf('  Added <info>%s</info> to the Admin group', $email));
-        $output->writeln('Done!');
+        $io->success(sprintf(
+            'Added account with email %s to the Admin group',
+            $email
+        ));
     }
 }
