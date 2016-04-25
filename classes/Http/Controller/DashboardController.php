@@ -19,7 +19,7 @@ class DashboardController extends BaseController
          *
          * @var Speakers $speakers
          */
-        $speakers = $this->app['application.speakers'];
+        $speakers = $this->service('application.speakers');
 
         try {
             $profile = $speakers->findProfile();

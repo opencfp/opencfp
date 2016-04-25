@@ -18,14 +18,14 @@ class SignupController extends BaseController
     public function indexAction(Request $req, $currentTimeString = 'now')
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         if ($sentry->check()) {
             return $this->redirectTo('dashboard');
         }
 
         if (strtotime($this->app->config('application.enddate') . ' 11:59 PM') < strtotime($currentTimeString)) {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'Sorry, the call for papers has ended.',
@@ -128,10 +128,10 @@ class SignupController extends BaseController
 
                 // This is for redirecting to OAuth endpoint if we arrived
                 // as part of the Authorization Code Grant flow.
-                if ($this->app['session']->has('redirectTo')) {
+                if ($this->service('session')->has('redirectTo')) {
                     $sentry->login($user);
 
-                    return new RedirectResponse($this->app['session']->get('redirectTo'));
+                    return new RedirectResponse($this->service('session')->get('redirectTo'));
                 }
 
                 // Set Success Flash Message

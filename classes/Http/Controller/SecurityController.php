@@ -29,8 +29,8 @@ class SecurityController extends BaseController
             if ($page->authenticate($req->get('email'), $req->get('password'))) {
                 // This is for redirecting to OAuth endpoint if we arrived
                 // as part of the Authorization Code Grant flow.
-                if ($this->app['session']->has('redirectTo')) {
-                    return new RedirectResponse($this->app['session']->get('redirectTo'));
+                if ($this->service('session')->has('redirectTo')) {
+                    return new RedirectResponse($this->service('session')->get('redirectTo'));
                 }
 
                 return $this->redirectTo('dashboard');
@@ -51,7 +51,7 @@ class SecurityController extends BaseController
         }
 
         // Set Success Flash Message
-        $this->app['session']->set('flash', [
+        $this->service('session')->set('flash', [
             'type' => 'error',
             'short' => 'Error',
             'ext' => $errorMessage,
@@ -65,7 +65,7 @@ class SecurityController extends BaseController
     public function outAction()
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
         
         $sentry->logout();
 

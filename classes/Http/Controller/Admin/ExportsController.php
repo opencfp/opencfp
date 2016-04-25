@@ -45,7 +45,7 @@ class ExportsController extends BaseController
         }
 
         /* @var Locator $spot */
-        $spot = $this->app['spot'];
+        $spot = $this->service('spot');
 
         $mapper = $spot->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $mapper->all();
@@ -68,10 +68,10 @@ class ExportsController extends BaseController
         $sort = [ "created_at" => "DESC" ];
 
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         $admin_user_id = $sentry->getUser()->getId();
-        $mapper = $this->app['spot']->mapper('OpenCFP\Domain\Entity\Talk');
+        $mapper = $this->service('spot')->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $mapper->getAllPagerFormatted($admin_user_id, $sort, $attributed, $where);
 
         foreach ($talks as $talk => $info) {
@@ -91,7 +91,7 @@ class ExportsController extends BaseController
     private function csvReturn($contents, $filename = 'data')
     {
         if (count($contents) === 0) {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'There were no talks that matched selected criteria.',
