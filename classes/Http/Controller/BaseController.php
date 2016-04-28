@@ -22,7 +22,7 @@ abstract class BaseController
      */
     public function url($route, $parameters = [])
     {
-        return $this->app['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->service('url_generator')->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
@@ -37,7 +37,7 @@ abstract class BaseController
     public function render($name, array $context = [], $status = Response::HTTP_OK)
     {
         /* @var Twig_Environment $twig */
-        $twig = $this->app['twig'];
+        $twig = $this->service('twig');
 
         return new Response($twig->render($name, $context), $status);
     }

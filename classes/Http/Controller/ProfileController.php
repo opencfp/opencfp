@@ -15,7 +15,7 @@ class ProfileController extends BaseController
     public function editAction(Request $req)
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         if (!$sentry->check()) {
             return $this->redirectTo('login');
@@ -24,7 +24,7 @@ class ProfileController extends BaseController
         $user = $sentry->getUser();
 
         if ((string) $user->getId() !== $req->get('id')) {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "You cannot edit someone else's profile",
@@ -34,7 +34,7 @@ class ProfileController extends BaseController
         }
 
         /* @var Locator $spot */
-        $spot = $this->app['spot'];
+        $spot = $this->service('spot');
         
         $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
         $speaker_data = $mapper->get($user->getId())->toArray();
@@ -63,7 +63,7 @@ class ProfileController extends BaseController
     public function processAction(Request $req)
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         if (!$sentry->check()) {
             return $this->redirectTo('login');
@@ -72,7 +72,7 @@ class ProfileController extends BaseController
         $user = $sentry->getUser();
 
         if ((string) $user->getId() !== $req->get('id')) {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "You cannot edit someone else's profile",
@@ -100,7 +100,7 @@ class ProfileController extends BaseController
             $form_data['speaker_photo'] = $req->files->get('speaker_photo');
         }
 
-        $form = new SignupForm($form_data, $this->app['purifier']);
+        $form = new SignupForm($form_data, $this->service('purifier'));
         $isValid = $form->validateAll('update');
 
         if ($isValid) {
@@ -113,9 +113,9 @@ class ProfileController extends BaseController
                 /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
                 $file = $form_data['speaker_photo'];
                 /** @var \OpenCFP\Domain\Services\ProfileImageProcessor $processor */
-                $processor = $this->app['profile_image_processor'];
+                $processor = $this->service('profile_image_processor');
                 /** @var PseudoRandomStringGenerator $generator */
-                $generator = $this->app['security.random'];
+                $generator = $this->service('security.random');
 
                 /**
                  * The extension technically is not required. We guess the extension using a trusted method.
@@ -126,7 +126,7 @@ class ProfileController extends BaseController
             }
 
             /* @var Locator $spot */
-            $spot = $this->app['spot'];
+            $spot = $this->service('spot');
             
             $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
             $user = $mapper->get($user->getId());
@@ -149,7 +149,7 @@ class ProfileController extends BaseController
             $response = $mapper->save($user);
 
             if ($response >= 0) {
-                $this->app['session']->set('flash', [
+                $this->service('session')->set('flash', [
                     'type' => 'success',
                     'short' => 'Success',
                     'ext' => "Successfully updated your information!",
@@ -158,7 +158,7 @@ class ProfileController extends BaseController
                 return $this->redirectTo('dashboard');
             }
         } else {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => implode('<br>', $form->getErrorMessages()),
@@ -177,7 +177,7 @@ class ProfileController extends BaseController
     public function passwordAction(Request $req)
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         if (!$sentry->check()) {
             return $this->redirectTo('login');
@@ -189,7 +189,7 @@ class ProfileController extends BaseController
     public function passwordProcessAction(Request $req)
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         if (!$sentry->check()) {
             return $this->redirectTo('login');
@@ -205,11 +205,11 @@ class ProfileController extends BaseController
             'password' => $req->get('password'),
             'password2' => $req->get('password_confirm'),
         ];
-        $form = new SignupForm($formData, $this->app['purifier']);
+        $form = new SignupForm($formData, $this->service('purifier'));
         $form->sanitize();
 
         if ($form->validatePasswords() === false) {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => implode("<br>", $form->getErrorMessages()),
@@ -226,7 +226,7 @@ class ProfileController extends BaseController
         $reset_code = $user->getResetPasswordCode();
 
         if (! $user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => "Unable to update your password in the database. Please try again.",
@@ -235,7 +235,7 @@ class ProfileController extends BaseController
             return $this->redirectTo('password_edit');
         }
 
-        $this->app['session']->set('flash', [
+        $this->service('session')->set('flash', [
             'type' => 'success',
             'short' => 'Success',
             'ext' => "Changed your password.",
@@ -254,7 +254,7 @@ class ProfileController extends BaseController
     protected function saveUser($app, $sanitized_data)
     {
         /* @var Locator $spot */
-        $spot = $this->app['spot'];
+        $spot = $this->service('spot');
         
         $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
         $user = $mapper->get($sanitized_data['user_id']);

@@ -40,10 +40,10 @@ class TalkController extends BaseController
     public function viewAction(Request $req)
     {
         /* @var Speakers $speakers */
-        $speakers = $this->app['application.speakers'];
+        $speakers = $this->service('application.speakers');
 
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         /////////
         if (!$sentry->check()) {
@@ -71,7 +71,7 @@ class TalkController extends BaseController
     public function editAction(Request $req)
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         if (!$sentry->check()) {
             return $this->redirectTo('login');
@@ -83,7 +83,7 @@ class TalkController extends BaseController
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
         if (! $this->isCfpOpen(strtotime('now'))) {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Read Only',
                 'ext' => 'You cannot edit talks once the call for papers has ended', ]
@@ -99,7 +99,7 @@ class TalkController extends BaseController
         $user = $sentry->getUser();
 
         /* @var Locator $spot */
-        $spot = $this->app['spot'];
+        $spot = $this->service('spot');
 
         $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk_info = $talk_mapper->get($talk_id)->toArray();
@@ -135,7 +135,7 @@ class TalkController extends BaseController
     public function createAction(Request $req)
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         if (!$sentry->check()) {
             return $this->redirectTo('login');
@@ -143,7 +143,7 @@ class TalkController extends BaseController
 
         // You can only create talks while the CfP is open
         if (! $this->isCfpOpen(strtotime('now'))) {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'You cannot create talks once the call for papers has ended', ]
@@ -179,7 +179,7 @@ class TalkController extends BaseController
     public function processCreateAction(Request $req)
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         if (!$sentry->check()) {
             return $this->redirectTo('login');
@@ -187,7 +187,7 @@ class TalkController extends BaseController
 
         // You can only create talks while the CfP is open
         if (! $this->isCfpOpen(strtotime('now'))) {
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'You cannot create talks once the call for papers has ended', ]
@@ -211,7 +211,7 @@ class TalkController extends BaseController
             'user_id' => $req->get('user_id'),
         ];
 
-        $form = new TalkForm($request_data, $this->app['purifier']);
+        $form = new TalkForm($request_data, $this->service('purifier'));
         $form->sanitize();
         $isValid = $form->validateAll();
 
@@ -231,12 +231,12 @@ class TalkController extends BaseController
             ];
 
             /* @var Locator $spot */
-            $spot = $this->app['spot'];
+            $spot = $this->service('spot');
 
             $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $talk = $talk_mapper->create($data);
 
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'success',
                 'short' => 'Success',
                 'ext' => 'Successfully added talk.',
@@ -263,7 +263,7 @@ class TalkController extends BaseController
                 'buttonInfo' => 'Submit my talk!',
             ];
 
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => implode("<br>", $form->getErrorMessages()),
@@ -278,7 +278,7 @@ class TalkController extends BaseController
     public function updateAction(Request $req)
     {
         /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        $sentry = $this->service('sentry');
 
         if (!$sentry->check()) {
             return $this->redirectTo('login');
@@ -300,7 +300,7 @@ class TalkController extends BaseController
             'user_id' => $req->get('user_id'),
         ];
 
-        $form = new TalkForm($request_data, $this->app['purifier']);
+        $form = new TalkForm($request_data, $this->service('purifier'));
         $form->sanitize();
         $isValid = $form->validateAll();
 
@@ -321,7 +321,7 @@ class TalkController extends BaseController
             ];
 
             /* @var Locator $spot */
-            $spot = $this->app['spot'];
+            $spot = $this->service('spot');
 
             $mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $talk = $mapper->get($data['id']);
@@ -332,7 +332,7 @@ class TalkController extends BaseController
 
             $mapper->save($talk);
 
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'success',
                 'short' => 'Success',
                 'ext' => 'Successfully updated talk.',
@@ -357,7 +357,7 @@ class TalkController extends BaseController
                 'buttonInfo' => 'Update my talk!',
             ];
 
-            $this->app['session']->set('flash', [
+            $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => implode("<br>", $form->getErrorMessages()),
