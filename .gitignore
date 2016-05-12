@@ -21,3 +21,4 @@ deployment.xml
 /web/.htaccess
 phinx.yml
 /phpunit.xml
+/web/.htaccess
