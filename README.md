@@ -155,8 +155,8 @@ server{
 }
 ```
 
-The application does not currently work properly if you use the built-in PHP
-server.
+The application does not currently work properly if you use PHP's built-in
+server. 
 
 <a name="create-a-database" />
 ### Create a Database
