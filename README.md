@@ -75,7 +75,7 @@ Here are some issues that we would love to see contributions for:
 ## Requirements
 
  * PHP 5.5+
- * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block.
+ * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php5-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
 
@@ -155,6 +155,8 @@ server{
 }
 ```
 
+The application does not currently work properly if you use the built-in PHP
+server.
 
 <a name="create-a-database" />
 ### Create a Database
