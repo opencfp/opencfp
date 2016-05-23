@@ -16,6 +16,7 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Installation](#installation)
    * [Cloning the Repository](#cloning-the-repository)
    * [Installing Composer Dependencies](#installing-composer-dependencies)
+   * [PHP Built-in Web Server](#php-built-in-web-server)
    * [Create a Database](#create-a-database)
    * [Specify Environment](#specify-environment)
    * [Configure Environment](#configure-environment)
@@ -29,9 +30,8 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
    * [Clear Caches](#clear-caches)
+   * [Scripts to Rule Them All](#scripts-rule-all)
  * [Testing](#testing)
- * [Developer Environment](#developer-environment)
-   * [PHP Built-in Web Server](#php-built-in-web-server)
  * [Troubleshooting](#troubleshooting)
 
 <a name="features" />
@@ -105,8 +105,20 @@ Checking connectivity... done.
 From the project directory, run the following command. You may need to download `composer.phar` first from http://getcomposer.org
 
 ```bash
-$ php composer.phar install
+$ script/setup
 ```
+
+<a name="php-built-in-web-server" />
+### PHP Built-in Web Server
+
+To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/features.commandline.webserver.php) the
+following command can be run:
+
+```
+$ script/server
+```
+
+The server uses port `8000`. This is a quick way to get started doing development on OpenCFP itself.
 
 <a name="specify-web-server-document-root" />
 ### Specify Web Server Document Root
@@ -577,6 +589,41 @@ if enabled. If you need to clear all application caches:
 $ bin/opencfp cache:clear
 ```
 
+<a name="scripts-rule-all" />
+### Scripts to Rule Them All
+
+OpenCFP follows the [Scripts to Rule Them All](https://github.com/github/scripts-to-rule-them-all) pattern. This allows
+for an easy to follow convention for common tasks when developing applications.
+
+#### Initial Setup
+This command will install all dependencies, run database migrations, and alert you of any missing configs.
+
+```
+$ script/setup
+```
+
+#### Update Application
+This command will update all dependencies and run new migrations
+
+```
+$ script/update
+```
+
+#### Start Development/Local Server
+This command will start a built-in php web server, using port `8000`.
+
+```
+$ script/server
+```
+
+#### Run Tests
+This command will run the PHPUnit test suite using distributed phpunit config, `phpunit.xml.dist`, if
+no phpunit.xml is found in the root.
+
+```
+$ script/test
+```
+
 <a name="testing" />
 ## Testing
 
@@ -593,21 +640,6 @@ $ script/test
 ```
 
 The default phpunit.xml.dist file is in the root directory for the project.
-
-<a name="developer-environment" />
-## Developer Environment
-
-<a name="php-built-in-web-server" />
-### PHP Built-in Web Server
-
-To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/features.commandline.webserver.php) the
-following command can be run:
-
-```
-$ script/server
-```
-
-The server uses port `8000`. This is a quick way to get started doing development on OpenCFP itself.
 
 <a name="troubleshooting" />
 ## Troubleshooting
