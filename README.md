@@ -132,18 +132,18 @@ server{
 	root /var/www/opencfp/web;
 	listen 80;
 	index index.php index.html index.htm;
-	
+
 	access_log /var/log/nginx/access.cfp.log;
 	error_log /var/log/nginx/error.cfp.log;
-	
+
 	location / {
 		try_files $uri $uri/ /index.php?$query_string;
 	}
 
 	location ~ \.php$ {
 		try_files $uri =404;
-		
-		fastcgi_param CFP_ENV production;	
+
+		fastcgi_param CFP_ENV production;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
 		fastcgi_read_timeout 150;
@@ -151,12 +151,12 @@ server{
 		fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
 		include fastcgi_params;
 	}
-	
+
 }
 ```
 
 The application does not currently work properly if you use PHP's built-in
-server. 
+server.
 
 <a name="create-a-database" />
 ### Create a Database
@@ -207,12 +207,12 @@ to consider:
 For example, if you wanted to setup Mailgun as your email provider, your mail configuration would look something like this:
 
 ```
-mail: 
-    host: smtp.mailgun.org 
-    port: 587 
-    username: do-not-reply@cfp.myfancyconference.com 
-    password: "a1b2c3d4" 
-    encryption: tls 
+mail:
+    host: smtp.mailgun.org
+    port: 587
+    username: do-not-reply@cfp.myfancyconference.com
+    password: "a1b2c3d4"
+    encryption: tls
     auth_mode: ~
 ```
 
@@ -585,21 +585,14 @@ your environment for testing:
 
 1. Create a testing database, and update the name and credentials in
    /config/testing.yml
-1. Copy the default `phinx.yml.dist` to `phinx.yml`
-1. Prepare the test database:
-
-```shell
-php ./vendor/bin/phinx --configuration=phinx.yml migrate -e testing
-```
-
-Once you are set up, the recommended way to run the tests is:
+2. Copy the default `phinx.yml.dist` to `phinx.yml`
+3. The recommended way to run the tests is:
 
 ```
-$ ./vendor/bin/phpunit
+$ script/test
 ```
 
 The default phpunit.xml.dist file is in the root directory for the project.
-
 
 <a name="developer-environment" />
 ## Developer Environment
@@ -611,11 +604,10 @@ To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/featur
 following command can be run:
 
 ```
-$ php -S localhost:8000 -t web web/index_dev.php
+$ script/server
 ```
 
-You can choose a port other than `8000`. This is a quick way to get started doing development on OpenCFP itself.
-
+The server uses port `8000`. This is a quick way to get started doing development on OpenCFP itself.
 
 <a name="troubleshooting" />
 ## Troubleshooting
