@@ -9,17 +9,11 @@ cd "$(dirname "$0")/.."
 
 script/bootstrap
 
-if [ ! -f "phinx.yml" ]; then
-    echo "Missing phinx.yml, be sure to copy from phinx.yml.dist and update config"
-    exit 1
-fi
-
-if [ ! -f "config/development.yml" ]; then
-    echo "Missing config/development.yml, be sure to copy from config/development.dist.yml and update config"
-    exit 1
+if [ "$CFP_ENV" = "" ]; then
+    export CFP_ENV="development"
 fi
 
 echo "==> Setting up DB..."
-vendor/bin/phinx migrate
+vendor/bin/phinx migrate -e $CFP_ENV
 
 echo "==> App is now ready to go!"
