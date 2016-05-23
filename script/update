@@ -8,6 +8,9 @@ cd "$(dirname "$0")/.."
 
 script/bootstrap
 
+echo "==> Clearing cache..."
+bin/opencfp cache:clear
+
 echo "==> Updating db..."
 # run all database migrations to ensure everything is up to date.
 vendor/bin/phinx migrate
