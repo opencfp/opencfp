@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# script/test: Run test suite for application. Optionally pass in a path to an
+#              individual test file to run a single test.
+
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+script/bootstrap
+
+echo "==> Creating test db..."
+vendor/bin/phinx --configuration=phinx.yml migrate -e testing
+
+if [ ! -f "phpunit.xml" ]; then
+    cp phpunit.xml.dist phpunit.xml
+fi
+
+echo "==> Running tests..."
+vendor/bin/phpunit

@@ -16,6 +16,7 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Installation](#installation)
    * [Cloning the Repository](#cloning-the-repository)
    * [Installing Composer Dependencies](#installing-composer-dependencies)
+   * [PHP Built-in Web Server](#php-built-in-web-server)
    * [Create a Database](#create-a-database)
    * [Specify Environment](#specify-environment)
    * [Configure Environment](#configure-environment)
@@ -29,9 +30,8 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
    * [Clear Caches](#clear-caches)
+   * [Scripts to Rule Them All](#scripts-rule-all)
  * [Testing](#testing)
- * [Developer Environment](#developer-environment)
-   * [PHP Built-in Web Server](#php-built-in-web-server)
  * [Troubleshooting](#troubleshooting)
 
 <a name="features" />
@@ -105,8 +105,20 @@ Checking connectivity... done.
 From the project directory, run the following command. You may need to download `composer.phar` first from http://getcomposer.org
 
 ```bash
-$ php composer.phar install
+$ script/setup
 ```
+
+<a name="php-built-in-web-server" />
+### PHP Built-in Web Server
+
+To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/features.commandline.webserver.php) the
+following command can be run:
+
+```
+$ script/server
+```
+
+The server uses port `8000`. This is a quick way to get started doing development on OpenCFP itself.
 
 <a name="specify-web-server-document-root" />
 ### Specify Web Server Document Root
@@ -132,18 +144,18 @@ server{
 	root /var/www/opencfp/web;
 	listen 80;
 	index index.php index.html index.htm;
-	
+
 	access_log /var/log/nginx/access.cfp.log;
 	error_log /var/log/nginx/error.cfp.log;
-	
+
 	location / {
 		try_files $uri $uri/ /index.php?$query_string;
 	}
 
 	location ~ \.php$ {
 		try_files $uri =404;
-		
-		fastcgi_param CFP_ENV production;	
+
+		fastcgi_param CFP_ENV production;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
 		fastcgi_pass unix:/var/run/php5-fpm.sock;
 		fastcgi_read_timeout 150;
@@ -151,12 +163,12 @@ server{
 		fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
 		include fastcgi_params;
 	}
-	
+
 }
 ```
 
 The application does not currently work properly if you use PHP's built-in
-server. 
+server.
 
 <a name="create-a-database" />
 ### Create a Database
@@ -207,12 +219,12 @@ to consider:
 For example, if you wanted to setup Mailgun as your email provider, your mail configuration would look something like this:
 
 ```
-mail: 
-    host: smtp.mailgun.org 
-    port: 587 
-    username: do-not-reply@cfp.myfancyconference.com 
-    password: "a1b2c3d4" 
-    encryption: tls 
+mail:
+    host: smtp.mailgun.org
+    port: 587
+    username: do-not-reply@cfp.myfancyconference.com
+    password: "a1b2c3d4"
+    encryption: tls
     auth_mode: ~
 ```
 
@@ -577,6 +589,41 @@ if enabled. If you need to clear all application caches:
 $ bin/opencfp cache:clear
 ```
 
+<a name="scripts-rule-all" />
+### Scripts to Rule Them All
+
+OpenCFP follows the [Scripts to Rule Them All](https://github.com/github/scripts-to-rule-them-all) pattern. This allows
+for an easy to follow convention for common tasks when developing applications.
+
+#### Initial Setup
+This command will install all dependencies, run database migrations, and alert you of any missing configs.
+
+```
+$ script/setup
+```
+
+#### Update Application
+This command will update all dependencies and run new migrations
+
+```
+$ script/update
+```
+
+#### Start Development/Local Server
+This command will start a built-in php web server, using port `8000`.
+
+```
+$ script/server
+```
+
+#### Run Tests
+This command will run the PHPUnit test suite using distributed phpunit config, `phpunit.xml.dist`, if
+no phpunit.xml is found in the root.
+
+```
+$ script/test
+```
+
 <a name="testing" />
 ## Testing
 
@@ -585,37 +632,14 @@ your environment for testing:
 
 1. Create a testing database, and update the name and credentials in
    /config/testing.yml
-1. Copy the default `phinx.yml.dist` to `phinx.yml`
-1. Prepare the test database:
-
-```shell
-php ./vendor/bin/phinx --configuration=phinx.yml migrate -e testing
-```
-
-Once you are set up, the recommended way to run the tests is:
+2. Copy the default `phinx.yml.dist` to `phinx.yml`
+3. The recommended way to run the tests is:
 
 ```
-$ ./vendor/bin/phpunit
+$ script/test
 ```
 
 The default phpunit.xml.dist file is in the root directory for the project.
-
-
-<a name="developer-environment" />
-## Developer Environment
-
-<a name="php-built-in-web-server" />
-### PHP Built-in Web Server
-
-To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/features.commandline.webserver.php) the
-following command can be run:
-
-```
-$ php -S localhost:8000 -t web web/index_dev.php
-```
-
-You can choose a port other than `8000`. This is a quick way to get started doing development on OpenCFP itself.
-
 
 <a name="troubleshooting" />
 ## Troubleshooting

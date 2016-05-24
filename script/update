@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# script/update: Update application to run for its current checkout.
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+script/bootstrap
+
+if [ "$CFP_ENV" = "" ]; then
+    export CFP_ENV="development"
+fi
+
+echo "==> Clearing cache..."
+bin/opencfp cache:clear
+
+echo "==> Updating db..."
+# run all database migrations to ensure everything is up to date.
+vendor/bin/phinx migrate -e $CFP_ENV
