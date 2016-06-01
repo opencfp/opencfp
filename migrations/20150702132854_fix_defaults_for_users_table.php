@@ -21,14 +21,14 @@ class FixDefaultsForUsersTable extends AbstractMigration
         $users->changeColumn('permissions', 'text', ['null' => true]);
         $users->changeColumn('activated', 'boolean', ['default' => 0]);
         $users->changeColumn('activation_code', 'string', ['null' => true]);
-        $users->changeColumn('activated_at', 'datetime', ['null' => true, 'default' => '0000-00-00 00:00:00']);
-        $users->changeColumn('last_login', 'datetime', ['null' => true, 'default' => '0000-00-00 00:00:00']);
+        $users->changeColumn('activated_at', 'datetime', ['null' => true, 'default' => '1970-01-01 00:00:00']);
+        $users->changeColumn('last_login', 'datetime', ['null' => true, 'default' => '1970-01-01 00:00:00']);
         $users->changeColumn('persist_code', 'string', ['null' => true]);
         $users->changeColumn('reset_password_code', 'string', ['null' => true]);
         $users->changeColumn('first_name', 'string', ['null' => true]);
         $users->changeColumn('last_name', 'string', ['null' => true]);
-        $users->changeColumn('created_at', 'datetime', ['default' => '0000-00-00 00:00:00']);
-        $users->changeColumn('updated_at', 'datetime', ['default' => '0000-00-00 00:00:00']);
+        $users->changeColumn('created_at', 'datetime', ['default' => '1970-01-01 00:00:00']);
+        $users->changeColumn('updated_at', 'datetime', ['default' => '1970-01-01 00:00:00']);
 
         // Custom fields
         $users->changeColumn('company', 'string', ['null' => true]);
