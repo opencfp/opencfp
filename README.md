@@ -116,9 +116,9 @@ SetEnv CFP_ENV production
 You will also need to set the `CFP_ENV` variable in the shell you are using when doing an install. Here are some
 ways to do that with common shells assuming we're using `production`:
 
-bash: `export CFP_ENV = production`
-zsh:  `export CFP_ENV = production`
-fish: `set -x CFP_ENV production`
+* bash: `export CFP_ENV = production`
+* zsh:  `export CFP_ENV = production`
+* fish: `set -x CFP_ENV production`
 
 Again, just use your preferred environment in place of `production` if required. 
 
