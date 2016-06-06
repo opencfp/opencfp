@@ -22,13 +22,6 @@ class DatabaseServiceProvider implements ServiceProviderInterface
         $app['db'] = $pdo;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
-    }
-
     private function checkConnection($pdo)
     {
         $check = $pdo->query('select database() as db')->fetch(\PDO::FETCH_ASSOC);

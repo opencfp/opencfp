@@ -2,8 +2,6 @@
 
 namespace OpenCFP\Provider\Gateways;
 
-use Cartalyst\Sentry\Sentry;
-use Illuminate\Support\Facades\App;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;

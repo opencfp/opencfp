@@ -21,8 +21,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function it_should_run_and_have_output()
     {
         $this->sut = new Application(BASE_PATH, Environment::testing());
-        unset($this->sut['session']);
-        $this->sut['session'] = new Session(new MockFileSessionStorage());
 
         // We start an output buffer because the Application sends its response to
         // the output buffer as a Symfony Response.

@@ -34,11 +34,4 @@ class SpotServiceProvider implements ServiceProviderInterface
             return new SpotLocator($config);
         };
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
-    }
 }

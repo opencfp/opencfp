@@ -18,11 +18,4 @@ class ImageProcessorProvider implements ServiceProviderInterface
             return new ProfileImageProcessor($app->uploadPath(), $app['security.random']);
         };
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
-    }
 }

@@ -52,11 +52,4 @@ class TwigServiceProvider implements ServiceProviderInterface
 
         $twig->addExtension(new MarkdownExtension($engine));
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
-    }
 }

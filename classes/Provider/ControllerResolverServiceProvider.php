@@ -15,11 +15,4 @@ class ControllerResolverServiceProvider implements ServiceProviderInterface
             return new ControllerResolver($app);
         };
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
-    }
 }

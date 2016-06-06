@@ -54,11 +54,4 @@ class SentryServiceProvider implements ServiceProviderInterface
             return $sentry;
         };
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
-    }
 }

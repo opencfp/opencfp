@@ -5,8 +5,6 @@ namespace OpenCFP\Test\Http\Controller\Admin;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -50,10 +48,6 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
             ->with(\OpenCFP\Domain\Entity\User::class)
             ->andReturn($mapper);
         $this->app['spot'] = $spot;
-
-        // Create a session object
-        unset($this->app['session']);
-        $this->app['session'] = new Session(new MockFileSessionStorage);
 
         // Use our pre-configured Application object
         ob_start();

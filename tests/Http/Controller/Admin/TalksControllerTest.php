@@ -7,8 +7,6 @@ use OpenCFP\Application;
 use OpenCFP\Domain\Entity\Mapper;
 use OpenCFP\Environment;
 use Spot\Query;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 use Twig_Environment;
 
 class TalksControllerTest extends \PHPUnit_Framework_TestCase
@@ -167,10 +165,6 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
             ->andReturn($talkCommentMapper);
         $this->app['spot'] = $spot;
 
-        // Create a session object
-        unset($this->app['session']);
-        $this->app['session'] = new Session(new MockFileSessionStorage);
-
         // Use our pre-configured Application object
         ob_start();
         $this->app->run();
@@ -217,10 +211,6 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         $spot->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\TalkMeta::class)->andReturn($talkMetaMapper);
 
         $this->app['spot'] = $spot;
-
-        // Create a session object
-        unset($this->app['session']);
-        $this->app['session'] = new Session(new MockFileSessionStorage);
 
         // Use our pre-configured Application object
         ob_start();

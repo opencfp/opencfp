@@ -31,11 +31,4 @@ class HtmlPurifierServiceProvider implements ServiceProviderInterface
             return new HTMLPurifier($config);
         };
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
-    }
 }

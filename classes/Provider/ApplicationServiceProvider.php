@@ -108,11 +108,4 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             );
         };
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
-    }
 }
