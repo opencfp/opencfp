@@ -20,11 +20,11 @@ class ForgotControllerTest extends \PHPUnit_Framework_TestCase
     public function indexDisplaysCorrectForm()
     {
         $app = new Application(BASE_PATH, Environment::testing());
-        unset($app['session']);
-        $app['session'] = new Session(new MockFileSessionStorage());
-        unset($app['csrf.token_storage']);
-        unset($app['csrf.token_manager']);
-        unset($app['csrf.token_generator']);
+//        unset($app['session']);
+//        $app['session'] = new Session(new MockFileSessionStorage());
+//        unset($app['csrf.token_storage']);
+//        unset($app['csrf.token_manager']);
+//        unset($app['csrf.token_generator']);
 //        unset($app['session.storage']);
 //        unset($app['session.storage.handler']);
 //        unset($app['session.storage.native']);

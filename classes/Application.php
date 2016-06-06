@@ -35,6 +35,8 @@ use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Twig_Environment;
 
@@ -60,10 +62,14 @@ class Application extends SilexApplication
         $this->register(new OAuthGatewayProvider);
 
         // Services...
-        $this->register(new SessionServiceProvider);
+        $this->register(
+            new SessionServiceProvider,
+            $environment->equals($environment->testing())
+                ? array('session.test' => new Session(new MockFileSessionStorage()))
+                : array()
+        );
         $this->register(new FormServiceProvider);
         $this->register(new CsrfServiceProvider());
-//        $this->register(new UrlGeneratorServiceProvider());
         $this->register(new ControllerResolverServiceProvider);
         $this->register(new DatabaseServiceProvider());
         $this->register(new ValidatorServiceProvider);

@@ -28,7 +28,8 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'driver' => 'pdo_sqlite',
         ]);
         $spot = new \Spot\Locator($cfg);
-        
+
+        unset($this->app['spot']);
         $this->app['spot'] = $spot;
 
         // Initialize the talk table in the sqlite database
