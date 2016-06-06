@@ -1,14 +1,15 @@
 <?php namespace OpenCFP\Provider;
 
+use Pimple\Container;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 
 class DatabaseServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         try {
             $pdo = $this->makePDOInstance($app);

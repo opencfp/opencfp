@@ -168,6 +168,7 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         $this->app['spot'] = $spot;
 
         // Create a session object
+        unset($this->app['session']);
         $this->app['session'] = new Session(new MockFileSessionStorage);
 
         // Use our pre-configured Application object
@@ -218,6 +219,7 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         $this->app['spot'] = $spot;
 
         // Create a session object
+        unset($this->app['session']);
         $this->app['session'] = new Session(new MockFileSessionStorage);
 
         // Use our pre-configured Application object

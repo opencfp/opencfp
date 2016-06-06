@@ -44,9 +44,11 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         $sentry = m::mock(Sentry::class);
         $sentry->shouldReceive('check')->andReturn(true);
         $sentry->shouldReceive('getUser')->andReturn($user);
+        unset($this->app['sentry']);
         $this->app['sentry'] = $sentry;
 
         // Create a test double for sessions so we can control what happens
+        unset($this->app['session']);
         $this->app['session'] = new SessionDouble();
 
         // Create our test double for the request object

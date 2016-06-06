@@ -19,9 +19,10 @@ use OpenCFP\Infrastructure\OAuth\SessionStorage;
 use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
+use Pimple\Container;
 use RandomLib\Factory;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 use Spot\Locator;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
@@ -29,9 +30,9 @@ class ApplicationServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['application.speakers'] = $app->share(function ($app) {
+        $app['application.speakers'] = function ($app) {
             /* @var Locator $spot */
             $spot = $app['spot'];
             
@@ -49,9 +50,9 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                 new SpotTalkRepository($talkMapper),
                 new EventDispatcher()
             );
-        });
+        };
 
-        $app[AirportInformationDatabase::class] = $app->share(function ($app) {
+        $app[AirportInformationDatabase::class] = function ($app) {
             $capsule = new Capsule;
 
             $capsule->addConnection([
@@ -68,13 +69,13 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             $capsule->setAsGlobal();
 
             return new IlluminateAirportInformationDatabase($capsule);
-        });
+        };
 
-        $app['security.random'] = $app->share(function ($app) {
+        $app['security.random'] = function ($app) {
             return new PseudoRandomStringGenerator(new Factory());
-        });
+        };
 
-        $app['oauth.resource'] = $app->share(function ($app) {
+        $app['oauth.resource'] = function ($app) {
             $sessionStorage = new SessionStorage();
             $accessTokenStorage = new AccessTokenStorage();
             $clientStorage = new ClientStorage();
@@ -88,9 +89,9 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             );
 
             return $server;
-        });
+        };
 
-        $app['application.speakers.api'] = $app->share(function ($app) {
+        $app['application.speakers.api'] = function ($app) {
             /* @var Locator $spot */
             $spot = $app['spot'];
             
@@ -105,7 +106,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                 new SpotTalkRepository($talkMapper),
                 new EventDispatcher()
             );
-        });
+        };
     }
 
     /**

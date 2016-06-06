@@ -3,17 +3,18 @@
 namespace OpenCFP\Provider\Gateways;
 
 use Cartalyst\Sentry\Sentry;
+use Pimple\Container;
 use Silex\Application;
 use Silex\ControllerCollection;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class OAuthGatewayProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['controller.oauth.authorization'] = $app->share(function ($app) {
+        $app['controller.oauth.authorization'] = function ($app) {
             $server = new AuthorizationServer();
 
             $server->setSessionStorage(new SessionStorage());
@@ -39,9 +40,9 @@ class OAuthGatewayProvider implements ServiceProviderInterface
             $controller->setApplication($app);
 
             return $controller;
-        });
+        };
 
-        $app['controller.oauth.clients'] = $app->share(function ($app) {
+        $app['controller.oauth.clients'] = function ($app) {
             /* @var Locator $spot */
             $spot = $app['spot'];
             
@@ -50,7 +51,7 @@ class OAuthGatewayProvider implements ServiceProviderInterface
             $app['spot']->mapper(\OpenCFP\Domain\OAuth\Endpoint::class),
             $app['security.random']
             );
-        });
+        };
     }
 
     public function boot(Application $app)

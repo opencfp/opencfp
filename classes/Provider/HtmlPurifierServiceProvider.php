@@ -2,17 +2,18 @@
 
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use Pimple\Container;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 
 class HtmlPurifierServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['purifier'] = $app->share(function ($app) {
+        $app['purifier'] = function ($app) {
             $config = HTMLPurifier_Config::createDefault();
 
             if ($app->config('cache.enabled')) {
@@ -28,7 +29,7 @@ class HtmlPurifierServiceProvider implements ServiceProviderInterface
             }
 
             return new HTMLPurifier($config);
-        });
+        };
     }
 
     /**

@@ -1,18 +1,19 @@
 <?php namespace OpenCFP\Provider;
 
+use Pimple\Container;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 
 class ControllerResolverServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['resolver'] = $app->share(function () use ($app) {
+        $app['resolver'] = function () use ($app) {
             return new ControllerResolver($app);
-        });
+        };
     }
 
     /**

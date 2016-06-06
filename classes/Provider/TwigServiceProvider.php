@@ -4,9 +4,10 @@ use Aptoma\Twig\Extension\MarkdownExtension;
 use Ciconia\Ciconia;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;
+use Pimple\Container;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
@@ -16,7 +17,7 @@ class TwigServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app->register(new SilexTwigServiceProvider(), [
             'twig.path' => $app->templatesPath(),

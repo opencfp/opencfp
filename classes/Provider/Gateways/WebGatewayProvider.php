@@ -3,15 +3,18 @@
 namespace OpenCFP\Provider\Gateways;
 
 use Cartalyst\Sentry\Sentry;
+use Illuminate\Support\Facades\App;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
-use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 
-class WebGatewayProvider implements ServiceProviderInterface
+class WebGatewayProvider implements BootableProviderInterface, ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
     }
 
@@ -21,7 +24,7 @@ class WebGatewayProvider implements ServiceProviderInterface
         $web = $app['controllers_factory'];
 
         $web->before(new RequestCleaner($app['purifier']));
-        $web->before(function (Request $request, Application $app) {
+        $web->before(function (Request $request, Container $app) {
             /* @var Twig_Environment $twig */
             $twig = $app['twig'];
 

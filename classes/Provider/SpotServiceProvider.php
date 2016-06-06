@@ -2,8 +2,9 @@
 
 namespace OpenCFP\Provider;
 
+use Pimple\Container;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 use Spot\Config as SpotConfig;
 use Spot\Locator as SpotLocator;
 
@@ -12,9 +13,9 @@ class SpotServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['spot'] = $app->share(function ($app) {
+        $app['spot'] = function ($app) {
             $config = new SpotConfig();
             $dbConfig = [
                 'dbname' => $app->config('database.database'),
@@ -31,7 +32,7 @@ class SpotServiceProvider implements ServiceProviderInterface
             $config->addConnection('mysql', $dbConfig);
 
             return new SpotLocator($config);
-        });
+        };
     }
 
     /**

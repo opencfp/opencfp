@@ -25,6 +25,7 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
     public function indexDisplaysUserAndTalks()
     {
         $app = new Application(BASE_PATH, Environment::testing());
+        unset($app['session']);
         $app['session'] = new Session(new MockFileSessionStorage());
 
         // Set things up so Sentry believes we're logged in
@@ -76,6 +77,7 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
     {
         $faker = $this->getFaker();
         $app = new Application(BASE_PATH, Environment::testing());
+        unset($app['session']);
         $app['session'] = new Session(new MockFileSessionStorage());
 
         // Specify configuration to enable `online_conference` settings.

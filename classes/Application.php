@@ -22,13 +22,16 @@ use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use OpenCFP\Provider\YamlConfigDriver;
 use Silex\Application as SilexApplication;
+use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\FormServiceProvider;
+use Silex\Provider\LocaleServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
+use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,10 +62,12 @@ class Application extends SilexApplication
         // Services...
         $this->register(new SessionServiceProvider);
         $this->register(new FormServiceProvider);
-        $this->register(new UrlGeneratorServiceProvider);
+        $this->register(new CsrfServiceProvider());
+//        $this->register(new UrlGeneratorServiceProvider());
         $this->register(new ControllerResolverServiceProvider);
-        $this->register(new DatabaseServiceProvider);
+        $this->register(new DatabaseServiceProvider());
         $this->register(new ValidatorServiceProvider);
+        $this->register(new LocaleServiceProvider());
         $this->register(new TranslationServiceProvider);
         $this->register(new MonologServiceProvider, [
             'monolog.logfile' => $this->config('log.path') ?: "{$basePath}/log/app.log",
@@ -283,10 +288,7 @@ class Application extends SilexApplication
 
     private function registerGlobalErrorHandler(Application $app)
     {
-        $app->error(function (\Exception $e, $code) use ($app) {
-            /** @var Request $request */
-            $request = $app['request'];
-
+        $app->error(function (\Exception $e, Request $request, $code) use ($app) {
             if (in_array('application/json', $request->getAcceptableContentTypes())) {
                 $headers = [];
 
