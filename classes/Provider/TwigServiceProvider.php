@@ -27,29 +27,30 @@ class TwigServiceProvider implements ServiceProviderInterface
             ],
         ]);
 
-        /* @var Twig_Environment $twig */
-        $twig = $app['twig'];
+        $app->extend('twig', function (Twig_Environment $twig, Container $app) {
+            if (!$app->isProduction()) {
+                $twig->addExtension(new Twig_Extension_Debug);
+            }
 
-        if (!$app->isProduction()) {
-            $twig->addExtension(new Twig_Extension_Debug);
-        }
+            $twig->addFunction(new Twig_SimpleFunction('uploads', function ($path) {
+                return '/uploads/' . $path;
+            }));
 
-        $twig->addFunction(new Twig_SimpleFunction('uploads', function ($path) {
-            return '/uploads/' . $path;
-        }));
+            $twig->addFunction(new Twig_SimpleFunction('assets', function ($path) {
+                return '/assets/' . $path;
+            }));
 
-        $twig->addFunction(new Twig_SimpleFunction('assets', function ($path) {
-            return '/assets/' . $path;
-        }));
+            $twig->addGlobal('site', $app->config('application'));
 
-        $twig->addGlobal('site', $app->config('application'));
+            // Twig Markdown Extension
+            $markdown = new Ciconia();
+            $markdown->addExtension(new InlineStyleExtension);
+            $markdown->addExtension(new WhiteSpaceExtension);
+            $engine = new CiconiaEngine($markdown);
 
-        // Twig Markdown Extension
-        $markdown = new Ciconia();
-        $markdown->addExtension(new InlineStyleExtension);
-        $markdown->addExtension(new WhiteSpaceExtension);
-        $engine = new CiconiaEngine($markdown);
+            $twig->addExtension(new MarkdownExtension($engine));
 
-        $twig->addExtension(new MarkdownExtension($engine));
+            return $twig;
+        });
     }
 }

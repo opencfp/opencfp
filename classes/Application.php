@@ -60,12 +60,7 @@ class Application extends SilexApplication
         $this->register(new OAuthGatewayProvider);
 
         // Services...
-        $this->register(
-            new SessionServiceProvider,
-            $environment->equals($environment->testing())
-                ? array('session.test' => new Session(new MockFileSessionStorage()))
-                : array()
-        );
+        $this->register(new SessionServiceProvider);
         $this->register(new FormServiceProvider);
         $this->register(new CsrfServiceProvider());
         $this->register(new ControllerResolverServiceProvider);

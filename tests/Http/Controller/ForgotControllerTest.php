@@ -5,6 +5,8 @@ namespace OpenCFP\Test\Http\Controller;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class ForgotControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,7 +19,7 @@ class ForgotControllerTest extends \PHPUnit_Framework_TestCase
     public function indexDisplaysCorrectForm()
     {
         $app = new Application(BASE_PATH, Environment::testing());
-        $app['form.csrf_provider'] = new SessionCsrfProvider($app['session'], 'secret');
+        $app['session.test'] = true;
         ob_start();
         $app->run();
         ob_end_clean();
