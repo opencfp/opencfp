@@ -1,8 +1,8 @@
 <?php namespace OpenCFP\Provider;
 
 use Pimple\Container;
-use Silex\Application;
 use Pimple\ServiceProviderInterface;
+use Silex\Application;
 
 class DatabaseServiceProvider implements ServiceProviderInterface
 {

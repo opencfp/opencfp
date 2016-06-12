@@ -20,9 +20,8 @@ use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
 use Pimple\Container;
-use RandomLib\Factory;
-use Silex\Application;
 use Pimple\ServiceProviderInterface;
+use RandomLib\Factory;
 use Spot\Locator;
 
 class ApplicationServiceProvider implements ServiceProviderInterface

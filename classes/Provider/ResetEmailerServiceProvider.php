@@ -4,7 +4,6 @@ namespace OpenCFP\Provider;
 
 use OpenCFP\Domain\Services\ResetEmailer;
 use Pimple\Container;
-use Silex\Application;
 use Pimple\ServiceProviderInterface;
 use Twig_Environment;
 

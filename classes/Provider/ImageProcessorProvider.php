@@ -4,7 +4,6 @@ namespace OpenCFP\Provider;
 
 use OpenCFP\Domain\Services\ProfileImageProcessor;
 use Pimple\Container;
-use Silex\Application;
 use Pimple\ServiceProviderInterface;
 
 class ImageProcessorProvider implements ServiceProviderInterface

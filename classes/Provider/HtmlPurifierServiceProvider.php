@@ -3,7 +3,6 @@
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Pimple\Container;
-use Silex\Application;
 use Pimple\ServiceProviderInterface;
 
 class HtmlPurifierServiceProvider implements ServiceProviderInterface

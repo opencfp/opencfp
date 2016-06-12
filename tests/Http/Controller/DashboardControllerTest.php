@@ -25,6 +25,7 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
     public function indexDisplaysUserAndTalks()
     {
         $app = new Application(BASE_PATH, Environment::testing());
+        $app['session.test'] = true;
 
         // Set things up so Sentry believes we're logged in
         $user = m::mock('StdClass');
@@ -75,6 +76,7 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
     {
         $faker = $this->getFaker();
         $app = new Application(BASE_PATH, Environment::testing());
+        $app['session.test'] = true;
 
         // Specify configuration to enable `online_conference` settings.
         // TODO Bake something like this as a trait. Dealing with mocking

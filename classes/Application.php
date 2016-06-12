@@ -62,11 +62,11 @@ class Application extends SilexApplication
         // Services...
         $this->register(new SessionServiceProvider);
         $this->register(new FormServiceProvider);
-        $this->register(new CsrfServiceProvider());
+        $this->register(new CsrfServiceProvider);
         $this->register(new ControllerResolverServiceProvider);
-        $this->register(new DatabaseServiceProvider());
+        $this->register(new DatabaseServiceProvider);
         $this->register(new ValidatorServiceProvider);
-        $this->register(new LocaleServiceProvider());
+        $this->register(new LocaleServiceProvider);
         $this->register(new TranslationServiceProvider);
         $this->register(new MonologServiceProvider, [
             'monolog.logfile' => $this->config('log.path') ?: "{$basePath}/log/app.log",

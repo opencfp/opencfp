@@ -5,9 +5,8 @@ use Ciconia\Ciconia;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use Pimple\Container;
-use Silex\Application;
-use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Pimple\ServiceProviderInterface;
+use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
@@ -19,7 +18,7 @@ class TwigServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $app->register(new SilexTwigServiceProvider(), [
+        $app->register(new SilexTwigServiceProvider, [
             'twig.path' => $app->templatesPath(),
             'twig.options' => [
                 'debug' => !$app->isProduction(),

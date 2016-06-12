@@ -5,10 +5,10 @@ namespace OpenCFP\Provider\Gateways;
 use OpenCFP\Http\API\ProfileController;
 use OpenCFP\Http\API\TalkController;
 use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
-use Pimple\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ApiGatewayProvider implements ServiceProviderInterface, BootableProviderInterface

@@ -4,10 +4,10 @@ namespace OpenCFP\Provider\Gateways;
 
 use Cartalyst\Sentry\Sentry;
 use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
-use Pimple\ServiceProviderInterface;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 

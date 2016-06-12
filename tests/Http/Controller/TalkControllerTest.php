@@ -17,6 +17,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
+        $this->app['session.test'] = true;
         ob_start();
         $this->app->run();
         ob_end_clean();

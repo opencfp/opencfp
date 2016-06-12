@@ -14,6 +14,7 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
     {
         // Create our Application object
         $this->app = new Application(BASE_PATH, Environment::testing());
+        $this->app['session.test'] = true;
 
         // Create a test double for our User entity
         $user = m::mock(\OpenCFP\Domain\Entity\User::class);

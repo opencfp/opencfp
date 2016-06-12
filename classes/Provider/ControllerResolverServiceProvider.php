@@ -1,7 +1,6 @@
 <?php namespace OpenCFP\Provider;
 
 use Pimple\Container;
-use Silex\Application;
 use Pimple\ServiceProviderInterface;
 
 class ControllerResolverServiceProvider implements ServiceProviderInterface

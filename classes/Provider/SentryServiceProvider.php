@@ -3,7 +3,6 @@
 use Cartalyst\Sentry\Facades\Native\Sentry;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Pimple\Container;
-use Silex\Application;
 use Pimple\ServiceProviderInterface;
 
 class SentryServiceProvider implements ServiceProviderInterface

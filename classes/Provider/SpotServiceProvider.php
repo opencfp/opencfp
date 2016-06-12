@@ -3,7 +3,6 @@
 namespace OpenCFP\Provider;
 
 use Pimple\Container;
-use Silex\Application;
 use Pimple\ServiceProviderInterface;
 use Spot\Config as SpotConfig;
 use Spot\Locator as SpotLocator;
