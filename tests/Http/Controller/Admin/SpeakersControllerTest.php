@@ -137,6 +137,10 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
         $spot->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\TalkComment::class)->andReturn($talkCommentsMapper);
         $spot->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\TalkMeta::class)->andReturn($talkMetaMapper);
 
+        // All of this stuff should be done in a transaction
+        $spot->shouldReceive('config->connection->beginTransaction')->once();
+        $spot->shouldReceive('config->connection->commit')->once();
+        
         $this->app['spot'] = $spot;
 
         // Execute the controller and capture the output
