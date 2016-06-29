@@ -168,6 +168,7 @@ class SpeakersController extends BaseController
             $spot->config()->connection()->commit();
         } catch (\Exception $e) {
             $spot->config()->connection()->rollBack();
+            $response = false;
         }
 
         $ext = "Successfully deleted the requested user";
