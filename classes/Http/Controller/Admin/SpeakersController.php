@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
@@ -10,6 +11,7 @@ use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\TwitterBootstrap3View;
 use Silex\Application;
 use Spot\Locator;
+use Spot\Mapper;
 use Symfony\Component\HttpFoundation\Request;
 
 class SpeakersController extends BaseController
@@ -157,6 +159,9 @@ class SpeakersController extends BaseController
 
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker = $mapper->get($req->get('id'));
+
+        $this->removeSpeakerTalks($speaker);
+
         $response = $mapper->delete($speaker);
 
         $ext = "Successfully deleted the requested user";
@@ -177,5 +182,37 @@ class SpeakersController extends BaseController
         ]);
 
         return $this->redirectTo('admin_speakers');
+    }
+
+    /**
+     * @param User $speaker
+     */
+    private function removeSpeakerTalks(User $speaker)
+    {
+        $spot = $this->service('spot');
+
+        /**
+         * @var Mapper $talkMapper
+         * @var Mapper $talkCommentMapper
+         * @var Mapper $talkMetaMapper
+         */
+        $talkMapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $talkCommentMapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkComment::class);
+        $talkMetaMapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
+
+        $talks = $speaker->talks->execute();
+
+        /** @var \OpenCFP\Domain\Entity\Talk $talk */
+        foreach ($talks as $talk) {
+            foreach ($talk->comments->execute() as $comment) {
+                $talkCommentMapper->delete($comment);
+            }
+
+            foreach ($talk->meta->execute() as $meta) {
+                $talkMetaMapper->delete($meta);
+            }
+
+            $talkMapper->delete($talk);
+        }
     }
 }
