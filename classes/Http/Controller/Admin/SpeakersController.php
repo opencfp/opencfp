@@ -160,7 +160,9 @@ class SpeakersController extends BaseController
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $speaker = $mapper->get($req->get('id'));
 
-        $spot->config()->connection()->beginTransaction();
+        $connection = $spot->config()->connection();
+
+        $connection->beginTransaction();
 
         try {
             $this->removeSpeakerTalks($speaker);
@@ -170,14 +172,14 @@ class SpeakersController extends BaseController
         }
 
         if ($response === false) {
-            $spot->config()->connection()->rollBack();
+            $connection->rollBack();
 
             $ext = "Unable to delete the requested user";
             $type = 'error';
             $short = 'Error';
         } else {
-            $spot->config()->connection()->commit();
-            
+            $connection->commit();
+
             $ext = "Successfully deleted the requested user";
             $type = 'success';
             $short = 'Success';
