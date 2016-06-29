@@ -165,20 +165,22 @@ class SpeakersController extends BaseController
         try {
             $this->removeSpeakerTalks($speaker);
             $response = $mapper->delete($speaker);
-            $spot->config()->connection()->commit();
         } catch (\Exception $e) {
-            $spot->config()->connection()->rollBack();
             $response = false;
         }
 
-        $ext = "Successfully deleted the requested user";
-        $type = 'success';
-        $short = 'Success';
-
         if ($response === false) {
+            $spot->config()->connection()->rollBack();
+
             $ext = "Unable to delete the requested user";
             $type = 'error';
             $short = 'Error';
+        } else {
+            $spot->config()->connection()->commit();
+            
+            $ext = "Successfully deleted the requested user";
+            $type = 'success';
+            $short = 'Success';
         }
 
         // Set flash message
