@@ -165,11 +165,10 @@ class SpeakersController extends BaseController
         try {
             $this->removeSpeakerTalks($speaker);
             $response = $mapper->delete($speaker);
+            $spot->config()->connection()->commit();
         } catch (\Exception $e) {
             $spot->config()->connection()->rollBack();
         }
-
-        $spot->config()->connection()->commit();
 
         $ext = "Successfully deleted the requested user";
         $type = 'success';
