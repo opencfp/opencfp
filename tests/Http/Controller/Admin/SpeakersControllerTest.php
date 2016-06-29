@@ -83,7 +83,6 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @group wip
      */
     public function speaker_talks_comments_and_meta_should_be_removed_when_speaker_is_deleted()
     {
