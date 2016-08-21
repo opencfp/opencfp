@@ -4,9 +4,7 @@ namespace OpenCFP\Test\Http\Controller;
 
 use OpenCFP\Application;
 use OpenCFP\Environment;
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class ForgotControllerTest extends \PHPUnit_Framework_TestCase
 {

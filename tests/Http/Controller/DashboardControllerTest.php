@@ -9,7 +9,6 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Environment;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 use Twig_Environment;
 
 class DashboardControllerTest extends \PHPUnit_Framework_TestCase
