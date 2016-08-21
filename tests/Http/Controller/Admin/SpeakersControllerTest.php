@@ -138,7 +138,8 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
         // All of this stuff should be done in a transaction
         $spot->shouldReceive('config->connection->beginTransaction')->once();
         $spot->shouldReceive('config->connection->commit')->once();
-        
+
+        unset($this->app['spot']);
         $this->app['spot'] = $spot;
 
         // Execute the controller and capture the output
