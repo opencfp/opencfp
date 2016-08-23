@@ -17,6 +17,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
+        $this->app['session.test'] = true;
         ob_start();
         $this->app->run();
         ob_end_clean();
@@ -28,7 +29,8 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'driver' => 'pdo_sqlite',
         ]);
         $spot = new \Spot\Locator($cfg);
-        
+
+        unset($this->app['spot']);
         $this->app['spot'] = $spot;
 
         // Initialize the talk table in the sqlite database
@@ -44,9 +46,11 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         $sentry = m::mock(Sentry::class);
         $sentry->shouldReceive('check')->andReturn(true);
         $sentry->shouldReceive('getUser')->andReturn($user);
+        unset($this->app['sentry']);
         $this->app['sentry'] = $sentry;
 
         // Create a test double for sessions so we can control what happens
+        unset($this->app['session']);
         $this->app['session'] = new SessionDouble();
 
         // Create our test double for the request object

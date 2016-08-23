@@ -3,8 +3,8 @@
 namespace OpenCFP\Provider;
 
 use OpenCFP\Domain\Services\ResetEmailer;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Twig_Environment;
 
 class ResetEmailerServiceProvider implements ServiceProviderInterface
@@ -12,9 +12,9 @@ class ResetEmailerServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['reset_emailer'] = $app->share(function ($app) {
+        $app['reset_emailer'] = function ($app) {
             /* @var Twig_Environment $twig */
             $twig = $app['twig'];
 
@@ -24,13 +24,6 @@ class ResetEmailerServiceProvider implements ServiceProviderInterface
                 $app->config('application.email'),
                 $app->config('application.title')
             );
-        });
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
+        };
     }
 }
