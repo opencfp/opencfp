@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0bee2ff51ffeed187be41ea8be50a6e9",
-    "content-hash": "4d393e998ce178820e018397952a3923",
+    "hash": "dbee60f57c2ebbbed0a409857621998e",
+    "content-hash": "a6ec9d635948f16760d32516e564010a",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -673,65 +673,6 @@
                 "html"
             ],
             "time": "2016-05-11 18:04:19"
-        },
-        {
-            "name": "igorw/config-service-provider",
-            "version": "dev-silex-2.x",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/beryllium/ConfigServiceProvider.git",
-                "reference": "a1bf4540aaff737388af7d35d8560bf77ac5e63e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/beryllium/ConfigServiceProvider/zipball/a1bf4540aaff737388af7d35d8560bf77ac5e63e",
-                "reference": "a1bf4540aaff737388af7d35d8560bf77ac5e63e",
-                "shasum": ""
-            },
-            "require": {
-                "silex/silex": "~2.0"
-            },
-            "require-dev": {
-                "jamesmoss/toml": "~0.1",
-                "phpunit/phpunit": "^4.0",
-                "symfony/yaml": "~2.1"
-            },
-            "suggest": {
-                "jamesmoss/toml": "~0.1",
-                "symfony/yaml": "~2.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Igorw\\Silex": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Igor Wiedler",
-                    "email": "igor@wiedler.ch"
-                },
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/igorw/ConfigServiceProvider/contributors"
-                }
-            ],
-            "description": "A config ServiceProvider for Silex with support for php, json and yaml.",
-            "keywords": [
-                "silex"
-            ],
-            "support": {
-                "source": "https://github.com/beryllium/ConfigServiceProvider/tree/silex-2.x"
-            },
-            "time": "2016-06-04 18:26:46"
         },
         {
             "name": "illuminate/container",
@@ -2645,6 +2586,7 @@
             ],
             "description": "Symfony Locale Component",
             "homepage": "https://symfony.com",
+            "abandoned": "symfony/intl",
             "time": "2016-03-04 07:54:35"
         },
         {
@@ -5273,14 +5215,7 @@
             "time": "2016-03-04 07:56:56"
         }
     ],
-    "aliases": [
-        {
-            "alias": "dev-master",
-            "alias_normalized": "9999999-dev",
-            "version": "dev-silex-2.x",
-            "package": "igorw/config-service-provider"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "pagerfanta/pagerfanta": 20,
@@ -5291,7 +5226,6 @@
         "illuminate/support": 20,
         "ezyang/htmlpurifier": 20,
         "vlucas/spot2": 20,
-        "igorw/config-service-provider": 20,
         "johnkary/phpunit-speedtrap": 20,
         "mockery/mockery": 20
     },
