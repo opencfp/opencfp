@@ -2,11 +2,6 @@
 
 namespace OpenCFP;
 
-use Igorw\Silex\ChainConfigDriver;
-use Igorw\Silex\ConfigServiceProvider;
-use Igorw\Silex\JsonConfigDriver;
-use Igorw\Silex\PhpConfigDriver;
-use Igorw\Silex\TomlConfigDriver;
 use League\OAuth2\Server\Exception\OAuthException;
 use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
