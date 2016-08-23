@@ -142,20 +142,17 @@ class Application extends SilexApplication
      */
     protected function bindConfiguration()
     {
-        /**
-         * Replace reference to `ChainConfigDriver` with `null` when PR below is merged.
-         * Symfony's YAML package deprecated allowing a path to be passed to `parse` method.
-         * This was causing our test-suite to fail. When this is merged, we can upgrade and
-         * all will be well again.
-         *
-         * @see https://github.com/igorw/ConfigServiceProvider/pull/46
-         */
-        $this->register(new ConfigServiceProvider($this->configPath(), [], new ChainConfigDriver([
-            new PhpConfigDriver(),
-            new YamlConfigDriver(), // This is ours; in OpenCFP/Provider/YamlConfigDriver.
-            new JsonConfigDriver(),
-            new TomlConfigDriver(),
-        ]), 'config'));
+        $driver = new YamlConfigDriver();
+
+        if (!file_exists($this->configPath())) {
+            throw new \InvalidArgumentException(
+                sprintf("The config file '%s' does not exist.", $this->filename)
+            );
+        }
+
+        if ($driver->supports($this->configPath())) {
+            $this['config'] = $driver->load($this->configPath());
+        }
 
         if (! $this->isProduction()) {
             $this['debug'] = true;
