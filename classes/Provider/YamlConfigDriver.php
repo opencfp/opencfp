@@ -2,10 +2,9 @@
 
 namespace OpenCFP\Provider;
 
-use Igorw\Silex\YamlConfigDriver as IgorYamlConfigDriver;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlConfigDriver extends IgorYamlConfigDriver
+class YamlConfigDriver
 {
     public function load($filename)
     {
@@ -14,5 +13,10 @@ class YamlConfigDriver extends IgorYamlConfigDriver
         }
         $config = Yaml::parse(file_get_contents($filename));
         return $config ?: [];
+    }
+
+    public function supports($filename)
+    {
+        return (bool) preg_match('#\.ya?ml(\.dist)?$#', $filename);
     }
 }
