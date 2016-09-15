@@ -159,23 +159,17 @@ class Talk extends Mapper
         $options = $this->getSortOptions(
             $options,
             [
-                'order_by' => 'review_count',
+                'order_by' => 'total_rating',
                 'sort' => 'DESC',
             ]
         );
-
-        $additionalOrderBy = '';
-        if ($options['order_by'] !== 'total_rating') {
-            $additionalOrderBy = ", total_rating DESC";
-        }
 
         $talks = $this->query(
             "SELECT t.*, SUM(m.rating) AS total_rating, COUNT(m.rating) as review_count FROM talks t "
             . "LEFT JOIN talk_meta m ON t.id = m.talk_id "
             . "WHERE rating > 0 "
             . "GROUP BY m.`talk_id` "
-            . "ORDER BY {$options['order_by']} {$options['sort']}"
-            . $additionalOrderBy,
+            . "ORDER BY {$options['order_by']} {$options['sort']}",
             ['user_id' => $admin_user_id]
         );
 
