@@ -159,7 +159,7 @@ class Talk extends Mapper
         $options = $this->getSortOptions(
             $options,
             [
-                'order_by' => 'rating',
+                'order_by' => 'review_count',
                 'sort' => 'DESC',
             ]
         );
