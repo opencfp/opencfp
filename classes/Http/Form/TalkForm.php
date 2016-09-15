@@ -21,6 +21,21 @@ class TalkForm extends Form
         'user_id',
     ];
 
+    public function __construct($data, \HTMLPurifier $purifier, array $options = []) {
+
+      if (!key_exists('desired', $data) || null === $data['desired']) {
+          ($data['desired'] = 0);
+      }
+
+      if (!key_exists('sponsor', $data) || null === $data['sponsor']) {
+          ($data['sponsor'] = 0);
+      }
+
+      parent::__construct($data, $purifier, $options);
+
+
+    }
+
     /**
      * Santize all our fields that were submitted
      *
