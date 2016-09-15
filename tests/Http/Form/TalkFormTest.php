@@ -80,7 +80,6 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function submitsTalkWhenNoDesiredOrSponrosIncluded($rawData, $response)
     {
-
         $data = unserialize($rawData);
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         
@@ -110,7 +109,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
         ];
 
         return [
-            [serialize($goodData), true]
+            [serialize($goodData), true],
         ];
     }
 
@@ -249,5 +248,4 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             ['user', false, false],
         ];
     }
-
 }
