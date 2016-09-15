@@ -25,9 +25,6 @@ class WebGatewayProvider implements ServiceProviderInterface
             /* @var Twig_Environment $twig */
             $twig = $app['twig'];
 
-            $twig->addGlobal('current_page', $request->getRequestUri());
-            $twig->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
-
             if ($app['sentry']->check()) {
                 $twig->addGlobal('user', $app['sentry']->getUser());
                 $twig->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));

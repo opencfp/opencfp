@@ -15,10 +15,10 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Requirements](#requirements)
  * [Installation](#installation)
    * [Cloning the Repository](#cloning-the-repository)
+   * [Specify Environment](#specify-environment)
    * [Installing Composer Dependencies](#installing-composer-dependencies)
    * [PHP Built-in Web Server](#php-built-in-web-server)
    * [Create a Database](#create-a-database)
-   * [Specify Environment](#specify-environment)
    * [Configure Environment](#configure-environment)
    * [Run Migrations](#run-migrations)
    * [Final Touches](#final-touches)
@@ -98,6 +98,29 @@ Receiving objects: 100% (4794/4794), 1.59 MiB | 10.37 MiB/s, done.
 Resolving deltas: 100% (2314/2314), done.
 Checking connectivity... done.
 ```
+
+<a name="specify-environment" />
+### Specify Environment
+
+OpenCFP can be configured to run in multiple environments. The application environment (`CFP_ENV`) must be specified
+as an environment variable. If not specified, the default is `development`.
+
+An example Apache configuration is provided at `/web/htaccess.dist`. Copy this file to `/web/.htaccess` or otherwise
+configure your web server in the same way and change the `CFP_ENV` value to specify a different environment. The
+default has been pre-set for development.
+
+```
+SetEnv CFP_ENV production
+```
+
+You will also need to set the `CFP_ENV` variable in the shell you are using when doing an install. Here are some
+ways to do that with common shells assuming we're using `production`:
+
+* bash: `export CFP_ENV=production`
+* zsh:  `export CFP_ENV = production`
+* fish: `set -x CFP_ENV production`
+
+Again, just use your preferred environment in place of `production` if required. 
 
 <a name="installing-composer-dependencies" />
 ### Installing Composer Dependencies
@@ -180,19 +203,6 @@ your installation of OpenCFP:
  * Database name
  * Credentials to an account that can access the above database
 
-<a name="specify-environment" />
-### Specify Environment
-
-OpenCFP can be configured to run in multiple environments. The application environment (`CFP_ENV`) must be specified
-as an environment variable. If not specified, the default is `development`.
-
-An example Apache configuration is provided at `/web/htaccess.dist`. Copy this file to `/web/.htaccess` or otherwise
-configure your web server in the same way and change the `CFP_ENV` value to specify a different environment. The
-default has been pre-set for development.
-
-```
-SetEnv CFP_ENV production
-```
 
 <a name="configure-environment" />
 ### Configure Environment

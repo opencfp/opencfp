@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserNotFoundException;
+use Exception;
 use OpenCFP\Http\Form\ForgotForm;
 use OpenCFP\Http\Form\ResetForm;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,6 +74,10 @@ class ForgotController extends BaseController
 
     public function resetAction(Request $req)
     {
+        if (empty($req->get('reset_code'))) {
+            throw new Exception();
+        }
+
         $errorMessage = "The reset you have requested appears to be invalid, please try again.";
         $error = 0;
         try {
@@ -113,6 +118,11 @@ class ForgotController extends BaseController
     {
         $user_id = $req->get('user_id');
         $reset_code = $req->get('reset_code');
+
+        if (empty($reset_code)) {
+            throw new Exception();
+        }
+
         $form_options = [
             'user_id' => $user_id,
             'reset_code' => $reset_code,
@@ -157,6 +167,10 @@ class ForgotController extends BaseController
         $user_id = $postArray['reset']['user_id'];
         $reset_code = $postArray['reset']['reset_code'];
         $password = $postArray['reset']['password']['password'];
+
+        if (empty($reset_code)) {
+            throw new Exception();
+        }
 
         try {
             /* @var Sentry $sentry */

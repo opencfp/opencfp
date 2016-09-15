@@ -285,7 +285,6 @@ class TalkController extends BaseController
         }
 
         $user = $sentry->getUser();
-
         $request_data = [
             'id' => $req->get('id'),
             'title' => $req->get('title'),
@@ -306,6 +305,7 @@ class TalkController extends BaseController
 
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
+            $updated_at = new \DateTime();
             $data = [
                 'id' => (int) $sanitized_data['id'],
                 'title' => $sanitized_data['title'],
@@ -318,6 +318,7 @@ class TalkController extends BaseController
                 'other' => $sanitized_data['other'],
                 'sponsor' => $sanitized_data['sponsor'],
                 'user_id' => (int) $user->getId(),
+                'updated_at' => $updated_at,
             ];
 
             /* @var Locator $spot */
