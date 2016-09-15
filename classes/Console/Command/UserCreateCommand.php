@@ -3,9 +3,8 @@
 namespace OpenCFP\Console\Command;
 
 use OpenCFP\Console\BaseCommand;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -20,7 +19,7 @@ class UserCreateCommand extends BaseCommand
                 new InputOption('last_name', 'l', InputOption::VALUE_REQUIRED, 'Last Name of the user to create', null),
                 new InputOption('email', 'e',  InputOption::VALUE_REQUIRED, 'Email of the user to create', null),
                 new InputOption('password', 'p',  InputOption::VALUE_REQUIRED, 'Password of the user to create', null),
-                new InputOption('admin', 'a', InputOption::VALUE_NONE, 'Promote to administrator', null)
+                new InputOption('admin', 'a', InputOption::VALUE_NONE, 'Promote to administrator', null),
             ])
             ->setDescription('Creates a new user');
     }
@@ -44,15 +43,15 @@ class UserCreateCommand extends BaseCommand
         ]);
 
         if (false === $user) {
-          $io->error('User Already Exists!');
-          return 1;
+            $io->error('User Already Exists!');
+            return 1;
         }
 
         $io->block('Account was created');
 
         if ($input->getOption('admin')) {
-          $io->block('Promoting to admin.');
-          $this->promote($user);
+            $io->block('Promoting to admin.');
+            $this->promote($user);
         }
 
         $io->success('User Created!');
@@ -60,8 +59,8 @@ class UserCreateCommand extends BaseCommand
 
     private function createUser($data)
     {
-      try {
-          $user_data = [
+        try {
+            $user_data = [
               'first_name' => $data['first_name'],
               'last_name' => $data['last_name'],
               'email' => $data['email'],
@@ -72,31 +71,30 @@ class UserCreateCommand extends BaseCommand
           /* @var Sentry $sentry */
           $sentry = $this->app['sentry'];
 
-          $user = $sentry->getUserProvider()->create($user_data);
+            $user = $sentry->getUserProvider()->create($user_data);
 
 
-          return $user;
-
-      } catch (UserExistsException $e) {
-          return false;
-      }
+            return $user;
+        } catch (UserExistsException $e) {
+            return false;
+        }
     }
 
     private function promote($user)
     {
-      if ($user->hasAccess('admin')) {
-          $io->error(sprintf(
+        if ($user->hasAccess('admin')) {
+            $io->error(sprintf(
               'Account with email %s already is in the Admin group.',
               $email
           ));
 
-          return false;
-      }
+            return false;
+        }
 
-      $sentry = $this->app['sentry'];
-      $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-      $user->addGroup($adminGroup);
+        $sentry = $this->app['sentry'];
+        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
+        $user->addGroup($adminGroup);
 
-      return true;
+        return true;
     }
 }
