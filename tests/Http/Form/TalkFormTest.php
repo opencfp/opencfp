@@ -70,6 +70,50 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that form object correctly detects if all the required fields
+     * are in the user-submitted data
+     *
+     * @test
+     * @dataProvider hasNoDesiredOrSponsorProvider
+     * @param array   $rawData  serialized user-submitted data
+     * @param boolean $response
+     */
+    public function submitsTalkWhenNoDesiredOrSponrosIncluded($rawData, $response)
+    {
+        $data = unserialize($rawData);
+        $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
+        
+        $this->assertEquals(
+            $response,
+            $form->hasRequiredFields(),
+            '\OpenCFP\Form\TalkForm::hasRequired() did not work correctly'
+        );
+    }
+
+    /**
+     * Data provider correctlyDetectsRequiredFields
+     *
+     * @return array
+     */
+    public function hasNoDesiredOrSponsorProvider()
+    {
+        $goodData = [
+            'title' => 'Talk Title',
+            'description' => 'Description of our talk',
+            'type' => 'session',
+            'category' => 'development',
+            'level' => 'entry',
+            'slides' => 'http://slideshare.net',
+            'other' => 'Misc comments',
+            'user_id' => 1,
+        ];
+
+        return [
+            [serialize($goodData), true],
+        ];
+    }
+
+    /**
      * Test that title data is properly validated
      *
      * @test
