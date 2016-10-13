@@ -39,7 +39,7 @@ class SignupController extends BaseController
             'hotel' => 0,
             'formAction' => $this->url('user_create'),
             'buttonInfo' => 'Create my speaker profile',
-            'coc_link' => $this->app->config('application.coc_link')
+            'coc_link' => $this->app->config('application.coc_link'),
         ]);
     }
 
