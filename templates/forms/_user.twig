@@ -100,6 +100,18 @@
             {% endif %}
         </div>
     </div>
+    {% if coc_link is defined and coc_link is not empty%}
+    <div class="form-group">
+        <label for="form-agree-coc" class="col-sm-2 control-label">Code of Conduct</label>
+        <div class="col-sm-10">
+            <div class="checkbox">
+                <label for="form-agree-coc">
+                    <input id="form-agree-coc" name="agree_coc" type="checkbox" value="agreed" > I agree to abide by the <a href="{{ coc_link }}" target="_blank">Code of conduct</a>.
+                </label>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-success">{{ buttonInfo }}</button>

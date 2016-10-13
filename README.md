@@ -220,12 +220,14 @@ $ cp config/production.dist.yml config/production.yml
 After making a local copy, edit `config/production.yml` and specify your own details. Here are some important options
 to consider:
 
-| Option                | Description                       |
-|:----------------------|:----------------------------------|
-| `application.enddate` | This is the date your call for proposals would end on. |
-| `secure_ssl`          | This should be enabled, if possible. Requires a valid SSL certificate. |
-| `database.*`          | This is the database information you collected above. |
-| `mail.*`              | This is SMTP configuration for sending mail. The application sends notifications on various system events. |
+| Option                 | Description                       |
+|:-----------------------|:----------------------------------|
+| `application.enddate`  | This is the date your call for proposals would end on. |
+| `application.coc_link` | Set this to the link for your conference code of conduct to require speakers to agree to the code of conduct at registration |
+| `secure_ssl`           | This should be enabled, if possible. Requires a valid SSL certificate. |
+| `database.*`           | This is the database information you collected above. |
+| `mail.*`               | This is SMTP configuration for sending mail. The application sends notifications on various system events. |
+| `talk.categories.*`    | dbkey: Display Name mapping for your talk categories |
 
 For example, if you wanted to setup Mailgun as your email provider, your mail configuration would look something like this:
 

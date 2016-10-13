@@ -13,6 +13,7 @@ application:
   online_conference: false
   date_format: d/m/Y
   date_timezone: "UTC"
+  coc_link: https://www.google.com
 
 api:
   enabled: true
