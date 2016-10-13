@@ -4,6 +4,7 @@ use Aptoma\Twig\Extension\MarkdownExtension;
 use Ciconia\Ciconia;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;
+use OpenCFP\Http\View\TalkHelper;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Silex\ServiceProviderInterface;
@@ -55,6 +56,8 @@ class TwigServiceProvider implements ServiceProviderInterface
         $engine = new CiconiaEngine($markdown);
 
         $twig->addExtension(new MarkdownExtension($engine));
+
+        $twig->addGlobal('talkHelper', new TalkHelper($app->config('talk.categories')));
     }
 
     /**
