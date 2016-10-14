@@ -114,10 +114,7 @@ class TalkForm extends Form
      */
     public function validateType()
     {
-        $validTalkTypes = [
-            'regular',
-            'tutorial',
-        ];
+        $validTalkTypes = $this->getOption('types');
 
         if (empty($this->_cleanData['type']) || !isset($this->_cleanData['type'])) {
             $this->_addErrorMessage("You must choose what type of talk you are submitting");
@@ -125,7 +122,7 @@ class TalkForm extends Form
             return false;
         }
 
-        if (!in_array($this->_cleanData['type'], $validTalkTypes)) {
+        if (!isset($validTalkTypes[$this->_cleanData['type']])) {
             $this->_addErrorMessage("You did not choose a valid talk type");
 
             return false;
@@ -136,11 +133,7 @@ class TalkForm extends Form
 
     public function validateLevel()
     {
-        $validLevels = [
-            'entry',
-            'mid',
-            'advanced',
-        ];
+        $validLevels = $this->getOption('levels');
 
         if (empty($this->_cleanData['level']) || !isset($this->_cleanData['level'])) {
             $this->_addErrorMessage("You must choose what level of talk you are submitting");
@@ -148,7 +141,7 @@ class TalkForm extends Form
             return false;
         }
 
-        if (!in_array($this->_cleanData['level'], $validLevels)) {
+        if (!isset($validLevels[$this->_cleanData['level']])) {
             $this->_addErrorMessage("You did not choose a valid talk level");
 
             return false;
