@@ -40,7 +40,7 @@ class TalkController extends BaseController
         $options = [
             'categories' => $this->getTalkCategories(),
             'levels' => $this->getTalkLevels(),
-            'types' => $this->getTalkTypes()
+            'types' => $this->getTalkTypes(),
         ];
         $form = new TalkForm($request_data, $this->service('purifier'), $options);
         return $form;
@@ -77,7 +77,7 @@ class TalkController extends BaseController
         if ($types === null) {
             $types = [
                 'regular' => 'Regular',
-                'tutorial' => 'Tutorial'
+                'tutorial' => 'Tutorial',
             ];
         }
 
@@ -92,7 +92,7 @@ class TalkController extends BaseController
             $levels = [
                 'entry' => 'Entry level',
                 'mid' => 'Mid-level',
-                'advanced' => 'Advanced'
+                'advanced' => 'Advanced',
             ];
         }
 
