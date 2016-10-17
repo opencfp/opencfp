@@ -57,7 +57,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 
         $twig->addExtension(new MarkdownExtension($engine));
 
-        $twig->addGlobal('talkHelper', new TalkHelper($app->config('talk.categories'), $app->config('talk.levels'), $app->config('talk.types')));
+        $twig->addGlobal('talkHelper', new TalkHelper($app->config('talk.categories')));
     }
 
     /**
