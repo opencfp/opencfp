@@ -25,9 +25,8 @@
         <label for="form-talk-type" class="col-sm-2 control-label">Talk Type</label>
         <div class="col-sm-10">
             <select id="form-talk-type" name="type" class="form-control">
-                {% for typeKey, displayType in talkTypes %}
-                    <option value="{{ typeKey }}" {% if type == typeKey %}selected {% endif %}>{{ displayType }}</option>
-                {% endfor %}
+                <option value="regular" {% if type == 'regular' %}selected {% endif %}>Regular</option>
+                <option value="tutorial" {% if type == 'tutorial' %}selected {% endif %}>Tutorial</option>
             </select>
         </div>
     </div>
@@ -46,9 +45,9 @@
         <label for="form-talk-level" class="col-sm-2 control-label">Talk Level</label>
         <div class="col-sm-10">
             <select id="form-talk-level" name="level" class="form-control">
-                {% for levelKey, displayLevel in talkLevels %}
-                    <option value="{{ levelKey }}" {% if level == levelKey %}selected {% endif %}>{{ displayLevel }}</option>
-                {% endfor %}
+                <option value="entry" {% if level == 'entry' %}selected {% endif %}>Entry level</option>
+                <option value="mid" {% if level == 'mid' %}selected {% endif %}>Mid-level</option>
+                <option value="advanced" {% if level == 'advanced' %}selected {% endif %}>Advanced</option>
             </select>
         </div>
     </div>
