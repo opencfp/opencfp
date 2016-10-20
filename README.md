@@ -228,6 +228,8 @@ to consider:
 | `database.*`           | This is the database information you collected above. |
 | `mail.*`               | This is SMTP configuration for sending mail. The application sends notifications on various system events. |
 | `talk.categories.*`    | dbkey: Display Name mapping for your talk categories |
+| `talk.types.*`         | dbkey: Display Name mapping for your talk types |
+| `talk.levels.*`        | dbkey: Display Name mapping for your talk levels |
 
 For example, if you wanted to setup Mailgun as your email provider, your mail configuration would look something like this:
 
