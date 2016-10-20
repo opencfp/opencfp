@@ -14,12 +14,26 @@ class TalkHelper
     private $categories;
 
     /**
+     * @var array
+     */
+    private $levels;
+
+    /**
+     * @var array
+     */
+    private $types;
+
+    /**
      * TalkHelper constructor.
      * @param $categories
+     * @param $levels
+     * @param $types
      */
-    public function __construct($categories)
+    public function __construct($categories, $levels, $types)
     {
         $this->categories = $categories;
+        $this->levels = $levels;
+        $this->types = $types;
     }
 
     /**
@@ -33,5 +47,31 @@ class TalkHelper
         }
         
         return $category;
+    }
+
+    /**
+     * @param $type
+     * @return mixed
+     */
+    public function getTypeDisplayName($type)
+    {
+        if (isset($this->types[$type])) {
+            return $this->types[$type];
+        }
+
+        return $type;
+    }
+
+    /**
+     * @param $level
+     * @return mixed
+     */
+    public function getLevelDisplayName($level)
+    {
+        if (isset($this->levels[$level])) {
+            return $this->levels[$level];
+        }
+
+        return $level;
     }
 }
