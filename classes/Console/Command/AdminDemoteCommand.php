@@ -75,5 +75,18 @@ EOF
             'Removed account with email %s from the Admin group',
             $email
         ));
+
+        return 0;
+    }
+
+    /**
+     * Method used to inject a OpenCFP\Application object into the command
+     * for testing purposes
+     *
+     * @param $app OpenCFP\Application
+     */
+    public function setApp($app)
+    {
+        $this->app = $app;
     }
 }
