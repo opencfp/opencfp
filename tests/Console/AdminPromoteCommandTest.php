@@ -3,10 +3,7 @@
 namespace OpenCFP\Test\Console;
 
 use Mockery;
-use OpenCFP\Console\Application;
-use OpenCFP\Console\Command;
 use OpenCFP\Environment;
-use Symfony\Component\Console;
 
 class AdminPromoteTest extends \PHPUnit_Framework_TestCase
 {
