@@ -134,4 +134,3 @@ class AdminPromoteTest extends \PHPUnit_Framework_TestCase
         return $output;
     }
 }
-
