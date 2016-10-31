@@ -48,7 +48,7 @@ class AdminPromoteTest extends \PHPUnit_Framework_TestCase
 
         /**
          * Create a mock Sentry object that returns a user that is in the
-         * system but does not have admin access
+         * system and is an admin
          */
         $user = Mockery::mock('\stdClass');
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
@@ -75,7 +75,7 @@ class AdminPromoteTest extends \PHPUnit_Framework_TestCase
         $output = $this->createOutputInterface();
 
         /**
-         * Create a mock User that has admin access and a removeGroup
+         * Create a mock User that has admin access and add an `addGroup`
          * method that is stubbed out
          */
         $user = Mockery::mock('\stdClass');
@@ -100,6 +100,11 @@ class AdminPromoteTest extends \PHPUnit_Framework_TestCase
         $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
         $command->setApp($app);
         $response = $command->execute($input, $output);
+
+        /**
+         * A response of 0 signifies that the console command ran without an
+         * error
+         */
         $this->assertEquals($response, 0);
     }
 
