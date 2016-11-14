@@ -32,7 +32,7 @@
         <div class="row">
             {% if site.event_location is defined and site.date_format is defined %}
             <div class="col-md-8"><h3 class="headline headline--alpha">
-                {{ site.title }} is  on {{ site.arrival|date(site.date_format) }} to {{ site.departure|date(site.date_format) }} in {{ site.event_location }}
+                {{ site.title }} is  on {{ site.arrival|date(site.date_format, false) }} to {{ site.departure|date(site.date_format, false) }} in {{ site.event_location }}
             </h3></div>
             {%  else %}
                 <div class="col-md-8"><h3 class="headline headline--alpha">For More Information About The Conference</h3></div>
