@@ -51,6 +51,10 @@ class Application extends SilexApplication
         $this->bindPathsInApplicationContainer();
         $this->bindConfiguration();
 
+        if ($timezone = $this->config('application.date_timezone')) {
+            date_default_timezone_set($timezone);
+        }
+
         // Register Gateways...
         $this->register(new WebGatewayProvider);
         $this->register(new ApiGatewayProvider);
@@ -93,10 +97,6 @@ class Application extends SilexApplication
         $this->register(new ApplicationServiceProvider);
 
         $this->registerGlobalErrorHandler($this);
-
-        if ($timezone = $this->config('application.date_timezone')) {
-            date_default_timezone_set($timezone);
-        }
     }
 
     /**
