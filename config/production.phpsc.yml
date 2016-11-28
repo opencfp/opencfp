@@ -1,0 +1,62 @@
+application:
+  title: PHP South Coast 2017
+  url: https://cfp.phpsouthcoast.co.uk
+  email: info@phpsouthcoast.co.uk
+  eventurl: https://2017.phpsouthcoast.co.uk/
+  event_location: Portsmouth, UK
+  enddate: Jan. 31st, 2017
+  show_submission_count: false
+  airport: SOU
+  arrival: 2017-06-09
+  departure: 2017-06-10
+#  secure_ssl: true
+  online_conference: false
+  date_format: d/m/Y
+  date_timezone: "UTC"
+  coc_link: https://2017.phpsouthcoast.co.uk/code-of-conduct/
+
+api:
+  enabled: false
+
+cache:
+  enabled: false
+
+database:
+  host: REPLACE-THIS
+  database: REPLACE-THIS
+  dsn: REPLACE-THIS
+  user: REPLACE-THIS
+  password: REPLACE-THIS
+
+log:
+  level: error
+
+mail:
+  host: REPLACE-THIS
+  port: REPLACE-THIS
+  username: REPLACE-THIS
+  password: REPLACE-THIS
+  encryption: REPLACE-THIS
+  auth_mode: ~
+
+talk:
+  categories:
+    api: APIs (REST, SOAP, etc.)
+    continuousdelivery: Continuous Delivery
+    database: Database
+    development: Development
+    devops: Devops
+    framework: Framework
+    javascript: JavaScript
+    security: Security
+    testing: Testing
+    uiux: UI/UX
+    other: Other
+  levels:
+    entry: Entry level
+    mid: Mid-level
+    advanced: Advanced
+  types:
+    lightning: Lightning (20 mins, including questions)
+    regular: Regular (50 mins, including questions)
+    keynote: Keynote (40 mins)
