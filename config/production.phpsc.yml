@@ -41,17 +41,7 @@ mail:
 
 talk:
   categories:
-    api: APIs (REST, SOAP, etc.)
-    continuousdelivery: Continuous Delivery
-    database: Database
-    development: Development
-    devops: Devops
-    framework: Framework
-    javascript: JavaScript
-    security: Security
-    testing: Testing
-    uiux: UI/UX
-    other: Other
+    everything: Everything
   levels:
     entry: Entry level
     mid: Mid-level
