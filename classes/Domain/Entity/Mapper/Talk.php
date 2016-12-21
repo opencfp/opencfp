@@ -283,6 +283,39 @@ class Talk extends Mapper
     }
 
     /**
+     * Return a collection of talks rated +1 by admin
+     *
+     * @param integer $admin_user_id
+     * @param array $options Ordery By and Sorting Options
+     * @return array
+     */
+    public function getPlusOneByUserId($admin_user_id, $options = [])
+    {
+        // Merge options with default options
+        $options = $this->getSortOptions(
+            $options,
+            [
+                'order_by' => 'm.created',
+                'sort' => 'DESC',
+            ]
+        );
+
+        $talks = $this->query(
+            'SELECT t.* FROM talks t '
+            . 'RIGHT JOIN talk_meta m ON t.id = m.talk_id '
+            . 'WHERE m.admin_user_id = :user_id AND m.rating = 1 '
+            . "ORDER BY {$options['order_by']} {$options['sort']}",
+            ['user_id' => $admin_user_id]
+        );
+
+        $formatted = [];
+        foreach ($talks as $talk) {
+            $formatted[] = $this->createdFormattedOutput($talk, $admin_user_id);
+        }
+
+        return $formatted;
+    }
+    /**
      * Return a collection of talks not rated by admin
      *
      * @param integer $admin_user_id

@@ -20,6 +20,7 @@
                 <option value="">None</option>
                 <option value="favorited"{% if filter|lower == 'favorited' %} SELECTED{% endif %}>Favorited Talks</option>
                 <option value="rated"{% if filter|lower == 'rated' %} SELECTED{% endif %}>Rated Talks</option>
+                <option value="plusone"{% if filter|lower == 'plusone' %} SELECTED{% endif %}>Talks Rated +1</option>
                 <option value="notrated"{% if filter|lower == 'notrated' %} SELECTED{% endif %}>Not Rated Talks</option>
                 <option value="viewed"{% if filter|lower == 'viewed' %} SELECTED{% endif %}>Viewed Talks</option>
                 <option value="notviewed"{% if filter|lower == 'notviewed' %} SELECTED{% endif %}>Not Viewed Talks</option>
