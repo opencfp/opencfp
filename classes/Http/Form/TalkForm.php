@@ -193,6 +193,27 @@ class TalkForm extends Form
 
     public function validateTags()
     {
+        $tags = $this->_cleanData['tags'];
+        if (empty($tags) || !isset($tags)) {
+            $this->_addErrorMessage('Tag needs to be a non-blank string');
+            return false;
+        }
+
+        $tags = explode(',', $tags);
+        foreach ($tags as $tag) {
+            if (!is_string($tag)) {
+                $this->_addErrorMessage('Tag needs to be a string');
+                return false;
+            }
+
+            $tag = trim($tag);
+
+            if ($tag === '') {
+                $this->_addErrorMessage('Tag needs to be a non-blank string');
+                return false;
+            }
+        }
+
         return true;
     }
 }

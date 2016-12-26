@@ -193,8 +193,7 @@ class TalkController extends BaseController
             'slides' => $talk_info['slides'],
             'other' => $talk_info['other'],
             'sponsor' => $talk_info['sponsor'],
-            'tags' => array_reduce($talk_info['tags'], function ($response, $item) {
-
+            'tags' => array_reduce($talk_info['tags'], function ($response, array $item) {
                 return (strlen($response) > 0) ? $response . ', ' . $item['tag'] : $item['tag'];
             }),
             'buttonInfo' => 'Update my talk!',
@@ -301,11 +300,6 @@ class TalkController extends BaseController
             $sanitized_data = $form->getCleanData();
             $tags = explode(',', $sanitized_data['tags']);
 
-            $tag_entity = [];
-            foreach ($tags as $tag) {
-                $tag_entity[] = new \OpenCFP\Domain\Entity\Tag(['tag' => trim($tag)]);
-            }
-
             /* @var Locator $spot */
             $spot = $this->service('spot');
 
@@ -325,6 +319,7 @@ class TalkController extends BaseController
 
             $talk = $talk_mapper->build($data);
 
+            $tag_entity = $this->fromTags($tags);
             $talk->relation('tags', new Collection($tag_entity));
 
             try {
@@ -363,6 +358,7 @@ class TalkController extends BaseController
             'tags' => $req->get('tags'),
             'buttonInfo' => 'Submit my talk!',
         ];
+
 
         $this->service('session')->set('flash', [
             'type' => 'error',
@@ -562,5 +558,21 @@ class TalkController extends BaseController
             echo $e;
             die();
         }
+    }
+
+    /**
+     * @param string[] $tags
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return static[]
+     */
+    public static function fromTags(array $tags)
+    {
+        return array_map(function ($tag) {
+            return new \OpenCFP\Domain\Entity\Tag([
+                'tag' => trim($tag),
+            ]);
+        }, $tags);
     }
 }

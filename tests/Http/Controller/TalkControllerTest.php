@@ -6,6 +6,7 @@ use Cartalyst\Sentry\Sentry;
 use DateTime;
 use Mockery as m;
 use OpenCFP\Application;
+use OpenCFP\Domain\Entity\TalkMeta;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\TalkController;
 
@@ -40,6 +41,17 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
 
         $talk_tag_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkTag::class);
         $talk_tag_mapper->migrate();
+
+        // TODO: Figure out why tests are now failing if tags are included
+        $favorites_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Favorite::class);
+        $favorites_mapper->migrate();
+
+        $talk_comments_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkComment::class);
+        $talk_comments_mapper->migrate();
+
+        $talk_meta_mapper = $spot->mapper(TalkMeta::class);
+        $talk_meta_mapper->migrate();
+        // END TODO
 
         // Set things up so Sentry believes we're logged in
         $user = m::mock('StdClass');
@@ -90,7 +102,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'other' => '',
             'sponsor' => '',
             'user_id' => $sentry->getUser()->getId(),
-            'tags' => '',
+            'tags' => 'tag1, tag2',
         ];
 
         $this->setPost($talk_data);
@@ -153,7 +165,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'other' => '',
             'sponsor' => '',
             'user_id' => $sentry->getUser()->getId(),
-            'tags' => '',
+            'tags' => 'tag1, tag2',
         ];
 
         $this->setPost($talk_data);
