@@ -21,7 +21,7 @@ class TalkTag extends Entity
     {
         return [
             'talk' => $mapper->belongsTo($entity, \OpenCFP\Domain\Entity\Talk::class, 'talk_id'),
-            'tag'  => $mapper->belongsTo($entity, \OpenCFP\Domain\Entity\Tag::class, 'tag_id')
+            'tag'  => $mapper->belongsTo($entity, \OpenCFP\Domain\Entity\Tag::class, 'tag_id'),
         ];
     }
 }
