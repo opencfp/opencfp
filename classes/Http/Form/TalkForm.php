@@ -19,6 +19,7 @@ class TalkForm extends Form
         'other',
         'sponsor',
         'user_id',
+        'tags'
     ];
 
     public function __construct($data, \HTMLPurifier $purifier, array $options = [])
@@ -63,7 +64,8 @@ class TalkForm extends Form
             $this->validateDesired() &&
             $this->validateSlides() &&
             $this->validateOther() &&
-            $this->validateSponsor()
+            $this->validateSponsor() &&
+            $this->validateTags()
         );
     }
 
@@ -185,6 +187,11 @@ class TalkForm extends Form
     }
 
     public function validateSponsor()
+    {
+        return true;
+    }
+
+    public function validateTags()
     {
         return true;
     }

@@ -74,4 +74,15 @@ class TalkHelper
 
         return $level;
     }
+
+    public function getTags($input)
+    {
+        $tags = [];
+
+        foreach ($input as $tag) {
+            $tags[] = $tag->tag;
+        }
+
+        return implode(', ', $tags);
+    }
 }

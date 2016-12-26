@@ -25,7 +25,7 @@ class Talk extends Entity
             'sponsor' => ['type' => 'smallint', 'value' => 0],
             'selected' => ['type' => 'smallint', 'value' => 0],
             'created_at' => ['type' => 'datetime', 'value' => new \DateTime()],
-            'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()],
+            'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()]
         ];
     }
 
@@ -37,6 +37,7 @@ class Talk extends Entity
             'comments' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\TalkComment::class, 'talk_id')
                 ->order(['created' => 'ASC']),
             'meta' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\TalkMeta::class, 'talk_id'),
+            'tags' => $mapper->hasManyThrough($entity, Tag::class, TalkTag::class, 'talk_id', 'tag_id'),
         ];
     }
 
@@ -52,7 +53,7 @@ class Talk extends Entity
             'desired' => $this->desired,
             'slides' => $this->slides,
             'other' => $this->other,
-            'sponsor' => $this->sponsor,
+            'sponsor' => $this->sponsor
         ];
     }
 }
