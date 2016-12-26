@@ -250,7 +250,7 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
 
         // Set up talks.
         $stub->talks = m::mock('stdClass');
-        $stub->talks->shouldReceive('where->execute->first')->andReturn(
+        $stub->talks->shouldReceive('where->with->execute->first')->andReturn(
             new Talk([
                 'id' => 1,
                 'title' => 'Testy Talk',

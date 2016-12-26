@@ -84,6 +84,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'other' => '',
             'sponsor' => '',
             'user_id' => $sentry->getUser()->getId(),
+            'tags' => '',
         ];
 
         $this->setPost($talk_data);
@@ -146,6 +147,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'other' => '',
             'sponsor' => '',
             'user_id' => $sentry->getUser()->getId(),
+            'tags' => '',
         ];
 
         $this->setPost($talk_data);
