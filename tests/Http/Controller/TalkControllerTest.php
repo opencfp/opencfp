@@ -36,13 +36,16 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk_mapper->migrate();
 
+        /*
+         * Need to include all of the relationships for a talk now since we
+         * have modified looking up a talk to include "with"
+         */
         $tag_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Tag::class);
         $tag_mapper->migrate();
 
         $talk_tag_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkTag::class);
         $talk_tag_mapper->migrate();
 
-        // TODO: Figure out why tests are now failing if tags are included
         $favorites_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Favorite::class);
         $favorites_mapper->migrate();
 
@@ -51,7 +54,6 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
 
         $talk_meta_mapper = $spot->mapper(TalkMeta::class);
         $talk_meta_mapper->migrate();
-        // END TODO
 
         // Set things up so Sentry believes we're logged in
         $user = m::mock('StdClass');
