@@ -88,7 +88,7 @@ class Speakers
     {
         $speaker = $this->identityProvider->getCurrentUser();
 
-        return $speaker->talks->execute();
+        return $speaker->talks->with(['tags'])->execute();
     }
 
     /**
