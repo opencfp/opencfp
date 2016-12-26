@@ -75,14 +75,10 @@ class TalkHelper
         return $level;
     }
 
-    public function getTags($input)
+    public function getTags($tags)
     {
-        $tags = [];
-
-        foreach ($input as $tag) {
-            $tags[] = $tag->tag;
-        }
-
-        return implode(', ', $tags);
+        return implode(', ', array_map(function (\OpenCFP\Domain\Entity\Tag $tag) {
+            return $tag->tag;
+        }, $tags));
     }
 }

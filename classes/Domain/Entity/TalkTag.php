@@ -10,7 +10,7 @@ class TalkTag extends Entity
     public static function fields()
     {
         return [
-            'id'        => ['type' => 'integer', 'primary' => true, 'autoincrement' => true],
+            'id' => ['type' => 'integer', 'primary' => true, 'autoincrement' => true],
             'talk_id' => ['type' => 'integer', 'required' => true, 'unique' => 'talk_tag'],
             'tag_id' => ['type' => 'integer', 'required' => true, 'unique' => 'talk_tag'],
         ];
