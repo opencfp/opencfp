@@ -13,7 +13,7 @@ class Tag extends Entity
     {
         return [
             'id' => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
-            'tag' => ['type' => 'string', 'length' => 50, 'required' => true, 'unique' => 'tag']
+            'tag' => ['type' => 'string', 'length' => 50, 'required' => true, 'unique' => 'tag'],
         ];
     }
 

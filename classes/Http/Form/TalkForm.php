@@ -19,7 +19,7 @@ class TalkForm extends Form
         'other',
         'sponsor',
         'user_id',
-        'tags'
+        'tags',
     ];
 
     public function __construct($data, \HTMLPurifier $purifier, array $options = [])

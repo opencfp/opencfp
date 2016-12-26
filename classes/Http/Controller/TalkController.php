@@ -193,7 +193,7 @@ class TalkController extends BaseController
             'slides' => $talk_info['slides'],
             'other' => $talk_info['other'],
             'sponsor' => $talk_info['sponsor'],
-            'tags' => array_reduce($talk_info['tags'], function($response, $item) {
+            'tags' => array_reduce($talk_info['tags'], function ($response, $item) {
 
                 return (strlen($response) > 0) ? $response . ', ' . $item['tag'] : $item['tag'];
             }),
@@ -290,7 +290,7 @@ class TalkController extends BaseController
             'other' => $req->get('other'),
             'sponsor' => $req->get('sponsor'),
             'user_id' => $req->get('user_id'),
-            'tags' => $req->get('tags')
+            'tags' => $req->get('tags'),
         ];
 
         $form = $this->getTalkForm($request_data);
@@ -320,7 +320,7 @@ class TalkController extends BaseController
                 'slides' => $sanitized_data['slides'],
                 'other' => $sanitized_data['other'],
                 'sponsor' => $sanitized_data['sponsor'],
-                'user_id' => (int) $user->getId()
+                'user_id' => (int) $user->getId(),
             ];
 
             $talk = $talk_mapper->build($data);
@@ -429,7 +429,7 @@ class TalkController extends BaseController
                 'other' => $sanitized_data['other'],
                 'sponsor' => $sanitized_data['sponsor'],
                 'user_id' => (int) $user->getId(),
-                'updated_at' => new \DateTime()
+                'updated_at' => new \DateTime(),
             ];
 
             $talk = $talk_mapper->build($data);

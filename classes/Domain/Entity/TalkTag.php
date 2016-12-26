@@ -13,7 +13,7 @@ class TalkTag extends Entity
         return [
             'id'        => ['type' => 'integer', 'primary' => true, 'autoincrement' => true],
             'talk_id' => ['type' => 'integer', 'required' => true, 'unique' => 'talk_tag'],
-            'tag_id' => ['type' => 'integer', 'required' => true, 'unique' => 'talk_tag']
+            'tag_id' => ['type' => 'integer', 'required' => true, 'unique' => 'talk_tag'],
         ];
     }
 
