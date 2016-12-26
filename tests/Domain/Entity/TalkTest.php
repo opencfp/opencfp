@@ -74,10 +74,7 @@ class TalkTest extends \PHPUnit_Framework_TestCase
         $this->bulkCreateTalks(11);
         $recent_talks = $this->mapper->getRecent(1);
 
-        $this->assertTrue(
-            count($recent_talks) == 10,
-            "Talk::getRecent() did not grab 10 talks out of 11"
-        );
+        $this->assertCount(10, $recent_talks, "Talk::getRecent() did not grab 10 talks out of 11");
     }
 
     //
