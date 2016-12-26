@@ -4,7 +4,6 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
-use Silex\Application;
 
 class DashboardController extends BaseController
 {
