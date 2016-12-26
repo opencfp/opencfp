@@ -1,7 +1,6 @@
 <?php
 namespace OpenCFP\Domain\Entity;
 
-
 use Spot\Entity;
 
 class TalkTag extends Entity
