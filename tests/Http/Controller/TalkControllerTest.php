@@ -35,6 +35,12 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk_mapper->migrate();
 
+        $tag_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Tag::class);
+        $tag_mapper->migrate();
+
+        $talk_tag_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkTag::class);
+        $talk_tag_mapper->migrate();
+
         // Set things up so Sentry believes we're logged in
         $user = m::mock('StdClass');
         $user->shouldReceive('getId')->andReturn(uniqid());
