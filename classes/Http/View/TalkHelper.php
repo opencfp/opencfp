@@ -77,8 +77,11 @@ class TalkHelper
 
     public function getTags($tags)
     {
-        return implode(', ', array_map(function (\OpenCFP\Domain\Entity\Tag $tag) {
-            return $tag->tag;
-        }, $tags));
+        $response = [];
+        foreach ($tags as $tag) {
+            $response[] = $tag->tag;
+        }
+
+        return implode(', ', $response);
     }
 }
