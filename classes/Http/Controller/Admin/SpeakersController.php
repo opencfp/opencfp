@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Http\Controller\BaseController;
@@ -13,7 +14,6 @@ use Silex\Application;
 use Spot\Locator;
 use Spot\Mapper;
 use Symfony\Component\HttpFoundation\Request;
-use Cartalyst\Sentry\Sentry;
 
 class SpeakersController extends BaseController
 {
