@@ -13,6 +13,7 @@ use Silex\Application;
 use Spot\Locator;
 use Spot\Mapper;
 use Symfony\Component\HttpFoundation\Request;
+use Cartalyst\Sentry\Sentry;
 
 class SpeakersController extends BaseController
 {
@@ -24,6 +25,9 @@ class SpeakersController extends BaseController
         if (!$this->userHasAccess()) {
             return $this->redirectTo('dashboard');
         }
+
+        /* @var Sentry $sentry */
+        $sentry = $this->service('sentry');
 
         /* @var Locator $spot */
         $spot = $this->service('spot');
@@ -55,6 +59,18 @@ class SpeakersController extends BaseController
 
             return $speaker;
         }, $rawSpeakers);
+
+        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
+        $adminUsers = $sentry->findAllUsersInGroup($adminGroup);
+        $adminUserIds = array_column($adminUsers->toArray(), 'id');
+
+        foreach ($rawSpeakers as $key => $each) {
+            if (in_array($each['id'], $adminUserIds)) {
+                $rawSpeakers[$key]['is_admin'] = true;
+            } else {
+                $rawSpeakers[$key]['is_admin'] = false;
+            }
+        }
 
         // Set up our page stuff
         $adapter = new ArrayAdapter($rawSpeakers);
