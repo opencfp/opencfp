@@ -1,7 +1,6 @@
 <?php namespace OpenCFP\Provider;
 
 use OpenCFP\Http\Controller\BaseController;
-use Silex\Application;
 
 class ControllerResolver extends \Silex\ControllerResolver
 {
