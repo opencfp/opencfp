@@ -49,7 +49,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $baseApp = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $application = new Application($baseApp);
 
-        $this->assertSame($baseApp, $application->getContainer());
+        $this->assertAttributeSame($baseApp, 'app', $application);
     }
 
     public function testHasDefaultCommands()
