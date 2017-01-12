@@ -17,8 +17,8 @@ class UserCreateCommand extends BaseCommand
             ->setDefinition([
                 new InputOption('first_name', 'f', InputOption::VALUE_REQUIRED, 'First Name of the user to create', null),
                 new InputOption('last_name', 'l', InputOption::VALUE_REQUIRED, 'Last Name of the user to create', null),
-                new InputOption('email', 'e',  InputOption::VALUE_REQUIRED, 'Email of the user to create', null),
-                new InputOption('password', 'p',  InputOption::VALUE_REQUIRED, 'Password of the user to create', null),
+                new InputOption('email', 'e', InputOption::VALUE_REQUIRED, 'Email of the user to create', null),
+                new InputOption('password', 'p', InputOption::VALUE_REQUIRED, 'Password of the user to create', null),
                 new InputOption('admin', 'a', InputOption::VALUE_NONE, 'Promote to administrator', null),
             ])
             ->setDescription('Creates a new user');
