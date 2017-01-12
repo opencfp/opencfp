@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9711f5a2ef82afc8c354f8920e5101b3",
+    "content-hash": "293fc056aa9883c064956e7046496925",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -5336,13 +5336,13 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "pagerfanta/pagerfanta": 20,
-        "ircmaxell/password-compat": 20,
+        "ezyang/htmlpurifier": 20,
+        "illuminate/container": 20,
         "illuminate/database": 20,
         "illuminate/events": 20,
-        "illuminate/container": 20,
         "illuminate/support": 20,
-        "ezyang/htmlpurifier": 20,
+        "ircmaxell/password-compat": 20,
+        "pagerfanta/pagerfanta": 20,
         "vlucas/spot2": 20,
         "johnkary/phpunit-speedtrap": 20,
         "mockery/mockery": 20
