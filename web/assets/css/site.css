@@ -6,11 +6,11 @@ body {
 }
 
 a {
-  color: #e24b3b;
+  color: rgb(27,117,187);
 }
 
 a:hover {
-  color: #e97467;
+  color: rgb(0,176,216);
 }
 
 .dashboard {
@@ -18,8 +18,8 @@ a:hover {
 }
 
 .header {
-  background: #e24b3b;
-  color: #FFF;
+  background: #FFF;
+  color: #000;
   padding: 6rem 0;
 }
 
@@ -47,13 +47,13 @@ a:hover {
 }
 
 .section--primary {
-  background: #e24b3b;
+  background: rgb(27,117,187);
   color: #FFF;
 }
 
 .section--light {
-  background: #EEE;
-  color: #7e8690;
+  background: rgb(0,176,216);
+  color: #fff;
 }
 
 .headline {
@@ -63,7 +63,7 @@ a:hover {
 }
 
 .headline--alpha {
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .headline--beta {
@@ -138,14 +138,10 @@ a:hover {
  * @tags ^button
  * @extends btn
  */
-.btn-opencfp--primary {
-  background: #FFF;
-  color: #e24b3b;
-}
-
-.btn-opencfp--primary:hover {
-  background: #F7F7F7;
-  color: #e24b3b;
+.btn-opencfp--primary,
+.btn-opencfp--primary:hover{
+  background: rgb(27,117,187);
+  color: #FFF;
 }
 
 .btn-opencfp--light {
@@ -160,13 +156,13 @@ a:hover {
 
 .btn-opencfp--outlined {
   background: transparent;
-  border-color: #FFF;
-  color: #FFF;
+  border-color: rgb(27,117,187);
+  color: rgb(27,117,187);
 }
 
 .btn-opencfp--outlined:hover {
-  background: #FFF;
-  color: #e24b3b;
+  background: rgb(27,117,187);
+  color: #FFF;
 }
 
 .btn-opencfp--centered {
@@ -184,7 +180,7 @@ a:hover {
 }
 
 .module__header {
-  background: #e24b3b;
+  background: rgb(27,117,187);
   color: #FFF;
   padding: 1rem 2rem;
 }
@@ -301,7 +297,7 @@ a:hover {
 .primary-text,
 .megaphone-cover,
 .megaphone-end {
-  fill: #e24b3b;
+  fill: rgb(27,117,187);
 }
 
 .base-text,
@@ -409,7 +405,7 @@ a:hover {
 .navbar-opencfp .nav .open>a:focus
 {
   background: none;
-  border-color: #e24b3b;
+  border-color: rgb(27,117,187);
 }
 
 .navbar-opencfp .navbar-toggle {

@@ -10,6 +10,7 @@
   <p><strong>Type:</strong> {{ talkHelper.getTypeDisplayName(talk.type) }}</p>
   <p><strong>Level:</strong> {{ talkHelper.getLevelDisplayName(talk.level) }}</p>
   <p><strong>Category:</strong> {{ talkHelper.getCategoryDisplayName(talk.category) }}</p>
+  <p><strong>Tags:</strong> {% if talk.get('tags')|length > 0 %} {{ talkHelper.getTags(talk.tags) }}{% endif %}</p>
   <p><strong>Desired:</strong> {{ talk.desired ? 'true' : 'false' }}</p>
   <p><strong>Sponsor:</strong> {{ talk.sponsor ? 'true' : 'false' }}</p>
 {% endblock %}
