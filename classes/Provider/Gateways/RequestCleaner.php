@@ -32,8 +32,11 @@ class RequestCleaner
             if (is_array($value)) {
                 $sanitized[$key] = $this->clean($value);
             } else {
-                $sanitized[$key] = $this->purifier->purify($value);
-                ;
+                $sanitized[$key] = preg_replace(
+                    ['/&amp;/', '/&lt;\b/', '/\b&gt;/'],
+                    ['&', '<', '>'],
+                    $this->purifier->purify($value)
+                );
             }
         }
 
