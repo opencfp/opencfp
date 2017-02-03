@@ -3568,22 +3568,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/spot2.git",
-                "reference": "2e9acb2f4115bd386d9f2f9446c799128f283d92"
+                "reference": "4abb1bd1ef13741c38fc56f7f3d634b779b19eef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/spot2/zipball/2e9acb2f4115bd386d9f2f9446c799128f283d92",
-                "reference": "2e9acb2f4115bd386d9f2f9446c799128f283d92",
+                "url": "https://api.github.com/repos/vlucas/spot2/zipball/4abb1bd1ef13741c38fc56f7f3d634b779b19eef",
+                "reference": "4abb1bd1ef13741c38fc56f7f3d634b779b19eef",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": "~2.4",
+                "doctrine/dbal": "^2.5.4",
                 "php": ">=5.4.0",
                 "sabre/event": "~2.0",
                 "vlucas/valitron": "~1.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.7"
+                "phpunit/phpunit": "^4.8"
             },
             "type": "library",
             "autoload": {
@@ -3615,7 +3615,7 @@
                 "model",
                 "orm"
             ],
-            "time": "2016-04-16 20:55:18"
+            "time": "2016-11-23 17:30:41"
         },
         {
             "name": "vlucas/valitron",
@@ -3883,7 +3883,7 @@
             ],
             "authors": [
                 {
-                    "name": "Francois Zaninotto"
+                    "name": "François Zaninotto"
                 }
             ],
             "description": "Faker is a PHP library that generates fake data for you.",
@@ -4083,7 +4083,7 @@
                 "profile",
                 "slow"
             ],
-            "time": "2015-09-13 19:01:00"
+            "time": "2015-09-13T19:01:00+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -4148,7 +4148,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2016-04-25 18:19:38"
+            "time": "2016-04-25T18:19:38+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
