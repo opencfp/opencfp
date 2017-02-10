@@ -34,7 +34,7 @@ class TwigServiceProvider implements ServiceProviderInterface
             return $app['request']->getRequestUri();
         });
 
-        $enddate = new \DateTimeImmutable($this->app->config('application.enddate'));
+        $enddate = new \DateTimeImmutable($app->config('application.enddate'));
         if ($enddate->format('H:i:s') == '00:00:00') {
             $enddate->add(new \DateInterval('PT23H59M'));
         }
