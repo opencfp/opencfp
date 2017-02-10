@@ -35,20 +35,24 @@ class DashboardController extends BaseController
     /**
      * Check to see if the CfP for this app is still open
      *
-     * @param integer $currentTime
+     * @param integer|\DateTimeInterface $currentTime
      *
      * @return boolean
      */
     public function isCfpOpen($currentTime = null)
     {
-        if (!$currentTime) {
-            $currentTime = strtotime('now');
+        if (! $currentTime) {
+            $currentTime = new \Datetime();
         }
 
-        if ($currentTime < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
-            return true;
+        if (! $currentTime instanceof \DateTimeInterface) {
+            $currentTime = new \DateTime('@' . $currentTime);
         }
 
-        return false;
+        if ($currentTime > new \DateTime($this->app->config('application.enddate') . ' 11:59 PM')) {
+            return false;
+        }
+
+        return true;
     }
 }
