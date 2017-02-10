@@ -49,7 +49,12 @@ class DashboardController extends BaseController
             $currentTime = new \DateTime('@' . $currentTime);
         }
 
-        if ($currentTime > new \DateTime($this->app->config('application.enddate') . ' 11:59 PM')) {
+        $enddate = new \DateTime($this->app->config('application.enddate'));
+        if ($enddate->format('H:i:s') == '00:00:00') {
+            $enddate->add(new \DateInterval('PT23H59M'));
+        }
+
+        if ($currentTime > $enddate) {
             return false;
         }
 

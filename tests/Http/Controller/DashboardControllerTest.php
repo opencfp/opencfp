@@ -174,6 +174,8 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
             [0, $yesterday, false],
             [new \DateTime('2017-12-09'), '2017-12-10', true],
             [new \DateTime('2017-12-11'), '2017-12-10', false],
+            [new \DateTime('2017-12-10T23:58:59'), '2017-12-10', true],
+            [new \DateTime('2017-12-10T23:59:01'), '2017-12-10', false],
         ];
     }
 }
