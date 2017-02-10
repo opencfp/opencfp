@@ -33,7 +33,12 @@ class TwigServiceProvider implements ServiceProviderInterface
         $twig->addGlobal('current_page', function () use ($app) {
             return $app['request']->getRequestUri();
         });
-        $twig->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
+
+        $enddate = new \DateTimeImmutable($this->app->config('application.enddate'));
+        if ($enddate->format('H:i:s') == '00:00:00') {
+            $enddate->add(new \DateInterval('PT23H59M'));
+        }
+        $twig->addGlobal('cfp_open', new \DateTimeImmutable('now') < $enddate);
 
         if (!$app->isProduction()) {
             $twig->addExtension(new Twig_Extension_Debug);
