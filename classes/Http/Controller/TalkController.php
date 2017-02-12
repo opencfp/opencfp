@@ -20,12 +20,17 @@ class TalkController extends BaseController
     /**
      * Check to see if the CfP for this app is still open
      *
-     * @param  integer $current_time
+     * @param  DateTimeInterface $current_time
      * @return boolean
      */
-    public function isCfpOpen($current_time)
+    public function isCfpOpen(\DateTimeInterface $current_time)
     {
-        if ($current_time < strtotime($this->app->config('application.enddate') . ' 11:59 PM')) {
+        $enddate = new \DateTime($this->app->config('application.enddate'));
+        if ($enddate->format('H:i:s') == '00:00:00') {
+            $enddate->add(new \DateInterval('PT23H59M'));
+        }
+
+        if ($current_time < $enddate) {
             return true;
         }
 
@@ -151,7 +156,7 @@ class TalkController extends BaseController
 
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
-        if (! $this->isCfpOpen(strtotime('now'))) {
+        if (! $this->isCfpOpen(new \DateTimeImmutable('now'))) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Read Only',
@@ -218,7 +223,7 @@ class TalkController extends BaseController
         }
 
         // You can only create talks while the CfP is open
-        if (! $this->isCfpOpen(strtotime('now'))) {
+        if (! $this->isCfpOpen(new \DateTimeImmutable('now'))) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -266,7 +271,7 @@ class TalkController extends BaseController
         }
 
         // You can only create talks while the CfP is open
-        if (! $this->isCfpOpen(strtotime('now'))) {
+        if (! $this->isCfpOpen(new \DateTimeImmutable('now'))) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -491,7 +496,7 @@ class TalkController extends BaseController
         }
 
         // You can only delete talks while the CfP is open
-        if (! $this->isCfpOpen(strtotime('now'))) {
+        if (! $this->isCfpOpen(new \DateTimeImmutable('now'))) {
             return $app->json(['delete' => 'no']);
         }
 

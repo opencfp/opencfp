@@ -7,7 +7,7 @@
                 <div class="col-md-9">
                     {% if cfp_open %}
                         <h1 class="headline headline-alpha">Call For Papers Now Open!</h1>
-                        <h3 class="headline headline-alpha">Submissions accepted until {{ site.enddate }}</h3>
+                        <h3 class="headline headline-alpha">Submissions accepted until {{ site.enddate | date(site.date_format) }}</h3>
                     {% else %}
                         <h1 class="headline headline-alpha">
                             {% if site.show_submission_count %}

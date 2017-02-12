@@ -24,7 +24,13 @@ class SignupController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        if (strtotime($this->app->config('application.enddate') . ' 11:59 PM') < strtotime($currentTimeString)) {
+        $current = new \DateTime($currentTimeString);
+        $endDate = new \DateTime($this->app->config('application.enddate'));
+        if ($endDate->format('H:i:s') == '00:00:00') {
+            $endDate->add(new \DateInterval('PT23H59M'));
+        }
+
+        if ($endDate < $current) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',

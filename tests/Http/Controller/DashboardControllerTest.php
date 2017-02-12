@@ -7,6 +7,7 @@ use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Environment;
+use OpenCFP\Http\Controller\DashboardController;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
@@ -146,5 +147,37 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
         $speakerProfileDouble = m::mock(SpeakerProfile::class);
         $speakerProfileDouble->shouldReceive($stubMethods);
         return $speakerProfileDouble;
+    }
+
+    /**
+     * @test
+     * @dataProvider checkWhetherCfpIsOpenOrNotWorksAsExpectedProvider
+     */
+    public function checkWhetherCfpIsOpenOrNotWorksAsExpected($currentTime, $cfpTime, $expected)
+    {
+        $app = m::mock(Application::class);
+        $app->shouldReceive('config')->with('application.enddate')->andReturn($cfpTime);
+        $controller = new DashboardController();
+        $controller->setApplication($app);
+
+        $this->assertSame($expected, $controller->isCfpOpen($currentTime));
+    }
+
+    public function checkWhetherCfpIsOpenOrNotWorksAsExpectedProvider()
+    {
+        $tomorrow = (new \DateTime('+ 1 day'))->format('Y-m-d');
+        $yesterday = (new \DateTime('- 1 day'))->format('Y-m-d');
+        return [
+            [strtotime('2017-12-09T12:34:45'), '2017-12-10', true],
+            [strtotime('2017-12-11T12:34:45'), '2017-12-10', false],
+            [0, $tomorrow, true],
+            [0, $yesterday, false],
+            [new \DateTime('2017-12-09'), '2017-12-10', true],
+            [new \DateTime('2017-12-11'), '2017-12-10', false],
+            [new \DateTime('2017-12-10T23:58:59'), '2017-12-10', true],
+            [new \DateTime('2017-12-10T23:59:01'), '2017-12-10', false],
+            [new \DateTime('2017-12-10T16:59:59'), '2017-12-10T17:00:00', true],
+            [new \DateTime('2017-12-10T17:00:01'), '2017-12-10T17:00:00', false],
+        ];
     }
 }
