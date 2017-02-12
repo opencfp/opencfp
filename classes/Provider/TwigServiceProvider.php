@@ -4,6 +4,8 @@ use Aptoma\Twig\Extension\MarkdownExtension;
 use Ciconia\Ciconia;
 use Ciconia\Extension\Gfm\InlineStyleExtension;
 use Ciconia\Extension\Gfm\WhiteSpaceExtension;
+use OpenCFP\Application;
+use OpenCFP\Http\View\TalkHelper;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
@@ -13,20 +15,27 @@ use Twig_SimpleFunction;
 
 class TwigServiceProvider implements ServiceProviderInterface
 {
+    protected $app;
+
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function register(Container $app)
+    public function register(Container $c)
     {
-        $app->register(new SilexTwigServiceProvider, [
-            'twig.path' => $app->templatesPath(),
+        $c->register(new SilexTwigServiceProvider, [
+            'twig.path' => $this->app->templatesPath(),
             'twig.options' => [
-                'debug' => !$app->isProduction(),
-                'cache' => $app->config('cache.enabled') ? $app->cacheTwigPath() : false,
+                'debug' => !$this->app->isProduction(),
+                'cache' => $this->app->config('cache.enabled') ? $this->app->cacheTwigPath() : false,
             ],
         ]);
 
-        $app->extend('twig', function (Twig_Environment $twig, Container $app) {
+        $c->extend('twig', function (Twig_Environment $twig, Application $app) {
             if (!$app->isProduction()) {
                 $twig->addExtension(new Twig_Extension_Debug);
             }
@@ -49,6 +58,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 
             $twig->addExtension(new MarkdownExtension($engine));
 
+            $twig->addGlobal('talkHelper', new TalkHelper($app->config('talk.categories')));
             return $twig;
         });
     }

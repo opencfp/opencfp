@@ -33,7 +33,7 @@
                         <strong>Slides:</strong> {% if talk.slides is defined %}{{ talk.slides }}{% endif %}<br />
                         <strong>Type:</strong> {{ talk.type }}<br />
                         <strong>Level:</strong> {% if talk.level is defined %}{{ talk.level }}{% endif %}<br />
-                        <strong>Category:</strong> {% if talk.category is defined %}{{ talk.category }}{% endif %}<br />
+                        <strong>Category:</strong> {% if talk.category is defined %}{{ talkHelper.getCategoryDisplayName(talk.category) }}{% endif %}<br />
                         <strong>Desired:</strong> {% if talk.desired is defined %}{{ talk.desired ? 'Yes' : 'No' }}{% endif %}<br />
                         <strong>Sponsor:</strong> {% if talk.sponsor is defined %}{{ talk.sponsor ? 'Yes' : 'No' }}{% endif %}<br />
                     </p>

@@ -80,7 +80,8 @@ class Application extends SilexApplication
         ]);
 
         $this->register(new SentryServiceProvider);
-        $this->register(new TwigServiceProvider);
+        $app = $this;
+        $this->register(new TwigServiceProvider($app));
         $this->register(new HtmlPurifierServiceProvider);
         $this->register(new SpotServiceProvider);
         $this->register(new ImageProcessorProvider);
