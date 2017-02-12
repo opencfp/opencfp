@@ -4,7 +4,7 @@ application:
   email: contact@openconf.com
   eventurl: http://localhost
   event_location: Miami, FL
-  enddate: Oct. 14th, 2016
+  enddate: Oct. 14th, 2116
   show_submission_count: false
   airport: MIA
   arrival: 2014-10-26
@@ -25,7 +25,7 @@ database:
   database: cfp_test
   dsn: mysql:dbname=cfp_test;host=127.0.0.1
   user: root
-  password:
+  password: secret
 
 log:
   level: debug
