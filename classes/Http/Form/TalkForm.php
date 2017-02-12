@@ -159,30 +159,15 @@ class TalkForm extends Form
 
     public function validateCategory()
     {
-        $validCategories = [
-            'development',
-            'framework',
-            'database',
-            'testing',
-            'security',
-            'devops',
-            'api',
-            'javascript',
-            'uiux',
-            'other',
-            'continuousdelivery',
-            'ibmi',
-        ];
+        $validCategories = $this->getOption('categories');
 
         if (empty($this->_cleanData['category']) || !isset($this->_cleanData['category'])) {
             $this->_addErrorMessage("You must choose what category of talk you are submitting");
-
             return false;
         }
 
-        if (!in_array($this->_cleanData['category'], $validCategories)) {
+        if (!isset($validCategories[$this->_cleanData['category']])) {
             $this->_addErrorMessage("You did not choose a valid talk category");
-
             return false;
         }
 

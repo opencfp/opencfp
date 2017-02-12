@@ -110,6 +110,7 @@ class TalkController extends BaseController
 
         $data = [
             'formAction' => $this->url('talk_update'),
+            'talkCategories' => $this->getTalkCategories(),
             'id' => $talk_id,
             'title' => html_entity_decode($talk_info['title']),
             'description' => html_entity_decode($talk_info['description']),
@@ -154,6 +155,7 @@ class TalkController extends BaseController
 
         $data = [
             'formAction' => $this->url('talk_create'),
+            'talkCategories' => $this->getTalkCategories(),
             'title' => $req->get('title'),
             'description' => $req->get('description'),
             'type' => $req->get('type'),
@@ -211,7 +213,11 @@ class TalkController extends BaseController
             'user_id' => $req->get('user_id'),
         ];
 
-        $form = new TalkForm($request_data, $this->service('purifier'));
+        $form = new TalkForm(
+            $request_data,
+            $this->service('purifier'),
+            ['categories' => $this->getTalkCategories()]
+        );
         $form->sanitize();
         $isValid = $form->validateAll();
 
@@ -251,6 +257,7 @@ class TalkController extends BaseController
         if (!$isValid) {
             $data = [
                 'formAction' => $this->url('talk_create'),
+                'talkCategories' => $this->getTalkCategories(),
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
@@ -263,13 +270,13 @@ class TalkController extends BaseController
                 'buttonInfo' => 'Submit my talk!',
             ];
 
-            $this->service('session')->set('flash', [
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => implode("<br>", $form->getErrorMessages()),
-            ]);
         }
 
+        $this->service('session')->set('flash', [
+            'type' => 'error',
+            'short' => 'Error',
+            'ext' => implode("<br>", $form->getErrorMessages()),
+        ]);
         $data['flash'] = $this->getFlash($this->app);
 
         return $this->render('talk/edit.twig', $data);
@@ -299,7 +306,11 @@ class TalkController extends BaseController
             'user_id' => $req->get('user_id'),
         ];
 
-        $form = new TalkForm($request_data, $this->service('purifier'));
+        $form = new TalkForm(
+            $request_data,
+            $this->service('purifier'),
+            ['categories' => $this->getTalkCategories()]
+        );
         $form->sanitize();
         $isValid = $form->validateAll();
 
@@ -342,28 +353,27 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        if (! $isValid) {
-            $data = [
-                'formAction' => $this->url('talk_update'),
-                'id' => $req->get('id'),
-                'title' => $req->get('title'),
-                'description' => $req->get('description'),
-                'type' => $req->get('type'),
-                'level' => $req->get('level'),
-                'category' => $req->get('category'),
-                'desired' => $req->get('desired'),
-                'slides' => $req->get('slides'),
-                'other' => $req->get('other'),
-                'sponsor' => $req->get('sponsor'),
-                'buttonInfo' => 'Update my talk!',
-            ];
+        $data = [
+            'formAction' => $this->url('talk_update'),
+            'talkCategories' => $this->getTalkCategories(),
+            'id' => $req->get('id'),
+            'title' => $req->get('title'),
+            'description' => $req->get('description'),
+            'type' => $req->get('type'),
+            'level' => $req->get('level'),
+            'category' => $req->get('category'),
+            'desired' => $req->get('desired'),
+            'slides' => $req->get('slides'),
+            'other' => $req->get('other'),
+            'sponsor' => $req->get('sponsor'),
+            'buttonInfo' => 'Update my talk!',
+        ];
 
-            $this->service('session')->set('flash', [
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => implode("<br>", $form->getErrorMessages()),
-            ]);
-        }
+        $this->service('session')->set('flash', [
+            'type' => 'error',
+            'short' => 'Error',
+            'ext' => implode("<br>", $form->getErrorMessages()),
+        ]);
 
         $data['flash'] = $this->getFlash($this->app);
 
@@ -447,5 +457,29 @@ class TalkController extends BaseController
             echo $e;
             die();
         }
+    }
+
+    private function getTalkCategories()
+    {
+        $categories = $this->app->config('talk.categories');
+
+        if ($categories === null) {
+            $categories = [
+                'api' => 'APIs (REST, SOAP, etc.)',
+                'continuousdelivery'=> 'Continuous Delivery',
+                'database'=> 'Database',
+                'development'=> 'Development',
+                'devops' => 'Devops',
+                'framework' => 'Framework',
+                'ibmi' => 'IBMi',
+                'javascript' => 'JavaScript',
+                'security' => 'Security',
+                'testing' => 'Testing',
+                'uiux' => 'UI/UX',
+                'other' => 'Other',
+            ];
+        }
+
+        return $categories;
     }
 }

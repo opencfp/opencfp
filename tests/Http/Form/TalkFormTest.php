@@ -80,7 +80,6 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
      */
     public function submitsTalkWhenNoDesiredOrSponrosIncluded($rawData, $response)
     {
-
         $data = unserialize($rawData);
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
 
@@ -110,7 +109,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
         ];
 
         return [
-            [serialize($goodData), true]
+            [serialize($goodData), true],
         ];
     }
 
@@ -229,6 +228,45 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that validates the talk category
+     *
+     * @test
+     * @dataProvider categoryProvider
+     * @param string  $category
+     * @param boolean $expectedResponse
+     */
+    public function categoryValidatesCorrectly($category, $expectedResponse)
+    {
+        $data = ['category' => $category];
+        $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier, ['categories' => ['test1' => 'Test 1', 'test2' => 'Test 2']]);
+        $form->sanitize();
+
+        $this->assertEquals(
+            $expectedResponse,
+            $form->validateCategory(),
+            '\OpenCFP\Form\TalkForm::validateType() did not apply validation rules correctly'
+        );
+    }
+
+    /**
+     * Data provider for typeValidatesCorrectly
+     *
+     * @return boolean
+     */
+    public function categoryProvider()
+    {
+        return [
+            ['test1', true],
+            ['test2', true],
+            ['foo', false],
+            [null, false],
+            [false, false],
+            [1, false],
+            [true, false],
+        ];
+    }
+
+    /**
      * Data provider for speakerIdValidates
      *
      * @return array
@@ -249,5 +287,4 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             ['user', false, false],
         ];
     }
-
 }

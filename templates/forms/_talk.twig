@@ -34,18 +34,9 @@
         <label for="form-talk-category" class="col-sm-2 control-label">Talk Category</label>
         <div class="col-sm-10">
             <select id="form-talk-category" name="category" class="form-control">
-                <option value="api" {% if category == 'api' %}selected {% endif %}>APIs (REST, SOAP, etc.)</option>
-                <option value="continuousdelivery" {% if category == 'continuousdelivery' %}selected {% endif %}>Continuous Delivery</option>
-                <option value="database" {% if category == 'database' %}selected {% endif %}>Database</option>
-                <option value="development" {% if category == 'development' %}selected {% endif %}>Development</option>
-                <option value="devops" {% if category == 'devops' %}selected {% endif %}>Devops</option>
-                <option value="framework" {% if category == 'framework' %}selected {% endif %}>Framework</option>
-                <option value="ibmi" {% if category == 'ibmi' %}selected {% endif %}>IBMi</option>
-                <option value="javascript" {% if category == 'javascript' %}selected {% endif %}>JavaScript</option>
-                <option value="security" {% if category == 'security' %}selected {% endif %}>Security</option>
-                <option value="testing" {% if category == 'testing' %}selected {% endif %}>Testing</option>
-                <option value="uiux" {% if category == 'uiux' %}selected {% endif %}>UI/UX</option>
-                <option value="other" {% if category == 'other' %}selected {% endif %}>Other</option>
+               {% for categoryKey, displayCategory in talkCategories %}
+                <option value="{{ categoryKey }}" {% if category == categoryKey %}selected {% endif %}>{{ displayCategory }}</option>
+                {% endfor %}
             </select>
         </div>
     </div>
