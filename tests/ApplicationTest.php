@@ -3,6 +3,7 @@
 namespace OpenCFP\Test;
 
 use OpenCFP\Application;
+use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Environment;
 use Symfony\Component\HttpFoundation\Session\Session;
 

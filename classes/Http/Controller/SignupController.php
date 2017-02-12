@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserExistsException;
+use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Http\Form\SignupForm;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use Silex\Application;
@@ -25,12 +26,10 @@ class SignupController extends BaseController
         }
 
         $current = new \DateTime($currentTimeString);
-        $endDate = new \DateTime($this->app->config('application.enddate'));
-        if ($endDate->format('H:i:s') == '00:00:00') {
-            $endDate->add(new \DateInterval('PT23H59M'));
-        }
 
-        if ($endDate < $current) {
+        $cfp = $this->service('callforproposal');
+
+        if (! $cfp->isOpen($current)) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
