@@ -63,18 +63,11 @@ to your event. However, anything you are willing to push back should be updated 
 keep the master branch generic for future event organizers that choose to use the system. You would then be able to
 merge master to your private branch and get updates when desired!
 
-Here are some issues that we would love to see contributions for:
-
-(Last updated November 19, 2015)
-
-* [Remind users with no talks submitted to send something](https://github.com/opencfp/opencfp/issues/159)
-* [Transition from Sentry to Silex Security](https://github.com/opencfp/opencfp/issues/163)
-* [Allow users to specify length of workshops](https://github.com/opencfp/opencfp/issues/254)
 
 <a name="requirements" />
 ## Requirements
 
- * PHP 5.5+
+ * PHP 7.0+
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php5-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
