@@ -215,10 +215,11 @@ to consider:
 | Option                | Description                       |
 |:----------------------|:----------------------------------|
 | `application.enddate` | This is the date your call for proposals would end on. |
+| `application.coc_link`| Set this to the link for your conference code of conduct to require speakers to agree to the code of conduct at registration |
 | `secure_ssl`          | This should be enabled, if possible. Requires a valid SSL certificate. |
 | `database.*`          | This is the database information you collected above. |
 | `mail.*`              | This is SMTP configuration for sending mail. The application sends notifications on various system events. |
-| `talk.categories.*    | This is information about what categories of talks you will be accepting |
+| `talk.categories.*`   | This is information about what categories of talks you will be accepting |
 
 For example, if you wanted to setup Mailgun as your email provider, your mail configuration would look something like this:
 

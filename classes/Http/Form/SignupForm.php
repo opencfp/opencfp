@@ -20,6 +20,7 @@ class SignupForm extends Form
         'transportation',
         'hotel',
         'speaker_photo',
+        'agree_coc',
     ];
 
     /**
@@ -32,9 +33,11 @@ class SignupForm extends Form
     {
         $this->sanitize();
         $valid_passwords = true;
+        $agree_coc = true;
 
         if ($action == 'create') {
             $valid_passwords = $this->validatePasswords();
+            $agree_coc = $this->validateAgreeCoc();
         }
 
         $valid_email = $this->validateEmail();
@@ -63,7 +66,8 @@ class SignupForm extends Form
             $valid_twitter &&
             $valid_speaker_info &&
             $valid_speaker_bio &&
-            $valid_speaker_photo
+            $valid_speaker_photo &&
+            $agree_coc
         );
     }
 
@@ -312,5 +316,19 @@ class SignupForm extends Form
                 $this->_taintedData['twitter']
             );
         }
+    }
+
+    public function validateAgreeCoc()
+    {
+        if (!$this->getOption('has_coc')) {
+            return true;
+        }
+
+        if ($this->_cleanData['agree_coc'] === 'agreed') {
+            return true;
+        }
+
+        $this->_addErrorMessage('You must agree to follow our code of conduct in order to submit');
+        return false;
     }
 }

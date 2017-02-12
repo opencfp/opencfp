@@ -39,10 +39,11 @@ class SignupController extends BaseController
             'hotel' => 0,
             'formAction' => $this->url('user_create'),
             'buttonInfo' => 'Create my speaker profile',
+            'coc_link' => $this->app->config('application.coc_link')
         ]);
     }
 
-    public function processAction(Request $req, Application $app)
+    public function processAction(Request $req, \OpenCFP\Application $app)
     {
         $form_data = [
             'formAction' => $this->url('user_create'),
@@ -54,7 +55,9 @@ class SignupController extends BaseController
             'password' => $req->get('password'),
             'password2' => $req->get('password2'),
             'airport' => $req->get('airport'),
+            'agree_coc' => $req->get('agree_coc'),
             'buttonInfo' => 'Create my speaker profile',
+            'coc_link' => $app->config('application.coc_link'),
         ];
         $form_data['speaker_info'] = $req->get('speaker_info') ?: null;
         $form_data['speaker_bio'] = $req->get('speaker_bio') ?: null;
@@ -66,18 +69,19 @@ class SignupController extends BaseController
             $form_data['speaker_photo'] = $req->files->get('speaker_photo');
         }
 
-        $form = new SignupForm($form_data, $app['purifier']);
+        $form = new SignupForm(
+            $form_data,
+            $app['purifier'],
+            ['has_coc' => !empty($app->config('application.coc_link'))]
+        );
         $isValid = $form->validateAll();
 
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
 
             if (isset($form_data['speaker_photo'])) {
-                /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
                 $file = $form_data['speaker_photo'];
-                /** @var ProfileImageProcessor $processor */
                 $processor = $app['profile_image_processor'];
-                /** @var PseudoRandomStringGenerator $generator */
                 $generator = $app['security.random'];
 
                 /**
