@@ -2,7 +2,9 @@
 
 namespace OpenCFP\Domain;
 
-use DateTime;
+use DateTimeInterface;
+use DateTimeImmutable;
+use DateInterval;
 
 /**
  * This object is responsible for representing behaviour around the call
@@ -13,12 +15,15 @@ use DateTime;
 class CallForProposal
 {
     /**
-     * @var DateTime
+     * @var DateTimeInterface
      */
     private $endDate;
 
-    public function __construct(DateTime $end)
+    public function __construct(DateTimeInterface $end)
     {
+        if ($end->format('H:i:s') === '00:00:00') {
+            $end = $end->add(new DateInterval('PT23H59M59S'));
+        }
         $this->endDate = $end;
     }
 
@@ -27,7 +32,7 @@ class CallForProposal
      */
     public function isOpen()
     {
-        $now = new DateTime('now');
+        $now = new DateTimeImmutable('now');
 
         return $now < $this->endDate;
     }
