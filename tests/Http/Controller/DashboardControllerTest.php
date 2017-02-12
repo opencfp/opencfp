@@ -62,7 +62,7 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
         ob_end_clean();
 
         // Instantiate the controller and run the indexAction
-        $controller = new \OpenCFP\Http\Controller\DashboardController();
+        $controller = new DashboardController();
         $controller->setApplication($app);
 
         $response = $controller->showSpeakerProfile();
