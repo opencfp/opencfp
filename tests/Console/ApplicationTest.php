@@ -56,6 +56,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             Console\Command\ListCommand::class,
             Command\AdminDemoteCommand::class,
             Command\AdminPromoteCommand::class,
+            Command\UserCreateCommand::class,
             Command\ClearCacheCommand::class,
         ];
 
