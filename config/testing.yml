@@ -21,10 +21,10 @@ cache:
   enabled: false
 
 database:
-  host:
-  database: "testdb.sqlite"
-  dsn: "sqlite:testdb.sqlite"
-  user:
+  host: 127.0.0.1
+  database: cfp_test
+  dsn: mysql:dbname=cfp_test;host=127.0.0.1
+  user: root
   password:
 
 log:
