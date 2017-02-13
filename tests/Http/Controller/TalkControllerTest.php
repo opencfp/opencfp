@@ -6,6 +6,7 @@ use Cartalyst\Sentry\Sentry;
 use DateTime;
 use Mockery as m;
 use OpenCFP\Application;
+use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Entity\TalkMeta;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\TalkController;
@@ -66,6 +67,9 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         // Create a test double for sessions so we can control what happens
         unset($this->app['session']);
         $this->app['session'] = new SessionDouble();
+
+        $this->app['callforproposal'] = m::mock(CallForProposal::class);
+        $this->app['callforproposal']->shouldReceive('isOpen')->andReturn(true);
 
         // Create our test double for the request object
         $this->req = m::mock('Symfony\Component\HttpFoundation\Request');
@@ -163,9 +167,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         // for the current date. `isCfpOpen` now uses 11:59pm current date.
         $now = new DateTime();
 
-        $config = $this->app['config'];
-        $config['application']['enddate'] = $now->format('M. jS, Y');
-        $this->app['config'] = $config;
+        $this->app['callforproposal'] = new CallForProposal(new DateTime($now->format('M. jS, Y')));
 
         /*
          * This should not have a flash message. The fact that this
@@ -183,9 +185,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
          */
         $yesterday = new DateTime("yesterday");
 
-        $config = $this->app['config'];
-        $config['application']['enddate'] = $yesterday->format('M. jS, Y');
-        $this->app['config'] = $config;
+        $this->app['callforproposal'] = new CallForProposal(new DateTime($yesterday->format('M. jS, Y')));
 
         $controller->createAction($this->req);
 

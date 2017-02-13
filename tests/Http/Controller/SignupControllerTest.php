@@ -7,6 +7,7 @@ use HTMLPurifier;
 use HTMLPurifier_Config;
 use Mockery as m;
 use OpenCFP\Application;
+use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Environment;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -34,11 +35,16 @@ class SignupControllerTest extends \PHPUnit_Framework_TestCase
         // Create a session
         $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
 
+
         // Create our URL generator
         $url = 'http://opencfp/signup';
         $url_generator = m::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
+
+        $app->shouldReceive('offsetGet')->with('callforproposal')->andReturn(
+            new CallForProposal(new \DateTime($endDateString))
+        );
 
         $controller = new \OpenCFP\Http\Controller\SignupController();
         $controller->setApplication($app);
@@ -73,6 +79,10 @@ class SignupControllerTest extends \PHPUnit_Framework_TestCase
         $sentry = m::mock('stdClass');
         $sentry->shouldReceive('check')->andReturn(false);
         $app['sentry'] = $sentry;
+
+        $app['callforproposal'] = new CallForProposal(
+            new \DateTime($endDateString)
+        );
 
         //$app['session'] = new Session(new MockFileSessionStorage());
         //$app['form.csrf_provider'] = new SessionCsrfProvider($app['session'], 'secret');

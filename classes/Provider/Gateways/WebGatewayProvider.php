@@ -26,7 +26,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             /* @var Twig_Environment $twig */
             $twig = $app['twig'];
 
-            $twig->addGlobal('current_page', function() use ($app) {
+            $twig->addGlobal('current_page', function () use ($app) {
                 return $app['request']->getRequestUri();
             });
             $twig->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
