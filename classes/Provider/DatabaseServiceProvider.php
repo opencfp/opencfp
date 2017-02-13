@@ -24,9 +24,9 @@ class DatabaseServiceProvider implements ServiceProviderInterface
 
     private function checkConnection($pdo)
     {
-        $check = $pdo->query('select database() as db')->fetch(\PDO::FETCH_ASSOC);
+        $check = $pdo->query('select * from airports')->fetch(\PDO::FETCH_ASSOC);
 
-        if (!$check['db']) {
+        if (!$check['code']) {
             $this->raiseDatabaseConnectionIssue();
         }
     }

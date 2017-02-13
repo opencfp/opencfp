@@ -58,5 +58,11 @@
         "psr-4": {
             "OpenCFP\\Test\\": "tests/"
         }
+    },
+    "scripts" : {
+        "test" : [
+            "./vendor/bin/phinx migrate -e test",
+            "phpunit"
+        ]
     }
 }

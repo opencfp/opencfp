@@ -549,21 +549,6 @@ class TalkController extends BaseController
         }
     }
 
-    /**
-     * @param $request_data
-     * @return TalkForm
-     */
-    private function getTalkForm($request_data)
-    {
-        $options = [
-            'categories' => $this->getTalkCategories(),
-            'levels' => $this->getTalkLevels(),
-            'types' => $this->getTalkTypes()
-        ];
-        $form = new TalkForm($request_data, $this->service('purifier'), $options);
-        return $form;
-    }
-
     /*
      * @param string[] $tags
      *

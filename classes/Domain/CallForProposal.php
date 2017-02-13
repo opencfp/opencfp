@@ -2,9 +2,9 @@
 
 namespace OpenCFP\Domain;
 
-use DateTimeInterface;
-use DateTimeImmutable;
 use DateInterval;
+use DateTimeImmutable;
+use DateTimeInterface;
 
 /**
  * This object is responsible for representing behaviour around the call

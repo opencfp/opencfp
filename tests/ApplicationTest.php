@@ -5,6 +5,7 @@ namespace OpenCFP\Test;
 use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Environment;
+use Prophecy\Call\Call;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**

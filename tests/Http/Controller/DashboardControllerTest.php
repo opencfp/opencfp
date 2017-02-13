@@ -3,6 +3,7 @@
 namespace OpenCFP\Test\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
+use Faker\Provider\DateTime;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
@@ -54,6 +55,7 @@ class DashboardControllerTest extends \PHPUnit_Framework_TestCase
         $profile->shouldReceive('name')->andReturn('Test User');
         $profile->shouldReceive('photo', 'company', 'twitter', 'airport', 'bio', 'info', 'transportation', 'hotel');
         $profile->shouldReceive('talks')->andReturn([$talk]);
+
 
         $speakerService = m::mock('StdClass');
         $speakerService->shouldReceive('findProfile')->andReturn($profile);
