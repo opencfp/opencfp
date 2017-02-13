@@ -17,6 +17,10 @@ class Application extends ConsoleApplication
      */
     protected $app;
 
+    /**
+     * Application constructor.
+     * @param ApplicationContainer $app
+     */
     public function __construct(ApplicationContainer $app)
     {
         parent::__construct('OpenCFP');
@@ -26,6 +30,9 @@ class Application extends ConsoleApplication
         $this->app = $app;
     }
 
+    /**
+     * @return array
+     */
     public function getDefaultCommands()
     {
         return [
@@ -36,5 +43,13 @@ class Application extends ConsoleApplication
             new UserCreateCommand,
             new ClearCacheCommand,
         ];
+    }
+
+    /**
+     * @return ApplicationContainer
+     */
+    public function getContainer()
+    {
+        return $this->app;
     }
 }
