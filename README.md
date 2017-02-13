@@ -77,9 +77,13 @@ merge master to your private branch and get updates when desired!
 ## Installation
 
 <a name="cloning-the-repository" />
+### Grab Latest Release
+
+It is recommended for you to always install the latest marked release. Go to `https://github.com/opencfp/opencfp/releases` to download it.
+
 ### Cloning the Repository
 
-Clone this project into your working directory.
+Clone this project into your working directory. We recommend always running the `master` branch as it was frequent contributions.
 
 Example:
 
