@@ -18,25 +18,20 @@ class TalkController extends BaseController
     use FlashableTrait;
 
     /**
-     * Check to see if the CfP for this app is still open
-     *
-     * @param  DateTimeInterface $current_time
-     * @return boolean
+     * @param $request_data
+     * @return TalkForm
      */
-    public function isCfpOpen(\DateTimeInterface $current_time)
+    private function getTalkForm($request_data)
     {
-        $enddate = new \DateTime($this->app->config('application.enddate'));
-        if ($enddate->format('H:i:s') == '00:00:00') {
-            $enddate->add(new \DateInterval('PT23H59M'));
-        }
-
-        if ($current_time < $enddate) {
-            return true;
-        }
-
-        return false;
+        $options = [
+            'categories' => $this->getTalkCategories(),
+            'levels' => $this->getTalkLevels(),
+            'types' => $this->getTalkTypes(),
+        ];
+        $form = new TalkForm($request_data, $this->service('purifier'), $options);
+        return $form;
     }
-
+    
     private function getTalkCategories()
     {
         $categories = $this->app->config('talk.categories');
@@ -141,7 +136,7 @@ class TalkController extends BaseController
 
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
-        if (! $this->isCfpOpen(new \DateTimeImmutable('now'))) {
+        if (! $this->service('callforproposal')->isOpen()) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Read Only',
@@ -208,7 +203,7 @@ class TalkController extends BaseController
         }
 
         // You can only create talks while the CfP is open
-        if (! $this->isCfpOpen(new \DateTimeImmutable('now'))) {
+        if (! $this->service('callforproposal')->isOpen()) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -255,7 +250,7 @@ class TalkController extends BaseController
         }
 
         // You can only create talks while the CfP is open
-        if (! $this->isCfpOpen(new \DateTimeImmutable('now'))) {
+        if (! $this->service('callforproposal')->isOpen()) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -467,7 +462,7 @@ class TalkController extends BaseController
         }
 
         // You can only delete talks while the CfP is open
-        if (! $this->isCfpOpen(new \DateTimeImmutable('now'))) {
+        if (! $this->service('callforproposal')->isOpen()) {
             return $app->json(['delete' => 'no']);
         }
 

@@ -4,6 +4,7 @@ namespace OpenCFP;
 
 use League\OAuth2\Server\Exception\OAuthException;
 use OpenCFP\Provider\ApplicationServiceProvider;
+use OpenCFP\Provider\CallForProposalProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
 use OpenCFP\Provider\DatabaseServiceProvider;
 use OpenCFP\Provider\Gateways\ApiGatewayProvider;
@@ -84,6 +85,7 @@ class Application extends SilexApplication
             ],
         ]);
 
+        $this->register(new CallForProposalProvider());
         $this->register(new SentryServiceProvider);
         $app = $this;
         $this->register(new TwigServiceProvider($app));
