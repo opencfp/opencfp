@@ -11,8 +11,8 @@
         <div class="module__body">
             <h2 class="headline">{{ talk.title }}</h2>
             <p>
-                {% if talk.level is defined %}<span class="label label-primary">{{ talk.level }}</span>{% endif %}
-                {% if talk.category is defined %}<span class="label label-warning">{{ talk.category }}</span>{% endif %}
+                {% if talk.level is defined %}<span class="label label-primary">{{ talkHelper.getLevelDisplayName(talk.level) }}</span>{% endif %}
+                {% if talk.category is defined %}<span class="label label-warning">{{ talkHelper.getCategoryDisplayName(talk.category) }}</span>{% endif %}
             </p>
             <h5><strong>Submitted by:</strong> <a href="{{ url('admin_speaker_view', { id: talk.user_id }) }}">{{ speaker.first_name }} {{ speaker.last_name }}</a></h5>
             <ul class="nav nav-tabs" role="tablist">
@@ -31,8 +31,8 @@
                 <div role="tabpanel" class="tab-pane" id="additional-info">
                     <p>
                         <strong>Slides:</strong> {% if talk.slides is defined %}{{ talk.slides }}{% endif %}<br />
-                        <strong>Type:</strong> {{ talk.type }}<br />
-                        <strong>Level:</strong> {% if talk.level is defined %}{{ talk.level }}{% endif %}<br />
+                        <strong>Type:</strong> {{ talkHelper.getTypeDisplayName(talk.type) }}<br />
+                        <strong>Level:</strong> {% if talk.level is defined %}{{ talkHalper.getLevelDisplayName(talk.level) }}{% endif %}<br />
                         <strong>Category:</strong> {% if talk.category is defined %}{{ talkHelper.getCategoryDisplayName(talk.category) }}{% endif %}<br />
                         <strong>Desired:</strong> {% if talk.desired is defined %}{{ talk.desired ? 'Yes' : 'No' }}{% endif %}<br />
                         <strong>Sponsor:</strong> {% if talk.sponsor is defined %}{{ talk.sponsor ? 'Yes' : 'No' }}{% endif %}<br />

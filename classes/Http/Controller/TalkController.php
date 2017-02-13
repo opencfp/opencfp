@@ -111,6 +111,8 @@ class TalkController extends BaseController
         $data = [
             'formAction' => $this->url('talk_update'),
             'talkCategories' => $this->getTalkCategories(),
+            'talkTypes' => $this->getTalkTypes(),
+            'talkLevels' => $this->getTalkLevels(),
             'id' => $talk_id,
             'title' => html_entity_decode($talk_info['title']),
             'description' => html_entity_decode($talk_info['description']),
@@ -156,6 +158,8 @@ class TalkController extends BaseController
         $data = [
             'formAction' => $this->url('talk_create'),
             'talkCategories' => $this->getTalkCategories(),
+            'talkTypes' => $this->getTalkTypes(),
+            'talkLevels' => $this->getTalkLevels(),
             'title' => $req->get('title'),
             'description' => $req->get('description'),
             'type' => $req->get('type'),
@@ -213,11 +217,7 @@ class TalkController extends BaseController
             'user_id' => $req->get('user_id'),
         ];
 
-        $form = new TalkForm(
-            $request_data,
-            $this->service('purifier'),
-            ['categories' => $this->getTalkCategories()]
-        );
+        $form = $this->getTalkForm($request_data);
         $form->sanitize();
         $isValid = $form->validateAll();
 
@@ -258,6 +258,8 @@ class TalkController extends BaseController
             $data = [
                 'formAction' => $this->url('talk_create'),
                 'talkCategories' => $this->getTalkCategories(),
+                'talkTypes' => $this->getTalkTypes(),
+                'talkLevels' => $this->getTalkLevels(),
                 'title' => $req->get('title'),
                 'description' => $req->get('description'),
                 'type' => $req->get('type'),
@@ -306,11 +308,7 @@ class TalkController extends BaseController
             'user_id' => $req->get('user_id'),
         ];
 
-        $form = new TalkForm(
-            $request_data,
-            $this->service('purifier'),
-            ['categories' => $this->getTalkCategories()]
-        );
+        $form = $this->getTalkForm($request_data);
         $form->sanitize();
         $isValid = $form->validateAll();
 
@@ -356,6 +354,8 @@ class TalkController extends BaseController
         $data = [
             'formAction' => $this->url('talk_update'),
             'talkCategories' => $this->getTalkCategories(),
+            'talkTypes' => $this->getTalkTypes(),
+            'talkLevels' => $this->getTalkLevels(),
             'id' => $req->get('id'),
             'title' => $req->get('title'),
             'description' => $req->get('description'),
@@ -459,6 +459,9 @@ class TalkController extends BaseController
         }
     }
 
+    /**
+     * @return array|null|string
+     */
     private function getTalkCategories()
     {
         $categories = $this->app->config('talk.categories');
@@ -481,5 +484,52 @@ class TalkController extends BaseController
         }
 
         return $categories;
+    }
+
+    /**
+     * @param $request_data
+     * @return TalkForm
+     */
+    private function getTalkForm($request_data)
+    {
+        $options = [
+            'categories' => $this->getTalkCategories(),
+            'levels' => $this->getTalkLevels(),
+            'types' => $this->getTalkTypes()
+        ];
+        $form = new TalkForm($request_data, $this->service('purifier'), $options);
+        return $form;
+    }
+
+    /**
+     * @return array|null|string
+     */
+    private function getTalkTypes()
+    {
+        $types = $this->app->config('talk.types');
+
+        if ($types == null) {
+            $types = [
+                'regular' => 'Regular',
+                'tutorial' => 'Tutorial'
+            ];
+        }
+
+        return $types;
+    }
+
+    private function getTalkLevels()
+    {
+        $levels = $this->app->config('talk.levels');
+
+        if ($levels === null) {
+            $levels = [
+                'entry' => 'Entry level',
+                'mid' => 'Mid-level',
+                'advanced' => 'Advanced'
+            ];
+        }
+
+        return $levels;
     }
 }

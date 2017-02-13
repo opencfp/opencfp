@@ -53,5 +53,12 @@ talk:
     testing: Testing
     uiux: UI/UX
     other: Other
+  levels:
+    entry: Entry level
+    mid: Mid-level
+    advanced: Advanced
+  types:
+    regular: Regular (50 mins)
+    tutorial: Tutorial (3 hrs)
 
 
