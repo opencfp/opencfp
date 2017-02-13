@@ -2,8 +2,8 @@
 
 use OpenCFP\Domain\CallForProposal;
 use Pimple\Container;
-use Silex\Application;
 use Pimple\ServiceProviderInterface;
+use Silex\Application;
 
 class CallForProposalProvider implements ServiceProviderInterface
 {

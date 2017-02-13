@@ -3,7 +3,6 @@
 namespace OpenCFP\Test\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
-use Faker\Provider\DateTime;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
