@@ -36,13 +36,13 @@ class UserCreateCommand extends BaseCommand
         $io->section('Creating User');
 
         $user = $this->createUser([
-          'first_name' => $input->getOption('first_name'),
-          'last_name' => $input->getOption('last_name'),
-          'password' => $input->getOption('password'),
-          'email' => $input->getOption('email'),
+            'first_name' => $input->getOption('first_name'),
+            'last_name' => $input->getOption('last_name'),
+            'password' => $input->getOption('password'),
+            'email' => $input->getOption('email'),
         ]);
 
-        if (false === $user) {
+        if ($user == false) {
             $io->error('User Already Exists!');
             return 1;
         }
@@ -61,15 +61,16 @@ class UserCreateCommand extends BaseCommand
     {
         try {
             $user_data = [
-              'first_name' => $data['first_name'],
-              'last_name' => $data['last_name'],
-              'email' => $data['email'],
-              'password' => $data['password'],
-              'activated' => 1,
-          ];
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'],
+                'password' => $data['password'],
+                'activated' => 1,
+            ];
 
-          /* @var Sentry $sentry */
-          $sentry = $this->app['sentry'];
+            /* @var Sentry $sentry */
+            $sentry = $this->app['sentry'];
+
 
             $user = $sentry->getUserProvider()->create($user_data);
 
@@ -84,9 +85,10 @@ class UserCreateCommand extends BaseCommand
     {
         if ($user->hasAccess('admin')) {
             $io->error(sprintf(
-              'Account with email %s already is in the Admin group.',
-              $email
-          ));
+                'Account with email %s already is in the Admin group.',
+                $email
+            ));
+
 
             return false;
         }

@@ -45,7 +45,7 @@ class TalkHelper
         if (isset($this->categories[$category])) {
             return $this->categories[$category];
         }
-        
+
         return $category;
     }
 

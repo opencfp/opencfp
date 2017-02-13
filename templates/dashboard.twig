@@ -74,7 +74,7 @@ function deleteTalk(tid) {
             <tr id="talk-{{ talk.id }}">
                 <td><b><a href="{{ url('talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a></b></td>
                 <td>{{ talkHelper.getTypeDisplayName(talk.type) }}</td>
-                <td>{{talkHelper.getCategoryDisplayName(talk.category) }}</td>
+                <td>{{ talkHelper.getCategoryDisplayName(talk.category) }}</td>
                 <td>{{ talk.created_at|date("F jS \\a\\t g:ia T") }}</td>
                 {% if cfp_open %}
                     <td><a href="{{ url('talk_edit', { id: talk.id }) }}">Edit</a></td>

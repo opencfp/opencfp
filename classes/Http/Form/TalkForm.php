@@ -22,14 +22,14 @@ class TalkForm extends Form
         'tags',
     ];
 
-    public function __construct($data, \HTMLPurifier $purifier, array $options = [])
+    public function __construct(array $data, \HTMLPurifier $purifier, array $options = [])
     {
-        if (!key_exists('desired', $data) || null === $data['desired']) {
-            ($data['desired'] = 0);
+        if (!key_exists('desired', $data) || $data['desired'] === null) {
+            $data['desired'] = 0;
         }
 
-        if (!key_exists('sponsor', $data) || null === $data['sponsor']) {
-            ($data['sponsor'] = 0);
+        if (!key_exists('sponsor', $data) || $data['sponsor'] === null) {
+            $data['sponsor'] = 0;
         }
 
         parent::__construct($data, $purifier, $options);
@@ -158,13 +158,11 @@ class TalkForm extends Form
 
         if (empty($this->_cleanData['category']) || !isset($this->_cleanData['category'])) {
             $this->_addErrorMessage("You must choose what category of talk you are submitting");
-
             return false;
         }
 
         if (!isset($validCategories[$this->_cleanData['category']])) {
             $this->_addErrorMessage("You did not choose a valid talk category");
-
             return false;
         }
 

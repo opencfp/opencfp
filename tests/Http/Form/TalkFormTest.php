@@ -83,7 +83,6 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     {
         $data = unserialize($rawData);
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
-        
         $this->assertEquals(
             $response,
             $form->hasRequiredFields(),
@@ -107,7 +106,6 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             'slides' => 'http://slideshare.net',
             'other' => 'Misc comments',
             'user_id' => 1,
-            'tags' => 'tag',
         ];
 
         return [
@@ -201,7 +199,11 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     public function typeValidatesCorrectly($type, $expectedResponse)
     {
         $data = ['type' => $type];
-        $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier, ['types' => ['regular' => 'Regular', 'tutorial' => 'Tutorial']]);
+        $form = new \OpenCFP\Http\Form\TalkForm(
+            $data,
+            $this->purifier,
+            ['types' => ['regular' => 'Regular', 'tutorial' => 'Tutorial']]
+        );
         $form->sanitize();
 
         $this->assertEquals(
@@ -269,45 +271,6 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that validates the talk type
-     *
-     * @test
-     * @dataProvider levelProvider
-     * @param string  $level
-     * @param boolean $expectedResponse
-     */
-    public function levelValidatesCorrectly($level, $expectedResponse)
-    {
-        $data = ['level' => $level];
-        $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier, ['levels' => ['entry' => 'Entry', 'advanced' => 'Advanced']]);
-        $form->sanitize();
-
-        $this->assertEquals(
-            $expectedResponse,
-            $form->validateLevel(),
-            '\OpenCFP\Form\TalkForm::validateType() did not apply validation rules correctly'
-        );
-    }
-
-    /**
-     * Data provider for typeValidatesCorrectly
-     *
-     * @return boolean
-     */
-    public function levelProvider()
-    {
-        return [
-            ['advanced', true],
-            ['entry', true],
-            ['foo', false],
-            [null, false],
-            [false, false],
-            [1, false],
-            [true, false],
-        ];
-    }
-
-    /**
      * Data provider for speakerIdValidates
      *
      * @return array
@@ -326,6 +289,48 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             [true, false, false],
             [false, false, false],
             ['user', false, false],
+        ];
+    }
+
+    /**
+     * Test that validates the talk type
+     *
+     * @test
+     * @dataProvider levelProvider
+     * @param string $level
+     * @param boolean $expectedResponse
+     */
+    public function levelValidatesCorrectly($level, $expectedResponse)
+    {
+        $data = ['level' => $level];
+        $form = new \OpenCFP\Http\Form\TalkForm(
+            $data,
+            $this->purifier,
+            ['levels' => ['entry' => 'Entry', 'advanced' => 'Advanced']]
+        );
+        $form->sanitize();
+        $this->assertEquals(
+            $expectedResponse,
+            $form->validateLevel(),
+            '\OpenCFP\Form\TalkForm::validateType() did not apply validation rules correctly'
+        );
+    }
+
+    /**
+     * Data provider for levelValidatesCorrectly
+     *
+     * @return array
+     */
+    public function levelProvider()
+    {
+        return [
+            ['advanced', true],
+            ['entry', true],
+            ['foo', false],
+            [null, false],
+            [false, false],
+            [1, false],
+            [true, false],
         ];
     }
 }

@@ -64,18 +64,11 @@ to your event. However, anything you are willing to push back should be updated 
 keep the master branch generic for future event organizers that choose to use the system. You would then be able to
 merge master to your private branch and get updates when desired!
 
-Here are some issues that we would love to see contributions for:
-
-(Last updated November 19, 2015)
-
-* [Remind users with no talks submitted to send something](https://github.com/opencfp/opencfp/issues/159)
-* [Transition from Sentry to Silex Security](https://github.com/opencfp/opencfp/issues/163)
-* [Allow users to specify length of workshops](https://github.com/opencfp/opencfp/issues/254)
 
 <a name="requirements" />
 ## Requirements
 
- * PHP 5.5+
+ * PHP 7.0+
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php5-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
@@ -220,16 +213,17 @@ $ cp config/production.dist.yml config/production.yml
 After making a local copy, edit `config/production.yml` and specify your own details. Here are some important options
 to consider:
 
-| Option                 | Description                       |
-|:-----------------------|:----------------------------------|
-| `application.enddate`  | This is the date your call for proposals would end on. |
-| `application.coc_link` | Set this to the link for your conference code of conduct to require speakers to agree to the code of conduct at registration |
-| `secure_ssl`           | This should be enabled, if possible. Requires a valid SSL certificate. |
-| `database.*`           | This is the database information you collected above. |
-| `mail.*`               | This is SMTP configuration for sending mail. The application sends notifications on various system events. |
-| `talk.categories.*`    | dbkey: Display Name mapping for your talk categories |
-| `talk.types.*`         | dbkey: Display Name mapping for your talk types |
-| `talk.levels.*`        | dbkey: Display Name mapping for your talk levels |
+| Option                | Description                       |
+|:----------------------|:----------------------------------|
+| `application.enddate` | This is the date your call for proposals would end on. |
+| `application.coc_link`| Set this to the link for your conference code of conduct to require speakers to agree to the code of conduct at registration |
+| `secure_ssl`          | This should be enabled, if possible. Requires a valid SSL certificate. |
+| `database.*`          | This is the database information you collected above. |
+| `mail.*`              | This is SMTP configuration for sending mail. The application sends notifications on various system events. |
+| `talk.categories.*`   | dbkey: Display Name mapping for your talk categories |
+| `talk.types.*`        | dbkey: Display Name mapping for your talk types |
+| `talk.levels.*`       | dbkey: Display Name mapping for your talk levels |
+
 
 For example, if you wanted to setup Mailgun as your email provider, your mail configuration would look something like this:
 

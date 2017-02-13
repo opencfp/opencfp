@@ -2,11 +2,6 @@
 
 namespace OpenCFP;
 
-use Igorw\Silex\ChainConfigDriver;
-use Igorw\Silex\ConfigServiceProvider;
-use Igorw\Silex\JsonConfigDriver;
-use Igorw\Silex\PhpConfigDriver;
-use Igorw\Silex\TomlConfigDriver;
 use League\OAuth2\Server\Exception\OAuthException;
 use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
@@ -22,12 +17,13 @@ use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use OpenCFP\Provider\YamlConfigDriver;
 use Silex\Application as SilexApplication;
+use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\FormServiceProvider;
+use Silex\Provider\LocaleServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
-use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,10 +59,11 @@ class Application extends SilexApplication
         // Services...
         $this->register(new SessionServiceProvider);
         $this->register(new FormServiceProvider);
-        $this->register(new UrlGeneratorServiceProvider);
+        $this->register(new CsrfServiceProvider);
         $this->register(new ControllerResolverServiceProvider);
         $this->register(new DatabaseServiceProvider);
         $this->register(new ValidatorServiceProvider);
+        $this->register(new LocaleServiceProvider);
         $this->register(new TranslationServiceProvider);
         $this->register(new MonologServiceProvider, [
             'monolog.logfile' => $this->config('log.path') ?: "{$basePath}/log/app.log",
@@ -87,7 +84,8 @@ class Application extends SilexApplication
         ]);
 
         $this->register(new SentryServiceProvider);
-        $this->register(new TwigServiceProvider);
+        $app = $this;
+        $this->register(new TwigServiceProvider($app));
         $this->register(new HtmlPurifierServiceProvider);
         $this->register(new SpotServiceProvider);
         $this->register(new ImageProcessorProvider);
@@ -140,20 +138,17 @@ class Application extends SilexApplication
      */
     protected function bindConfiguration()
     {
-        /**
-         * Replace reference to `ChainConfigDriver` with `null` when PR below is merged.
-         * Symfony's YAML package deprecated allowing a path to be passed to `parse` method.
-         * This was causing our test-suite to fail. When this is merged, we can upgrade and
-         * all will be well again.
-         *
-         * @see https://github.com/igorw/ConfigServiceProvider/pull/46
-         */
-        $this->register(new ConfigServiceProvider($this->configPath(), [], new ChainConfigDriver([
-            new PhpConfigDriver(),
-            new YamlConfigDriver(), // This is ours; in OpenCFP/Provider/YamlConfigDriver.
-            new JsonConfigDriver(),
-            new TomlConfigDriver(),
-        ]), 'config'));
+        $driver = new YamlConfigDriver();
+
+        if (!file_exists($this->configPath())) {
+            throw new \InvalidArgumentException(
+                sprintf("The config file '%s' does not exist.", $this->filename)
+            );
+        }
+
+        if ($driver->supports($this->configPath())) {
+            $this['config'] = $driver->load($this->configPath());
+        }
 
         if (! $this->isProduction()) {
             $this['debug'] = true;
@@ -283,10 +278,7 @@ class Application extends SilexApplication
 
     private function registerGlobalErrorHandler(Application $app)
     {
-        $app->error(function (\Exception $e, $code) use ($app) {
-            /** @var Request $request */
-            $request = $app['request'];
-
+        $app->error(function (\Exception $e, Request $request, $code) use ($app) {
             if (in_array('application/json', $request->getAcceptableContentTypes())) {
                 $headers = [];
 

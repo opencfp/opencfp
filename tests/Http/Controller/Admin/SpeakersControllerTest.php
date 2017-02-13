@@ -18,6 +18,7 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
     {
         // Create our Application object
         $this->app = new Application(BASE_PATH, Environment::testing());
+        $this->app['session.test'] = true;
 
         // Create a test double for our User entity
         $user = m::mock(\OpenCFP\Domain\Entity\User::class);
@@ -52,9 +53,6 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
             ->with(\OpenCFP\Domain\Entity\User::class)
             ->andReturn($mapper);
         $this->app['spot'] = $spot;
-
-        // Create a session object
-        $this->app['session'] = new Session(new MockFileSessionStorage);
 
         // Use our pre-configured Application object
         ob_start();
@@ -140,7 +138,8 @@ class SpeakersControllerTest extends \PHPUnit_Framework_TestCase
         // All of this stuff should be done in a transaction
         $spot->shouldReceive('config->connection->beginTransaction')->once();
         $spot->shouldReceive('config->connection->commit')->once();
-        
+
+        unset($this->app['spot']);
         $this->app['spot'] = $spot;
 
         // Execute the controller and capture the output
