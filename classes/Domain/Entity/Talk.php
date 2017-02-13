@@ -37,7 +37,6 @@ class Talk extends Entity
             'comments' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\TalkComment::class, 'talk_id')
                 ->order(['created' => 'ASC']),
             'meta' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\TalkMeta::class, 'talk_id'),
-            'tags' => $mapper->hasManyThrough($entity, Tag::class, TalkTag::class, 'talk_id', 'tag_id'),
         ];
     }
 

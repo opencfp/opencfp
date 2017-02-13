@@ -42,12 +42,6 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
          * Need to include all of the relationships for a talk now since we
          * have modified looking up a talk to include "with"
          */
-        $tag_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Tag::class);
-        $tag_mapper->migrate();
-
-        $talk_tag_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkTag::class);
-        $talk_tag_mapper->migrate();
-
         $favorites_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Favorite::class);
         $favorites_mapper->migrate();
 
@@ -108,7 +102,6 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'other' => '',
             'sponsor' => '',
             'user_id' => $sentry->getUser()->getId(),
-            'tags' => 'tag1, tag2',
         ];
 
         $this->setPost($talk_data);
@@ -121,16 +114,6 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
 
         $create_flash = $this->app['session']->get('flash');
         $this->assertEquals($create_flash['type'], 'success');
-
-        // Now, edit the results and update them
-        $talk_data['id'] = 1;
-        $talk_data['description'] = "The title should contain this & that & this other thing";
-        $talk_data['title'] = "Test Title With Ampersand & More Things";
-        $this->setPost($talk_data);
-
-        $controller->updateAction($this->req, $this->app);
-        $update_flash = $this->app['session']->get('flash');
-        $this->assertEquals($update_flash['type'], 'success');
     }
 
     /**
@@ -171,7 +154,6 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'other' => '',
             'sponsor' => '',
             'user_id' => $sentry->getUser()->getId(),
-            'tags' => 'tag1, tag2',
         ];
 
         $this->setPost($talk_data);

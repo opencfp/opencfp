@@ -43,6 +43,7 @@ class Application extends SilexApplication
 
         $this['path'] = $basePath;
         $this['env'] = $environment;
+        $this['debug'] = true;
 
         $this->bindPathsInApplicationContainer();
         $this->bindConfiguration();

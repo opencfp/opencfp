@@ -36,7 +36,6 @@ class TalkSubmission
             'other' => '',
             'sponsor' => '',
             'user_id' => '',
-            'tags' => '',
         ], $this->data);
 
         return new Talk($data);
