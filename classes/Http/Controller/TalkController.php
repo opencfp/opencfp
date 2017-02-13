@@ -37,21 +37,6 @@ class TalkController extends BaseController
         return false;
     }
 
-    /**
-     * @param $request_data
-     * @return TalkForm
-     */
-    private function getTalkForm($request_data)
-    {
-        $options = [
-            'categories' => $this->getTalkCategories(),
-            'levels' => $this->getTalkLevels(),
-            'types' => $this->getTalkTypes(),
-        ];
-        $form = new TalkForm($request_data, $this->service('purifier'), $options);
-        return $form;
-    }
-    
     private function getTalkCategories()
     {
         $categories = $this->app->config('talk.categories');
@@ -570,33 +555,6 @@ class TalkController extends BaseController
     }
 
     /**
-     * @return array|null|string
-     */
-    private function getTalkCategories()
-    {
-        $categories = $this->app->config('talk.categories');
-
-        if ($categories === null) {
-            $categories = [
-                'api' => 'APIs (REST, SOAP, etc.)',
-                'continuousdelivery'=> 'Continuous Delivery',
-                'database'=> 'Database',
-                'development'=> 'Development',
-                'devops' => 'Devops',
-                'framework' => 'Framework',
-                'ibmi' => 'IBMi',
-                'javascript' => 'JavaScript',
-                'security' => 'Security',
-                'testing' => 'Testing',
-                'uiux' => 'UI/UX',
-                'other' => 'Other',
-            ];
-        }
-
-        return $categories;
-    }
-
-    /**
      * @param $request_data
      * @return TalkForm
      */
@@ -609,38 +567,6 @@ class TalkController extends BaseController
         ];
         $form = new TalkForm($request_data, $this->service('purifier'), $options);
         return $form;
-    }
-
-    /**
-     * @return array|null|string
-     */
-    private function getTalkTypes()
-    {
-        $types = $this->app->config('talk.types');
-
-        if ($types == null) {
-            $types = [
-                'regular' => 'Regular',
-                'tutorial' => 'Tutorial'
-            ];
-        }
-
-        return $types;
-    }
-
-    private function getTalkLevels()
-    {
-        $levels = $this->app->config('talk.levels');
-
-        if ($levels === null) {
-            $levels = [
-                'entry' => 'Entry level',
-                'mid' => 'Mid-level',
-                'advanced' => 'Advanced'
-            ];
-        }
-
-        return $levels;
     }
 
     /*

@@ -19,7 +19,6 @@ class TalkForm extends Form
         'other',
         'sponsor',
         'user_id',
-        'tags',
     ];
 
     public function __construct(array $data, \HTMLPurifier $purifier, array $options = [])
@@ -64,8 +63,7 @@ class TalkForm extends Form
             $this->validateDesired() &&
             $this->validateSlides() &&
             $this->validateOther() &&
-            $this->validateSponsor() &&
-            $this->validateTags()
+            $this->validateSponsor()
         );
     }
 
@@ -186,32 +184,6 @@ class TalkForm extends Form
 
     public function validateSponsor()
     {
-        return true;
-    }
-
-    public function validateTags()
-    {
-        $tags = $this->_cleanData['tags'];
-        if (empty($tags) || !isset($tags)) {
-            $this->_addErrorMessage('Tag needs to be a non-blank string');
-            return false;
-        }
-
-        $tags = explode(',', $tags);
-        foreach ($tags as $tag) {
-            if (!is_string($tag)) {
-                $this->_addErrorMessage('Tag needs to be a string');
-                return false;
-            }
-
-            $tag = trim($tag);
-
-            if ($tag === '') {
-                $this->_addErrorMessage('Tag needs to be a non-blank string');
-                return false;
-            }
-        }
-
         return true;
     }
 }
