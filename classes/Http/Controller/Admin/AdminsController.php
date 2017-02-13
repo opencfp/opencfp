@@ -103,4 +103,52 @@ class AdminsController extends BaseController
 
         return $this->redirectTo('admin_admins');
     }
+
+    public function promoteAction(Request $req)
+    {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
+        /* @var Sentry $sentry */
+        $sentry = $this->service('sentry');
+
+        /* @var Locator $spot */
+        $spot = $this->service('spot');
+
+        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
+        $user_data = $mapper->get($req->get('id'))->toArray();
+        $user = $sentry->getUserProvider()->findByLogin($user_data['email']);
+
+        if ($user->hasAccess('admin')) {
+            $this->service('session')->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'User already is in the Admin group.',
+            ]);
+
+            return $this->redirectTo('admin_admins');
+        }
+
+        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
+        $response = $user->addGroup($adminGroup);
+
+        if ($response == false) {
+            $this->service('session')->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'We were unable to promote the Admin. Please try again.',
+            ]);
+
+            return $this->redirectTo('admin_admins');
+        }
+
+        $this->service('session')->set('flash', [
+            'type' => 'success',
+            'short' => 'Success',
+            'ext' => 'Successfully promoted as an Admin!',
+        ]);
+
+        return $this->redirectTo('admin_admins');
+    }
 }

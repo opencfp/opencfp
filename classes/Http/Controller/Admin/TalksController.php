@@ -130,7 +130,7 @@ class TalksController extends BaseController
         $talk_id = $req->get('id');
 
         $talk = $talk_mapper->where(['id' => $talk_id])
-            ->with(['comments'])
+            ->with(['comments', 'tags'])
             ->first();
 
         if (empty($talk)) {

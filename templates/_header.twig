@@ -2,12 +2,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <img data-src="/assets/img/logo_round.svg" class="svg-inject event-logo" alt="Event Logo">
+                    <img src="/assets/img/opencfp_generic_logo.png" class="svg-inject event-logo" alt="Event Logo">
                 </div>
                 <div class="col-md-9">
                     {% if cfp_open %}
                         <h1 class="headline headline-alpha">Call For Papers Now Open!</h1>
-                        <h3 class="headline headline-alpha">Submissions accepted until {{ site.enddate }}</h3>
+                        <h3 class="headline headline-alpha">Submissions accepted until {{ site.enddate | date(site.date_format) }}</h3>
                     {% else %}
                         <h1 class="headline headline-alpha">
                             {% if site.show_submission_count %}
@@ -32,7 +32,7 @@
         <div class="row">
             {% if site.event_location is defined and site.date_format is defined %}
             <div class="col-md-8"><h3 class="headline headline--alpha">
-                {{ site.title }} is  on {{ site.arrival|date(site.date_format) }} to {{ site.departure|date(site.date_format) }} in {{ site.event_location }}
+                {{ site.title }} is  on {{ site.arrival|date(site.date_format, false) }} to {{ site.departure|date(site.date_format, false) }} in {{ site.event_location }}
             </h3></div>
             {%  else %}
                 <div class="col-md-8"><h3 class="headline headline--alpha">For More Information About The Conference</h3></div>

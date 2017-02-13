@@ -1787,6 +1787,7 @@
                 "microframework"
             ],
             "time": "2016-11-06T18:09:06+00:00"
+
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2740,7 +2741,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+           "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/polyfill-php54",
@@ -3805,9 +3806,14 @@
                 "php-cs-fixer"
             ],
             "type": "application",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Symfony\\CS\\": "Symfony/CS/"
+                    "PhpCsFixer\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4638,7 +4644,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2016-11-15T14:06:22+00:00"
+           "time": "2016-11-15T14:06:22+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -5308,7 +5314,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/stopwatch/zipball/9aa0b51889c01bca474853ef76e9394b02264464",
                 "reference": "9aa0b51889c01bca474853ef76e9394b02264464",
-                "shasum": ""
+               "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9"
@@ -5399,13 +5405,13 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "pagerfanta/pagerfanta": 20,
-        "ircmaxell/password-compat": 20,
+        "ezyang/htmlpurifier": 20,
+        "illuminate/container": 20,
         "illuminate/database": 20,
         "illuminate/events": 20,
-        "illuminate/container": 20,
         "illuminate/support": 20,
-        "ezyang/htmlpurifier": 20,
+        "ircmaxell/password-compat": 20,
+        "pagerfanta/pagerfanta": 20,
         "vlucas/spot2": 20,
         "johnkary/phpunit-speedtrap": 20,
         "mockery/mockery": 20

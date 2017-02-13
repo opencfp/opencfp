@@ -75,5 +75,12 @@ EOF
             'Added account with email %s to the Admin group',
             $email
         ));
+
+        return 0;
+    }
+
+    public function setApp($app)
+    {
+        $this->app = $app;
     }
 }

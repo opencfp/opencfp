@@ -6,6 +6,7 @@ use Cartalyst\Sentry\Sentry;
 use DateTime;
 use Mockery as m;
 use OpenCFP\Application;
+use OpenCFP\Domain\Entity\TalkMeta;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\TalkController;
 
@@ -36,6 +37,25 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
         // Initialize the talk table in the sqlite database
         $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk_mapper->migrate();
+
+        /*
+         * Need to include all of the relationships for a talk now since we
+         * have modified looking up a talk to include "with"
+         */
+        $tag_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Tag::class);
+        $tag_mapper->migrate();
+
+        $talk_tag_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkTag::class);
+        $talk_tag_mapper->migrate();
+
+        $favorites_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Favorite::class);
+        $favorites_mapper->migrate();
+
+        $talk_comments_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkComment::class);
+        $talk_comments_mapper->migrate();
+
+        $talk_meta_mapper = $spot->mapper(TalkMeta::class);
+        $talk_meta_mapper->migrate();
 
         // Set things up so Sentry believes we're logged in
         $user = m::mock('StdClass');
@@ -88,6 +108,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'other' => '',
             'sponsor' => '',
             'user_id' => $sentry->getUser()->getId(),
+            'tags' => 'tag1, tag2',
         ];
 
         $this->setPost($talk_data);
@@ -150,6 +171,7 @@ class TalkControllerTest extends \PHPUnit_Framework_TestCase
             'other' => '',
             'sponsor' => '',
             'user_id' => $sentry->getUser()->getId(),
+            'tags' => 'tag1, tag2',
         ];
 
         $this->setPost($talk_data);

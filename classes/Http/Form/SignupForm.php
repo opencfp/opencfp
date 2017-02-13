@@ -318,7 +318,7 @@ class SignupForm extends Form
         }
     }
 
-    public function validateAgreeCoc()
+    private function validateAgreeCoc()
     {
         if (!$this->getOption('has_coc')) {
             return true;
@@ -328,7 +328,7 @@ class SignupForm extends Form
             return true;
         }
 
-        $this->_addErrorMessage('You must agree to follow our code of conduct in order to submit');
+        $this->_addErrorMessage('You must agree to abide by our code of conduct in order to submit');
         return false;
     }
 }

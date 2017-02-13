@@ -197,7 +197,7 @@ class TalksControllerTest extends \PHPUnit_Framework_TestCase
         $talkId = uniqid();
 
         $query = m::mock(Query::class);
-        $query->shouldReceive('with')->with(['comments'])->andReturnSelf();
+        $query->shouldReceive('with')->with(['comments', 'tags'])->andReturnSelf();
         $query->shouldReceive('first')->andReturnNull();
 
         $talkMapper = m::mock(Mapper\Talk::class);

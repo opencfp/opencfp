@@ -37,9 +37,4 @@ class Application extends ConsoleApplication
             new ClearCacheCommand,
         ];
     }
-
-    public function getContainer()
-    {
-        return $this->app;
-    }
 }

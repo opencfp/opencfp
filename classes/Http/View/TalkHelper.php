@@ -53,7 +53,8 @@ class TalkHelper
      * @param $type
      * @return mixed
      */
-    public function getTypeDisplayName($type) {
+    public function getTypeDisplayName($type)
+    {
         if (isset($this->types[$type])) {
             return $this->types[$type];
         }
@@ -65,11 +66,22 @@ class TalkHelper
      * @param $level
      * @return mixed
      */
-    public function getLevelDisplayName($level) {
+    public function getLevelDisplayName($level)
+    {
         if (isset($this->levels[$level])) {
             return $this->levels[$level];
         }
 
         return $level;
+    }
+
+    public function getTags($tags)
+    {
+        $response = [];
+        foreach ($tags as $tag) {
+            $response[] = $tag->tag;
+        }
+
+        return implode(', ', $response);
     }
 }

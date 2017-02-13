@@ -29,6 +29,7 @@ OpenCFP is a PHP-based conference talk submission system.
    * [Using the API](#json-api-usage)
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
+   * [User Management](#user-management)
    * [Clear Caches](#clear-caches)
    * [Scripts to Rule Them All](#scripts-rule-all)
  * [Testing](#testing)
@@ -113,7 +114,7 @@ ways to do that with common shells assuming we're using `production`:
 * zsh:  `export CFP_ENV = production`
 * fish: `set -x CFP_ENV production`
 
-Again, just use your preferred environment in place of `production` if required. 
+Again, just use your preferred environment in place of `production` if required.
 
 <a name="installing-composer-dependencies" />
 ### Installing Composer Dependencies
@@ -222,6 +223,7 @@ to consider:
 | `talk.categories.*`   | dbkey: Display Name mapping for your talk categories |
 | `talk.types.*`        | dbkey: Display Name mapping for your talk types |
 | `talk.levels.*`       | dbkey: Display Name mapping for your talk levels |
+
 
 For example, if you wanted to setup Mailgun as your email provider, your mail configuration would look something like this:
 
@@ -584,6 +586,23 @@ Removing `speaker@opencfp.org` from the admin group:
 
 ```
 $ bin/opencfp admin:demote --env=production speaker@opencfp.org
+```
+
+<a name="user-management" />
+### User Management
+
+Users are needed for you system, and sometimes you want to add users via command line.
+
+Adding a speaker:
+
+```
+$ bin/opencfp user:create --first_name="Speaker" --last_name="Name" --email="speaker@opencfp.org" --password="somePassw0rd!"
+```
+
+Add an admin:
+
+```
+$ bin/opencfp user:create --first_name="Admin" --last_name="Name" --email="admin@opencfp.org" --password="somePassw0rd!" --admin
 ```
 
 <a name="clear-caches" />

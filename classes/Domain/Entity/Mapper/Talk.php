@@ -168,7 +168,7 @@ class Talk extends Mapper
             "SELECT t.*, SUM(m.rating) AS total_rating, COUNT(m.rating) as review_count FROM talks t "
             . "LEFT JOIN talk_meta m ON t.id = m.talk_id "
             . "GROUP BY m.`talk_id` "
-            . "HAVING total_rating > 0"
+            . "HAVING total_rating > 0 "
             . "ORDER BY {$options['order_by']} {$options['sort']}",
             ['user_id' => $admin_user_id]
         );
@@ -303,8 +303,8 @@ class Talk extends Mapper
 
         $talks = $this->query(
             "SELECT t.* FROM talks t "
-            . "LEFT JOIN talk_meta m ON t.id = m.talk_id "
-            . "WHERE (m.rating = 0 AND m.admin_user_id = :user_id) OR m.rating IS NULL "
+            . "LEFT JOIN talk_meta m ON (t.id = m.talk_id AND m.admin_user_id = :user_id)"
+            . "WHERE m.rating = 0 OR m.rating IS NULL "
             . "ORDER BY {$options['order_by']} {$options['sort']}",
             ['user_id' => $admin_user_id]
         );

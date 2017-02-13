@@ -66,7 +66,7 @@ class Speakers
     public function getTalk($talkId)
     {
         $speaker = $this->identityProvider->getCurrentUser();
-        $talk = $speaker->talks->where(['id' => $talkId])->execute()->first();
+        $talk = $speaker->talks->where(['id' => $talkId])->with(['tags'])->execute()->first();
 
         // If it can't grab by relation, it's likely not their talk.
         if (!$talk) {
@@ -88,7 +88,7 @@ class Speakers
     {
         $speaker = $this->identityProvider->getCurrentUser();
 
-        return $speaker->talks->execute();
+        return $speaker->talks->with(['tags'])->execute();
     }
 
     /**

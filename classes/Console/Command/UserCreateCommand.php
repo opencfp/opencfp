@@ -19,7 +19,7 @@ class UserCreateCommand extends BaseCommand
                 new InputOption('last_name', 'l', InputOption::VALUE_REQUIRED, 'Last Name of the user to create', null),
                 new InputOption('email', 'e', InputOption::VALUE_REQUIRED, 'Email of the user to create', null),
                 new InputOption('password', 'p', InputOption::VALUE_REQUIRED, 'Password of the user to create', null),
-                new InputOption('admin', 'a', InputOption::VALUE_NONE, 'Promote to administrator', null)
+                new InputOption('admin', 'a', InputOption::VALUE_NONE, 'Promote to administrator', null),
             ])
             ->setDescription('Creates a new user');
     }
@@ -71,11 +71,11 @@ class UserCreateCommand extends BaseCommand
             /* @var Sentry $sentry */
             $sentry = $this->app['sentry'];
 
+
             $user = $sentry->getUserProvider()->create($user_data);
 
 
             return $user;
-
         } catch (UserExistsException $e) {
             return false;
         }
@@ -88,6 +88,7 @@ class UserCreateCommand extends BaseCommand
                 'Account with email %s already is in the Admin group.',
                 $email
             ));
+
 
             return false;
         }

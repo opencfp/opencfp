@@ -58,6 +58,7 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
             'desired' => 1,
             'sponsor' => 1,
             'user_id' => 1,
+            'tags' => 'tag',
         ];
         $extendedData = $goodData;
         $extendedData['extra'] = "Extra data in \$_POST but we ignore it";
@@ -82,7 +83,6 @@ class TalkFormTest extends \PHPUnit_Framework_TestCase
     {
         $data = unserialize($rawData);
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
-
         $this->assertEquals(
             $response,
             $form->hasRequiredFields(),

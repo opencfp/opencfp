@@ -49,18 +49,27 @@ Talk.prototype.rate = function(rating) {
   var url = this.baseUrl + this.id + '/rate';
   var data = { id: this.id, rating: rating };
 
+  if (this.$el.find('i').hasClass('admin-icon--selected')) {
+    data.rating = 0;
+  }
+
   $.ajax({
     type: "POST",
     url: url,
     data: data,
     success: function() {
-      if (rating === -1) {
+      if (data.rating === -1) {
         $('#talk-downvote-' + _this.id + ' i').addClass('admin-icon--selected');
         $('#talk-upvote-' + _this.id + ' i').removeClass('admin-icon--selected');
       }
 
-      if (rating === 1) {
+      if (data.rating === 1) {
         $('#talk-upvote-' + _this.id + ' i').addClass('admin-icon--selected');
+        $('#talk-downvote-' + _this.id + ' i').removeClass('admin-icon--selected');
+      }
+
+      if (data.rating === 0) {
+        $('#talk-upvote-' + _this.id + ' i').removeClass('admin-icon--selected');
         $('#talk-downvote-' + _this.id + ' i').removeClass('admin-icon--selected');
       }
     },

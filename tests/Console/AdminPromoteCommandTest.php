@@ -3,80 +3,19 @@
 namespace OpenCFP\Test\Console;
 
 use Mockery;
-use OpenCFP\Console\Application;
-use OpenCFP\Console\Command;
 use OpenCFP\Environment;
-use Symfony\Component\Console;
 
-class ApplicationTest extends \PHPUnit_Framework_TestCase
+class AdminPromoteTest extends \PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {
         Mockery::close();
     }
 
-    public function testIsConsoleApplication()
-    {
-        $application = new Application(new \OpenCFP\Application(BASE_PATH, Environment::testing()));
-
-        $this->assertInstanceOf(Console\Application::class, $application);
-    }
-
-    public function testConstructorSetsName()
-    {
-        $application = new Application(new \OpenCFP\Application(BASE_PATH, Environment::testing()));
-
-        $this->assertSame('OpenCFP', $application->getName());
-    }
-
-    public function testConstructorAddsInputOptionForEnvironment()
-    {
-        $application = new Application(new \OpenCFP\Application(BASE_PATH, Environment::testing()));
-
-        $inputDefinition = $application->getDefinition();
-
-        $this->assertTrue($inputDefinition->hasOption('env'));
-
-        $option = $inputDefinition->getOption('env');
-
-        $this->assertNull($option->getShortcut());
-        $this->assertTrue($option->isValueRequired());
-        $this->assertSame('The environment the command should run in', $option->getDescription());
-    }
-
-    public function testConstructorSetsApplication()
-    {
-        $baseApp = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $application = new Application($baseApp);
-
-        $this->assertAttributeSame($baseApp, 'app', $application);
-    }
-
-    public function testHasDefaultCommands()
-    {
-        $appContainer = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $application = new Application($appContainer);
-
-        $expected = [
-            Console\Command\HelpCommand::class,
-            Console\Command\ListCommand::class,
-            Command\AdminDemoteCommand::class,
-            Command\AdminPromoteCommand::class,
-            Command\UserCreateCommand::class,
-            Command\ClearCacheCommand::class,
-        ];
-
-        $actual = array_map(function (Console\Command\Command $command) {
-            return get_class($command);
-        }, $application->getDefaultCommands());
-
-        sort($expected);
-        sort($actual);
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    public function testAdminDemoteDetectsNonExistentUser()
+    /**
+     * @test
+     */
+    public function promoteDetectsNonExistentUser()
     {
         // Create our input and output dependencies
         $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
@@ -92,13 +31,16 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app['sentry'] = $sentry;
 
         // Create our command object and inject our application
-        $command = new \OpenCFP\Console\Command\AdminDemoteCommand();
+        $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
         $command->setApp($app);
         $response = $command->execute($input, $output);
         $this->assertEquals($response, 1);
     }
 
-    public function testAdminDemoteWillNotDemoteNonAdminAccounts()
+    /**
+     * @test
+     */
+    public function willNotPromoteExistingAdminAccounts()
     {
         // Create our input and output dependencies
         $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
@@ -106,10 +48,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         /**
          * Create a mock Sentry object that returns a user that is in the
-         * system but does not have admin access
+         * system and is an admin
          */
         $user = Mockery::mock('\stdClass');
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
+        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
         $sentry = Mockery::mock('\Cartalyst\Sentry\Sentry');
         $sentry->shouldReceive('getUserProvider->findByLogin')
             ->andReturn($user);
@@ -117,25 +59,28 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app['sentry'] = $sentry;
 
         // Create our command object and inject our application
-        $command = new \OpenCFP\Console\Command\AdminDemoteCommand();
+        $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
         $command->setApp($app);
         $response = $command->execute($input, $output);
         $this->assertEquals($response, 1);
     }
 
-    public function testAdminDemoteSuccess()
+    /**
+     * @test
+     */
+    public function promoteExistingNonAdminAccount()
     {
         // Create our input and output dependencies
         $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
         $output = $this->createOutputInterface();
 
         /**
-         * Create a mock User that has admin access and a removeGroup
+         * Create a mock User that has admin access and add an `addGroup`
          * method that is stubbed out
          */
         $user = Mockery::mock('\stdClass');
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
-        $user->shouldReceive('removeGroup');
+        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
+        $user->shouldReceive('addGroup');
 
         /**
          * Create a Sentry object that also returns an ID that represents
@@ -152,9 +97,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         // Create our command object and inject our application
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app['sentry'] = $sentry;
-        $command = new \OpenCFP\Console\Command\AdminDemoteCommand();
+        $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
         $command->setApp($app);
         $response = $command->execute($input, $output);
+
+        /**
+         * A response of 0 signifies that the console command ran without an
+         * error
+         */
         $this->assertEquals($response, 0);
     }
 
