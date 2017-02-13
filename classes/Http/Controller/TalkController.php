@@ -156,7 +156,7 @@ class TalkController extends BaseController
         $spot = $this->service('spot');
 
         $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-        $talk_info = $talk_mapper->where(['id' => $talk_id])->with(['tags'])->execute()->first()->toArray();
+        $talk_info = $talk_mapper->where(['id' => $talk_id])->execute()->first()->toArray();
 
         if ($talk_info['user_id'] !== (int) $user->getId()) {
             return $this->redirectTo('dashboard');
@@ -178,9 +178,6 @@ class TalkController extends BaseController
             'slides' => $talk_info['slides'],
             'other' => $talk_info['other'],
             'sponsor' => $talk_info['sponsor'],
-            'tags' => array_reduce($talk_info['tags'], function ($response, array $item) {
-                return (strlen($response) > 0) ? $response . ', ' . $item['tag'] : $item['tag'];
-            }),
             'buttonInfo' => 'Update my talk!',
         ];
 
@@ -227,7 +224,6 @@ class TalkController extends BaseController
             'slides' => $req->get('slides'),
             'other' => $req->get('other'),
             'sponsor' => $req->get('sponsor'),
-            'tags' => $req->get('tags'),
             'buttonInfo' => 'Submit my talk!',
         ];
 
@@ -274,7 +270,6 @@ class TalkController extends BaseController
             'other' => $req->get('other'),
             'sponsor' => $req->get('sponsor'),
             'user_id' => $req->get('user_id'),
-            'tags' => $req->get('tags'),
         ];
 
         $form = $this->getTalkForm($request_data);
@@ -283,7 +278,6 @@ class TalkController extends BaseController
 
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
-            $tags = explode(',', $sanitized_data['tags']);
 
             /* @var Locator $spot */
             $spot = $this->service('spot');
@@ -303,9 +297,6 @@ class TalkController extends BaseController
             ];
 
             $talk = $talk_mapper->build($data);
-
-            $tag_entity = $this->fromTags($tags);
-            $talk->relation('tags', new Collection($tag_entity));
 
             try {
                 $talk_data = $talk_mapper->save($talk, ['relations' => true]);
@@ -340,7 +331,6 @@ class TalkController extends BaseController
             'slides' => $req->get('slides'),
             'other' => $req->get('other'),
             'sponsor' => $req->get('sponsor'),
-            'tags' => $req->get('tags'),
             'buttonInfo' => 'Submit my talk!',
         ];
 
@@ -382,7 +372,6 @@ class TalkController extends BaseController
             'other' => $req->get('other'),
             'sponsor' => $req->get('sponsor'),
             'user_id' => $req->get('user_id'),
-            'tags' => $req->get('tags'),
         ];
 
         $form = $this->getTalkForm($request_data);
@@ -391,16 +380,9 @@ class TalkController extends BaseController
 
         if ($isValid) {
             $sanitized_data = $form->getCleanData();
-            $tags = explode(',', $sanitized_data['tags']);
-
-            $tag_entity = [];
-            foreach ($tags as $tag) {
-                $tag_entity[] = new \OpenCFP\Domain\Entity\Tag(['tag' => trim($tag)]);
-            }
 
             /* @var Locator $spot */
             $spot = $this->service('spot');
-
             $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $data = [
                 'id' => (int) $sanitized_data['id'],
@@ -418,8 +400,6 @@ class TalkController extends BaseController
             ];
 
             $talk = $talk_mapper->build($data);
-
-            $talk->relation('tags', new Collection($tag_entity));
 
             try {
                 $talk_data = $talk_mapper->save($talk, ['relations' => true]);
@@ -455,7 +435,6 @@ class TalkController extends BaseController
             'slides' => $req->get('slides'),
             'other' => $req->get('other'),
             'sponsor' => $req->get('sponsor'),
-            'tags' => $req->get('tags'),
             'buttonInfo' => 'Update my talk!',
         ];
 
@@ -549,19 +528,18 @@ class TalkController extends BaseController
         }
     }
 
-    /*
-     * @param string[] $tags
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return static[]
+    /**
+     * @param $request_data
+     * @return TalkForm
      */
-    public static function fromTags(array $tags)
+    private function getTalkForm($request_data)
     {
-        return array_map(function ($tag) {
-            return new \OpenCFP\Domain\Entity\Tag([
-                'tag' => trim($tag),
-            ]);
-        }, $tags);
+        $options = [
+            'categories' => $this->getTalkCategories(),
+            'levels' => $this->getTalkLevels(),
+            'types' => $this->getTalkTypes()
+        ];
+        $form = new TalkForm($request_data, $this->service('purifier'), $options);
+        return $form;
     }
 }
