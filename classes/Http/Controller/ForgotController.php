@@ -15,20 +15,18 @@ class ForgotController extends BaseController
 
     public function indexAction()
     {
-        $form = $this->service('form.factory')->create(new ForgotForm());
-
+        $form = $this->service('form.factory')->createBuilder(ForgotForm::class)->getForm();
         $data = [
             'form' => $form->createView(),
-            'current_page' => "Forgot Password",
+            'current_page' => 'Forgot Password'
         ];
-
         return $this->render('user/forgot_password.twig', $data);
     }
 
     public function sendResetAction(Request $req)
     {
-        $form = $this->service('form.factory')->create(new ForgotForm());
-        $form->bind($req);
+        $form = $this->service('form.factory')->createBuilder(ForgotForm::class)->getForm();
+        $form->handleRequest($req);
 
         if (!$form->isValid()) {
             $this->service('session')->set('flash', [
@@ -46,11 +44,9 @@ class ForgotController extends BaseController
         try {
             /* @var Sentry $sentry */
             $sentry = $this->service('sentry');
-
             $user = $sentry->getUserProvider()->findByLogin($data['email']);
         } catch (UserNotFoundException $e) {
             $this->service('session')->set('flash', $this->successfulSendFlashParameters($data['email']));
-
             return $this->redirectTo('forgot_password');
         }
 
