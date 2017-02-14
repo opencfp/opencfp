@@ -60,3 +60,10 @@ talk:
   types:
     regular: Regular (50 mins)
     tutorial: Tutorial (3 hrs)
+
+security:
+  firewalls:
+    secured_area:
+      form_forgot:
+        csrf_parameter: _csrf_security_token
+        csrf_token_id: forgot_password
