@@ -6,7 +6,7 @@ use OpenCFP\Domain\Entity;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
-class SpeakerProfileTest extends \PHPUnit_Framework_TestCase
+class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 

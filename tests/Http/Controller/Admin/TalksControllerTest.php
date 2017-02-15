@@ -9,7 +9,7 @@ use OpenCFP\Environment;
 use Spot\Query;
 use Twig_Environment;
 
-class TalksControllerTest extends \PHPUnit_Framework_TestCase
+class TalksControllerTest extends \PHPUnit\Framework\TestCase
 {
     private $app;
 

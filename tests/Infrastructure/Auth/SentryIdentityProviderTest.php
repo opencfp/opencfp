@@ -5,6 +5,7 @@ namespace OpenCFP\Test\Infrastructure\Auth;
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users;
 use Mockery as m;
+use OpenCFP\Application\NotAuthorizedException;
 use OpenCFP\Domain\Entity;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
@@ -12,7 +13,7 @@ use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
-class SentryIdentityProviderTest extends \PHPUnit_Framework_TestCase
+class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 
@@ -29,10 +30,11 @@ class SentryIdentityProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(IdentityProvider::class, $provider);
     }
 
+    /**
+     * @expectedException \OpenCFP\Domain\Services\NotAuthenticatedException
+     */
     public function testGetCurrentUserThrowsNotAuthenticatedExceptionWhenNotAuthenticated()
     {
-        $this->setExpectedException(NotAuthenticatedException::class);
-
         $sentry = $this->getSentryMock();
 
         $sentry

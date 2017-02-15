@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Domain;
 use DateTime;
 use OpenCFP\Domain\CallForProposal;
 
-class CallForProposalTest extends \PHPUnit_Framework_TestCase
+class CallForProposalTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

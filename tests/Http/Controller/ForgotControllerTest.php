@@ -2,11 +2,12 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
+use Cartalyst\Sentry\Users\UserNotFoundException;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 
-class ForgotControllerTest extends \PHPUnit_Framework_TestCase
+class ForgotControllerTest extends \PHPUnit\Framework\TestCase
 {
     protected $app;
 
@@ -101,9 +102,8 @@ class ForgotControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Cartalyst\Sentry\Users\UserNotFoundException;
      */
-    public function resetPasswordNotFindingUserCorrectlyThrowsException()
+    public function resetPasswordNotFindingUserCorrectlyDisplaysMessage()
     {
         $form_factory = m::mock('Silex\Provider\FormServiceProvider');
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
@@ -113,6 +113,12 @@ class ForgotControllerTest extends \PHPUnit_Framework_TestCase
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
         $controller->sendResetAction($req);
+
+        $flash_message = $this->app['session']->get('flash');
+        $this->assertContains(
+            'If your email was valid, we sent a link to reset your password to',
+            $flash_message['ext']
+        );
     }
 
     /**

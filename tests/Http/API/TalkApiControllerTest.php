@@ -10,7 +10,7 @@ use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Http\API\TalkController;
 use Symfony\Component\HttpFoundation\Request;
 
-class TalkApiControllerTest extends \PHPUnit_Framework_TestCase
+class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var TalkController

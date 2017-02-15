@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 /**
  * @covers OpenCFP\Application
  */
-class ApplicationTest extends \PHPUnit_Framework_TestCase
+class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
     /** @var Application */
     private $sut;

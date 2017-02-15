@@ -30,11 +30,13 @@ class IlluminateAirportInformationDatabaseTest extends DatabaseTestCase
         $this->assertEquals('USA', $airport->country);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @expectedException \Exception
+     * @expectedExceptionMessage not found
+     */
     public function it_squawks_when_airport_is_not_found()
     {
-        $this->setExpectedException(\Exception::class, 'not found');
-
         $this->airports->withCode('foobarbaz');
     }
 

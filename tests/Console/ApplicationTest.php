@@ -8,7 +8,7 @@ use OpenCFP\Console\Command;
 use OpenCFP\Environment;
 use Symfony\Component\Console;
 
-class ApplicationTest extends \PHPUnit_Framework_TestCase
+class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
     public function tearDown()
     {

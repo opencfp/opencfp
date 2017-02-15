@@ -13,7 +13,7 @@ use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Twig_Environment;
 
-class DashboardControllerTest extends \PHPUnit_Framework_TestCase
+class DashboardControllerTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 

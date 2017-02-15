@@ -8,7 +8,7 @@ use OpenCFP\Environment;
 /**
  * @group db
  */
-class FavoriteTest extends \PHPUnit_Framework_TestCase
+class FavoriteTest extends \PHPUnit\Framework\TestCase
 {
     private $app;
     private $mapper;

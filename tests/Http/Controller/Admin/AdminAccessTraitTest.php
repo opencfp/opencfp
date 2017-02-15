@@ -6,7 +6,7 @@ use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
 use OpenCFP\Application;
 
-class AdminAccessTraitTest extends \PHPUnit_Framework_TestCase
+class AdminAccessTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testReturnsFalseIfCheckFailed()
     {

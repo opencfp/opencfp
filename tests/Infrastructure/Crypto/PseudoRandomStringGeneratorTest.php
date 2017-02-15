@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Infrastructure\Crypto;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use RandomLib\Factory;
 
-class PseudoRandomStringGeneratorTest extends \PHPUnit_Framework_TestCase
+class PseudoRandomStringGeneratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var PseudoRandomStringGenerator
