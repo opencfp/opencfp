@@ -4,7 +4,7 @@ namespace OpenCFP\Test\Domain;
 
 use OpenCFP\Domain\AirportInfo;
 
-class AirportInfoTest extends \PHPUnit_Framework_TestCase
+class AirportInfoTest extends \PHPUnit\Framework\TestCase
 {
 
     /** @test */

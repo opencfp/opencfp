@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Console;
 use Mockery;
 use OpenCFP\Environment;
 
-class AdminPromoteTest extends \PHPUnit_Framework_TestCase
+class AdminPromoteTest extends \PHPUnit\Framework\TestCase
 {
     public function tearDown()
     {

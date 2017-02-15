@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Test\Http\API;
 
-class ApiControllerTest extends \PHPUnit_Framework_TestCase
+class ApiControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var StubApiController
@@ -32,10 +32,12 @@ class ApiControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Huzzah', $response->getContent());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @expectedException \PHPUnit\Framework\Exception
+     */
     public function it_warns_when_successful_status_code_is_used_for_error()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error_Warning');
         $this->sut->setStatusCode(200)
             ->respondWithError('Error with success status code');
     }

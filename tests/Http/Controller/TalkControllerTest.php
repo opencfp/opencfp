@@ -11,7 +11,7 @@ use OpenCFP\Domain\Entity\TalkMeta;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\TalkController;
 
-class TalkControllerTest extends \PHPUnit_Framework_TestCase
+class TalkControllerTest extends \PHPUnit\Framework\TestCase
 {
     private $app;
     private $req;

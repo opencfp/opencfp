@@ -14,7 +14,7 @@ use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
 
-class SpeakersTest extends \PHPUnit_Framework_TestCase
+class SpeakersTest extends \PHPUnit\Framework\TestCase
 {
     const SPEAKER_ID = '1';
 
@@ -72,16 +72,19 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($speaker->first_name . ' ' . $speaker->last_name, $profile->getName());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @expectedException \OpenCFP\Domain\EntityNotFoundException
+     */
     public function it_throws_an_exception_when_speaker_is_not_found()
     {
         $this->trainStudentRepositoryToThrowEntityNotFoundException();
-
-        $this->setExpectedException(\OpenCFP\Domain\EntityNotFoundException::class);
         $this->sut->findProfile();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_retrieves_a_specific_talk_owned_by_speaker()
     {
         $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerWithOneTalk());
@@ -91,14 +94,15 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Testy Talk', $talk->title);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @expectedException \OpenCFP\Application\NotAuthorizedException
+     */
     public function it_disallows_speakers_viewing_talks_other_than_their_own()
     {
         // We use relation to grab speakers talks. So if they have none, someone is doing
         // something screwy attempting to get a talk they should be able to.
         $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerWithNoTalks());
-
-        $this->setExpectedException(\OpenCFP\Application\NotAuthorizedException::class);
         $this->sut->getTalk(1);
     }
 
@@ -116,12 +120,13 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Yet Another Talk', $talks[2]->title);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @expectedException \OpenCFP\Application\NotAuthorizedException
+     */
     public function it_guards_if_spot_relation_ever_returns_talks_that_arent_owned_by_speaker()
     {
         $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerFromMisbehavingSpot());
-
-        $this->setExpectedException(\OpenCFP\Application\NotAuthorizedException::class);
         $this->sut->getTalk(1);
     }
 
@@ -161,18 +166,20 @@ class SpeakersTest extends \PHPUnit_Framework_TestCase
          * the data in the TalkSubmission and then persist that Talk. It should dispatch
          * an event when a talk is submitted.
          */
-        $this->sut->submitTalk($submission);
+        $talk = $this->sut->submitTalk($submission);
+        $this->assertEquals($talk->title, 'Sample Talk');
+        $this->assertEquals($talk->description, 'Some example talk for our submission');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @expectedException Exception
+     */
     public function it_doesnt_allow_talk_submissions_after_cfp_has_ended()
     {
         $this->callForProposal->shouldReceive('isOpen')
             ->once()
             ->andReturn(false);
-
-        $this->setExpectedException('Exception', 'has ended');
-
         $submission = TalkSubmission::fromNative([
             'title' => 'Sample Talk',
             'description' => 'Some example talk for our submission',

@@ -178,9 +178,6 @@ class TalkController extends BaseController
             'slides' => $talk_info['slides'],
             'other' => $talk_info['other'],
             'sponsor' => $talk_info['sponsor'],
-            'tags' => array_reduce($talk_info['tags'], function ($response, array $item) {
-                return (strlen($response) > 0) ? $response . ', ' . $item['tag'] : $item['tag'];
-            }),
             'buttonInfo' => 'Update my talk!',
         ];
 

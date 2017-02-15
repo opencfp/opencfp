@@ -8,7 +8,7 @@ use Swift_Mailer;
 use Swift_Message;
 use Twig_Template;
 
-class ResetEmailerTest extends \PHPUnit_Framework_TestCase
+class ResetEmailerTest extends \PHPUnit\Framework\TestCase
 {
     protected function tearDown()
     {
@@ -42,10 +42,11 @@ class ResetEmailerTest extends \PHPUnit_Framework_TestCase
             'Reset'
         );
 
-        $resetEmailer->send(
+        $response = $resetEmailer->send(
             123,
             $userEmail,
             '987abc'
         );
+        $this->assertTrue($response !== false);
     }
 }

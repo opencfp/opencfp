@@ -1,9 +1,7 @@
 <?php namespace OpenCFP\Provider;
 
+use Aptoma\Twig\Extension\MarkdownEngine;
 use Aptoma\Twig\Extension\MarkdownExtension;
-use Ciconia\Ciconia;
-use Ciconia\Extension\Gfm\InlineStyleExtension;
-use Ciconia\Extension\Gfm\WhiteSpaceExtension;
 use OpenCFP\Application;
 use OpenCFP\Http\View\TalkHelper;
 use Pimple\Container;
@@ -57,11 +55,7 @@ class TwigServiceProvider implements ServiceProviderInterface
             $twig->addGlobal('site', $app->config('application'));
 
             // Twig Markdown Extension
-            $markdown = new Ciconia();
-            $markdown->addExtension(new InlineStyleExtension);
-            $markdown->addExtension(new WhiteSpaceExtension);
-            $engine = new CiconiaEngine($markdown);
-
+            $engine = new MarkdownEngine\MichelfMarkdownEngine();
             $twig->addExtension(new MarkdownExtension($engine));
 
             $twig->addGlobal(

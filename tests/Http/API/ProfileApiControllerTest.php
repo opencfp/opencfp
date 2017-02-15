@@ -11,7 +11,7 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\API\ProfileController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProfileApiControllerTest extends \PHPUnit_Framework_TestCase
+class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ProfileController

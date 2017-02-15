@@ -10,7 +10,7 @@ use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use Spot\Mapper;
 
-class SpotSpeakerRepositoryTest extends \PHPUnit_Framework_TestCase
+class SpotSpeakerRepositoryTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 
@@ -23,10 +23,11 @@ class SpotSpeakerRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(SpeakerRepository::class, $repository);
     }
 
+    /**
+     * @expectedException \OpenCFP\Domain\EntityNotFoundException
+     */
     public function testFindByThrowsEntityNotFoundException()
     {
-        $this->setExpectedException(EntityNotFoundException::class, '');
-
         $id = $this->getFaker()->randomNumber();
 
         $mapper = $this->getMapperMock();
@@ -61,21 +62,6 @@ class SpotSpeakerRepositoryTest extends \PHPUnit_Framework_TestCase
         $repository = new SpotSpeakerRepository($mapper);
 
         $this->assertSame($speaker, $repository->findById($id));
-    }
-
-    public function testPersistDoesNothing()
-    {
-        $mapper = $this->getMapperMock();
-
-        $mapper->shouldNotReceive(m::any());
-
-        $speaker = $this->getUserMock();
-
-        $speaker->shouldNotReceive(m::any());
-
-        $repository = new SpotSpeakerRepository($mapper);
-
-        $repository->persist($speaker);
     }
 
     //

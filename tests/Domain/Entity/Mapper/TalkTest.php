@@ -9,7 +9,7 @@ use Spot\Locator;
 /**
  * @group db
  */
-class TalkTest extends \PHPUnit_Framework_TestCase
+class TalkTest extends \PHPUnit\Framework\TestCase
 {
     private $app;
     private $mapper;

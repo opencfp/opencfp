@@ -13,7 +13,7 @@ use Spot\Locator;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
-class SignupControllerTest extends \PHPUnit_Framework_TestCase
+class SignupControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

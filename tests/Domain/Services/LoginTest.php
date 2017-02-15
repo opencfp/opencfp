@@ -9,7 +9,7 @@ use Mockery as m;
 use OpenCFP\Domain\Services\Login;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
-class LoginTest extends \PHPUnit_Framework_TestCase
+class LoginTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 

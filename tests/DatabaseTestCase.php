@@ -9,7 +9,7 @@ use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase
+abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var PDO
