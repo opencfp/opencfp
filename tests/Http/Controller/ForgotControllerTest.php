@@ -64,13 +64,39 @@ class ForgotControllerTest extends \PHPUnit_Framework_TestCase
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
-        $response = $controller->sendResetAction($req);
+        $controller->sendResetAction($req);
 
         // As long as the email validates as being a potential email, the flash message should indicate success
         $flash_message = $this->app['session']->get('flash');
         $this->assertContains(
             'If your email was valid, we sent a link to reset your password to',
-            (string) $flash_message['ext']
+            $flash_message['ext']
         );
     }
+
+    /**
+     * @test
+     */
+    public function invalidResetFormTriggersErrorMessage()
+    {
+        $form = m::mock('OpenCFP\Http\Form\ForgotForm');
+        $form->shouldReceive('handleRequest');
+        $form->shouldReceive('isValid')->andReturn(false);
+        $form_factory = m::mock('Silex\Provider\FormServiceProvider');
+        $form_factory->shouldReceive('createBuilder->getForm')->andReturn($form);
+        $this->app['form.factory'] = $form_factory;
+
+        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $controller = new \OpenCFP\Http\Controller\ForgotController();
+        $controller->setApplication($this->app);
+        $controller->sendResetAction($req);
+
+        $flash_message = $this->app['session']->get('flash');
+        $this->assertContains(
+            'Please enter a properly formatted email address',
+            $flash_message['ext']
+        );
+
+    }
 }
+
