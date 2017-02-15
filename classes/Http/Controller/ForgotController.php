@@ -25,7 +25,9 @@ class ForgotController extends BaseController
 
     public function sendResetAction(Request $req)
     {
-        $form = $this->service('form.factory')->createBuilder(ForgotForm::class)->getForm();
+        $form = $this->service('form.factory')
+            ->createBuilder(ForgotForm::class)
+            ->getForm();
         $form->handleRequest($req);
 
         if (!$form->isValid()) {
