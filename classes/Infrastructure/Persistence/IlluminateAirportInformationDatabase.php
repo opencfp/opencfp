@@ -35,6 +35,6 @@ class IlluminateAirportInformationDatabase implements AirportInformationDatabase
             throw new \Exception("An airport matching '{$code}' was not found.");
         }
 
-        return AirportInfo::fromData($airport);
+        return AirportInfo::fromData((array)$airport);
     }
 }
