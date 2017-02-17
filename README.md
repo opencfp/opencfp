@@ -72,6 +72,7 @@ merge master to your private branch and get updates when desired!
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php7.0-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
+ * MySQL 5.6+
 
 <a name="installation" />
 ## Installation
