@@ -32,8 +32,8 @@ class CreateReminders extends AbstractMigration
             ->addColumn('code', 'string')
             ->addColumn('completed', 'boolean')
             ->addColumn('completed_at', 'timestamp', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['default' => '1970-01-01 00:00:00'])
-            ->addColumn('updated_at', 'timestamp', ['default' => '1970-01-01 00:00:00'])
+            ->addColumn('created_at', 'timestamp', ['default' => 'NOW()'])
+            ->addColumn('updated_at', 'timestamp', ['default' => 'NOW()'])
             ->create();
     }
 }
