@@ -30,8 +30,8 @@ class SentinelThrottleUpdates extends AbstractMigration
         $table = $this->table('throttle');
         $table->addColumn('ip', 'string', ['null' => true])
             ->addColumn('type', 'string')
-            ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('created_at', 'timestamp', ['default' => '1970-01-01 00:00:00'])
+            ->addColumn('updated_at', 'timestamp', ['default' => '1970-01-01 00:00:00'])
             ->removeColumn('ip_address')
             ->removeColumn('attempts')
             ->removeColumn('suspended')
