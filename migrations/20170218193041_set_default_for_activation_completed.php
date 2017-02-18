@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateRoleUsers extends AbstractMigration
+class SetDefaultForActivationCompleted extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,11 +27,8 @@ class CreateRoleUsers extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('role_users', ['id' => false, 'primary_key' => ['user_id','role_id']]);
-        $table->addColumn('user_id', 'integer')
-            ->addColumn('role_id', 'integer')
-            ->addColumn('created_at', 'timestamp', ['null' => true])
-            ->addColumn('updated_at', 'timestamp', ['null' => true])
-            ->create();
+        $this->table('activations')
+            ->changeColumn('completed', 'boolean', ['default' => false])
+            ->update();
     }
 }

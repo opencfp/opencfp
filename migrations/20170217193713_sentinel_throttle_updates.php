@@ -25,7 +25,7 @@ class SentinelThrottleUpdates extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function up()
     {
         $table = $this->table('throttle');
         $table->addColumn('ip', 'string', ['null' => true])
@@ -38,6 +38,22 @@ class SentinelThrottleUpdates extends AbstractMigration
             ->removeColumn('last_attempt_at')
             ->removeColumn('suspended_at')
             ->removeColumn('banned_at')
+            ->update();
+    }
+
+    public function down()
+    {
+        $table = $this->table('throttle');
+        $table->addColumn('ip_address', 'string')
+            ->addColumn('attempts', 'string')
+            ->addColumn('suspended', 'string')
+            ->addColumn('last_attempt_at', 'string')
+            ->addColumn('suspended_at', 'string')
+            ->addColumn('banned_at', 'string')
+            ->removeColumn('ip')
+            ->removeColumn('type')
+            ->removeColumn('created_at')
+            ->removeColumn('updated_at')
             ->update();
     }
 }

@@ -3,6 +3,7 @@
 namespace OpenCFP\Console\Command;
 
 use OpenCFP\Console\BaseCommand;
+use Cartalyst\Sentinel\Activations\EloquentActivation;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +20,7 @@ class UserCreateCommand extends BaseCommand
                 new InputOption('last_name', 'l', InputOption::VALUE_REQUIRED, 'Last Name of the user to create', null),
                 new InputOption('email', 'e', InputOption::VALUE_REQUIRED, 'Email of the user to create', null),
                 new InputOption('password', 'p', InputOption::VALUE_REQUIRED, 'Password of the user to create', null),
-                new InputOption('admin', 'a', InputOption::VALUE_NONE, 'Promote to administrator', null),
+                new InputOption('role', 'r', InputOption::VALUE_OPTIONAL, "Role of the user to create (speaker, reviewer, admin), default is speaker", null)
             ])
             ->setDescription('Creates a new user');
     }
@@ -30,28 +31,32 @@ class UserCreateCommand extends BaseCommand
             $input,
             $output
         );
-
         $io->title('OpenCFP');
-
         $io->section('Creating User');
+
+        // Figure what role was passed in
+        $valid_roles = ['speaker', 'reviewer', 'admin'];
+        $role = 'speaker';
+
+        if ($input->getOption('role') !== null) {
+            $role = $input->getOption('role');
+        }
+
+        if (!in_array($role, $valid_roles)) {
+            $io->error('You selected an invalid role for the user');
+            return 1;
+        }
 
         $user = $this->createUser([
             'first_name' => $input->getOption('first_name'),
             'last_name' => $input->getOption('last_name'),
             'password' => $input->getOption('password'),
             'email' => $input->getOption('email'),
+            'role' => $role
         ]);
-
         if ($user == false) {
             $io->error('User Already Exists!');
             return 1;
-        }
-
-        $io->block('Account was created');
-
-        if ($input->getOption('admin')) {
-            $io->block('Promoting to admin.');
-            $this->promote($user);
         }
 
         $io->success('User Created!');
@@ -60,43 +65,21 @@ class UserCreateCommand extends BaseCommand
     private function createUser($data)
     {
         try {
-            $user_data = [
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'email' => $data['email'],
-                'password' => $data['password'],
-                'activated' => 1,
+            $credentials = [
+                'first_name' => $data['first_name'] ?: null,
+                'last_name' => $data['last_name'] ?: null,
+                'email' => $data['email'] ?: null,
+                'password' => $data['password'] ?: null,
             ];
-
-            /* @var Sentry $sentry */
-            $sentry = $this->app['sentry'];
-
-
-            $user = $sentry->getUserProvider()->create($user_data);
-
+            $sentinel = $this->app['sentinel'];
+            $user = $sentinel::registerAndActivate($credentials);
+            $role = $sentinel::findRoleBySlug($data['role']);
+            $role->users()->attach($user);
 
             return $user;
-        } catch (UserExistsException $e) {
+        } catch (Exception $e) {
+            echo $e->getMessage(). "\n";
             return false;
         }
-    }
-
-    private function promote($user)
-    {
-        if ($user->hasAccess('admin')) {
-            $io->error(sprintf(
-                'Account with email %s already is in the Admin group.',
-                $email
-            ));
-
-
-            return false;
-        }
-
-        $sentry = $this->app['sentry'];
-        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-        $user->addGroup($adminGroup);
-
-        return true;
     }
 }
