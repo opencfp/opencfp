@@ -1,6 +1,5 @@
 language: php
 
-dist: trusty
 sudo: false
 
 matrix:
