@@ -1,6 +1,10 @@
 language: php
 
+dist: trusty
 sudo: false
+
+services:
+  - mysql
 
 matrix:
   fast_finish: true
