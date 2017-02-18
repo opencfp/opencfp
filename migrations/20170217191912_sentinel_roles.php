@@ -31,8 +31,8 @@ class SentinelRoles extends AbstractMigration
         $table->addColumn('slug', 'string')
             ->addColumn('name', 'string')
             ->addColumn('permissions', 'text')
-            ->addColumn('created_at', 'timestamp', ['default' => '1970-01-01 00:00:00'])
-            ->addColumn('upated_at', 'timestamp', ['default' => '1970-01-01 00:00:00'])
+            ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('upated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->create();
     }
 }
