@@ -3,7 +3,6 @@
 namespace OpenCFP\Console\Command;
 
 use OpenCFP\Console\BaseCommand;
-use Cartalyst\Sentinel\Activations\EloquentActivation;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

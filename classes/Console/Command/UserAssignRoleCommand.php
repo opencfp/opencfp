@@ -10,6 +10,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UserAssignRoleCommand extends BaseCommand
 {
+    protected $app;
+
     protected function configure()
     {
         $this
@@ -21,6 +23,17 @@ class UserAssignRoleCommand extends BaseCommand
             ->setDescription('Assign a user to a specific role');
     }
 
+    /**
+     * Method used to inject a OpenCFP\Application object into the command
+     * for testing purposes
+     *
+     * @param $app \OpenCFP\Application
+     */
+    public function setApp($app)
+    {
+        $this->app = $app;
+    }
+
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle(
@@ -28,7 +41,7 @@ class UserAssignRoleCommand extends BaseCommand
             $output
         );
         $io->title('OpenCFP');
-        $io->section('Changing user role');
+        $io->section('Assigning user role');
 
         // Figure what role was passed in
         $valid_roles = ['speaker', 'reviewer', 'admin'];

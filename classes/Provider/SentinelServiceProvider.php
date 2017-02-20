@@ -1,7 +1,6 @@
 <?php namespace OpenCFP\Provider;
 
-use Cartalyst\Sentinel\Sentinel;
-use Cartalyst\Sentry\Facades\Native\Sentry;
+use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -32,7 +31,7 @@ class SentinelServiceProvider implements ServiceProviderInterface
         $database->bootEloquent();
 
         $app['sentinel'] = function ($app) {
-            return new \Cartalyst\Sentinel\Native\Facades\Sentinel;
+            return new Sentinel;
         };
     }
 }

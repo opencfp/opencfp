@@ -64,6 +64,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
             Command\AdminPromoteCommand::class,
             Command\UserCreateCommand::class,
             Command\ClearCacheCommand::class,
+            Command\UserAssignRoleCommand::class,
         ];
 
         $actual = array_map(function (Console\Command\Command $command) {
@@ -156,6 +157,54 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $command->setApp($app);
         $response = $command->execute($input, $output);
         $this->assertEquals($response, 0);
+    }
+
+    public function testUserAssignRoleSuccess()
+    {
+        $input = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
+        $input->shouldReceive('getOption')->with('email')->andReturn('test@opencfp.org');
+        $input->shouldReceive('getOption')->with('role')->andReturn('reviewer');
+        $user = new \stdClass();
+        $user->roles = [];
+        $role = Mockery::mock('\Cartalyst\Sentinel\Roles\RoleInterface');
+        $role->shouldReceive('users->attach');
+        $sentinel = Mockery::mock('Cartalyst\Sentinel\Native\Facades\Sentinel');
+        $sentinel->shouldReceive('findByCredentials')->andReturn($user);
+        $sentinel->shouldReceive('findRoleBySlug')->andReturn($role);
+
+        $output = $this->createOutputInterface();
+
+        $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app['sentinel'] = $sentinel;
+        $command = new Command\UserAssignRoleCommand();
+        $command->setApp($app);
+        $response = $command->execute($input, $output);
+        $this->assertEquals($response, 0);
+    }
+
+    public function testUserAssignRoleFailure()
+    {
+        $input = Mockery::mock('Symfony\Component\Console\Input\InputInterface');
+        $input->shouldReceive('getOption')->with('email')->andReturn('test@opencfp.org');
+        $input->shouldReceive('getOption')->with('role')->andReturn('reviewer');
+        $user = new \stdClass();
+        $user_role = new \stdClass();
+        $user_role->slug = 'reviewer';
+        $user->roles = [$user_role];
+        $role = Mockery::mock('\Cartalyst\Sentinel\Roles\RoleInterface');
+        $role->shouldReceive('users->attach');
+        $sentinel = Mockery::mock('Cartalyst\Sentinel\Native\Facades\Sentinel');
+        $sentinel->shouldReceive('findByCredentials')->andReturn($user);
+        $sentinel->shouldReceive('findRoleBySlug')->andReturn($role);
+
+        $output = $this->createOutputInterface();
+
+        $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app['sentinel'] = $sentinel;
+        $command = new Command\UserAssignRoleCommand();
+        $command->setApp($app);
+        $response = $command->execute($input, $output);
+        $this->assertEquals($response, 1);
     }
 
     protected function createInputInterfaceWithEmail($email)
