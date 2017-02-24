@@ -1,55 +1,57 @@
-<form action="{{ formAction }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+<form id="signup" action="{{ url('user_create') }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+    {{ form_errors(form) }}
+    {{ form_widget(form._token) }}
     {% if id is defined %}
-        <input name="id" type="hidden" value="{{ id }}">
+        {{ form_widget(form.id) }}
     {% endif %}
     <div class="form-group">
         <label for="form-user-email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
-            <input id="form-user-email" type="email" name="email" class="form-control" placeholder="you@domain.com" value="{{ email | default('') }}">
+            {{ form_widget(form.email) }}
         </div>
     </div>
     {% if user is not defined %}
         <div class="form-group">
             <label for="form-user-password" class="col-sm-2 control-label">Password</label>
             <div class="col-sm-10">
-                <input id="form-user-password" type="password" name="password" class="form-control" placeholder="Password, at least 5 characters">
+                {{ form_widget(form.password.first) }}
             </div>
         </div>
         <div class="form-group">
-            <label for="form-user-password2" class="col-sm-2 control-label">Password</label>
+            <label for="form-user-password" class="col-sm-2 control-label">Password</label>
             <div class="col-sm-10">
-                <input id="form-user-password2" type="password" name="password2" class="form-control" placeholder="Password (confirm)">
+                {{ form_widget(form.password.second) }}
             </div>
         </div>
     {% endif %}
     <div class="form-group">
         <label for="form-user-first-name" class="col-sm-2 control-label">First Name</label>
         <div class="col-sm-10">
-            <input id="form-user-first-name" type="text" name="first_name" class="form-control" placeholder="First Name" value="{{ first_name | default('') }}">
+            {{ form_widget(form.first_name) }}
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-last-name" class="col-sm-2 control-label">Last Name</label>
         <div class="col-sm-10">
-            <input id="form-user-last-name" type="text" name="last_name" class="form-control" placeholder="Last Name" value="{{ last_name | default('') }}">
+            {{ form_widget(form.last_name) }}
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-company" class="col-sm-2 control-label">Company</label>
         <div class="col-sm-10">
-            <input id="form-user-company" type="text" name="company" class="form-control" placeholder="Company" value="{{ company | default('') }}">
+            {{ form_widget(form.company) }}
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-twitter" class="col-sm-2 control-label">Twitter</label>
         <div class="col-sm-10">
-            <input id="form-user-twitter" type="text" name="twitter" class="form-control" placeholder="@twitter" value="{{ twitter | default('') }}">
+            {{ form_widget(form.twitter) }}
         </div>
     </div>
     <div class="form-group">
         <label for="form-user-bio" class="col-sm-2 control-label">Speaker Bio</label>
         <div class="col-sm-10">
-            <textarea id="form-user-bio" name="speaker_bio" class="form-control" placeholder="Information About You" rows="5">{{ speaker_bio | default('') }}</textarea>
+            {{ form_widget(form.speaker_bio) }}
             <p class="help-block">Speaker bio can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
@@ -57,14 +59,14 @@
     <div class="form-group">
         <label for="form-user-airport" class="col-sm-2 control-label">Departing Airport Code</label>
         <div class="col-sm-10">
-            <input id="form-user-airport" type="text" name="airport" class="form-control" placeholder="3 Characters" value="{{ airport | default('') }}">
+            {{ form_widget(form.airport) }}
         </div>
     </div>
     {% endif %}
     <div class="form-group">
         <label for="form-user-notes" class="col-sm-2 control-label">Additional Notes</label>
         <div class="col-sm-10">
-            <textarea id="form-user-notes" name="speaker_info" class="form-control" placeholder="Other information you feel the organizers should be aware of" rows="5">{{ speaker_info | default('') }}</textarea>
+            {{ form_widget(form.speaker_info) }}
             <p class="help-block">Speaker notes can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
@@ -74,7 +76,7 @@
         <div class="col-sm-10">
             <div class="checkbox">
                 <label for="form-transportation">
-                    <input id="form-transportation" name="transportation" type="checkbox" value="1" {% if transportation == '1' %}checked{% endif %}> I need help with flight cost.
+                    <input id="{{ form.transportation.vars.id }}" name="signup_form[transportation]" type="checkbox" value="{{ form.transportation.vars.value }}" {{ form.transportation.vars.checked }}> I need help with flight cost.
                 </label>
             </div>
         </div>
@@ -84,7 +86,7 @@
         <div class="col-sm-10">
             <div class="checkbox">
                 <label for="form-hotel">
-                    <input id="form-hotel" name="hotel" type="checkbox" value="1" {% if hotel == '1' %}checked{% endif %}> I need help with hotel cost.
+                    <input id="{{ form.hotel.vars.id }}" name="signup_form[hotel]" type="checkbox" value="{{ form.hotel.vars.value }}" {{ form.hotel.vars.checked }}> I need help with hotel cost.
                 </label>
             </div>
         </div>
@@ -93,8 +95,7 @@
     <div class="form-group">
         <label for="form-user-photo" class="col-sm-2 control-label">Photo</label>
         <div class="col-sm-10">
-            <input type="file" id="form-user-photo" name="speaker_photo" class="form-control" placeholder="Photo at least 300px wide by 300px high" accept="image/jpg, image/jpeg, image/png">
-            <p class="help-block">Photo should be square, and must be at least 300px wide by 300px high. JPG and PNG are the only accepted formats.</p>
+            {{ form_widget(form.speaker_photo) }}
             {% if preview_photo is defined and preview_photo is not empty %}
                 <img src="{{ preview_photo }}" class="profile-photo">
             {% endif %}
@@ -106,7 +107,7 @@
         <div class="col-sm-10">
             <div class="checkbox">
                 <label for="form-agree-coc">
-                    <input id="form-agree-coc" name="agree_coc" type="checkbox" value="agreed" > I agree to abide by the <a href="{{ coc_link }}" target="_blank">Code of conduct</a>.
+                    {{  form_widget(form.agree_coc) }}
                 </label>
             </div>
         </div>

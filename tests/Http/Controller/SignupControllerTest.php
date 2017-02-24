@@ -2,13 +2,13 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Environment;
+use OpenCFP\Http\Controller\SignupController;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
@@ -21,20 +21,19 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function signupAfterEnddateShowsError($endDateString, $currentTimeString)
     {
-        // report that there is no active user
-        $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->andReturn(false);
-
-        $app = m::mock(\OpenCFP\Application::class);
-        // Create a session
+        $app = m::mock(Application::class);
         $app->shouldReceive('redirect');
 
-        $app->shouldReceive('offsetGet')->with('sentry')->andReturn($sentry);
+        // Set our enddate for the CfP
         $app->shouldReceive('config')->with('application.enddate')->andReturn($endDateString);
+
+        // Create our Sentinel double as a user is not logged in
+        $sentinel = m::mock(Sentinel::class);
+        $sentinel->shouldReceive('check')->andReturn(false);
+        $app->shouldReceive('offsetGet')->with('sentinel')->andReturn($sentinel);
 
         // Create a session
         $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
-
 
         // Create our URL generator
         $url = 'http://opencfp/signup';
@@ -42,6 +41,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
 
+        // Set our CallForProposal service the way we want
         $app->shouldReceive('offsetGet')->with('callforproposal')->andReturn(
             new CallForProposal(new \DateTime($endDateString))
         );
@@ -68,6 +68,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function signupBeforeEnddateRendersSignupForm($endDateString, $currentTimeString)
     {
+        // Create our test-centric App object
         $app = new Application(BASE_PATH, Environment::testing());
 
         // set the application end date configuration
@@ -75,22 +76,26 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $config['application']['enddate'] = $endDateString;
         $app['config'] = $config;
 
-        // report that there is no active user
-        $sentry = m::mock('stdClass');
-        $sentry->shouldReceive('check')->andReturn(false);
-        $app['sentry'] = $sentry;
-
+        // Override our CallForProposal's object
         $app['callforproposal'] = new CallForProposal(
             new \DateTime($endDateString)
         );
 
-        //$app['session'] = new Session(new MockFileSessionStorage());
-        //$app['form.csrf_provider'] = new SessionCsrfProvider($app['session'], 'secret');
+        // Create our Sentinel double
+        $sentinel = m::mock('SentinelWrapper');
+
+        // User is not logged in
+        $sentinel->shouldReceive('check')->andReturn(false);
+        $app['sentinel'] = $sentinel;
+        $app['session'] = new Session(new MockFileSessionStorage());
+        $app['session.test'] = true;
+
+        // Fire up our Application object
         ob_start();
         $app->run();
         ob_end_clean();
 
-        $controller = new \OpenCFP\Http\Controller\SignupController();
+        $controller = new SignupController();
         $controller->setApplication($app);
 
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
@@ -118,16 +123,71 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
+    public function formDataProvider()
+    {
+        return [
+            [[
+                'formAction' => 'http://opencfp/signup',
+                'first_name' => 'Testy',
+                'last_name' => 'McTesterton',
+                'email' => 'test@opencfp.org',
+                'company' => null,
+                'twitter' => null,
+                'password' => 'wutwut',
+                'password2' => 'wutwut',
+                'airport' => null,
+                'speaker_info' => null,
+                'speaker_bio' => null,
+                'transportation' => null,
+                'hotel' => null,
+                'buttonInfo' => 'Create my speaker profile',
+                'agree_coc' => null,
+            ]],
+            [[
+                'formAction' => 'http://opencfp/signup',
+                'first_name' => 'Testy',
+                'last_name' => 'McTesterton',
+                'email' => 'test@opencfp.org',
+                'company' => null,
+                'twitter' => null,
+                'password' => 'wutwut',
+                'password2' => 'wutwut',
+                'airport' => null,
+                'speaker_info' => null,
+                'speaker_bio' => null,
+                'transportation' => null,
+                'hotel' => null,
+                'buttonInfo' => 'Create my speaker profile',
+                'agree_coc' => 'agreed'
+            ]],
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider formDataProvider
      */
-    public function signupWithValidInfoWorks()
+    public function signupWithValidInfoWorks($form_data)
     {
         $app = m::mock(\OpenCFP\Application::class);
         $app->shouldReceive('redirect');
 
+        // Create a pretend Sentry object that registers and activates our user
+        $user = m::mock('stdClass');
+        $user->shouldReceive('attach');
+        $sentinel = m::mock('OpenCFP\Util\Wrapper\SentinelWrapper');
+        $sentinel->shouldReceive('registerAndActivate')->andReturn($user);
+        $role = m::mock('stdClass');
+        $role->shouldReceive('users')->andReturn($user);
+        $sentinel->shouldReceive('findRoleBySlug')->with('speaker')->andReturn($role);
+        $app->shouldReceive('offsetGet')->with('sentinel')->andReturn($sentinel);
+
         // Create a session
         $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
+
+        // Get our form factory and have it return our form
+        $isValid = true;
+        $app->shouldReceive('offsetGet')->with('form.factory')->andReturn($this->createSingupFormFactory($isValid));
 
         // Create our URL generator
         $url = 'http://opencfp/signup';
@@ -135,58 +195,11 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
 
-        // We need to set up our speaker information
-        $form_data = [
-            'formAction' => $url,
-            'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
-            'email' => 'test@opencfp.org',
-            'company' => null,
-            'twitter' => null,
-            'password' => 'wutwut',
-            'password2' => 'wutwut',
-            'airport' => null,
-            'speaker_info' => null,
-            'speaker_bio' => null,
-            'transportation' => null,
-            'hotel' => null,
-            'buttonInfo' => 'Create my speaker profile',
-            'agree_coc' => null,
-        ];
-
-        // Set our HTMLPurifier we use for validation
-        $config = HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier($config);
-        $app->shouldReceive('offsetGet')->with('purifier')->andReturn($purifier);
-        $app->shouldReceive('config')->with('application.coc_link')->andReturn(null);
-
-        // Create a pretend Sentry object that says everything is cool
-        $sentry = m::mock(Sentry::class);
-        $user = m::mock(\OpenCFP\Domain\Entity\User::class);
-        $user->shouldReceive('set');
-        $user->shouldReceive('addGroup');
-        $user->shouldReceive('relation');
-        $user->id = 1; // Any integer value is fine
-        $sentry->shouldReceive('getUserProvider->create')->andReturn($user);
-        $sentry->shouldReceive('getGroupProvider->findByName');
-
-        $app->shouldReceive('offsetGet')->with('sentry')->andReturn($sentry);
-
-        // Create an instance of our database
-        $speaker = new \stdClass;
-        $mapper = m::mock('stdClass');
-        $mapper->shouldReceive('get')->andReturn($speaker);
-        $mapper->shouldReceive('save');
-        $spot = m::mock(Locator::class);
-        $spot->shouldReceive('mapper')->andReturn($mapper);
-        $app->shouldReceive('offsetGet')->with('spot')->andReturn($spot);
-
         // Create an instance of the controller and we're all set
         $controller = new \OpenCFP\Http\Controller\SignupController();
         $controller->setApplication($app);
 
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
-
 
         foreach ($form_data as $field => $value) {
             $req->shouldReceive('get')->with($field)->andReturn($value);
@@ -197,7 +210,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $req->files = $files;
 
         $controller->processAction($req, $app);
-        $expectedMessage = "You've successfully created your account!";
+        $expectedMessage = "Your account has been created, you're ready to log in";
         $session_details = $app['session']->get('flash');
 
         $this->assertContains(
@@ -207,92 +220,15 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function signupCocWithValidInfoWorks()
+    protected function createSingupFormFactory($isValid)
     {
-        $app = m::mock(\OpenCFP\Application::class);
-        $app->shouldReceive('redirect');
+        $signup_form = m::mock('OpenCFP\Http\Form\SignupForm');
+        $signup_form->shouldReceive('handleRequest');
+        $signup_form->shouldReceive('getData');
+        $signup_form->shouldReceive('isValid')->andReturn($isValid);
+        $form_factory = m::mock('stdClass');
+        $form_factory->shouldReceive('createBuilder->getForm')->andReturn($signup_form);
 
-        // Create a session
-        $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
-
-        // Create our URL generator
-        $url = 'http://opencfp/signup';
-        $url_generator = m::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
-        $url_generator->shouldReceive('generate')->andReturn($url);
-        $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
-
-        // We need to set up our speaker information
-        $form_data = [
-            'formAction' => $url,
-            'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
-            'email' => 'test@opencfp.org',
-            'company' => null,
-            'twitter' => null,
-            'password' => 'wutwut',
-            'password2' => 'wutwut',
-            'airport' => null,
-            'speaker_info' => null,
-            'speaker_bio' => null,
-            'transportation' => null,
-            'hotel' => null,
-            'buttonInfo' => 'Create my speaker profile',
-            'agree_coc' => 'agreed',
-        ];
-
-        // Set our HTMLPurifier we use for validation
-        $config = HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier($config);
-        $app->shouldReceive('offsetGet')->with('purifier')->andReturn($purifier);
-        $app->shouldReceive('config')->with('application.coc_link')->andReturn('http://www.google.com');
-
-        // Create a pretend Sentry object that says everything is cool
-        $sentry = m::mock(Sentry::class);
-        $user = m::mock(\OpenCFP\Domain\Entity\User::class);
-        $user->shouldReceive('set');
-        $user->shouldReceive('addGroup');
-        $user->shouldReceive('relation');
-        $user->id = 1; // Any integer value is fine
-        $sentry->shouldReceive('getUserProvider->create')->andReturn($user);
-        $sentry->shouldReceive('getGroupProvider->findByName');
-
-        $app->shouldReceive('offsetGet')->with('sentry')->andReturn($sentry);
-
-        // Create an instance of our database
-        $speaker = new \stdClass;
-        $mapper = m::mock('stdClass');
-        $mapper->shouldReceive('get')->andReturn($speaker);
-        $mapper->shouldReceive('save');
-        $spot = m::mock(Locator::class);
-        $spot->shouldReceive('mapper')->andReturn($mapper);
-        $app->shouldReceive('offsetGet')->with('spot')->andReturn($spot);
-
-        // Create an instance of the controller and we're all set
-        $controller = new \OpenCFP\Http\Controller\SignupController();
-        $controller->setApplication($app);
-
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
-
-
-        foreach ($form_data as $field => $value) {
-            $req->shouldReceive('get')->with($field)->andReturn($value);
-        }
-
-        $files = m::mock('StdClass');
-        $files->shouldReceive('get')->with('speaker_photo')->andReturn(null);
-        $req->files = $files;
-
-        $controller->processAction($req, $app);
-        $expectedMessage = "You've successfully created your account!";
-        $session_details = $app['session']->get('flash');
-
-        $this->assertContains(
-            $expectedMessage,
-            $session_details['ext'],
-            "Did not successfully create an account"
-        );
+        return $form_factory;
     }
 }

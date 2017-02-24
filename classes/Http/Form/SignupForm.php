@@ -1,334 +1,156 @@
 <?php
-
 namespace OpenCFP\Http\Form;
+
+use OpenCFP\Http\Form\Validator\Constraints\AccountExists;
+use OpenCFP\Http\Form\Validator\Constraints\TwitterAccount;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Form object for our signup & profile pages, handles validation of form data
  */
-class SignupForm extends Form
+class SignupForm extends AbstractType
 {
-    protected $_fieldList = [
-        'email',
-        'password',
-        'password2',
-        'first_name',
-        'last_name',
-        'company',
-        'twitter',
-        'speaker_info',
-        'speaker_bio',
-        'transportation',
-        'hotel',
-        'speaker_photo',
-        'agree_coc',
-    ];
-
-    /**
-     * Validate all methods by calling all our validation methods
-     *
-     * @param  string  $action
-     * @return boolean
-     */
-    public function validateAll($action = 'create')
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->sanitize();
-        $valid_passwords = true;
-        $agree_coc = true;
+        $builder->add('email', EmailType::class, [
+            'label' => 'Email',
+            'constraints' => [
+                new Assert\NotBlank(),
+                new AccountExists(),
+            ],
+            'attr' => ['placeholder' => 'you@domain.org', 'class' => 'form-control']])
+            ->add('password', RepeatedType::class, [
+                'error_bubbling' => true,
+                'type' => PasswordType::class,
+                'required' => true,
+                'constraints' => [
+                   new Assert\NotBlank(),
+                   new Assert\Length([
+                       'min' => 5,
+                       'max' => 255,
+                       'minMessage' => 'Passwords must be between 5 and 255 characters',
+                       'maxMessage' => 'Passwords must be between 5 and 255 characters',
+                   ])],
+                'first_options' => ['label' => 'Password', 'attr' => ['class' => 'form-control', 'placeholder' => 'Password (minimum 5 characters)']],
+                'second_options' => ['label' => 'Password', 'attr' => ['class' => 'form-control', 'placeholder' => 'Password (confirm)']],
+                'invalid_message' => 'Passwords did not match', ])
+            ->add('first_name', TextType::class, [
+                'error_bubbling' => true,
+                'required' => true,
+                'label' => 'First Name',
+                'attr' => ['placeholder' => 'First Name', 'class' => 'form-control'],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'min' => 1,
+                        'max' => 255,
+                        'maxMessage' => 'First name must be between 1 and 255 characters',
+                    ])]
+                ])
+            ->add('last_name', TextType::class, [
+                'error_bubbling' => true,
+                'label' => 'Last Name',
+                'attr' => ['placeholder' => 'Last Name', 'class' => 'form-control'],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'min' => 1,
+                        'max' => 255,
+                        'minMessage' => 'Last name must be between 1 and 255 characters',
+                        'maxMessage' => 'Last name must be between 1 and 255 characters',
+                    ])]
+                ])
+            ->add('company', TextType::class, [
+                'error_bubbling' => true,
+                'label' => 'Company',
+                'attr' => ['placeholder' => 'Company', 'class' => 'form-control'],
+                'required' => false,
+                'constraints' => [new Assert\Length([
+                    'min' => 1,
+                    'max' => 255,
+                    'minMessage' => 'Company name must be between 1 and 255 characters',
+                    'maxMessage' => 'Company name must be between 1 and 255 characters',
+                ])]])
+            ->add('twitter', TextType::class, [
+                'error_bubbling' => true,
+                'label' => 'Twitter',
+                'attr' => ['placeholder' => '@twitter', 'class' => 'form-control'],
+                'required' => false,
+                'constraints' => [new TwitterAccount()]
+            ])
+            ->add('speaker_bio', TextareaType::class, [
+                'error_bubbling' => true,
+                'label' => 'Speaker Bio',
+                'attr' => ['placeholder' => 'Information About You', 'rows' => 5, 'class' => 'form-control'],
+                'required' => false,
+            ])
+            ->add('airport', TextType::class, [
+                'error_bubbling' => true,
+                'label' => 'Departing Airport Code',
+                'attr' => ['placeholder' => '3 Characters', 'class' => 'form-control'],
+                'required' => false,
+                'constraints' => [new Assert\Length([
+                    'min' => 3,
+                    'max' => 3,
+                    'exactMessage' => 'Airport codes must be 3 alphabetical characters'
+            ])]])
+            ->add('speaker_info', TextareaType::class, [
+                'error_bubbling' => true,
+                'label' => 'Additional Notes',
+                'attr' => ['placeholder' => 'Other infomration you feel the organizers should be aware of', 'class' => 'form-control'],
+                'required' => false,
+            ])
+            ->add('transportation', CheckboxType::class, [
+                'error_bubbling' => true,
+                'required' => false,
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('hotel', CheckboxType::class, [
+                'error_bubbling' => true,
+                'required' => false,
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('speaker_photo', FileType::class, [
+                'error_bubbling' => true,
+                'constraints' => [new Assert\Image([
+                    'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png'],
+                    'maxSize' => 5 * 1048576,
+                    'mimeTypesMessage' => 'You can only upload JPEG or PNG files'
+                ])],
+                'label' => 'Photo',
+                'required' => false,
+                'attr' => ['class' => 'form-control']
+            ]);
 
-        if ($action == 'create') {
-            $valid_passwords = $this->validatePasswords();
-            $agree_coc = $this->validateAgreeCoc();
+        // Now, we have to add some fields in if there are some optional values
+        if (isset($options['id'])) {
+            $builder->add('id', HiddenType::class, [
+                'error_bubbling' => true,
+                'required' => false,
+            ]);
         }
 
-        $valid_email = $this->validateEmail();
-        $valid_first_name = $this->validateFirstName();
-        $valid_last_name = $this->validateLastName();
-        $valid_company = $this->validateCompany();
-        $valid_twitter = $this->validateTwitter();
-        $valid_speaker_photo = $this->validateSpeakerPhoto();
-        $valid_speaker_info = true;
-        $valid_speaker_bio = true;
-
-        if (!empty($this->_taintedData['speaker_info'])) {
-            $valid_speaker_info = $this->validateSpeakerInfo();
-        }
-
-        if (!empty($this->_taintedData['speaker_bio'])) {
-            $valid_speaker_bio = $this->validateSpeakerBio();
-        }
-
-        return (
-            $valid_email &&
-            $valid_passwords &&
-            $valid_first_name &&
-            $valid_last_name &&
-            $valid_company &&
-            $valid_twitter &&
-            $valid_speaker_info &&
-            $valid_speaker_bio &&
-            $valid_speaker_photo &&
-            $agree_coc
-        );
-    }
-
-    public function validateSpeakerPhoto()
-    {
-        $allowedMimeTypes = [
-            'image/jpeg',
-            'image/jpg',
-            'image/png',
-        ];
-
-        // Speaker Photo is not required, only validate if it exists
-        if (!isset($this->_taintedData['speaker_photo'])) {
-            return true;
-        }
-
-        // Check if the file was uploaded OK, display any error that may have occurred
-        if (!$this->_taintedData['speaker_photo']->isValid()) {
-            $this->_addErrorMessage($this->_taintedData['speaker_photo']->getErrorMessage());
-
-            return false;
-        }
-
-        // Check if uploaded file is greater than 5MB
-        if ($this->_taintedData['speaker_photo']->getClientSize() > (5 * 1048576)) {
-            $this->_addErrorMessage("Speaker photo can not be larger than 5MB");
-
-            return false;
-        }
-
-        // Check if photo is in the mime-type white list
-        if (!in_array($this->_taintedData['speaker_photo']->getMimeType(), $allowedMimeTypes)) {
-            $this->_addErrorMessage("Speaker photo must be a jpg or png");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Method that applies validation rules to email
-     *
-     * @return bool
-     * @internal param string $email
-     */
-    public function validateEmail()
-    {
-        if (!isset($this->_taintedData['email']) || $this->_taintedData['email'] == '') {
-            $this->_addErrorMessage("Missing email");
-
-            return false;
-        }
-
-        $response = filter_var($this->_taintedData['email'], FILTER_VALIDATE_EMAIL);
-
-        if (!$response) {
-            $this->_addErrorMessage("Invalid email address format");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Method that applies validation rules to user-submitted passwords
-     *
-     * @return true|string
-     */
-    public function validatePasswords()
-    {
-        $passwd = $this->_cleanData['password'];
-        $passwd2 = $this->_cleanData['password2'];
-
-        if ($passwd == '' || $passwd2 == '') {
-            $this->_addErrorMessage("Missing passwords");
-
-            return false;
-        }
-
-        if ($passwd !== $passwd2) {
-            $this->_addErrorMessage("The submitted passwords do not match");
-
-            return false;
-        }
-
-        if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
-            $this->_addErrorMessage("The submitted password must be at least 5 characters long");
-
-            return false;
-        }
-
-        if ($passwd !== str_replace(" ", "", $passwd)) {
-            $this->_addErrorMessage("The submitted password contains invalid characters");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Method that applies vaidation rules to user-submitted first names
-     *
-     * @return boolean
-     */
-    public function validateFirstName()
-    {
-        $first_name = filter_var(
-            $this->_cleanData['first_name'],
-            FILTER_SANITIZE_STRING,
-            ['flags' => FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW]
-        );
-        $validation_response = true;
-
-        if ($first_name == '') {
-            $this->_addErrorMessage('First name cannot be blank');
-            $validation_response = false;
-        }
-
-        if (strlen($first_name) > 255) {
-            $this->_addErrorMessage('First name cannot exceed 255 characters');
-            $validation_response = false;
-        }
-
-        if ($first_name !== $this->_taintedData['first_name']) {
-            $this->_addErrorMessage('First name contains unwanted characters');
-            $validation_response = false;
-        }
-
-        return $validation_response;
-    }
-
-    /**
-     * Method that applies vaidation rules to user-submitted first names
-     *
-     * @return boolean
-     */
-    public function validateLastName()
-    {
-        $last_name = $this->_cleanData['last_name'];
-
-        if (empty($last_name)) {
-            $this->_addErrorMessage("Last name was blank or contained unwanted characters");
-
-            return false;
-        }
-
-        if (strlen($last_name) > 255) {
-            $this->_addErrorMessage("Last name cannot be longer than 255 characters");
-
-            return false;
-        }
-
-        if ($last_name !== $this->_taintedData['last_name']) {
-            $this->_addErrorMessage("Last name data did not match after sanitizing");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function validateCompany()
-    {
-        // $company = $this->_cleanData['company'];
-        return true;
-    }
-
-    public function validateTwitter()
-    {
-        // $twitter = $this->_cleanData['twitter'];
-        return true;
-    }
-
-    /**
-     * Method that applies validation rules to user-submitted speaker info
-     *
-     * @return boolean
-     */
-    public function validateSpeakerInfo()
-    {
-        $speakerInfo = filter_var(
-            $this->_cleanData['speaker_info'],
-            FILTER_SANITIZE_STRING
-        );
-        $validation_response = true;
-        $speakerInfo = strip_tags($speakerInfo);
-        $speakerInfo = $this->_purifier->purify($speakerInfo);
-
-        if (empty($speakerInfo)) {
-            $this->_addErrorMessage("You submitted speaker info but it was empty after sanitizing");
-            $validation_response = false;
-        }
-
-        return $validation_response;
-    }
-
-    /**
-     * Method that applies validation rules to user-submitted speaker bio
-     *
-     * @return boolean
-     */
-    public function validateSpeakerBio()
-    {
-        $speaker_bio = filter_var(
-            $this->_cleanData['speaker_bio'],
-            FILTER_SANITIZE_STRING
-        );
-        $validation_response = true;
-        $speaker_bio = strip_tags($speaker_bio);
-        $speaker_bio = $this->_purifier->purify($speaker_bio);
-
-        if (empty($speaker_bio)) {
-            $this->_addErrorMessage("You submitted speaker bio information but it was empty after sanitizing");
-            $validation_response = false;
-        }
-
-        return $validation_response;
-    }
-
-    /**
-     * Santize all our fields that were submitted
-     *
-     * @return array
-     */
-    public function sanitize()
-    {
-        parent::sanitize();
-
-        // We shouldn't be sanitizing passwords, so reset them
-        if (isset($this->_taintedData['password'])) {
-            $this->_cleanData['password'] = $this->_taintedData['password'];
-        }
-
-        if (isset($this->_taintedData['password2'])) {
-            $this->_cleanData['password2'] = $this->_taintedData['password2'];
-        }
-
-        // Remove leading @ for twitter
-        if (isset($this->_taintedData['twitter'])) {
-            $this->_cleanData['twitter'] = preg_replace(
-                '/^@/',
-                '',
-                $this->_taintedData['twitter']
-            );
+        if (isset($options['coc_link'])) {
+            $builder->add('agree_coc', CheckboxType::class, [
+                'error_bubbling' => true,
+                'label' => "I agree to abide by the <a href='{$options['coc_link']}' target='_blank'>Code of conduct</a>",
+                'required' => false,
+            ]);
         }
     }
 
-    private function validateAgreeCoc()
+    public function getName()
     {
-        if (!$this->getOption('has_coc')) {
-            return true;
-        }
-
-        if ($this->_cleanData['agree_coc'] === 'agreed') {
-            return true;
-        }
-
-        $this->_addErrorMessage('You must agree to abide by our code of conduct in order to submit');
-        return false;
+        return 'signup';
     }
 }
