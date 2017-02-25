@@ -29,6 +29,11 @@ class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
         $this->sut = new ProfileController($this->speakers);
     }
 
+    protected function tearDown()
+    {
+        m::close();
+    }
+
     /** @test */
     public function it_shows_a_speaker_profile()
     {

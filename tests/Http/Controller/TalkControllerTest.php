@@ -75,6 +75,11 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->req = m::mock('Symfony\Component\HttpFoundation\Request');
     }
 
+    public function tearDown()
+    {
+        m::close();
+    }
+
     /**
      * Verify that talks with ampersands and other characters in them can
      * be created and then edited properly

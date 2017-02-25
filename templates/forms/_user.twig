@@ -1,9 +1,6 @@
 <form id="signup" action="{{ url('user_create') }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
     {{ form_errors(form) }}
     {{ form_widget(form._token) }}
-    {% if id is defined %}
-        {{ form_widget(form.id) }}
-    {% endif %}
     <div class="form-group">
         <label for="form-user-email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
@@ -51,7 +48,7 @@
     <div class="form-group">
         <label for="form-user-bio" class="col-sm-2 control-label">Speaker Bio</label>
         <div class="col-sm-10">
-            {{ form_widget(form.speaker_bio) }}
+            {{ form_widget(form.bio) }}
             <p class="help-block">Speaker bio can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
@@ -66,7 +63,7 @@
     <div class="form-group">
         <label for="form-user-notes" class="col-sm-2 control-label">Additional Notes</label>
         <div class="col-sm-10">
-            {{ form_widget(form.speaker_info) }}
+            {{ form_widget(form.info) }}
             <p class="help-block">Speaker notes can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">markdown</a> to support links</p>
         </div>
     </div>
@@ -95,7 +92,7 @@
     <div class="form-group">
         <label for="form-user-photo" class="col-sm-2 control-label">Photo</label>
         <div class="col-sm-10">
-            {{ form_widget(form.speaker_photo) }}
+            {{ form_widget(form.photo_path) }}
             {% if preview_photo is defined and preview_photo is not empty %}
                 <img src="{{ preview_photo }}" class="profile-photo">
             {% endif %}
@@ -107,7 +104,7 @@
         <div class="col-sm-10">
             <div class="checkbox">
                 <label for="form-agree-coc">
-                    {{  form_widget(form.agree_coc) }}
+                    {{  form_widget(form.agree_coc) }} I agree to abide by the conference <a href='{{ coc_link }}' target='_blank'>Code of Conduct</a>
                 </label>
             </div>
         </div>

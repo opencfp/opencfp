@@ -1,18 +1,18 @@
 <?php
 namespace OpenCFP\Http\Form;
 
-use OpenCFP\Http\Form\Validator\Constraints\AccountExists;
+use OpenCFP\Http\Form\Entity\User;
 use OpenCFP\Http\Form\Validator\Constraints\TwitterAccount;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,13 +20,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SignupForm extends AbstractType
 {
+    private $coc_link;
+
+    public function __construct($coc_link = null)
+    {
+        $this->coc_link = $coc_link;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(['data_class' => User::class]);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('email', EmailType::class, [
             'label' => 'Email',
             'constraints' => [
                 new Assert\NotBlank(),
-                new AccountExists(),
             ],
             'attr' => ['placeholder' => 'you@domain.org', 'class' => 'form-control']])
             ->add('password', RepeatedType::class, [
@@ -88,7 +99,7 @@ class SignupForm extends AbstractType
                 'required' => false,
                 'constraints' => [new TwitterAccount()]
             ])
-            ->add('speaker_bio', TextareaType::class, [
+            ->add('bio', TextareaType::class, [
                 'error_bubbling' => true,
                 'label' => 'Speaker Bio',
                 'attr' => ['placeholder' => 'Information About You', 'rows' => 5, 'class' => 'form-control'],
@@ -104,7 +115,7 @@ class SignupForm extends AbstractType
                     'max' => 3,
                     'exactMessage' => 'Airport codes must be 3 alphabetical characters'
             ])]])
-            ->add('speaker_info', TextareaType::class, [
+            ->add('info', TextareaType::class, [
                 'error_bubbling' => true,
                 'label' => 'Additional Notes',
                 'attr' => ['placeholder' => 'Other infomration you feel the organizers should be aware of', 'class' => 'form-control'],
@@ -120,7 +131,7 @@ class SignupForm extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('speaker_photo', FileType::class, [
+            ->add('photo_path', FileType::class, [
                 'error_bubbling' => true,
                 'constraints' => [new Assert\Image([
                     'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png'],
@@ -131,26 +142,12 @@ class SignupForm extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form-control']
             ]);
-
-        // Now, we have to add some fields in if there are some optional values
-        if (isset($options['id'])) {
-            $builder->add('id', HiddenType::class, [
-                'error_bubbling' => true,
-                'required' => false,
-            ]);
-        }
-
-        if (isset($options['coc_link'])) {
-            $builder->add('agree_coc', CheckboxType::class, [
-                'error_bubbling' => true,
-                'label' => "I agree to abide by the <a href='{$options['coc_link']}' target='_blank'>Code of conduct</a>",
-                'required' => false,
-            ]);
-        }
     }
 
     public function getName()
     {
         return 'signup';
     }
+
+
 }

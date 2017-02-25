@@ -17,6 +17,11 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 
+    public function tearDown()
+    {
+        m::close();
+    }
+
     public function testImplementsIdentityProvider()
     {
         $sentry = $this->getSentryMock();

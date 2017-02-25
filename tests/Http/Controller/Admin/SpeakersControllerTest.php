@@ -34,6 +34,11 @@ class SpeakersControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['user'] = $user;
     }
 
+    protected function tearDown()
+    {
+        m::close();
+    }
+
     /**
      * Verify that not found speaker redirects and sets flash error message
      *

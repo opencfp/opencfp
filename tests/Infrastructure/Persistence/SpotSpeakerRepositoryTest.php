@@ -14,6 +14,11 @@ class SpotSpeakerRepositoryTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 
+    public function tearDown()
+    {
+        m::close();
+    }
+
     public function testImplementsSpeakerRepository()
     {
         $mapper = $this->getMapperMock();

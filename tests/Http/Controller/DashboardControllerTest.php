@@ -17,6 +17,11 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 
+    public function tearDown()
+    {
+        m::close();
+    }
+
     /**
      * Test that the index page returns a list of talks associated
      * with a specific user and information about that user as well
@@ -36,7 +41,7 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
 
         // Create a test double for Sentry
         $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->times(3)->andReturn(true);
+        $sentry->shouldReceive('check')->andReturn(true);
         $sentry->shouldReceive('getUser')->andReturn($user);
         $app['sentry'] = $sentry;
 

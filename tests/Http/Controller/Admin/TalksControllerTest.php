@@ -33,6 +33,11 @@ class TalksControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['user'] = $user;
     }
 
+    protected function tearDown()
+    {
+        m::close();
+    }
+
     /**
      * Test that the index page grabs a collection of talks
      * and successfully displays them

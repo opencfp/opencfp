@@ -10,6 +10,11 @@ use Spot\Mapper;
 
 class SpotTalkRepositoryTest extends \PHPUnit\Framework\TestCase
 {
+    public function tearDown()
+    {
+        m::close();
+    }
+
     public function testImplementsTalkRepository()
     {
         $mapper = $this->getMapperMock();

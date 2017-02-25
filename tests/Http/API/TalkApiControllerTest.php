@@ -28,6 +28,11 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
         $this->sut = new TalkController($this->speakers);
     }
 
+    protected function tearDown()
+    {
+        m::close();
+    }
+
     /** @test */
     public function it_returns_created_response_when_talk_is_submitted()
     {

@@ -2,7 +2,9 @@
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\Http\Form\Entity\User;
 use OpenCFP\Http\Form\SignupForm;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,10 +24,9 @@ class SignupController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $cfp = $this->service('callforproposal');
         $current = new \DateTime($currentTimeString);
 
-        if (!$cfp->isOpen($current)) {
+        if (!$this->service('callforproposal')->isOpen($current)) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -36,14 +37,26 @@ class SignupController extends BaseController
         }
 
         $form = $this->service('form.factory')
-            ->createBuilder(SignupForm::class)
+            ->createBuilder(SignupForm::class, new User)
             ->getForm();
-        return $this->render('user/create.twig', [
+
+        if ($this->app->config('application.coc_link') !== null) {
+            $form->add('agree_coc', CheckboxType::class, [
+                'error_bubbling' => true,
+                'required' => true,
+            ]);
+        }
+        $form_options = [
             'formAction' => $this->url('user_create'),
             'form' => $form->createView(),
             'buttonInfo' => 'Create my speaker profile',
-            'coc_link' => $this->app->config('application.coc_link'),
-        ]);
+        ];
+
+        if ($this->app->config('application.coc_link') !== null) {
+            $form_options['coc_link'] = $this->app->config('application.coc_link');
+        }
+
+        return $this->render('user/create.twig', $form_options);
     }
 
     public function processAction(Request $req)
@@ -51,6 +64,14 @@ class SignupController extends BaseController
         $form = $this->service('form.factory')
             ->createBuilder(SignupForm::class)
             ->getForm();
+
+        if ($this->app->config('application.coc_link') !== null) {
+            $form->add('agree_coc', CheckboxType::class, [
+                'error_bubbling' => true,
+                'required' => true,
+            ]);
+        }
+
         $form->handleRequest($req);
 
         if (!$form->isValid()) {
@@ -64,10 +85,24 @@ class SignupController extends BaseController
 
         // Form is valid, let's create a user with a default role of 'speaker'
         try {
-           $data = $form->getData();
-           $user = $this->app['sentinel']->registerAndActivate($data);
-           $role = $this->app['sentinel']->findRoleBySlug('speaker');
-           $role->users()->attach($user);
+            // We get back a User entity from which we need to extract the data to create a user
+            $user_entity = $form->getData();
+            $data = [
+                'email' => $user_entity->getEmail(),
+                'password' => $user_entity->getPassword(),
+                'first_name' => $user_entity->getFirstName(),
+                'last_name' => $user_entity->getLastName(),
+                'company' => $user_entity->getCompany(),
+                'twitter' => $user_entity->getTwitter(),
+                'bio' => $user_entity->getBio(),
+                'airport' => $user_entity->getAirport(),
+                'info' => $user_entity->getInfo(),
+                'transportation' => $user_entity->getTransportation(),
+                'photo_path' => $user_entity->getPhotoPath()
+            ];
+            $user = $this->app['sentinel']->registerAndActivate($data);
+            $role = $this->app['sentinel']->findRoleBySlug('speaker');
+            $role->users()->attach($user);
         } catch (\Illuminate\Database\QueryException $e) {
             $this->service('session')->set('flash', [
                 'type' => 'error',

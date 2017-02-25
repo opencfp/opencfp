@@ -18,8 +18,13 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         ob_start();
         $this->app->run();
         ob_end_clean();
-
     }
+
+    public function tearDown()
+    {
+        m::close();
+    }
+
     /**
      * Test that index action displays a form that allows the user to reset
      * their password

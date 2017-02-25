@@ -7,6 +7,11 @@ use OpenCFP\Application;
 
 class ContainerAwareTest extends \PHPUnit\Framework\TestCase
 {
+    public function tearDown()
+    {
+        m::close();
+    }
+
     public function testAllowsToRetrieveService()
     {
         $slug = 'foo';
