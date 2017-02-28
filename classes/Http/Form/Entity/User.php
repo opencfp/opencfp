@@ -43,6 +43,7 @@ class User
             'info' => $this->getInfo(),
             'photo_path' => $this->getPhotoPath(),
             'agree_coc' => $this->getAgreeCoc(),
+            'id' => $this->getId(),
         ];
     }
 
@@ -333,5 +334,21 @@ class User
     public function setAgreeCoc($agree_coc)
     {
         $this->agree_coc = $agree_coc;
+    }
+
+    /**
+     * @return mixed id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

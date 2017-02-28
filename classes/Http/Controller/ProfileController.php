@@ -3,7 +3,7 @@
 namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
-use OpenCFP\Http\Form\SignupForm;
+use OpenCFP\Http\Form\UserForm;
 use Silex\Application;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,7 +100,7 @@ class ProfileController extends BaseController
             $form_data['speaker_photo'] = $req->files->get('speaker_photo');
         }
 
-        $form = new SignupForm($form_data, $this->service('purifier'));
+        $form = new UserForm($form_data, $this->service('purifier'));
         $isValid = $form->validateAll('update');
 
         if ($isValid) {
@@ -198,14 +198,14 @@ class ProfileController extends BaseController
         $user = $sentry->getUser();
 
         /**
-         * Okay, the logic is kind of weird but we can use the SignupForm
+         * Okay, the logic is kind of weird but we can use the UserForm
          * validation code to make sure our password changes are good
          */
         $formData = [
             'password' => $req->get('password'),
             'password2' => $req->get('password_confirm'),
         ];
-        $form = new SignupForm($formData, $this->service('purifier'));
+        $form = new UserForm($formData, $this->service('purifier'));
         $form->sanitize();
 
         if ($form->validatePasswords() === false) {

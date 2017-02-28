@@ -3,7 +3,7 @@
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Http\Form\Entity\User;
-use OpenCFP\Http\Form\SignupForm;
+use OpenCFP\Http\Form\UserForm;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +36,7 @@ class SignupController extends BaseController
         }
 
         $form = $this->service('form.factory')
-            ->createBuilder(SignupForm::class, new User)
+            ->createBuilder(UserForm::class, new User)
             ->getForm();
 
         if ($this->app->config('application.coc_link') !== null) {
@@ -61,7 +61,7 @@ class SignupController extends BaseController
     public function processAction(Request $req)
     {
         $form = $this->service('form.factory')
-            ->createBuilder(SignupForm::class)
+            ->createBuilder(UserForm::class)
             ->getForm();
 
         if ($this->app->config('application.coc_link') !== null) {

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Form object for our signup & profile pages, handles validation of form data
  */
-class SignupForm extends AbstractType
+class UserForm extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
