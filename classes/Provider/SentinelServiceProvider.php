@@ -31,7 +31,7 @@ class SentinelServiceProvider implements ServiceProviderInterface
         $database->bootEloquent();
 
         $app['sentinel'] = function ($app) {
-            return new SentinelWrapper;
+            return new SentinelWrapper($app['env']);
         };
     }
 }

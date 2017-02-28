@@ -8,6 +8,27 @@ use Cartalyst\Sentinel\Native\Facades\Sentinel;
 
 class SentinelWrapper
 {
+    public function __construct($environment)
+    {
+        /**
+         * By default, Sentinel has two checkpoints enabled for authentication -- activation and throttle. While in
+         * development mode, we will turn off the throttle checkpoint or else you won't be able to repeatedly test
+         * anything to do with logins
+         */
+        if ($environment == 'development') {
+            Sentinel::removeCheckpoint('throttle');
+        }
+    }
+
+    /**
+     * @param array $credentials
+     * @return mixed
+     */
+    public function authenticate(array $credentials)
+    {
+        return Sentinel::authenticate($credentials);
+    }
+
     /**
      * @return mixed
      */
@@ -44,13 +65,11 @@ class SentinelWrapper
     }
 
     /**
-     * @param null $user
-     * @param bool $destroy_session
      * @return mixed
      */
-    public function logout($user = null, $destroy_session = false)
+    public function logout()
     {
-        return Sentinel::logout($user, $destroy_session);
+        return Sentinel::logout(null, true);
     }
 
     /**

@@ -32,6 +32,7 @@ class SentinelThrottleUpdates extends AbstractMigration
             ->addColumn('type', 'string')
             ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->changeColumn('user_id', 'integer', ['default' => null])
             ->removeColumn('ip_address')
             ->removeColumn('attempts')
             ->removeColumn('suspended')

@@ -88,7 +88,7 @@ class Application extends SilexApplication
 
         $this->register(new CallForProposalProvider());
         $this->register(new SentryServiceProvider);
-        $this->register(new SentinelServiceProvider);
+        $this->register(new SentinelServiceProvider($environment));
         $app = $this;
         $this->register(new TwigServiceProvider($app));
         $this->register(new HtmlPurifierServiceProvider);
