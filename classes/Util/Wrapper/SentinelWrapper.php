@@ -34,9 +34,23 @@ class SentinelWrapper
         return Sentinel::findRoleBySlug($slug);
     }
 
+    /**
+     * @param $user
+     * @return mixed
+     */
     public function login($user)
     {
         return Sentinel::login($user);
+    }
+
+    /**
+     * @param null $user
+     * @param bool $destroy_session
+     * @return mixed
+     */
+    public function logout($user = null, $destroy_session = false)
+    {
+        return Sentinel::logout($user, $destroy_session);
     }
 
     /**

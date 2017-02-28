@@ -70,11 +70,10 @@ class SecurityController extends BaseController
 
     public function outAction()
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
-        
-        $sentry->logout();
-
+        // Log the user out and destroy their active session
+        $sentinel = $this->service('sentinel');
+        $user = $sentinel->check();
+        $sentinel->logout($user, true);
         return $this->redirectTo('homepage');
     }
 }
