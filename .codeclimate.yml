@@ -4,11 +4,12 @@ engines:
     enabled: true
     config:
       languages:
-      - php
+        php:
+          mass_threshold: 30
   phpcodesniffer:
     enabled: true
     config:
-      standard: PSR1,PSR2
+      standard: PSR2
 
 ratings:
   paths:
