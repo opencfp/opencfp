@@ -51,7 +51,6 @@ class Speakers
     public function findProfile()
     {
         $speaker = $this->identityProvider->getCurrentUser();
-
         return new SpeakerProfile($speaker);
     }
 

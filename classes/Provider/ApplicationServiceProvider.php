@@ -10,6 +10,7 @@ use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Infrastructure\Auth\OAuthIdentityProvider;
+use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
@@ -39,12 +40,13 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             $talkMapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
-            /* @var Sentry $sentry */
-            $sentry = $app['sentry'];
-            
+            //$sentry = $app['sentry'];
+            $sentinel = $app['sentinel'];
+
             return new Speakers(
                 new CallForProposal(new \DateTime($app->config('application.enddate'))),
-                new SentryIdentityProvider($sentry, $speakerRepository),
+                //new SentryIdentityProvider($sentry, $speakerRepository),
+                new SentinelIdentityProvider($sentinel, $speakerRepository),
                 $speakerRepository,
                 new SpotTalkRepository($talkMapper),
                 new EventDispatcher()

@@ -17,12 +17,34 @@ class SentinelWrapper
     }
 
     /**
+     * @param array $credentials
+     * @return mixed
+     */
+    public function findByCredentials(Array $credentials)
+    {
+        return Sentinel::findByCredentials($credentials);
+    }
+
+    /**
      * @param $slug
      * @return mixed
      */
     public function findRoleBySlug($slug)
     {
         return Sentinel::findRoleBySlug($slug);
+    }
+
+    public function login($user)
+    {
+        return Sentinel::login($user);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return Sentinel::getUser();
     }
 
     /**

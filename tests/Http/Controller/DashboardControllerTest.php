@@ -10,7 +10,7 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\DashboardController;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
-use Symfony\Component\HttpFoundation\Session\Session;
+use OpenCFP\Util\Wrapper\SentinelWrapper;
 use Twig_Environment;
 
 class DashboardControllerTest extends \PHPUnit\Framework\TestCase
@@ -39,11 +39,7 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
 
-        // Create a test double for Sentry
-        $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->andReturn(true);
-        $sentry->shouldReceive('getUser')->andReturn($user);
-        $app['sentry'] = $sentry;
+        $app['sentinel'] = $this->createSentinel($user);
 
         $app['callforproposal'] = m::mock(CallForProposal::class);
         $app['callforproposal']->shouldReceive('isOpen')->andReturn(true);
@@ -59,7 +55,6 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
         $profile->shouldReceive('name')->andReturn('Test User');
         $profile->shouldReceive('photo', 'company', 'twitter', 'airport', 'bio', 'info', 'transportation', 'hotel');
         $profile->shouldReceive('talks')->andReturn([$talk]);
-
 
         $speakerService = m::mock('StdClass');
         $speakerService->shouldReceive('findProfile')->andReturn($profile);
@@ -111,10 +106,7 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('id')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->andReturn(true);
-        $sentry->shouldReceive('getUser')->andReturn($user);
-        $app['sentry'] = $sentry;
+        $app['sentinel'] = $this->createSentinel($user);
         $app['user'] = $user;
 
         // Create a test double for SpeakerProfile
@@ -160,5 +152,14 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
         $speakerProfileDouble = m::mock(SpeakerProfile::class);
         $speakerProfileDouble->shouldReceive($stubMethods);
         return $speakerProfileDouble;
+    }
+
+    private function createSentinel($user)
+    {
+        $sentinel = m::mock(SentinelWrapper::class);
+        $sentinel->shouldReceive('getUser')->andReturn($user);
+        $sentinel->shouldReceive('check')->andReturn(true);
+
+        return $sentinel;
     }
 }

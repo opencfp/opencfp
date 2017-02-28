@@ -20,13 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SignupForm extends AbstractType
 {
-    private $coc_link;
-
-    public function __construct($coc_link = null)
-    {
-        $this->coc_link = $coc_link;
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(['data_class' => User::class]);

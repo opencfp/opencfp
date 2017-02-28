@@ -2,8 +2,8 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
-use OpenCFP\Domain\Services\Login;
+use OpenCFP\Http\Form\Login as LoginForm;
+use OpenCFP\Http\Form\Entity\Login as LoginEntity;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,33 +15,40 @@ class SecurityController extends BaseController
 
     public function indexAction()
     {
-        return $this->render('login.twig');
+        $sentinel = $this->service('sentinel');
+
+        if ($sentinel->check() !== false) {
+            return $this->redirectTo('dashboard');
+        }
+
+        $form = $this->service('form.factory')
+            ->createBuilder(LoginForm::class, new LoginEntity())
+            ->getForm();
+
+        return $this->render('login.twig', ['form' => $form->createView()]);
     }
 
     public function processAction(Request $req, Application $app)
     {
         try {
-            /* @var Sentry $sentry */
-            $sentry = $app['sentry'];
+            $form = $this->service('form.factory')
+                ->createBuilder(LoginForm::class)
+                ->getForm();
+            $form->handleRequest($req);
 
-            $page = new Login($sentry);
-
-            if ($page->authenticate($req->get('email'), $req->get('password'))) {
-                // This is for redirecting to OAuth endpoint if we arrived
-                // as part of the Authorization Code Grant flow.
-                if ($this->service('session')->has('redirectTo')) {
-                    return new RedirectResponse($this->service('session')->get('redirectTo'));
-                }
-
-                return $this->redirectTo('dashboard');
+            if (!$form->isValid($req)) {
+                return $this->redirectTo('login');
             }
 
-            $errorMessage = $page->getAuthenticationMessage();
-
-            $template_data = [
-                'email' => $req->get('email'),
+            $data = $form->getData();
+            $credentials = [
+                'email' => $data->getEmail(),
+                'password' => $data->getPassword()
             ];
-            $code = Response::HTTP_BAD_REQUEST;
+            $sentinel = $this->service('sentinel');
+            $user = $sentinel->findByCredentials($credentials);
+            $sentinel->login($user);
+            return $this->redirectTo('dashboard');
         } catch (Exception $e) {
             $errorMessage = $e->getMessage();
             $template_data = [
@@ -49,7 +56,6 @@ class SecurityController extends BaseController
             ];
             $code = Response::HTTP_BAD_REQUEST;
         }
-
         // Set Success Flash Message
         $this->service('session')->set('flash', [
             'type' => 'error',

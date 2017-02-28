@@ -14,7 +14,6 @@ class SignupController extends BaseController
 
     /**
      * @param Request $req
-     * @param \OpenCFP\Application $app
      * @param string $currentTimeString
      * @return mixed|RedirectResponse
      */
