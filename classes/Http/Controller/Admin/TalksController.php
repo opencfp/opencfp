@@ -128,7 +128,6 @@ class TalksController extends BaseController
         $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $meta_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
         $talk_id = $req->get('id');
-
         $talk = $talk_mapper->where(['id' => $talk_id])
             ->with(['comments'])
             ->first();
@@ -142,7 +141,6 @@ class TalksController extends BaseController
 
             return $this->app->redirect($this->url('admin_talks'));
         }
-
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
@@ -188,7 +186,6 @@ class TalksController extends BaseController
             'speaker' => $speaker,
             'otherTalks' => $otherTalks,
         ];
-
         return $this->render('admin/talks/view.twig', $templateData);
     }
 
@@ -306,7 +303,14 @@ class TalksController extends BaseController
 
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk = $mapper->get($req->get('id'));
-        $talk->selected = $status;
+
+        $selected = 1;
+
+        if ($status == false) {
+            $selected = 0;
+        }
+
+        $talk->selected = $selected;
         $mapper->save($talk);
 
         return true;
