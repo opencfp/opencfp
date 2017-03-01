@@ -3,7 +3,9 @@
 namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
-use OpenCFP\Http\Form\UserForm;
+use OpenCFP\Http\Form\DataTransformer\EloquentUserToProfileEntityTransformer;
+use OpenCFP\Http\Form\Entity\Profile;
+use OpenCFP\Http\Form\ProfileForm;
 use Silex\Application;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,16 +16,15 @@ class ProfileController extends BaseController
 
     public function editAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        $sentinel = $this->service('sentinel');
 
-        if (!$sentry->check()) {
+        if (!$sentinel->check()) {
             return $this->redirectTo('login');
         }
 
-        $user = $sentry->getUser();
+        $user = $sentinel->getUser();
 
-        if ((string) $user->getId() !== $req->get('id')) {
+        if ((string) $user->id !== $req->get('id')) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -33,45 +34,44 @@ class ProfileController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-        
-        $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
-        $speaker_data = $mapper->get($user->getId())->toArray();
-
-        $form_data = [
-            'email' => $user->getLogin(),
-            'first_name' => $speaker_data['first_name'],
-            'last_name' => $speaker_data['last_name'],
-            'company' => $speaker_data['company'],
-            'twitter' => $speaker_data['twitter'],
-            'speaker_info' => $speaker_data['info'],
-            'speaker_bio' => $speaker_data['bio'],
-            'speaker_photo' => $speaker_data['photo_path'],
-            'preview_photo' => '/uploads/' . $speaker_data['photo_path'],
-            'airport' => $speaker_data['airport'],
-            'transportation' => $speaker_data['transportation'],
-            'hotel' => $speaker_data['hotel'],
-            'id' => $user->getId(),
-            'formAction' => $this->url('user_update'),
-            'buttonInfo' => 'Update Profile',
+        // Create our form, pass in the Eloquent user returned by Sentinel and then attach the hidden ID field
+        $form = $this->service('form.factory')
+            ->createBuilder(ProfileForm::class, $user)
+            ->addViewTransformer(new EloquentUserToProfileEntityTransformer())
+            ->getForm();
+        $template_data = [
+            'form_path' => $this->url('user_update'),
+            'buttonInfo' => 'Update my profile',
+            'form' => $form->createView(),
         ];
-
-        return $this->render('user/edit.twig', $form_data) ;
+        return $this->render('user/edit.twig', $template_data) ;
     }
 
     public function processAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        $sentinel = $this->service('sentinel');
+        $sentinel_user = $sentinel->check();
 
-        if (!$sentry->check()) {
+        if (!$sentinel_user) {
             return $this->redirectTo('login');
         }
 
-        $user = $sentry->getUser();
+        $form = $this->service('form.factory')
+            ->createBuilder(ProfileForm::class)
+            ->getForm();
+        $form->handleRequest($req);
 
-        if ((string) $user->getId() !== $req->get('id')) {
+        if (!$form->isValid()) {
+            return $this->render('user/create.twig', [
+                'form_path' => $this->url('user_update'),
+                'form' => $form->createView(),
+                'buttonInfo' => 'Update my profile',
+            ]);
+        }
+
+        $form_user = $form->getData();
+
+        if ((string) $sentinel_user->id !== $form_user->getId()) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -81,82 +81,45 @@ class ProfileController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $form_data = [
-            'email' => $req->get('email'),
-            'user_id' => $req->get('id'),
-            'first_name' => $req->get('first_name'),
-            'last_name' => $req->get('last_name'),
-            'company' => $req->get('company'),
-            'twitter' => $req->get('twitter'),
-            'airport' => $req->get('airport'),
-            'transportation' => $req->get('transportation'),
-            'hotel' => $req->get('hotel'),
-            'speaker_info' => $req->get('speaker_info') ?: null,
-            'speaker_bio' => $req->get('speaker_bio') ?: null,
-        ];
-
-        if ($req->files->get('speaker_photo') != null) {
-            // Upload Image
-            $form_data['speaker_photo'] = $req->files->get('speaker_photo');
+        if ($form_user->getPhotoPath() !== null) {
+            $file = $form_user->getPhotoPath();
+            $processor = $this->service('profile_image_processor');
+            $generator = $this->service('security.random');
+            $filename = $generator->generate(40) . '.' . $file->guessExtension();
+            $processor->process($file, $filename);
         }
 
-        $form = new UserForm($form_data, $this->service('purifier'));
-        $isValid = $form->validateAll('update');
+        /* @var Locator $spot */
+        $spot = $this->service('spot');
 
-        if ($isValid) {
-            $sanitized_data = $form->getCleanData();
+        $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
+        $user = $mapper->get($form_user->getId());
+        $user->email = $form_user->getEmail();
+        $user->first_name = $form_user->getFirstName();
+        $user->last_name = $form_user->getLastName();
+        $user->company = $form_user->getCompany();
+        $user->twitter = $form_user->getTwitter();
+        $user->airport = $form_user->getAirport();
+        $user->transportation = (int)$form_user->getTransportation();
+        $user->hotel = (int)$form_user->getHotel();
+        $user->info = $form_user->getInfo();
+        $user->bio = $form_user->getBio();
 
-            // Remove leading @ for twitter
-            $sanitized_data['twitter'] = preg_replace('/^@/', '', $sanitized_data['twitter']);
+        if ($form_user->getPhotoPath() !== null) {
+            $user->photo_path = $filename;
+        }
 
-            if (isset($form_data['speaker_photo'])) {
-                /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
-                $file = $form_data['speaker_photo'];
-                /** @var \OpenCFP\Domain\Services\ProfileImageProcessor $processor */
-                $processor = $this->service('profile_image_processor');
-                /** @var PseudoRandomStringGenerator $generator */
-                $generator = $this->service('security.random');
+        /** @var $response number of affected rows */
+        $response = $mapper->save($user);
 
-                /**
-                 * The extension technically is not required. We guess the extension using a trusted method.
-                 */
-                $sanitized_data['speaker_photo'] = $generator->generate(40) . '.' . $file->guessExtension();
+        if ($response >= 0) {
+            $this->service('session')->set('flash', [
+                'type' => 'success',
+                'short' => 'Success',
+                'ext' => "Successfully updated your profile!",
+            ]);
 
-                $processor->process($file, $sanitized_data['speaker_photo']);
-            }
-
-            /* @var Locator $spot */
-            $spot = $this->service('spot');
-            
-            $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
-            $user = $mapper->get($user->getId());
-            $user->email = $sanitized_data['email'];
-            $user->first_name = $sanitized_data['first_name'];
-            $user->last_name = $sanitized_data['last_name'];
-            $user->company = $sanitized_data['company'];
-            $user->twitter = $sanitized_data['twitter'];
-            $user->airport = $sanitized_data['airport'];
-            $user->transportation = (int) $sanitized_data['transportation'];
-            $user->hotel = (int) $sanitized_data['hotel'];
-            $user->info = $sanitized_data['speaker_info'];
-            $user->bio = $sanitized_data['speaker_bio'];
-
-            if (isset($sanitized_data['speaker_photo'])) {
-                $user->photo_path = $sanitized_data['speaker_photo'];
-            }
-
-            /** @var $response number of affected rows */
-            $response = $mapper->save($user);
-
-            if ($response >= 0) {
-                $this->service('session')->set('flash', [
-                    'type' => 'success',
-                    'short' => 'Success',
-                    'ext' => "Successfully updated your information!",
-                ]);
-
-                return $this->redirectTo('dashboard');
-            }
+            return $this->redirectTo('dashboard');
         } else {
             $this->service('session')->set('flash', [
                 'type' => 'error',
@@ -165,21 +128,19 @@ class ProfileController extends BaseController
             ]);
         }
 
-        $form_data['formAction'] = $this->url('user_update');
-        $form_data['buttonInfo'] = 'Update Profile';
-        $form_data['id'] = $user->id;
-        $form_data['user'] = $user;
-        $form_data['flash'] = $this->getFlash($this->app);
-
-        return $this->render('user/edit.twig', $form_data);
+        return $this->render('user/edit.twig', [
+            'form_path' => $this->url('user_update'),
+            'buttonInfo' => 'Update my profile',
+            'flash' => $this->getFlash($this->app),
+            'form' => $form->createView()
+        ]);
     }
 
     public function passwordAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        $sentinel = $this->service('sentinel');
 
-        if (!$sentry->check()) {
+        if (!$sentinel->check()) {
             return $this->redirectTo('login');
         }
 
@@ -242,33 +203,5 @@ class ProfileController extends BaseController
         ]);
 
         return $this->redirectTo('password_edit');
-    }
-
-    /**
-     * Method that saves user info using sanitized data and an Entity mapper
-     *
-     * @param  Application $app
-     * @param  array       $sanitized_data
-     * @return boolean
-     */
-    protected function saveUser($app, $sanitized_data)
-    {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-        
-        $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
-        $user = $mapper->get($sanitized_data['user_id']);
-        $user->email = $sanitized_data['email'];
-        $user->first_name = $sanitized_data['first_name'];
-        $user->last_name = $sanitized_data['last_name'];
-        $user->company = $sanitized_data['company'];
-        $user->twitter = $sanitized_data['twitter'];
-        $user->airport = $sanitized_data['airport'];
-        $user->transportation = $sanitized_data['transportation'];
-        $user->hotel = $sanitized_data['hotel'];
-        $user->info = $sanitized_data['speaker_info'];
-        $user->bio = $sanitized_data['speaker_bio'];
-
-        return $mapper->save($user);
     }
 }

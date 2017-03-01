@@ -1,6 +1,9 @@
-<form id="signup" action="{{ url('user_create') }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+    {{ form_start(form, {'action': form_path, 'attr': {'class': 'form-horizontal'}}) }}
     {{ form_errors(form) }}
     {{ form_widget(form._token) }}
+    {%  if form.id is defined %}
+    {{ form_widget(form.id) }}
+    {% endif %}
     <div class="form-group">
         <label for="form-user-email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">

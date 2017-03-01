@@ -46,8 +46,9 @@ class SignupController extends BaseController
             ]);
         }
         $form_options = [
-            'formAction' => $this->url('user_create'),
+            'form_path' => $this->url('user_create'),
             'form' => $form->createView(),
+            'buttonInfo' => 'Create my speaker profile',
             'buttonInfo' => 'Create my speaker profile',
         ];
 
@@ -75,7 +76,7 @@ class SignupController extends BaseController
 
         if (!$form->isValid()) {
             return $this->render('user/create.twig', [
-                'formAction' => $this->url('user_create'),
+                'form_path' => $this->url('user_create'),
                 'form' => $form->createView(),
                 'buttonInfo' => 'Create my speaker profile',
                 'coc_link' => $this->app->config('application.coc_link'),

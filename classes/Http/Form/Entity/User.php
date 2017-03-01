@@ -21,6 +21,7 @@ class User
     protected $info;
     protected $photo_path;
     protected $agree_coc;
+    protected $id;
 
     public function createArray()
     {
