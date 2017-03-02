@@ -72,21 +72,21 @@
     </div>
     {% if site.online_conference  == false %}
     <div class="form-group">
-        <label for="form-transportation" class="col-sm-2 control-label">Airfare?</label>
+        <label for="form-transportation" class="col-sm-2 control-label">Help With Airfare?</label>
         <div class="col-sm-10">
-            <div class="checkbox">
+            <div class="select">
                 <label for="form-transportation">
-                    <input id="{{ form.transportation.vars.id }}" name="signup_form[transportation]" type="checkbox" value="{{ form.transportation.vars.value }}" {{ form.transportation.vars.checked }}> I need help with flight cost.
+                    {{ form_widget(form.transportation) }}
                 </label>
             </div>
         </div>
     </div>
     <div class="form-group">
-        <label for="form-hotel" class="col-sm-2 control-label">Hotel?</label>
+        <label for="form-hotel" class="col-sm-2 control-label">Help With Hotel?</label>
         <div class="col-sm-10">
-            <div class="checkbox">
+            <div class="select">
                 <label for="form-hotel">
-                    <input id="{{ form.hotel.vars.id }}" name="signup_form[hotel]" type="checkbox" value="{{ form.hotel.vars.value }}" {{ form.hotel.vars.checked }}> I need help with hotel cost.
+                    {{ form_widget(form.hotel) }}
                 </label>
             </div>
         </div>

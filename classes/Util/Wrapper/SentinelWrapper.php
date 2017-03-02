@@ -88,4 +88,14 @@ class SentinelWrapper
     {
         return Sentinel::registerAndActivate($user);
     }
+
+    /**
+     * @param $user
+     * @param array $credentials
+     * @return mixed
+     */
+    public function update($user, array $credentials)
+    {
+        return Sentinel::update($user, $credentials);
+    }
 }

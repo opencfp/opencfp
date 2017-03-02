@@ -26,7 +26,8 @@ class EloquentUserToProfileEntityTransformer implements DataTransformerInterface
         $profile->setCompany($eloquent_user->company);
         $profile->setTwitter($eloquent_user->twitter);
         $profile->setAirport($eloquent_user->airport);
-        $profile->setHotel($eloquent_user->hotel);
+        $profile->setTransportation((bool)$eloquent_user->transportation);
+        $profile->setHotel((bool)$eloquent_user->hotel);
         $profile->setBio($eloquent_user->bio);
         $profile->setInfo($eloquent_user->info);
         $profile->setPhotoPath($eloquent_user->photo_path);

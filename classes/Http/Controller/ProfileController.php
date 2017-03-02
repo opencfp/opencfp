@@ -2,11 +2,11 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
+use OpenCFP\Application;
+use OpenCFP\Http\Form\ChangePasswordForm;
 use OpenCFP\Http\Form\DataTransformer\EloquentUserToProfileEntityTransformer;
-use OpenCFP\Http\Form\Entity\Profile;
+use OpenCFP\Http\Form\Entity\ChangePassword;
 use OpenCFP\Http\Form\ProfileForm;
-use Silex\Application;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,17 +14,21 @@ class ProfileController extends BaseController
 {
     use FlashableTrait;
 
+    /**
+     * @param Request $req
+     * @return mixed|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function editAction(Request $req)
     {
         $sentinel = $this->service('sentinel');
 
-        if (!$sentinel->check()) {
+        if ($sentinel->check() == false) {
             return $this->redirectTo('login');
         }
 
         $user = $sentinel->getUser();
 
-        if ((string) $user->id !== $req->get('id')) {
+        if ((string)$user->id !== (string)$req->get('id')) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -47,14 +51,19 @@ class ProfileController extends BaseController
         return $this->render('user/edit.twig', $template_data) ;
     }
 
+    /**
+     * @param Request $req
+     * @return mixed|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function processAction(Request $req)
     {
         $sentinel = $this->service('sentinel');
-        $sentinel_user = $sentinel->check();
 
-        if (!$sentinel_user) {
+        if (!$sentinel->check()) {
             return $this->redirectTo('login');
         }
+
+        $sentinel_user = $sentinel->getUser();
 
         $form = $this->service('form.factory')
             ->createBuilder(ProfileForm::class)
@@ -62,7 +71,7 @@ class ProfileController extends BaseController
         $form->handleRequest($req);
 
         if (!$form->isValid()) {
-            return $this->render('user/create.twig', [
+            return $this->render('user/edit.twig', [
                 'form_path' => $this->url('user_update'),
                 'form' => $form->createView(),
                 'buttonInfo' => 'Update my profile',
@@ -71,7 +80,7 @@ class ProfileController extends BaseController
 
         $form_user = $form->getData();
 
-        if ((string) $sentinel_user->id !== $form_user->getId()) {
+        if ($sentinel_user->id !== $form_user->getId()) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -91,7 +100,6 @@ class ProfileController extends BaseController
 
         /* @var Locator $spot */
         $spot = $this->service('spot');
-
         $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
         $user = $mapper->get($form_user->getId());
         $user->email = $form_user->getEmail();
@@ -120,80 +128,88 @@ class ProfileController extends BaseController
             ]);
 
             return $this->redirectTo('dashboard');
-        } else {
-            $this->service('session')->set('flash', [
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => implode('<br>', $form->getErrorMessages()),
-            ]);
         }
 
         return $this->render('user/edit.twig', [
             'form_path' => $this->url('user_update'),
             'buttonInfo' => 'Update my profile',
-            'flash' => $this->getFlash($this->app),
             'form' => $form->createView()
         ]);
     }
 
+    /**
+     * @param Request $req
+     * @return mixed|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function passwordAction(Request $req)
     {
         $sentinel = $this->service('sentinel');
+        $user = $sentinel->check();
 
-        if (!$sentinel->check()) {
+        if (!$user) {
             return $this->redirectTo('login');
         }
 
-        return $this->render('user/change_password.twig');
+        // Create a ChangePassword entity for the form to use
+        $change_password = new ChangePassword();
+        $change_password->setUserId($user->id);
+        $form = $this->service('form.factory')
+            ->createBuilder(ChangePasswordForm::class, $change_password)
+            ->getForm();
+
+        return $this->render('user/change_password.twig', [
+            'form' => $form->createView(),
+            'form_path' => $this->url('password_change')
+        ]);
     }
 
+    /**
+     * @param Request $req
+     * @return mixed|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function passwordProcessAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        $sentinel = $this->service('sentinel');
+        $sentinel_user = $sentinel->check();
 
-        if (!$sentry->check()) {
+        if (!$sentinel_user) {
             return $this->redirectTo('login');
         }
 
-        $user = $sentry->getUser();
+        $form = $this->service('form.factory')
+            ->createBuilder(ChangePasswordForm::class)
+            ->getForm();
+        $form->handleRequest($req);
 
-        /**
-         * Okay, the logic is kind of weird but we can use the UserForm
-         * validation code to make sure our password changes are good
-         */
-        $formData = [
-            'password' => $req->get('password'),
-            'password2' => $req->get('password_confirm'),
-        ];
-        $form = new UserForm($formData, $this->service('purifier'));
-        $form->sanitize();
-
-        if ($form->validatePasswords() === false) {
-            $this->service('session')->set('flash', [
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => implode("<br>", $form->getErrorMessages()),
+        if (!$form->isValid()) {
+            return $this->render('user/change_password.twig', [
+                'form_path' => $this->url('password_change'),
+                'form' => $form->createView(),
             ]);
-
-            return $this->redirectTo('password_edit');
         }
 
-        /**
-         * Resetting passwords looks weird because we need to use Sentry's
-         * own built-in password reset functionality to do it
-         */
-        $sanitized_data = $form->getCleanData();
-        $reset_code = $user->getResetPasswordCode();
+        $change_password = $form->getData();
 
-        if (! $user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
+        if ((string) $sentinel_user->id !== $change_password->getUserId()) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Unable to update your password in the database. Please try again.",
+                'ext' => "You cannot edit someone else's profile",
             ]);
 
-            return $this->redirectTo('password_edit');
+            return $this->redirectTo('dashboard');
+        }
+
+        $updated_user = $sentinel->update($sentinel_user, ['password' => $change_password->getPassword()]);
+
+        if (!$updated_user) {
+            $this->service('session')->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => "Unable to update your password, please try again"
+            ]);
+
+            return $this->redirectTo('dashboard');
         }
 
         $this->service('session')->set('flash', [
@@ -202,6 +218,14 @@ class ProfileController extends BaseController
             'ext' => "Changed your password.",
         ]);
 
-        return $this->redirectTo('password_edit');
+        return $this->redirectTo('dashboard');
+    }
+
+    /**
+     * @param Application $app
+     */
+    public function setApp(Application $app)
+    {
+        $this->app = $app;
     }
 }

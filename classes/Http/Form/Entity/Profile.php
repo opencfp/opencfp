@@ -16,6 +16,22 @@ class Profile
     protected $info;
     protected $photo_path;
 
+    public function transformEloquentUser($eloquent_user)
+    {
+        $this->setId($eloquent_user->id);
+        $this->setEmail($eloquent_user->email);
+        $this->setFirstName($eloquent_user->first_name);
+        $this->setLastName($eloquent_user->last_name);
+        $this->setCompany($eloquent_user->company);
+        $this->setTwitter($eloquent_user->twitter);
+        $this->setAirport($eloquent_user->airport);
+        $this->setTransportation($eloquent_user->transportation);
+        $this->setHotel($eloquent_user->hotel);
+        $this->setBio($eloquent_user->bio);
+        $this->setInfo($eloquent_user->info);
+        $this->setPhotoPath($eloquent_user->photo_path);
+    }
+    
     /**
      * @return mixed
      */

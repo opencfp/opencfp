@@ -1,11 +1,10 @@
 <?php
 namespace OpenCFP\Http\Form;
 
-use OpenCFP\Http\Form\DataTransformer\EloquentUserToUserEntityTransformer;
 use OpenCFP\Http\Form\Entity\User;
 use OpenCFP\Http\Form\Validator\Constraints\TwitterAccount;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -115,12 +114,20 @@ class UserForm extends AbstractType
                 'attr' => ['placeholder' => 'Other infomration you feel the organizers should be aware of', 'class' => 'form-control'],
                 'required' => false,
             ])
-            ->add('transportation', CheckboxType::class, [
+            ->add('transportation', ChoiceType::class, [
+                'choices' => [
+                    'Yes' => true,
+                    'No' => false,
+                ],
                 'error_bubbling' => true,
                 'required' => false,
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control', 'length' => 5],
             ])
-            ->add('hotel', CheckboxType::class, [
+            ->add('hotel', ChoiceType::class, [
+                'choices' => [
+                    'Yes' => true,
+                    'No' => false,
+                ],
                 'error_bubbling' => true,
                 'required' => false,
                 'attr' => ['class' => 'form-control'],
