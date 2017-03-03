@@ -144,11 +144,12 @@ class ProfileController extends BaseController
     public function passwordAction(Request $req)
     {
         $sentinel = $this->service('sentinel');
-        $user = $sentinel->check();
 
-        if (!$user) {
+        if ($sentinel->check() == false) {
             return $this->redirectTo('login');
         }
+
+        $user = $sentinel->getUser();
 
         // Create a ChangePassword entity for the form to use
         $change_password = new ChangePassword();
@@ -170,11 +171,12 @@ class ProfileController extends BaseController
     public function passwordProcessAction(Request $req)
     {
         $sentinel = $this->service('sentinel');
-        $sentinel_user = $sentinel->check();
 
-        if (!$sentinel_user) {
+        if (!$sentinel->check()) {
             return $this->redirectTo('login');
         }
+
+        $sentinel_user = $sentinel->getUser();
 
         $form = $this->service('form.factory')
             ->createBuilder(ChangePasswordForm::class)
@@ -194,7 +196,7 @@ class ProfileController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "You cannot edit someone else's profile",
+                'ext' => "You cannot change someone else's password",
             ]);
 
             return $this->redirectTo('dashboard');

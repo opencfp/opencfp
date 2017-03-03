@@ -8,6 +8,7 @@ use OpenCFP\Domain\Entity\Mapper\User as UserMapper;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\ProfileController;
+use OpenCFP\Http\Form\Entity\ChangePassword;
 use OpenCFP\Http\Form\Entity\Profile;
 use OpenCFP\Util\Wrapper\SentinelWrapper;
 use org\bovigo\vfs\vfsStream;
@@ -31,6 +32,23 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
     public function tearDown()
     {
         m::close();
+    }
+
+    public function createChangePasswordFormFactory($req, $user_id)
+    {
+        $change_password = new ChangePassword();
+        $change_password->setUserId($user_id);
+        $change_password->setPassword('passwd');
+        $form = m::mock('\stdClass');
+        $form->shouldReceive('handleRequest')->with($req);
+        $form->shouldReceive('isValid')->andReturn(true);
+        $form->shouldReceive('getData')->andReturn($change_password);
+        $view = m::mock('\Symfony\Component\Form\FormView');
+        $form->shouldReceive('createView')->andReturn($view);
+        $form_factory = m::mock('\stdClass');
+        $form_factory->shouldReceive('createBuilder->getForm')->andReturn($form);
+        return $form_factory;
+
     }
 
     public function createFormFactory($req)
@@ -393,6 +411,202 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
             '<!-- id: user/edit -->',
             $response->getContent(),
             "Valid form with photo path didn't result in an update"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function passwordChangeRedirectsForNonAuthenticatedUser()
+    {
+        // Create our Request objecet
+        $req = m::mock(Request::class);
+
+        // Create a non-authenticated user
+        $sentinel = m::mock(SentinelWrapper::class);
+        $sentinel->shouldReceive('check')->andReturn(false);
+        $this->app['sentinel'] = $sentinel;
+
+        ob_start();
+        $this->app->run();
+        ob_end_clean();
+
+        $controller = new ProfileController();
+        $controller->setApp($this->app);
+        $response = $controller->passwordAction($req);
+
+        $this->assertContains(
+            'Redirecting to /login',
+            $response->getContent(),
+            "Non-authenticated user was allowed to change their password"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function passwordChangeFormDisplayed()
+    {
+        // Create our Request object
+        $req = m::mock(Request::class);
+
+        $this->app['sentinel'] = $this->createSentinelWithLoggedInUser();
+
+        ob_start();
+        $this->app->run();
+        ob_end_clean();
+
+        $controller = new ProfileController();
+        $controller->setApp($this->app);
+        $response = $controller->passwordAction($req);
+
+        $this->assertContains(
+            '<!-- id: profile/change_password -->',
+            $response->getContent(),
+            "Password change form not displayed"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function processPasswordChangeRedirectsForNonAuthenticatedUser()
+    {
+        // Create our Request object
+        $req = m::mock(Request::class);
+
+        // Create a non-authenticated user
+        $sentinel = m::mock(SentinelWrapper::class);
+        $sentinel->shouldReceive('check')->andReturn(false);
+        $this->app['sentinel'] = $sentinel;
+
+        ob_start();
+        $this->app->run();
+        ob_end_clean();
+
+        $controller = new ProfileController();
+        $controller->setApp($this->app);
+        $response = $controller->passwordProcessAction($req);
+
+        $this->assertContains(
+            'Redirecting to /login',
+            $response->getContent(),
+            "Non-authenticated user was allowed to POST data to change a password"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function processPasswordHandlesInvalidFormCorrectly()
+    {
+        // Create our Request object
+        $req = m::mock(Request::class);
+        $req->shouldReceive('getMethod')->andReturn('post');
+
+        $this->app['sentinel'] = $this->createSentinelWithLoggedInUser();
+
+        ob_start();
+        $this->app->run();
+        ob_end_clean();
+
+        $controller = new ProfileController();
+        $controller->setApp($this->app);
+        $response = $controller->passwordProcessAction($req);
+
+        $this->assertContains(
+            '<!-- id: profile/change_password -->',
+            $response->getContent(),
+            "Process Password did not handle invalid form correctly"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function processPasswordCannotChangeAnotherUsersPassword()
+    {
+        // Create our Request object
+        $req = m::mock(Request::class);
+        $req->shouldReceive('getMethod')->andReturn('post');
+
+        $this->app['sentinel'] = $this->createSentinelWithLoggedInUser();
+        $this->app['form.factory'] = $this->createChangePasswordFormFactory($req, 2); // 2 is a user id
+
+        ob_start();
+        $this->app->run();
+        ob_end_clean();
+
+        $controller = new ProfileController();
+        $controller->setApp($this->app);
+        $response = $controller->passwordProcessAction($req);
+
+        $this->assertContains(
+            'Redirecting to /dashboard',
+            $response->getContent(),
+            "You were allowed to POST data to change someone else's password"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itHandlesNotUpdatingAUsersPasswordCorrectly()
+    {
+        // Create our Request object
+        $req = m::mock(Request::class);
+        $req->shouldReceive('getMethod')->andReturn('post');
+
+        // Create our Sentinel object
+        $sentinel = $this->createSentinelWithLoggedInUser();
+        $sentinel->shouldReceive('update')->andReturn(false);
+        $this->app['sentinel'] = $sentinel;
+
+        $this->app['form.factory'] = $this->createChangePasswordFormFactory($req, 1); // 1 is logged in user's ID
+
+        ob_start();
+        $this->app->run();
+        ob_end_clean();
+
+        $controller = new ProfileController();
+        $controller->setApp($this->app);
+        $response = $controller->passwordProcessAction($req);
+
+        $this->assertContains(
+            'Redirecting to /dashboard',
+            $response->getContent(),
+            "Password was not succesfully updated"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itHandlesUpdatingAUsersPasswordCorrectly()
+    {
+        // Create our Request object
+        $req = m::mock(Request::class);
+        $req->shouldReceive('getMethod')->andReturn('post');
+
+        // Create our Sentinel object
+        $sentinel = $this->createSentinelWithLoggedInUser();
+        $sentinel->shouldReceive('update')->andReturn(true);
+        $this->app['sentinel'] = $sentinel;
+
+        $this->app['form.factory'] = $this->createChangePasswordFormFactory($req, 1); // 1 is logged in user's ID
+
+        ob_start();
+        $this->app->run();
+        ob_end_clean();
+
+        $controller = new ProfileController();
+        $controller->setApp($this->app);
+        $response = $controller->passwordProcessAction($req);
+
+        $this->assertContains(
+            'Redirecting to /dashboard',
+            $response->getContent(),
+            "User did not succesfully change their password"
         );
     }
 }
