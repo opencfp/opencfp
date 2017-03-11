@@ -20,6 +20,16 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
     }
 
     /** @test */
+    public function it_should_be_resolvable_to_the_development_environment_by_default()
+    {
+        if (isset($_SERVER['CFP_ENV'])) {
+            unset($_SERVER['CFP_ENV']);
+        }
+        
+        $this->assertEquals('development', Environment::fromEnvironmentVariable());
+    }
+
+    /** @test */
     public function it_should_be_resolvable_from_environment_variable()
     {
         $_SERVER['CFP_ENV'] = 'testing';
