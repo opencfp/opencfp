@@ -77,6 +77,14 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testGetContainerShouldReturnTheApplicationObject()
+    {
+        $appContainer = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $application = new Application($appContainer);
+
+        $this->assertEquals(\OpenCFP\Application::class, get_class($application->getContainer()));
+    }
+
     public function testAdminDemoteDetectsNonExistentUser()
     {
         // Create our input and output dependencies
