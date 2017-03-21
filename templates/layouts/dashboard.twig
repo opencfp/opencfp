@@ -3,11 +3,23 @@
     <head>
         <title>{% block title %}{{ site.title }}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block scripts %}
+            <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="/assets/js/svg-injector.min.js"></script>
+            <script>
+                // Elements to inject
+                var mySVGsToInject = document.querySelectorAll('img.svg-inject');
+
+                // Do the injection
+                SVGInjector(mySVGsToInject);
+            </script>
+        {% endblock %}
         <!-- Bootstrap -->
         <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="/assets/css/site.css" rel="stylesheet" media="screen">
         <link href="/assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
-        <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Roboto:400,700,300' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Roboto:400,700,300' rel='stylesheet' type='text/css'>
     </head>
     <body class="dashboard">
         <div class="navbar navbar-opencfp navbar-fixed-top section--full" role="navigation">
@@ -58,17 +70,6 @@
                 </div>
             </div>
         </div>
-        {% block scripts %}
-            <script src="//code.jquery.com/jquery-3.1.1.slim.min.js"></script>
-            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-            <script src="/assets/js/svg-injector.min.js"></script>
-            <script>
-              // Elements to inject
-              var mySVGsToInject = document.querySelectorAll('img.svg-inject');
 
-              // Do the injection
-              SVGInjector(mySVGsToInject);
-            </script>
-        {% endblock %}
     </body>
 </html>
