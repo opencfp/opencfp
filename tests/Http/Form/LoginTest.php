@@ -5,9 +5,7 @@ namespace OpenCFP\Test\Http\Form;
 use Mockery as m;
 use OpenCFP\Http\Form\Entity\Login as LoginEntity;
 use OpenCFP\Http\Form\Login as LoginForm;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -22,16 +20,6 @@ class LoginTest extends \PHPUnit\Framework\TestCase
     protected $factory;
 
     /**
-     * @var FormBuilder
-     */
-    protected $builder;
-
-    /**
-     * @var EventDispatcher
-     */
-    protected $dispatcher;
-
-    /**
      * @var ValidatorInterface
      */
     private $validator;
@@ -41,8 +29,13 @@ class LoginTest extends \PHPUnit\Framework\TestCase
         $this->factory = Forms::createFormFactoryBuilder()
             ->addExtensions($this->getExtensions())
             ->getFormFactory();
-        $this->dispatcher = m::mock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->builder = new FormBuilder(null, null, $this->dispatcher, $this->factory);
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        m::close();
     }
 
     protected function getExtensions()
@@ -60,7 +53,14 @@ class LoginTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testSubmitValidData()
+    /**
+     * Test that form object correctly synchronizes the different
+     * data formats, correctly sets user-submitted data for all
+     * fields on form submission and correctly creates its view.
+     *
+     * @test
+     */
+    public function submitValidData()
     {
         $formData = [
             'email' => 'you@domain.org',
@@ -87,5 +87,19 @@ class LoginTest extends \PHPUnit\Framework\TestCase
         foreach (array_keys($formData) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
+    }
+
+    /**
+     * Test that the form object correctly returns its name.
+     *
+     * @test
+     */
+    public function getFormName()
+    {
+        $form = $this->factory
+            ->createBuilder(LoginForm::class, new LoginEntity())
+            ->getForm();
+
+        $this->assertSame('login', $form->getName());
     }
 }
