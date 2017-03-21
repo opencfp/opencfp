@@ -15,6 +15,11 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->purifier = new \HTMLPurifier();
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+    }
+
     /**
      * Test that form object correctly detects if all the required fields
      * are in the user-submitted data
