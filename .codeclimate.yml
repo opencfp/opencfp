@@ -1,0 +1,18 @@
+---
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        php:
+          mass_threshold: 30
+  phpcodesniffer:
+    enabled: true
+    config:
+      standard: PSR2
+
+ratings:
+  paths:
+  - "**.php"
+
+exclude_paths: 
