@@ -24,14 +24,14 @@ class Login extends AbstractType
                 new Assert\NotBlank(),
             ],
             'required' => true,
-            'attr' => ['placeholder' => 'you@domain.org', 'class' => 'form-control']])
+            'attr' => ['placeholder' => 'you@domain.org', 'class' => 'form-control'], ])
             ->add('password', PasswordType::class, [
                 'label' => 'Password',
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Password'],
-                'required' => true
+                'required' => true,
             ]);
     }
 

@@ -3,8 +3,7 @@
 namespace OpenCFP\Test\Http\Form;
 
 use Mockery as m;
-use OpenCFP\Http\Form\Entity\Login as LoginEntity;
-use OpenCFP\Http\Form\Login as LoginForm;
+use OpenCFP\Http\Form\ResetForm;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
@@ -12,7 +11,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class LoginTest extends \PHPUnit\Framework\TestCase
+class ResetFormTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var FormFactoryInterface
@@ -63,23 +62,27 @@ class LoginTest extends \PHPUnit\Framework\TestCase
     public function submitValidData()
     {
         $formData = [
-            'email' => 'you@domain.org',
-            'password' => 'test',
+            'password' => [
+                'password' => 'test',
+                'password2' => 'test',
+            ],
+            'user_id' => '42',
+            'reset_code' => '123',
         ];
 
         $form = $this->factory
-            ->createBuilder(LoginForm::class, new LoginEntity())
+            ->createBuilder(ResetForm::class)
             ->getForm();
-
-        $loginEntity = new LoginEntity;
-        $loginEntity->setEmail($formData['email']);
-        $loginEntity->setPassword($formData['password']);
 
         // submit the data to the form directly
         $form->submit($formData);
 
+        // Repeated password field becomes single field after form submission
+        $formData['password'] = 'test';
+
         $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($loginEntity, $form->getData());
+
+        $this->assertEquals($formData, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
@@ -97,9 +100,9 @@ class LoginTest extends \PHPUnit\Framework\TestCase
     public function getFormName()
     {
         $form = $this->factory
-            ->createBuilder(LoginForm::class, new LoginEntity())
+            ->createBuilder(ResetForm::class)
             ->getForm();
 
-        $this->assertSame('login', $form->getName());
+        $this->assertSame('reset_form', $form->getName());
     }
 }
