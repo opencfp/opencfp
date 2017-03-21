@@ -473,24 +473,13 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function updateHandlesInvalidFormCorrectly()
     {
-        $form = m::mock('\stdClass');
-        $form->shouldReceive('handleRequest')->with($this->req);
-        $form->shouldReceive('isValid')->andReturn(false);
-        $form->shouldReceive('createView');
-        $form_factory = m::mock('\stdClass');
-        $form_factory->shouldReceive('createBuilder->getForm')->andReturn($form);
-        unset($this->app['form.factory']);
-        $this->app['form.factory'] = $form_factory;
-
         $controller = new TalkController();
         $controller->setApplication($this->app);
-        $controller->updateAction($this->req);
-        $flash = $this->app['session']->get('flash');
-
-        $this->assertEquals(
-            'error',
-            $flash['type'],
-            "updateAction did not handle invalid form correctly"
+        $response = $controller->updateAction($this->req);
+        $this->assertContains(
+            'Please check your form for errors',
+            $response->getContent(),
+            'TalkController::updateAction did not handle invalid form correctly'
         );
     }
 
