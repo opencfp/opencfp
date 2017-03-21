@@ -49,7 +49,6 @@ class SignupController extends BaseController
             'form_path' => $this->url('user_create'),
             'form' => $form->createView(),
             'buttonInfo' => 'Create my speaker profile',
-            'buttonInfo' => 'Create my speaker profile',
         ];
 
         if ($this->app->config('application.coc_link') !== null) {

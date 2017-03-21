@@ -95,7 +95,7 @@ class ProfileForm extends AbstractType
             ->add('info', TextareaType::class, [
                 'error_bubbling' => true,
                 'label' => 'Additional Notes',
-                'attr' => ['placeholder' => 'Other infomration you feel the organizers should be aware of', 'class' => 'form-control'],
+                'attr' => ['placeholder' => 'Other information you feel the organizers should be aware of', 'class' => 'form-control'],
                 'required' => false,
             ])
             ->add('transportation', ChoiceType::class, [

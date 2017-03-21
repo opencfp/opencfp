@@ -80,7 +80,7 @@ class ProfileController extends BaseController
 
         $form_user = $form->getData();
 
-        if ($sentinel_user->id !== $form_user->getId()) {
+        if ((int) $sentinel_user->id !== (int) $form_user->getId()) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',

@@ -1,0 +1,4 @@
+
+Warning: simplexml_load_file(): I/O warning : failed to load external entity "/Users/chartjes/vm/opencfp/build/logs/clover.xml" in /Users/chartjes/vm/opencfp/vendor/satooshi/php-coveralls/src/Contrib/Bundle/CoverallsV1Bundle/Api/Jobs.php on line 52
+
+Catchable fatal error: Argument 1 passed to Contrib\Bundle\CoverallsV1Bundle\Collector\CloverXmlCoverageCollector::collect() must be an instance of SimpleXMLElement, boolean given, called in /Users/chartjes/vm/opencfp/vendor/satooshi/php-coveralls/src/Contrib/Bundle/CoverallsV1Bundle/Api/Jobs.php on line 54 and defined in /Users/chartjes/vm/opencfp/vendor/satooshi/php-coveralls/src/Contrib/Bundle/CoverallsV1Bundle/Collector/CloverXmlCoverageCollector.php on line 30

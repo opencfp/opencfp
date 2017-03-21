@@ -1,189 +1,105 @@
 <?php
-
 namespace OpenCFP\Http\Form;
+
+use OpenCFP\Http\Form\Entity\Talk;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class representing the form that speakers fill out when they want
  * to submit a talk
  */
-class TalkForm extends Form
+class TalkForm extends AbstractType
 {
-    protected $_fieldList = [
-        'title',
-        'description',
-        'type',
-        'level',
-        'category',
-        'desired',
-        'slides',
-        'other',
-        'sponsor',
-        'user_id',
-    ];
-
-    public function __construct(array $data, \HTMLPurifier $purifier, array $options = [])
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!key_exists('desired', $data) || $data['desired'] === null) {
-            $data['desired'] = 0;
-        }
-
-        if (!key_exists('sponsor', $data) || $data['sponsor'] === null) {
-            $data['sponsor'] = 0;
-        }
-
-        parent::__construct($data, $purifier, $options);
-    }
+        $builder
+            ->add('id', HiddenType::class, ['error_bubbling' => true])
+            ->add('user_id', HiddenType::class, ['error_bubbling' => true])
+            ->add('title', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'max' => 100,
+                        'maxMessage' => "Talk title can't be more than 100 characters",
+                    ]),
+                ],
+                'required' => true,
+                'error_bubbling' => true,
+                'attr' => ['placeholder' => 'Talk Title', 'class' => 'form-control']
+            ])
+            ->add('description', TextareaType::class, [
+                'constraints' => [new Assert\NotBlank()],
+                'required' => true,
+                'error_bubbling' => true,
+                'attr' => ['placeholder' => 'Description', 'class' => 'form-control']
+            ])
+            ->add('slides', TextType::class, [
+                'constraints' => [new Assert\Length([
+                    'max' => 255,
+                    'maxMessage' => "Slides URL can't be more than 255 characters"])],
+                'required' => false,
+                'error_bubbling' => true,
+                'attr' => ['placeholder' => 'URL for slides if online', 'class' => 'form-control']
+            ])
+            ->add('other', TextareaType::class, [
+                'attr' => [
+                    'placeholder' => "Other Considerations, such as Joind.In, Lanyrd, local user group, etc.",
+                    'rows' => 5,
+                    'class' => 'form-control'
+                ],
+                'required' => false,
+            ])
+            ->add('sponsor', ChoiceType::class, [
+                'choices' => ['Yes' => true, 'No' => false],
+                'required' => false,
+                'error_bubbling' => true,
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('desired', ChoiceType::class, [
+                'choices' => ['Yes' => true, 'No' => false],
+                'required' => false,
+                'error_bubbling' => true,
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('type', ChoiceType::class, [
+                'choices' => $options['types'],
+                'required' => true,
+                'error_bubbling' => true,
+                'attr' => ['class' => 'form-control']
+            ])
+            ->add('category', ChoiceType::class, [
+                'choices' => $options['categories'],
+                'required' => true,
+                'error_bubbling' => true,
+                'attr' => ['class' => 'form-control']
+            ])
+            ->add('level', ChoiceType::class, [
+                'choices' => $options['levels'],
+                'required' => true,
+                'error_bubbling' => true,
+                'attr' => ['class' => 'form-control']
+            ]);
+}
 
     /**
-     * Santize all our fields that were submitted
-     *
-     * @return array
+     * @param OptionsResolver $resolver
      */
-    public function sanitize()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::sanitize();
-
-        foreach ($this->_cleanData as $key => $value) {
-            $this->_cleanData[$key] = strip_tags($value);
-        }
+        $resolver->setDefaults(['data_class' => Talk::class]);
+        $resolver->setRequired(['categories', 'types', 'levels']);
     }
 
-    /**
-     * Validate everything
-     *
-     * @return boolean
-     */
-    public function validateAll($action = 'create')
-    {
-        return (
-            $this->validateTitle() &&
-            $this->validateDescription() &&
-            $this->validateLevel() &&
-            $this->validateCategory() &&
-            $this->validateDesired() &&
-            $this->validateSlides() &&
-            $this->validateOther() &&
-            $this->validateSponsor()
-        );
-    }
 
-    /**
-     * Method that validates title data
-     *
-     * @return boolean
-     */
-    public function validateTitle()
-    {
-        if (empty($this->_taintedData['title'])) {
-            $this->_addErrorMessage("Please fill in the title");
-
-            return false;
-        }
-
-        $title = $this->_cleanData['title'];
-
-        if (strlen($title) > 100) {
-            $this->_addErrorMessage("Your talk title has to be 100 characters or less");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Method that validates description data
-     *
-     * @return boolean
-     */
-    public function validateDescription()
-    {
-        if (empty($this->_cleanData['description'])) {
-            $this->_addErrorMessage("Your description was missing");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Method that validates talk types
-     *
-     * @return boolean
-     */
-    public function validateType()
-    {
-        $validTalkTypes = $this->getOption('types');
-
-        if (empty($this->_cleanData['type']) || !isset($this->_cleanData['type'])) {
-            $this->_addErrorMessage("You must choose what type of talk you are submitting");
-
-            return false;
-        }
-
-        if (!isset($validTalkTypes[$this->_cleanData['type']])) {
-            $this->_addErrorMessage("You did not choose a valid talk type");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function validateLevel()
-    {
-        $validLevels = $this->getOption('levels');
-
-        if (empty($this->_cleanData['level']) || !isset($this->_cleanData['level'])) {
-            $this->_addErrorMessage("You must choose what level of talk you are submitting");
-
-            return false;
-        }
-
-        if (!isset($validLevels[$this->_cleanData['level']])) {
-            $this->_addErrorMessage("You did not choose a valid talk level");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function validateCategory()
-    {
-        $validCategories = $this->getOption('categories');
-
-        if (empty($this->_cleanData['category']) || !isset($this->_cleanData['category'])) {
-            $this->_addErrorMessage("You must choose what category of talk you are submitting");
-            return false;
-        }
-
-        if (!isset($validCategories[$this->_cleanData['category']])) {
-            $this->_addErrorMessage("You did not choose a valid talk category");
-            return false;
-        }
-
-        return true;
-    }
-
-    public function validateDesired()
-    {
-        return true;
-    }
-
-    public function validateSlides()
-    {
-        return true;
-    }
-
-    public function validateOther()
-    {
-        return true;
-    }
-
-    public function validateSponsor()
-    {
-        return true;
-    }
 }

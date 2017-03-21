@@ -3,19 +3,14 @@
 {{ parent() }}
 <script type="text/javascript">
 function deleteTalk(tid) {
-    $.ajax({
-        type: "POST",
-        url: "/talk/delete",
-        data: "tid=" + tid + "&user_id=" + {{ user.id }},
-        success: function(data, textStatus, jqXHR) {
-            if (data.delete == 'ok') {
-                alert("Deleted talk!");
-                $("#talk-"+tid).remove();
-            } else if (data.delete == 'no-user') {
-                alert("You must be logged in to delete talks")
-            } else {
-                alert("Unable to delete talk");
-            }
+    $.post("/talk/delete", {tid: tid, user_id: {{ user.id }}}, function(data) {
+        if (data.delete == 'ok') {
+            alert("Deleted talk!");
+            $("#talk-" + tid).remove();
+        } else if (data.delete == 'no-user') {
+            alert("You must be logged in to delete talks");
+        } else {
+            alert("Unable to delete talk");
         }
     });
 }
@@ -40,7 +35,7 @@ function deleteTalk(tid) {
             <br />
             <strong>Name:</strong> {{ profile.name }}
             {% if profile.twitter %}
-                <a href="https://twitter.com/@{{ profile.twitter }}" title="{{ profile.name }} on Twitter">@{{ profile.twitter }}</a>
+                <a href="https://twitter.com/{{ profile.twitter }}" title="{{ profile.name }} on Twitter">{{ profile.twitter }}</a>
             {% endif %}<br />
             <strong>Company:</strong> {{ profile.company }}<br />
             {% if site.online_conference == false %}
