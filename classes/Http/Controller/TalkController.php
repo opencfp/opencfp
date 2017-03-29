@@ -7,7 +7,6 @@ use OpenCFP\Application\NotAuthorizedException;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Http\Form\TalkForm;
 use Silex\Application;
-use Spot\Entity\Collection;
 use Spot\Locator;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
