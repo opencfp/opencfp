@@ -402,7 +402,7 @@ class Talk extends Mapper
             'created_at' => $talk->created_at,
             'selected' => $talk->selected,
             'favorite' => $talk->favorite,
-            'meta' => ($talk_meta) ? $talk_meta : $mapper->get(),
+            'meta' => $talk_meta ? $talk_meta : $mapper->get(),
             'description' => $talk->description,
             'slides' => $talk->slides,
             'other' => $talk->other,
