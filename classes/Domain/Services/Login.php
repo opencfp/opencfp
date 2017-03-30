@@ -35,7 +35,7 @@ class Login
     public function authenticate($user, $password)
     {
         if (empty($user) || empty($password)) {
-            $this->authenticationMessage = "Missing Email or Password";
+            $this->authenticationMessage = 'Missing Email or Password';
 
             return false;
         }
@@ -49,7 +49,7 @@ class Login
                 false
             );
         } catch (UserNotFoundException $e) {
-            $this->authenticationMessage = "Invalid Email or Password";
+            $this->authenticationMessage = 'Invalid Email or Password';
 
             return false;
         } catch (UserNotActivatedException $e) {
@@ -67,7 +67,7 @@ class Login
     public function getViewVariables()
     {
         $variables = [];
-        if (isset($_REQUEST['email']) && (isset($_REQUEST['passwd']))) {
+        if (isset($_REQUEST['email']) && isset($_REQUEST['passwd'])) {
             if (!$this->authenticate($_REQUEST['email'], $_REQUEST['passwd'])) {
                 $variables['errorMessage'] = $this->getAuthenticationMessage();
                 $variables['email'] = $_REQUEST['email'];

@@ -217,7 +217,7 @@ class ProfileController extends BaseController
         $this->service('session')->set('flash', [
             'type' => 'success',
             'short' => 'Success',
-            'ext' => "Changed your password.",
+            'ext' => 'Changed your password.',
         ]);
 
         return $this->redirectTo('dashboard');

@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Users\UserNotFoundException;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Environment;
@@ -102,7 +101,6 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
             'Please enter a properly formatted email address',
             $flash_message['ext']
         );
-
     }
 
     /**
@@ -188,4 +186,3 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         return $form;
     }
 }
-

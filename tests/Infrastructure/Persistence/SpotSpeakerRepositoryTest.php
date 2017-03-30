@@ -4,7 +4,6 @@ namespace OpenCFP\Test\Infrastructure\Persistence;
 
 use Mockery as m;
 use OpenCFP\Domain\Entity;
-use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;

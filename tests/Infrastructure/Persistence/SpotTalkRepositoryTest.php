@@ -3,7 +3,6 @@
 namespace OpenCFP\Test\Infrastructure\Persistence;
 
 use Mockery as m;
-use OpenCFP\Domain\Entity;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
 use Spot\Mapper;

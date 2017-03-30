@@ -6,6 +6,7 @@ OpenCFP is a PHP-based conference talk submission system.
 [![Build Status](https://travis-ci.org/opencfp/opencfp.svg?branch=master)](https://travis-ci.org/opencfp/opencfp)
 [![Code Climate](https://codeclimate.com/github/opencfp/opencfp/badges/gpa.svg)](https://codeclimate.com/github/opencfp/opencfp)
 [![Test Coverage](https://codeclimate.com/github/opencfp/opencfp/badges/coverage.svg)](https://codeclimate.com/github/opencfp/opencfp)
+[![Issue Count](https://codeclimate.com/github/opencfp/opencfp/badges/issue_count.svg)](https://codeclimate.com/github/opencfp/opencfp)
 
 ## README Contents
 
@@ -35,8 +36,8 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Testing](#testing)
  * [Troubleshooting](#troubleshooting)
 
-<a name="features" />
-## Features
+
+## [Features](#features)
 
  * Speaker registration system that gathers contact information.
  * Dashboard that allows speakers to submit talk proposals and manage their profile.
@@ -44,8 +45,8 @@ OpenCFP is a PHP-based conference talk submission system.
  * Command-line utilities for administering the system.
  * JSON-API for selected use-cases. (Coming Soon!)
 
-<a name="screenshots" />
-## Screenshots
+
+## [Screenshots](#screenshots)
 ![Front page](http://i.imgur.com/GDhX1lD.png)
 ![Login screen](http://i.imgur.com/VfNNch9.png)
 ![Speaker page](http://i.imgur.com/uw1qmbS.png)
@@ -55,8 +56,8 @@ OpenCFP is a PHP-based conference talk submission system.
 ![Admin speaker details](http://i.imgur.com/3oSXzGQ.png)
 ![Admin talks dashboard](http://i.imgur.com/6Uu0OZu.png)
 
-<a name="contributing" />
-## Contributing
+
+## [Contributing](#contributing)
 
 We welcome and love contributions! To facilitate receiving updates to OpenCFP, we encourage you to create a new
 personal branch after you fork this repository. This branch should be used for content and changes that are specific
@@ -65,8 +66,7 @@ keep the master branch generic for future event organizers that choose to use th
 merge master to your private branch and get updates when desired!
 
 
-<a name="requirements" />
-## Requirements
+## [Requirements](#requirements)
 
  * PHP 7.0+
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
@@ -74,11 +74,9 @@ merge master to your private branch and get updates when desired!
  * You may need to install `php7.0-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
  * MySQL 5.6+
 
-<a name="installation" />
-## Installation
+## [Installation](#installation)
 
-<a name="cloning-the-repository" />
-### Grab Latest Release
+### [Grab Latest Release](#cloning-the-repository)
 
 It is recommended for you to always install the latest marked release. Go to `https://github.com/opencfp/opencfp/releases` to download it.
 
@@ -98,8 +96,7 @@ Resolving deltas: 100% (2314/2314), done.
 Checking connectivity... done.
 ```
 
-<a name="specify-environment" />
-### Specify Environment
+### [Specify Environment](#specify-environment)
 
 OpenCFP can be configured to run in multiple environments. The application environment (`CFP_ENV`) must be specified
 as an environment variable. If not specified, the default is `development`.
@@ -121,8 +118,7 @@ ways to do that with common shells assuming we're using `production`:
 
 Again, just use your preferred environment in place of `production` if required.
 
-<a name="installing-composer-dependencies" />
-### Installing Composer Dependencies
+### [Installing Composer Dependencies](#installing-composer-dependencies)
 
 From the project directory, run the following command. You may need to download `composer.phar` first from http://getcomposer.org
 
@@ -130,8 +126,7 @@ From the project directory, run the following command. You may need to download 
 $ script/setup
 ```
 
-<a name="php-built-in-web-server" />
-### PHP Built-in Web Server
+### [PHP Built-in Web Server](#php-built-in-web-server)
 
 To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/features.commandline.webserver.php) the
 following command can be run:
@@ -142,8 +137,7 @@ $ script/server
 
 The server uses port `8000`. This is a quick way to get started doing development on OpenCFP itself.
 
-<a name="specify-web-server-document-root" />
-### Specify Web Server Document Root
+### [Specify Web Server Document Root](#specify-web-server-document-root)
 
 Set up your desired webserver to point to the `/web` directory.
 
@@ -192,8 +186,7 @@ server{
 The application does not currently work properly if you use PHP's built-in
 server.
 
-<a name="create-a-database" />
-### Create a Database
+### [Create a Database](#create-a-database)
 
 Create a new database for the application to use. You will need to have the following handy to continue configuring
 your installation of OpenCFP:
@@ -203,8 +196,7 @@ your installation of OpenCFP:
  * Credentials to an account that can access the above database
 
 
-<a name="configure-environment" />
-### Configure Environment
+### [Configure Environment](#configure-environment)
 
 Depending on which environment you specified above, you will need to make a copy of the distributed configuration
 schema to enter your own details into.
@@ -242,8 +234,7 @@ mail:
     auth_mode: ~
 ```
 
-<a name="run-migrations" />
-### Run Migrations
+### [Run Migrations](#run-migrations)
 
 This project uses [Phinx](http://phinx.org) to handle migrations. Be sure to copy the `phinx.yml.dist` file that is in the
 root directory for the project to `phinx.yml` and edit it to match your own database settings.
@@ -256,29 +247,25 @@ $ vendor/bin/phinx migrate --environment=production
 
 Note: For updating previously installed instances only run migrations as needed.
 
-<a name="final-touches" />
-### Final Touches
+### [Final Touches](#final-touches)
 
  * The web server must be able to write to the `/web/uploads` directory in order to
  * You may need to alter the `memory_limit` of the web server to allow image processing of head-shots. This is largely
    dictated by the size of the images people upload. Typically 512M works.
  * Customize templates and `/web/assets/css/site.css` to your heart's content.
 
-<a name="json-api" />
-## JSON API
+## [JSON API](#json-api)
 
 OpenCFP has a JSON API (not to be confused with the [json-api specification](http://jsonapi.org/)) that can be used by
 third-party applications to take advantage of a set of features on behalf of a user. The API is enabled by default, but
 can be disabled if not needed for your instance of OpenCFP.
 
-<a name="json-api-configuration" />
-### API Configuration
+### [API Configuration](#json-api-configuration)
 
 Configuration for the API is stored under the `api` namespace of your configuration YAML file. Currently, there is only
 one available configuration setting: whether or not the api is `enabled`.
 
-<a name="json-api-authorization" />
-### Authorization
+### [Authorization](#json-api-authorization)
 
 In order to use any of the available APIs in order to do work on a OpenCFP user's behalf, an OAuth2 token must be
 provided and must have appropriate OAuth2 scope(s) associated with it. Interacting with the authorization endpoints
@@ -300,8 +287,8 @@ With all of that out of the way, here are some nuts and bolts about our implemen
 - It is **highly recommended** to only enable this API if you have a valid SSL certificate. OAuth2's security mechanisms are 100% reliant on TLS.
 - Authorization endpoints are described below.
 
-<a name="json-api-endpoints" />
-### Endpoints
+
+### [Endpoints](#json-api-endpoints)
 
 This serves as a high-level overview of the OpenCFP API.
 
@@ -338,8 +325,8 @@ The Talks API allows you to manage the collection of submitted talks for the cur
 | `PUT` | `/api/talks/{id}` | **Not Implemented** Updates a particular talk. Partial updates are supported through `PUT`. You are not required to send entire object representation. |
 | `DELETE` | `/api/talks/{id}` | **Not Implemented** Removes a talk. |
 
-<a name="json-api-usage" />
-### Using the API
+
+### [Using the API](#json-api-usage)
 
 In this scenario, we will submit talks on behalf of a user and we make a few assumptions: we assume that you have **NOT** registered as a Client Application yet and that the user you are submitting talks on behalf of does **NOT** have an account on the target instance of OpenCFP.
 
@@ -566,8 +553,8 @@ Content-type: application/json
 After refreshing the access token, you'll obviously want to update the previous token you've associated with your user.
 Also note that **refresh tokens are rotated** in addition to the access token. You'll want to keep track of this per-user.
 
-<a name="command-line-utilities" />
-## Command-line Utilities
+
+## [Command-line Utilities](#command-line-utilities)
 
 OpenCFP comes bundled with a few command-line utilities to administer the system. A full list of commands (along with help for each)
 can be found by running the following in the project root:
@@ -576,8 +563,7 @@ can be found by running the following in the project root:
 $ bin/opencfp
 ```
 
-<a name="admin-group-management" />
-### Admin Group Management
+### [Admin Group Management](#admin-group-management)
 
 Administrators are authorized to review speaker information in addition to specifying talk favorites and making selections.
 
@@ -593,8 +579,7 @@ Removing `speaker@opencfp.org` from the admin group:
 $ bin/opencfp admin:demote --env=production speaker@opencfp.org
 ```
 
-<a name="user-management" />
-### User Management
+### [User Management](#user-management)
 
 Users are needed for you system, and sometimes you want to add users via command line.
 
@@ -610,8 +595,7 @@ Add an admin:
 $ bin/opencfp user:create --first_name="Admin" --last_name="Name" --email="admin@opencfp.org" --password="somePassw0rd!" --admin
 ```
 
-<a name="clear-caches" />
-### Clear Caches
+### [Clear Caches](#clear-caches)
 
 OpenCFP uses Twig as a templating engine and HTML Purifier for input filtering. Both of these packages maintain a cache,
 if enabled. If you need to clear all application caches:
@@ -620,8 +604,7 @@ if enabled. If you need to clear all application caches:
 $ bin/opencfp cache:clear
 ```
 
-<a name="scripts-rule-all" />
-### Scripts to Rule Them All
+### [Scripts to Rule Them All](#scripts-rule-all)
 
 OpenCFP follows the [Scripts to Rule Them All](https://github.com/github/scripts-to-rule-them-all) pattern. This allows
 for an easy to follow convention for common tasks when developing applications.
@@ -655,8 +638,7 @@ no phpunit.xml is found in the root.
 $ script/test
 ```
 
-<a name="testing" />
-## Testing
+## [Testing](#testing)
 
 There is a test suite that uses PHPUnit in the /tests directory. To set up
 your environment for testing:
@@ -672,8 +654,7 @@ $ script/test
 
 The default phpunit.xml.dist file is in the root directory for the project.
 
-<a name="troubleshooting" />
-## Troubleshooting
+## [Troubleshooting](#troubleshooting)
 
 **I'm getting weird permissions-related errors to do with HTML Purifier.**
 

@@ -65,7 +65,7 @@ class ExportsController extends BaseController
 
     private function talksExportAction($attributed, $where = null)
     {
-        $sort = [ "created_at" => "DESC" ];
+        $sort = [ 'created_at' => 'DESC' ];
 
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
@@ -109,10 +109,10 @@ class ExportsController extends BaseController
 
         $output = fopen('php://output', 'w');
 
-        fputcsv($output, (array_keys($contents[0])));
+        fputcsv($output, array_keys($contents[0]));
 
         foreach ($contents as $i => $content) {
-            fputcsv($output, (array_values($content)));
+            fputcsv($output, array_values($content));
         }
 
         fclose($output);

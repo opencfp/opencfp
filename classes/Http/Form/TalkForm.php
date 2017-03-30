@@ -100,6 +100,4 @@ class TalkForm extends AbstractType
         $resolver->setDefaults(['data_class' => Talk::class]);
         $resolver->setRequired(['categories', 'types', 'levels']);
     }
-
-
 }

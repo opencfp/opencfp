@@ -206,7 +206,7 @@ class Application extends SilexApplication
      */
     public function uploadPath()
     {
-        return $this->basePath() . "/web/uploads";
+        return $this->basePath() . '/web/uploads';
     }
 
     /**
@@ -215,7 +215,7 @@ class Application extends SilexApplication
      */
     public function templatesPath()
     {
-        return $this->basePath() . "/templates";
+        return $this->basePath() . '/templates';
     }
 
     /**
@@ -224,7 +224,7 @@ class Application extends SilexApplication
      */
     public function publicPath()
     {
-        return $this->basePath() . "/web";
+        return $this->basePath() . '/web';
     }
 
     /**
@@ -233,7 +233,7 @@ class Application extends SilexApplication
      */
     public function assetsPath()
     {
-        return $this->basePath() . "/web/assets";
+        return $this->basePath() . '/web/assets';
     }
 
     /**
@@ -242,7 +242,7 @@ class Application extends SilexApplication
      */
     public function cacheTwigPath()
     {
-        return $this->basePath() . "/cache/twig";
+        return $this->basePath() . '/cache/twig';
     }
 
     /**
@@ -251,7 +251,7 @@ class Application extends SilexApplication
      */
     public function cachePurifierPath()
     {
-        return $this->basePath() . "/cache/htmlpurifier";
+        return $this->basePath() . '/cache/htmlpurifier';
     }
 
     /**

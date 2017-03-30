@@ -10,7 +10,7 @@ matrix:
   fast_finish: true
   include:
     - php: 7.0
-      env: WITH_COVERAGE=true
+      env: WITH_COVERAGE=true WITH_CS=true
 
 env:
   global:

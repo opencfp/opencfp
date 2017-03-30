@@ -44,9 +44,9 @@ class AirportInfo
     public static function fromData(array $data)
     {
         return new static(
-            $code = isset($data['code']) ? $data['code'] : null,
-            $name = isset($data['name']) ? $data['name'] : null,
-            $country = isset($data['country']) ? $data['country'] : null
+            $code = $data['code'] ?? null,
+            $name = $data['name'] ?? null,
+            $country = $data['country'] ?? null
         );
     }
 }

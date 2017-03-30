@@ -97,7 +97,7 @@ abstract class Form
      */
     public function getTaintedField($name, $default = null)
     {
-        return isset($this->_taintedData[$name]) ? $this->_taintedData[$name] : $default;
+        return $this->_taintedData[$name] ?? $default;
     }
 
     /**
@@ -119,7 +119,7 @@ abstract class Form
      */
     public function getOption($name, $default = null)
     {
-        return isset($this->_options[$name]) ? $this->_options[$name] : $default;
+        return $this->_options[$name] ?? $default;
     }
 
     /**

@@ -48,7 +48,7 @@ class Environment
      */
     public static function fromEnvironmentVariable()
     {
-        $environment = isset($_SERVER['CFP_ENV']) ? $_SERVER['CFP_ENV'] : 'development';
+        $environment = $_SERVER['CFP_ENV'] ?? 'development';
 
         return new self($environment);
     }

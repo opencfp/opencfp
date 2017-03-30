@@ -65,7 +65,7 @@ class User extends Entity
         $json = $permissions;
 
         if (is_string($permissions) && json_decode($permissions) === null) {
-            return "{}";
+            return '{}';
         }
 
         if (is_array($permissions)) {

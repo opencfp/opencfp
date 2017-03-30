@@ -68,8 +68,6 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         // Create our test double for the request object
         $this->req = m::mock('Symfony\Component\HttpFoundation\Request');
         $this->req->shouldReceive('getMethod');
-
-
     }
 
     public function tearDown()
@@ -102,7 +100,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         // Get our request object to return expected data
         $talk_data = [
             'title' => 'Test Submission',
-            'description' => "Make sure we can submit before end and not after.",
+            'description' => 'Make sure we can submit before end and not after.',
             'type' => 'regular',
             'level' => 'entry',
             'category' => 'other',
@@ -136,7 +134,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
          * However, if I update application configuration to make
          * the CFP end date to be "yesterday" then we get flash as expected.
          */
-        $yesterday = new DateTime("yesterday");
+        $yesterday = new DateTime('yesterday');
 
         $this->app['callforproposal'] = new CallForProposal(new DateTime($yesterday->format('M. jS, Y')));
 

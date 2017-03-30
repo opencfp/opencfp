@@ -66,7 +66,7 @@ class TalkTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $talk->id,
             $admin_favorite['id'],
-            "Did not get expected list of admin-favorited talks"
+            'Did not get expected list of admin-favorited talks'
         );
     }
 
