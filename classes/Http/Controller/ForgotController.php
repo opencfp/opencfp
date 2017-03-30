@@ -18,7 +18,7 @@ class ForgotController extends BaseController
         $form = $this->service('form.factory')->createBuilder(ForgotForm::class)->getForm();
         $data = [
             'form' => $form->createView(),
-            'current_page' => 'Forgot Password'
+            'current_page' => 'Forgot Password',
         ];
         return $this->render('user/forgot_password.twig', $data);
     }
