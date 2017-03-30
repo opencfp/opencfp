@@ -39,7 +39,7 @@ class TalkTest extends \PHPUnit\Framework\TestCase
      */
     public function utf8CharactersCorrectlyEncoded()
     {
-        $title = "Battle: Feature Branches VS Feature Switching (╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)";
+        $title = 'Battle: Feature Branches VS Feature Switching (╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)';
         $data = [
             'title' => $title,
             'description' => 'Talk with UTF-8 characters in the title',
@@ -74,7 +74,7 @@ class TalkTest extends \PHPUnit\Framework\TestCase
         $this->bulkCreateTalks(11);
         $recent_talks = $this->mapper->getRecent(1);
 
-        $this->assertCount(10, $recent_talks, "Talk::getRecent() did not grab 10 talks out of 11");
+        $this->assertCount(10, $recent_talks, 'Talk::getRecent() did not grab 10 talks out of 11');
     }
 
     //

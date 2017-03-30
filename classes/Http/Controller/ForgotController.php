@@ -34,7 +34,7 @@ class ForgotController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Please enter a properly formatted email address",
+                'ext' => 'Please enter a properly formatted email address',
             ]);
 
             return $this->redirectTo('forgot_password');
@@ -59,7 +59,7 @@ class ForgotController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "We were unable to send your password reset request. Please try again",
+                'ext' => 'We were unable to send your password reset request. Please try again',
             ]);
 
             return $this->redirectTo('forgot_password');
@@ -76,7 +76,7 @@ class ForgotController extends BaseController
             throw new Exception();
         }
 
-        $errorMessage = "The reset you have requested appears to be invalid, please try again.";
+        $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
         $error = 0;
         try {
             /* @var Sentry $sentry */
@@ -131,7 +131,7 @@ class ForgotController extends BaseController
             return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
         }
 
-        $errorMessage = "The reset you have requested appears to be invalid, please try again.";
+        $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
         $error = 0;
 
         try {
@@ -188,7 +188,7 @@ class ForgotController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Please select a different password than your current one.",
+                'ext' => 'Please select a different password than your current one.',
             ]);
 
             return $this->redirectTo('login');
@@ -209,7 +209,7 @@ class ForgotController extends BaseController
         $this->service('session')->set('flash', [
             'type' => 'error',
             'short' => 'Error',
-            'ext' => "Password reset failed, please contact the administrator.",
+            'ext' => 'Password reset failed, please contact the administrator.',
         ]);
 
         return $this->redirectTo('homepage');

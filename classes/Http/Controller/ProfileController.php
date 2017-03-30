@@ -152,7 +152,7 @@ class ProfileController extends BaseController
                 $this->service('session')->set('flash', [
                     'type' => 'success',
                     'short' => 'Success',
-                    'ext' => "Successfully updated your information!",
+                    'ext' => 'Successfully updated your information!',
                 ]);
 
                 return $this->redirectTo('dashboard');
@@ -212,7 +212,7 @@ class ProfileController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => implode("<br>", $form->getErrorMessages()),
+                'ext' => implode('<br>', $form->getErrorMessages()),
             ]);
 
             return $this->redirectTo('password_edit');
@@ -229,7 +229,7 @@ class ProfileController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Unable to update your password in the database. Please try again.",
+                'ext' => 'Unable to update your password in the database. Please try again.',
             ]);
 
             return $this->redirectTo('password_edit');
@@ -238,7 +238,7 @@ class ProfileController extends BaseController
         $this->service('session')->set('flash', [
             'type' => 'success',
             'short' => 'Success',
-            'ext' => "Changed your password.",
+            'ext' => 'Changed your password.',
         ]);
 
         return $this->redirectTo('password_edit');

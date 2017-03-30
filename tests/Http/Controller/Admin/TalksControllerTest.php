@@ -58,7 +58,7 @@ class TalksControllerTest extends \PHPUnit\Framework\TestCase
         $talkData = [0 => [
             'id' => 1,
             'title' => 'Test Title',
-            'description' => "The title should contain this & that",
+            'description' => 'The title should contain this & that',
             'meta' => [
                 'rating' => 5,
             ],

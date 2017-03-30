@@ -65,7 +65,7 @@ class ExportsController extends BaseController
 
     private function talksExportAction($attributed, $where = null)
     {
-        $sort = [ "created_at" => "DESC" ];
+        $sort = [ 'created_at' => 'DESC' ];
 
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');

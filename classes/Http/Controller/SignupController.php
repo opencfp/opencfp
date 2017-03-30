@@ -165,7 +165,7 @@ class SignupController extends BaseController
             $app['session']->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => implode("<br>", $form->getErrorMessages()),
+                'ext' => implode('<br>', $form->getErrorMessages()),
             ]);
         }
 

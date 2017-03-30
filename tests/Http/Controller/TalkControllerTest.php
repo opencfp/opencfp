@@ -97,7 +97,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         // Get our request object to return expected data
         $talk_data = [
             'title' => 'Test Title With Ampersand',
-            'description' => "The title should contain this & that",
+            'description' => 'The title should contain this & that',
             'type' => 'regular',
             'level' => 'entry',
             'category' => 'other',
@@ -149,7 +149,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         // Get our request object to return expected data
         $talk_data = [
             'title' => 'Test Submission',
-            'description' => "Make sure we can submit before end and not after.",
+            'description' => 'Make sure we can submit before end and not after.',
             'type' => 'regular',
             'level' => 'entry',
             'category' => 'other',
@@ -183,7 +183,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
          * However, if I update application configuration to make
          * the CFP end date to be "yesterday" then we get flash as expected.
          */
-        $yesterday = new DateTime("yesterday");
+        $yesterday = new DateTime('yesterday');
 
         $this->app['callforproposal'] = new CallForProposal(new DateTime($yesterday->format('M. jS, Y')));
 

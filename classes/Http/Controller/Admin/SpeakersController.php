@@ -121,7 +121,7 @@ class SpeakersController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Could not find requested speaker",
+                'ext' => 'Could not find requested speaker',
             ]);
 
             return $this->app->redirect($this->url('admin_speakers'));
@@ -189,13 +189,13 @@ class SpeakersController extends BaseController
         if ($response === false) {
             $connection->rollBack();
 
-            $ext = "Unable to delete the requested user";
+            $ext = 'Unable to delete the requested user';
             $type = 'error';
             $short = 'Error';
         } else {
             $connection->commit();
 
-            $ext = "Successfully deleted the requested user";
+            $ext = 'Successfully deleted the requested user';
             $type = 'success';
             $short = 'Success';
         }

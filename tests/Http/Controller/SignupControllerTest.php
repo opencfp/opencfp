@@ -52,13 +52,13 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
         $controller->indexAction($req, $currentTimeString);
 
-        $expectedMessage = "Sorry, the call for papers has ended.";
+        $expectedMessage = 'Sorry, the call for papers has ended.';
         $session_details = $app['session']->get('flash');
 
         $this->assertContains(
             $expectedMessage,
             $session_details['ext'],
-            "Did not get cfp closed message"
+            'Did not get cfp closed message'
         );
     }
 
@@ -203,7 +203,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertContains(
             $expectedMessage,
             $session_details['ext'],
-            "Did not successfully create an account"
+            'Did not successfully create an account'
         );
     }
 
@@ -292,7 +292,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertContains(
             $expectedMessage,
             $session_details['ext'],
-            "Did not successfully create an account"
+            'Did not successfully create an account'
         );
     }
 }
