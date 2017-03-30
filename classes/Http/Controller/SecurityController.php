@@ -2,10 +2,9 @@
 
 namespace OpenCFP\Http\Controller;
 
-use OpenCFP\Http\Form\Login as LoginForm;
 use OpenCFP\Http\Form\Entity\Login as LoginEntity;
+use OpenCFP\Http\Form\Login as LoginForm;
 use Silex\Application;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,7 +41,7 @@ class SecurityController extends BaseController
         $data = $form->getData();
         $credentials = [
             'email' => $data->getEmail(),
-            'password' => $data->getPassword()
+            'password' => $data->getPassword(),
         ];
         $sentinel = $this->service('sentinel');
         $user = $sentinel->authenticate($credentials);
@@ -51,7 +50,7 @@ class SecurityController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Invalid email address and/or password"
+                'ext' => 'Invalid email address and/or password',
             ]);
             $template_data['flash'] = $this->getFlash($app);
             $template_data['form'] = $form->createView();

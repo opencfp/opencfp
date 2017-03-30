@@ -18,7 +18,7 @@ class UserAssignRoleCommand extends BaseCommand
             ->setName('user:assignrole')
             ->setDefinition([
                 new InputOption('email', 'e', InputOption::VALUE_REQUIRED, 'Email of user to assign role to', null),
-                new InputOption('role', 'r', InputOption::VALUE_OPTIONAL, "Role to assign to user", null)
+                new InputOption('role', 'r', InputOption::VALUE_OPTIONAL, 'Role to assign to user', null),
             ])
             ->setDescription('Assign a user to a specific role');
     }

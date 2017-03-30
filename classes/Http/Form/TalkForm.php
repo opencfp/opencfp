@@ -36,27 +36,27 @@ class TalkForm extends AbstractType
                 ],
                 'required' => true,
                 'error_bubbling' => true,
-                'attr' => ['placeholder' => 'Talk Title', 'class' => 'form-control']
+                'attr' => ['placeholder' => 'Talk Title', 'class' => 'form-control'],
             ])
             ->add('description', TextareaType::class, [
                 'constraints' => [new Assert\NotBlank()],
                 'required' => true,
                 'error_bubbling' => true,
-                'attr' => ['placeholder' => 'Description', 'class' => 'form-control']
+                'attr' => ['placeholder' => 'Description', 'class' => 'form-control'],
             ])
             ->add('slides', TextType::class, [
                 'constraints' => [new Assert\Length([
                     'max' => 255,
-                    'maxMessage' => "Slides URL can't be more than 255 characters"])],
+                    'maxMessage' => "Slides URL can't be more than 255 characters", ])],
                 'required' => false,
                 'error_bubbling' => true,
-                'attr' => ['placeholder' => 'URL for slides if online', 'class' => 'form-control']
+                'attr' => ['placeholder' => 'URL for slides if online', 'class' => 'form-control'],
             ])
             ->add('other', TextareaType::class, [
                 'attr' => [
-                    'placeholder' => "Other Considerations, such as Joind.In, Lanyrd, local user group, etc.",
+                    'placeholder' => 'Other Considerations, such as Joind.In, Lanyrd, local user group, etc.',
                     'rows' => 5,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
                 ],
                 'required' => false,
             ])
@@ -76,21 +76,21 @@ class TalkForm extends AbstractType
                 'choices' => $options['types'],
                 'required' => true,
                 'error_bubbling' => true,
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('category', ChoiceType::class, [
                 'choices' => $options['categories'],
                 'required' => true,
                 'error_bubbling' => true,
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
             ])
             ->add('level', ChoiceType::class, [
                 'choices' => $options['levels'],
                 'required' => true,
                 'error_bubbling' => true,
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
             ]);
-}
+    }
 
     /**
      * @param OptionsResolver $resolver

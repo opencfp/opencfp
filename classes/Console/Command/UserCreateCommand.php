@@ -19,7 +19,7 @@ class UserCreateCommand extends BaseCommand
                 new InputOption('last_name', 'l', InputOption::VALUE_REQUIRED, 'Last Name of the user to create', null),
                 new InputOption('email', 'e', InputOption::VALUE_REQUIRED, 'Email of the user to create', null),
                 new InputOption('password', 'p', InputOption::VALUE_REQUIRED, 'Password of the user to create', null),
-                new InputOption('role', 'r', InputOption::VALUE_OPTIONAL, "Role of the user to create (speaker, reviewer, admin), default is speaker", null)
+                new InputOption('role', 'r', InputOption::VALUE_OPTIONAL, 'Role of the user to create (speaker, reviewer, admin), default is speaker', null),
             ])
             ->setDescription('Creates a new user');
     }
@@ -51,7 +51,7 @@ class UserCreateCommand extends BaseCommand
             'last_name' => $input->getOption('last_name'),
             'password' => $input->getOption('password'),
             'email' => $input->getOption('email'),
-            'role' => $role
+            'role' => $role,
         ]);
         if ($user == false) {
             $io->error('User Already Exists!');

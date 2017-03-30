@@ -48,7 +48,6 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $form_factory = m::mock('\stdClass');
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($form);
         return $form_factory;
-
     }
 
     public function createFormFactory($req)
@@ -117,7 +116,7 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $this->assertContains(
             'Redirecting to /login',
             $response->getContent(),
-            "User not logged in was not kicked out"
+            'User not logged in was not kicked out'
         );
     }
 
@@ -190,7 +189,7 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $this->assertContains(
             'Redirecting to /login',
             $response->getContent(),
-            "User not logged in was not kicked out"
+            'User not logged in was not kicked out'
         );
     }
 
@@ -215,7 +214,7 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $this->assertContains(
             '<!-- id: user/edit -->',
             $response->getContent(),
-            "Did not display form after invalid data POSTed"
+            'Did not display form after invalid data POSTed'
         );
     }
 
@@ -438,7 +437,7 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $this->assertContains(
             'Redirecting to /login',
             $response->getContent(),
-            "Non-authenticated user was allowed to change their password"
+            'Non-authenticated user was allowed to change their password'
         );
     }
 
@@ -463,7 +462,7 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $this->assertContains(
             '<!-- id: profile/change_password -->',
             $response->getContent(),
-            "Password change form not displayed"
+            'Password change form not displayed'
         );
     }
 
@@ -491,7 +490,7 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $this->assertContains(
             'Redirecting to /login',
             $response->getContent(),
-            "Non-authenticated user was allowed to POST data to change a password"
+            'Non-authenticated user was allowed to POST data to change a password'
         );
     }
 
@@ -517,7 +516,7 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $this->assertContains(
             '<!-- id: profile/change_password -->',
             $response->getContent(),
-            "Process Password did not handle invalid form correctly"
+            'Process Password did not handle invalid form correctly'
         );
     }
 
@@ -575,7 +574,7 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $this->assertContains(
             'Redirecting to /dashboard',
             $response->getContent(),
-            "Password was not succesfully updated"
+            'Password was not succesfully updated'
         );
     }
 
@@ -606,7 +605,7 @@ class ProfileControllerTest extends \PhpUnit\Framework\TestCase
         $this->assertContains(
             'Redirecting to /dashboard',
             $response->getContent(),
-            "User did not succesfully change their password"
+            'User did not succesfully change their password'
         );
     }
 }

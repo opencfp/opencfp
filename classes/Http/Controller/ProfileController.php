@@ -124,7 +124,7 @@ class ProfileController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'success',
                 'short' => 'Success',
-                'ext' => "Successfully updated your profile!",
+                'ext' => 'Successfully updated your profile!',
             ]);
 
             return $this->redirectTo('dashboard');
@@ -133,7 +133,7 @@ class ProfileController extends BaseController
         return $this->render('user/edit.twig', [
             'form_path' => $this->url('user_update'),
             'buttonInfo' => 'Update my profile',
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -160,7 +160,7 @@ class ProfileController extends BaseController
 
         return $this->render('user/change_password.twig', [
             'form' => $form->createView(),
-            'form_path' => $this->url('password_change')
+            'form_path' => $this->url('password_change'),
         ]);
     }
 
@@ -208,7 +208,7 @@ class ProfileController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Unable to update your password, please try again"
+                'ext' => 'Unable to update your password, please try again',
             ]);
 
             return $this->redirectTo('dashboard');

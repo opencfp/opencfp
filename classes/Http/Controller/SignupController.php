@@ -29,7 +29,7 @@ class SignupController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => 'Sorry, the call for papers has ended.'
+                'ext' => 'Sorry, the call for papers has ended.',
                 ]);
 
             return $this->redirectTo('homepage');
@@ -97,7 +97,7 @@ class SignupController extends BaseController
                 'airport' => $user_entity->getAirport(),
                 'info' => $user_entity->getInfo(),
                 'transportation' => $user_entity->getTransportation(),
-                'photo_path' => $user_entity->getPhotoPath()
+                'photo_path' => $user_entity->getPhotoPath(),
             ];
             $user = $this->app['sentinel']->registerAndActivate($data);
             $role = $this->app['sentinel']->findRoleBySlug('speaker');
@@ -106,7 +106,7 @@ class SignupController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "There was a problem creating your account, please try again"
+                'ext' => 'There was a problem creating your account, please try again',
             ]);
             return $this->render('user/create.twig', [
                 'formAction' => $this->url('user_create'),
@@ -120,7 +120,7 @@ class SignupController extends BaseController
         $this->service('session')->set('flash', [
             'type' => 'success',
             'short' => 'Success',
-            'ext' => "Your account has been created, you're ready to log in!"
+            'ext' => "Your account has been created, you're ready to log in!",
         ]);
         return $this->redirectTo('login');
     }

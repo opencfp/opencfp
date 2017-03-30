@@ -8,8 +8,8 @@ use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Entity\TalkMeta;
 use OpenCFP\Environment;
-use OpenCFP\Http\Form\Entity\Talk;
 use OpenCFP\Http\Controller\TalkController;
+use OpenCFP\Http\Form\Entity\Talk;
 use OpenCFP\Util\Wrapper\SentinelWrapper;
 
 class TalkControllerTest extends \PHPUnit\Framework\TestCase
@@ -158,9 +158,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "Redirecting to /login",
+            'Redirecting to /login',
             $controller->viewAction($this->req)->getContent(),
-            "Non-logged in user can view a talk"
+            'Non-logged in user can view a talk'
         );
     }
 
@@ -183,9 +183,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "<!-- id: talk/view -->",
+            '<!-- id: talk/view -->',
             $controller->viewAction($this->req)->getContent(),
-            "TalkController::viewAction did not correctly render view"
+            'TalkController::viewAction did not correctly render view'
         );
     }
 
@@ -200,9 +200,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "Redirecting to /login",
+            'Redirecting to /login',
             $controller->editAction($this->req)->getContent(),
-            "editAction did not kick out a non-logged-in user"
+            'editAction did not kick out a non-logged-in user'
         );
     }
 
@@ -223,9 +223,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "<!-- id: form/talk -->",
+            '<!-- id: form/talk -->',
             $controller->editAction($this->req)->getContent(),
-            "edit form did not display expected talk"
+            'edit form did not display expected talk'
         );
     }
 
@@ -243,9 +243,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "Redirecting to /dashboard",
+            'Redirecting to /dashboard',
             $controller->editAction($this->req)->getContent(),
-            "edit form did not handle missing talk ID correctly"
+            'edit form did not handle missing talk ID correctly'
         );
     }
 
@@ -268,9 +268,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "Redirecting to /talk",
+            'Redirecting to /talk',
             $controller->editAction($this->req)->getContent(),
-            "editAction allowed a talk to be edited after the CfP was closed"
+            'editAction allowed a talk to be edited after the CfP was closed'
         );
     }
 
@@ -285,7 +285,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "Redirecting to /login",
+            'Redirecting to /login',
             $controller->createAction($this->req)->getContent(),
             'createAction did not kick out non-logged-in user'
         );
@@ -302,7 +302,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "Redirecting to /dashboard",
+            'Redirecting to /dashboard',
             $controller->createAction($this->req)->getContent(),
             'createAction let you create a talk after the CfP is closed'
         );
@@ -317,7 +317,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "<!-- id: form/talk -->",
+            '<!-- id: form/talk -->',
             $controller->createAction($this->req)->getContent(),
             'createAction did not show talk form'
         );
@@ -334,9 +334,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "Redirecting to /login",
+            'Redirecting to /login',
             $controller->processCreateAction($this->req)->getContent(),
-            "processCreateAction did not kick out an unauthenticated user"
+            'processCreateAction did not kick out an unauthenticated user'
         );
     }
 
@@ -352,9 +352,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "Redirecting to /dashboard",
+            'Redirecting to /dashboard',
             $controller->processCreateAction($this->req)->getContent(),
-            "processCreateAction allowed creating talks after the CfP is closed"
+            'processCreateAction allowed creating talks after the CfP is closed'
         );
     }
 
@@ -371,9 +371,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "<!-- id: form/talk -->",
+            '<!-- id: form/talk -->',
             $controller->processCreateAction($this->req)->getContent(),
-            "processCreate did not handle an invalid form correctly"
+            'processCreate did not handle an invalid form correctly'
         );
     }
 
@@ -394,7 +394,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $expected_flash = [
             'type' => 'success',
             'short' => 'Success',
-            'ext' => "Successfully saved talk."
+            'ext' => 'Successfully saved talk.',
         ];
         $controller = new TalkController();
         $controller->setApplication($this->app);
@@ -403,7 +403,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expected_flash,
             $this->app['session']->get('flash'),
-            "processCreate did not handle a valid talk form correctly"
+            'processCreate did not handle a valid talk form correctly'
         );
     }
 
@@ -419,9 +419,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $this->assertContains(
-            "Redirecting to /login",
+            'Redirecting to /login',
             $controller->updateAction($this->req)->getContent(),
-            "updateAction did not kick out unauthenticated users"
+            'updateAction did not kick out unauthenticated users'
         );
     }
 
@@ -443,7 +443,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
             'desired' => 0,
             'sponsor' => 0,
             'other' => 'OTHER',
-            'slides' => null
+            'slides' => null,
         ]);
         $form = m::mock('\stdClass');
         $form->shouldReceive('handleRequest')->with($this->req);
@@ -462,7 +462,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             'Successfully saved talk.',
             $flash['ext'],
-            "updateAction did not save updated talk"
+            'updateAction did not save updated talk'
         );
     }
 
@@ -487,7 +487,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
     protected function createLoggedInUser()
     {
         $user = [];
-        $user['id'] = random_int(1,1000);
+        $user['id'] = random_int(1, 1000);
         $user['email'] = uniqid() . '@opencfp.org';
 
         $sentinel = m::mock(SentinelWrapper::class);
@@ -525,7 +525,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
             'slides' => '',
             'type' => 'regular',
             'category' => 'test',
-            'level' => 'beginner'
+            'level' => 'beginner',
         ];
         $talk = $mapper->build($data);
         $talk_id = $mapper->save($talk);

@@ -110,7 +110,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
     {
         // end date, current date
         return [
-            [$close = 'Jan 1, 2000', $now = 'Jan 2, 2000']
+            [$close = 'Jan 1, 2000', $now = 'Jan 2, 2000'],
         ];
     }
 

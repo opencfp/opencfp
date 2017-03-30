@@ -25,14 +25,14 @@ class ChangePasswordForm extends AbstractType
                     'max' => 255,
                     'minMessage' => 'Passwords must be between 5 and 255 characters',
                     'maxMessage' => 'Passwords must be between 5 and 255 characters',
-                ])],
+                ]), ],
             'first_options' => ['label' => 'Password', 'attr' => ['class' => 'form-control', 'placeholder' => 'Password (minimum 5 characters)']],
             'second_options' => ['label' => 'Password', 'attr' => ['class' => 'form-control', 'placeholder' => 'Password (confirm)']],
             'invalid_message' => 'Passwords did not match', ])
             ->add('user_id', HiddenType::class, [
                 'error_bubbling' => true,
                 'required' => true,
-                'constraints' => [new Assert\NotBlank()]
+                'constraints' => [new Assert\NotBlank()],
             ])
             ->getForm();
     }
@@ -41,7 +41,6 @@ class ChangePasswordForm extends AbstractType
     {
         $resolver->setDefaults(['data_class' => ChangePassword::class]);
     }
-
 
     public function getName()
     {

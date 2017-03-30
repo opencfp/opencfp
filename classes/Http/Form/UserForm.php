@@ -32,7 +32,7 @@ class UserForm extends AbstractType
             'constraints' => [
                 new Assert\NotBlank(),
             ],
-            'attr' => ['placeholder' => 'you@domain.org', 'class' => 'form-control']])
+            'attr' => ['placeholder' => 'you@domain.org', 'class' => 'form-control'], ])
             ->add('password', RepeatedType::class, [
                 'error_bubbling' => true,
                 'type' => PasswordType::class,
@@ -44,7 +44,7 @@ class UserForm extends AbstractType
                        'max' => 255,
                        'minMessage' => 'Passwords must be between 5 and 255 characters',
                        'maxMessage' => 'Passwords must be between 5 and 255 characters',
-                   ])],
+                   ]), ],
                 'first_options' => ['label' => 'Password', 'attr' => ['class' => 'form-control', 'placeholder' => 'Password (minimum 5 characters)']],
                 'second_options' => ['label' => 'Password', 'attr' => ['class' => 'form-control', 'placeholder' => 'Password (confirm)']],
                 'invalid_message' => 'Passwords did not match', ])
@@ -59,7 +59,7 @@ class UserForm extends AbstractType
                         'min' => 1,
                         'max' => 255,
                         'maxMessage' => 'First name must be between 1 and 255 characters',
-                    ])]
+                    ]), ],
                 ])
             ->add('last_name', TextType::class, [
                 'error_bubbling' => true,
@@ -72,7 +72,7 @@ class UserForm extends AbstractType
                         'max' => 255,
                         'minMessage' => 'Last name must be between 1 and 255 characters',
                         'maxMessage' => 'Last name must be between 1 and 255 characters',
-                    ])]
+                    ]), ],
                 ])
             ->add('company', TextType::class, [
                 'error_bubbling' => true,
@@ -84,13 +84,13 @@ class UserForm extends AbstractType
                     'max' => 255,
                     'minMessage' => 'Company name must be between 1 and 255 characters',
                     'maxMessage' => 'Company name must be between 1 and 255 characters',
-                ])]])
+                ])], ])
             ->add('twitter', TextType::class, [
                 'error_bubbling' => true,
                 'label' => 'Twitter',
                 'attr' => ['placeholder' => '@twitter', 'class' => 'form-control'],
                 'required' => false,
-                'constraints' => [new TwitterAccount()]
+                'constraints' => [new TwitterAccount()],
             ])
             ->add('bio', TextareaType::class, [
                 'error_bubbling' => true,
@@ -106,8 +106,8 @@ class UserForm extends AbstractType
                 'constraints' => [new Assert\Length([
                     'min' => 3,
                     'max' => 3,
-                    'exactMessage' => 'Airport codes must be 3 alphabetical characters'
-            ])]])
+                    'exactMessage' => 'Airport codes must be 3 alphabetical characters',
+            ])], ])
             ->add('info', TextareaType::class, [
                 'error_bubbling' => true,
                 'label' => 'Additional Notes',
@@ -137,11 +137,11 @@ class UserForm extends AbstractType
                 'constraints' => [new Assert\Image([
                     'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png'],
                     'maxSize' => 5 * 1048576,
-                    'mimeTypesMessage' => 'You can only upload JPEG or PNG files'
+                    'mimeTypesMessage' => 'You can only upload JPEG or PNG files',
                 ])],
                 'label' => 'Photo',
                 'required' => false,
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
             ]);
     }
 

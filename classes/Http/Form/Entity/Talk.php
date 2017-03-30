@@ -15,7 +15,8 @@ class Talk
     protected $other;
     protected $sponsor;
 
-    public function createFromArray($data) {
+    public function createFromArray($data)
+    {
         $this->setId($data['id']);
         $this->setUserId($data['user_id']);
         $this->setTitle($data['title']);
@@ -42,7 +43,7 @@ class Talk
             'desired' => $this->getDesired(),
             'slides' => $this->getSlides(),
             'other' => $this->getOther(),
-            'sponsor' => $this->getSponsor()
+            'sponsor' => $this->getSponsor(),
         ];
     }
 
@@ -222,4 +223,3 @@ class Talk
         $this->sponsor = $sponsor;
     }
 }
-

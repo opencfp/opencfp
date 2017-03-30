@@ -8,7 +8,6 @@ use OpenCFP\Http\Form\TalkForm;
 use Silex\Application;
 use Spot\Locator;
 use Swift_Message;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 
@@ -249,7 +248,7 @@ class TalkController extends BaseController
                 $this->service('session')->set('flash', [
                     'type' => 'error',
                     'short' => 'Error',
-                    'ext' => 'Unable to update the talk'
+                    'ext' => 'Unable to update the talk',
                 ]);
                 $data = [
                     'formAction' => $this->url('talk_update'),
@@ -281,7 +280,7 @@ class TalkController extends BaseController
         $this->service('session')->set('flash', [
             'type' => 'error',
             'short' => 'Error',
-            'ext' => "Please check your form for errors",
+            'ext' => 'Please check your form for errors',
         ]);
 
         $data['flash'] = $this->getFlash($this->app);

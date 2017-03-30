@@ -41,7 +41,7 @@ class SentinelWrapper
      * @param array $credentials
      * @return mixed
      */
-    public function findByCredentials(Array $credentials)
+    public function findByCredentials(array $credentials)
     {
         return Sentinel::findByCredentials($credentials);
     }
