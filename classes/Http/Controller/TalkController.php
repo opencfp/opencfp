@@ -336,13 +336,13 @@ class TalkController extends BaseController
         $this->service('session')->set('flash', [
             'type' => 'error',
             'short' => 'Error',
-            'ext' => implode("<br>", $form->getErrorMessages()),
+            'ext' => implode('<br>', $form->getErrorMessages()),
         ]);
 
         $this->service('session')->set('flash', [
             'type' => 'error',
             'short' => 'Error',
-            'ext' => implode("<br>", $form->getErrorMessages()),
+            'ext' => implode('<br>', $form->getErrorMessages()),
         ]);
         $data['flash'] = $this->getFlash($this->app);
 
@@ -444,7 +444,7 @@ class TalkController extends BaseController
         $this->service('session')->set('flash', [
             'type' => 'error',
             'short' => 'Error',
-            'ext' => implode("<br>", $form->getErrorMessages()),
+            'ext' => implode('<br>', $form->getErrorMessages()),
         ]);
 
         $data['flash'] = $this->getFlash($this->app);

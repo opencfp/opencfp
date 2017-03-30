@@ -60,7 +60,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
             'user_id' => 1,
         ];
         $extendedData = $goodData;
-        $extendedData['extra'] = "Extra data in \$_POST but we ignore it";
+        $extendedData['extra'] = 'Extra data in $_POST but we ignore it';
 
         return [
             [serialize($badData), false],
@@ -145,8 +145,8 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         return [
             [substr($faker->text(90), 0, 90), true],
             [null, false],
-            ["This is a string that could be more than 100 characters long but will we really know for sure until I check it out?", false],
-            ["A little bit of this & that", true],
+            ['This is a string that could be more than 100 characters long but will we really know for sure until I check it out?', false],
+            ['A little bit of this & that', true],
         ];
     }
 

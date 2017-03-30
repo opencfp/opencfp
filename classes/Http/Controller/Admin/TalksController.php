@@ -86,27 +86,27 @@ class TalksController extends BaseController
         }
 
         switch (strtolower($filter)) {
-            case "selected":
+            case 'selected':
                 return $talk_mapper->getSelected($admin_user_id, $options);
                 break;
 
-            case "notviewed":
+            case 'notviewed':
                 return $talk_mapper->getNotViewedByUserId($admin_user_id, $options);
                 break;
 
-            case "notrated":
+            case 'notrated':
                 return $talk_mapper->getNotRatedByUserId($admin_user_id, $options);
                 break;
 
-            case "rated":
+            case 'rated':
                 return $talk_mapper->getRatedByUserId($admin_user_id, $options);
                 break;
 
-            case "viewed":
+            case 'viewed':
                 return $talk_mapper->getViewedByUserId($admin_user_id, $options);
                 break;
 
-            case "favorited":
+            case 'favorited':
                 return $talk_mapper->getFavoritesByUserId($admin_user_id, $options);
                 break;
 
@@ -136,7 +136,7 @@ class TalksController extends BaseController
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
-                'ext' => "Could not find requested talk",
+                'ext' => 'Could not find requested talk',
             ]);
 
             return $this->app->redirect($this->url('admin_talks'));
@@ -344,7 +344,7 @@ class TalksController extends BaseController
         $this->service('session')->set('flash', [
                 'type' => 'success',
                 'short' => 'Success',
-                'ext' => "Comment Added!",
+                'ext' => 'Comment Added!',
             ]);
 
         return $this->app->redirect($this->url('admin_talk_view', ['id' => $talk_id]));

@@ -130,9 +130,9 @@ class Talk extends Mapper
         );
 
         $talks = $this->query(
-            "SELECT t.* FROM talks t "
-            . "LEFT JOIN favorites f ON t.id = f.talk_id "
-            . "WHERE f.admin_user_id = :user_id "
+            'SELECT t.* FROM talks t '
+            . 'LEFT JOIN favorites f ON t.id = f.talk_id '
+            . 'WHERE f.admin_user_id = :user_id '
             . "ORDER BY {$options['order_by']} {$options['sort']}",
             ['user_id' => $admin_user_id]
         );
@@ -165,10 +165,10 @@ class Talk extends Mapper
         );
 
         $talks = $this->query(
-            "SELECT t.*, SUM(m.rating) AS total_rating, COUNT(m.rating) as review_count FROM talks t "
-            . "LEFT JOIN talk_meta m ON t.id = m.talk_id "
-            . "GROUP BY m.`talk_id` "
-            . "HAVING total_rating > 0 "
+            'SELECT t.*, SUM(m.rating) AS total_rating, COUNT(m.rating) as review_count FROM talks t '
+            . 'LEFT JOIN talk_meta m ON t.id = m.talk_id '
+            . 'GROUP BY m.`talk_id` '
+            . 'HAVING total_rating > 0 '
             . "ORDER BY {$options['order_by']} {$options['sort']}",
             ['user_id' => $admin_user_id]
         );
@@ -200,9 +200,9 @@ class Talk extends Mapper
         );
 
         $talks = $this->query(
-            "SELECT t.* FROM talks t "
-            . "LEFT JOIN talk_meta m ON t.id = m.talk_id "
-            . "WHERE (m.viewed = 0 AND m.admin_user_id = :user_id) OR m.viewed IS NULL "
+            'SELECT t.* FROM talks t '
+            . 'LEFT JOIN talk_meta m ON t.id = m.talk_id '
+            . 'WHERE (m.viewed = 0 AND m.admin_user_id = :user_id) OR m.viewed IS NULL '
             . "ORDER BY {$options['order_by']} {$options['sort']}",
             ['user_id' => $admin_user_id]
         );
@@ -234,9 +234,9 @@ class Talk extends Mapper
         );
 
         $talks = $this->query(
-            "SELECT t.* FROM talks t "
-            . "RIGHT JOIN talk_meta m ON t.id = m.talk_id "
-            . "WHERE m.admin_user_id = :user_id AND m.viewed = 1 "
+            'SELECT t.* FROM talks t '
+            . 'RIGHT JOIN talk_meta m ON t.id = m.talk_id '
+            . 'WHERE m.admin_user_id = :user_id AND m.viewed = 1 '
             . "ORDER BY {$options['order_by']} {$options['sort']}",
             ['user_id' => $admin_user_id]
         );
@@ -268,9 +268,9 @@ class Talk extends Mapper
         );
 
         $talks = $this->query(
-            "SELECT t.* FROM talks t "
-            . "RIGHT JOIN talk_meta m ON t.id = m.talk_id "
-            . "WHERE m.admin_user_id = :user_id AND (m.rating = 1 OR m.rating = -1) "
+            'SELECT t.* FROM talks t '
+            . 'RIGHT JOIN talk_meta m ON t.id = m.talk_id '
+            . 'WHERE m.admin_user_id = :user_id AND (m.rating = 1 OR m.rating = -1) '
             . "ORDER BY {$options['order_by']} {$options['sort']}",
             ['user_id' => $admin_user_id]
         );
@@ -302,9 +302,9 @@ class Talk extends Mapper
         );
 
         $talks = $this->query(
-            "SELECT t.* FROM talks t "
-            . "LEFT JOIN talk_meta m ON (t.id = m.talk_id AND m.admin_user_id = :user_id)"
-            . "WHERE m.rating = 0 OR m.rating IS NULL "
+            'SELECT t.* FROM talks t '
+            . 'LEFT JOIN talk_meta m ON (t.id = m.talk_id AND m.admin_user_id = :user_id)'
+            . 'WHERE m.rating = 0 OR m.rating IS NULL '
             . "ORDER BY {$options['order_by']} {$options['sort']}",
             ['user_id' => $admin_user_id]
         );
