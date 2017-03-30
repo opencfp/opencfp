@@ -15,4 +15,4 @@ ratings:
   paths:
   - "**.php"
 
-exclude_paths: 
+exclude_paths:
