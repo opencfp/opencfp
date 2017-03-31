@@ -13,6 +13,8 @@ class LoginTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->loginEntity = new LoginEntity();
     }
 

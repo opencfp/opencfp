@@ -13,6 +13,8 @@ class UserTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->userEntity = new User();
     }
 
