@@ -26,6 +26,8 @@ class LoginTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->factory = Forms::createFormFactoryBuilder()
             ->addExtensions($this->getExtensions())
             ->getFormFactory();

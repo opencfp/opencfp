@@ -13,6 +13,8 @@ class ProfileTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->profileEntity = new Profile();
     }
 
