@@ -320,7 +320,7 @@ class SignupForm extends Form
 
     private function validateAgreeCoc()
     {
-        if (!$this->getOption('has_coc')) {
+        if ($this->getOption('has_coc') !== null) {
             return true;
         }
 
