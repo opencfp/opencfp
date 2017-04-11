@@ -12,7 +12,7 @@ use OpenCFP\Application as ApplicationContainer;
 
 $basePath = realpath(dirname(__DIR__));
 $input = new ArgvInput();
-$environment = $input->getParameterOption(array('--env', '-e'), getenv('CFP_ENV') ?: 'development');
+$environment = $input->getParameterOption(array('--env'), getenv('CFP_ENV') ?: 'development');
 
 $container = new ApplicationContainer($basePath, Environment::fromString($environment));
 $app = new Application($container);
