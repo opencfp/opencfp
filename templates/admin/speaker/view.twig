@@ -10,7 +10,7 @@
             {% endif %}
             <div class="col-md-8">
                 <blockquote>
-                    <h2>{{ speaker.first_name }} {{ speaker.last_name }}</h2>
+                    <h2>{{ speaker.name }}</h2>
                     {% if speaker.airport.code %}<p><a href="https://www.google.com/flights/#search;f={{ speaker.airport.code|upper }};t={{ airport|upper }};d={{ arrival }};r={{ departure }}" target="_blank">{{ speaker.airport.code }} </a><i class="fa fa-plane"></i></p>{% endif %}
                 </blockquote>
                 <p>
