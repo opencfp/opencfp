@@ -169,8 +169,7 @@ class Talk extends Mapper
             . 'LEFT JOIN talk_meta m ON t.id = m.talk_id '
             . 'GROUP BY m.`talk_id` '
             . 'HAVING total_rating > 0 '
-            . "ORDER BY {$options['order_by']} {$options['sort']}",
-            ['user_id' => $admin_user_id]
+            . "ORDER BY {$options['order_by']} {$options['sort']}"
         );
 
         $formatted = [];
