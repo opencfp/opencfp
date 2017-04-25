@@ -70,6 +70,42 @@ class TalkTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function getTopRatedByUserIdReturnsCorrectList()
+    {
+        // Create a test talk
+        $admin_user_id = 1;
+        $admin_majority = 3;
+
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+
+        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
+
+        $talk_data = [
+            'title' => 'Admin Favorite Talk',
+            'description' => "This talk has {$admin_majority} favorites!",
+            'user_id' => $admin_user_id,
+            'type' => 'regular',
+            'category' => 'api',
+            'level' => 'entry',
+        ];
+        $talk = $mapper->create($talk_data);
+
+        $this->rateTalks($admin_user_id, $talk);
+        $mapper->createdFormattedOutput($talk, $admin_user_id);
+        $top_rated_collection = $mapper->getTopRatedByUserId($admin_user_id);
+        $top_rated = $top_rated_collection[0];
+
+        $this->assertEquals(
+            $talk->id,
+            $top_rated['id'],
+            'Did not get expected list of top rated talks'
+        );
+    }
+
     //
     // Factory Methods
     //
@@ -78,7 +114,7 @@ class TalkTest extends \PHPUnit\Framework\TestCase
     {
         /* @var Locator $spot */
         $spot = $this->app['spot'];
-        
+
         // Create a test user
         $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_mapper->create([
@@ -101,5 +137,30 @@ class TalkTest extends \PHPUnit\Framework\TestCase
             ];
             $favorite_mapper->create($favorite_data);
         }
+    }
+
+    private function rateTalks($admin_user_id, $talk)
+    {
+        /* @var Locator $spot */
+        $spot = $this->app['spot'];
+
+        // Create a test user
+        $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
+        $user_mapper->create([
+            'id' => $admin_user_id,
+            'email' => 'test@test.com',
+            'password' => 'supersecret',
+            'first_name' => 'Testy',
+            'last_name' => 'McTesterson',
+        ]);
+
+        $talk_meta_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
+
+        $talk_meta = $talk_meta_mapper->get();
+        $talk_meta->admin_user_id = $admin_user_id;
+        $talk_meta->talk_id = $talk->id;
+
+        $talk_meta->rating = 1;
+        $talk_meta_mapper->save($talk_meta);
     }
 }
