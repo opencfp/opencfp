@@ -167,7 +167,7 @@ class Talk extends Mapper
         $talks = $this->query(
             'SELECT t.*, SUM(m.rating) AS total_rating, COUNT(m.rating) as review_count FROM talks t '
             . 'INNER JOIN talk_meta m ON t.id = m.talk_id '
-            . 'GROUP BY m.`talk_id` '
+            . 'GROUP BY t.id '
             . 'HAVING total_rating > 0 '
             . "ORDER BY {$options['order_by']} {$options['sort']}"
         );
