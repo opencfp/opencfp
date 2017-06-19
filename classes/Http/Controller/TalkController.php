@@ -298,7 +298,7 @@ class TalkController extends BaseController
             $talk = $talk_mapper->build($data);
 
             try {
-                $talk_data = $talk_mapper->save($talk, ['relations' => true]);
+                $talk_mapper->save($talk, ['relations' => true]);
             } catch (\Exception $e) {
                 echo $e->getMessage();
                 die();
@@ -311,7 +311,7 @@ class TalkController extends BaseController
             ]);
 
             // send email to speaker showing submission
-            $this->sendSubmitEmail($this->app, $user->getLogin(), $talk_data);
+            $this->sendSubmitEmail($this->app, $user->getLogin(), $talk->get('id'));
 
             return $this->redirectTo('dashboard');
         }
@@ -405,7 +405,7 @@ class TalkController extends BaseController
             }
 
             try {
-                $talk_data = $talk_mapper->save($talk, ['relations' => true]);
+                $talk_mapper->save($talk, ['relations' => true]);
             } catch (\Exception $e) {
                 echo $e->getMessage();
                 die();
@@ -418,7 +418,7 @@ class TalkController extends BaseController
             ]);
 
             // send email to speaker showing submission
-            $this->sendSubmitEmail($this->app, $user->getLogin(), $talk_data);
+            $this->sendSubmitEmail($this->app, $user->getLogin(), $talk->get('id'));
 
             return $this->redirectTo('dashboard');
         }
