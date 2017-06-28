@@ -98,15 +98,15 @@ class ForgotController extends BaseController
                 'ext' => $errorMessage,
             ]);
         }
-
+        
         // Build password form and display it to the user
         $form_options = [
             'user_id' => $req->get('user_id'),
             'reset_code' => $req->get('reset_code'),
         ];
-        $form = $this->service('form.factory')->create(new ResetForm(), $form_options);
+        $form = $this->service('form.factory')->create(new ResetForm());
 
-        $data['form'] = $form->createView();
+        $data['form'] = $form->createView($form_options);
         $data['flash'] = $this->getFlash($this->app);
 
         return $this->render('user/forgot_password.twig', $data);
@@ -121,16 +121,15 @@ class ForgotController extends BaseController
             throw new Exception();
         }
 
-        $form_options = [
-            'user_id' => $user_id,
-            'reset_code' => $reset_code,
-        ];
-        $form = $this->service('form.factory')->create(new ResetForm(), $form_options);
-
+        $form = $this->service('form.factory')->createBuilder(ResetForm::class)->getForm();
+        $form->handleRequest($req);
+        
         if (! $form->isValid()) {
+            $form->get('user_id')->setData($user_id);
+            $form->get('reset_code')->setData($reset_code);
             return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
         }
-
+             
         $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
         $error = 0;
 
@@ -160,11 +159,17 @@ class ForgotController extends BaseController
 
     public function updatePasswordAction(Request $req)
     {
-        $postArray = $req->request->all();
+        $form = $this->service('form.factory')->createBuilder(ResetForm::class)->getForm();
+        $form->handleRequest($req);
+        
+        if (! $form->isValid()) {
+            return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
+        }
 
-        $user_id = $postArray['reset']['user_id'];
-        $reset_code = $postArray['reset']['reset_code'];
-        $password = $postArray['reset']['password']['password'];
+        $data = $form->getData();
+        $user_id = $data['user_id'];
+        $reset_code = $data['reset_code'];
+        $password = $data['password'];
 
         if (empty($reset_code)) {
             throw new Exception();

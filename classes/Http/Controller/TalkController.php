@@ -175,7 +175,6 @@ class TalkController extends BaseController
 
         $talk_entity = $form->getData();
         $spot = $this->service('spot');
-
         $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $data = [
             'title' => $talk_entity->getTitle(),
@@ -190,7 +189,8 @@ class TalkController extends BaseController
             'user_id' => (int) $user['id'],
         ];
 
-        $talk = $talk_mapper->build($data);
+        // send email to speaker showing submission
+        $this->sendSubmitEmail($this->app, $user->getLogin(), $talk->get('id'));
 
         try {
             $talk_data = $talk_mapper->save($talk, ['relations' => true]);
@@ -243,7 +243,7 @@ class TalkController extends BaseController
             $talk->updated_at = new \DateTime();
 
             try {
-                $response = $mapper->save($talk);
+                $talk_mapper->save($talk, ['relations' => true]);
             } catch (\Exception $e) {
                 $this->service('session')->set('flash', [
                     'type' => 'error',
@@ -266,7 +266,7 @@ class TalkController extends BaseController
             ]);
 
             // send email to speaker showing submission
-            $this->sendSubmitEmail($this->app, $user['email'], $talk_form_entity->toArray());
+            $this->sendSubmitEmail($this->app, $user->getLogin(), $talk->get('id'));
 
             return $this->redirectTo('dashboard');
         }

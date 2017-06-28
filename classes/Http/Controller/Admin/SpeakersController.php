@@ -5,6 +5,7 @@ namespace OpenCFP\Http\Controller\Admin;
 use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
+use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\Adapter\ArrayAdapter;
@@ -154,7 +155,7 @@ class SpeakersController extends BaseController
             'airport' => $this->app->config('application.airport'),
             'arrival' => date('Y-m-d', $this->app->config('application.arrival')),
             'departure' => date('Y-m-d', $this->app->config('application.departure')),
-            'speaker' => $speaker_details,
+            'speaker' => new SpeakerProfile($speaker_details),
             'talks' => $talks,
             'photo_path' => '/uploads/',
             'page' => $req->get('page'),
