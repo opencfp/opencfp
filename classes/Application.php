@@ -145,7 +145,7 @@ class Application extends SilexApplication
 
         if (!file_exists($this->configPath())) {
             throw new \InvalidArgumentException(
-                sprintf("The config file '%s' does not exist.", $this->filename)
+                sprintf("The config file '%s' does not exist.", $this->configPath())
             );
         }
 
