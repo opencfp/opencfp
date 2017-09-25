@@ -193,4 +193,194 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('error', $flashMessage['type']);
         $this->assertEquals('You cannot create talks once the call for papers has ended', $flashMessage['ext']);
     }
+
+    /**
+     * @test
+     */
+    public function willDisplayOwnTalk()
+    {
+        $controller = new TalkController();
+        $controller->setApplication($this->app);
+
+        /* @var Sentry $sentry */
+        $sentry = $this->app['sentry'];
+
+        // Get our request object to return expected data
+        $talk_data = [
+            'title' => 'Test Submission',
+            'description' => 'Make sure we can see our own talk.',
+            'type' => 'regular',
+            'level' => 'entry',
+            'category' => 'other',
+            'desired' => 0,
+            'slides' => '',
+            'other' => '',
+            'sponsor' => '',
+            'user_id' => $sentry->getUser()->getId(),
+        ];
+
+        $this->setPost($talk_data);
+
+        $speaker = m::mock(\OpenCFP\Application\Speakers::class);
+        $speaker->shouldReceive('getTalk')->with(1)->andReturn($talk_data);
+        $this->app['application.speakers'] = $speaker;
+        $this->req->shouldReceive('get')->with('id')->andReturn(1);
+
+        $response = $controller->viewAction($this->req);
+
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\Response',
+            $response
+        );
+        $this->assertContains('<h2 class="headline">Test Submission', (string) $response);
+        $this->assertContains('<p>Make sure we can see our own talk.', (string) $response);
+    }
+
+    /**
+     * @test
+     */
+    public function canNotEditTalkAfterCfpIsClosed()
+    {
+        $controller = new TalkController();
+        $controller->setApplication($this->app);
+
+        $this->req->shouldReceive('get')->with('id')->andReturn(4);
+
+        $callForProposal = m::mock(CallForProposal::class);
+        $callForProposal->shouldReceive('isOpen')->andReturn(false);
+        $this->app['callforproposal'] = $callForProposal;
+        $response = $controller->editAction($this->req);
+
+        $flashMessage = $this->app['session']->get('flash');
+
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\RedirectResponse',
+            $response
+        );
+        $this->assertEquals('error', $flashMessage['type']);
+        $this->assertEquals('You cannot edit talks once the call for papers has ended', $flashMessage['ext']);
+    }
+
+    /**
+     * @test
+     */
+    public function getRedirectedToDashboardOnEditWhenNoTalkID()
+    {
+        $controller = new TalkController();
+        $controller->setApplication($this->app);
+        $this->req->shouldReceive('get')->with('id')->andReturn('');
+
+        $response = $controller->editAction($this->req);
+
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\RedirectResponse',
+            $response
+        );
+        $this->assertNotContains(
+            '<input id="form-talk-title" type="text" name="title" class="form-control" placeholder="Talk Title"',
+            (string)$response
+        );
+        $this->assertNotContains(
+            '<div class="form-group">',
+            (string) $response
+        );
+        $this->assertContains('dashboard', $response->getTargetUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function getRedirectedToDashboardWhenTalkIsNotYours()
+    {
+        $controller = new TalkController();
+        $controller->setApplication($this->app);
+        $this->req->shouldReceive('get')->with('id')->andReturn(1);
+        $this->app['spot'] = m::mock(\Spot\Locator::class);
+        $this->app['spot']->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\Talk::class)->andReturn($this->app['spot']);
+        $this->app['spot']->shouldReceive('where')->with(['id' => 1])->andReturn($this->app['spot']);
+        $this->app['spot']->shouldReceive('execute')->andReturn($this->app['spot']);
+        $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
+        $this->app['spot']->shouldReceive('toArray')->andReturn(['user_id'=> (int)$this->app['sentry']->getUser()->getId() + 2]);
+
+
+        $response = $controller->editAction($this->req);
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\RedirectResponse',
+            $response
+        );
+        $this->assertContains('dashboard', $response->getTargetUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function seeEditPageWhenAllowed()
+    {
+        $controller = new TalkController();
+        $controller->setApplication($this->app);
+        $this->req->shouldReceive('get')->with('id')->andReturn(1);
+        $this->app['spot'] = m::mock(\Spot\Locator::class);
+        $this->app['spot']->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\Talk::class)->andReturn($this->app['spot']);
+        $this->app['spot']->shouldReceive('where')->with(['id' => 1])->andReturn($this->app['spot']);
+        $this->app['spot']->shouldReceive('execute')->andReturn($this->app['spot']);
+        $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
+        $this->app['spot']->shouldReceive('toArray')->andReturn(
+            [
+                'user_id' => (int)$this->app['sentry']->getUser()->getId(),
+                'title' => 'Title of talk to edit',
+                'description' => 'The Description',
+                'type' => 'regular',
+                'level' => 'entry',
+                'category' => 'other',
+                'desired' => 0,
+                'slides' => '',
+                'other' => '',
+                'sponsor' => '',
+            ]
+        );
+
+        $response = $controller->editAction($this->req);
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\Response',
+            $response
+        );
+        $this->assertContains(
+            '<input id="form-talk-title" type="text" name="title" class="form-control" placeholder="Talk Title"',
+            (string)$response
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getDirectBackToEditPageWhenInValidTitle()
+    {
+        $controller = new TalkController();
+        $controller->setApplication($this->app);
+
+        $talk_data = [
+            'id' => 3,
+            'title' => '',
+            'description' => 'This talk is missing its title',
+            'type' => 'regular',
+            'level' => 'entry',
+            'category' => 'other',
+            'desired' => 0,
+            'slides' => '',
+            'other' => '',
+            'sponsor' => '',
+            'user_id' => $this->app['sentry']->getUser()->getId(),
+        ];
+
+        $this->setPost($talk_data);
+
+
+        $response = $controller->updateAction($this->req);
+
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\Response',
+            $response
+        );
+        $this->assertContains('Please fill in the title', (string) $response);
+    }
 }
