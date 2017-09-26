@@ -52,7 +52,7 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
         // Create a test double for profile
         $profile = m::mock('StdClass');
         $profile->shouldReceive('name')->andReturn('Test User');
-        $profile->shouldReceive('photo', 'company', 'twitter', 'airport', 'bio', 'info', 'transportation', 'hotel');
+        $profile->shouldReceive('photo', 'company', 'twitter', 'url', 'airport', 'bio', 'info', 'transportation', 'hotel');
         $profile->shouldReceive('talks')->andReturn([$talk]);
 
 
@@ -121,6 +121,7 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
             'getEmail' => $faker->companyEmail,
             'getCompany' => $faker->company,
             'getTwitter' => $faker->userName,
+            'getUrl' => $faker->url,
             'getInfo' => $faker->text,
             'getBio' => $faker->text,
             'getTransportation' => true,

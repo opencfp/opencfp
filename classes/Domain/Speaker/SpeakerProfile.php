@@ -58,6 +58,11 @@ class SpeakerProfile
         return $this->speaker->twitter;
     }
 
+    public function getUrl()
+    {
+        return $this->speaker->url;
+    }
+
     public function getInfo()
     {
         return $this->speaker->info;
@@ -94,6 +99,7 @@ class SpeakerProfile
             'name' => $this->getName(),
             'email' => $this->getEmail(),
             'twitter' => $this->getTwitter(),
+            'url' => $this->getUrl(),
             'bio' => $this->getBio(),
         ];
     }
