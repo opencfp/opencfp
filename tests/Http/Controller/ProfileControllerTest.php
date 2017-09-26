@@ -86,6 +86,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
                 'info' => 'My information',
                 'bio' => 'Interesting details about my life',
                 'photo_path' => '',
+                'url' => '',
                 'airport' => '',
                 'transportation' => '',
                 'hotel' => '',
@@ -221,6 +222,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $this->req->shouldReceive('get')->with('airport')->andReturn('');
         $this->req->shouldReceive('get')->with('transportation')->andReturn('');
         $this->req->shouldReceive('get')->with('hotel')->andReturn('');
+        $this->req->shouldReceive('get')->with('url')->andReturn('https://joind.in/user/myname');
         $this->req->shouldReceive('get')->with('speaker_info')->andReturn('All my info');
         $this->req->shouldReceive('get')->with('speaker_bio')->andReturn('I did a lot of things');
         $this->req->shouldReceive('get')->with('speaker_photo')->andReturn('');
