@@ -42,6 +42,9 @@ function deleteTalk(tid) {
             {% if profile.twitter %}
                 <a href="https://twitter.com/@{{ profile.twitter }}" title="{{ profile.name }} on Twitter">@{{ profile.twitter }}</a>
             {% endif %}<br />
+            {% if profile.url %}
+                <strong>joind.in:</strong> <a href="{{ profile.url }}">{{ profile.url }}</a><br />
+            {% endif %}<br />
             <strong>Company:</strong> {{ profile.company }}<br />
             {% if site.online_conference == false %}
             <strong>Airport:</strong> {{ profile.airport }}<br />

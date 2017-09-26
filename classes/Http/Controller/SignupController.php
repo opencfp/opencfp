@@ -55,6 +55,7 @@ class SignupController extends BaseController
             'last_name' => $req->get('last_name'),
             'company' => $req->get('company'),
             'twitter' => $req->get('twitter'),
+            'url' => $req->get('url'),
             'email' => $req->get('email'),
             'password' => $req->get('password'),
             'password2' => $req->get('password2'),
@@ -107,6 +108,7 @@ class SignupController extends BaseController
                     'email' => $sanitized_data['email'],
                     'password' => $sanitized_data['password'],
                     'airport' => $sanitized_data['airport'],
+                    'url' => $sanitized_data['url'],
                     'activated' => 1,
                 ];
 
@@ -123,16 +125,18 @@ class SignupController extends BaseController
 
                 /* @var Locator $spot */
                 $spot = $app['spot'];
-                
+
                 // Add in the extra speaker information
                 $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
 
                 $speaker = $mapper->get($user->id);
+
                 $speaker->info = $sanitized_data['speaker_info'];
                 $speaker->bio = $sanitized_data['speaker_bio'];
                 $speaker->photo_path = $sanitized_data['speaker_photo'];
                 $speaker->transportation = (int) $sanitized_data['transportation'];
                 $speaker->hotel = (int) $sanitized_data['hotel'];
+
                 $mapper->save($speaker);
 
                 // This is for redirecting to OAuth endpoint if we arrived

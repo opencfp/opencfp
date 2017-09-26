@@ -76,7 +76,7 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($twitter, $profile->getTwitter());
     }
-    
+
     public function testGetInfoReturnsInfo()
     {
         $info = $this->getFaker()->text();
@@ -89,7 +89,7 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($info, $profile->getInfo());
     }
-    
+
     public function testGetBioReturnsBio()
     {
         $bio = $this->getFaker()->text();
@@ -133,7 +133,7 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
 
         $this->assertFalse($profile->getTransportation());
     }
-    
+
     public function testGetHotelReturnsHotel()
     {
         $hotel = $this->getFaker()->sentence();
@@ -181,6 +181,7 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
         $lastName = $faker->lastName;
         $email = $faker->email;
         $twitter = $faker->userName;
+        $url = $faker->url;
         $bio = $faker->text();
 
         $speaker = new Entity\User();
@@ -189,6 +190,7 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
         $speaker->set('last_name', $lastName);
         $speaker->set('email', $email);
         $speaker->set('twitter', $twitter);
+        $speaker->set('url', $url);
         $speaker->set('bio', $bio);
 
         $profile = new SpeakerProfile($speaker);
@@ -197,6 +199,7 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
             'name' => $firstName . ' ' . $lastName,
             'email' => $email,
             'twitter' => $twitter,
+            'url' => $url,
             'bio' => $bio,
         ];
 

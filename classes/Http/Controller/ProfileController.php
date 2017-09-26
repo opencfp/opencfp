@@ -35,7 +35,7 @@ class ProfileController extends BaseController
 
         /* @var Locator $spot */
         $spot = $this->service('spot');
-        
+
         $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
         $speaker_data = $mapper->get($user->getId())->toArray();
 
@@ -45,6 +45,7 @@ class ProfileController extends BaseController
             'last_name' => $speaker_data['last_name'],
             'company' => $speaker_data['company'],
             'twitter' => $speaker_data['twitter'],
+            'url' => $speaker_data['url'],
             'speaker_info' => $speaker_data['info'],
             'speaker_bio' => $speaker_data['bio'],
             'speaker_photo' => $speaker_data['photo_path'],
@@ -88,6 +89,7 @@ class ProfileController extends BaseController
             'last_name' => $req->get('last_name'),
             'company' => $req->get('company'),
             'twitter' => $req->get('twitter'),
+            'url' => $req->get('url'),
             'airport' => $req->get('airport'),
             'transportation' => $req->get('transportation'),
             'hotel' => $req->get('hotel'),
@@ -127,7 +129,7 @@ class ProfileController extends BaseController
 
             /* @var Locator $spot */
             $spot = $this->service('spot');
-            
+
             $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
             $user = $mapper->get($user->getId());
             $user->email = $sanitized_data['email'];
@@ -135,6 +137,7 @@ class ProfileController extends BaseController
             $user->last_name = $sanitized_data['last_name'];
             $user->company = $sanitized_data['company'];
             $user->twitter = $sanitized_data['twitter'];
+            $user->url = $sanitized_data['url'];
             $user->airport = $sanitized_data['airport'];
             $user->transportation = (int) $sanitized_data['transportation'];
             $user->hotel = (int) $sanitized_data['hotel'];
@@ -255,7 +258,7 @@ class ProfileController extends BaseController
     {
         /* @var Locator $spot */
         $spot = $this->service('spot');
-        
+
         $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
         $user = $mapper->get($sanitized_data['user_id']);
         $user->email = $sanitized_data['email'];
@@ -263,6 +266,7 @@ class ProfileController extends BaseController
         $user->last_name = $sanitized_data['last_name'];
         $user->company = $sanitized_data['company'];
         $user->twitter = $sanitized_data['twitter'];
+        $user->url = $sanitized_data['url'];
         $user->airport = $sanitized_data['airport'];
         $user->transportation = $sanitized_data['transportation'];
         $user->hotel = $sanitized_data['hotel'];

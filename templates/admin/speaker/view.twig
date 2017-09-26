@@ -14,8 +14,9 @@
                     {% if speaker.airport.code %}<p><a href="https://www.google.com/flights/#search;f={{ speaker.airport.code|upper }};t={{ airport|upper }};d={{ arrival }};r={{ departure }}" target="_blank">{{ speaker.airport.code }} </a><i class="fa fa-plane"></i></p>{% endif %}
                 </blockquote>
                 <p>
-                  <i class="fa fa-envelope"></i> <a href="mailto:{{ speaker.email }}">{{ speaker.email }}</a><br>
-                  {% if speaker.twitter is not empty %}<i class="fa fa-twitter-square"></i> <a href="http://twitter.com/{{ speaker.twitter }}" target="_blank" rel="external">{{ speaker.twitter }}</a>{% endif %}
+                  <i class="fa fa-envelope"></i> <a href="mailto:{{ speaker.email }}">{{ speaker.email }}</a>
+                  {% if speaker.twitter is not empty %}<br><i class="fa fa-twitter-square"></i> <a href="http://twitter.com/{{ speaker.twitter }}" target="_blank" rel="external">{{ speaker.twitter }}</a>{% endif %}
+                  {% if speaker.url is not empty %}<br><i class="fa"></i> <a href="{{ speaker.url }}" target="_blank" rel="external">{{ speaker.url }}</a>{% endif %}
                 </p>
                 <h3>Speaker Bio</h3>
                 <p>{{ speaker.bio|striptags|markdown }}</p>

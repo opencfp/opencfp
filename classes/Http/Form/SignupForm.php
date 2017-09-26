@@ -21,6 +21,7 @@ class SignupForm extends Form
         'hotel',
         'speaker_photo',
         'agree_coc',
+        'url',
     ];
 
     /**
@@ -45,6 +46,7 @@ class SignupForm extends Form
         $valid_last_name = $this->validateLastName();
         $valid_company = $this->validateCompany();
         $valid_twitter = $this->validateTwitter();
+        $valid_url = $this->validateUrl();
         $valid_speaker_photo = $this->validateSpeakerPhoto();
         $valid_speaker_info = true;
         $valid_speaker_bio = true;
@@ -64,6 +66,7 @@ class SignupForm extends Form
             $valid_last_name &&
             $valid_company &&
             $valid_twitter &&
+            $valid_url &&
             $valid_speaker_info &&
             $valid_speaker_bio &&
             $valid_speaker_photo &&
@@ -242,6 +245,19 @@ class SignupForm extends Form
     {
         // $twitter = $this->_cleanData['twitter'];
         return true;
+    }
+
+    public function validateUrl()
+    {
+        if(preg_match('/https:\/\/joind\.in\/talk\/[a-zA-Z0-9]{3,8}/', $this->_cleanData['url']))
+        {
+            return true;
+        }
+        else
+        {
+            $this->_addErrorMessage('You did not enter a valid joind.in URL');
+            return false;
+        }
     }
 
     /**
