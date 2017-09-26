@@ -249,12 +249,9 @@ class SignupForm extends Form
 
     public function validateUrl()
     {
-        if(preg_match('/https:\/\/joind\.in\/talk\/[a-zA-Z0-9]{3,8}/', $this->_cleanData['url']))
-        {
+        if (preg_match('/https:\/\/joind\.in\/talk\/[a-zA-Z0-9]{3,8}/', $this->_cleanData['url'])) {
             return true;
-        }
-        else
-        {
+        } else {
             $this->_addErrorMessage('You did not enter a valid joind.in URL');
             return false;
         }
