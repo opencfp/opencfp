@@ -9,11 +9,12 @@ use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\DashboardController;
+use OpenCFP\Test\TestCase;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Twig_Environment;
 
-class DashboardControllerTest extends \PHPUnit\Framework\TestCase
+class DashboardControllerTest extends TestCase
 {
     use GeneratorTrait;
 
@@ -25,9 +26,6 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function indexDisplaysUserAndTalks()
     {
-        $app = new Application(BASE_PATH, Environment::testing());
-        $app['session.test'] = true;
-
         // Set things up so Sentry believes we're logged in
         $user = m::mock('StdClass');
         $user->shouldReceive('id')->andReturn(1);
@@ -36,12 +34,9 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
 
         // Create a test double for Sentry
         $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->times(3)->andReturn(true);
+        $sentry->shouldReceive('check')->times(1)->andReturn(true);
         $sentry->shouldReceive('getUser')->andReturn($user);
-        $app['sentry'] = $sentry;
-
-        $app['callforproposal'] = m::mock(CallForProposal::class);
-        $app['callforproposal']->shouldReceive('isOpen')->andReturn(true);
+        $this->swap('sentry', $sentry);
 
         // Create a test double for a talk in profile
         $talk = m::mock('StdClass');
@@ -55,23 +50,16 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
         $profile->shouldReceive('photo', 'company', 'twitter', 'url', 'airport', 'bio', 'info', 'transportation', 'hotel');
         $profile->shouldReceive('talks')->andReturn([$talk]);
 
-
         $speakerService = m::mock('StdClass');
         $speakerService->shouldReceive('findProfile')->andReturn($profile);
+        $this->swap('application.speakers', $speakerService);
 
-        $app['application.speakers'] = $speakerService;
+        $this->callForPapersIsOpen();
 
-        ob_start();
-        $app->run();  // Fire before handlers... boot...
-        ob_end_clean();
-
-        // Instantiate the controller and run the indexAction
-        $controller = new DashboardController();
-        $controller->setApplication($app);
-
-        $response = $controller->showSpeakerProfile();
-        $this->assertContains('Test Title', (string) $response);
-        $this->assertContains('Test User', (string) $response);
+        $this->get('/dashboard')
+            ->assertSuccessful()
+            ->assertSee('Test Title')
+            ->assertSee('Test User');
     }
 
     /**
@@ -80,23 +68,6 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
     public function it_hides_transportation_and_hotel_when_doing_an_online_conference()
     {
         $faker = $this->getFaker();
-        $app = new Application(BASE_PATH, Environment::testing());
-        $app['session.test'] = true;
-
-        $app['callforproposal'] = m::mock(CallForProposal::class);
-        $app['callforproposal']->shouldReceive('isOpen')->andReturn(true);
-
-
-        // Specify configuration to enable `online_conference` settings.
-        // TODO Bake something like this as a trait. Dealing with mocking
-        // TODO services like configuration and template rending is painful.
-        $config = $app['config']['application'];
-        $config['online_conference'] = true;
-
-        /* @var Twig_Environment $twig */
-        $twig = $app['twig'];
-
-        $twig->addGlobal('site', $config);
 
         // There's some global before filters that call Sentry directly.
         // We have to stub that behaviour here to have it think we are not admin.
@@ -109,8 +80,8 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
         $sentry = m::mock(Sentry::class);
         $sentry->shouldReceive('check')->andReturn(true);
         $sentry->shouldReceive('getUser')->andReturn($user);
-        $app['sentry'] = $sentry;
-        $app['user'] = $user;
+        $this->swap('sentry', $sentry);
+        $this->swap('user', $user);
 
         // Create a test double for SpeakerProfile
         // We  have benefit of being able to stub an application
@@ -135,20 +106,14 @@ class DashboardControllerTest extends \PHPUnit\Framework\TestCase
             ->andReturn($profile)
             ->getMock();
 
-        $app['application.speakers'] = $speakersDouble;
+        $this->swap('application.speakers', $speakersDouble);
 
-        ob_start();
-        $app->run();  // Fire before handlers... boot...
-        ob_end_clean();
+        $this->callForPapersIsOpen()
+            ->isOnlineConference();
 
-        // Instantiate the controller and run the indexAction
-        $controller = new \OpenCFP\Http\Controller\DashboardController();
-        $controller->setApplication($app);
-
-        $response = (string) $controller->showSpeakerProfile();
-
-        $this->assertNotContains('Need Transportation', $response);
-        $this->assertNotContains('Need Hotel', $response);
+        $this->get('/dashboard')
+            ->assertNotSee('Need Transportation')
+            ->assertNotSee('Need Hotel');
     }
 
     private function stubProfileWith($stubMethods = [])
