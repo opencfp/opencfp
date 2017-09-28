@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
 use OpenCFP\Application;
 use OpenCFP\Environment;

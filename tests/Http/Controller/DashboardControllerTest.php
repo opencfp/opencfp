@@ -5,14 +5,9 @@ namespace OpenCFP\Test\Http\Controller;
 use Cartalyst\Sentry\Sentry;
 use Mockery as m;
 use OpenCFP\Application;
-use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
-use OpenCFP\Environment;
-use OpenCFP\Http\Controller\DashboardController;
 use OpenCFP\Test\TestCase;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Twig_Environment;
 
 class DashboardControllerTest extends TestCase
 {
