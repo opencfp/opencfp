@@ -249,7 +249,10 @@ class SignupForm extends Form
 
     public function validateUrl()
     {
-        if (preg_match('/https:\/\/joind\.in\/user\/[a-zA-Z0-9]{1,25}/', $this->_cleanData['url'])) {
+        if (preg_match('/https:\/\/joind\.in\/user\/[a-zA-Z0-9]{1,25}/', $this->_cleanData['url'])
+            || !isset($this->_cleanData['url'])
+            || '' == $this->_cleanData['url']
+        ) {
             return true;
         } else {
             $this->_addErrorMessage('You did not enter a valid joind.in URL');
