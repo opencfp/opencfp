@@ -180,14 +180,10 @@ class SignupForm extends Form
      */
     public function validateFirstName()
     {
-        $first_name = filter_var(
-            $this->_cleanData['first_name'],
-            FILTER_SANITIZE_STRING,
-            ['flags' => FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW]
-        );
+        $first_name = $this->_cleanData['first_name'];
         $validation_response = true;
 
-        if ($first_name == '') {
+        if (empty($first_name)) {
             $this->_addErrorMessage('First name cannot be blank');
             $validation_response = false;
         }
@@ -213,26 +209,24 @@ class SignupForm extends Form
     public function validateLastName()
     {
         $last_name = $this->_cleanData['last_name'];
+        $validation_response = true;
 
         if (empty($last_name)) {
-            $this->_addErrorMessage('Last name was blank or contained unwanted characters');
-
-            return false;
+            $this->_addErrorMessage('Last name cannot be blank');
+            $validation_response = false;
         }
 
         if (strlen($last_name) > 255) {
-            $this->_addErrorMessage('Last name cannot be longer than 255 characters');
-
-            return false;
+            $this->_addErrorMessage('Last name cannot exceed 255 characters');
+            $validation_response = false;
         }
 
         if ($last_name !== $this->_taintedData['last_name']) {
-            $this->_addErrorMessage('Last name data did not match after sanitizing');
-
-            return false;
+            $this->_addErrorMessage('Last name contains unwanted characters');
+            $validation_response = false;
         }
 
-        return true;
+        return $validation_response;
     }
 
     public function validateCompany()
