@@ -27,6 +27,10 @@
                     <strong>Need Hotel:</strong> {% if speaker.hotel == '1' %} Yes {% else %} No {% endif %}
                 {% endif %}
 
+                {%  if speaker.info is not empty %}
+                <p><strong>Additional Notes:</strong> {{ speaker.info }}</p>
+                {% endif %}
+
                 {% if talks | length > 0 %}
                     <h3>Talk Submissions</h3>
 
