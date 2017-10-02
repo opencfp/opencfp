@@ -298,8 +298,8 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
             'email' => 'test@domain.com',
             'password' => 'xxxxxx',
             'password2' => 'xxxxxx',
-            'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
+            'first_name' => 'Tésty',
+            'last_name' => 'McTestèrton',
             'url' => 'https://joind.in/user/abc123',
         ];
         $baseDataWithSpeakerInfo = $baseData;
