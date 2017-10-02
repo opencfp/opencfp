@@ -4,11 +4,11 @@ application:
   email: contact@openconf.com
   eventurl: http://myenvent.com
   event_location: Miami, FL
-  enddate: Oct. 14th, 2016
+  enddate: Oct. 14th, 2100
   show_submission_count: false
   airport: MIA
-  arrival: 2014-10-26
-  departure: 2014-10-31
+  arrival: 2018-10-26
+  departure: 2018-10-31
   secure_ssl: true
   online_conference: false
   date_format: d/m/Y
