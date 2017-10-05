@@ -3,6 +3,7 @@
 namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentry\Sentry;
+use Cartalyst\Sentry\Users\UserAlreadyActivatedException;
 use Cartalyst\Sentry\Users\UserInterface;
 use OpenCFP\Domain\Services\AccountManagement;
 
@@ -47,6 +48,18 @@ class SentryAccountManagement implements AccountManagement
         );
 
         return $user;
+    }
+
+    public function activate($email)
+    {
+        $user = $this->findByLogin($email);
+        $code = $user->getActivationCode();
+
+        try {
+            $user->attemptActivation($code);
+        } catch (UserAlreadyActivatedException $e) {
+            // Do nothing
+        }
     }
 
     public function promote($email)

@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class SentryAccountManagementTest extends DatabaseTestCase
 {
+    use SentryTestHelpers;
+
     /**
      * @var SentryAccountManagement
      */
@@ -50,6 +52,17 @@ class SentryAccountManagementTest extends DatabaseTestCase
     }
 
     /** @test */
+    public function can_activate_user()
+    {
+        $user = $this->sut->create('test@example.com', 'secret');
+        $this->assertFalse($user->isActivated());
+
+        $this->sut->activate('test@example.com');
+
+        $this->assertTrue($this->sut->findByLogin('test@example.com')->isActivated());
+    }
+
+    /** @test */
     public function can_promote_and_demote_user()
     {
         $this->sut->create('test@example.com', 'secret', [
@@ -64,28 +77,5 @@ class SentryAccountManagementTest extends DatabaseTestCase
 
         $this->sut->demote('test@example.com');
         $this->assertCount(0, $this->sut->findByRole('Admin'));
-    }
-
-    public function getSentry()
-    {
-        $hasher = new \Cartalyst\Sentry\Hashing\NativeHasher;
-        $userProvider = new \Cartalyst\Sentry\Users\Eloquent\Provider($hasher);
-        $groupProvider = new \Cartalyst\Sentry\Groups\Eloquent\Provider;
-        $throttleProvider = new \Cartalyst\Sentry\Throttling\Eloquent\Provider($userProvider);
-        $session = new SymfonySentrySession(new Session(new MockFileSessionStorage()));
-        $cookie = new \Cartalyst\Sentry\Cookies\NativeCookie([]);
-
-        $sentry = new \Cartalyst\Sentry\Sentry(
-            $userProvider,
-            $groupProvider,
-            $throttleProvider,
-            $session,
-            $cookie
-        );
-
-        Sentry::setupDatabaseResolver($this->phinxPdo);
-        $throttleProvider->disable();
-
-        return $sentry;
     }
 }
