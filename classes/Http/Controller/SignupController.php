@@ -5,6 +5,8 @@ namespace OpenCFP\Http\Controller;
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
 use Spot\Locator;
@@ -17,11 +19,9 @@ class SignupController extends BaseController
 
     public function indexAction(Request $req, $currentTimeString = 'now')
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        $auth = $this->service(Authentication::class);
 
-        // TODO AuthenticationService
-        if ($sentry->check()) {
+        if ($auth->check()) {
             return $this->redirectTo('dashboard');
         }
 
@@ -113,17 +113,10 @@ class SignupController extends BaseController
                     'activated' => 1,
                 ];
 
-                /* @var Sentry $sentry */
-                $sentry = $app['sentry'];
+                /** @var AccountManagement $accounts */
+                $accounts = $this->service(AccountManagement::class);
 
-                // TODO AccountManagement
-                $user = $sentry->getUserProvider()->create($user_data);
-
-                // Add them to the proper group
-                $user->addGroup($sentry
-                    ->getGroupProvider()
-                    ->findByName('Speakers')
-                );
+                $user = $accounts->create($user_data['email'], $user_data['password'], $user_data);
 
                 /* @var Locator $spot */
                 $spot = $app['spot'];
@@ -144,7 +137,7 @@ class SignupController extends BaseController
                 // This is for redirecting to OAuth endpoint if we arrived
                 // as part of the Authorization Code Grant flow.
                 if ($this->service('session')->has('redirectTo')) {
-                    $sentry->login($user);
+                    $this->service(Authentication::class)->authenticate($user->getLogin(), $user->getPassword());
 
                     return new RedirectResponse($this->service('session')->get('redirectTo'));
                 }

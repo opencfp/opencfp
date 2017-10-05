@@ -3,11 +3,13 @@
 namespace OpenCFP\Test\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
+use Cartalyst\Sentry\Users\UserInterface;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use Spot\Locator;
@@ -23,14 +25,14 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
     public function signupAfterEnddateShowsError($endDateString, $currentTimeString)
     {
         // report that there is no active user
-        $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->andReturn(false);
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(false);
 
         $app = m::mock(\OpenCFP\Application::class);
         // Create a session
         $app->shouldReceive('redirect');
 
-        $app->shouldReceive('offsetGet')->with('sentry')->andReturn($sentry);
+        $app->shouldReceive('offsetGet')->with(Authentication::class)->andReturn($auth);
         $app->shouldReceive('config')->with('application.enddate')->andReturn($endDateString);
 
         // Create a session
@@ -161,17 +163,16 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $app->shouldReceive('offsetGet')->with('purifier')->andReturn($purifier);
         $app->shouldReceive('config')->with('application.coc_link')->andReturn(null);
 
-        // Create a pretend Sentry object that says everything is cool
-        $sentry = m::mock(Sentry::class);
-        $user = m::mock(\OpenCFP\Domain\Entity\User::class);
-        $user->shouldReceive('set');
-        $user->shouldReceive('addGroup');
-        $user->shouldReceive('relation');
-        $user->id = 1; // Any integer value is fine
-        $sentry->shouldReceive('getUserProvider->create')->andReturn($user);
-        $sentry->shouldReceive('getGroupProvider->findByName');
+        $user = m::mock(UserInterface::class);
+        $user->id = 1;
 
-        $app->shouldReceive('offsetGet')->with('sentry')->andReturn($sentry);
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('user')->andReturn($user);
+        $app->shouldReceive('offsetGet')->with(Authentication::class)->andReturn($auth);
+
+        $accounts = m::mock(AccountManagement::class);
+        $accounts->shouldReceive('create')->andReturn($user);
+        $app->shouldReceive('offsetGet')->with(AccountManagement::class)->andReturn($accounts);
 
         // Create an instance of our database
         $speaker = new \stdClass;
@@ -251,17 +252,13 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $app->shouldReceive('offsetGet')->with('purifier')->andReturn($purifier);
         $app->shouldReceive('config')->with('application.coc_link')->andReturn(null);
 
-        // Create a pretend Sentry object that says everything is cool
-        $sentry = m::mock(Sentry::class);
-        $user = m::mock(\OpenCFP\Domain\Entity\User::class);
-        $user->shouldReceive('set');
-        $user->shouldReceive('addGroup');
-        $user->shouldReceive('relation');
-        $user->id = 1; // Any integer value is fine
-        $sentry->shouldReceive('getUserProvider->create')->andReturn($user);
-        $sentry->shouldReceive('getGroupProvider->findByName');
+        $user = m::mock(UserInterface::class);
+        $user->id = 1;
 
-        $app->shouldReceive('offsetGet')->with('sentry')->andReturn($sentry);
+        $accounts = m::mock(AccountManagement::class);
+        $accounts->shouldReceive('create')->andReturn($user);
+
+        $app->shouldReceive('offsetGet')->with(AccountManagement::class)->andReturn($accounts);
 
         // Create an instance of our database
         $speaker = new \stdClass;
@@ -341,17 +338,13 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $app->shouldReceive('offsetGet')->with('purifier')->andReturn($purifier);
         $app->shouldReceive('config')->with('application.coc_link')->andReturn('http://www.google.com');
 
-        // Create a pretend Sentry object that says everything is cool
-        $sentry = m::mock(Sentry::class);
-        $user = m::mock(\OpenCFP\Domain\Entity\User::class);
-        $user->shouldReceive('set');
-        $user->shouldReceive('addGroup');
-        $user->shouldReceive('relation');
-        $user->id = 1; // Any integer value is fine
-        $sentry->shouldReceive('getUserProvider->create')->andReturn($user);
-        $sentry->shouldReceive('getGroupProvider->findByName');
+        $user = m::mock(UserInterface::class);
+        $user->id = 1;
 
-        $app->shouldReceive('offsetGet')->with('sentry')->andReturn($sentry);
+        $accounts = m::mock(AccountManagement::class);
+        $accounts->shouldReceive('create')->andReturn($user);
+
+        $app->shouldReceive('offsetGet')->with(AccountManagement::class)->andReturn($accounts);
 
         // Create an instance of our database
         $speaker = new \stdClass;
