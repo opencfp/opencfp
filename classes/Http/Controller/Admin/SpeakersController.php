@@ -29,11 +29,23 @@ class SpeakersController extends BaseController
         /* @var Locator $spot */
         $spot = $this->service('spot');
 
+        $search = $req->get('search');
+
+
+
         $rawSpeakers = $spot
             ->mapper(\OpenCFP\Domain\Entity\User::class)
-            ->all()
-            ->order(['first_name' => 'ASC'])
-            ->toArray();
+            ->all();
+
+        if ($search != '' && $search != null) {
+            $rawSpeakers = $rawSpeakers
+                ->where(['first_name :like' => $search])
+                ->orWhere(['last_name :like' => $search]);
+        }
+
+        $rawSpeakers = $rawSpeakers
+        ->order(['first_name' => 'ASC'])
+        ->toArray();
 
         $airports = $this->service(AirportInformationDatabase::class);
 
@@ -98,6 +110,7 @@ class SpeakersController extends BaseController
             'pagination' => $pagination,
             'speakers' => $pagerfanta,
             'page' => $pagerfanta->getCurrentPage(),
+            'search' => $search ?: '',
         ];
 
         return $this->render('admin/speaker/index.twig', $templateData);
