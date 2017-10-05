@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Login;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,57 +21,38 @@ class SecurityController extends BaseController
 
     public function processAction(Request $req, Application $app)
     {
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
+
         try {
-            /* @var Sentry $sentry */
-            $sentry = $app['sentry'];
+            $auth->authenticate($req->get('email', $req->get('password')));
 
-            // TODO Implement AuthenticationService
-            $page = new Login($sentry);
-
-            if ($page->authenticate($req->get('email'), $req->get('password'))) {
-                // This is for redirecting to OAuth endpoint if we arrived
-                // as part of the Authorization Code Grant flow.
-                if ($this->service('session')->has('redirectTo')) {
-                    return new RedirectResponse($this->service('session')->get('redirectTo'));
-                }
-
-                return $this->redirectTo('dashboard');
+            // This is for redirecting to OAuth endpoint if we arrived
+            // as part of the Authorization Code Grant flow.
+            if ($this->service('session')->has('redirectTo')) {
+                return new RedirectResponse($this->service('session')->get('redirectTo'));
             }
 
-            $errorMessage = $page->getAuthenticationMessage();
-
-            $template_data = [
-                'email' => $req->get('email'),
-            ];
-            $code = Response::HTTP_BAD_REQUEST;
+            return $this->redirectTo('dashboard');
         } catch (Exception $e) {
-            $errorMessage = $e->getMessage();
+            $this->service('session')->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => $e->getMessage(),
+            ]);
+
             $template_data = [
                 'email' => $req->get('email'),
+                'flash' => $this->getFlash($app)
             ];
-            $code = Response::HTTP_BAD_REQUEST;
+
+            return $this->render('login.twig', $template_data, Response::HTTP_BAD_REQUEST);
         }
-
-        // Set Success Flash Message
-        $this->service('session')->set('flash', [
-            'type' => 'error',
-            'short' => 'Error',
-            'ext' => $errorMessage,
-        ]);
-
-        $template_data['flash'] = $this->getFlash($app);
-
-        return $this->render('login.twig', $template_data, $code);
     }
 
     public function outAction()
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
-
-        // TODO Use AuthenticationService
-        $sentry->logout();
-
+        $this->service(Authentication::class)->logout();
         return $this->redirectTo('homepage');
     }
 }
