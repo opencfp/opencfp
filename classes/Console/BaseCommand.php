@@ -19,7 +19,6 @@ abstract class BaseCommand extends Command
         // Because colors are coolest ...
         $output->setDecorated(true);
 
-        // TODO: Violation of law of demeter.
         // Since this is considered "framework layer" and has little churn...
         // Probably okay.
         $this->app = $this->getApplication()->getContainer();

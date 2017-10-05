@@ -66,7 +66,6 @@ class DashboardControllerTest extends TestCase
 
         // There's some global before filters that call Sentry directly.
         // We have to stub that behaviour here to have it think we are not admin.
-        // TODO This stuff is everywhere. Bake it into a trait for testing in the short-term.
         $user = m::mock('stdClass');
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
         $user->shouldReceive('getId')->andReturn(1);
