@@ -29,6 +29,7 @@ class DashboardController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO IdentityProvider
         $recent_talks = $talk_mapper->getRecent($sentry->getUser()->getId());
 
         $templateData = [

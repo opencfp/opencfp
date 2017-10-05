@@ -21,6 +21,7 @@ class ReviewController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO IdentityProvider
         $user = $sentry->getUser();
 
         /* @var Locator $spot */

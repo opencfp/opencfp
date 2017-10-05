@@ -22,7 +22,7 @@ class TalksController extends BaseController
 
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
-
+        // TODO IdentityProvider
         $admin_user_id = $sentry->getUser()->getId();
         $options = [
             'order_by' => $req->get('order_by'),
@@ -143,7 +143,7 @@ class TalksController extends BaseController
         }
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
-
+        // TODO IdentityProvider
         // Mark talk as viewed by admin
         $talk_meta = $meta_mapper->where([
                 'admin_user_id' => $sentry->getUser()->getId(),
@@ -198,6 +198,7 @@ class TalksController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO IdentityProvider
         $admin_user_id = (int) $sentry->getUser()->getId();
         $mapper = $this->service('spot')->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
 
@@ -241,7 +242,7 @@ class TalksController extends BaseController
 
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
-
+        // TODO IdentityProvider
         $admin_user_id = (int) $sentry->getUser()->getId();
         $status = true;
 
@@ -326,7 +327,7 @@ class TalksController extends BaseController
 
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
-
+        // TODO IdentityProvider
         $admin_user_id = (int) $sentry->getUser()->getId();
 
         /* @var Locator $spot */

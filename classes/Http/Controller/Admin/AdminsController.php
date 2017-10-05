@@ -18,6 +18,7 @@ class AdminsController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
+        // TODO AccountManagement
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
@@ -63,6 +64,7 @@ class AdminsController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO IdentityProvider
         $admin = $sentry->getUser();
 
         if ($admin->getId() == $req->get('id')) {
@@ -82,6 +84,7 @@ class AdminsController extends BaseController
         $user_data = $mapper->get($req->get('id'))->toArray();
         $user = $sentry->getUserProvider()->findByLogin($user_data['email']);
 
+        // TODO AccountManagement
         $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
         $response = $user->removeGroup($adminGroup);
 
@@ -118,6 +121,7 @@ class AdminsController extends BaseController
 
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_data = $mapper->get($req->get('id'))->toArray();
+        // TODO AccountManagement
         $user = $sentry->getUserProvider()->findByLogin($user_data['email']);
 
         if ($user->hasAccess('admin')) {

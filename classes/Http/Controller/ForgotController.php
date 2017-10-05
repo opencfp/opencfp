@@ -44,6 +44,7 @@ class ForgotController extends BaseController
         $data = $form->getData();
 
         try {
+            // TODO Use AccountManagement to get user by login
             /* @var Sentry $sentry */
             $sentry = $this->service('sentry');
             $user = $sentry->getUserProvider()->findByLogin($data['email']);
@@ -79,6 +80,7 @@ class ForgotController extends BaseController
         $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
         $error = 0;
         try {
+            // TODO Use AccountManagement to get user by identifier
             /* @var Sentry $sentry */
             $sentry = $this->service('sentry');
 
@@ -134,6 +136,7 @@ class ForgotController extends BaseController
         $error = 0;
 
         try {
+            // TODO Use AccountManagement to get user by identifier
             /* @var Sentry $sentry */
             $sentry = $this->service('sentry');
 
@@ -176,6 +179,7 @@ class ForgotController extends BaseController
         }
 
         try {
+            // TODO Use AccountManagement to get user by identifier
             /* @var Sentry $sentry */
             $sentry = $this->service('sentry');
 

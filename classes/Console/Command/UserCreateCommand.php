@@ -71,7 +71,7 @@ class UserCreateCommand extends BaseCommand
             /* @var Sentry $sentry */
             $sentry = $this->app['sentry'];
 
-
+            // TODO Use AccountManagement instead
             $user = $sentry->getUserProvider()->create($user_data);
 
 
@@ -93,6 +93,7 @@ class UserCreateCommand extends BaseCommand
             return false;
         }
 
+        // TODO Use AccountManagement instead
         $sentry = $this->app['sentry'];
         $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
         $user->addGroup($adminGroup);

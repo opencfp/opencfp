@@ -24,6 +24,7 @@ class SecurityController extends BaseController
             /* @var Sentry $sentry */
             $sentry = $app['sentry'];
 
+            // TODO Implement AuthenticationService
             $page = new Login($sentry);
 
             if ($page->authenticate($req->get('email'), $req->get('password'))) {
@@ -66,7 +67,8 @@ class SecurityController extends BaseController
     {
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
-        
+
+        // TODO Use AuthenticationService
         $sentry->logout();
 
         return $this->redirectTo('homepage');

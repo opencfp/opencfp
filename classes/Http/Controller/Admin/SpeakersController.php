@@ -60,6 +60,7 @@ class SpeakersController extends BaseController
             return $speaker;
         }, $rawSpeakers);
 
+        // TODO AccountManagement findbyrole
         $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
         $adminUsers = $sentry->findAllUsersInGroup($adminGroup);
         $adminUserIds = array_column($adminUsers->toArray(), 'id');

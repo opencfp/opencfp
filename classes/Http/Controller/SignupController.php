@@ -20,6 +20,7 @@ class SignupController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO AuthenticationService
         if ($sentry->check()) {
             return $this->redirectTo('dashboard');
         }
@@ -115,6 +116,7 @@ class SignupController extends BaseController
                 /* @var Sentry $sentry */
                 $sentry = $app['sentry'];
 
+                // TODO AccountManagement
                 $user = $sentry->getUserProvider()->create($user_data);
 
                 // Add them to the proper group

@@ -17,10 +17,11 @@ class ProfileController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO: AuthenticationService
         if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
-
+        // TODO: Use IdentityProvider
         $user = $sentry->getUser();
 
         if ((string) $user->getId() !== $req->get('id')) {
@@ -66,10 +67,12 @@ class ProfileController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO Use AuthenticationService
         if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
 
+        // TODO Use IdentityProvider
         $user = $sentry->getUser();
 
         if ((string) $user->getId() !== $req->get('id')) {
@@ -182,6 +185,7 @@ class ProfileController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO AuthenticationService
         if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
@@ -194,10 +198,12 @@ class ProfileController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO AuthenticationService
         if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
 
+        // TODO IdentityProvider
         $user = $sentry->getUser();
 
         /**

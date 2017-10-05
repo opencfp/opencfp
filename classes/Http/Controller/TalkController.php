@@ -98,6 +98,7 @@ class TalkController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO Authentication (maybe see if we can just rely on application.speakers here)
         /////////
         if (!$sentry->check()) {
             return $this->redirectTo('login');
@@ -126,6 +127,7 @@ class TalkController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO Authentication
         if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
@@ -149,6 +151,7 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
+        // TODO IdentityProvider
         $user = $sentry->getUser();
 
         /* @var Locator $spot */
@@ -194,6 +197,7 @@ class TalkController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO Authentication
         if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
@@ -241,6 +245,7 @@ class TalkController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO Authentication
         if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
@@ -256,6 +261,7 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
+        // TODO IdentityProvider
         $user = $sentry->getUser();
 
         $request_data = [
@@ -354,10 +360,12 @@ class TalkController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
 
+        // TODO Authentication
         if (!$sentry->check()) {
             return $this->redirectTo('login');
         }
 
+        // TODO IdentityProvider
         $user = $sentry->getUser();
         $request_data = [
             'id' => $req->get('id'),
@@ -457,6 +465,7 @@ class TalkController extends BaseController
         /* @var Sentry $sentry */
         $sentry = $app['sentry'];
 
+        // TODO Authentication
         if (!$sentry->check()) {
             return $app->json(['delete' => 'no-user']);
         }
@@ -466,6 +475,7 @@ class TalkController extends BaseController
             return $app->json(['delete' => 'no']);
         }
 
+        // TODO IdentityProvider
         $user = $sentry->getUser();
         $talk_mapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk = $talk_mapper->get($req->get('tid'));

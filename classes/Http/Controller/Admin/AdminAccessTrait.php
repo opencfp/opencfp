@@ -22,7 +22,7 @@ trait AdminAccessTrait
     {
         /* @var Sentry $sentry */
         $sentry = $this->app['sentry'];
-        
+        // TODO IdentityProvider and Authentication
         if (!$sentry->check()) {
             return false;
         }

@@ -49,6 +49,7 @@ EOF
         ));
 
         try {
+            // TODO Use AccountManagement implementation instead
             $user = $sentry->getUserProvider()->findByLogin($email);
         } catch (UserNotFoundException $e) {
             $io->error(sprintf(

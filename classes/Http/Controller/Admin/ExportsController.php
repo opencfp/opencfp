@@ -69,7 +69,7 @@ class ExportsController extends BaseController
 
         /* @var Sentry $sentry */
         $sentry = $this->service('sentry');
-
+        // TODO IdentityProvider
         $admin_user_id = $sentry->getUser()->getId();
         $mapper = $this->service('spot')->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $mapper->getAllPagerFormatted($admin_user_id, $sort, $attributed, $where);
