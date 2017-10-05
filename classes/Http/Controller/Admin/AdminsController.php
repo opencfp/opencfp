@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\TwitterBootstrap3View;
 use Spot\Locator;
@@ -19,7 +20,7 @@ class AdminsController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        /** @var AccountManagement $accounts */
+        /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
 
         $adminUsers = $accounts->findByRole('Admin');
@@ -60,11 +61,10 @@ class AdminsController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO IdentityProvider
-        $admin = $sentry->getUser();
+        $admin = $auth->user();
 
         if ($admin->getId() == $req->get('id')) {
             $this->service('session')->set('flash', [
@@ -81,21 +81,17 @@ class AdminsController extends BaseController
 
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_data = $mapper->get($req->get('id'))->toArray();
-        $user = $sentry->getUserProvider()->findByLogin($user_data['email']);
+        $user = $auth->findByLogin($user_data['email']);
 
-        // TODO AccountManagement
-        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-        $response = $user->removeGroup($adminGroup);
+        try {
+            $this->service(AccountManagement::class)->demote($user->getLogin());
 
-        if ($response == true) {
             $this->service('session')->set('flash', [
                 'type' => 'success',
                 'short' => 'Success',
                 'ext' => 'Successfully removed the Admin!',
             ]);
-        }
-
-        if ($response == false) {
+        } catch (\Exception $e) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -112,16 +108,15 @@ class AdminsController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /* @var AccountManagement $accounts */
+        $accounts = $this->service(AccountManagement::class);
 
         /* @var Locator $spot */
         $spot = $this->service('spot');
 
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_data = $mapper->get($req->get('id'))->toArray();
-        // TODO AccountManagement
-        $user = $sentry->getUserProvider()->findByLogin($user_data['email']);
+        $user = $accounts->findByLogin($user_data['email']);
 
         if ($user->hasAccess('admin')) {
             $this->service('session')->set('flash', [
@@ -133,24 +128,21 @@ class AdminsController extends BaseController
             return $this->redirectTo('admin_admins');
         }
 
-        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-        $response = $user->addGroup($adminGroup);
+        try {
+            $accounts->promote($user->getLogin());
 
-        if ($response == false) {
+            $this->service('session')->set('flash', [
+                'type' => 'success',
+                'short' => 'Success',
+                'ext' => 'Successfully promoted as an Admin!',
+            ]);
+        } catch (\Exception $e) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'We were unable to promote the Admin. Please try again.',
             ]);
-
-            return $this->redirectTo('admin_admins');
         }
-
-        $this->service('session')->set('flash', [
-            'type' => 'success',
-            'short' => 'Success',
-            'ext' => 'Successfully promoted as an Admin!',
-        ]);
 
         return $this->redirectTo('admin_admins');
     }
