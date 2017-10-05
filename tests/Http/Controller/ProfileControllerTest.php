@@ -3,8 +3,12 @@
 namespace OpenCFP\Test\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
+use Cartalyst\Sentry\Users\UserInterface;
+use Illuminate\Support\Facades\Auth;
 use Mockery as m;
 use OpenCFP\Application;
+use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\ProfileController;
 use Spot\Locator;
@@ -20,7 +24,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $this->app = new Application(BASE_PATH, Environment::testing());
         $this->app['session.test'] = true;
 
-        $user = m::mock('StdClass');
+        $user = m::mock(UserInterface::class);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('id')->andReturn(1);
@@ -28,10 +32,10 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
         $user->shouldReceive('getLogin')->andReturn('my@email.com');
 
-        $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->andReturn(true);
-        $sentry->shouldReceive('getUser')->andReturn($user);
-        $this->app['sentry'] = $sentry;
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
+        $this->app[Authentication::class] = $auth;
 
         // Use our pre-configured Application object
         ob_start();
@@ -76,7 +80,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
 
         $spot = m::mock(Locator::class);
         $spot->shouldReceive('mapper')->with('\OpenCFP\Domain\Entity\User')->andReturn($spot);
-        $spot->shouldReceive('get')->with($this->app['sentry']->getUser()->getId())->andReturn($spot);
+        $spot->shouldReceive('get')->with($this->app[Authentication::class]->user()->getId())->andReturn($spot);
         $spot->shouldReceive('toArray')->with()->andReturn(
             [
                 'first_name' => 'Speaker Name',
@@ -162,7 +166,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $spot = m::mock(Locator::class);
         $spot->shouldReceive('mapper')->with('\OpenCFP\Domain\Entity\User')->andReturn($spot);
         $spot->shouldReceive('get')
-            ->with($this->app['sentry']->getUser()->getId())
+            ->with($this->app[Authentication::class]->user()->getId())
             ->andReturn($user);
         $spot->shouldReceive('save')->with($user)->andReturn(0);
 

@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
 use Spot\Locator;
@@ -14,15 +15,14 @@ class ProfileController extends BaseController
 
     public function editAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO: AuthenticationService
-        if (!$sentry->check()) {
+        if (!$auth->check()) {
             return $this->redirectTo('login');
         }
-        // TODO: Use IdentityProvider
-        $user = $sentry->getUser();
+
+        $user = $auth->user();
 
         if ((string) $user->getId() !== $req->get('id')) {
             $this->service('session')->set('flash', [
@@ -64,16 +64,14 @@ class ProfileController extends BaseController
 
     public function processAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO Use AuthenticationService
-        if (!$sentry->check()) {
+        if (!$auth->check()) {
             return $this->redirectTo('login');
         }
 
-        // TODO Use IdentityProvider
-        $user = $sentry->getUser();
+        $user = $auth->user();
 
         if ((string) $user->getId() !== $req->get('id')) {
             $this->service('session')->set('flash', [
@@ -182,11 +180,10 @@ class ProfileController extends BaseController
 
     public function passwordAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO AuthenticationService
-        if (!$sentry->check()) {
+        if (!$auth->check()) {
             return $this->redirectTo('login');
         }
 
@@ -195,16 +192,14 @@ class ProfileController extends BaseController
 
     public function passwordProcessAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO AuthenticationService
-        if (!$sentry->check()) {
+        if (!$auth->check()) {
             return $this->redirectTo('login');
         }
 
-        // TODO IdentityProvider
-        $user = $sentry->getUser();
+        $user = $auth->user();
 
         /**
          * Okay, the logic is kind of weird but we can use the SignupForm

@@ -8,6 +8,7 @@ use HTMLPurifier_Config;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -69,6 +70,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
     public function signupBeforeEnddateRendersSignupForm($endDateString, $currentTimeString)
     {
         $app = new Application(BASE_PATH, Environment::testing());
+        $app['session.test'] = true;
 
         // set the application end date configuration
         $config = $app['config'];
@@ -76,16 +78,14 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $app['config'] = $config;
 
         // report that there is no active user
-        $sentry = m::mock('stdClass');
-        $sentry->shouldReceive('check')->andReturn(false);
-        $app['sentry'] = $sentry;
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(false);
+        $app[Authentication::class] = $auth;
 
         $app['callforproposal'] = new CallForProposal(
             new \DateTime($endDateString)
         );
 
-        //$app['session'] = new Session(new MockFileSessionStorage());
-        //$app['form.csrf_provider'] = new SessionCsrfProvider($app['session'], 'secret');
         ob_start();
         $app->run();
         ob_end_clean();

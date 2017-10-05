@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Provider\Gateways;
 
+use OpenCFP\Domain\Services\Authentication;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
@@ -32,9 +33,9 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             $twig->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
 
             // Authentication
-            if ($app['sentry']->check()) {
-                $twig->addGlobal('user', $app['sentry']->getUser());
-                $twig->addGlobal('user_is_admin', $app['sentry']->getUser()->hasAccess('admin'));
+            if ($app[Authentication::class]->check()) {
+                $twig->addGlobal('user', $app[Authentication::class]->user());
+                $twig->addGlobal('user_is_admin', $app[Authentication::class]->user()->hasAccess('admin'));
             }
 
             if ($app['session']->has('flash')) {
