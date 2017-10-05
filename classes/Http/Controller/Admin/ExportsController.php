@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use Cartalyst\Sentry\Sentry;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\BaseController;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,10 +68,7 @@ class ExportsController extends BaseController
     {
         $sort = [ 'created_at' => 'DESC' ];
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
-        // TODO IdentityProvider
-        $admin_user_id = $sentry->getUser()->getId();
+        $admin_user_id = $this->service(Authentication::class)->user()->getId();
         $mapper = $this->service('spot')->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $mapper->getAllPagerFormatted($admin_user_id, $sort, $attributed, $where);
 
