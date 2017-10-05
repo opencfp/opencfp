@@ -14,7 +14,7 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
     /**
      * @var PDO
      */
-    private $phinxPdo;
+    protected $phinxPdo;
 
     /**
      * Make sure to call parent::setUp() if you override this.
