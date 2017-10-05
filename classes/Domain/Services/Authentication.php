@@ -2,6 +2,8 @@
 
 namespace OpenCFP\Domain\Services;
 
+use Cartalyst\Sentry\Users\UserInterface;
+
 interface Authentication
 {
     /**
@@ -17,9 +19,10 @@ interface Authentication
     /**
      * Returns current authenticated User account.
      *
-     * @return mixed
+     * @return UserInterface
+     * @throws NotAuthenticatedException
      */
-    public function user();
+    public function user(): UserInterface;
 
     /**
      * Determines whether or not the user is logged in.
@@ -39,8 +42,6 @@ interface Authentication
      * Destroys the user's active authenticated session.
      *
      * @return void
-     *
-     * @throws NotAuthenticatedException
      */
     public function logout();
 }
