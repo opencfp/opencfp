@@ -5,6 +5,7 @@ namespace OpenCFP\Http\Controller;
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserNotFoundException;
 use Exception;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Http\Form\ForgotForm;
 use OpenCFP\Http\Form\ResetForm;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,10 +45,10 @@ class ForgotController extends BaseController
         $data = $form->getData();
 
         try {
-            // TODO Use AccountManagement to get user by login
-            /* @var Sentry $sentry */
-            $sentry = $this->service('sentry');
-            $user = $sentry->getUserProvider()->findByLogin($data['email']);
+            /** @var AccountManagement $accounts */
+            $accounts = $this->service(AccountManagement::class);
+
+            $user = $accounts->findByLogin($data['email']);
         } catch (UserNotFoundException $e) {
             $this->service('session')->set('flash', $this->successfulSendFlashParameters($data['email']));
             return $this->redirectTo('forgot_password');
@@ -80,11 +81,10 @@ class ForgotController extends BaseController
         $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
         $error = 0;
         try {
-            // TODO Use AccountManagement to get user by identifier
-            /* @var Sentry $sentry */
-            $sentry = $this->service('sentry');
+            /** @var AccountManagement $accounts */
+            $accounts = $this->service(AccountManagement::class);
 
-            $user = $sentry->getUserProvider()->findById($req->get('user_id'));
+            $user = $accounts->findById($req->get('user_id'));
 
             if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
                 $error++;
@@ -136,11 +136,10 @@ class ForgotController extends BaseController
         $error = 0;
 
         try {
-            // TODO Use AccountManagement to get user by identifier
-            /* @var Sentry $sentry */
-            $sentry = $this->service('sentry');
+            /** @var AccountManagement $accounts */
+            $accounts = $this->service(AccountManagement::class);
 
-            $user = $sentry->getUserProvider()->findById($req->get('user_id'));
+            $user = $accounts->findById($req->get('user_id'));
         } catch (UserNotFoundException $e) {
             $error++;
         }
@@ -179,11 +178,10 @@ class ForgotController extends BaseController
         }
 
         try {
-            // TODO Use AccountManagement to get user by identifier
-            /* @var Sentry $sentry */
-            $sentry = $this->service('sentry');
+            /** @var AccountManagement $accounts */
+            $accounts = $this->service(AccountManagement::class);
 
-            $user = $sentry->getUserProvider()->findById($user_id);
+            $user = $accounts->findById($user_id);
         } catch (UserNotFoundException $e) {
             echo $e;
             die();
