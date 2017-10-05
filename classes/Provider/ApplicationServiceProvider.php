@@ -7,9 +7,12 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use League\OAuth2\Server\ResourceServer;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Infrastructure\Auth\OAuthIdentityProvider;
+use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
+use OpenCFP\Infrastructure\Auth\SentryAuthentication;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
@@ -31,6 +34,19 @@ class ApplicationServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
+        $app[AccountManagement::class] = function ($app) {
+            return new SentryAccountManagement($app['sentry']);
+        };
+
+        $app[IdentityProvider::class] = function ($app) {
+            $userMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
+            return new SentryIdentityProvider($app['sentry'], new SpotSpeakerRepository($userMapper));
+        };
+
+        $app[Authentication::class] = function ($app) {
+            return new SentryAuthentication($app['sentry']);
+        };
+
         $app['application.speakers'] = function ($app) {
             /* @var Locator $spot */
             $spot = $app['spot'];
