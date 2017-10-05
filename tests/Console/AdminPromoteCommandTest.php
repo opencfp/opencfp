@@ -48,8 +48,9 @@ class AdminPromoteTest extends \PHPUnit\Framework\TestCase
          * Create a mock User that has admin access and add an `addGroup`
          * method that is stubbed out
          */
-        $user = Mockery::mock('\stdClass');
+        $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
+        $user->shouldReceive('getLogin')->andReturn('test@opencfp.dev');
         $user->shouldReceive('addGroup');
 
         /**
@@ -57,16 +58,15 @@ class AdminPromoteTest extends \PHPUnit\Framework\TestCase
          * an admin group provider. Number doesn't matter for this particular
          * test
          */
-        $sentry = Mockery::mock('\Cartalyst\Sentry\Sentry');
-        $sentry->shouldReceive('getUserProvider->findByLogin')
+        $accounts = Mockery::mock(AccountManagement::class);
+        $accounts->shouldReceive('findByLogin')
             ->andReturn($user);
-        $sentry->shouldReceive('getGroupProvider->findByName')
-            ->with('Admin')
-            ->andReturn(1);
+        $accounts->shouldReceive('promote')
+            ->with('test@opencfp.dev');
 
         // Create our command object and inject our application
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $app['sentry'] = $sentry;
+        $app[AccountManagement::class] = $accounts;
         $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
         $command->setApp($app);
         $response = $command->execute($input, $output);
