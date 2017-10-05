@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use Cartalyst\Sentry\Sentry;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\View\TwitterBootstrap3View;
@@ -20,10 +21,10 @@ class TalksController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
-        // TODO IdentityProvider
-        $admin_user_id = $sentry->getUser()->getId();
+        /* @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
+
+        $admin_user_id = $auth->user()->getId();
         $options = [
             'order_by' => $req->get('order_by'),
             'sort' => $req->get('sort'),
@@ -325,10 +326,8 @@ class TalksController extends BaseController
 
         $talk_id = (int)$req->get('id');
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
-        // TODO IdentityProvider
-        $admin_user_id = (int) $sentry->getUser()->getId();
+        $user = $this->service(Authentication::class)->user();
+        $admin_user_id = (int) $user->getId();
 
         /* @var Locator $spot */
         $spot = $this->service('spot');

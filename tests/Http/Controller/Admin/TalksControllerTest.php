@@ -2,9 +2,11 @@
 
 namespace OpenCFP\Test\Http\Controller\Admin;
 
+use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\Entity\Mapper;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use Spot\Query;
 use Twig_Environment;
@@ -20,16 +22,16 @@ class TalksControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['session.test'] = true;
 
         // Create a test double for our User entity
-        $user = m::mock(\OpenCFP\Domain\Entity\User::class);
+        $user = m::mock(UserInterface::class);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
 
         // Create a test double for our Sentry object
-        $sentry = m::mock('Cartalyst\Sentry\Sentry');
-        $sentry->shouldReceive('check')->andReturn(true);
-        $sentry->shouldReceive('getUser')->andReturn($user);
-        $this->app['sentry'] = $sentry;
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
+        $this->app[Authentication::class] = $auth;
         $this->app['user'] = $user;
     }
 
@@ -121,7 +123,7 @@ class TalksControllerTest extends \PHPUnit\Framework\TestCase
 
         $twig->addGlobal(
             'user_is_admin',
-            $this->app['sentry']->getUser()->hasAccess('admin')
+            $this->app['user']->hasAccess('admin')
         );
 
         ob_start();
