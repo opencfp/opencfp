@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use Cartalyst\Sentry\Sentry;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\BaseController;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +27,8 @@ class DashboardController extends BaseController
         $talk_mapper = $this->service('spot')->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $favorite_mapper = $this->service('spot')->mapper(\OpenCFP\Domain\Entity\Favorite::class);
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
-
-        // TODO IdentityProvider
-        $recent_talks = $talk_mapper->getRecent($sentry->getUser()->getId());
+        $user = $this->service(Authentication::class)->user();
+        $recent_talks = $talk_mapper->getRecent($user->getId());
 
         $templateData = [
             'speakerTotal' => $speaker_total,
