@@ -35,7 +35,7 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
 
         /** @var Migrate $migrateCommand */
         $migrateCommand = $phinx->get('migrate');
-        $adapter = $migrateCommand->getManager()->getEnvironment('memory')->getAdapter();
+        $adapter = $migrateCommand->getManager()->getEnvironment('memory')->getAdapter()->getAdapter();
 
         /** @var PDO $pdo */
         $this->phinxPdo = $adapter->getConnection();
