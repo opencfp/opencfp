@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use Cartalyst\Sentry\Sentry;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\TwitterBootstrap3View;
 use Spot\Locator;
@@ -18,12 +19,10 @@ class AdminsController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        // TODO AccountManagement
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var AccountManagement $accounts */
+        $accounts = $this->service(AccountManagement::class);
 
-        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-        $adminUsers = $sentry->findAllUsersInGroup($adminGroup);
+        $adminUsers = $accounts->findByRole('Admin');
 
         // Set up our page stuff
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($adminUsers->toArray());
