@@ -4,7 +4,9 @@ namespace OpenCFP\Console\Command;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserNotFoundException;
+use Exception;
 use OpenCFP\Console\BaseCommand;
+use OpenCFP\Domain\Services\AccountManagement;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,8 +33,8 @@ EOF
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        /** @var AccountManagement $accounts */
+        $accounts = $this->app[AccountManagement::class];
 
         $email = $input->getArgument('email');
 
@@ -49,9 +51,8 @@ EOF
         ));
 
         try {
-            // TODO Use AccountManagement implementation instead
-            $user = $sentry->getUserProvider()->findByLogin($email);
-        } catch (UserNotFoundException $e) {
+            $user = $accounts->findByLogin($email);
+        } catch (Exception $e) {
             $io->error(sprintf(
                 'Could not find account with email %s.',
                 $email
@@ -69,8 +70,7 @@ EOF
             return 1;
         }
 
-        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-        $user->removeGroup($adminGroup);
+        $accounts->demote($user->getLogin());
 
         $io->success(sprintf(
             'Removed account with email %s from the Admin group',

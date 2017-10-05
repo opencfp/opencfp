@@ -2,9 +2,11 @@
 
 namespace OpenCFP\Test\Console;
 
+use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
 use OpenCFP\Console\Application;
 use OpenCFP\Console\Command;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
 use Symfony\Component\Console;
 
@@ -133,25 +135,20 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
          * Create a mock User that has admin access and a removeGroup
          * method that is stubbed out
          */
-        $user = Mockery::mock('\stdClass');
+        $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
+        $user->shouldReceive('getLogin')->andReturn('test@opencfp.dev');
         $user->shouldReceive('removeGroup');
 
-        /**
-         * Create a Sentry object that also returns an ID that represents
-         * an admin group provider. Number doesn't matter for this particular
-         * test
-         */
-        $sentry = Mockery::mock('\Cartalyst\Sentry\Sentry');
-        $sentry->shouldReceive('getUserProvider->findByLogin')
+        $accounts = Mockery::mock(AccountManagement::class);
+        $accounts->shouldReceive('findByLogin')
             ->andReturn($user);
-        $sentry->shouldReceive('getGroupProvider->findByName')
-            ->with('Admin')
-            ->andReturn(1);
+        $accounts->shouldReceive('demote')
+            ->with('test@opencfp.dev');
 
         // Create our command object and inject our application
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $app['sentry'] = $sentry;
+        $app[AccountManagement::class] = $accounts;
         $command = new \OpenCFP\Console\Command\AdminDemoteCommand();
         $command->setApp($app);
         $response = $command->execute($input, $output);
