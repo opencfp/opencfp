@@ -2,7 +2,9 @@
 
 namespace OpenCFP\Console\Command;
 
+use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Console\BaseCommand;
+use OpenCFP\Domain\Services\AccountManagement;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -64,16 +66,14 @@ class UserCreateCommand extends BaseCommand
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'email' => $data['email'],
-                'password' => $data['password'],
-                'activated' => 1,
+                'password' => $data['password']
             ];
 
-            /* @var Sentry $sentry */
-            $sentry = $this->app['sentry'];
+            /** @var AccountManagement $accounts */
+            $accounts = $this->app[AccountManagement::class];
 
-            // TODO Use AccountManagement instead
-            $user = $sentry->getUserProvider()->create($user_data);
-
+            $user = $accounts->create($data['email'], $data['password'], $user_data);
+            $accounts->activate($user->getLogin());
 
             return $user;
         } catch (UserExistsException $e) {
@@ -93,10 +93,9 @@ class UserCreateCommand extends BaseCommand
             return false;
         }
 
-        // TODO Use AccountManagement instead
-        $sentry = $this->app['sentry'];
-        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-        $user->addGroup($adminGroup);
+        /** @var AccountManagement $accounts */
+        $accounts = $this->app[AccountManagement::class];
+        $accounts->promote($user->getLogin());
 
         return true;
     }
