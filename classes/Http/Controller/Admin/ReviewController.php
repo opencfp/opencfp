@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use Cartalyst\Sentry\Sentry;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\TwitterBootstrap3View;
 use Spot\Locator;
@@ -18,11 +19,7 @@ class ReviewController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
-
-        // TODO IdentityProvider
-        $user = $sentry->getUser();
+        $user = $this->service(Authentication::class)->user();
 
         /* @var Locator $spot */
         $spot = $this->service('spot');
