@@ -158,7 +158,7 @@ class TalksController extends BaseController
 
         if (!$talk_meta->viewed) {
             $talk_meta->viewed = true;
-            $talk_meta->admin_user_id = $sentry->getUser()->getId();
+            $talk_meta->admin_user_id = $auth->user()->getId();
             $talk_meta->talk_id = $talk_id;
             $meta_mapper->save($talk_meta);
         }

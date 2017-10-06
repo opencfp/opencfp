@@ -26,7 +26,7 @@ class AdminsController extends BaseController
         $adminUsers = $accounts->findByRole('Admin');
 
         // Set up our page stuff
-        $adapter = new \Pagerfanta\Adapter\ArrayAdapter($adminUsers->toArray());
+        $adapter = new \Pagerfanta\Adapter\ArrayAdapter($adminUsers);
         $pagerfanta = new \Pagerfanta\Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage(20);
         $pagerfanta->getNbResults();
@@ -64,6 +64,9 @@ class AdminsController extends BaseController
         /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
+        /** @var AccountManagement $accounts */
+        $accounts = $this->service(AccountManagement::class);
+
         $admin = $auth->user();
 
         if ($admin->getId() == $req->get('id')) {
@@ -81,10 +84,10 @@ class AdminsController extends BaseController
 
         $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
         $user_data = $mapper->get($req->get('id'))->toArray();
-        $user = $auth->findByLogin($user_data['email']);
+        $user = $accounts->findByLogin($user_data['email']);
 
         try {
-            $this->service(AccountManagement::class)->demote($user->getLogin());
+            $accounts->demote($user->getLogin());
 
             $this->service('session')->set('flash', [
                 'type' => 'success',

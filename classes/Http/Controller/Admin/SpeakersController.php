@@ -61,7 +61,7 @@ class SpeakersController extends BaseController
         /** @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
         $adminUsers = $accounts->findByRole('Admin');
-        $adminUserIds = array_column($adminUsers->toArray(), 'id');
+        $adminUserIds = array_column($adminUsers, 'id');
 
         foreach ($rawSpeakers as $key => $each) {
             if (in_array($each['id'], $adminUserIds)) {
