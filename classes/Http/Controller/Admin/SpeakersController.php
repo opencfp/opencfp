@@ -30,22 +30,8 @@ class SpeakersController extends BaseController
         $spot = $this->service('spot');
 
         $search = $req->get('search');
-
-
-
-        $rawSpeakers = $spot
-            ->mapper(\OpenCFP\Domain\Entity\User::class)
-            ->all();
-
-        if ($search != '' && $search != null) {
-            $rawSpeakers = $rawSpeakers
-                ->where(['first_name :like' => $search])
-                ->orWhere(['last_name :like' => $search]);
-        }
-
-        $rawSpeakers = $rawSpeakers
-        ->order(['first_name' => 'ASC'])
-        ->toArray();
+        $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
+        $rawSpeakers = $user_mapper->search($search)->toArray();
 
         $airports = $this->service(AirportInformationDatabase::class);
 

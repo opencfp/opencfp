@@ -19,4 +19,16 @@ class User extends Mapper
 
         return $user;
     }
+
+    public function search($search = '', $orderBy = ['first_name' => 'ASC'])
+    {
+        if ($search == '' || $search == null) {
+            return $this->all()->order($orderBy);
+        }
+
+        return $this->all()
+            ->where(['first_name :like' => $search])
+            ->orWhere(['last_name :like' => $search])
+            ->order($orderBy);
+    }
 }
