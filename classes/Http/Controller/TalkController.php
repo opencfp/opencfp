@@ -5,6 +5,7 @@ namespace OpenCFP\Http\Controller;
 use Cartalyst\Sentry\Sentry;
 use OpenCFP\Application\NotAuthorizedException;
 use OpenCFP\Application\Speakers;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\TalkForm;
 use Silex\Application;
 use Spot\Locator;
@@ -95,16 +96,12 @@ class TalkController extends BaseController
         /* @var Speakers $speakers */
         $speakers = $this->service('application.speakers');
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO Authentication (maybe see if we can just rely on application.speakers here)
-        /////////
-        if (!$sentry->check()) {
+        if (!$auth->check()) {
             return $this->redirectTo('login');
         }
-
-        /////////
 
         try {
             $id = filter_var($req->get('id'), FILTER_VALIDATE_INT);
@@ -124,11 +121,10 @@ class TalkController extends BaseController
      */
     public function editAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO Authentication
-        if (!$sentry->check()) {
+        if (!$auth->check()) {
             return $this->redirectTo('login');
         }
 
@@ -151,8 +147,7 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        // TODO IdentityProvider
-        $user = $sentry->getUser();
+        $user = $auth->user();
 
         /* @var Locator $spot */
         $spot = $this->service('spot');
@@ -194,11 +189,10 @@ class TalkController extends BaseController
      */
     public function createAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO Authentication
-        if (!$sentry->check()) {
+        if (!$auth->check()) {
             return $this->redirectTo('login');
         }
 
@@ -242,11 +236,10 @@ class TalkController extends BaseController
      */
     public function processCreateAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO Authentication
-        if (!$sentry->check()) {
+        if (!$auth->check()) {
             return $this->redirectTo('login');
         }
 
@@ -261,8 +254,7 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        // TODO IdentityProvider
-        $user = $sentry->getUser();
+        $user = $auth->user();
 
         $request_data = [
             'title' => $req->get('title'),
@@ -357,16 +349,15 @@ class TalkController extends BaseController
 
     public function updateAction(Request $req)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO Authentication
-        if (!$sentry->check()) {
+        if (!$auth->check()) {
             return $this->redirectTo('login');
         }
 
-        // TODO IdentityProvider
-        $user = $sentry->getUser();
+        $user = $auth->user();
+
         $request_data = [
             'id' => $req->get('id'),
             'title' => $req->get('title'),
@@ -462,12 +453,11 @@ class TalkController extends BaseController
 
     public function deleteAction(Request $req, Application $app)
     {
-        /* @var Sentry $sentry */
-        $sentry = $app['sentry'];
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        // TODO Authentication
-        if (!$sentry->check()) {
-            return $app->json(['delete' => 'no-user']);
+        if (!$auth->check()) {
+            return $this->redirectTo('login');
         }
 
         // You can only delete talks while the CfP is open
@@ -475,8 +465,7 @@ class TalkController extends BaseController
             return $app->json(['delete' => 'no']);
         }
 
-        // TODO IdentityProvider
-        $user = $sentry->getUser();
+        $user = $auth->user();
         $talk_mapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk = $talk_mapper->get($req->get('tid'));
 

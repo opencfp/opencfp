@@ -3,11 +3,13 @@
 namespace OpenCFP\Test\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
+use Cartalyst\Sentry\Users\UserInterface;
 use DateTime;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Entity\TalkMeta;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\TalkController;
 
@@ -52,21 +54,16 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $talk_meta_mapper = $spot->mapper(TalkMeta::class);
         $talk_meta_mapper->migrate();
 
-        // Set things up so Sentry believes we're logged in
-        $user = m::mock('StdClass');
+        $user = m::mock(UserInterface::class);
         $user->shouldReceive('getId')->andReturn(uniqid());
         $user->shouldReceive('getLogin')->andReturn(uniqid() . '@grumpy-learning.com');
 
         // Create a test double for Sentry
-        $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->andReturn(true);
-        $sentry->shouldReceive('getUser')->andReturn($user);
-        unset($this->app['sentry']);
-        $this->app['sentry'] = $sentry;
-
-        // Create a test double for sessions so we can control what happens
-        unset($this->app['session']);
-        $this->app['session'] = new SessionDouble();
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
+        unset($this->app[Authentication::class]);
+        $this->app[Authentication::class] = $auth;
 
         $this->app['callforproposal'] = m::mock(CallForProposal::class);
         $this->app['callforproposal']->shouldReceive('isOpen')->andReturn(true);
@@ -91,8 +88,8 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $swiftmailer->shouldReceive('send')->andReturn(true);
         $this->app['mailer'] = $swiftmailer;
 
-        /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        /* @var Authentication $auth */
+        $auth = $this->app[Authentication::class];
 
         // Get our request object to return expected data
         $talk_data = [
@@ -105,7 +102,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
             'slides' => '',
             'other' => '',
             'sponsor' => '',
-            'user_id' => $sentry->getUser()->getId(),
+            'user_id' => $auth->user()->getId(),
         ];
 
         $this->setPost($talk_data);
@@ -143,8 +140,8 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller = new TalkController();
         $controller->setApplication($this->app);
 
-        /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        /* @var Authentication $auth */
+        $auth = $this->app[Authentication::class];
 
         // Get our request object to return expected data
         $talk_data = [
@@ -157,7 +154,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
             'slides' => '',
             'other' => '',
             'sponsor' => '',
-            'user_id' => $sentry->getUser()->getId(),
+            'user_id' => $auth->user()->getId(),
         ];
 
         $this->setPost($talk_data);
@@ -202,8 +199,8 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller = new TalkController();
         $controller->setApplication($this->app);
 
-        /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        /* @var Authentication $auth */
+        $auth = $this->app[Authentication::class];
 
         // Get our request object to return expected data
         $talk_data = [
@@ -216,7 +213,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
             'slides' => '',
             'other' => '',
             'sponsor' => '',
-            'user_id' => $sentry->getUser()->getId(),
+            'user_id' => $auth->user()->getId(),
         ];
 
         $this->setPost($talk_data);
@@ -300,7 +297,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['spot']->shouldReceive('where')->with(['id' => 1])->andReturn($this->app['spot']);
         $this->app['spot']->shouldReceive('execute')->andReturn($this->app['spot']);
         $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('toArray')->andReturn(['user_id'=> (int)$this->app['sentry']->getUser()->getId() + 2]);
+        $this->app['spot']->shouldReceive('toArray')->andReturn(['user_id'=> (int)$this->app[Authentication::class]->user()->getId() + 2]);
 
 
         $response = $controller->editAction($this->req);
@@ -326,7 +323,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
         $this->app['spot']->shouldReceive('toArray')->andReturn(
             [
-                'user_id' => (int)$this->app['sentry']->getUser()->getId(),
+                'user_id' => (int)$this->app[Authentication::class]->user()->getId(),
                 'title' => 'Title of talk to edit',
                 'description' => 'The Description',
                 'type' => 'regular',
@@ -369,7 +366,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
             'slides' => '',
             'other' => '',
             'sponsor' => '',
-            'user_id' => $this->app['sentry']->getUser()->getId(),
+            'user_id' => $this->app[Authentication::class]->user()->getId(),
         ];
 
         $this->setPost($talk_data);
