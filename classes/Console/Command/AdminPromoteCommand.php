@@ -2,8 +2,6 @@
 
 namespace OpenCFP\Console\Command;
 
-use Cartalyst\Sentry\Sentry;
-use Cartalyst\Sentry\Users\UserNotFoundException;
 use Exception;
 use OpenCFP\Console\BaseCommand;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -22,7 +20,8 @@ class AdminPromoteCommand extends BaseCommand
                 new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to promote to admin'),
             ])
             ->setDescription('Promote an existing user to be an admin')
-            ->setHelp(<<<EOF
+            ->setHelp(
+                <<<EOF
 The <info>%command.name%</info> command promotes a user to the admin group for a given environment:
 
 <info>php %command.full_name% speaker@opencfp.org --env=production</info>

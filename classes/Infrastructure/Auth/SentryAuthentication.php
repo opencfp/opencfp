@@ -6,7 +6,6 @@ use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\AuthenticationException;
-use OpenCFP\Domain\Services\InvalidCredentialsException;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 
 class SentryAuthentication implements Authentication

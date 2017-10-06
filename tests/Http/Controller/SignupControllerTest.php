@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
 use HTMLPurifier;
 use HTMLPurifier_Config;

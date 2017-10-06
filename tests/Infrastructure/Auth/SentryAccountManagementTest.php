@@ -2,12 +2,8 @@
 
 namespace OpenCFP\Test\Infrastructure\Auth;
 
-use Cartalyst\Sentry\Facades\Native\Sentry;
 use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
-use OpenCFP\Provider\SymfonySentrySession;
 use OpenCFP\Test\DatabaseTestCase;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 class SentryAccountManagementTest extends DatabaseTestCase
 {
@@ -30,7 +26,7 @@ class SentryAccountManagementTest extends DatabaseTestCase
     {
         $this->sut->create('test@example.com', 'secret', [
             'first_name' => 'Test',
-            'last_name' => 'Account'
+            'last_name' => 'Account',
         ]);
 
         $user = $this->sut->findByLogin('test@example.com');
@@ -43,7 +39,7 @@ class SentryAccountManagementTest extends DatabaseTestCase
     {
         $user = $this->sut->create('test@example.com', 'secret', [
             'first_name' => 'Test',
-            'last_name' => 'Account'
+            'last_name' => 'Account',
         ]);
 
         $group = $user->getGroups()[0];
@@ -67,7 +63,7 @@ class SentryAccountManagementTest extends DatabaseTestCase
     {
         $this->sut->create('test@example.com', 'secret', [
             'first_name' => 'Test',
-            'last_name' => 'Account'
+            'last_name' => 'Account',
         ]);
 
         $this->assertCount(0, $this->sut->findByRole('Admin'));

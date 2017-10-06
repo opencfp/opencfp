@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Login;
 use Silex\Application;
@@ -43,7 +42,7 @@ class SecurityController extends BaseController
 
             $template_data = [
                 'email' => $req->get('email'),
-                'flash' => $this->getFlash($app)
+                'flash' => $this->getFlash($app),
             ];
 
             return $this->render('login.twig', $template_data, Response::HTTP_BAD_REQUEST);

@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserNotFoundException;
 use Exception;
 use OpenCFP\Domain\Services\AccountManagement;

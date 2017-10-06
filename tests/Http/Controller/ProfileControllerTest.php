@@ -2,12 +2,9 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
-use Illuminate\Support\Facades\Auth;
 use Mockery as m;
 use OpenCFP\Application;
-use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\ProfileController;

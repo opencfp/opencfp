@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 trait SentryTestHelpers
 {
-
     public function getSentry()
     {
         $hasher = new \Cartalyst\Sentry\Hashing\NativeHasher;

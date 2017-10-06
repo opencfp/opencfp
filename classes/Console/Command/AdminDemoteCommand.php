@@ -2,8 +2,6 @@
 
 namespace OpenCFP\Console\Command;
 
-use Cartalyst\Sentry\Sentry;
-use Cartalyst\Sentry\Users\UserNotFoundException;
 use Exception;
 use OpenCFP\Console\BaseCommand;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -22,7 +20,8 @@ class AdminDemoteCommand extends BaseCommand
                 new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to demote'),
             ])
             ->setDescription('Demote an existing user from being an admin')
-            ->setHelp(<<<EOF
+            ->setHelp(
+                <<<EOF
 The <info>%command.name%</info> command removes a user from the admin group for a given environment:
 
 <info>php %command.full_name% speaker@opencfp.org --env=production</info>

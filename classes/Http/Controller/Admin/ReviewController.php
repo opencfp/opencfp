@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\TwitterBootstrap3View;

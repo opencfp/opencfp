@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use OpenCFP\Application\NotAuthorizedException;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Services\Authentication;
@@ -134,7 +133,9 @@ class TalkController extends BaseController
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
         if (! $this->service('callforproposal')->isOpen()) {
-            $this->service('session')->set('flash', [
+            $this->service('session')->set(
+                'flash',
+                [
                 'type' => 'error',
                 'short' => 'Read Only',
                 'ext' => 'You cannot edit talks once the call for papers has ended', ]
@@ -198,7 +199,9 @@ class TalkController extends BaseController
 
         // You can only create talks while the CfP is open
         if (! $this->service('callforproposal')->isOpen()) {
-            $this->service('session')->set('flash', [
+            $this->service('session')->set(
+                'flash',
+                [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'You cannot create talks once the call for papers has ended', ]
@@ -245,7 +248,9 @@ class TalkController extends BaseController
 
         // You can only create talks while the CfP is open
         if (! $this->service('callforproposal')->isOpen()) {
-            $this->service('session')->set('flash', [
+            $this->service('session')->set(
+                'flash',
+                [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => 'You cannot create talks once the call for papers has ended', ]

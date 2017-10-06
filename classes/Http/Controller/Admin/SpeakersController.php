@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
