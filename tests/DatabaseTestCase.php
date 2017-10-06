@@ -16,17 +16,25 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected $phinxPdo;
 
+    protected $options;
+
     /**
      * Make sure to call parent::setUp() if you override this.
      */
     protected function setUp()
     {
         $this->migrate();
+        $this->phinxPdo->beginTransaction();
+    }
+
+    protected function tearDown()
+    {
+        $this->phinxPdo->rollBack();
     }
 
     protected function migrate()
     {
-        $input = new ArgvInput(['phinx', 'migrate', '--environment=memory']);
+        $input = new ArgvInput(['phinx', 'migrate', '--environment=testing']);
         $output = new NullOutput();
 
         $phinx = new PhinxApplication();
@@ -35,7 +43,9 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
 
         /** @var Migrate $migrateCommand */
         $migrateCommand = $phinx->get('migrate');
-        $adapter = $migrateCommand->getManager()->getEnvironment('memory')->getAdapter()->getAdapter();
+        $adapter = $migrateCommand->getManager()->getEnvironment('testing')->getAdapter()->getAdapter();
+
+        $this->options = $adapter->getOptions();
 
         /** @var PDO $pdo */
         $this->phinxPdo = $adapter->getConnection();
@@ -46,8 +56,8 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
         $capsule = new Capsule;
 
         $capsule->addConnection([
-            'driver'    => 'sqlite',
-            'database'  => ':memory:',
+            'driver'    => 'mysql',
+            'database'  => $this->options['name'],
         ]);
 
         /**
