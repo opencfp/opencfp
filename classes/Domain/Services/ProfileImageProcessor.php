@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Domain\Services;
 
-use Intervention\Image\Image;
+use Intervention\Image\ImageManagerStatic as Image;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -60,10 +60,14 @@ class ProfileImageProcessor
 
             $speakerPhoto = Image::make($this->publishDir . '/' . $tempFilename);
 
-            if ($speakerPhoto->height > $speakerPhoto->width) {
-                $speakerPhoto->resize($this->size, null, true);
+            if ($speakerPhoto->height() > $speakerPhoto->width()) {
+                $speakerPhoto->resize($this->size, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
             } else {
-                $speakerPhoto->resize(null, $this->size, true);
+                $speakerPhoto->resize(null, $this->size, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
             }
 
             $speakerPhoto->crop($this->size, $this->size);
