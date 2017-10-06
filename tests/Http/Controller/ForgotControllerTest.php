@@ -2,8 +2,10 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
+use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
 use OpenCFP\Application;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
 
 class ForgotControllerTest extends \PHPUnit\Framework\TestCase
@@ -50,8 +52,9 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function sendResetDisplaysCorrectMessage()
     {
-        unset($this->app['sentry']);
-        $this->app['sentry'] = $this->createSentry($this->createUser());
+        $accounts = m::mock(AccountManagement::class);
+        $accounts->shouldReceive('findByLogin')->andReturn($this->createUser());
+        $this->app[AccountManagement::class] = $accounts;
 
         // Override our reset_emailer service
         $reset_emailer = m::mock('OpenCFP\Provider\ResetEmailerServiceProvider');
@@ -123,8 +126,9 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function resetPasswordHandlesNotSendingResetEmailCorrectly()
     {
-        unset($this->app['sentry']);
-        $this->app['sentry'] = $this->createSentry($this->createUser());
+        $accounts = m::mock(AccountManagement::class);
+        $accounts->shouldReceive('findByLogin')->andReturn($this->createUser());
+        $this->app[AccountManagement::class] = $accounts;
 
         // Override our reset_emailer service
         $reset_emailer = m::mock('OpenCFP\Provider\ResetEmailerServiceProvider');
@@ -151,21 +155,11 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
 
     private function createUser()
     {
-        $user = m::mock('StdClass');
+        $user = m::mock(UserInterface::class);
         $user->shouldReceive('getResetPasswordCode');
         $user->shouldReceive('getId');
 
         return $user;
-    }
-
-    private function createSentry($user)
-    {
-        $sentry = m::mock('Cartalyst\Sentry\Sentry');
-        $sentry->shouldReceive('getUserProvider->findByLogin')->andReturn($user);
-        $sentry->shouldReceive('check')->andReturn(true);
-        $sentry->shouldReceive('getUser')->andReturn($user);
-
-        return $sentry;
     }
 
     private function createForm($valid_status)

@@ -113,8 +113,13 @@ class TestCase extends \PHPUnit\Framework\TestCase
     public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
     {
         $request = Request::create(
-            $uri, $method, $parameters,
-            $cookies, $files, array_replace($this->server, $server), $content
+            $uri,
+            $method,
+            $parameters,
+            $cookies,
+            $files,
+            array_replace($this->server, $server),
+            $content
         );
 
         $response = $this->app->handle($request);

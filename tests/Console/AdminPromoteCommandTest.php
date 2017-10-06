@@ -2,7 +2,9 @@
 
 namespace OpenCFP\Test\Console;
 
+use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
 
 class AdminPromoteTest extends \PHPUnit\Framework\TestCase
@@ -21,42 +23,10 @@ class AdminPromoteTest extends \PHPUnit\Framework\TestCase
         $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
         $output = $this->createOutputInterface();
 
-        /**
-         * Create a Sentry mock that throws our expected exception and then
-         * add it to our Application mock
-         */
-        $sentry = Mockery::mock('\Cartalyst\Sentry\Sentry');
-        $sentry->shouldReceive('getUserProvider->findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException);
+        $accounts = Mockery::mock(AccountManagement::class);
+        $accounts->shouldReceive('findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException);
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $app['sentry'] = $sentry;
-
-        // Create our command object and inject our application
-        $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
-        $command->setApp($app);
-        $response = $command->execute($input, $output);
-        $this->assertEquals($response, 1);
-    }
-
-    /**
-     * @test
-     */
-    public function willNotPromoteExistingAdminAccounts()
-    {
-        // Create our input and output dependencies
-        $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
-        $output = $this->createOutputInterface();
-
-        /**
-         * Create a mock Sentry object that returns a user that is in the
-         * system and is an admin
-         */
-        $user = Mockery::mock('\stdClass');
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
-        $sentry = Mockery::mock('\Cartalyst\Sentry\Sentry');
-        $sentry->shouldReceive('getUserProvider->findByLogin')
-            ->andReturn($user);
-        $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $app['sentry'] = $sentry;
+        $app[AccountManagement::class] = $accounts;
 
         // Create our command object and inject our application
         $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
@@ -78,8 +48,9 @@ class AdminPromoteTest extends \PHPUnit\Framework\TestCase
          * Create a mock User that has admin access and add an `addGroup`
          * method that is stubbed out
          */
-        $user = Mockery::mock('\stdClass');
+        $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
+        $user->shouldReceive('getLogin')->andReturn('test@opencfp.dev');
         $user->shouldReceive('addGroup');
 
         /**
@@ -87,16 +58,15 @@ class AdminPromoteTest extends \PHPUnit\Framework\TestCase
          * an admin group provider. Number doesn't matter for this particular
          * test
          */
-        $sentry = Mockery::mock('\Cartalyst\Sentry\Sentry');
-        $sentry->shouldReceive('getUserProvider->findByLogin')
+        $accounts = Mockery::mock(AccountManagement::class);
+        $accounts->shouldReceive('findByLogin')
             ->andReturn($user);
-        $sentry->shouldReceive('getGroupProvider->findByName')
-            ->with('Admin')
-            ->andReturn(1);
+        $accounts->shouldReceive('promote')
+            ->with('test@opencfp.dev');
 
         // Create our command object and inject our application
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $app['sentry'] = $sentry;
+        $app[AccountManagement::class] = $accounts;
         $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
         $command->setApp($app);
         $response = $command->execute($input, $output);

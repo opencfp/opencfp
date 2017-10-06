@@ -2,9 +2,9 @@
 
 namespace OpenCFP\Console\Command;
 
-use Cartalyst\Sentry\Sentry;
-use Cartalyst\Sentry\Users\UserNotFoundException;
+use Exception;
 use OpenCFP\Console\BaseCommand;
+use OpenCFP\Domain\Services\AccountManagement;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,7 +20,8 @@ class AdminDemoteCommand extends BaseCommand
                 new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to demote'),
             ])
             ->setDescription('Demote an existing user from being an admin')
-            ->setHelp(<<<EOF
+            ->setHelp(
+                <<<EOF
 The <info>%command.name%</info> command removes a user from the admin group for a given environment:
 
 <info>php %command.full_name% speaker@opencfp.org --env=production</info>
@@ -31,8 +32,8 @@ EOF
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        /* @var Sentry $sentry */
-        $sentry = $this->app['sentry'];
+        /** @var AccountManagement $accounts */
+        $accounts = $this->app[AccountManagement::class];
 
         $email = $input->getArgument('email');
 
@@ -49,8 +50,8 @@ EOF
         ));
 
         try {
-            $user = $sentry->getUserProvider()->findByLogin($email);
-        } catch (UserNotFoundException $e) {
+            $user = $accounts->findByLogin($email);
+        } catch (Exception $e) {
             $io->error(sprintf(
                 'Could not find account with email %s.',
                 $email
@@ -68,8 +69,7 @@ EOF
             return 1;
         }
 
-        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-        $user->removeGroup($adminGroup);
+        $accounts->demote($user->getLogin());
 
         $io->success(sprintf(
             'Removed account with email %s from the Admin group',

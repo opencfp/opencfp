@@ -24,8 +24,8 @@ class Schema extends AbstractMigration
             ->addIndex(['name'], ['name' => 'groups_name_unique', 'unique' => true])
             ->create();
 
-        $this->execute("INSERT INTO groups (name, permissions, created_at, updated_at) VALUES ('Speakers', '{\"users\":1}', NOW(), NOW())");
-        $this->execute("INSERT INTO groups (name, permissions, created_at, updated_at) VALUES ('Admin', '{\"admin\":1}', NOW(), NOW())");
+        $this->execute("INSERT INTO groups (name, permissions, created_at, updated_at) VALUES ('Speakers', '{\"users\":1}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
+        $this->execute("INSERT INTO groups (name, permissions, created_at, updated_at) VALUES ('Admin', '{\"admin\":1}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
     }
 
     protected function createThrottleTable()

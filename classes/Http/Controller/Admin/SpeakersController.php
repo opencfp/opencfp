@@ -2,8 +2,8 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Entity\User;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
@@ -25,9 +25,6 @@ class SpeakersController extends BaseController
         if (!$this->userHasAccess()) {
             return $this->redirectTo('dashboard');
         }
-
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
 
         /* @var Locator $spot */
         $spot = $this->service('spot');
@@ -60,9 +57,10 @@ class SpeakersController extends BaseController
             return $speaker;
         }, $rawSpeakers);
 
-        $adminGroup = $sentry->getGroupProvider()->findByName('Admin');
-        $adminUsers = $sentry->findAllUsersInGroup($adminGroup);
-        $adminUserIds = array_column($adminUsers->toArray(), 'id');
+        /** @var AccountManagement $accounts */
+        $accounts = $this->service(AccountManagement::class);
+        $adminUsers = $accounts->findByRole('Admin');
+        $adminUserIds = array_column($adminUsers, 'id');
 
         foreach ($rawSpeakers as $key => $each) {
             if (in_array($each['id'], $adminUserIds)) {

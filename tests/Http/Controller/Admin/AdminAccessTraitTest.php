@@ -2,29 +2,25 @@
 
 namespace OpenCFP\Test\Http\Controller\Admin;
 
-use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
+use Mockery;
 use OpenCFP\Application;
+use OpenCFP\Domain\Services\Authentication;
 
 class AdminAccessTraitTest extends \PHPUnit\Framework\TestCase
 {
+    public function tearDown()
+    {
+        Mockery::close();
+    }
+
     public function testReturnsFalseIfCheckFailed()
     {
-        $sentry = $this->getSentryMock();
-
-        $sentry
-            ->expects($this->once())
-            ->method('check')
-            ->willReturn(false)
-        ;
-
-        $sentry
-            ->expects($this->never())
-            ->method('getUser')
-        ;
+        $auth = Mockery::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(false);
 
         $application = $this->getApplicationMock([
-            'sentry' => $sentry,
+            Authentication::class => $auth,
         ]);
 
         $adminAccess = new AdminAccessTraitFake($application);
@@ -34,24 +30,15 @@ class AdminAccessTraitTest extends \PHPUnit\Framework\TestCase
 
     public function testReturnsFalseIfCheckSucceededButUserHasNoAdminPermission()
     {
-        $userWithoutAdminPermission = $this->getUserMock(false);
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
 
-        $sentry = $this->getSentryMock();
-
-        $sentry
-            ->expects($this->at(0))
-            ->method('check')
-            ->willReturn(true)
-        ;
-
-        $sentry
-            ->expects($this->at(1))
-            ->method('getUser')
-            ->willReturn($userWithoutAdminPermission)
-        ;
+        $auth = Mockery::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
 
         $application = $this->getApplicationMock([
-            'sentry' => $sentry,
+            Authentication::class => $auth,
         ]);
 
         $adminAccess = new AdminAccessTraitFake($application);
@@ -61,34 +48,21 @@ class AdminAccessTraitTest extends \PHPUnit\Framework\TestCase
 
     public function testReturnsTrueIfCheckSucceededAndUserHasAdminPermission()
     {
-        $userWithAdminPermission = $this->getUserMock(true);
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
 
-        $sentry = $this->getSentryMock();
-
-        $sentry
-            ->expects($this->at(0))
-            ->method('check')
-            ->willReturn(true)
-        ;
-
-        $sentry
-            ->expects($this->at(1))
-            ->method('getUser')
-            ->willReturn($userWithAdminPermission)
-        ;
+        $auth = Mockery::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
 
         $application = $this->getApplicationMock([
-            'sentry' => $sentry,
+            Authentication::class => $auth,
         ]);
 
         $adminAccess = new AdminAccessTraitFake($application);
 
         $this->assertTrue($adminAccess->hasAdminAccess());
     }
-
-    //
-    // Factory Methods
-    //
 
     /**
      * @param array $items
@@ -112,34 +86,5 @@ class AdminAccessTraitTest extends \PHPUnit\Framework\TestCase
         ;
 
         return $application;
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Sentry
-     */
-    private function getSentryMock()
-    {
-        return $this->getMockBuilder('Cartalyst\Sentry\Sentry')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-    }
-
-    /**
-     * @param bool $hasAdminPermission
-     * @return UserInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getUserMock($hasAdminPermission = false)
-    {
-        $user = $this->getMockBuilder('Cartalyst\Sentry\Users\UserInterface')->getMock();
-
-        $user
-            ->expects($this->any())
-            ->method('hasPermission')
-            ->with($this->identicalTo('admin'))
-            ->willReturn($hasAdminPermission)
-        ;
-
-        return $user;
     }
 }

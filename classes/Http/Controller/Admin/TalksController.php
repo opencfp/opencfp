@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use Cartalyst\Sentry\Sentry;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\View\TwitterBootstrap3View;
@@ -20,10 +20,10 @@ class TalksController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /* @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        $admin_user_id = $sentry->getUser()->getId();
+        $admin_user_id = $auth->user()->getId();
         $options = [
             'order_by' => $req->get('order_by'),
             'sort' => $req->get('sort'),
@@ -141,12 +141,12 @@ class TalksController extends BaseController
 
             return $this->app->redirect($this->url('admin_talks'));
         }
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /* @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
         // Mark talk as viewed by admin
         $talk_meta = $meta_mapper->where([
-                'admin_user_id' => $sentry->getUser()->getId(),
+                'admin_user_id' => $auth->user()->getId(),
                 'talk_id' => (int)$req->get('id'),
             ])
             ->first();
@@ -157,7 +157,7 @@ class TalksController extends BaseController
 
         if (!$talk_meta->viewed) {
             $talk_meta->viewed = true;
-            $talk_meta->admin_user_id = $sentry->getUser()->getId();
+            $talk_meta->admin_user_id = $auth->user()->getId();
             $talk_meta->talk_id = $talk_id;
             $meta_mapper->save($talk_meta);
         }
@@ -195,10 +195,10 @@ class TalksController extends BaseController
             return false;
         }
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        $admin_user_id = (int) $sentry->getUser()->getId();
+        $admin_user_id = (int) $auth->user()->getId();
         $mapper = $this->service('spot')->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
 
         $talk_rating = (int)$req->get('rating');
@@ -239,10 +239,10 @@ class TalksController extends BaseController
             return false;
         }
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
 
-        $admin_user_id = (int) $sentry->getUser()->getId();
+        $admin_user_id = (int) $auth->user()->getId();
         $status = true;
 
         if ($req->get('delete') !== null) {
@@ -324,10 +324,8 @@ class TalksController extends BaseController
 
         $talk_id = (int)$req->get('id');
 
-        /* @var Sentry $sentry */
-        $sentry = $this->service('sentry');
-
-        $admin_user_id = (int) $sentry->getUser()->getId();
+        $user = $this->service(Authentication::class)->user();
+        $admin_user_id = (int) $user->getId();
 
         /* @var Locator $spot */
         $spot = $this->service('spot');

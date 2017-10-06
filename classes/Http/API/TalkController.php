@@ -53,8 +53,6 @@ class TalkController extends ApiController
         try {
             $talks = $this->speakers->getTalks();
 
-            // TODO Replace this crap with an object responsible for
-            // the "Talk Resource" to/from json.
             $output = [];
             foreach ($talks as $talk) {
                 $output[] = $talk->toArrayForApi();

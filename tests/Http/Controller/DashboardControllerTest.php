@@ -3,8 +3,10 @@
 namespace OpenCFP\Test\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
+use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
 use OpenCFP\Application;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Test\TestCase;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
@@ -22,16 +24,16 @@ class DashboardControllerTest extends TestCase
     public function indexDisplaysUserAndTalks()
     {
         // Set things up so Sentry believes we're logged in
-        $user = m::mock('StdClass');
+        $user = m::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn(1);
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
 
         // Create a test double for Sentry
-        $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->times(1)->andReturn(true);
-        $sentry->shouldReceive('getUser')->andReturn($user);
-        $this->swap('sentry', $sentry);
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
+        $this->swap(Authentication::class, $auth);
 
         // Create a test double for a talk in profile
         $talk = m::mock('StdClass');
@@ -66,16 +68,15 @@ class DashboardControllerTest extends TestCase
 
         // There's some global before filters that call Sentry directly.
         // We have to stub that behaviour here to have it think we are not admin.
-        // TODO This stuff is everywhere. Bake it into a trait for testing in the short-term.
-        $user = m::mock('stdClass');
+        $user = m::mock(UserInterface::class);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('id')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $sentry = m::mock(Sentry::class);
-        $sentry->shouldReceive('check')->andReturn(true);
-        $sentry->shouldReceive('getUser')->andReturn($user);
-        $this->swap('sentry', $sentry);
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
+        $this->swap(Authentication::class, $auth);
         $this->swap('user', $user);
 
         // Create a test double for SpeakerProfile
