@@ -25,7 +25,7 @@ class SecurityController extends BaseController
         $auth = $this->service(Authentication::class);
 
         try {
-            $auth->authenticate($req->get('email', $req->get('password')));
+            $auth->authenticate($req->get('email'), $req->get('password'));
 
             // This is for redirecting to OAuth endpoint if we arrived
             // as part of the Authorization Code Grant flow.
