@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\View\TwitterBootstrap3View;
@@ -210,25 +211,14 @@ class TalksController extends BaseController
         $talk_rating = (int)$req->get('rating');
         $talk_id = (int)$req->get('id');
 
+        $talkRatingStrategy = new YesNoRating($mapper, $auth);
+
         // Check for invalid rating range
-        if ($talk_rating < -1 || $talk_rating > 1) {
+        if (!$talkRatingStrategy->isValidRating($talk_rating)) {
             return false;
         }
 
-        $talk_meta = $mapper->where([
-                'admin_user_id' => $admin_user_id,
-                'talk_id' => (int)$req->get('id'),
-            ])
-            ->first();
-
-        if (!$talk_meta) {
-            $talk_meta = $mapper->get();
-            $talk_meta->admin_user_id = $admin_user_id;
-            $talk_meta->talk_id = $talk_id;
-        }
-
-        $talk_meta->rating = $talk_rating;
-        $mapper->save($talk_meta);
+        $talkRatingStrategy->rate($talk_id, $talk_rating);
 
         return true;
     }
