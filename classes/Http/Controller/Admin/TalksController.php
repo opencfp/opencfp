@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
@@ -204,21 +205,18 @@ class TalksController extends BaseController
 
         /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
-
-        $admin_user_id = (int) $auth->user()->getId();
         $mapper = $this->service('spot')->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
-
-        $talk_rating = (int)$req->get('rating');
-        $talk_id = (int)$req->get('id');
 
         $talkRatingStrategy = new YesNoRating($mapper, $auth);
 
-        // Check for invalid rating range
-        if (!$talkRatingStrategy->isValidRating($talk_rating)) {
+        try {
+            $talk_rating = (int) $req->get('rating');
+            $talk_id = (int) $req->get('id');
+
+            $talkRatingStrategy->rate($talk_id, $talk_rating);
+        } catch (TalkRatingException $e) {
             return false;
         }
-
-        $talkRatingStrategy->rate($talk_id, $talk_rating);
 
         return true;
     }

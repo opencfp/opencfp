@@ -29,7 +29,7 @@ class YesNoRating implements TalkRatingStrategy
     public function rate(int $talkId, $rating)
     {
         if (!$this->isValidRating($rating)) {
-            return; //maybe throw here instead?
+            throw TalkRatingException::invalidRating($rating);
         }
 
         $meta = $this->fetchMetaInfo($talkId);
