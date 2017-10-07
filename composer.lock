@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "def02f8bf52dc636ee29943583b0d6f9",
+    "content-hash": "c47b81f02e1eabebb93927cc1bf97091",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -2184,9 +2184,7 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "email": "fabien@symfony.com"
                 },
                 {
                     "name": "Chris Corbyn"

@@ -245,7 +245,7 @@ class SignupForm extends Form
     {
         if (preg_match('/https:\/\/joind\.in\/user\/[a-zA-Z0-9]{1,25}/', $this->_cleanData['url'])
             || !isset($this->_cleanData['url'])
-            || '' == $this->_cleanData['url']
+            || $this->_cleanData['url'] == ''
         ) {
             return true;
         } else {

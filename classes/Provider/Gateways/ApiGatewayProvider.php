@@ -33,7 +33,7 @@ class ApiGatewayProvider implements ServiceProviderInterface, BootableProviderIn
         $api->before(function (Request $request) {
             $request->headers->set('Accept', 'application/json');
 
-            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            if (strpos($request->headers->get('Content-Type'), 'application/json') === 0) {
                 $data = json_decode($request->getContent(), true);
                 $request->request->replace(is_array($data) ? $data : []);
             }

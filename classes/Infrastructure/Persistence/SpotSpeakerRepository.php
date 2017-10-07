@@ -26,7 +26,7 @@ class SpotSpeakerRepository implements SpeakerRepository
     {
         $speaker = $this->mapper->get($speakerId);
 
-        if (false === $speaker) {
+        if ($speaker === false) {
             throw new EntityNotFoundException;
         }
 

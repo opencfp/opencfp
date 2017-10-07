@@ -16,6 +16,11 @@ $config = PhpCsFixer\Config::create()
         'psr0' => false,
         'single_quote' => true,
         'trailing_comma_in_multiline_array' => true,
+        'yoda_style' => [
+            'equal' => false,
+            'identical' => false,
+            'less_and_greater' => false,
+        ],
     ])
     ->setFinder($finder);
 
