@@ -13,7 +13,7 @@ class ControllerResolver extends \Silex\ControllerResolver
      */
     protected function createController($controller)
     {
-        if (false !== strpos($controller, '::')) {
+        if (strpos($controller, '::') !== false) {
             $instance = parent::createController($controller);
 
             // Injects container from side rather than constructor.
@@ -24,7 +24,7 @@ class ControllerResolver extends \Silex\ControllerResolver
             return $instance;
         }
 
-        if (false === strpos($controller, ':')) {
+        if (strpos($controller, ':') === false) {
             throw new \LogicException(sprintf('Unable to parse the controller name "%s".', $controller));
         }
 
