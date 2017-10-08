@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
@@ -80,7 +81,8 @@ class TalksController extends BaseController
         /* @var Locator $spot */
         $spot = $this->service('spot');
 
-        $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        /** @var \OpenCFP\Domain\Entity\Mapper\Talk $talk_mapper */
+        $talk_mapper = $spot->mapper(Talk::class);
         if ($filter === null) {
             return $talk_mapper->getAllPagerFormatted($admin_user_id, $options);
         }
@@ -100,6 +102,10 @@ class TalksController extends BaseController
 
             case 'rated':
                 return $talk_mapper->getRatedByUserId($admin_user_id, $options);
+                break;
+
+            case 'plusone':
+                return $talk_mapper->getPlusOneByUserId($admin_user_id, $options);
                 break;
 
             case 'viewed':
@@ -125,7 +131,7 @@ class TalksController extends BaseController
         $spot = $this->service('spot');
 
         // Get info about the talks
-        $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $talk_mapper = $spot->mapper(Talk::class);
         $meta_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
         $talk_id = $req->get('id');
         $talk = $talk_mapper->where(['id' => $talk_id])
@@ -301,7 +307,7 @@ class TalksController extends BaseController
         /* @var Locator $spot */
         $spot = $this->service('spot');
 
-        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
+        $mapper = $spot->mapper(Talk::class);
         $talk = $mapper->get($req->get('id'));
 
         $selected = 1;
