@@ -11,6 +11,11 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Test\TestCase;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
+/**
+ * Class DashboardControllerTest
+ * @package OpenCFP\Test\Http\Controller
+ * @group db
+ */
 class DashboardControllerTest extends TestCase
 {
     use GeneratorTrait;

@@ -10,6 +10,11 @@ use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
 use Symfony\Component\Console;
 
+/**
+ * Class ApplicationTest
+ * @package OpenCFP\Test\Console
+ * @group db
+ */
 class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
     public function tearDown()

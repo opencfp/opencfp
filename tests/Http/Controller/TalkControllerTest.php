@@ -13,6 +13,11 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use OpenCFP\Http\Controller\TalkController;
 
+/**
+ * Class TalkControllerTest
+ * @package OpenCFP\Test\Http\Controller
+ * @group db
+ */
 class TalkControllerTest extends \PHPUnit\Framework\TestCase
 {
     private $app;

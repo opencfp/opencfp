@@ -5,6 +5,11 @@ namespace OpenCFP\Test\Infrastructure\Auth;
 use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Test\DatabaseTestCase;
 
+/**
+ * Class SentryAccountManagementTest
+ * @package OpenCFP\Test\Infrastructure\Auth
+ * @group db
+ */
 class SentryAccountManagementTest extends DatabaseTestCase
 {
     use SentryTestHelpers;

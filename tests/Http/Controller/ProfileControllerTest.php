@@ -10,6 +10,11 @@ use OpenCFP\Environment;
 use OpenCFP\Http\Controller\ProfileController;
 use Spot\Locator;
 
+/**
+ * Class ProfileControllerTest
+ * @package OpenCFP\Test\Http\Controller
+ * @group db
+ */
 class ProfileControllerTest extends \PHPUnit\Framework\TestCase
 {
     private $app;

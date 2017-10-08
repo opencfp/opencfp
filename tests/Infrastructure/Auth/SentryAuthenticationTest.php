@@ -6,6 +6,11 @@ use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentryAuthentication;
 use OpenCFP\Test\DatabaseTestCase;
 
+/**
+ * Class SentryAuthenticationTest
+ * @package OpenCFP\Test\Infrastructure\Auth
+ * @group db
+ */
 class SentryAuthenticationTest extends DatabaseTestCase
 {
     use SentryTestHelpers;

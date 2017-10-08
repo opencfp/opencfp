@@ -8,6 +8,7 @@ use OpenCFP\Test\DatabaseTestCase;
 /**
  * Tests integration with illuminate/database and airports table to implement
  * an AirportInfromationDatabase
+ * @group db
  */
 class IlluminateAirportInformationDatabaseTest extends DatabaseTestCase
 {

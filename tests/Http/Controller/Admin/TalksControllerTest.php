@@ -11,6 +11,11 @@ use OpenCFP\Environment;
 use Spot\Query;
 use Twig_Environment;
 
+/**
+ * Class TalksControllerTest
+ * @package OpenCFP\Test\Http\Controller\Admin
+ * @group db
+ */
 class TalksControllerTest extends \PHPUnit\Framework\TestCase
 {
     private $app;

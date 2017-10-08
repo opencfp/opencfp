@@ -7,6 +7,11 @@ use Mockery;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
 
+/**
+ * Class AdminPromoteTest
+ * @package OpenCFP\Test\Console
+ * @group db
+ */
 class AdminPromoteTest extends \PHPUnit\Framework\TestCase
 {
     public function tearDown()
