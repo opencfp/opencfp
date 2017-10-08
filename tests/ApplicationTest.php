@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @covers OpenCFP\Application
+ * @group db
  */
 class ApplicationTest extends \PHPUnit\Framework\TestCase
 {

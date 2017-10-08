@@ -12,6 +12,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
+/**
+ * Class SpeakersControllerTest
+ * @package OpenCFP\Test\Http\Controller\Admin
+ * @group db
+ */
 class SpeakersControllerTest extends \PHPUnit\Framework\TestCase
 {
     private $app;

@@ -8,6 +8,11 @@ use OpenCFP\Application;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
 
+/**
+ * Class ForgotControllerTest
+ * @package OpenCFP\Test\Http\Controller
+ * @group db
+ */
 class ForgotControllerTest extends \PHPUnit\Framework\TestCase
 {
     protected $app;

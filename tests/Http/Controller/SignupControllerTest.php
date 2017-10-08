@@ -15,6 +15,11 @@ use Spot\Locator;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
+/**
+ * Class SignupControllerTest
+ * @package OpenCFP\Test\Http\Controller
+ * @group db
+ */
 class SignupControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
