@@ -67,7 +67,7 @@ class ExportsController extends BaseController
     {
         $sort = [ 'created_at' => 'DESC' ];
 
-        $admin_user_id = $this->service(Authentication::class)->user()->getId();
+        $admin_user_id = $this->service(Authentication::class)->userId();
         $mapper = $this->service('spot')->mapper('OpenCFP\Domain\Entity\Talk');
         $talks = $mapper->getAllPagerFormatted($admin_user_id, $sort, $attributed, $where);
 

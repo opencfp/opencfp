@@ -25,6 +25,14 @@ interface Authentication
     public function user(): UserInterface;
 
     /**
+     * Returns current authenticated User Id.
+     *
+     * @return int
+     * @throws NotAuthenticatedException
+     */
+    public function userId(): int;
+
+    /**
      * Determines whether or not the user is logged in.
      *
      * @return bool

@@ -39,7 +39,7 @@ class YesNoRating implements TalkRatingStrategy
 
     private function fetchMetaInfo(int $talkId): TalkMeta
     {
-        $adminUserId = (int) $this->auth->user()->getId();
+        $adminUserId = $this->auth->userId();
         $talkMeta = $this->mapper->where([
             'admin_user_id' => $adminUserId,
             'talk_id' => $talkId,

@@ -54,6 +54,12 @@ class SentryAuthentication implements Authentication
         return $user;
     }
 
+    public function userId(): int
+    {
+        return (int) $this->user()
+            ->getId();
+    }
+
     /**
      * Determines whether or not the user is logged in.
      *
