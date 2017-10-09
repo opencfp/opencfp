@@ -8,6 +8,12 @@ class TalkMeta extends Model
 {
     protected $table = 'talk_meta';
     public $timestamps = false;
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
 
     public function talk()
     {
