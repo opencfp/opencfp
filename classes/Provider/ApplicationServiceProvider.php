@@ -7,6 +7,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use League\OAuth2\Server\ResourceServer;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
@@ -21,7 +22,6 @@ use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
 use OpenCFP\Infrastructure\OAuth\ClientStorage;
 use OpenCFP\Infrastructure\OAuth\ScopeStorage;
 use OpenCFP\Infrastructure\OAuth\SessionStorage;
-use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
 use Pimple\Container;
@@ -89,7 +89,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app[AirportInformationDatabase::class] = function ($app) {
-            return new IlluminateAirportInformationDatabase($app[Capsule::class]);
+            return new Airport;
         };
 
         $app['security.random'] = function ($app) {

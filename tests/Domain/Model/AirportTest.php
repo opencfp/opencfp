@@ -1,16 +1,14 @@
 <?php
 
-namespace OpenCFP\Test\Infrastructure\Persistence;
+namespace OpenCFP\Test\Domain\Model;
 
-use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
+use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Test\DatabaseTestCase;
 
 /**
- * Tests integration with illuminate/database and airports table to implement
- * an AirportInfromationDatabase
  * @group db
  */
-class IlluminateAirportInformationDatabaseTest extends DatabaseTestCase
+class AirportTest extends DatabaseTestCase
 {
     private $airports;
 
@@ -18,7 +16,7 @@ class IlluminateAirportInformationDatabaseTest extends DatabaseTestCase
     {
         parent::setUp();
 
-        $this->airports = $this->getAirportInformationDatabase();
+        $this->airports = $this->getAirport();
     }
 
     /** @test */
@@ -42,10 +40,10 @@ class IlluminateAirportInformationDatabaseTest extends DatabaseTestCase
     }
 
     /**
-     * @return IlluminateAirportInformationDatabase
+     * @return Airport
      */
-    private function getAirportInformationDatabase()
+    private function getAirport()
     {
-        return new IlluminateAirportInformationDatabase($this->getCapsule());
+        return new Airport;
     }
 }
