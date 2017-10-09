@@ -37,7 +37,7 @@ class DashboardControllerTest extends TestCase
         /**
          * Mocking for the user and Favorite models is done with overload: and full namespaces.
          * This is to force mockery to override the ones generated with the new keyword as well.
-         * We can't use them in the top of the file like normal classes either as that messes with the magic.
+         * We can't make use of the 'use' keyword to import them since that messes with the magic.
          */
         $userMock = m::mock('overload:' . \OpenCFP\Domain\Model\User::class);
         $userMock->shouldReceive('all->count')->andReturn('1');

@@ -19,6 +19,11 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
     protected $options;
 
     /**
+     * @var Capsule
+     */
+    protected $capsule;
+
+    /**
      * Make sure to call parent::setUp() if you override this.
      */
     protected function setUp()
@@ -67,7 +72,9 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
         $capsule->getConnection()->setPdo($this->phinxPdo);
 
         $capsule->setAsGlobal();
+        $capsule->bootEloquent();
 
-        return $capsule;
+        $this->capsule = $capsule;
+        return $this->capsule;
     }
 }
