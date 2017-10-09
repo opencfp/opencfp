@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TalkComment extends Model
 {
     protected $table = 'talk_comments';
+    public $timestamps = false;
 
     public function user()
     {

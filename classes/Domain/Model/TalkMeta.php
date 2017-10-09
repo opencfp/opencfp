@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TalkMeta extends Model
 {
     protected $table = 'talk_meta';
+    public $timestamps = false;
 
     public function talk()
     {
