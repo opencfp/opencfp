@@ -49,6 +49,25 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             return new SentryAuthentication($app['sentry']);
         };
 
+        $app[Capsule::class] = function ($app) {
+            $capsule = new Capsule;
+
+            $capsule->addConnection([
+                'driver'    => 'mysql',
+                'host'      => $app->config('database.host'),
+                'database'  => $app->config('database.database'),
+                'username'  => $app->config('database.user'),
+                'password'  => $app->config('database.password'),
+                'charset'   => 'utf8',
+                'collation' => 'utf8_unicode_ci',
+                'prefix'    => '',
+            ]);
+
+            $capsule->setAsGlobal();
+            $capsule->bootEloquent();
+            return $capsule;
+        };
+
         $app['application.speakers'] = function ($app) {
             /* @var Locator $spot */
             $spot = $app['spot'];
@@ -70,22 +89,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app[AirportInformationDatabase::class] = function ($app) {
-            $capsule = new Capsule;
-
-            $capsule->addConnection([
-                'driver'    => 'mysql',
-                'host'      => $app->config('database.host'),
-                'database'  => $app->config('database.database'),
-                'username'  => $app->config('database.user'),
-                'password'  => $app->config('database.password'),
-                'charset'   => 'utf8',
-                'collation' => 'utf8_unicode_ci',
-                'prefix'    => '',
-            ]);
-
-            $capsule->setAsGlobal();
-
-            return new IlluminateAirportInformationDatabase($capsule);
+            return new IlluminateAirportInformationDatabase($app[Capsule::class]);
         };
 
         $app['security.random'] = function ($app) {
