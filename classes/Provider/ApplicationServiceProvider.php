@@ -7,6 +7,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use League\OAuth2\Server\ResourceServer;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
@@ -21,7 +22,6 @@ use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
 use OpenCFP\Infrastructure\OAuth\ClientStorage;
 use OpenCFP\Infrastructure\OAuth\ScopeStorage;
 use OpenCFP\Infrastructure\OAuth\SessionStorage;
-use OpenCFP\Infrastructure\Persistence\IlluminateAirportInformationDatabase;
 use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
 use Pimple\Container;
@@ -49,6 +49,25 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             return new SentryAuthentication($app['sentry']);
         };
 
+        $app[Capsule::class] = function ($app) {
+            $capsule = new Capsule;
+
+            $capsule->addConnection([
+                'driver'    => 'mysql',
+                'host'      => $app->config('database.host'),
+                'database'  => $app->config('database.database'),
+                'username'  => $app->config('database.user'),
+                'password'  => $app->config('database.password'),
+                'charset'   => 'utf8',
+                'collation' => 'utf8_unicode_ci',
+                'prefix'    => '',
+            ]);
+
+            $capsule->setAsGlobal();
+            $capsule->bootEloquent();
+            return $capsule;
+        };
+
         $app['application.speakers'] = function ($app) {
             /* @var Locator $spot */
             $spot = $app['spot'];
@@ -70,22 +89,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app[AirportInformationDatabase::class] = function ($app) {
-            $capsule = new Capsule;
-
-            $capsule->addConnection([
-                'driver'    => 'mysql',
-                'host'      => $app->config('database.host'),
-                'database'  => $app->config('database.database'),
-                'username'  => $app->config('database.user'),
-                'password'  => $app->config('database.password'),
-                'charset'   => 'utf8',
-                'collation' => 'utf8_unicode_ci',
-                'prefix'    => '',
-            ]);
-
-            $capsule->setAsGlobal();
-
-            return new IlluminateAirportInformationDatabase($capsule);
+            return new Airport;
         };
 
         $app['security.random'] = function ($app) {
