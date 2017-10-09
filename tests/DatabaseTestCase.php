@@ -12,33 +12,46 @@ use Symfony\Component\Console\Output\NullOutput;
 abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var PDO
-     */
-    protected $phinxPdo;
-
-    protected $options;
-
-    /**
      * @var Capsule
      */
-    protected $capsule;
+    private $capsule;
 
     /**
-     * Make sure to call parent::setUp() if you override this.
+     * @var bool Have we migrated or not?
      */
+    private $migrated = false;
+
     protected function setUp()
     {
         $this->migrate();
-        $this->phinxPdo->beginTransaction();
+        $this->getCapsule()->getConnection()->beginTransaction();
     }
 
     protected function tearDown()
     {
-        $this->phinxPdo->rollBack();
+        $this->capsule->getConnection()->rollBack();
+    }
+
+    /**
+     * Helper method that wraps interactions with a connection in
+     * a transaction. Callable receives default Illuminate Connnection which
+     * can be used to work with tables or the schema builder.
+     *
+     * @param callable $callback
+     */
+    protected function transaction(callable $callback)
+    {
+        $this->capsule->getConnection()->beginTransaction();
+        $callback($this->capsule->getConnection());
+        $this->capsule->getConnection()->rollBack();
     }
 
     protected function migrate()
     {
+        if ($this->migrated) {
+            return;
+        }
+
         $input = new ArgvInput(['phinx', 'migrate', '--environment=testing']);
         $output = new NullOutput();
 
@@ -50,31 +63,24 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
         $migrateCommand = $phinx->get('migrate');
         $adapter = $migrateCommand->getManager()->getEnvironment('testing')->getAdapter()->getAdapter();
 
-        $this->options = $adapter->getOptions();
+        $options = $adapter->getOptions();
 
-        /** @var PDO $pdo */
-        $this->phinxPdo = $adapter->getConnection();
+        $this->capsule = new Capsule;
+
+        $this->capsule->addConnection([
+            'driver'   => 'mysql',
+            'database' => $options['name'],
+            'host'     => $options['host'],
+            'username' => $options['user'],
+            'password' => $options['pass']
+        ]);
+
+        $this->capsule->setAsGlobal();
+        $this->capsule->bootEloquent();
     }
 
     protected function getCapsule()
     {
-        $capsule = new Capsule;
-
-        $capsule->addConnection([
-            'driver'    => 'mysql',
-            'database'  => $this->options['name'],
-        ]);
-
-        /**
-         * Swap PDO instance so that we're using the same in-memory
-         * database migrated by Phinx.
-         */
-        $capsule->getConnection()->setPdo($this->phinxPdo);
-
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
-
-        $this->capsule = $capsule;
         return $this->capsule;
     }
 }

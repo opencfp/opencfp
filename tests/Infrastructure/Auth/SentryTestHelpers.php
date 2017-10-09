@@ -26,7 +26,6 @@ trait SentryTestHelpers
             $cookie
         );
 
-        Sentry::setupDatabaseResolver($this->phinxPdo);
         $throttleProvider->disable();
 
         return $sentry;

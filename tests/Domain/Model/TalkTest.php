@@ -12,20 +12,6 @@ use OpenCFP\Test\DatabaseTestCase;
 class TalkTest extends DatabaseTestCase
 {
 
-    /**
-     * Illuminate doesn't like the fact that we use the PDO begin transaction and rollback
-     * so we need to use the ones from the Illuminate capsule to do that instead.
-     */
-    public function setUp()
-    {
-        $this->migrate();
-        $this->getCapsule()->getConnection()->beginTransaction();
-    }
-
-    public function tearDown()
-    {
-        $this->capsule->getConnection()->rollBack();
-    }
 
 
     /** @test */
