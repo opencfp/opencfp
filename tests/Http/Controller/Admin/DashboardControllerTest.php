@@ -40,11 +40,11 @@ class DashboardControllerTest extends TestCase
          * We can't make use of the 'use' keyword to import them since that messes with the magic.
          */
         $userMock = m::mock('overload:' . \OpenCFP\Domain\Model\User::class);
-        $userMock->shouldReceive('all->count')->andReturn('1');
+        $userMock->shouldReceive('count')->andReturn('1');
         $this->swap(\OpenCFP\Domain\Model\User::class, $userMock);
 
         $favoriteMock = m::mock('overload:' . \OpenCFP\Domain\Model\Favorite::class);
-        $favoriteMock->shouldReceive('all->count')->andReturn('1');
+        $favoriteMock->shouldReceive('count')->andReturn('1');
         $this->swap(\OpenCFP\Domain\Model\User::class, $favoriteMock);
         $this->swap(\OpenCFP\Domain\Model\Favorite::class, $favoriteMock);
 
@@ -64,10 +64,9 @@ class DashboardControllerTest extends TestCase
     private function talkListMock()
     {
         $talk = m::mock('overload:' . \OpenCFP\Domain\Model\Talk::class);
-        $talk->shouldReceive('all')->andReturn($talk);
         $talk->shouldReceive('count')->andReturn(10);
         $talk->shouldReceive('where')->andReturn($talk);
-        $talk->shouldReceive('getRecent')->andReturn([
+        $talk->shouldReceive('recent')->andReturn([
             [
                 'id' => 1,
                 'title' => 'First Talk',

@@ -18,19 +18,14 @@ class DashboardController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $speaker_total = User::all()->count();
-
-        $talkModel = new Talk();
-        $favoriteModel = new Favorite();
-
         $user = $this->service(Authentication::class)->user();
-        $recent_talks = $talkModel->getRecent($user->getId());
+        $recent_talks = Talk::recent($user->getId());
 
         $templateData = [
-            'speakerTotal' => $speaker_total,
-            'talkTotal' => $talkModel->all()->count(),
-            'favoriteTotal' => $favoriteModel->all()->count(),
-            'selectTotal' => $talkModel->all()->where('selected', 1)->count(),
+            'speakerTotal' => User::count(),
+            'talkTotal' => Talk::count(),
+            'favoriteTotal' => Favorite::count(),
+            'selectTotal' => Talk::where('selected', 1)->count(),
             'talks' => $recent_talks,
         ];
 

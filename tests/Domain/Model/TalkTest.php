@@ -12,16 +12,13 @@ use OpenCFP\Test\DatabaseTestCase;
 class TalkTest extends DatabaseTestCase
 {
 
-
-
     /** @test */
     public function getRecentReturnsAnArrayOfTalks()
     {
         $this->generateTalks();
-        $talk = new Talk;
-        $recent = $talk->getRecent(1);
+        $recent = Talk::recent(1);
         $this->assertEquals(4, count($recent));
-        $anotherRecent = $talk->getRecent(1, 3);
+        $anotherRecent = Talk::recent(1, 3);
         $this->assertEquals(3, count($anotherRecent));
     }
 

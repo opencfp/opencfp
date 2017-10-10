@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Domain\Model;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Talk extends Model
@@ -36,23 +37,22 @@ class Talk extends Model
     /**
      * Return a collection of recent talks
      *
-     * @param $admin_id
-     * @param int $limit
+     * @param Builder $query
+     * @param         $admin_id
+     * @param int     $limit
      *
      * @return array|Talk[]
      */
-    public function getRecent($admin_id, $limit = 10)
+    public function scopeRecent(Builder $query, $admin_id, $limit = 10)
     {
-        $talks = $this
+        return $query
             ->orderBy('created_at')
             ->with(['favorites', 'meta'])
+            ->take($limit)
             ->get()
-            ->take($limit);
-        $formatted = [];
-        foreach ($talks as $talk) {
-            $formatted[] = $this->createdFormattedOutput($talk, $admin_id);
-        }
-        return $formatted;
+            ->map(function($talk) use ($admin_id) {
+                return $this->createdFormattedOutput($talk, $admin_id);
+            });
     }
     /**
      * Iterates over DBAL objects and returns a formatted result set
