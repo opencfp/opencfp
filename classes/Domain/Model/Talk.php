@@ -42,7 +42,7 @@ class Talk extends Eloquent
             ->with(['favorites', 'meta'])
             ->take($limit)
             ->get()
-            ->map(function($talk) use ($admin_id) {
+            ->map(function ($talk) use ($admin_id) {
                 return $this->createdFormattedOutput($talk, $admin_id);
             });
     }

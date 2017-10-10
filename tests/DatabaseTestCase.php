@@ -3,7 +3,6 @@
 namespace OpenCFP\Test;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use PDO;
 use Phinx\Console\Command\Migrate;
 use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -72,7 +71,7 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
             'database' => $options['name'],
             'host'     => $options['host'],
             'username' => $options['user'],
-            'password' => $options['pass']
+            'password' => $options['pass'],
         ]);
 
         $this->capsule->setAsGlobal();

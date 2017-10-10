@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Infrastructure\Auth;
 
-use Cartalyst\Sentry\Facades\Native\Sentry;
 use OpenCFP\Provider\SymfonySentrySession;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
