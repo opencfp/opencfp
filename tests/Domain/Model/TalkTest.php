@@ -4,6 +4,7 @@ namespace OpenCFP\Test\Domain\Model;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\DatabaseTestCase;
 
 /**
@@ -13,13 +14,12 @@ class TalkTest extends DatabaseTestCase
 {
 
     /** @test */
-    public function getRecentReturnsAnArrayOfTalks()
+    public function recentReturnsAnArrayOfTalks()
     {
-        $this->generateTalks();
-        $recent = Talk::recent(1);
-        $this->assertEquals(4, count($recent));
-        $anotherRecent = Talk::recent(1, 3);
-        $this->assertEquals(3, count($anotherRecent));
+        factory(Talk::class, 10)->create();
+
+        $this->assertCount(10, Talk::recent(1));
+        $this->assertCount(3, Talk::recent(1, 3));
     }
 
     /**

@@ -59,6 +59,9 @@
         ],
         "psr-4": {
             "OpenCFP\\Test\\": "tests/"
-        }
+        },
+        "files": [
+            "tests/helpers.php"
+        ]
     }
 }
