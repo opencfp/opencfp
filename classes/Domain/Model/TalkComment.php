@@ -3,9 +3,7 @@
 
 namespace OpenCFP\Domain\Model;
 
-use Illuminate\Database\Eloquent\Model;
-
-class TalkComment extends Model
+class TalkComment extends Eloquent
 {
     protected $table = 'talk_comments';
     public $timestamps = false;

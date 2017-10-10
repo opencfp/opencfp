@@ -2,9 +2,7 @@
 
 namespace OpenCFP\Domain\Model;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Favorite extends Model
+class Favorite extends Eloquent
 {
     protected $table = 'favorites';
     public $timestamps = false;

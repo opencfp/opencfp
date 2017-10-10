@@ -2,9 +2,7 @@
 
 namespace OpenCFP\Domain\Model;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Group extends Model
+class Group extends Eloquent
 {
     protected $table = 'groups';
 

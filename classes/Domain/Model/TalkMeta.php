@@ -2,9 +2,7 @@
 
 namespace OpenCFP\Domain\Model;
 
-use Illuminate\Database\Eloquent\Model;
-
-class TalkMeta extends Model
+class TalkMeta extends Eloquent
 {
     protected $table = 'talk_meta';
     public $timestamps = false;

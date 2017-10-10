@@ -2,10 +2,9 @@
 
 namespace OpenCFP\Domain\Model;
 
-use Illuminate\Database\Eloquent\Model;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 
-class Airport extends Model implements AirportInformationDatabase
+class Airport extends Eloquent implements AirportInformationDatabase
 {
     protected $table = 'airports';
     public $timestamps = false;

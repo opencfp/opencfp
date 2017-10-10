@@ -3,17 +3,9 @@
 namespace OpenCFP\Domain\Model;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
-class Talk extends Model
+class Talk extends Eloquent
 {
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
-
     public function speaker()
     {
         return $this->belongsTo(User::class, 'user_id');
