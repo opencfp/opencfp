@@ -4,6 +4,7 @@ namespace OpenCFP\Test\Domain\Model;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\DatabaseTestCase;
 
 /**
@@ -11,7 +12,7 @@ use OpenCFP\Test\DatabaseTestCase;
  */
 class TalkTest extends DatabaseTestCase
 {
-
+    
     /** @test */
     public function getRecentReturnsAnArrayOfTalks()
     {
