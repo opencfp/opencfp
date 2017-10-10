@@ -22,7 +22,7 @@ $factory->define(\OpenCFP\Domain\Model\User::class, function (\Faker\Generator $
 
 $factory->define(\OpenCFP\Domain\Model\Talk::class, function (\Faker\Generator $faker) {
     return [
-        'user_id' => function() {
+        'user_id' => function () {
             return factory(\OpenCFP\Domain\Model\User::class)->create()->id;
         },
         'title' => $faker->sentence(),
