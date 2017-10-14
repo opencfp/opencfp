@@ -7,7 +7,6 @@ use OpenCFP\Http\View\TalkHelper;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
