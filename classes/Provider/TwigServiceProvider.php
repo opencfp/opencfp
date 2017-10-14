@@ -7,6 +7,7 @@ use OpenCFP\Http\View\TalkHelper;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
@@ -45,12 +46,6 @@ class TwigServiceProvider implements ServiceProviderInterface
             $twig->addFunction(new Twig_SimpleFunction('assets', function ($path) {
                 return '/assets/' . $path;
             }));
-
-            $twig->addGlobal('current_page', function () use ($app) {
-                return $app['request']->getRequestUri();
-            });
-
-            $twig->addGlobal('cfp_open', $app['callforproposal']->isOpen());
 
             $twig->addGlobal('site', $app->config('application'));
 
