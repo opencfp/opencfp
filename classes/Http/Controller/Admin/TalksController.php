@@ -4,6 +4,8 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
+use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\View\TwitterBootstrap3View;
@@ -24,7 +26,7 @@ class TalksController extends BaseController
         /* @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
-        $admin_user_id = $auth->user()->getId();
+        $admin_user_id = $auth->userId();
         $options = [
             'order_by' => $req->get('order_by'),
             'sort' => $req->get('sort'),
@@ -152,7 +154,7 @@ class TalksController extends BaseController
 
         // Mark talk as viewed by admin
         $talk_meta = $meta_mapper->where([
-                'admin_user_id' => $auth->user()->getId(),
+                'admin_user_id' => $auth->userId(),
                 'talk_id' => (int)$req->get('id'),
             ])
             ->first();
@@ -163,7 +165,7 @@ class TalksController extends BaseController
 
         if (!$talk_meta->viewed) {
             $talk_meta->viewed = true;
-            $talk_meta->admin_user_id = $auth->user()->getId();
+            $talk_meta->admin_user_id = $auth->userId();
             $talk_meta->talk_id = $talk_id;
             $meta_mapper->save($talk_meta);
         }
@@ -203,32 +205,18 @@ class TalksController extends BaseController
 
         /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
-
-        $admin_user_id = (int) $auth->user()->getId();
         $mapper = $this->service('spot')->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
 
-        $talk_rating = (int)$req->get('rating');
-        $talk_id = (int)$req->get('id');
+        $talkRatingStrategy = new YesNoRating($mapper, $auth);
 
-        // Check for invalid rating range
-        if ($talk_rating < -1 || $talk_rating > 1) {
+        try {
+            $talk_rating = (int) $req->get('rating');
+            $talk_id = (int) $req->get('id');
+
+            $talkRatingStrategy->rate($talk_id, $talk_rating);
+        } catch (TalkRatingException $e) {
             return false;
         }
-
-        $talk_meta = $mapper->where([
-                'admin_user_id' => $admin_user_id,
-                'talk_id' => (int)$req->get('id'),
-            ])
-            ->first();
-
-        if (!$talk_meta) {
-            $talk_meta = $mapper->get();
-            $talk_meta->admin_user_id = $admin_user_id;
-            $talk_meta->talk_id = $talk_id;
-        }
-
-        $talk_meta->rating = $talk_rating;
-        $mapper->save($talk_meta);
 
         return true;
     }
@@ -248,7 +236,7 @@ class TalksController extends BaseController
         /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
-        $admin_user_id = (int) $auth->user()->getId();
+        $admin_user_id = $auth->userId();
         $status = true;
 
         if ($req->get('delete') !== null) {
