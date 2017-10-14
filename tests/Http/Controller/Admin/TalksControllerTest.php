@@ -36,6 +36,8 @@ class TalksControllerTest extends \PHPUnit\Framework\TestCase
         $auth = m::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
+        $auth->shouldReceive('userId')->andReturn(1);
+
         $this->app[Authentication::class] = $auth;
         $this->app['user'] = $user;
     }
