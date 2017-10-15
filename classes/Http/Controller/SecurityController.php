@@ -33,7 +33,7 @@ class SecurityController extends BaseController
             }
 
             return $this->redirectTo('dashboard');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
