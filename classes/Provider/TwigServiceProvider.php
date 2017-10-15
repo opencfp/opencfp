@@ -46,12 +46,6 @@ class TwigServiceProvider implements ServiceProviderInterface
                 return '/assets/' . $path;
             }));
 
-            $twig->addGlobal('current_page', function () use ($app) {
-                return $app['request']->getRequestUri();
-            });
-
-            $twig->addGlobal('cfp_open', $app['callforproposal']->isOpen());
-
             $twig->addGlobal('site', $app->config('application'));
 
             // Twig Markdown Extension

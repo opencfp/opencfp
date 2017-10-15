@@ -10,6 +10,7 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
+use Twig_SimpleFunction;
 
 class WebGatewayProvider implements BootableProviderInterface, ServiceProviderInterface
 {
@@ -27,10 +28,12 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             /* @var Twig_Environment $twig */
             $twig = $app['twig'];
 
-            $twig->addGlobal('current_page', function () use ($app) {
-                return $app['request']->getRequestUri();
-            });
-            $twig->addGlobal('cfp_open', strtotime('now') < strtotime($app->config('application.enddate') . ' 11:59 PM'));
+            $twig->addGlobal('current_page', $request->getRequestUri());
+            $twig->addGlobal('cfp_open', $app['callforproposal']->isOpen());
+
+            $twig->addFunction(new Twig_SimpleFunction('active', function ($route) use ($app, $request) {
+                return $app['url_generator']->generate($route) == $request->getRequestUri();
+            }));
 
             // Authentication
             if ($app[Authentication::class]->check()) {
