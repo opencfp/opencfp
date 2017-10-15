@@ -8,7 +8,7 @@ OpenCFP is a PHP-based conference talk submission system.
 [![Test Coverage](https://codeclimate.com/github/opencfp/opencfp/badges/coverage.svg)](https://codeclimate.com/github/opencfp/opencfp)
 [![Issue Count](https://codeclimate.com/github/opencfp/opencfp/badges/issue_count.svg)](https://codeclimate.com/github/opencfp/opencfp)
 
-Current release: v1.0.8
+Current release: v1.0.9
 
 ## README Contents
 
