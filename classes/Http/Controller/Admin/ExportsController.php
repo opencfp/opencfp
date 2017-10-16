@@ -85,6 +85,31 @@ class ExportsController extends BaseController
         return $this->csvReturn($talks, $filename);
     }
 
+    /**
+     * Adds a ' in front of items that start with =,+,- or @
+     * This stops the cell from being executed as a formula in excel/google sheets etc.
+     *
+     * @param string $info
+     * @return string
+     */
+    private function csvFormat($info)
+    {
+        if ($this->startsWith($info, '=')
+                || $this->startsWith($info, '+')
+                || $this->startsWith($info, '-')
+                || $this->startsWith($info, '@')
+            ) {
+            $info = "'". $info;
+        }
+        return $info;
+    }
+
+    private function startsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        return (substr($haystack, 0, $length) === $needle);
+    }
+
     private function csvReturn($contents, $filename = 'data')
     {
         if (count($contents) === 0) {
@@ -108,7 +133,9 @@ class ExportsController extends BaseController
 
         fputcsv($output, array_keys($contents[0]));
 
-        foreach ($contents as $i => $content) {
+        foreach ($contents as $content) {
+            $content = array_map([$this,'csvFormat'], $content);
+
             fputcsv($output, array_values($content));
         }
 
