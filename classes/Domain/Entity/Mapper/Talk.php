@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Domain\Entity\Mapper;
 
+use OpenCFP\Domain\Services\TalkFormatter;
 use Spot\Mapper;
 
 class Talk extends Mapper
@@ -414,62 +415,8 @@ class Talk extends Mapper
      */
     public function createdFormattedOutput($talk, $admin_user_id, $userData = true)
     {
-        if ($talk->favorites) {
-            foreach ($talk->favorites as $favorite) {
-                if ($favorite->admin_user_id == $admin_user_id) {
-                    $talk->favorite = 1;
-                }
-            }
-        }
-
-        $mapper = $this->getMapper(\OpenCFP\Domain\Entity\TalkMeta::class);
-        $talk_meta = $mapper->where(['talk_id' => $talk->id, 'admin_user_id' => $admin_user_id])
-            ->first();
-
-        $output = [
-            'id' => $talk->id,
-            'title' => $talk->title,
-            'type' => $talk->type,
-            'category' => $talk->category,
-            'created_at' => $talk->created_at,
-            'selected' => $talk->selected,
-            'favorite' => $talk->favorite,
-            'meta' => $talk_meta ?: $mapper->get(),
-            'description' => $talk->description,
-            'slides' => $talk->slides,
-            'other' => $talk->other,
-            'level' => $talk->level,
-            'desired' => $talk->desired,
-            'sponsor' => $talk->sponsor,
-        ];
-
-        if ($talk->speaker && $userData) {
-            $output['user'] = [
-                'id' => $talk->speaker->id,
-                'first_name' => $talk->speaker->first_name,
-                'last_name' => $talk->speaker->last_name,
-            ];
-
-            $output += [
-                'speaker_id' => $talk->speaker->id,
-                'speaker_first_name' => $talk->speaker->first_name,
-                'speaker_last_name' => $talk->speaker->last_name,
-                'speaker_email' => $talk->speaker->email,
-                'speaker_company' => $talk->speaker->company,
-                'speaker_twitter' => $talk->speaker->twitter,
-                'speaker_airport' => $talk->speaker->airport,
-                'speaker_hotel' => $talk->speaker->hotel,
-                'speaker_transportation' => $talk->speaker->transportation,
-                'speaker_info' => $talk->speaker->info,
-                'speaker_bio' => $talk->speaker->bio,
-            ];
-        }
-
-        if ($talk->total_rating) {
-            $output['total_rating'] = $talk->total_rating;
-            $output['review_count'] = $talk->review_count;
-        }
-
+        $format = new TalkFormatter();
+        $output = $format->createdFormattedOutput($talk, $admin_user_id, $userData);
         return $output;
     }
 
