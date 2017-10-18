@@ -4,7 +4,7 @@ namespace OpenCFP\Test\Domain\Model;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Domain\Model\User;
+use OpenCFP\Domain\Services\TalkFormatter;
 use OpenCFP\Test\DatabaseTestCase;
 
 /**
@@ -29,7 +29,9 @@ class TalkTest extends DatabaseTestCase
     {
         $this->generateOneTalk();
         $talk = new Talk;
-        $format =$talk->createdFormattedOutput($talk->first(), 1);
+        $formatter = new TalkFormatter();
+
+        $format =$formatter->createdFormattedOutput($talk->first(), 1);
 
         $this->assertEquals('One talk to rule them all', $format['title']);
         $this->assertEquals('api', $format['category']);
@@ -43,10 +45,11 @@ class TalkTest extends DatabaseTestCase
     public function createFormattedOutputWorksWithMeta()
     {
         $this->generateOneTalk();
+        $formatter = new TalkFormatter();
         $talk = new Talk;
 
         // Now to see if the meta gets put in correctly
-        $secondFormat =$talk->createdFormattedOutput($talk->first(), 2);
+        $secondFormat =$formatter->createdFormattedOutput($talk->first(), 2);
 
         $this->assertEquals(1, $secondFormat['meta']->rating);
         $this->assertEquals(1, $secondFormat['meta']->viewed);
