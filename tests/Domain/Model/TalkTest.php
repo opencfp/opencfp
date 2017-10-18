@@ -18,8 +18,8 @@ class TalkTest extends DatabaseTestCase
     {
         factory(Talk::class, 10)->create();
 
-        $this->assertCount(10, Talk::recent(1));
-        $this->assertCount(3, Talk::recent(1, 3));
+        $this->assertCount(10, Talk::recent()->get());
+        $this->assertCount(3, Talk::recent(3)->get());
     }
 
     /**

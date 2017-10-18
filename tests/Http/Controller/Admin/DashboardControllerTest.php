@@ -32,6 +32,7 @@ class DashboardControllerTest extends TestCase
         $auth = m::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
+        $auth->shouldReceive('userId')->andReturn(1);
         $this->swap(Authentication::class, $auth);
 
         /**
@@ -45,7 +46,6 @@ class DashboardControllerTest extends TestCase
 
         $favoriteMock = m::mock('overload:' . \OpenCFP\Domain\Model\Favorite::class);
         $favoriteMock->shouldReceive('count')->andReturn('1');
-        $this->swap(\OpenCFP\Domain\Model\User::class, $favoriteMock);
         $this->swap(\OpenCFP\Domain\Model\Favorite::class, $favoriteMock);
 
         $this->talkListMock();
@@ -66,7 +66,10 @@ class DashboardControllerTest extends TestCase
         $talk = m::mock('overload:' . \OpenCFP\Domain\Model\Talk::class);
         $talk->shouldReceive('count')->andReturn(10);
         $talk->shouldReceive('where')->andReturn($talk);
-        $talk->shouldReceive('recent')->andReturn([
+        $talk->shouldReceive('recent->get');
+
+        $formatted = m::mock('overload:' . \OpenCFP\Domain\Services\TalkFormatter::class);
+        $formatted->shouldReceive('formatList')->andReturn([
             [
                 'id' => 1,
                 'title' => 'First Talk',
@@ -102,6 +105,8 @@ class DashboardControllerTest extends TestCase
                 'selected' => 1,
             ],
         ]);
+        $this->swap(\OpenCFP\Domain\Services\TalkFormatter::class, $formatted);
+
         $this->swap(\OpenCFP\Domain\Model\Talk::class, $talk);
     }
 }

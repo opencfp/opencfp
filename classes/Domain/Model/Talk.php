@@ -28,24 +28,18 @@ class Talk extends Eloquent
     }
 
     /**
-     * Return a collection of recent talks
+     * Returns the most recent talks
      *
      * @param Builder $query
-     * @param         $admin_id
-     * @param int     $limit
-     *
-     * @return array|Talk[]
+     * @param int $limit
+     * @return \Illuminate\Database\Query\Builder|static
      */
-    public function scopeRecent(Builder $query, $admin_id, $limit = 10)
+    public function scopeRecent(Builder $query, $limit = 10)
     {
         return $query
             ->orderBy('created_at')
             ->with(['favorites', 'meta'])
-            ->take($limit)
-            ->get()
-            ->map(function ($talk) use ($admin_id) {
-                return $this->createdFormattedOutput($talk, $admin_id);
-            });
+            ->take($limit);
     }
     /**
      * Iterates over DBAL objects and returns a formatted result set

@@ -2,29 +2,26 @@
 
 namespace OpenCFP\Domain\Services;
 
+use Illuminate\Database\Eloquent\Collection;
 use OpenCFP\Domain\Entity\Talk as TalkEntity;
 use OpenCFP\Domain\Model\Talk as TalkModel;
 use OpenCFP\Domain\Model\TalkMeta;
 
 class TalkFormatter
 {
-
     /**
-     * Grabs the related meta information of the talk, or 0's when there is none
+     * @param Collection $talkCollection Collection of Talks
+     * @param integer $admin_user_id
+     * @param bool $userData
      *
-     * @param TalkModel|TalkEntity $talk Talk that we want the meta information off
-     * @param int $admin_user_id user di
-     * @return array|TalkMeta
+     * @return array|Collection
      */
-    protected function getTalkMeta($talk, $admin_user_id)
+    public function formatList($talkCollection, $admin_user_id, $userData = true)
     {
-        $meta = TalkMeta::where('talk_id', $talk->id)->where('admin_user_id', $admin_user_id)->first();
-
-        if ($meta instanceof TalkMeta) {
-            return $meta;
-        }
-
-        return ['rating' => 0, 'viewed' => 0];
+        return $talkCollection
+            ->map(function ($talk) use ($admin_user_id,$userData) {
+                return $this->createdFormattedOutput($talk, $admin_user_id, $userData);
+            });
     }
 
     /**
@@ -91,5 +88,23 @@ class TalkFormatter
         }
 
         return $output;
+    }
+
+    /**
+     * Grabs the related meta information of the talk, or 0's when there is none
+     *
+     * @param TalkModel|TalkEntity $talk Talk that we want the meta information off
+     * @param int $admin_user_id user di
+     * @return array|TalkMeta
+     */
+    protected function getTalkMeta($talk, $admin_user_id)
+    {
+        $meta = TalkMeta::where('talk_id', $talk->id)->where('admin_user_id', $admin_user_id)->first();
+
+        if ($meta instanceof TalkMeta) {
+            return $meta;
+        }
+
+        return ['rating' => 0, 'viewed' => 0];
     }
 }

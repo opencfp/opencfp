@@ -2,10 +2,12 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use Illuminate\Database\Eloquent\Collection;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\TalkFormatter;
 use OpenCFP\Http\Controller\BaseController;
 
 class DashboardController extends BaseController
@@ -18,8 +20,12 @@ class DashboardController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $user = $this->service(Authentication::class)->user();
-        $recent_talks = Talk::recent($user->getId());
+        $userId = $this->service(Authentication::class)->userId();
+        $talkFormatter = new TalkFormatter();
+
+        /** @var Collection $recent_talks */
+        $recent_talks = Talk::recent()->get();
+        $recent_talks = $talkFormatter->formatList($recent_talks, $userId);
 
         $templateData = [
             'speakerTotal' => User::count(),
