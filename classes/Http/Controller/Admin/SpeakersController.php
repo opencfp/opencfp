@@ -18,15 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakersController extends BaseController
 {
-    use AdminAccessTrait;
     use FlashableTrait;
 
     public function indexAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         /* @var Locator $spot */
         $spot = $this->service('spot');
 
@@ -105,10 +100,6 @@ class SpeakersController extends BaseController
 
     public function viewAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         /* @var Locator $spot */
         $spot = $this->service('spot');
 
@@ -164,10 +155,6 @@ class SpeakersController extends BaseController
 
     public function deleteAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         /* @var Locator $spot */
         $spot = $this->service('spot');
 

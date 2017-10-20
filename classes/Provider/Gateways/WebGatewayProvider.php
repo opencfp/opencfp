@@ -3,6 +3,7 @@
 namespace OpenCFP\Provider\Gateways;
 
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Infrastructure\Auth\AdminAccess;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
@@ -51,6 +52,9 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         if ($app->config('application.secure_ssl')) {
             $web->requireHttps();
         }
+        $adminAccess = function ($request, $app) {
+            return AdminAccess::userHasAccess($app);
+        };
 
         $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')->bind('homepage');
         $web->get('/package', 'OpenCFP\Http\Controller\PagesController::showSpeakerPackage')->bind('speaker_package');
@@ -92,28 +96,28 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $web->post('/updatepassword', 'OpenCFP\Http\Controller\ForgotController::updatePasswordAction')->bind('password_update');
 
         // Admin Routes
-        $web->get('/admin', 'OpenCFP\Http\Controller\Admin\DashboardController::indexAction')->bind('admin');
+        $web->get('/admin', 'OpenCFP\Http\Controller\Admin\DashboardController::indexAction')->bind('admin')->before($adminAccess);
 
         // Admin::Talks
-        $web->get('/admin/talks', 'OpenCFP\Http\Controller\Admin\TalksController::indexAction')->bind('admin_talks');
-        $web->get('/admin/talks/{id}', 'OpenCFP\Http\Controller\Admin\TalksController::viewAction')->bind('admin_talk_view');
-        $web->post('/admin/talks/{id}/favorite', 'OpenCFP\Http\Controller\Admin\TalksController::favoriteAction')->bind('admin_talk_favorite');
-        $web->post('/admin/talks/{id}/select', 'OpenCFP\Http\Controller\Admin\TalksController::selectAction')->bind('admin_talk_select');
-        $web->post('/admin/talks/{id}/comment', 'OpenCFP\Http\Controller\Admin\TalksController::commentCreateAction')->bind('admin_talk_comment_create');
-        $web->post('/admin/talks/{id}/rate', 'OpenCFP\Http\Controller\Admin\TalksController::rateAction')->bind('admin_talk_rate');
+        $web->get('/admin/talks', 'OpenCFP\Http\Controller\Admin\TalksController::indexAction')->bind('admin_talks')->before($adminAccess);
+        $web->get('/admin/talks/{id}', 'OpenCFP\Http\Controller\Admin\TalksController::viewAction')->bind('admin_talk_view')->before($adminAccess);
+        $web->post('/admin/talks/{id}/favorite', 'OpenCFP\Http\Controller\Admin\TalksController::favoriteAction')->bind('admin_talk_favorite')->before($adminAccess);
+        $web->post('/admin/talks/{id}/select', 'OpenCFP\Http\Controller\Admin\TalksController::selectAction')->bind('admin_talk_select')->before($adminAccess);
+        $web->post('/admin/talks/{id}/comment', 'OpenCFP\Http\Controller\Admin\TalksController::commentCreateAction')->bind('admin_talk_comment_create')->before($adminAccess);
+        $web->post('/admin/talks/{id}/rate', 'OpenCFP\Http\Controller\Admin\TalksController::rateAction')->bind('admin_talk_rate')->before($adminAccess);
 
         // Admin::Speakers
-        $web->get('/admin/speakers', 'OpenCFP\Http\Controller\Admin\SpeakersController::indexAction')->bind('admin_speakers');
-        $web->get('/admin/speakers/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::viewAction')->bind('admin_speaker_view');
-        $web->get('/admin/speakers/{id}/promote', 'OpenCFP\Http\Controller\Admin\SpeakersController::promoteAction')->bind('admin_speaker_promote');
-        $web->get('/admin/speakers/{id}/demote', 'OpenCFP\Http\Controller\Admin\SpeakersController::demoteAction')->bind('admin_speaker_demote');
-        $web->get('/admin/speakers/delete/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::deleteAction')->bind('admin_speaker_delete');
+        $web->get('/admin/speakers', 'OpenCFP\Http\Controller\Admin\SpeakersController::indexAction')->bind('admin_speakers')->before($adminAccess);;
+        $web->get('/admin/speakers/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::viewAction')->bind('admin_speaker_view')->before($adminAccess);;
+        $web->get('/admin/speakers/{id}/promote', 'OpenCFP\Http\Controller\Admin\SpeakersController::promoteAction')->bind('admin_speaker_promote')->before($adminAccess);;
+        $web->get('/admin/speakers/{id}/demote', 'OpenCFP\Http\Controller\Admin\SpeakersController::demoteAction')->bind('admin_speaker_demote')->before($adminAccess);;
+        $web->get('/admin/speakers/delete/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::deleteAction')->bind('admin_speaker_delete')->before($adminAccess);;
 
         // CSV Exports
-        $web->get('/admin/export/csv', 'OpenCFP\Http\Controller\Admin\ExportsController::attributedTalksExportAction')->bind('admin_export_csv');
-        $web->get('/admin/export/csv/anon', 'OpenCFP\Http\Controller\Admin\ExportsController::anonymousTalksExportAction')->bind('admin_export_csv_anon');
-        $web->get('/admin/export/csv/selected', 'OpenCFP\Http\Controller\Admin\ExportsController::selectedTalksExportAction')->bind('admin_export_csv_selected');
-        $web->get('/admin/export/csv/emails', 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction')->bind('admin_export_csv_emails');
+        $web->get('/admin/export/csv', 'OpenCFP\Http\Controller\Admin\ExportsController::attributedTalksExportAction')->bind('admin_export_csv')->before($adminAccess);
+        $web->get('/admin/export/csv/anon', 'OpenCFP\Http\Controller\Admin\ExportsController::anonymousTalksExportAction')->bind('admin_export_csv_anon')->before($adminAccess);
+        $web->get('/admin/export/csv/selected', 'OpenCFP\Http\Controller\Admin\ExportsController::selectedTalksExportAction')->bind('admin_export_csv_selected')->before($adminAccess);
+        $web->get('/admin/export/csv/emails', 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction')->bind('admin_export_csv_emails')->before($adminAccess);
 
         $app->mount('/', $web);
         // @codingStandardsIgnoreEnd
