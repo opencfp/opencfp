@@ -1,25 +1,25 @@
 <?php
 
-namespace OpenCFP\Domain\Services;
+namespace OpenCFP\Domain\Talk;
 
-use Illuminate\Database\Eloquent\Collection;
-use OpenCFP\Domain\Entity\Talk as TalkEntity;
-use OpenCFP\Domain\Model\Talk as TalkModel;
+use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\TalkMeta;
+use OpenCFP\Domain\Services\TalkFormat;
 
-class TalkFormatter
+class TalkFormatter implements TalkFormat
 {
     /**
+     * Iterates over a collection of DBAL objects and returns a formatted result set
+     *
      * @param Collection $talkCollection Collection of Talks
      * @param integer $admin_user_id
      * @param bool $userData
-     *
-     * @return array|Collection
+     * @return Collection
      */
-    public function formatList($talkCollection, $admin_user_id, $userData = true)
+    public function formatList(Collection $talkCollection, int $admin_user_id, bool $userData = true) : Collection
     {
         return $talkCollection
-            ->map(function ($talk) use ($admin_user_id,$userData) {
+            ->map(function ($talk) use ($admin_user_id, $userData) {
                 return $this->createdFormattedOutput($talk, $admin_user_id, $userData);
             });
     }
@@ -27,12 +27,12 @@ class TalkFormatter
     /**
      * Iterates over DBAL objects and returns a formatted result set
      *
-     * @param  mixed $talk
-     * @param  integer $admin_user_id
+     * @param mixed $talk
+     * @param integer $admin_user_id
      * @param bool $userData grab the speaker data or not
      * @return array
      */
-    public function createdFormattedOutput($talk, $admin_user_id, $userData = true)
+    public function createdFormattedOutput($talk, int $admin_user_id, bool $userData = true) : array
     {
         if ($talk->favorites) {
             foreach ($talk->favorites as $favorite) {
@@ -93,11 +93,12 @@ class TalkFormatter
     /**
      * Grabs the related meta information of the talk, or 0's when there is none
      *
-     * @param TalkModel|TalkEntity $talk Talk that we want the meta information off
-     * @param int $admin_user_id user di
-     * @return array|TalkMeta
+     * @param mixed $talk Talk we want to get the meta of, both entity and model work.
+     * @param int $admin_user_id user ID of the admin
+     *
+     * @return TalkMeta
      */
-    protected function getTalkMeta($talk, $admin_user_id)
+    protected function getTalkMeta($talk, int $admin_user_id) : TalkMeta
     {
         $meta = TalkMeta::where('talk_id', $talk->id)->where('admin_user_id', $admin_user_id)->first();
 
@@ -105,6 +106,6 @@ class TalkFormatter
             return $meta;
         }
 
-        return ['rating' => 0, 'viewed' => 0];
+        return new TalkMeta(['rating' => 0, 'viewed' => 0]);
     }
 }

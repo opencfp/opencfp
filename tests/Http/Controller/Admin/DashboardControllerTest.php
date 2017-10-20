@@ -68,7 +68,7 @@ class DashboardControllerTest extends TestCase
         $talk->shouldReceive('where')->andReturn($talk);
         $talk->shouldReceive('recent->get');
 
-        $formatted = m::mock('overload:' . \OpenCFP\Domain\Services\TalkFormatter::class);
+        $formatted = m::mock('overload:' . \OpenCFP\Domain\Talk\TalkFormatter::class);
         $formatted->shouldReceive('formatList')->andReturn([
             [
                 'id' => 1,
@@ -105,7 +105,7 @@ class DashboardControllerTest extends TestCase
                 'selected' => 1,
             ],
         ]);
-        $this->swap(\OpenCFP\Domain\Services\TalkFormatter::class, $formatted);
+        $this->swap(\OpenCFP\Domain\Talk\TalkFormatter::class, $formatted);
 
         $this->swap(\OpenCFP\Domain\Model\Talk::class, $talk);
     }

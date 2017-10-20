@@ -29,11 +29,9 @@ class Talk extends Eloquent
     /**
      * Returns the most recent talks
      *
-     * @param Builder $query
-     * @param int $limit
-     * @return \Illuminate\Database\Query\Builder|static
+     * @param int $limit maximum ammount of entries to return.
      */
-    public function scopeRecent(Builder $query, $limit = 10)
+    public function scopeRecent(Builder $query, int $limit = 10) : Builder
     {
         return $query
             ->orderBy('created_at')

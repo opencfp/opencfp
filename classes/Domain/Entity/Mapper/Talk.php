@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Domain\Entity\Mapper;
 
-use OpenCFP\Domain\Services\TalkFormatter;
+use OpenCFP\Domain\Talk\TalkFormatter;
 use Spot\Mapper;
 
 class Talk extends Mapper
