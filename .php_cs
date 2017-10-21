@@ -11,6 +11,7 @@ $config = PhpCsFixer\Config::create()
         'array_syntax' => [
             'syntax' => 'short'
         ],
+        'no_extra_consecutive_blank_lines' => true,
         'no_unused_imports' => true,
         'ordered_imports' => true,
         'psr0' => false,
