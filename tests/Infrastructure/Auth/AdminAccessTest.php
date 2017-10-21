@@ -47,7 +47,7 @@ class AdminAccessTest extends TestCase
     /**
      * @test
      */
-    public function testReturnsTrueIfCheckSucceededAndUserHasAdminPermission()
+    public function testReturnsNothingIfCheckSucceededAndUserHasAdminPermission()
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
@@ -57,6 +57,7 @@ class AdminAccessTest extends TestCase
         $auth->shouldReceive('user')->andReturn($user);
         $this->swap(Authentication::class, $auth);
 
-        $this->assertTrue(AdminAccess::userHasAccess($this->app) == null);
+        //The middleware doesn't do anything if the user is an admin, so it returns null (void)
+        $this->assertNull(AdminAccess::userHasAccess($this->app));
     }
 }
