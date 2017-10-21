@@ -52,7 +52,6 @@ class TalkTest extends DatabaseTestCase
         $this->assertEquals(1, $secondFormat['meta']->viewed);
     }
 
-
     private function generateOneTalk()
     {
         $talk = new Talk();
@@ -79,7 +78,6 @@ class TalkTest extends DatabaseTestCase
             ]
         );
     }
-
 
     /**
      * Helper function that generates some talks for us

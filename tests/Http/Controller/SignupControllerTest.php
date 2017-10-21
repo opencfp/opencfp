@@ -42,7 +42,6 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         // Create a session
         $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
 
-
         // Create our URL generator
         $url = 'http://opencfp/signup';
         $url_generator = m::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
@@ -193,7 +192,6 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
 
-
         foreach ($form_data as $field => $value) {
             $req->shouldReceive('get')->with($field)->andReturn($value);
         }
@@ -279,7 +277,6 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
 
-
         foreach ($form_data as $field => $value) {
             $req->shouldReceive('get')->with($field)->andReturn($value);
         }
@@ -364,7 +361,6 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($app);
 
         $req = m::mock('Symfony\Component\HttpFoundation\Request');
-
 
         foreach ($form_data as $field => $value) {
             $req->shouldReceive('get')->with($field)->andReturn($value);

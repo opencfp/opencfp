@@ -142,7 +142,6 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
     {
         $this->putUserInRequest(false);
 
-
         $controller = new ProfileController();
         $controller->setApplication($this->app);
         $response = $controller->processAction($this->req);
@@ -180,7 +179,6 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $response = $controller->processAction($this->req);
 
         $flash= $this->app['session']->get('flash');
-
 
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\RedirectResponse',

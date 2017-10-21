@@ -160,7 +160,6 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-
         $data = [
             'formAction' => $this->url('talk_update'),
             'talkCategories' => $this->getTalkCategories(),
