@@ -11,7 +11,7 @@ class AlterUserColumnDefaults extends AbstractMigration
     public function up()
     {
         $this->table('users')
-            ->changeColumn('activated', 'boolean', ['default' => 0, 'null' => true])
+            ->changeColumn('activated', 'boolean', ['default' => false, 'null' => true])
             ->changeColumn('activation_code', 'string', ['null' => true])
             ->changeColumn('activated_at', 'datetime', ['null' => true, 'default' => null])
             ->changeColumn('last_login', 'datetime', ['null' => true, 'default' => null])

@@ -72,6 +72,7 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
             'host'     => $options['host'],
             'username' => $options['user'],
             'password' => $options['pass'],
+            'charset'  => 'utf8',
         ]);
 
         $this->capsule->setAsGlobal();
