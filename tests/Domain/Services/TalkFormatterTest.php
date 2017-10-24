@@ -28,7 +28,6 @@ class TalkFormatterTest extends DatabaseTestCase
         $this->assertEquals('api', $format['category']);
         $this->assertEquals(0, $format['meta']->rating);
         $this->assertEquals(0, $format['meta']->viewed);
-        $this->assertTrue(!isset($format['user']));
     }
 
     /**
