@@ -60,7 +60,6 @@ class TalkFormatterTest extends DatabaseTestCase
         $this->assertInstanceOf(Collection::class, $formatted);
     }
 
-
     private function generateOneTalk()
     {
         $talk = new Talk();
