@@ -136,7 +136,6 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-
     /**
      * @test
      */
@@ -304,7 +303,6 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
         $this->app['spot']->shouldReceive('toArray')->andReturn(['user_id'=> (int)$this->app[Authentication::class]->user()->getId() + 2]);
 
-
         $response = $controller->editAction($this->req);
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\RedirectResponse',
@@ -375,7 +373,6 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         ];
 
         $this->setPost($talk_data);
-
 
         $response = $controller->updateAction($this->req);
 

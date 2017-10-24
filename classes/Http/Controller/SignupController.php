@@ -75,7 +75,6 @@ class SignupController extends BaseController
             $form_data['speaker_photo'] = $req->files->get('speaker_photo');
         }
 
-
         $form = new SignupForm(
             $form_data,
             $app['purifier'],

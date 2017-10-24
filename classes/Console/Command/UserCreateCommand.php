@@ -89,7 +89,6 @@ class UserCreateCommand extends BaseCommand
                 $email
             ));
 
-
             return false;
         }
 
