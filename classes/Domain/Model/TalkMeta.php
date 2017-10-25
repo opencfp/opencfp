@@ -9,12 +9,14 @@ class TalkMeta extends Eloquent
     const CREATED_AT = 'created';
     const UPDATED_AT = null;
 
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
+
+    const DEFAULT_RATING = 0;
+    const DEFAULT_VIEWED = 0;
+
+    protected $attributes = [
+        'rating' => self::DEFAULT_RATING,
+        'viewed' => self::DEFAULT_VIEWED,
+    ];
 
     public function talk()
     {
