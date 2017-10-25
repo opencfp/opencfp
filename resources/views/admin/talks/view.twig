@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h2 class="mb-2">
-                {{ talk.title|raw }} <span class="text-grey-dark">&mdash; {{ speaker.first_name }} {{ speaker.last_name }}</span>
+                {{ talk.title|raw }} <span class="text-grey-dark">&mdash; {{ speaker.name }}</span>
             </h2>
             {% if talk.slides is not empty %}
                 <div><i class="fa fa-television mr-1"></i> <a class="hover:text-brand" href="{{ talk.slides }}">{{ talk.slides }}</a></div>
@@ -45,13 +45,13 @@
         </div>
     </div>
 
-    {% if talk.get('comments')|length > 0 %}
+    {% if talk.comments|length > 0 %}
         <h3 class="my-4"><i class="fa fa-comments"></i> Comments</h3>
 
         {% for comment in talk.comments %}
             <div class="flex text-sm mt-4">
                 <div>
-                    <img class="w-16 mr-4 rounded" src="{{ comment.user.get('photo_path') ? '/uploads/' ~ comment.user.photo_path : '/assets/img/dummyphoto.jpg' }}">
+                    <img class="w-16 mr-4 rounded" src="{{ comment.user.photo_path ? '/uploads/' ~ comment.user.photo_path : '/assets/img/dummyphoto.jpg' }}">
                 </div>
                 <div class="border border-grey rounded-sm w-full">
                     <div class="p-3 border-b border-grey bg-blue-lightest flex justify-between">

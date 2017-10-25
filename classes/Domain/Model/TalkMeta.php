@@ -5,6 +5,7 @@ namespace OpenCFP\Domain\Model;
 class TalkMeta extends Eloquent
 {
     protected $table = 'talk_meta';
+
     const CREATED_AT = 'created';
     const UPDATED_AT = null;
 
