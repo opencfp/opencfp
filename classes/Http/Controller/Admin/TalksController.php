@@ -161,8 +161,8 @@ class TalksController extends BaseController
         }
         $talk_meta->save();
 
-        $all_talks = Talk::where('user_id', $talk->user_id)
-            ->get();
+        $speaker = $talk->speaker;
+        $all_talks = $speaker->talks;
 
         // Grab all the other talks and filter out the one we have
         $otherTalks = $all_talks->filter(function ($talk) use ($talk_id) {
@@ -177,7 +177,7 @@ class TalksController extends BaseController
         $templateData = [
             'talk' => $talk,
             'talk_meta' => $talk_meta->toArray(),
-            'speaker' => new SpeakerProfile($talk->speaker),
+            'speaker' => new SpeakerProfile($speaker),
             'otherTalks' => $otherTalks,
         ];
         return $this->render('admin/talks/view.twig', $templateData);
