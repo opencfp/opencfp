@@ -136,7 +136,7 @@ class TalksController extends BaseController
             ->with('comments')
             ->first();
 
-        if (! $talk instanceof Talk) {
+        if (!$talk instanceof Talk) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -151,7 +151,6 @@ class TalksController extends BaseController
         // Mark talk as viewed by admin
         $talk_meta = $talk
             ->meta()
-            ->where('admin_user_id', $userId)
             ->firstOrNew([
                 'admin_user_id' => $userId,
                 'talk_id' => $talk_id,
@@ -159,8 +158,8 @@ class TalksController extends BaseController
 
         if (!$talk_meta->viewed) {
             $talk_meta->viewed = true;
-            $talk_meta->save();
         }
+        $talk_meta->save();
 
         $all_talks = Talk::where('user_id', $talk->user_id)
             ->get();
