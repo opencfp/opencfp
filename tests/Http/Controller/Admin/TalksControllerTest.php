@@ -3,15 +3,14 @@
 namespace OpenCFP\Test\Http\Controller\Admin;
 
 use Mockery as m;
-use OpenCFP\Domain\Entity\Mapper;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Test\TestCase;
-use Spot\Query;
 
 /**
- * Class TalksControllerTest
- * @package OpenCFP\Test\Http\Controller\Admin
- * @group db
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ *
+ * These slow down the tests a bit, but it is required for our overrides to work.
  */
 class TalksControllerTest extends TestCase
 {
@@ -168,49 +167,13 @@ class TalksControllerTest extends TestCase
      *
      * @test
      */
-    public function talkNotFoundHasFlashMessage()
+    public function talkNotFoundRedirectsBackToTalksOverview()
     {
-        $talkId = uniqid();
+        $talk = m::mock('overload:'. \OpenCFP\Domain\Model\Talk::class);
+        $talk->shouldReceive('where->with->first')->andReturnNull();
 
-        $query = m::mock(Query::class);
-        $query->shouldReceive('with')->with(['comments'])->andReturnSelf();
-        $query->shouldReceive('first')->andReturnNull();
-
-        $talkMapper = m::mock(Mapper\Talk::class);
-        $talkMapper->shouldReceive('where')->with(['id' => $talkId])->andReturn($query);
-
-        $talkMetaMapper = m::mock(\Spot\Mapper::class);
-
-        $spot = m::mock('Spot\Locator');
-        $spot->shouldReceive('mapper')
-            ->with(\OpenCFP\Domain\Entity\Talk::class)
-            ->andReturn($talkMapper);
-        $spot->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\TalkMeta::class)->andReturn($talkMetaMapper);
-
-        $this->app['spot'] = $spot;
-
-        // Use our pre-configured Application object
-        ob_start();
-        $this->app->run();
-        ob_end_clean();
-
-        // Create our Request object
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
-        $req->shouldReceive('get')->with('id')->andReturn($talkId);
-
-        // Execute the controller and capture the output
-        $controller = new \OpenCFP\Http\Controller\Admin\TalksController();
-        $controller->setApplication($this->app);
-        $response = $controller->viewAction($req);
-
-        $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
-            $response
-        );
-
-        $this->assertContains(
-            'Could not find requested talk',
-            $this->app['session']->get('flash')
-        );
+        $this->get('/admin/talks/255')
+            ->assertRedirect()
+            ->assertNotSee('<strong>Submitted by:</strong>');
     }
 }
