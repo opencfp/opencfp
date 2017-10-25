@@ -163,7 +163,7 @@ class TalksControllerTest extends TestCase
     }
 
     /**
-     * Verify that not found talk redirects and sets flash error message
+     * Verify that not found talk redirects
      *
      * @test
      */
@@ -175,5 +175,45 @@ class TalksControllerTest extends TestCase
         $this->get('/admin/talks/255')
             ->assertRedirect()
             ->assertNotSee('<strong>Submitted by:</strong>');
+    }
+
+    /**
+     * @test
+     */
+    public function talkWithNoMetaDisplaysCorrectly()
+    {
+        //TODO: add test that shows a talk with no previous meta displays correctly
+    }
+
+    /**
+     * @test
+     */
+    public function previouslyViewedTalksDisplaysCorrectly()
+    {
+        //TODO: add test that shows a talk which has been previoulsy viewed displays correctly
+    }
+
+    /**
+     * @test
+     */
+    public function talkWithRatingButNotViewedUpdatesCorrectly()
+    {
+        //TODO: add test that shows a talk which has a rating but not viewed gets updated/ shown correctly
+    }
+
+    /**
+     * @test
+     */
+    public function commentsDisplaysCorrectly()
+    {
+        //TODO: add test for displaying of comments
+    }
+
+    /**
+     * @test
+     */
+    public function otherTalksGetDisplayedCorrectly()
+    {
+        //TODO: add tests for displaying of other talks by speaker
     }
 }
