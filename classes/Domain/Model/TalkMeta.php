@@ -35,4 +35,13 @@ class TalkMeta extends Eloquent
          * while still having a created_at field.
          */
     }
+
+    public function viewTalk()
+    {
+        if (!$this->viewed) {
+            $this->viewed = true;
+            $this->save();
+        }
+        return $this;
+    }
 }

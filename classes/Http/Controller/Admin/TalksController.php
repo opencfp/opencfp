@@ -155,28 +155,15 @@ class TalksController extends BaseController
                 'admin_user_id' => $userId,
                 'talk_id' => $talk_id,
             ]);
-
-        if (!$talk_meta->viewed) {
-            $talk_meta->viewed = true;
-        }
-        $talk_meta->save();
+        $talk_meta->viewTalk();
 
         $speaker = $talk->speaker;
-        $all_talks = $speaker->talks;
-
-        // Grab all the other talks and filter out the one we have
-        $otherTalks = $all_talks->filter(function ($talk) use ($talk_id) {
-            if ((int) $talk['id'] == (int) $talk_id) {
-                return false;
-            }
-
-            return true;
-        });
+        $otherTalks = $speaker->getOtherTalks($talk_id);
 
         // Build and render the template
         $templateData = [
             'talk' => $talk,
-            'talk_meta' => $talk_meta->toArray(),
+            'talk_meta' => $talk_meta,
             'speaker' => new SpeakerProfile($speaker),
             'otherTalks' => $otherTalks,
         ];
