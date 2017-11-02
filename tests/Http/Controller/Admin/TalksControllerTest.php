@@ -182,7 +182,20 @@ class TalksControllerTest extends TestCase
      */
     public function talkWithNoMetaDisplaysCorrectly()
     {
-        //TODO: add test that shows a talk with no previous meta displays correctly
+        $talk = m::mock('overload:' . \OpenCFP\Domain\Model\Talk::class);
+        $talk->shouldReceive('where->with->first')
+            ->andReturn(
+                new \OpenCFP\Domain\Model\Talk([
+                    'user_id' => 1,
+                    'title' => 'title',
+                    'description' => 'boooo',
+                    'type' => 'regular',
+                    'level' => 'entry',
+                    'category' => 'api',
+                ])
+            );
+        $this->get('/admin/talks/255');
+        //TODO: Make a proper test
     }
 
     /**

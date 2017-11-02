@@ -9,7 +9,6 @@ class TalkMeta extends Eloquent
     const CREATED_AT = 'created';
     const UPDATED_AT = null;
 
-
     const DEFAULT_RATING = 0;
     const DEFAULT_VIEWED = 0;
 

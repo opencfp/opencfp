@@ -192,5 +192,6 @@ class TestCase extends \PHPUnit\Framework\TestCase
         $auth->shouldReceive('user')->andReturn($user);
         $auth->shouldReceive('userId')->andReturn($id);
         $this->swap(Authentication::class, $auth);
+        return $this;
     }
 }
