@@ -24,7 +24,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $web = $app['controllers_factory'];
 
         $web->before(new RequestCleaner($app['purifier']));
-        $web->before(function (Request $request, Container $app) {
+        $app->before(function (Request $request, Container $app) {
             /* @var Twig_Environment $twig */
             $twig = $app['twig'];
 
@@ -45,7 +45,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
                 $twig->addGlobal('flash', $app['session']->get('flash'));
                 $app['session']->set('flash', null);
             }
-        });
+        }, Application::EARLY_EVENT);
 
         if ($app->config('application.secure_ssl')) {
             $web->requireHttps();
