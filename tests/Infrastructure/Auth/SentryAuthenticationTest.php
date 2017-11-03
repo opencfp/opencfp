@@ -4,15 +4,17 @@ namespace OpenCFP\Test\Infrastructure\Auth;
 
 use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentryAuthentication;
-use OpenCFP\Test\DatabaseTestCase;
+use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\TestCase;
 
 /**
  * Class SentryAuthenticationTest
  * @package OpenCFP\Test\Infrastructure\Auth
  * @group db
  */
-class SentryAuthenticationTest extends DatabaseTestCase
+class SentryAuthenticationTest extends TestCase
 {
+    use DatabaseTransaction;
     use SentryTestHelpers;
 
     /**
@@ -22,7 +24,7 @@ class SentryAuthenticationTest extends DatabaseTestCase
 
     public function setUp()
     {
-        parent::setUp();
+        $this->setUpDatabase();
 
         $accounts = new SentryAccountManagement($this->getSentry());
 
@@ -30,6 +32,11 @@ class SentryAuthenticationTest extends DatabaseTestCase
         $accounts->activate('test@example.com');
 
         $this->sut = new SentryAuthentication($this->getSentry());
+    }
+
+    public function tearDown()
+    {
+        $this->tearDownDatabase();
     }
 
     /** @test */

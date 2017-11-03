@@ -9,12 +9,6 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Test\DatabaseTransaction;
 use OpenCFP\Test\TestCase;
 
-/**
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
- *
- * These slow down the tests a bit, but it is required for our overrides to work.
- */
 class TalksControllerTest extends TestCase
 {
     use DatabaseTransaction;

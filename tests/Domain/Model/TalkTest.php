@@ -5,13 +5,25 @@ namespace OpenCFP\Test\Domain\Model;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\DatabaseTestCase;
+use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\TestCase;
 
 /**
  * @group db
  */
-class TalkTest extends DatabaseTestCase
+class TalkTest extends TestCase
 {
+    use DatabaseTransaction;
+
+    public function setUp()
+    {
+        $this->setUpDatabase();
+    }
+
+    public function tearDown()
+    {
+        $this->tearDownDatabase();
+    }
 
     /** @test */
     public function recentReturnsAnArrayOfTalks()
