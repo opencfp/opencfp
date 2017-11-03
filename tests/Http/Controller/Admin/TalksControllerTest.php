@@ -3,7 +3,10 @@
 namespace OpenCFP\Test\Http\Controller\Admin;
 
 use Mockery as m;
+use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Test\DatabaseTransaction;
 use OpenCFP\Test\TestCase;
 
 /**
@@ -14,10 +17,19 @@ use OpenCFP\Test\TestCase;
  */
 class TalksControllerTest extends TestCase
 {
+    use DatabaseTransaction;
+
     public function setUp()
     {
         parent::setUp();
         $this->asAdmin();
+        $this->setUpDatabase();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->tearDownDatabase();
     }
 
     /**
@@ -169,9 +181,6 @@ class TalksControllerTest extends TestCase
      */
     public function talkNotFoundRedirectsBackToTalksOverview()
     {
-        $talk = m::mock('overload:'. \OpenCFP\Domain\Model\Talk::class);
-        $talk->shouldReceive('where->with->first')->andReturnNull();
-
         $this->get('/admin/talks/255')
             ->assertRedirect()
             ->assertNotSee('<strong>Submitted by:</strong>');
@@ -182,20 +191,10 @@ class TalksControllerTest extends TestCase
      */
     public function talkWithNoMetaDisplaysCorrectly()
     {
-        $talk = m::mock('overload:' . \OpenCFP\Domain\Model\Talk::class);
-        $talk->shouldReceive('where->with->first')
-            ->andReturn(
-                new \OpenCFP\Domain\Model\Talk([
-                    'user_id' => 1,
-                    'title' => 'title',
-                    'description' => 'boooo',
-                    'type' => 'regular',
-                    'level' => 'entry',
-                    'category' => 'api',
-                ])
-            );
-        $this->get('/admin/talks/255');
-        //TODO: Make a proper test
+        $talk = factory(Talk::class, 1)->create();
+
+        $this->get('/admin/talks/'. $talk->first()->id)
+            ->assertSuccessful();
     }
 
     /**
@@ -203,30 +202,10 @@ class TalksControllerTest extends TestCase
      */
     public function previouslyViewedTalksDisplaysCorrectly()
     {
-        //TODO: add test that shows a talk which has been previoulsy viewed displays correctly
-    }
+        $meta = factory(TalkMeta::class, 1)->create();
+        $this->asAdmin($meta->first()->admin_user_id);
 
-    /**
-     * @test
-     */
-    public function talkWithRatingButNotViewedUpdatesCorrectly()
-    {
-        //TODO: add test that shows a talk which has a rating but not viewed gets updated/ shown correctly
-    }
-
-    /**
-     * @test
-     */
-    public function commentsDisplaysCorrectly()
-    {
-        //TODO: add test for displaying of comments
-    }
-
-    /**
-     * @test
-     */
-    public function otherTalksGetDisplayedCorrectly()
-    {
-        //TODO: add tests for displaying of other talks by speaker
+        $this->get('/admin/talks/'. $meta->first()->talk_id)
+            ->assertSuccessful();
     }
 }
