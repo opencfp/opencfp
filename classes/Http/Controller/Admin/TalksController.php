@@ -131,8 +131,8 @@ class TalksController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $talk_id = $req->get('id');
-        $talk = Talk::where('id', $talk_id)
+        $talkId = $req->get('id');
+        $talk = Talk::where('id', $talkId)
             ->with('comments')
             ->first();
 
@@ -149,21 +149,21 @@ class TalksController extends BaseController
         $userId = $this->service(Authentication::class)->userId();
 
         // Mark talk as viewed by admin
-        $talk_meta = $talk
+        $talkMeta = $talk
             ->meta()
             ->firstOrNew([
                 'admin_user_id' => $userId,
-                'talk_id' => $talk_id,
+                'talk_id' => $talkId,
             ]);
-        $talk_meta->viewTalk();
+        $talkMeta->viewTalk();
 
         $speaker = $talk->speaker;
-        $otherTalks = $speaker->getOtherTalks($talk_id);
+        $otherTalks = $speaker->getOtherTalks($talkId);
 
         // Build and render the template
         $templateData = [
-            'talk' => $talk,
-            'talk_meta' => $talk_meta,
+            'talk' => $talk->toArray(),
+            'talk_meta' => $talkMeta,
             'speaker' => new SpeakerProfile($speaker),
             'otherTalks' => $otherTalks,
         ];
