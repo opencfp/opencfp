@@ -5,7 +5,7 @@ namespace OpenCFP\Http\Controller\Admin;
 use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
-use OpenCFP\Domain\Services\TalkRating\YesNoRating;
+use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\View\TwitterBootstrap3View;
@@ -202,12 +202,8 @@ class TalksController extends BaseController
         if (!$this->userHasAccess()) {
             return false;
         }
-
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-        $mapper = $this->service('spot')->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
-
-        $talkRatingStrategy = new YesNoRating($mapper, $auth);
+        /** @var TalkRatingStrategy $talkRatingStrategy */
+        $talkRatingStrategy = $this->service(TalkRatingStrategy::class);
 
         try {
             $talk_rating = (int) $req->get('rating');

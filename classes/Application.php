@@ -15,6 +15,7 @@ use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\ResetEmailerServiceProvider;
 use OpenCFP\Provider\SentryServiceProvider;
 use OpenCFP\Provider\SpotServiceProvider;
+use OpenCFP\Provider\TalkRatingProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use OpenCFP\Provider\YamlConfigDriver;
 use Silex\Application as SilexApplication;
@@ -93,6 +94,7 @@ class Application extends SilexApplication
         $this->register(new SpotServiceProvider);
         $this->register(new ImageProcessorProvider);
         $this->register(new ResetEmailerServiceProvider());
+        $this->register(new TalkRatingProvider());
 
         // Application Services...
         $this->register(new ApplicationServiceProvider);
