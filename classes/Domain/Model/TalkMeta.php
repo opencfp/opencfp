@@ -35,7 +35,7 @@ class TalkMeta extends Eloquent
          */
     }
 
-    public function viewTalk()
+    public function viewTalk() : self
     {
         if (!$this->viewed) {
             $this->viewed = true;
