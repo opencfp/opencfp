@@ -81,7 +81,7 @@ class TalksControllerTest extends TestCase
         $talkMapper->shouldReceive('getAllPagerFormatted')->andReturn($talkData);
 
         // Overide our DB mappers to return doubles
-        $spot = m::mock('Spot\Locator');
+        $spot = m::mock(\Spot\Locator::class);
         $spot->shouldReceive('mapper')
             ->with(\OpenCFP\Domain\Entity\User::class)
             ->andReturn($userMapper);
@@ -90,8 +90,8 @@ class TalksControllerTest extends TestCase
             ->andReturn($talkMapper);
         $this->app['spot'] = $spot;
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
-        $paramBag = m::mock('Symfony\Component\HttpFoundation\ParameterBag');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $paramBag = m::mock(\Symfony\Component\HttpFoundation\ParameterBag::class);
 
         $queryParams = [
             'page' => 1,
@@ -141,7 +141,7 @@ class TalksControllerTest extends TestCase
         $talkCommentMapper->shouldReceive('save');
 
         // Override our mapper with the double
-        $spot = m::mock('Spot\Locator');
+        $spot = m::mock(\Spot\Locator::class);
         $spot->shouldReceive('mapper')
             ->with(\OpenCFP\Domain\Entity\TalkComment::class)
             ->andReturn($talkCommentMapper);
@@ -153,7 +153,7 @@ class TalksControllerTest extends TestCase
         ob_end_clean();
 
         // Create our Request object
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $req->shouldReceive('get')->with('id')->andReturn($talkId);
         $req->shouldReceive('get')->with('comment')->andReturn($comment);
 
@@ -163,7 +163,7 @@ class TalksControllerTest extends TestCase
         $response = $controller->commentCreateAction($req);
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
+            \Symfony\Component\HttpFoundation\RedirectResponse::class,
             $response
         );
     }

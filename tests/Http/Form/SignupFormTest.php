@@ -20,7 +20,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function formRejectsValidationOnInvalidSpeakerPhoto()
     {
         // Mock speaker photo.
-        $photo = m::mock('stdClass');
+        $photo = m::mock(\stdClass::class);
         $photo->shouldReceive('isValid')->andReturn(false);
         $photo->shouldReceive('getErrorMessage')->andReturn('stubbed error message');
 

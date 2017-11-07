@@ -45,7 +45,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         // Create our URL generator
         $url = 'http://opencfp/signup';
-        $url_generator = m::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
+        $url_generator = m::mock(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class);
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
 
@@ -56,7 +56,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $controller = new \OpenCFP\Http\Controller\SignupController();
         $controller->setApplication($app);
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller->indexAction($req, $currentTimeString);
 
         $expectedMessage = 'Sorry, the call for papers has ended.';
@@ -99,7 +99,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $controller = new \OpenCFP\Http\Controller\SignupController();
         $controller->setApplication($app);
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $response = $controller->indexAction($req, $currentTimeString);
 
         // Make sure we see the signup page
@@ -134,7 +134,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         // Create our URL generator
         $url = 'http://opencfp/signup';
-        $url_generator = m::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
+        $url_generator = m::mock(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class);
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
 
@@ -178,7 +178,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         // Create an instance of our database
         $speaker = new \stdClass;
-        $mapper = m::mock('stdClass');
+        $mapper = m::mock(\stdClass::class);
         $mapper->shouldReceive('get')->andReturn($speaker);
         $mapper->shouldReceive('save');
         $spot = m::mock(Locator::class);
@@ -191,7 +191,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
             'coc' => '1',
         ]);
 
-        $requestStack = m::mock('stdClass');
+        $requestStack = m::mock(\stdClass::class);
         $requestStack->shouldReceive('getCurrentRequest')->andReturn($request);
         $app->shouldReceive('offsetGet')->with('request_stack')->andReturn($requestStack);
 
@@ -199,13 +199,13 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $controller = new \OpenCFP\Http\Controller\SignupController();
         $controller->setApplication($app);
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
 
         foreach ($form_data as $field => $value) {
             $req->shouldReceive('get')->with($field)->andReturn($value);
         }
 
-        $files = m::mock('StdClass');
+        $files = m::mock(\stdClass::class);
         $files->shouldReceive('get')->with('speaker_photo')->andReturn(null);
         $req->files = $files;
 
@@ -233,7 +233,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         // Create our URL generator
         $url = 'http://opencfp/signup';
-        $url_generator = m::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
+        $url_generator = m::mock(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class);
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
 
@@ -278,7 +278,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         // Create an instance of our database
         $speaker = new \stdClass;
-        $mapper = m::mock('stdClass');
+        $mapper = m::mock(\stdClass::class);
         $mapper->shouldReceive('get')->andReturn($speaker);
         $mapper->shouldReceive('save');
         $spot = m::mock(Locator::class);
@@ -291,7 +291,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
             'coc' => '1',
         ]);
 
-        $requestStack = m::mock('stdClass');
+        $requestStack = m::mock(\stdClass::class);
         $requestStack->shouldReceive('getCurrentRequest')->andReturn($request);
         $app->shouldReceive('offsetGet')->with('request_stack')->andReturn($requestStack);
 
@@ -299,13 +299,13 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $controller = new \OpenCFP\Http\Controller\SignupController();
         $controller->setApplication($app);
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
 
         foreach ($form_data as $field => $value) {
             $req->shouldReceive('get')->with($field)->andReturn($value);
         }
 
-        $files = m::mock('StdClass');
+        $files = m::mock(\stdClass::class);
         $files->shouldReceive('get')->with('speaker_photo')->andReturn(null);
         $req->files = $files;
 
@@ -333,7 +333,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         // Create our URL generator
         $url = 'http://opencfp/signup';
-        $url_generator = m::mock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
+        $url_generator = m::mock(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class);
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
 
@@ -373,7 +373,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         // Create an instance of our database
         $speaker = new \stdClass;
-        $mapper = m::mock('stdClass');
+        $mapper = m::mock(\stdClass::class);
         $mapper->shouldReceive('get')->andReturn($speaker);
         $mapper->shouldReceive('save');
         $spot = m::mock(Locator::class);
@@ -391,7 +391,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
             'coc' => '1',
         ]);
 
-        $requestStack = m::mock('stdClass');
+        $requestStack = m::mock(\stdClass::class);
         $requestStack->shouldReceive('getCurrentRequest')->andReturn($request);
         $app->shouldReceive('offsetGet')->with('request_stack')->andReturn($requestStack);
 
@@ -399,13 +399,13 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $controller = new \OpenCFP\Http\Controller\SignupController();
         $controller->setApplication($app);
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
 
         foreach ($form_data as $field => $value) {
             $req->shouldReceive('get')->with($field)->andReturn($value);
         }
 
-        $files = m::mock('StdClass');
+        $files = m::mock(\stdClass::class);
         $files->shouldReceive('get')->with('speaker_photo')->andReturn(null);
         $req->files = $files;
 

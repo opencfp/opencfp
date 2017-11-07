@@ -32,7 +32,10 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $response,
             $form->hasRequiredFields(),
-            '\OpenCFP\Form\TalkForm::hasRequired() did not work correctly'
+            sprintf(
+                '%s::hasRequired() did not work correctly',
+                \OpenCFP\Http\Form\TalkForm::class
+            )
         );
     }
 
@@ -85,7 +88,10 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $response,
             $form->hasRequiredFields(),
-            '\OpenCFP\Form\TalkForm::hasRequired() did not work correctly'
+            sprintf(
+                '%s::hasRequired() did not work correctly',
+                \OpenCFP\Http\Form\TalkForm::class
+            )
         );
     }
 
@@ -129,7 +135,10 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateTitle(),
-            '\OpenCFP\Form\TalkForm::validateTitle() did not apply validation rules correctly'
+            sprintf(
+                '%s::validateTitle() did not apply validation rules correctly',
+                \OpenCFP\Http\Form\TalkForm::class
+            )
         );
     }
 
@@ -167,7 +176,10 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateDescription(),
-            '\OpenCFP\Form\TalkForm::validateDescription() did not apply validation rules correctly'
+            sprintf(
+                '%s::validateDescription() did not apply validation rules correctly',
+                \OpenCFP\Http\Form\TalkForm::class
+            )
         );
     }
 
@@ -208,7 +220,10 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateType(),
-            '\OpenCFP\Form\TalkForm::validateType() did not apply validation rules correctly'
+            sprintf(
+                '%s::validateType() did not apply validation rules correctly',
+                \OpenCFP\Http\Form\TalkForm::class
+            )
         );
     }
 
@@ -247,7 +262,10 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateCategory(),
-            '\OpenCFP\Form\TalkForm::validateType() did not apply validation rules correctly'
+            sprintf(
+                '%s::validateType() did not apply validation rules correctly',
+                \OpenCFP\Http\Form\TalkForm::class
+            )
         );
     }
 
@@ -311,7 +329,10 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateLevel(),
-            '\OpenCFP\Form\TalkForm::validateType() did not apply validation rules correctly'
+            sprintf(
+                '%s::validateType() did not apply validation rules correctly',
+                \OpenCFP\Http\Form\TalkForm::class
+            )
         );
     }
 
