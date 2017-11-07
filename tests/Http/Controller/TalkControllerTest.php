@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
 use OpenCFP\Application;

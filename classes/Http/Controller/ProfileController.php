@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
