@@ -21,6 +21,9 @@
                         {% if user_is_admin %}
                             <a href="{{ url('admin') }}" class="mr-8 py-6 {% if active('admin') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Admin</a>
                         {% endif %}
+                        {% if user_is_reviewer is defined and user_is_reviewer %}
+                            <a href="{{ url('reviewer') }}" class="mr-8 py-6 {% if active('reviewer') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Reviewer</a>
+                        {% endif %}
                         <a href="{{ url('logout') }}" class="py-6 text-soft">Logout</a>
                     {% else %}
                         <a href="{{ url('login') }}" class="mr-8 py-6 text-soft hover:text-dark">Login</a>
