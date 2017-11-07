@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\API;
 
-use Exception;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,7 +32,7 @@ class ProfileController extends ApiController
             return $this->respond($profile->toArrayForApi());
         } catch (NotAuthenticatedException $e) {
             return $this->respondUnauthorized();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->respondInternalError($e->getMessage());
         }
     }
