@@ -206,8 +206,26 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
         $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
+        $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
+        $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
+        $auth = Mockery::mock(Authentication::class);
 
         // Create a test double for Sentry
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
+        $auth->shouldReceive('userId')->andReturn($id);
+        $this->swap(Authentication::class, $auth);
+        return $this;
+    }
+
+    public function asReviewer(int $id =1): self
+    {
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
+        $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
+        $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(true);
+        $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(true);
+
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
