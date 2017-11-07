@@ -131,6 +131,17 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         //Reviewer Routes
         $web->get('/reviewer/', 'OpenCFP\Http\Controller\Reviewer\DashboardController::indexAction')->bind('reviewer');
 
+        // Reviewer::Talks
+        $web->get('/reviewer/talks', 'OpenCFP\Http\Controller\Reviewer\TalksController::indexAction')->bind('reviewer_talks');
+        $web->get('/reviewer/talks/{id}', 'OpenCFP\Http\Controller\Reviewer\TalksController::viewAction')->bind('reviewer_talk_view');
+        $web->post('/reviewer/talks/{id}/favorite', 'OpenCFP\Http\Controller\Reviewer\TalksController::favoriteAction')->bind('reviewer_talk_favorite');
+        $web->post('/reviewer/talks/{id}/comment', 'OpenCFP\Http\Controller\Reviewer\TalksController::commentCreateAction')->bind('reviewer_talk_comment_create');
+        $web->post('/reviewer/talks/{id}/rate', 'OpenCFP\Http\Controller\Reviewer\TalksController::rateAction')->bind('reviewer_talk_rate');
+
+        // Reviewer::Speakers
+        $web->get('/reviewer/speakers', 'OpenCFP\Http\Controller\Reviewer\SpeakersController::indexAction')->bind('reviewer_speakers');
+        $web->get('/reviewer/speakers/{id}', 'OpenCFP\Http\Controller\Reviewer\SpeakersController::viewAction')->bind('reviewer_speaker_view');
+
         $app->mount('/', $web);
         // @codingStandardsIgnoreEnd
     }
