@@ -56,9 +56,6 @@
         }
     },
     "autoload-dev": {
-        "classmap": [
-            "tests/DatabaseTestCase.php"
-        ],
         "psr-4": {
             "OpenCFP\\Test\\": "tests/"
         },

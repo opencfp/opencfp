@@ -2,8 +2,10 @@
 
 namespace OpenCFP\Test;
 
+use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
 use OpenCFP\Application;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -172,6 +174,24 @@ class TestCase extends \PHPUnit\Framework\TestCase
         $config['application']['online_conference'] = true;
         $this->app['config'] = $config;
         $this->app['twig']->addGlobal('site', $this->app->config('application'));
+        return $this;
+    }
+
+    public function asAdmin(int $id = 1) : self
+    {
+        // Set things up so Sentry believes we're logged in
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('id')->andReturn($id);
+        $user->shouldReceive('getId')->andReturn($id);
+        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
+        $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
+
+        // Create a test double for Sentry
+        $auth = Mockery::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
+        $auth->shouldReceive('userId')->andReturn($id);
+        $this->swap(Authentication::class, $auth);
         return $this;
     }
 }

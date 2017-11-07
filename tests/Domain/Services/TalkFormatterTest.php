@@ -6,13 +6,26 @@ use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\DatabaseTestCase;
+use OpenCFP\Test\DatabaseTransaction;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group db
  */
-class TalkFormatterTest extends DatabaseTestCase
+class TalkFormatterTest extends TestCase
 {
+    use DatabaseTransaction;
+
+    public function setUp()
+    {
+        $this->setUpDatabase();
+    }
+
+    public function tearDown()
+    {
+        $this->tearDownDatabase();
+    }
+
     /**
      * @test
      */
