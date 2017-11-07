@@ -9,7 +9,6 @@ class YesNoRating extends TalkRating
         if ($rating < -1 || $rating > 1) {
             return false;
         }
-
         return true;
     }
 

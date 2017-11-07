@@ -22,7 +22,7 @@ class SpeakerProfile
         $this->speaker = $speaker;
     }
 
-    public function needsProfile()
+    public function needsProfile() : bool
     {
         return $this->speaker->has_made_profile == 0;
     }
@@ -43,7 +43,7 @@ class SpeakerProfile
         return $this->speaker->talks->execute();
     }
 
-    public function getName()
+    public function getName() : string
     {
         return $this->speaker->first_name . ' ' . $this->speaker->last_name;
     }
