@@ -16,6 +16,7 @@
         "illuminate/database": "~5.5",
         "illuminate/events": "~5.5",
         "illuminate/support": "~5.5",
+        "illuminate/validation": "^5.5",
         "intervention/image": "~2.3",
         "ircmaxell/random-lib": "~1.2",
         "michelf/php-markdown": "~1.7",
@@ -36,6 +37,7 @@
         "symfony/twig-bridge": "~3.2",
         "symfony/validator": "~3.2",
         "symfony/yaml": "~2.5",
+        "twig/extensions": "^1.5",
         "twig/twig": "1.*",
         "vlucas/spot2": "dev-master"
     },

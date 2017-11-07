@@ -1,0 +1,68 @@
+<form action="{{ formAction }}" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+    {% if id is defined %}
+        <input name="id" type="hidden" value="{{ id }}">
+    {% endif %}
+
+    <div class="flex">
+        <div class="w-1/2 mr-4">
+            <label for="form-user-email">Email</label>
+            <input id="form-user-email" type="email" name="email" placeholder="you@example.com" value="{{ email | default('') }}">
+
+            <label for="form-user-first-name">First Name</label>
+            <input id="form-user-first-name" type="text" name="first_name" placeholder="First Name" value="{{ first_name | default('') }}">
+
+            <label for="form-user-last-name">Last Name</label>
+            <input id="form-user-last-name" type="text" name="last_name" placeholder="Last Name" value="{{ last_name | default('') }}">
+
+            <label for="form-user-company">Company</label>
+            <input id="form-user-company" type="text" name="company" placeholder="Company" value="{{ company | default('') }}">
+
+            <label for="form-user-twitter">Twitter</label>
+            <input id="form-user-twitter" type="text" name="twitter" placeholder="@twitter" value="{{ twitter | default('') }}">
+
+            <label for="form-user-url">joind.in</label>
+            <input id="form-user-url" type="text" name="url" placeholder="https://joind.in/user/" value="{{ url | default('') }}">
+
+            {% if site.online_conference  == false %}
+                <h3 class="text-base text-dark-soft mt-4">Travel Assistance</h3>
+                <div>
+                    <input id="form-transportation" name="transportation" type="checkbox" value="1" {% if transportation == '1' %}checked{% endif %}>
+                    <label for="form-transportation" class="text-base text-normal text-dark">I need help with flight cost</label>
+                </div>
+                <div>
+                    <input id="form-hotel" name="hotel" type="checkbox" value="1" {% if hotel == '1' %}checked{% endif %}>
+                    <label for="form-hotel" class="text-base text-normal text-dark">I need help with hotel cost</label>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="w-1/2 ml-4">
+            <label for="form-user-bio">Speaker Bio</label>
+            <textarea id="form-user-bio" name="speaker_bio" placeholder="Tell us about yourself ..." rows="5">{{ speaker_bio | default('') }}</textarea>
+            <p class="text-xs text-em mb-2 text-dark-soft">Speaker bio can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank" class="text-underline">markdown</a> to support links</p>
+
+            {% if site.online_conference == false %}
+                <label for="form-user-airport">Departing Airport Code</label>
+                <input id="form-user-airport" type="text" name="airport" placeholder="3 Characters" value="{{ airport | default('') }}">
+            {% endif %}
+
+            <label for="form-user-notes">Additional Notes</label>
+            <textarea id="form-user-notes" name="speaker_info" placeholder="Any other information you feel the organizers should be aware of ..." rows="5">{{ speaker_info | default('') }}</textarea>
+            <p class="text-xs text-em mb-2 text-dark-soft">Speaker notes can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank" class="text-underline">markdown</a> to support links</p>
+
+            <label for="form-user-photo" class="btn btn-brand cursor-pointer inline-block"><i class="fa fa-upload"></i><span class="ml-2">Upload Photo</span></label>
+            <input type="file" id="form-user-photo" name="speaker_photo" placeholder="Photo at least 300px wide by 300px high" accept="image/jpg, image/jpeg, image/png" class="hidden">
+            <p class="text-xs text-em mb-2 text-dark-soft">Photo should be square, and must be at least 300px wide by 300px high. JPG and PNG are the only accepted formats.</p>
+            {% if preview_photo is defined and preview_photo is not empty %}
+                <img src="{{ preview_photo }}" class="rounded-pill">
+            {% endif %}
+
+            {% if coc_link is defined and coc_link is not empty %}
+                <label for="form-agree-coc">Code of Conduct</label>
+                <input id="form-agree-coc" name="agree_coc" type="checkbox" value="agreed" > I agree to abide by the <a href="{{ coc_link }}" target="_blank">Code of conduct</a>.
+            {% endif %}
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-brand">{{ buttonInfo }}</button>
+</form>

@@ -215,7 +215,7 @@ class Application extends SilexApplication
      */
     public function templatesPath()
     {
-        return $this->basePath() . '/templates';
+        return $this->basePath() . '/resources/views';
     }
 
     /**

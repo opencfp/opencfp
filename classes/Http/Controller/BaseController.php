@@ -2,8 +2,15 @@
 
 namespace OpenCFP\Http\Controller;
 
+use Illuminate\Container\Container;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Translation\FileLoader;
+use Illuminate\Translation\Translator;
+use Illuminate\Validation\Factory;
 use OpenCFP\ContainerAware;
+use OpenCFP\Domain\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
@@ -51,5 +58,37 @@ abstract class BaseController
     public function redirectTo($route, $status = Response::HTTP_FOUND)
     {
         return $this->app->redirect($this->url($route), $status);
+    }
+
+    /**
+     * @return RedirectResponse
+     */
+    public function redirectBack()
+    {
+        /** @var Request $request */
+        $request = $this->service('request_stack')->getCurrentRequest();
+
+        return $this->app->redirect($request->headers->get('referer'));
+    }
+
+    public function validate($rules = [], $messages = [], $customAttributes = [])
+    {
+        /** @var Request $request */
+        $request = $this->service('request_stack')->getCurrentRequest();
+        $data = $request->query->all() + $request->request->all() + $request->files->all();
+
+        $validation = new Factory(
+            new Translator(new FileLoader(new Filesystem(), __DIR__ . '/../../../resources/lang'), 'en'),
+            new Container()
+        );
+
+        $validator = $validation->make($data, $rules, $messages, $customAttributes);
+
+        if ($validator->fails()) {
+            throw ValidationException::withErrors(array_flatten($validator->errors()->toArray()));
+        }
+
+        unset($validation);
+        unset($validator);
     }
 }

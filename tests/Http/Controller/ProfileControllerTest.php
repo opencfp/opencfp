@@ -152,7 +152,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertContains('Invalid email address format', (string) $response);
         $this->assertContains('<h2 class="headline">My Profile</h2>', (string) $response);
-        $this->assertContains('<label for="form-user-email" class="col-sm-2 control-label">Email</label>', (string) $response);
+        $this->assertContains('<label for="form-user-email">Email</label>', (string) $response);
     }
 
     /**

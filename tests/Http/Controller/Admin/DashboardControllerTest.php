@@ -55,7 +55,7 @@ class DashboardControllerTest extends TestCase
             ->assertSee('First Talk')
             ->assertSee('The bug slayer strikes again!')
             ->assertSee('The Bug Slayer')
-            ->assertSee('<h2>10</h2>');
+            ->assertSee('10</div>');
     }
 
     /**
@@ -75,6 +75,7 @@ class DashboardControllerTest extends TestCase
                 'title' => 'First Talk',
                 'type' => 'regular',
                 'category' => 'api',
+                'description' => 'Talk is amazing',
                 'created_at' => new \DateTime(),
                 'user' => [
                     'id' => 1,
@@ -92,6 +93,7 @@ class DashboardControllerTest extends TestCase
                 'title' => 'The bug slayer strikes again!',
                 'type' => 'regular',
                 'category' => 'api',
+                'description' => 'Talk is amazing',
                 'created_at' => new \DateTime(),
                 'user' => [
                     'id' => 1,

@@ -1,0 +1,94 @@
+{% extends "layouts/default.twig" %}
+{% block scripts %}
+{{ parent() }}
+<script type="text/javascript">
+function deleteTalk(tid) {
+    $.ajax({
+        type: "POST",
+        url: "/talk/delete",
+        data: "tid=" + tid + "&user_id=" + {{ user.id }},
+        success: function(data, textStatus, jqXHR) {
+            if (data.delete == 'ok') {
+                $("#talk-"+tid).remove();
+            } else if (data.delete == 'no-user') {
+                alert("You must be logged in to delete talks")
+            } else {
+                alert("Unable to delete talk");
+            }
+        }
+    });
+}
+</script>
+{% endblock %}
+
+{% block content %}
+    {% if profile.needsProfile() %}
+    <div class="text-center">
+        <i class="fa fa-user-circle text-soft fa-5x"></i>
+        <h1 class="font-serif font-thin text-5xl">Welcome to {{ app.config.application.title }}!</h1>
+        <p class="text-soft mb-8">It looks like this is your first time here ...</p>
+        <a href="{{ url('user_edit', { id: user.id }) }}" class="btn btn-brand">Fill out your profile</a>
+    </div>
+    {% else %}
+    <div class="bg-brand p-8 text-white flex items-center justify-between">
+        <div class="flex items-center">
+            <div class="mr-6">
+                {% if profile.photo is not empty %}
+                    <img src="{{ uploads(profile.photo) }}" class="rounded-full border-4 border-white w-32"/>
+                {% else %}
+                    <img src="{{ assets('img/dummyphoto.jpg') }}" class="rounded-full border-4 border-white w-32"/>
+                {% endif %}
+            </div>
+            <div>
+                <h2 class="m-0">{{ profile.name }}</h2>
+                {% if profile.company %}
+                    <p>{{ profile.company }}</p>
+                {% endif %}
+                {% if profile.twitter %}
+                    <a class="text-white text-xs" href="https://twitter.com/@{{ profile.twitter }}" title="@{{ profile.name }} on Twitter"><i class="fa fa-twitter"></i> @{{ profile.twitter }}</a>
+                {% endif %}
+                {% if profile.url %}
+                    | <a class="text-white text-xs" href="{{ profile.url }}">{{ profile.url }}</a>
+                {% endif %}
+            </div>
+        </div>
+        <div>
+            <a class="btn btn-white-o mr-2" href="{{ url('password_edit') }}">Change Password</a>
+            <a class="btn btn-white-o mr-2" href="{{ url('user_edit', { id: user.id }) }}">Edit Profile</a>
+            {% if profile.talks is not empty %}<a class="btn btn-white mr-4" href="{{ url('talk_new') }}">Submit a talk</a>{% endif %}
+        </div>
+    </div>
+
+    <div class="w-5/6 mx-auto mt-8">
+        {% if profile.talks is not empty %}
+            {% for talk in profile.talks %}
+                <div id="talk-{{ talk.id }}" class="flex items-center justify-between mb-8">
+                    <div class="w-5/6">
+                        <h2 class="m-0"><a href="{{ url('talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a></h2>
+                        <p class="text-sm text-dark-soft mb-3">{{ talk.description | truncate(200) }}</p>
+                        <div>
+                            <span class="bg-brand text-white text-xs rounded-full py-2 px-3 mr-2"><i class="fa fa-clock-o"></i> {{ talkHelper.getTypeDisplayName(talk.type) }}</span>
+                            <span class="bg-brand text-white text-xs rounded-full py-2 px-3"><i class="fa fa-graduation-cap"></i> {{ talkHelper.getCategoryDisplayName(talk.category) }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        {% if cfp_open %}
+                            <a href="{{ url('talk_edit', { id: talk.id }) }}" class="underline text-sm text-brand">Edit</a>
+                        {% else %}
+                            <a href="{{ url('talk_view', { id: talk.id }) }}" class="underline text-sm text-brand">View</a>
+                        {% endif %}
+                        <a href="#" onClick="deleteTalk('{{ talk.id }}');return false;" class="ml-2 underline text-sm text-brand">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center">
+                <i class="fa fa-commenting-o text-soft fa-5x"></i>
+                <h1 class="font-serif font-thin text-5xl m-0">Get Started!</h1>
+                <p class="mb-8">Submit as many talks as you like for consideration ...</p>
+                <a href="{{ url('talk_new') }}" class="btn btn-brand">Submit a Talk</a>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endblock %}

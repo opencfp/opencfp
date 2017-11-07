@@ -12,6 +12,7 @@ application:
   secure_ssl: false
   online_conference: false
   date_format: m-d-Y
+  coc_link: http://confcodeofconduct.com
 
 
 api:

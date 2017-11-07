@@ -52,6 +52,8 @@ class TwigServiceProvider implements ServiceProviderInterface
             $engine = new MarkdownEngine\MichelfMarkdownEngine();
             $twig->addExtension(new MarkdownExtension($engine));
 
+            $twig->addExtension(new \Twig_Extensions_Extension_Text());
+
             $twig->addGlobal(
                 'talkHelper',
                 new TalkHelper(

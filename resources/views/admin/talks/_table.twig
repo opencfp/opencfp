@@ -1,0 +1,33 @@
+<table>
+    <thead class="uppercase font-bold text-soft text-left">
+        <tr>
+            <th class="sort" data-field="title">Title</th>
+            <th class="sort" data-field="type">Type</th>
+            <th class="sort" data-field="category">Category</th>
+            <th class="sort" data-field="created_at">Created On</th>
+            <th class="sort" data-field="first_name">Submitted by</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for talk in talks %}
+            <tr class="border-t border-grey py-3">
+                <td class="block"><a href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a></td>
+                <td>{{ talkHelper.getTypeDisplayName(talk.type) }}</td>
+                <td>{{ talkHelper.getCategoryDisplayName(talk.category) }}</td>
+                <td>{{ talk.created_at|date("M jS Y \\a\\t g:ia T") }}</td>
+                {% if false == talk.user %}
+                <td><em>Unknown User</em></td>
+                {% else %}
+                <td><a href="{{ url('admin_speaker_view', { id: talk.user.id }) }}">{{ talk.user.first_name }} {{ talk.user.last_name }}</a></td>
+                {% endif %}
+                <td class="whitespace-no-wrap">
+                    <a href="#" id="talk-upvote-{{ talk.id }}" class="js-talk-rating" data-id="{{ talk.id }}" data-rating="1" title="I want to see this talk"><i class="fa fa-thumbs-up admin-icon{% if talk.meta.rating == 1 %} admin-icon--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-downvote-{{ talk.id }}" class="js-talk-rating" data-id="{{ talk.id }}" data-rating="-1" title="I don't want to see this talk"><i class="fa fa-thumbs-down admin-icon{% if talk.meta.rating == -1 %} admin-icon--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-favorite-{{ talk.id }}" class="js-talk-favorite" data-id="{{ talk.id }}" title="Favorite!"><i class="fa fa-star admin-icon{% if talk.favorite == 1 %} admin-icon--selected{% endif %}"></i></a>
+                    <a href="#" id="talk-select-{{ talk.id }}" class="js-talk-select" data-id="{{ talk.id }}" title="Select this talk"><i class="fa fa-check-square admin-icon{% if talk.selected == 1 %} admin-icon--selected{% endif %}"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

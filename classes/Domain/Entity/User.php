@@ -35,6 +35,7 @@ class User extends Entity
             'info' => ['type' => 'text'],
             'bio' => ['type' => 'text'],
             'photo_path' => ['type' => 'string', 'length' => 255],
+            'has_made_profile' => ['type' => 'smallint', 'value' => 0],
         ];
     }
 

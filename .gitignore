@@ -1,10 +1,11 @@
 /.idea
 /.vagrant
+/node_modules/
 /cache/
 /coverage/
 /vendor/*
 /tests/coverage/*
-/templates/compilation_cache
+/resources/views/compilation_cache
 /htmlpurifier_cache
 .DS_Store
 opencfp.iml

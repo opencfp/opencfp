@@ -1,0 +1,35 @@
+.btn {
+  @apply .py-3 .px-6 .rounded;
+}
+
+.btn-sm {
+  @apply .py-2 .px-3 .rounded .text-sm;
+}
+
+.btn-disabled {
+  @apply .bg-grey .text-white .border-2 .border-grey;
+}
+
+.btn-brand {
+  @apply .bg-brand .text-white .border-2 .border-brand;
+}
+
+.btn-white {
+  @apply .bg-white .text-brand .border-2 .border-white;
+}
+
+.btn-white-o {
+  @apply .border-2 .border-white .text-white;
+
+  &:hover {
+    @apply .bg-white .text-brand;
+  }
+}
+
+.btn-brand-o {
+  @apply .border-2 .border-brand .text-brand;
+
+  &:hover {
+    @apply .bg-brand .text-white;
+  }
+}

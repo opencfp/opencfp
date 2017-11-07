@@ -35,6 +35,7 @@ Current release: v1.0.9
    * [User Management](#user-management)
    * [Clear Caches](#clear-caches)
    * [Scripts to Rule Them All](#scripts-rule-all)
+ * [Compiling Frontend Assets](#compiling-frontend-assets)
  * [Testing](#testing)
  * [Troubleshooting](#troubleshooting)
 
@@ -638,6 +639,29 @@ no phpunit.xml is found in the root.
 ```
 $ script/test
 ```
+
+## [Compiling Frontend Assets](#compiling-frontend-assets)
+
+OpenCFP ships with a pre-compiled CSS file. However, we now include the Sass / PostCSS used to compile front-end assets. You are free to modify these source files to change brand colors or modify your instance however you see fit. Remember, you can do **nothing** and take advantage of the pre-compiled CSS we ship. You only need these instructions if you want to customize or contribute to the look and feel of OpenCFP. Let's take a look at this new workflow for OpenCFP. 
+
+Install Node dependencies using `npm` or `yarn`.
+
+```bash
+# If you have a recent version of Node.js + npm that doesn't suck...
+npm install
+
+# If you love Facebook and balls of string...
+yarn install
+
+# If you're really awesome, do both...
+don't do both
+```
+
+Now dependencies are installed and we're ready to compile assets. Check out the `scripts` section of `package.json`. A normal development workflow is to run either `npm run watch` or `npm run watch-poll` (for OS that don't have `fs-events`) and begin work. When you make changes to Sass files, Webpack will recompile assets, but it doesn't compress the output. To do that, run `npm run prod` (an alias for `npm run production`). This will run the same compilation, but will compress the output.
+
+The main `app.scss` file is at [`resources/assets/sass/app.scss`](resources/assets/sass/app.scss). We use [Laravel Mix](https://github.com/JeffreyWay/laravel-mix) to compile our Sass. Mix is configurable to run without Laravel, so we take advantage of that because it really makes dealing with Webpack a lot simpler. Our Mix configuration is at [`webpack.mix.js`](webpack.mix.js). In it, we run our `app.scss` through a Sass compilation step, we copy FontAwesome icons and finally run the compiled CSS through [Tailwind CSS](https://tailwindcss.com), a PostCSS plugin.
+
+TailwindCSS is a new utility-first CSS framework that uses CSS class composition to piece together interfaces. Check out [their documentation](https://tailwindcss.com/docs/what-is-tailwind/) for more information on how to use the framework. We use it extensively across OpenCFP and it saves a lot of time and keeps us from having to maintain *too much* CSS. If you take a look through our `app.scss`, you'll see a lot of calls to [`@apply`](https://tailwindcss.com/docs/functions-and-directives#apply). This is NOT a Sass construct. It's a TailwindCSS function used to mixin existing classes into our custom CSS. 
 
 ## [Testing](#testing)
 

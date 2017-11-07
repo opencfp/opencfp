@@ -1,0 +1,50 @@
+{% extends "layouts/admin.twig" %}
+{% block content %}
+
+    <div class="flex mb-8">
+        <img class="w-16 h-16 mr-4 rounded-full" src="{{ speaker.photo ? '/uploads/' ~ speaker.photo : '/assets/img/dummyphoto.jpg' }}">
+        <div>
+            <h1 class="-mt-2">
+                {{ speaker.name }}
+                {% if speaker.airport.code %}
+                    <a href="https://www.google.com/flights/#search;f={{ speaker.airport.code|upper }};t={{ airport|upper }};d={{ arrival }};r={{ departure }}" class="ml-3 text-brand text-sm hover:underline" target="_blank"><i class="fa fa-plane mr-2"></i>Flight Cost</a>
+                {% endif %}
+            </h1>
+            <div>
+                {% if speaker.company %}<span class="mr-3"><i class="fa fa-building"></i> {{ speaker.company }}</span>{% endif %}
+                {% if speaker.twitter %}<span class="mr-3"><a class="hover:text-brand" target="_blank" href="https://twitter.com/{{ speaker.twitter }}"><i class="fa fa-twitter"></i> @{{ speaker.twitter }}</a></span>{% endif %}
+                {% if speaker.email %}<span class="mr-3"><i class="fa fa-envelope"></i> {{ speaker.email }}</span>{% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="flex">
+        <div class="w-1/2 mr-4">
+            <h3><i class="fa fa-file-text-o"></i> Speaker Bio</h3>
+            {{ speaker.bio|striptags|markdown }}
+        </div>
+        <div class="w-1/2">
+            {% if talks | length > 0 %}
+                <h3><i class="fa fa-bullhorn"></i> Talk Submissions</h3>
+
+                {% for talk in talks %}
+                    <a class="text-brand block mb-3" href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title }}</a>
+                {% endfor %}
+            {% endif %}
+
+            {% if site.online_conference == false %}
+                <h3 class="mt-3">Other Information</h3>
+                <strong>Need Transportation:</strong> {% if speaker.transportation == '1' %} Yes {% else %} No {% endif %}<br />
+                <strong>Need Hotel:</strong> {% if speaker.hotel == '1' %} Yes {% else %} No {% endif %}
+            {% endif %}
+
+            {% if speaker.info is not empty %}
+                <h3>Additional Notes</h3>
+                <p>{{ speaker.info }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

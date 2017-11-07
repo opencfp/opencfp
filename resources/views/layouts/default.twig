@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{{ site.title }}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/assets/css/app.css" rel="stylesheet" media="screen">
+    </head>
+    <body class="border-t-4 border-brand">
+        <nav class="{% if not active('homepage') %}border-b border-white{% endif %}">
+            <div class="container mx-auto flex justify-between">
+                <a class="font-serif flex items-center" href="{{ url('homepage') }}">
+                    <img class="w-10 mr-2" src="/assets/img/logo.svg" alt="OpenCFP">
+                    <h1 class="font-normal m-0">Open<span class="text-brand font-bold">CFP</span></h1>
+                </a>
+                <div class="flex">
+                    <a href="{{ url('homepage') }}" class="mr-8 py-6 {% if active('homepage') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Home</a>
+                    <a href="{{ url('speaker_package') }}" class="mr-8 py-6 {% if active('speaker_package') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Speaker Package</a>
+                    <a href="{{ url('talk_ideas') }}" class="mr-8 py-6 {% if active('talk_ideas') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Talk Ideas</a>
+                    {% if user is defined and user is not empty %}
+                        <a href="{{ url('dashboard') }}" class="mr-8 py-6 {% if active('dashboard') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Dashboard</a>
+                        {% if user_is_admin %}
+                            <a href="{{ url('admin') }}" class="mr-8 py-6 {% if active('admin') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Admin</a>
+                        {% endif %}
+                        <a href="{{ url('logout') }}" class="py-6 text-soft">Logout</a>
+                    {% else %}
+                        <a href="{{ url('login') }}" class="mr-8 py-6 text-soft hover:text-dark">Login</a>
+                        <a href="{{ url('user_new') }}" class="py-6 text-soft @text-dark">Signup</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        {% block header %}
+        {% endblock %}
+
+        <main class="container mx-auto mt-8 flex">
+            <div class="flex-1 mr-16">{% block sidebar %}{% endblock %}</div>
+            <div class="flex-3 w-full">{% block content %}{% endblock %}</div>
+        </main>
+
+        {% block scripts %}
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+                    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+                    crossorigin="anonymous"></script>
+        {% endblock %}
+
+        {% include "_forkme.twig" %}
+    </body>
+</html>

@@ -43,6 +43,7 @@ class DashboardControllerTest extends TestCase
         // Create a test double for a talk in profile
         $talk = m::mock('StdClass');
         $talk->shouldReceive('title')->andReturn('Test Title');
+        $talk->shouldReceive('description')->andReturn('Awesome talk');
         $talk->shouldReceive('id')->andReturn(1);
         $talk->shouldReceive('type', 'category', 'created_at');
 
@@ -51,6 +52,7 @@ class DashboardControllerTest extends TestCase
         $profile->shouldReceive('name')->andReturn('Test User');
         $profile->shouldReceive('photo', 'company', 'twitter', 'url', 'airport', 'bio', 'info', 'transportation', 'hotel');
         $profile->shouldReceive('talks')->andReturn([$talk]);
+        $profile->shouldReceive('needsProfile')->andReturn(false);
 
         $speakerService = m::mock('StdClass');
         $speakerService->shouldReceive('findProfile')->andReturn($profile);
