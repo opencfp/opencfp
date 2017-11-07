@@ -22,6 +22,7 @@ env:
 
 # cache composer downloads so installing is quicker
 cache:
+  yarn: true
   directories:
     - $HOME/.composer/cache
     - $HOME/.php-cs-fixer
