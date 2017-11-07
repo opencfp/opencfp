@@ -13,7 +13,7 @@ matrix:
   fast_finish: true
   include:
     - php: 7.0
-      env: WITH_COVERAGE=true WITH_CS=true
+      env: WITH_CS=true
 
 env:
   global:
@@ -22,13 +22,14 @@ env:
 
 # cache composer downloads so installing is quicker
 cache:
+  yarn: true
   directories:
     - $HOME/.composer/cache
     - $HOME/.php-cs-fixer
 
 before_install:
-  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then COLLECT_COVERAGE=true; else COLLECT_COVERAGE=false; fi
-  - if [[ "$COLLECT_COVERAGE" == "false" ]]; then phpenv config-rm xdebug.ini; fi
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then WITH_COVERAGE=true; else WITH_COVERAGE=false; fi
+  - if [[ "$WITH_COVERAGE" == "false" ]]; then phpenv config-rm xdebug.ini; fi
   - if [[ "$WITH_CS" == "true" ]]; then mkdir -p "$HOME/.php-cs-fixer"; fi
   - composer validate --no-check-publish
 
@@ -42,8 +43,8 @@ before_script:
   - vendor/bin/phinx migrate -e testing
 
 script:
-  - if [[ "$COLLECT_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
+  - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
   - if [[ "$WITH_CS" == "true" ]]; then vendor/bin/php-cs-fixer fix --verbose --diff --dry-run; fi
 
 after_success:
-  - if [[ "$COLLECT_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
+  - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi

@@ -2,10 +2,12 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\Domain\Entity\Talk;
+use OpenCFP\Domain\Entity\Talk as TalkEntity;
+use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
+use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\View\DefaultView;
@@ -79,7 +81,7 @@ class TalksController extends BaseController
         $spot = $this->service('spot');
 
         /** @var \OpenCFP\Domain\Entity\Mapper\Talk $talk_mapper */
-        $talk_mapper = $spot->mapper(Talk::class);
+        $talk_mapper = $spot->mapper(TalkEntity::class);
         if ($filter === null) {
             return $talk_mapper->getAllPagerFormatted($admin_user_id, $options);
         }
@@ -120,18 +122,16 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
 
-        // Get info about the talks
-        $talk_mapper = $spot->mapper(Talk::class);
-        $meta_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
-        $talk_id = $req->get('id');
-        $talk = $talk_mapper->where(['id' => $talk_id])
-            ->with(['comments'])
+        $talkId = $req->get('id');
+        $talk = Talk::where('id', $talkId)
+            ->with('comments')
             ->first();
 
-        if (empty($talk)) {
+        if (!$talk instanceof Talk) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -140,50 +140,28 @@ class TalksController extends BaseController
 
             return $this->app->redirect($this->url('admin_talks'));
         }
-        /* @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
+
+        $userId = $this->service(Authentication::class)->userId();
 
         // Mark talk as viewed by admin
-        $talk_meta = $meta_mapper->where([
-                'admin_user_id' => $auth->userId(),
-                'talk_id' => (int)$req->get('id'),
-            ])
-            ->first();
+        $talkMeta = $talk
+            ->meta()
+            ->firstOrNew([
+                'admin_user_id' => $userId,
+                'talk_id' => $talkId,
+            ]);
+        $talkMeta->viewTalk();
 
-        if (!$talk_meta) {
-            $talk_meta = $meta_mapper->get();
-        }
-
-        if (!$talk_meta->viewed) {
-            $talk_meta->viewed = true;
-            $talk_meta->admin_user_id = $auth->userId();
-            $talk_meta->talk_id = $talk_id;
-            $meta_mapper->save($talk_meta);
-        }
-
-        $all_talks = $talk_mapper->all()
-            ->where(['user_id' => $talk->user_id])
-            ->toArray();
-
-        // Get info about our speaker
-        $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $speaker = $user_mapper->get($talk->user_id)->toArray();
-
-        // Grab all the other talks and filter out the one we have
-        $otherTalks = array_filter($all_talks, function ($talk) use ($talk_id) {
-            if ((int) $talk['id'] == (int) $talk_id) {
-                return false;
-            }
-
-            return true;
-        });
+        $speaker = $talk->speaker;
+        $otherTalks = $speaker->getOtherTalks($talkId);
 
         // Build and render the template
         $templateData = [
-            'talk' => $talk,
-            'talk_meta' => $talk_meta,
-            'speaker' => $speaker,
+            'talk' => $talk->toArray(),
+            'talk_meta' => $talkMeta,
+            'speaker' => new SpeakerProfile($speaker),
             'otherTalks' => $otherTalks,
+            'comments' => $talk->comments()->get(),
         ];
         return $this->render('admin/talks/view.twig', $templateData);
     }
@@ -271,7 +249,7 @@ class TalksController extends BaseController
         /* @var Locator $spot */
         $spot = $this->service('spot');
 
-        $mapper = $spot->mapper(Talk::class);
+        $mapper = $spot->mapper(TalkEntity::class);
         $talk = $mapper->get($req->get('id'));
 
         $selected = 1;

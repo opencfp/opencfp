@@ -7,7 +7,7 @@ use OpenCFP\Domain\Services\Authentication;
 
 class TalkRatingContext
 {
-    public static function getTalkStrategy(string $strategy, Authentication $auth) : TalkRatingStrategy
+    public static function getTalkStrategy(string $strategy, Authentication $auth): TalkRatingStrategy
     {
         $strategy = strtolower($strategy);
         switch ($strategy) {

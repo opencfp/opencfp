@@ -5,15 +5,17 @@ namespace OpenCFP\Domain\Model;
 class TalkMeta extends Eloquent
 {
     protected $table = 'talk_meta';
+
     const CREATED_AT = 'created';
     const UPDATED_AT = null;
 
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
+    const DEFAULT_RATING = 0;
+    const DEFAULT_VIEWED = 0;
+
+    protected $attributes = [
+        'rating' => self::DEFAULT_RATING,
+        'viewed' => self::DEFAULT_VIEWED,
+    ];
 
     public function talk()
     {
@@ -31,5 +33,14 @@ class TalkMeta extends Eloquent
          * This is the dirty way to tell Illuminate that we don't have an updated at field
          * while still having a created_at field.
          */
+    }
+
+    public function viewTalk(): self
+    {
+        if (!$this->viewed) {
+            $this->viewed = true;
+            $this->save();
+        }
+        return $this;
     }
 }

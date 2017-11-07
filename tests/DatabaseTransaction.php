@@ -8,7 +8,7 @@ use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
+trait DatabaseTransaction
 {
     /**
      * @var Capsule
@@ -20,13 +20,13 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
      */
     private $migrated = false;
 
-    protected function setUp()
+    protected function setUpDatabase()
     {
         $this->migrate();
         $this->getCapsule()->getConnection()->beginTransaction();
     }
 
-    protected function tearDown()
+    protected function tearDownDatabase()
     {
         $this->capsule->getConnection()->rollBack();
     }
@@ -72,7 +72,6 @@ abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase
             'host'     => $options['host'],
             'username' => $options['user'],
             'password' => $options['pass'],
-            'charset'  => 'utf8',
         ]);
 
         $this->capsule->setAsGlobal();
