@@ -19,7 +19,7 @@ class FixZeroDates extends AbstractMigration
 
     public function up()
     {
-        $this->execute("SET SESSION sql_mode = ''");
+        //$this->execute("SET SESSION sql_mode = ''");
 
         $this->table('users')
             ->changeColumn('activated_at', 'datetime', ['null' => true, 'default' => null])
@@ -33,12 +33,12 @@ class FixZeroDates extends AbstractMigration
             ->changeColumn('updated_at', 'datetime', ['null' => true, 'default' => null])
             ->save();
 
-        $this->run('UPDATE IGNORE `%s` SET `%s` = NULL WHERE `%s` IN ("0000-00-00 00:00:00", "1000-01-01 00:00:00")');
+        //$this->run('UPDATE IGNORE `%s` SET `%s` = NULL WHERE `%s` IN ("0000-00-00 00:00:00", "1000-01-01 00:00:00")');
     }
 
     public function down()
     {
-        $this->run('UPDATE IGNORE `%s` SET `%s` = "1000-01-01 00:00:00" WHERE `%s` IS NULL');
+        //$this->run('UPDATE IGNORE `%s` SET `%s` = "1000-01-01 00:00:00" WHERE `%s` IS NULL');
 
         $this->table('users')
             ->changeColumn('activated_at', 'string', ['null' => false, 'default' => '1000-01-01 00:00:00'])

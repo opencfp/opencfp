@@ -15,7 +15,7 @@ class AddTalkMeta extends AbstractMigration
             ->addColumn('rating', 'integer', ['default' => 0])
             ->addColumn('viewed', 'boolean', ['default' => false])
             ->addColumn('created', 'datetime')
-            ->addIndex(['admin_user_id', 'talk_id'], ['name' => 'talk_meta--admin_user_id__talk_id', 'unique' => true])
+            ->addIndex(['admin_user_id', 'talk_id'], ['name' => 'talk_meta__admin_user_id__talk_id', 'unique' => true])
             ->create();
     }
 
