@@ -1,4 +1,6 @@
-<?php namespace OpenCFP;
+<?php
+
+namespace OpenCFP;
 
 use InvalidArgumentException;
 

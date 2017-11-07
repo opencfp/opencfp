@@ -1,4 +1,6 @@
-<?php namespace OpenCFP\Domain\Speaker;
+<?php
+
+namespace OpenCFP\Domain\Speaker;
 
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\EntityNotFoundException;

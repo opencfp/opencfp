@@ -1,4 +1,6 @@
-<?php namespace OpenCFP\Provider;
+<?php
+
+namespace OpenCFP\Provider;
 
 use OpenCFP\Domain\CallForProposal;
 use Pimple\Container;

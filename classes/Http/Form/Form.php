@@ -1,4 +1,5 @@
 <?php
+
 namespace OpenCFP\Http\Form;
 
 abstract class Form

@@ -1,4 +1,5 @@
 <?php
+
 namespace OpenCFP\Domain\Entity;
 
 use Spot\Entity;
