@@ -167,7 +167,7 @@ abstract class Form
      */
     public function sanitize()
     {
-        $this->_cleanData = $this->_sanitize($this->_taintedData);
+        $this->_cleanData = $this->sanitize($this->_taintedData);
     }
 
     /**
@@ -176,7 +176,7 @@ abstract class Form
      * @param  array $taintedData The tainted data
      * @return array Sanitized data
      */
-    protected function _sanitize(array $taintedData)
+    protected function sanitize(array $taintedData)
     {
         $purifier  = $this->_purifier;
         $filtered = array_map(
