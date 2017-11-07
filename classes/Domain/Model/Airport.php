@@ -15,7 +15,7 @@ class Airport extends Eloquent implements AirportInformationDatabase
      * @return Airport
      * @throws \Exception
      */
-    public function withCode($code)
+    public function withCode($code) : self
     {
         $airport = $this->where('code', $code)->first(['code', 'name', 'country']);
 
