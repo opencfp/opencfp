@@ -3,7 +3,6 @@
 namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Users\UserNotFoundException;
-use Exception;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Http\Form\ForgotForm;
 use OpenCFP\Http\Form\ResetForm;
@@ -74,7 +73,7 @@ class ForgotController extends BaseController
     public function resetAction(Request $req)
     {
         if (empty($req->get('reset_code'))) {
-            throw new Exception();
+            throw new \Exception();
         }
 
         $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
@@ -119,7 +118,7 @@ class ForgotController extends BaseController
         $reset_code = $req->get('reset_code');
 
         if (empty($reset_code)) {
-            throw new Exception();
+            throw new \Exception();
         }
 
         $form = $this->service('form.factory')->createBuilder(ResetForm::class)->getForm();
@@ -173,7 +172,7 @@ class ForgotController extends BaseController
         $password = $data['password'];
 
         if (empty($reset_code)) {
-            throw new Exception();
+            throw new \Exception();
         }
 
         try {

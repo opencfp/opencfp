@@ -4,7 +4,6 @@ namespace OpenCFP\Test\Http\Controller;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
-use DateTime;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
@@ -166,9 +165,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         // Set CFP end to today (whenever test is run)
         // Previously, this fails because it checked midnight
         // for the current date. `isCfpOpen` now uses 11:59pm current date.
-        $now = new DateTime();
+        $now = new \DateTime();
 
-        $this->app['callforproposal'] = new CallForProposal(new DateTime($now->format('M. jS, Y')));
+        $this->app['callforproposal'] = new CallForProposal(new \DateTime($now->format('M. jS, Y')));
 
         /*
          * This should not have a flash message. The fact that this
@@ -184,9 +183,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
          * However, if I update application configuration to make
          * the CFP end date to be "yesterday" then we get flash as expected.
          */
-        $yesterday = new DateTime('yesterday');
+        $yesterday = new \DateTime('yesterday');
 
-        $this->app['callforproposal'] = new CallForProposal(new DateTime($yesterday->format('M. jS, Y')));
+        $this->app['callforproposal'] = new CallForProposal(new \DateTime($yesterday->format('M. jS, Y')));
 
         $controller->createAction($this->req);
 

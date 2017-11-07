@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Http\API;
 
-use Exception;
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
@@ -57,7 +56,7 @@ class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
     public function it_responds_internal_error_when_something_bad_happens()
     {
         $this->speakers->shouldReceive('findProfile')
-            ->andThrow(new Exception('Zomgz it blew up somehow.'));
+            ->andThrow(new \Exception('Zomgz it blew up somehow.'));
 
         $response = $this->sut->handleShowSpeakerProfile($this->getRequest());
 

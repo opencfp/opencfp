@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Console\Command;
 
-use Exception;
 use OpenCFP\Console\BaseCommand;
 use OpenCFP\Domain\Services\AccountManagement;
 use Symfony\Component\Console\Input\InputArgument;
@@ -51,7 +50,7 @@ EOF
 
         try {
             $user = $accounts->findByLogin($email);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $io->error(sprintf(
                 'Could not find account with email %s.',
                 $email

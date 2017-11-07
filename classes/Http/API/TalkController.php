@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\API;
 
-use Exception;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Domain\Talk\InvalidTalkSubmissionException;
@@ -43,7 +42,7 @@ class TalkController extends ApiController
             return $this->setStatusCode(Response::HTTP_BAD_REQUEST)->respondWithError($e->getMessage());
         } catch (NotAuthenticatedException $e) {
             return $this->respondUnauthorized();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->respondInternalError($e->getMessage());
         }
     }
