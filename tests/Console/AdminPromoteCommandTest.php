@@ -12,7 +12,7 @@ use OpenCFP\Environment;
  * @package OpenCFP\Test\Console
  * @group db
  */
-class AdminPromoteTest extends \PHPUnit\Framework\TestCase
+class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
 {
     public function tearDown()
     {
