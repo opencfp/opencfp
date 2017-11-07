@@ -15,6 +15,7 @@ $config = PhpCsFixer\Config::create()
         'no_unused_imports' => true,
         'ordered_imports' => true,
         'psr0' => false,
+        'single_blank_line_before_namespace' => true,
         'single_quote' => true,
         'trailing_comma_in_multiline_array' => true,
         'yoda_style' => [
