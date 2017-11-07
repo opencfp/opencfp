@@ -122,11 +122,8 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        $spot = $this->service('spot');
-        $talk_mapper = $spot->mapper(Talk::class);
-        $meta_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
-        $talk_id = $req->get('id');
-        $talk = $talk_mapper->where(['id' => $talk_id])
+        $talkId = $req->get('id');
+        $talk = Talk::where('id', $talkId)
             ->with(['comments'])
             ->first();
 
