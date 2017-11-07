@@ -16,7 +16,7 @@ class TalkFormatter implements TalkFormat
      * @param bool $userData
      * @return Collection
      */
-    public function formatList(Collection $talkCollection, int $admin_user_id, bool $userData = true) : Collection
+    public function formatList(Collection $talkCollection, int $admin_user_id, bool $userData = true): Collection
     {
         return $talkCollection
             ->map(function ($talk) use ($admin_user_id, $userData) {
@@ -32,7 +32,7 @@ class TalkFormatter implements TalkFormat
      * @param bool $userData grab the speaker data or not
      * @return array
      */
-    public function createdFormattedOutput($talk, int $admin_user_id, bool $userData = true) : array
+    public function createdFormattedOutput($talk, int $admin_user_id, bool $userData = true): array
     {
         if ($talk->favorites) {
             foreach ($talk->favorites as $favorite) {
@@ -98,7 +98,7 @@ class TalkFormatter implements TalkFormat
      *
      * @return TalkMeta
      */
-    protected function getTalkMeta($talk, int $admin_user_id) : TalkMeta
+    protected function getTalkMeta($talk, int $admin_user_id): TalkMeta
     {
         $meta = TalkMeta::where('talk_id', $talk->id)->where('admin_user_id', $admin_user_id)->first();
 
