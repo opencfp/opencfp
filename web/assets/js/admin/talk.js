@@ -9,7 +9,7 @@ Talk.prototype.favorite = function() {
   var url = this.baseUrl + this.id + '/favorite';
   var data = { id: this.id };
 
-  if (this.$el.find('i').hasClass('admin-icon--selected')) {
+  if (this.$el.find('i').hasClass('text-orange-dark')) {
     data.delete = true;
   }
 
@@ -18,7 +18,7 @@ Talk.prototype.favorite = function() {
     url: url,
     data: data,
     success: function() {
-      _this.$el.find('i').toggleClass('admin-icon--selected');
+      _this.$el.find('i').toggleClass('text-orange-dark');
     },
     error: _this.onError
   });
@@ -29,7 +29,7 @@ Talk.prototype.select = function() {
   var url = this.baseUrl + this.id + '/select';
   var data = { id: this.id };
 
-  if (this.$el.find('i').hasClass('admin-icon--selected')) {
+  if (this.$el.find('i').hasClass('text-indigo-dark')) {
     data.delete = true;
   }
 
@@ -38,7 +38,7 @@ Talk.prototype.select = function() {
     url: url,
     data: data,
     success: function() {
-      _this.$el.find('i').toggleClass('admin-icon--selected');
+      _this.$el.find('i').toggleClass('text-indigo-dark');
     },
     error: _this.onError
   });
@@ -49,7 +49,7 @@ Talk.prototype.rate = function(rating) {
   var url = this.baseUrl + this.id + '/rate';
   var data = { id: this.id, rating: rating };
 
-  if (this.$el.find('i').hasClass('admin-icon--selected')) {
+  if (this.$el.find('i').hasClass('selected')) {
     data.rating = 0;
   }
 
@@ -59,18 +59,19 @@ Talk.prototype.rate = function(rating) {
     data: data,
     success: function() {
       if (data.rating === -1) {
-        $('#talk-downvote-' + _this.id + ' i').addClass('admin-icon--selected');
-        $('#talk-upvote-' + _this.id + ' i').removeClass('admin-icon--selected');
+        console.log('here')
+        $('#talk-downvote-' + _this.id + ' i').addClass('text-red-dark');
+        $('#talk-upvote-' + _this.id + ' i').removeClass('text-green-dark');
       }
 
       if (data.rating === 1) {
-        $('#talk-upvote-' + _this.id + ' i').addClass('admin-icon--selected');
-        $('#talk-downvote-' + _this.id + ' i').removeClass('admin-icon--selected');
+        $('#talk-upvote-' + _this.id + ' i').addClass('text-green-dark');
+        $('#talk-downvote-' + _this.id + ' i').removeClass('text-red-dark');
       }
 
       if (data.rating === 0) {
-        $('#talk-upvote-' + _this.id + ' i').removeClass('admin-icon--selected');
-        $('#talk-downvote-' + _this.id + ' i').removeClass('admin-icon--selected');
+        $('#talk-upvote-' + _this.id + ' i').removeClass('text-green-dark');
+        $('#talk-downvote-' + _this.id + ' i').removeClass('text-red-dark');
       }
     },
     error: _this.onError

@@ -1,0 +1,28 @@
+{% extends "layouts/default.twig" %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var input = document.getElementById('form-user-photo')
+        var label = input.previousElementSibling
+        var originalLabelValue = label.innerHTML
+
+        input.addEventListener('change', function (e) {
+            if (this.files) {
+                fileName = e.target.value.split('\\').pop()
+            }
+
+            if (fileName) {
+                label.querySelector('span').innerHTML = fileName
+            } else {
+                label.innerHTML = originalLabelValue
+            }
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    {% include '_flash.twig' %}
+    <h2 class="headline">My Profile</h2>
+    {% include 'forms/_user.twig' %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "layouts/default.twig" %}
+{% block content %}
+    <h2 class="mb-3">{{ talk.title }}</h2>
+    <div class="mb-6">
+        <span class="bg-brand text-white text-xs rounded-full py-2 px-3 mr-2"><i class="fa fa-clock-o"></i> {{ talkHelper.getTypeDisplayName(talk.type) }}</span>
+        <span class="bg-brand text-white text-xs rounded-full py-2 px-3 mr-2"><i class="fa fa-graduation-cap"></i> {{ talkHelper.getCategoryDisplayName(talk.category) }}</span>
+        <span class="bg-brand text-white text-xs rounded-full py-2 px-3">{{ talkHelper.getLevelDisplayName(talk.level) }}</span>
+    </div>
+    <p class="text-sm text-dark-soft">{{ talk.description | markdown }}</p>
+{% endblock %}

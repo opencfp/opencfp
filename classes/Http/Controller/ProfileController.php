@@ -149,6 +149,8 @@ class ProfileController extends BaseController
                 $user->photo_path = $sanitized_data['speaker_photo'];
             }
 
+            $user->has_made_profile = 1;
+
             /** @var $response number of affected rows */
             $response = $mapper->save($user);
 

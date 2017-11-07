@@ -15,7 +15,7 @@ class SecurityController extends BaseController
 
     public function indexAction()
     {
-        return $this->render('login.twig');
+        return $this->render('security/login.twig');
     }
 
     public function processAction(Request $req, Application $app)
@@ -45,7 +45,7 @@ class SecurityController extends BaseController
                 'flash' => $this->getFlash($app),
             ];
 
-            return $this->render('login.twig', $template_data, Response::HTTP_BAD_REQUEST);
+            return $this->render('security/login.twig', $template_data, Response::HTTP_BAD_REQUEST);
         }
     }
 

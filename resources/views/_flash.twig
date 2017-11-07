@@ -1,0 +1,20 @@
+{% block flash %}
+    {% if flash is defined and flash is not empty %}
+        {% set style = (flash.type == 'error') ? 'border-brand bg-red-lightest text-brand' : 'border-green-dark bg-green-lightest text-green-dark' %}
+
+        <div class="rounded-sm border-t-8 text-sm p-4 my-4 {{ style }}">
+            {% if flash.short is not empty %}<div class="font-bold text-lg">{{ flash.short }}</div>{% endif %}
+            {% autoescape false %}
+                {% if flash.ext is iterable %}
+                    <ul>
+                        {% for error in flash.ext %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>{{ flash.ext }}</p>
+                {% endif %}
+            {% endautoescape %}
+        </div>
+    {% endif %}
+{% endblock flash %}

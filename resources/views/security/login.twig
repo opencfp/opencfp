@@ -1,0 +1,22 @@
+{% extends "layouts/splash.twig" %}
+{% block content %}
+  <div class="text-white w-1/6">
+    <a class="font-serif flex items-center justify-center mb-4" href="{{ url('homepage') }}">
+      <img class="w-10 mr-2" src="/assets/img/logo.svg" alt="OpenCFP">
+      <h1 class="font-normal text-white m-0">Open<span class="text-brand font-bold">CFP</span></h1>
+    </a>
+
+    {% include "_flash.twig" %}
+
+    <form method="post" action="{{ url('login_check') }}">
+      <label class="text-sm text-white">Email</label>
+      <input type="email" name="email" class="w-full" placeholder="you@example.com">
+      <label class="text-sm text-white">Password</label>
+      <input type="password" name="password" class="w-full" placeholder="•••••••">
+      <p class="text-right my-4"><a href="{{ url('forgot_password') }}" class="text-white text-sm">Forgot password?</a></p>
+      <button type="submit" class="btn btn-brand w-full">Login</button>
+    </form>
+
+    <p class="text-light text-center text-sm my-4">New user? <a href="{{ url('user_new') }}" class="text-brand text-bold">Signup Now</a></p>
+  </div>
+{% endblock %}

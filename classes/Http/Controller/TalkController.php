@@ -348,7 +348,7 @@ class TalkController extends BaseController
         ]);
         $data['flash'] = $this->getFlash($this->app);
 
-        return $this->render('talk/edit.twig', $data);
+        return $this->render('talk/create.twig', $data);
     }
 
     public function updateAction(Request $req)

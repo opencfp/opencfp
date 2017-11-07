@@ -1,0 +1,23 @@
+{% extends "layouts/splash.twig" %}
+{% block content %}
+    <div class="text-white w-1/6">
+        <a class="font-serif flex items-center justify-center mb-4" href="{{ url('homepage') }}">
+            <img class="w-10 mr-2" src="/assets/img/logo.svg" alt="OpenCFP">
+            <h1 class="font-normal text-white m-0">Open<span class="text-brand font-bold">CFP</span></h1>
+        </a>
+
+        {% include "_flash.twig" %}
+
+        <form method="post" action="{{ url('user_create') }}">
+            <label class="text-white text-sm">Email</label>
+            <input type="email" name="email" placeholder="you@example.com">
+            <label class="text-white text-sm">Password</label>
+            <input type="password" name="password" placeholder="•••••••">
+            <div class="text-sm my-4 flex items-center">
+                <input id="coc" class="mr-2" name="coc" type="checkbox">
+                <label for="coc" class="text-white">I agree to abide by the <a href="{{ app.config.application.coc_link }}" target="_blank" class="text-brand text-bold text-underline">Code of Conduct</a></label>
+            </div>
+            <button type="submit" class="btn btn-brand w-full">Signup</button>
+        </form>
+    </div>
+{% endblock %}

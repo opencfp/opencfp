@@ -1,0 +1,44 @@
+{% extends "layouts/default.twig" %}
+
+{% block header %}
+    <header id="hero" class="bg-cover p-24" style="background:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/assets/img/venue.jpg) no-repeat center -300px fixed;">
+        <div class="container mx-auto flex">
+            <div class="p-8 bg-brand text-white">
+                {% if cfp_open %}
+                    <h1>Call For Papers Now Open!</h1>
+                    <p>Submissions accepted until {{ site.enddate | date(site.date_format) }}</p>
+                {% else %}
+                    <h1>
+                        {% if site.show_submission_count %}
+                            Call for Papers ended with {{ number_of_talks }} submissions!
+                        {% else %}
+                            Call for Papers has ended!
+                        {% endif %}
+                    </h1>
+                    <p>Submissions were accepted until {{ site.enddate }}</p>
+                {% endif %}
+
+                <div class="mt-8">
+                    {% if cfp_open %}<a href="{{ url('user_new') }}" class="btn btn-white-o">Register Now</a>{% endif %}
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <div class="container mx-auto">
+        <div class="flex justify-between items-center px-4 py-6">
+            {% if site.event_location is defined and site.date_format is defined %}
+                <p>{{ site.title }} is from <span class="text-bold">{{ site.arrival|date(site.date_format, false) }}</span> to <span class="text-bold">{{ site.departure|date(site.date_format, false) }}</span> in {{ site.event_location }}</p>
+            {%  else %}
+                <p>For More Information About The Conference</p>
+            {% endif %}
+            <a href="{{ site.eventurl }}" class="btn btn-brand-o">Visit Conference Site</a>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    {% include "_flash.twig" %}
+
+    {% include "_marketing.twig" %}
+{% endblock %}

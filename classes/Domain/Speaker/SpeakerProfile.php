@@ -22,6 +22,11 @@ class SpeakerProfile
         $this->speaker = $speaker;
     }
 
+    public function needsProfile()
+    {
+        return $this->speaker->has_made_profile == 0;
+    }
+
     /**
      * Returns a collection of the speaker's talks.
      *

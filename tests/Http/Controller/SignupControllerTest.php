@@ -12,6 +12,7 @@ use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use Spot\Locator;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
@@ -102,10 +103,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $response = $controller->indexAction($req, $currentTimeString);
 
         // Make sure we see the signup page
-        $this->assertContains(
-            '<!-- page-id: user/create -->',
-            (string) $response
-        );
+        $this->assertContains('Signup', (string) $response);
     }
 
     public function badSignupDateProvider()
@@ -171,6 +169,7 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         $auth = m::mock(Authentication::class);
         $auth->shouldReceive('user')->andReturn($user);
+        $auth->shouldReceive('authenticate')->andReturn(true);
         $app->shouldReceive('offsetGet')->with(Authentication::class)->andReturn($auth);
 
         $accounts = m::mock(AccountManagement::class);
@@ -185,6 +184,16 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $spot = m::mock(Locator::class);
         $spot->shouldReceive('mapper')->andReturn($mapper);
         $app->shouldReceive('offsetGet')->with('spot')->andReturn($spot);
+
+        $request = Request::create('/signup', 'POST', [
+            'email' => 'test@example.com',
+            'password' => 'pa$$w3rd',
+            'coc' => '1',
+        ]);
+
+        $requestStack = m::mock('stdClass');
+        $requestStack->shouldReceive('getCurrentRequest')->andReturn($request);
+        $app->shouldReceive('offsetGet')->with('request_stack')->andReturn($requestStack);
 
         // Create an instance of the controller and we're all set
         $controller = new \OpenCFP\Http\Controller\SignupController();
@@ -262,6 +271,11 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
 
         $app->shouldReceive('offsetGet')->with(AccountManagement::class)->andReturn($accounts);
 
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('user')->andReturn($user);
+        $auth->shouldReceive('authenticate')->andReturn(true);
+        $app->shouldReceive('offsetGet')->with(Authentication::class)->andReturn($auth);
+
         // Create an instance of our database
         $speaker = new \stdClass;
         $mapper = m::mock('stdClass');
@@ -270,6 +284,16 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $spot = m::mock(Locator::class);
         $spot->shouldReceive('mapper')->andReturn($mapper);
         $app->shouldReceive('offsetGet')->with('spot')->andReturn($spot);
+
+        $request = Request::create('/signup', 'POST', [
+            'email' => 'test@example.com',
+            'password' => 'pa$$w3rd',
+            'coc' => '1',
+        ]);
+
+        $requestStack = m::mock('stdClass');
+        $requestStack->shouldReceive('getCurrentRequest')->andReturn($request);
+        $app->shouldReceive('offsetGet')->with('request_stack')->andReturn($requestStack);
 
         // Create an instance of the controller and we're all set
         $controller = new \OpenCFP\Http\Controller\SignupController();
@@ -355,6 +379,21 @@ class SignupControllerTest extends \PHPUnit\Framework\TestCase
         $spot = m::mock(Locator::class);
         $spot->shouldReceive('mapper')->andReturn($mapper);
         $app->shouldReceive('offsetGet')->with('spot')->andReturn($spot);
+
+        $auth = m::mock(Authentication::class);
+        $auth->shouldReceive('user')->andReturn($user);
+        $auth->shouldReceive('authenticate')->andReturn(true);
+        $app->shouldReceive('offsetGet')->with(Authentication::class)->andReturn($auth);
+
+        $request = Request::create('/signup', 'POST', [
+            'email' => 'test@example.com',
+            'password' => 'pa$$w3rd',
+            'coc' => '1',
+        ]);
+
+        $requestStack = m::mock('stdClass');
+        $requestStack->shouldReceive('getCurrentRequest')->andReturn($request);
+        $app->shouldReceive('offsetGet')->with('request_stack')->andReturn($requestStack);
 
         // Create an instance of the controller and we're all set
         $controller = new \OpenCFP\Http\Controller\SignupController();

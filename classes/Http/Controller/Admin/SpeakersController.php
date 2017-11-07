@@ -5,12 +5,13 @@ namespace OpenCFP\Http\Controller\Admin;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
-use Pagerfanta\View\TwitterBootstrap3View;
+use Pagerfanta\View\DefaultView;
 use Spot\Locator;
 use Spot\Mapper;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,7 +83,7 @@ class SpeakersController extends BaseController
         $routeGenerator = function ($page) {
             return '/admin/speakers?page=' . $page;
         };
-        $view = new TwitterBootstrap3View();
+        $view = new DefaultView();
         $pagination = $view->render(
             $pagerfanta,
             $routeGenerator,
@@ -238,5 +239,100 @@ class SpeakersController extends BaseController
 
             $talkMapper->delete($talk);
         }
+    }
+
+    public function demoteAction(Request $req)
+    {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
+        /** @var Authentication $auth */
+        $auth = $this->service(Authentication::class);
+
+        /** @var AccountManagement $accounts */
+        $accounts = $this->service(AccountManagement::class);
+
+        $admin = $auth->user();
+
+        if ($admin->getId() == $req->get('id')) {
+            $this->service('session')->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'Sorry, you cannot remove yourself as Admin.',
+            ]);
+
+            return $this->redirectTo('admin_speakers');
+        }
+
+        /* @var Locator $spot */
+        $spot = $this->service('spot');
+
+        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
+        $user_data = $mapper->get($req->get('id'))->toArray();
+        $user = $accounts->findByLogin($user_data['email']);
+
+        try {
+            $accounts->demote($user->getLogin());
+
+            $this->service('session')->set('flash', [
+                'type' => 'success',
+                'short' => 'Success',
+                'ext' => '',
+            ]);
+        } catch (\Exception $e) {
+            $this->service('session')->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'We were unable to remove the Admin. Please try again.',
+            ]);
+        }
+
+        return $this->redirectTo('admin_speakers');
+    }
+
+    public function promoteAction(Request $req)
+    {
+        if (!$this->userHasAccess()) {
+            return $this->redirectTo('dashboard');
+        }
+
+        /* @var AccountManagement $accounts */
+        $accounts = $this->service(AccountManagement::class);
+
+        /* @var Locator $spot */
+        $spot = $this->service('spot');
+
+        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
+        $user_data = $mapper->get($req->get('id'))->toArray();
+        $user = $accounts->findByLogin($user_data['email']);
+
+        if ($user->hasAccess('admin')) {
+            $this->service('session')->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'User already is in the Admin group.',
+            ]);
+
+            return $this->redirectTo('admin_speakers');
+        }
+
+        try {
+            $accounts->promote($user->getLogin());
+
+            $this->service('session')->set('flash', [
+                'type' => 'success',
+                'short' => 'Success',
+                'ext' => '',
+            ]);
+        } catch (\Exception $e) {
+            $this->service('session')->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'We were unable to promote the Admin. Please try again.',
+            ]);
+        }
+
+        return $this->redirectTo('admin_speakers');
     }
 }

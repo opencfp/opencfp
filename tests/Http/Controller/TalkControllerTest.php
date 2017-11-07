@@ -233,8 +233,8 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
             'Symfony\Component\HttpFoundation\Response',
             $response
         );
-        $this->assertContains('<h2 class="headline">Test Submission', (string) $response);
-        $this->assertContains('<p>Make sure we can see our own talk.', (string) $response);
+        $this->assertContains('Test Submission', (string) $response);
+        $this->assertContains('Make sure we can see our own talk.', (string) $response);
     }
 
     /**
@@ -345,7 +345,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
             $response
         );
         $this->assertContains(
-            '<input id="form-talk-title" type="text" name="title" class="form-control" placeholder="Talk Title"',
+            'Talk Title',
             (string)$response
         );
     }

@@ -20,7 +20,7 @@ class ForgotController extends BaseController
             'form' => $form->createView(),
             'current_page' => 'Forgot Password',
         ];
-        return $this->render('user/forgot_password.twig', $data);
+        return $this->render('security/forgot_password.twig', $data);
     }
 
     public function sendResetAction(Request $req)

@@ -20,6 +20,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 
     public function boot(Application $app)
     {
+        // @codingStandardsIgnoreStart
         /* @var $web ControllerCollection */
         $web = $app['controllers_factory'];
 
@@ -104,13 +105,9 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         // Admin::Speakers
         $web->get('/admin/speakers', 'OpenCFP\Http\Controller\Admin\SpeakersController::indexAction')->bind('admin_speakers');
         $web->get('/admin/speakers/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::viewAction')->bind('admin_speaker_view');
+        $web->get('/admin/speakers/{id}/promote', 'OpenCFP\Http\Controller\Admin\SpeakersController::promoteAction')->bind('admin_speaker_promote');
+        $web->get('/admin/speakers/{id}/demote', 'OpenCFP\Http\Controller\Admin\SpeakersController::demoteAction')->bind('admin_speaker_demote');
         $web->get('/admin/speakers/delete/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::deleteAction')->bind('admin_speaker_delete');
-        $web->get('/admin/admins', 'OpenCFP\Http\Controller\Admin\AdminsController::indexAction')->bind('admin_admins');
-        $web->get('/admin/admins/{id}', 'OpenCFP\Http\Controller\Admin\AdminsController::removeAction')->bind('admin_admin_delete');
-        $web->get('/admin/admins/{id}/promote', 'OpenCFP\Http\Controller\Admin\AdminsController::promoteAction')->bind('admin_admin_promote');
-
-        // Admin::Review
-        $web->get('/admin/review', 'OpenCFP\Http\Controller\Admin\ReviewController::indexAction')->bind('admin_reviews');
 
         // CSV Exports
         $web->get('/admin/export/csv', 'OpenCFP\Http\Controller\Admin\ExportsController::attributedTalksExportAction')->bind('admin_export_csv');
@@ -119,5 +116,6 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $web->get('/admin/export/csv/emails', 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction')->bind('admin_export_csv_emails');
 
         $app->mount('/', $web);
+        // @codingStandardsIgnoreEnd
     }
 }

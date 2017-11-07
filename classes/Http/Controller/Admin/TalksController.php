@@ -8,7 +8,7 @@ use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
-use Pagerfanta\View\TwitterBootstrap3View;
+use Pagerfanta\View\DefaultView;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -56,7 +56,7 @@ class TalksController extends BaseController
             $queryParams['page'] = $page;
             return '/admin/talks?' . http_build_query($queryParams);
         };
-        $view = new TwitterBootstrap3View();
+        $view = new DefaultView();
         $pagination = $view->render(
             $pagerfanta,
             $routeGenerator,
@@ -102,8 +102,8 @@ class TalksController extends BaseController
                 return $talk_mapper->getNotRatedByUserId($admin_user_id, $options);
                 break;
 
-            case 'rated':
-                return $talk_mapper->getRatedByUserId($admin_user_id, $options);
+            case 'toprated':
+                return $talk_mapper->getTopRatedByUserId($admin_user_id, $options);
                 break;
 
             case 'plusone':
