@@ -5,7 +5,7 @@
             <h2 class="mb-2">
                 {{ talk.title|raw }} <span class="text-grey-dark">&mdash; {{ speaker.name }}</span>
             </h2>
-            {% if talk.slides is not empty %}
+            {% if talk.slides is defined and talk.slides is not empty %}
                 <div><i class="fa fa-television mr-1"></i> <a class="hover:text-brand" href="{{ talk.slides }}">{{ talk.slides }}</a></div>
             {% endif %}
             <div class="mt-4 mb-6">
@@ -45,10 +45,10 @@
         </div>
     </div>
 
-    {% if talk.comments|length > 0 %}
+    {% if comments is defined and comments|length > 0 %}
         <h3 class="my-4"><i class="fa fa-comments"></i> Comments</h3>
 
-        {% for comment in talk.comments %}
+        {% for comment in comments %}
             <div class="flex text-sm mt-4">
                 <div>
                     <img class="w-16 mr-4 rounded" src="{{ comment.user.photo_path ? '/uploads/' ~ comment.user.photo_path : '/assets/img/dummyphoto.jpg' }}">

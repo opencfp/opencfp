@@ -166,6 +166,7 @@ class TalksController extends BaseController
             'talk_meta' => $talkMeta,
             'speaker' => new SpeakerProfile($speaker),
             'otherTalks' => $otherTalks,
+            'comments' => $talk->comments()->get(),
         ];
         return $this->render('admin/talks/view.twig', $templateData);
     }
