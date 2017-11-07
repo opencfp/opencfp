@@ -1,4 +1,6 @@
-<?php namespace OpenCFP\Provider;
+<?php
+
+namespace OpenCFP\Provider;
 
 use Cartalyst\Sentry\Facades\Native\Sentry;
 use Pimple\Container;

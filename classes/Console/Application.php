@@ -1,4 +1,6 @@
-<?php namespace OpenCFP\Console;
+<?php
+
+namespace OpenCFP\Console;
 
 use OpenCFP\Application as ApplicationContainer;
 use OpenCFP\Console\Command\AdminDemoteCommand;
