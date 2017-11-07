@@ -128,6 +128,9 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $admin->get('/export/csv/emails', 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction')->bind('admin_export_csv_emails');
         $app->mount('/admin/', $admin);
 
+        //Reviewer Routes
+        $web->get('/reviewer/', 'OpenCFP\Http\Controller\Reviewer\DashboardController::indexAction')->bind('reviewer');
+
         $app->mount('/', $web);
         // @codingStandardsIgnoreEnd
     }
