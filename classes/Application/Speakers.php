@@ -48,7 +48,7 @@ class Speakers
      *
      * @return SpeakerProfile
      */
-    public function findProfile() : SpeakerProfile
+    public function findProfile(): SpeakerProfile
     {
         $speaker = $this->identityProvider->getCurrentUser();
 
@@ -96,7 +96,7 @@ class Speakers
      * @return Talk
      * @throws \Exception
      */
-    public function submitTalk(TalkSubmission $submission) : Talk
+    public function submitTalk(TalkSubmission $submission): Talk
     {
         if (!$this->callForProposal->isOpen()) {
             throw new \Exception('You cannot create talks once the call for papers has ended.');

@@ -58,7 +58,7 @@ abstract class Form
      *
      * @return boolean
      */
-    public function hasRequiredFields() : bool
+    public function hasRequiredFields(): bool
     {
         $dataKeys = array_keys($this->_taintedData);
         $foundFields = array_intersect($this->_fieldList, $dataKeys);
@@ -106,7 +106,7 @@ abstract class Form
      *
      * @return array
      */
-    public function getTaintedData() : array
+    public function getTaintedData(): array
     {
         return $this->_taintedData;
     }
@@ -133,7 +133,7 @@ abstract class Form
      *
      * @return array
      */
-    public function getErrorMessages() : array
+    public function getErrorMessages(): array
     {
         return $this->_messages;
     }
@@ -143,7 +143,7 @@ abstract class Form
      *
      * @return boolean
      */
-    public function hasErrors() : bool
+    public function hasErrors(): bool
     {
         return count($this->_messages) > 0;
     }

@@ -74,7 +74,7 @@ class SignupForm extends Form
         );
     }
 
-    public function validateSpeakerPhoto() :bool
+    public function validateSpeakerPhoto(): bool
     {
         $allowedMimeTypes = [
             'image/jpeg',
@@ -117,7 +117,7 @@ class SignupForm extends Form
      * @return bool
      * @internal param string $email
      */
-    public function validateEmail() : bool
+    public function validateEmail(): bool
     {
         if (!isset($this->_taintedData['email']) || $this->_taintedData['email'] == '') {
             $this->_addErrorMessage('Missing email');
@@ -141,7 +141,7 @@ class SignupForm extends Form
      *
      * @return true|string
      */
-    public function validatePasswords() : bool
+    public function validatePasswords(): bool
     {
         $passwd = $this->_cleanData['password'];
         $passwd2 = $this->_cleanData['password2'];
@@ -178,7 +178,7 @@ class SignupForm extends Form
      *
      * @return boolean
      */
-    public function validateFirstName() : bool
+    public function validateFirstName(): bool
     {
         $first_name = $this->_cleanData['first_name'];
         $validation_response = true;
@@ -206,7 +206,7 @@ class SignupForm extends Form
      *
      * @return boolean
      */
-    public function validateLastName() : bool
+    public function validateLastName(): bool
     {
         $last_name = $this->_cleanData['last_name'];
         $validation_response = true;
@@ -229,19 +229,19 @@ class SignupForm extends Form
         return $validation_response;
     }
 
-    public function validateCompany() : bool
+    public function validateCompany(): bool
     {
         // $company = $this->_cleanData['company'];
         return true;
     }
 
-    public function validateTwitter() : bool
+    public function validateTwitter(): bool
     {
         // $twitter = $this->_cleanData['twitter'];
         return true;
     }
 
-    public function validateUrl() : bool
+    public function validateUrl(): bool
     {
         if (preg_match('/https:\/\/joind\.in\/user\/[a-zA-Z0-9]{1,25}/', $this->_cleanData['url'])
             || !isset($this->_cleanData['url'])
@@ -259,7 +259,7 @@ class SignupForm extends Form
      *
      * @return boolean
      */
-    public function validateSpeakerInfo() : bool
+    public function validateSpeakerInfo(): bool
     {
         $speakerInfo = filter_var(
             $this->_cleanData['speaker_info'],
@@ -282,7 +282,7 @@ class SignupForm extends Form
      *
      * @return boolean
      */
-    public function validateSpeakerBio() : bool
+    public function validateSpeakerBio(): bool
     {
         $speaker_bio = filter_var(
             $this->_cleanData['speaker_bio'],
@@ -326,7 +326,7 @@ class SignupForm extends Form
         }
     }
 
-    private function validateAgreeCoc() : bool
+    private function validateAgreeCoc(): bool
     {
         if (!$this->getOption('has_coc')) {
             return true;

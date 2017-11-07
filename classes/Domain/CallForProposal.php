@@ -11,7 +11,7 @@ namespace OpenCFP\Domain;
 class CallForProposal
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
     private $endDate;
 

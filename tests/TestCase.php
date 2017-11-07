@@ -112,7 +112,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $this;
     }
 
-    public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null) : TestResponse
+    public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
     {
         $request = Request::create(
             $uri,
@@ -150,7 +150,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $this->call('DELETE', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function callForPapersIsOpen() : self
+    public function callForPapersIsOpen(): self
     {
         $cfp = Mockery::mock(CallForProposal::class);
         $cfp->shouldReceive('isOpen')->andReturn(true);
@@ -159,7 +159,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $this;
     }
 
-    public function callForPapersIsClosed() : self
+    public function callForPapersIsClosed(): self
     {
         $cfp = Mockery::mock(CallForProposal::class);
         $cfp->shouldReceive('isOpen')->andReturn(false);
@@ -168,7 +168,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $this;
     }
 
-    public function isOnlineConference() : self
+    public function isOnlineConference(): self
     {
         $config = $this->app['config'];
         $config['application']['online_conference'] = true;
