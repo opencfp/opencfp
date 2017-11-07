@@ -33,7 +33,7 @@ class User extends Eloquent
      * @param int $talkId
      * @return Collection|Talk[]
      */
-    public function getOtherTalks($talkId = 0) : Collection
+    public function getOtherTalks($talkId = 0): Collection
     {
         $allTalks = $this->talks;
         $otherTalks = $allTalks->filter(function ($talk) use ($talkId) {

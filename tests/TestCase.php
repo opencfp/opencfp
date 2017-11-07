@@ -177,7 +177,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $this;
     }
 
-    public function asAdmin(int $id = 1) : self
+    public function asAdmin(int $id = 1): self
     {
         // Set things up so Sentry believes we're logged in
         $user = Mockery::mock(UserInterface::class);
