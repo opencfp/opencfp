@@ -8,6 +8,7 @@ use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Entity\Talk;
 use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Http\API\TalkController;
+use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\Request;
 
 class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
@@ -46,7 +47,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->sut->handleSubmitTalk($request);
 
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertContains('Happy Path Submission', $response->getContent());
     }
 
@@ -57,7 +58,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->sut->handleSubmitTalk($request);
 
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertContains('The description of the talk must be included', $response->getContent());
     }
 
@@ -71,7 +72,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->sut->handleSubmitTalk($request);
 
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 
     /** @test */
@@ -83,7 +84,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->sut->handleViewTalk($this->getValidRequest(), 1);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
         $this->assertContains('Testy Talk', $response->getContent());
     }
 
@@ -95,7 +96,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->sut->handleViewTalk($this->getValidRequest(), 1);
 
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
         $this->assertContains('Unauthorized', $response->getContent());
     }
 
@@ -110,7 +111,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->sut->handleViewAllTalks($this->getValidRequest());
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
         $this->assertContains('Testy Talk', $response->getContent());
         $this->assertContains('Another Talk', $response->getContent());
         $this->assertContains('Yet Another Talk', $response->getContent());
@@ -124,7 +125,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->sut->handleViewAllTalks($this->getValidRequest());
 
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
         $this->assertContains('Unauthorized', $response->getContent());
     }
 
