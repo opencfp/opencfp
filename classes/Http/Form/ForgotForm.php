@@ -1,4 +1,5 @@
 <?php
+
 namespace OpenCFP\Http\Form;
 
 use Symfony\Component\Form\AbstractType;

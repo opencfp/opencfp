@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OpenCFP\Domain\Services\TalkRating;
 
 class TalkRatingException extends \RuntimeException
