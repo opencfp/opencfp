@@ -10,6 +10,7 @@ use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
+use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Spot\Locator;
@@ -30,7 +31,7 @@ class TalksController extends BaseController
             'sort' => $req->get('sort'),
         ];
 
-        $pager_formatted_talks = $this->getFilteredTalks(
+        $pager_formatted_talks = $this->service(TalkFilter::class)->getFilteredTalks(
             $req->get('filter'),
             $admin_user_id,
             $options
@@ -55,51 +56,6 @@ class TalksController extends BaseController
         ];
 
         return $this->render('admin/talks/index.twig', $templateData);
-    }
-
-    private function getFilteredTalks($filter = null, $admin_user_id, $options = [])
-    {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        /** @var \OpenCFP\Domain\Entity\Mapper\Talk $talk_mapper */
-        $talk_mapper = $spot->mapper(TalkEntity::class);
-        if ($filter === null) {
-            return $talk_mapper->getAllPagerFormatted($admin_user_id, $options);
-        }
-
-        switch (strtolower($filter)) {
-            case 'selected':
-                return $talk_mapper->getSelected($admin_user_id, $options);
-                break;
-
-            case 'notviewed':
-                return $talk_mapper->getNotViewedByUserId($admin_user_id, $options);
-                break;
-
-            case 'notrated':
-                return $talk_mapper->getNotRatedByUserId($admin_user_id, $options);
-                break;
-
-            case 'toprated':
-                return $talk_mapper->getTopRatedByUserId($admin_user_id, $options);
-                break;
-
-            case 'plusone':
-                return $talk_mapper->getPlusOneByUserId($admin_user_id, $options);
-                break;
-
-            case 'viewed':
-                return $talk_mapper->getViewedByUserId($admin_user_id, $options);
-                break;
-
-            case 'favorited':
-                return $talk_mapper->getFavoritesByUserId($admin_user_id, $options);
-                break;
-
-            default:
-                return $talk_mapper->getAllPagerFormatted($admin_user_id, $options);
-        }
     }
 
     public function viewAction(Request $req)
