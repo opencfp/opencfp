@@ -3,20 +3,27 @@
 namespace OpenCFP\Test\Domain\Model;
 
 use OpenCFP\Domain\Model\Airport;
-use OpenCFP\Test\DatabaseTestCase;
+use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\TestCase;
 
 /**
  * @group db
  */
-class AirportTest extends DatabaseTestCase
+class AirportTest extends TestCase
 {
+    use DatabaseTransaction;
+
     private $airports;
 
-    protected function setUp()
+    public function setUp()
     {
-        parent::setUp();
-
+        $this->setUpDatabase();
         $this->airports = $this->getAirport();
+    }
+
+    public function tearDown()
+    {
+        $this->tearDownDatabase();
     }
 
     /** @test */

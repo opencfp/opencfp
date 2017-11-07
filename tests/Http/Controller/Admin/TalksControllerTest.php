@@ -2,44 +2,28 @@
 
 namespace OpenCFP\Test\Http\Controller\Admin;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
-use OpenCFP\Application;
-use OpenCFP\Domain\Entity\Mapper;
+use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Environment;
-use Spot\Query;
-use Twig_Environment;
+use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\TestCase;
 
-/**
- * Class TalksControllerTest
- * @package OpenCFP\Test\Http\Controller\Admin
- * @group db
- */
-class TalksControllerTest extends \PHPUnit\Framework\TestCase
+class TalksControllerTest extends TestCase
 {
-    private $app;
+    use DatabaseTransaction;
 
-    protected function setUp()
+    public function setUp()
     {
-        // Create our Application object
-        $this->app = new Application(BASE_PATH, Environment::testing());
-        $this->app['session.test'] = true;
+        parent::setUp();
+        $this->asAdmin();
+        $this->setUpDatabase();
+    }
 
-        // Create a test double for our User entity
-        $user = m::mock(UserInterface::class);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
-        $user->shouldReceive('getId')->andReturn(1);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
-
-        // Create a test double for our Sentry object
-        $auth = m::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-        $auth->shouldReceive('userId')->andReturn(1);
-
-        $this->app[Authentication::class] = $auth;
-        $this->app['user'] = $user;
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->tearDownDatabase();
     }
 
     /**
@@ -50,14 +34,15 @@ class TalksControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function indexPageDisplaysTalksCorrectly()
     {
-        $userId = $this->app['user']->getId();
-
+        /** @var Authentication $auth */
+        $auth = $this->app[Authentication::class];
+        $userId = $auth->user()->getId();
         // Create our fake talk
         $talk = m::mock(\OpenCFP\Domain\Entity\Talk::class);
         $talk->shouldReceive('save');
         $talk->shouldReceive('set')
-            ->with($this->app['user'])
-            ->andSet('speaker', $this->app['user']);
+            ->with($auth->user())
+            ->andSet('speaker', $auth->user());
         $userDetails = [
             'id' => $userId,
             'first_name' => 'Test',
@@ -86,7 +71,7 @@ class TalksControllerTest extends \PHPUnit\Framework\TestCase
         ]];
         $userMapper = m::mock(\OpenCFP\Domain\Entity\Mapper\User::class);
         $userMapper->shouldReceive('migrate');
-        $userMapper->shouldReceive('build')->andReturn($this->app['user']);
+        $userMapper->shouldReceive('build')->andReturn($auth->user());
         $userMapper->shouldReceive('save')->andReturn(true);
 
         $talkMapper = m::mock(\OpenCFP\Domain\Entity\Mapper\Talk::class);
@@ -125,23 +110,10 @@ class TalksControllerTest extends \PHPUnit\Framework\TestCase
         $req->query = $paramBag;
         $req->shouldReceive('getRequestUri')->andReturn('foo');
 
-        /* @var Twig_Environment $twig */
-        $twig = $this->app['twig'];
-
-        $twig->addGlobal(
-            'user_is_admin',
-            $this->app['user']->hasAccess('admin')
-        );
-
-        ob_start();
-        $this->app->run();
-        ob_end_clean();
-
-        $controller = new \OpenCFP\Http\Controller\Admin\TalksController();
-        $controller->setApplication($this->app);
-        $response = $controller->indexAction($req);
-        $this->assertContains('Test Title', (string) $response);
-        $this->assertContains('Test User', (string) $response);
+        $this->get('/admin/talks')
+            ->assertSuccessful()
+            ->assertSee('Test Title')
+            ->assertSee('Test User');
     }
 
     /**
@@ -197,53 +169,37 @@ class TalksControllerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Verify that not found talk redirects and sets flash error message
+     * Verify that not found talk redirects
      *
      * @test
      */
-    public function talkNotFoundHasFlashMessage()
+    public function talkNotFoundRedirectsBackToTalksOverview()
     {
-        $talkId = uniqid();
+        $this->get('/admin/talks/255')
+            ->assertRedirect()
+            ->assertNotSee('<strong>Submitted by:</strong>');
+    }
 
-        $query = m::mock(Query::class);
-        $query->shouldReceive('with')->with(['comments'])->andReturnSelf();
-        $query->shouldReceive('first')->andReturnNull();
+    /**
+     * @test
+     */
+    public function talkWithNoMetaDisplaysCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create();
 
-        $talkMapper = m::mock(Mapper\Talk::class);
-        $talkMapper->shouldReceive('where')->with(['id' => $talkId])->andReturn($query);
+        $this->get('/admin/talks/'. $talk->first()->id)
+            ->assertSuccessful();
+    }
 
-        $talkMetaMapper = m::mock(\Spot\Mapper::class);
+    /**
+     * @test
+     */
+    public function previouslyViewedTalksDisplaysCorrectly()
+    {
+        $meta = factory(TalkMeta::class, 1)->create();
+        $this->asAdmin($meta->first()->admin_user_id);
 
-        $spot = m::mock('Spot\Locator');
-        $spot->shouldReceive('mapper')
-            ->with(\OpenCFP\Domain\Entity\Talk::class)
-            ->andReturn($talkMapper);
-        $spot->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\TalkMeta::class)->andReturn($talkMetaMapper);
-
-        $this->app['spot'] = $spot;
-
-        // Use our pre-configured Application object
-        ob_start();
-        $this->app->run();
-        ob_end_clean();
-
-        // Create our Request object
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
-        $req->shouldReceive('get')->with('id')->andReturn($talkId);
-
-        // Execute the controller and capture the output
-        $controller = new \OpenCFP\Http\Controller\Admin\TalksController();
-        $controller->setApplication($this->app);
-        $response = $controller->viewAction($req);
-
-        $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
-            $response
-        );
-
-        $this->assertContains(
-            'Could not find requested talk',
-            $this->app['session']->get('flash')
-        );
+        $this->get('/admin/talks/'. $meta->first()->talk_id)
+            ->assertSuccessful();
     }
 }
