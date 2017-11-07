@@ -122,13 +122,12 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
-        $talkId = $req->get('id');
-        $talk = Talk::where('id', $talkId)
-            ->with('comments')
+        $spot = $this->service('spot');
+        $talk_mapper = $spot->mapper(Talk::class);
+        $meta_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
+        $talk_id = $req->get('id');
+        $talk = $talk_mapper->where(['id' => $talk_id])
+            ->with(['comments'])
             ->first();
 
         if (!$talk instanceof Talk) {
