@@ -38,6 +38,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
     public function it_fails_when_given_an_invalid_environment_string()
     {
         $this->expectException(\InvalidArgumentException::class);
+
         Environment::fromString('foo');
     }
 }

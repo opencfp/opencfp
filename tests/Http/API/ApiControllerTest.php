@@ -39,9 +39,11 @@ class ApiControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function it_warns_when_successful_status_code_is_used_for_error()
     {
+        $this->sut->setStatusCode(HttpFoundation\Response::HTTP_OK);
+
         $this->expectException(\PHPUnit\Framework\Exception::class);
-        $this->sut->setStatusCode(HttpFoundation\Response::HTTP_OK)
-            ->respondWithError('Error with success status code');
+
+        $this->sut->respondWithError('Error with success status code');
     }
 
     /** @test */

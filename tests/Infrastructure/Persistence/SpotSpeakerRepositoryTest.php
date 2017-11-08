@@ -22,11 +22,8 @@ class SpotSpeakerRepositoryTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SpeakerRepository::class, $repository);
     }
 
-    /**
-     */
     public function testFindByThrowsEntityNotFoundException()
     {
-        $this->expectException(\OpenCFP\Domain\EntityNotFoundException::class);
         $id = $this->getFaker()->randomNumber();
 
         $mapper = $this->getMapperMock();
@@ -39,6 +36,8 @@ class SpotSpeakerRepositoryTest extends \PHPUnit\Framework\TestCase
         ;
 
         $repository = new SpotSpeakerRepository($mapper);
+
+        $this->expectException(\OpenCFP\Domain\EntityNotFoundException::class);
 
         $repository->findById($id);
     }

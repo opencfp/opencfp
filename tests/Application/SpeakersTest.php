@@ -77,8 +77,10 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
      */
     public function it_throws_an_exception_when_speaker_is_not_found()
     {
-        $this->expectException(\OpenCFP\Domain\EntityNotFoundException::class);
         $this->trainStudentRepositoryToThrowEntityNotFoundException();
+
+        $this->expectException(\OpenCFP\Domain\EntityNotFoundException::class);
+
         $this->sut->findProfile();
     }
 
@@ -99,10 +101,12 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
      */
     public function it_disallows_speakers_viewing_talks_other_than_their_own()
     {
-        $this->expectException(\OpenCFP\Application\NotAuthorizedException::class);
         // We use relation to grab speakers talks. So if they have none, someone is doing
         // something screwy attempting to get a talk they should be able to.
         $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerWithNoTalks());
+
+        $this->expectException(\OpenCFP\Application\NotAuthorizedException::class);
+
         $this->sut->getTalk(1);
     }
 
@@ -125,8 +129,10 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
      */
     public function it_guards_if_spot_relation_ever_returns_talks_that_arent_owned_by_speaker()
     {
-        $this->expectException(\OpenCFP\Application\NotAuthorizedException::class);
         $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerFromMisbehavingSpot());
+
+        $this->expectException(\OpenCFP\Application\NotAuthorizedException::class);
+
         $this->sut->getTalk(1);
     }
 
@@ -176,7 +182,6 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
      */
     public function it_doesnt_allow_talk_submissions_after_cfp_has_ended()
     {
-        $this->expectException(\Exception::class);
         $this->callForProposal->shouldReceive('isOpen')
             ->once()
             ->andReturn(false);
@@ -187,6 +192,8 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
             'category' => 'api',
             'level' => 'mid',
         ]);
+
+        $this->expectException(\Exception::class);
 
         $this->sut->submitTalk($submission);
     }
