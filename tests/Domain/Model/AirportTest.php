@@ -42,6 +42,7 @@ class AirportTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('not found');
+
         $this->airports->withCode('foobarbaz');
     }
 
