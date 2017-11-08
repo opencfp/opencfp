@@ -13,7 +13,7 @@ class SignupController extends BaseController
 {
     use FlashableTrait;
 
-    public function indexAction(Request $req, $currentTimeString = 'now')
+    public function indexAction()
     {
         $auth = $this->service(Authentication::class);
 
@@ -21,11 +21,9 @@ class SignupController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $current = new \DateTime($currentTimeString);
-
         $cfp = $this->service('callforproposal');
 
-        if (! $cfp->isOpen($current)) {
+        if (! $cfp->isOpen()) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',

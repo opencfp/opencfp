@@ -6,11 +6,9 @@ use Cartalyst\Sentry\Users\UserInterface;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Mockery as m;
-use OpenCFP\Application;
-use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Environment;
+use OpenCFP\Test\TestCase;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -21,104 +19,36 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */
-class SignupControllerTest extends \PHPUnit\Framework\TestCase
+class SignupControllerTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider badSignupDateProvider
      */
-    public function signupAfterEnddateShowsError($endDateString, $currentTimeString)
+    public function signupAfterEnddateShowsError()
     {
-        // report that there is no active user
-        $auth = m::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(false);
-
-        $app = m::mock(\OpenCFP\Application::class);
-        // Create a session
-        $app->shouldReceive('redirect');
-
-        $app->shouldReceive('offsetGet')->with(Authentication::class)->andReturn($auth);
-        $app->shouldReceive('config')->with('application.enddate')->andReturn($endDateString);
-
-        // Create a session
-        $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
-
-        // Create our URL generator
-        $url = 'http://opencfp/signup';
-        $url_generator = m::mock(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class);
-        $url_generator->shouldReceive('generate')->andReturn($url);
-        $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
-
-        $app->shouldReceive('offsetGet')->with('callforproposal')->andReturn(
-            new CallForProposal(new \DateTime($endDateString))
-        );
-
-        $controller = new \OpenCFP\Http\Controller\SignupController();
-        $controller->setApplication($app);
-
-        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
-        $controller->indexAction($req, $currentTimeString);
-
-        $expectedMessage = 'Sorry, the call for papers has ended.';
-        $session_details = $app['session']->get('flash');
-
-        $this->assertContains(
-            $expectedMessage,
-            $session_details['ext'],
-            'Did not get cfp closed message'
-        );
+        $this->callForPapersIsClosed()->get('/signup')
+            ->assertRedirect()
+            ->assertNotSee('Signup');
     }
 
     /**
      * @test
-     * @dataProvider goodSignupDateProvider
      */
-    public function signupBeforeEnddateRendersSignupForm($endDateString, $currentTimeString)
+    public function signupBeforeEnddateRendersSignupForm()
     {
-        $app = new Application(BASE_PATH, Environment::testing());
-        $app['session.test'] = true;
-
-        // set the application end date configuration
-        $config = $app['config'];
-        $config['application']['enddate'] = $endDateString;
-        $app['config'] = $config;
-
-        // report that there is no active user
-        $auth = m::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(false);
-        $app[Authentication::class] = $auth;
-
-        $app['callforproposal'] = new CallForProposal(
-            new \DateTime($endDateString)
-        );
-
-        ob_start();
-        $app->run();
-        ob_end_clean();
-
-        $controller = new \OpenCFP\Http\Controller\SignupController();
-        $controller->setApplication($app);
-
-        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
-        $response = $controller->indexAction($req, $currentTimeString);
-
-        // Make sure we see the signup page
-        $this->assertContains('Signup', (string) $response);
+        $this->callForPapersIsOpen()->get('/signup')
+            ->assertSuccessful()
+            ->assertSee('Signup');
     }
 
-    public function badSignupDateProvider()
+    /**
+     * @test
+     */
+    public function signUpRedirectsWhenLoggedIn()
     {
-        return [
-            [$close = 'Jan 1, 2000', $now = 'Jan 2, 2000'],
-        ];
-    }
-
-    public function goodSignupDateProvider()
-    {
-        return [
-            [$close = 'Jan 1, 2000', $now = 'Jan 1, 2000 3:00 PM'],
-            ['Jan 2, 2000', 'Jan 1, 2000'],
-        ];
+        $this->asAdmin()->get('/signup')
+            ->assertRedirect()
+            ->assertNotSee('Signup');
     }
 
     /**
