@@ -5,10 +5,10 @@ namespace OpenCFP\Test\Http\Controller\Admin;
 use Mockery;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
-use OpenCFP\Test\TestCase;
+use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class SpeakerAccessTest extends TestCase
+class SpeakerAccessTest extends WebTestCase
 {
     /**
      * @test

@@ -8,7 +8,7 @@ use HTMLPurifier_Config;
 use Mockery as m;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Test\TestCase;
+use OpenCFP\Test\WebTestCase;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */
-class SignupControllerTest extends TestCase
+class SignupControllerTest extends WebTestCase
 {
     /**
      * @test
