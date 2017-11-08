@@ -16,15 +16,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends BaseController
 {
-    use AdminAccessTrait;
     use FlashableTrait;
 
     public function indexAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         /* @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
@@ -127,13 +122,9 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         $talkId = $req->get('id');
         $talk = Talk::where('id', $talkId)
-            ->with('comments')
+            ->with(['comments'])
             ->first();
 
         if (!$talk instanceof Talk) {
@@ -173,9 +164,6 @@ class TalksController extends BaseController
 
     public function rateAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return false;
-        }
         /** @var TalkRatingStrategy $talkRatingStrategy */
         $talkRatingStrategy = $this->service(TalkRatingStrategy::class);
 
@@ -199,10 +187,6 @@ class TalksController extends BaseController
      */
     public function favoriteAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return false;
-        }
-
         /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
@@ -252,10 +236,6 @@ class TalksController extends BaseController
      */
     public function selectAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return false;
-        }
-
         $status = true;
 
         if ($req->get('delete') !== null) {
@@ -282,10 +262,6 @@ class TalksController extends BaseController
 
     public function commentCreateAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return false;
-        }
-
         $talk_id = (int)$req->get('id');
 
         $user = $this->service(Authentication::class)->user();

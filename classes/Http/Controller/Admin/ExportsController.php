@@ -5,45 +5,26 @@ namespace OpenCFP\Http\Controller\Admin;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\BaseController;
 use Spot\Locator;
-use Symfony\Component\HttpFoundation\Request;
 
 class ExportsController extends BaseController
 {
-    use AdminAccessTrait;
-
-    public function anonymousTalksExportAction(Request $req)
+    public function anonymousTalksExportAction()
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         return $this->talksExportAction(false);
     }
 
-    public function attributedTalksExportAction(Request $req)
+    public function attributedTalksExportAction()
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         return $this->talksExportAction(true);
     }
 
-    public function selectedTalksExportAction(Request $req)
+    public function selectedTalksExportAction()
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         return $this->talksExportAction(true, ['selected' => 1]);
     }
 
-    public function emailExportAction(Request $req)
+    public function emailExportAction()
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         /* @var Locator $spot */
         $spot = $this->service('spot');
 

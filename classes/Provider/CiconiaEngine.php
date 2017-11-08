@@ -1,4 +1,5 @@
 <?php
+
 namespace OpenCFP\Provider;
 
 use Aptoma\Twig\Extension\MarkdownEngineInterface;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OpenCFP\Domain\Model;
 
 class TalkComment extends Eloquent

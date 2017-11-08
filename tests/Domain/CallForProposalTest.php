@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Domain;
 
-use DateTime;
 use OpenCFP\Domain\CallForProposal;
 
 class CallForProposalTest extends \PHPUnit\Framework\TestCase
@@ -13,7 +12,7 @@ class CallForProposalTest extends \PHPUnit\Framework\TestCase
      */
     public function it_should_tell_whether_or_not_the_cfp_is_open($endDate)
     {
-        $cfp = new CallForProposal(new DateTime($endDate));
+        $cfp = new CallForProposal(new \DateTime($endDate));
         $this->assertTrue($cfp->isOpen());
     }
 
@@ -28,7 +27,7 @@ class CallForProposalTest extends \PHPUnit\Framework\TestCase
     /** @test */
     public function it_should_say_cfp_is_closed_after_end_date_has_passed()
     {
-        $cfp = new CallForProposal(new DateTime('-1 day'));
+        $cfp = new CallForProposal(new \DateTime('-1 day'));
         $this->assertFalse($cfp->isOpen());
     }
 }

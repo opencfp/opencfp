@@ -50,7 +50,7 @@ class DashboardControllerTest extends TestCase
 
         $this->talkListMock();
 
-        $this->get('/admin')
+        $this->get('/admin/')
             ->assertSuccessful()
             ->assertSee('First Talk')
             ->assertSee('The bug slayer strikes again!')

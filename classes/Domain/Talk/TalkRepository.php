@@ -1,4 +1,6 @@
-<?php namespace OpenCFP\Domain\Talk;
+<?php
+
+namespace OpenCFP\Domain\Talk;
 
 use OpenCFP\Domain\Entity\Talk;
 

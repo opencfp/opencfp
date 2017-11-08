@@ -2,13 +2,13 @@
 
 namespace OpenCFP\Test\Http\API;
 
-use Exception;
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\API\ProfileController;
+use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
@@ -37,7 +37,7 @@ class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->sut->handleShowSpeakerProfile($this->getRequest());
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
         $this->assertContains('Hamburglar', $response->getContent());
     }
 
@@ -49,7 +49,7 @@ class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $this->sut->handleShowSpeakerProfile($this->getRequest());
 
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
         $this->assertContains('Unauthorized', $response->getContent());
     }
 
@@ -57,11 +57,11 @@ class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
     public function it_responds_internal_error_when_something_bad_happens()
     {
         $this->speakers->shouldReceive('findProfile')
-            ->andThrow(new Exception('Zomgz it blew up somehow.'));
+            ->andThrow(new \Exception('Zomgz it blew up somehow.'));
 
         $response = $this->sut->handleShowSpeakerProfile($this->getRequest());
 
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
         $this->assertContains('Zomgz it blew up somehow', $response->getContent());
     }
 

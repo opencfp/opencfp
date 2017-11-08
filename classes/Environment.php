@@ -1,6 +1,6 @@
-<?php namespace OpenCFP;
+<?php
 
-use InvalidArgumentException;
+namespace OpenCFP;
 
 class Environment
 {
@@ -13,7 +13,7 @@ class Environment
     private function __construct($slug)
     {
         if (! in_array($slug, ['production', 'development', 'testing'])) {
-            throw new InvalidArgumentException('Invalid environment specified.');
+            throw new \InvalidArgumentException('Invalid environment specified.');
         }
 
         $this->slug = (string) $slug;
