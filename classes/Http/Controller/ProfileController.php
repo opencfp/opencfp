@@ -14,14 +14,7 @@ class ProfileController extends BaseController
 
     public function editAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
-        $user = $auth->user();
+        $user = $this->service(Authentication::class)->user();
 
         if ((string) $user->getId() !== $req->get('id')) {
             $this->service('session')->set('flash', [
@@ -63,14 +56,7 @@ class ProfileController extends BaseController
 
     public function processAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
-        $user = $auth->user();
+        $user = $this->service(Authentication::class)->user();
 
         if ((string) $user->getId() !== $req->get('id')) {
             $this->service('session')->set('flash', [
@@ -179,28 +165,14 @@ class ProfileController extends BaseController
         return $this->render('user/edit.twig', $form_data);
     }
 
-    public function passwordAction(Request $req)
+    public function passwordAction()
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
         return $this->render('user/change_password.twig');
     }
 
     public function passwordProcessAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
-        $user = $auth->user();
+        $user = $this->service(Authentication::class)->user();
 
         /**
          * Okay, the logic is kind of weird but we can use the SignupForm

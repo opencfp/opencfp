@@ -4,6 +4,7 @@ namespace OpenCFP\Provider\Gateways;
 
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\AdminAccess;
+use OpenCFP\Infrastructure\Auth\SpeakerAccess;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
@@ -53,6 +54,10 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             $app->requireHttps();
         }
 
+        $asSpeaker = function () use ($app) {
+            return SpeakerAccess::userHasAccess($app);
+        };
+
         $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')->bind('homepage');
         $web->get('/package', 'OpenCFP\Http\Controller\PagesController::showSpeakerPackage')->bind('speaker_package');
         $web->get('/ideas', 'OpenCFP\Http\Controller\PagesController::showTalkIdeas')->bind('talk_ideas');
@@ -61,12 +66,12 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $web->get('/dashboard', 'OpenCFP\Http\Controller\DashboardController::showSpeakerProfile')->bind('dashboard');
 
         // Talks
-        $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')->bind('talk_edit');
-        $web->get('/talk/create', 'OpenCFP\Http\Controller\TalkController::createAction')->bind('talk_new');
-        $web->post('/talk/create', 'OpenCFP\Http\Controller\TalkController::processCreateAction')->bind('talk_create');
-        $web->post('/talk/update', 'OpenCFP\Http\Controller\TalkController::updateAction')->bind('talk_update');
-        $web->post('/talk/delete', 'OpenCFP\Http\Controller\TalkController::deleteAction')->bind('talk_delete');
-        $web->get('/talk/{id}', 'OpenCFP\Http\Controller\TalkController::viewAction')->bind('talk_view');
+        $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')->bind('talk_edit')->before($asSpeaker);
+        $web->get('/talk/create', 'OpenCFP\Http\Controller\TalkController::createAction')->bind('talk_new')->before($asSpeaker);
+        $web->post('/talk/create', 'OpenCFP\Http\Controller\TalkController::processCreateAction')->bind('talk_create')->before($asSpeaker);
+        $web->post('/talk/update', 'OpenCFP\Http\Controller\TalkController::updateAction')->bind('talk_update')->before($asSpeaker);
+        $web->post('/talk/delete', 'OpenCFP\Http\Controller\TalkController::deleteAction')->bind('talk_delete')->before($asSpeaker);
+        $web->get('/talk/{id}', 'OpenCFP\Http\Controller\TalkController::viewAction')->bind('talk_view')->before($asSpeaker);
 
         // Login/Logout
         $web->get('/login', 'OpenCFP\Http\Controller\SecurityController::indexAction')->bind('login');
@@ -79,12 +84,12 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $web->get('/signup/success', 'OpenCFP\Http\Controller\SignupController::successAction')->bind('user_success');
 
         // Edit Profile/Account
-        $web->get('/profile/edit/{id}', 'OpenCFP\Http\Controller\ProfileController::editAction')->bind('user_edit');
-        $web->post('/profile/edit', 'OpenCFP\Http\Controller\ProfileController::processAction')->bind('user_update');
+        $web->get('/profile/edit/{id}', 'OpenCFP\Http\Controller\ProfileController::editAction')->bind('user_edit')->before($asSpeaker);
+        $web->post('/profile/edit', 'OpenCFP\Http\Controller\ProfileController::processAction')->bind('user_update')->before($asSpeaker);
 
         // Change/forgot Password
-        $web->get('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordAction')->bind('password_edit');
-        $web->post('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordProcessAction')->bind('password_change');
+        $web->get('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordAction')->bind('password_edit')->before($asSpeaker);
+        $web->post('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordProcessAction')->bind('password_change')->before($asSpeaker);
         $web->get('/forgot', 'OpenCFP\Http\Controller\ForgotController::indexAction')->bind('forgot_password');
         $web->post('/forgot', 'OpenCFP\Http\Controller\ForgotController::sendResetAction')->bind('forgot_password_create');
         $web->get('/forgot_success', 'OpenCFP\Http\Controller\ForgotController::successAction')->bind('forgot_password_success');
