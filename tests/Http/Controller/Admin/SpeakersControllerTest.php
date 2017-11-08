@@ -51,7 +51,7 @@ class SpeakersControllerTest extends \PHPUnit\Framework\TestCase
         $speakerId = uniqid();
 
         // Override our mapper with the double
-        $spot = m::mock('Spot\Locator');
+        $spot = m::mock(\Spot\Locator::class);
         $mapper = m::mock(\OpenCFP\Domain\Entity\Mapper\User::class);
         $mapper->shouldReceive('get')
             ->andReturn([]);
@@ -67,7 +67,7 @@ class SpeakersControllerTest extends \PHPUnit\Framework\TestCase
         ob_end_clean();
 
         // Create our Request object
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $req->shouldReceive('get')->with('id')->andReturn($speakerId);
 
         // Execute the controller and capture the output
@@ -76,7 +76,7 @@ class SpeakersControllerTest extends \PHPUnit\Framework\TestCase
         $response = $controller->viewAction($req);
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
+            \Symfony\Component\HttpFoundation\RedirectResponse::class,
             $response
         );
 

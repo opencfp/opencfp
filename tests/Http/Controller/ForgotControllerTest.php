@@ -62,16 +62,16 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $this->app[AccountManagement::class] = $accounts;
 
         // Override our reset_emailer service
-        $reset_emailer = m::mock('OpenCFP\Provider\ResetEmailerServiceProvider');
+        $reset_emailer = m::mock(\OpenCFP\Provider\ResetEmailerServiceProvider::class);
         $reset_emailer->shouldReceive('send')->andReturn(true);
         $this->app['reset_emailer'] = $reset_emailer;
 
         // We need to create a replacement form.factory to return a form we control
-        $form_factory = m::mock('Silex\Provider\FormServiceProvider');
+        $form_factory = m::mock(\Silex\Provider\FormServiceProvider::class);
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
         $this->app['form.factory'] = $form_factory;
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
         $controller->sendResetAction($req);
@@ -89,11 +89,11 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function invalidResetFormTriggersErrorMessage()
     {
-        $form_factory = m::mock('Silex\Provider\FormServiceProvider');
+        $form_factory = m::mock(\Silex\Provider\FormServiceProvider::class);
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('not valid'));
         $this->app['form.factory'] = $form_factory;
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
         $controller->sendResetAction($req);
@@ -110,11 +110,11 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function resetPasswordNotFindingUserCorrectlyDisplaysMessage()
     {
-        $form_factory = m::mock('Silex\Provider\FormServiceProvider');
+        $form_factory = m::mock(\Silex\Provider\FormServiceProvider::class);
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
         $this->app['form.factory'] = $form_factory;
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
         $controller->sendResetAction($req);
@@ -136,16 +136,16 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $this->app[AccountManagement::class] = $accounts;
 
         // Override our reset_emailer service
-        $reset_emailer = m::mock('OpenCFP\Provider\ResetEmailerServiceProvider');
+        $reset_emailer = m::mock(\OpenCFP\Provider\ResetEmailerServiceProvider::class);
         $reset_emailer->shouldReceive('send')->andReturn(false);
         $this->app['reset_emailer'] = $reset_emailer;
 
         // We need to create a replacement form.factory to return a form we control
-        $form_factory = m::mock('Silex\Provider\FormServiceProvider');
+        $form_factory = m::mock(\Silex\Provider\FormServiceProvider::class);
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
         $this->app['form.factory'] = $form_factory;
 
-        $req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
         $controller->sendResetAction($req);
@@ -170,7 +170,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
     private function createForm($valid_status)
     {
         $is_valid = ($valid_status == 'valid');
-        $form = m::mock('OpenCFP\Http\Form\ForgotForm');
+        $form = m::mock(\OpenCFP\Http\Form\ForgotForm::class);
         $form->shouldReceive('handleRequest');
         $form->shouldReceive('isValid')->andReturn($is_valid);
         $data = ['email' => 'test@opencfp.org'];

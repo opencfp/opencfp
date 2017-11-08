@@ -44,7 +44,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $this->app->run();
         ob_end_clean();
 
-        $this->req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $this->req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
     }
 
     /**
@@ -62,7 +62,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $flash= $this->app['session']->get('flash');
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
+            \Symfony\Component\HttpFoundation\RedirectResponse::class,
             $response
         );
         $this->assertEquals('error', $flash['type']);
@@ -105,7 +105,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $response = $controller->editAction($this->req);
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\Response',
+            \Symfony\Component\HttpFoundation\Response::class,
             $response
         );
         $this->assertContains('<h2 class="headline">My Profile</h2>', (string) $response);
@@ -127,7 +127,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $flash= $this->app['session']->get('flash');
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
+            \Symfony\Component\HttpFoundation\RedirectResponse::class,
             $response
         );
         $this->assertEquals('error', $flash['type']);
@@ -147,7 +147,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $response = $controller->processAction($this->req);
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\Response',
+            \Symfony\Component\HttpFoundation\Response::class,
             $response
         );
         $this->assertContains('Invalid email address format', (string) $response);
@@ -162,7 +162,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
     {
         $this->putUserInRequest(true);
 
-        $user = m::mock('StdClass');
+        $user = m::mock(\stdClass::class);
 
         $spot = m::mock(Locator::class);
         $spot->shouldReceive('mapper')->with('\OpenCFP\Domain\Entity\User')->andReturn($spot);
@@ -181,7 +181,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $flash= $this->app['session']->get('flash');
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
+            \Symfony\Component\HttpFoundation\RedirectResponse::class,
             $response
         );
         $this->assertContains('dashboard', $response->getTargetUrl());
@@ -199,7 +199,7 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
         $response = $controller->passwordAction($this->req);
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\Response',
+            \Symfony\Component\HttpFoundation\Response::class,
             $response
         );
         $this->assertContains(
