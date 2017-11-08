@@ -9,7 +9,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Environment;
 use Symfony\Component\HttpFoundation\Request;
 
-class TestCase extends \PHPUnit\Framework\TestCase
+class WebTestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Application

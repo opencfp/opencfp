@@ -4,12 +4,11 @@ namespace OpenCFP\Test\Domain\Model;
 
 use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Test\DatabaseTransaction;
-use OpenCFP\Test\TestCase;
 
 /**
  * @group db
  */
-class AirportTest extends TestCase
+class AirportTest extends \PHPUnit\Framework\TestCase
 {
     use DatabaseTransaction;
 

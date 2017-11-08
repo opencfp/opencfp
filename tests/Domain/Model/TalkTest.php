@@ -6,12 +6,11 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Test\DatabaseTransaction;
-use OpenCFP\Test\TestCase;
 
 /**
  * @group db
  */
-class TalkTest extends TestCase
+class TalkTest extends \PHPUnit\Framework\TestCase
 {
     use DatabaseTransaction;
 

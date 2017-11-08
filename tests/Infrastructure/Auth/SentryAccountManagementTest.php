@@ -4,14 +4,13 @@ namespace OpenCFP\Test\Infrastructure\Auth;
 
 use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Test\DatabaseTransaction;
-use OpenCFP\Test\TestCase;
 
 /**
  * Class SentryAccountManagementTest
  * @package OpenCFP\Test\Infrastructure\Auth
  * @group db
  */
-class SentryAccountManagementTest extends TestCase
+class SentryAccountManagementTest extends \PHPUnit\Framework\TestCase
 {
     use DatabaseTransaction;
     use SentryTestHelpers;

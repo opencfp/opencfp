@@ -8,15 +8,15 @@ use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
-use OpenCFP\Test\TestCase;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
+use OpenCFP\Test\WebTestCase;
 
 /**
  * Class DashboardControllerTest
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */
-class DashboardControllerTest extends TestCase
+class DashboardControllerTest extends WebTestCase
 {
     use GeneratorTrait;
 
