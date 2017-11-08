@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
 use OpenCFP\Application;
@@ -73,7 +72,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['callforproposal']->shouldReceive('isOpen')->andReturn(true);
 
         // Create our test double for the request object
-        $this->req = m::mock('Symfony\Component\HttpFoundation\Request');
+        $this->req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
     }
 
     /**
@@ -88,7 +87,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         // Create a test double for SwiftMailer
-        $swiftmailer = m::mock('StdClass');
+        $swiftmailer = m::mock(\stdClass::class);
         $swiftmailer->shouldReceive('send')->andReturn(true);
         $this->app['mailer'] = $swiftmailer;
 
@@ -229,7 +228,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $response = $controller->viewAction($this->req);
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\Response',
+            \Symfony\Component\HttpFoundation\Response::class,
             $response
         );
         $this->assertContains('Test Submission', (string) $response);
@@ -254,7 +253,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $flashMessage = $this->app['session']->get('flash');
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
+            \Symfony\Component\HttpFoundation\RedirectResponse::class,
             $response
         );
         $this->assertEquals('error', $flashMessage['type']);
@@ -273,7 +272,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $response = $controller->editAction($this->req);
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
+            \Symfony\Component\HttpFoundation\RedirectResponse::class,
             $response
         );
         $this->assertNotContains(
@@ -304,7 +303,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $controller->editAction($this->req);
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\RedirectResponse',
+            \Symfony\Component\HttpFoundation\RedirectResponse::class,
             $response
         );
         $this->assertContains('dashboard', $response->getTargetUrl());
@@ -340,7 +339,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
 
         $response = $controller->editAction($this->req);
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\Response',
+            \Symfony\Component\HttpFoundation\Response::class,
             $response
         );
         $this->assertContains(
@@ -376,7 +375,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $response = $controller->updateAction($this->req);
 
         $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\Response',
+            \Symfony\Component\HttpFoundation\Response::class,
             $response
         );
         $this->assertContains('Please fill in the title', (string) $response);

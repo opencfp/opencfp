@@ -21,7 +21,7 @@ class ResetEmailerTest extends \PHPUnit\Framework\TestCase
         $userEmail = 'user@example.com';
 
         /* @var Swift_Mailer $swiftMailer */
-        $swiftMailer = Mockery::mock('Swift_Mailer')
+        $swiftMailer = Mockery::mock(Swift_Mailer::class)
             ->shouldReceive('send')
             ->once()
             ->with(Mockery::on(function (Swift_Message $message) use ($userEmail) {
@@ -33,7 +33,7 @@ class ResetEmailerTest extends \PHPUnit\Framework\TestCase
         ;
 
         /* @var Twig_Template $template */
-        $template = Mockery::mock('Twig_Template')->shouldIgnoreMissing();
+        $template = Mockery::mock(Twig_Template::class)->shouldIgnoreMissing();
 
         $resetEmailer = new ResetEmailer(
             $swiftMailer,

@@ -95,13 +95,6 @@ class TalkController extends BaseController
         /* @var Speakers $speakers */
         $speakers = $this->service('application.speakers');
 
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
         try {
             $id = filter_var($req->get('id'), FILTER_VALIDATE_INT);
             $talk = $speakers->getTalk($id);
@@ -120,13 +113,6 @@ class TalkController extends BaseController
      */
     public function editAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
         $id = $req->get('id');
         $talk_id = filter_var($id, FILTER_VALIDATE_INT);
 
@@ -148,7 +134,7 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $user = $auth->user();
+        $user = $this->service(Authentication::class)->user();
 
         /* @var Locator $spot */
         $spot = $this->service('spot');
@@ -189,13 +175,6 @@ class TalkController extends BaseController
      */
     public function createAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
         // You can only create talks while the CfP is open
         if (! $this->service('callforproposal')->isOpen()) {
             $this->service('session')->set(
@@ -238,13 +217,6 @@ class TalkController extends BaseController
      */
     public function processCreateAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
         // You can only create talks while the CfP is open
         if (! $this->service('callforproposal')->isOpen()) {
             $this->service('session')->set(
@@ -258,7 +230,7 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $user = $auth->user();
+        $user = $this->service(Authentication::class)->user();
 
         $request_data = [
             'title' => $req->get('title'),
@@ -353,14 +325,7 @@ class TalkController extends BaseController
 
     public function updateAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
-        $user = $auth->user();
+        $user = $this->service(Authentication::class)->user();
 
         $request_data = [
             'id' => $req->get('id'),
@@ -457,19 +422,12 @@ class TalkController extends BaseController
 
     public function deleteAction(Request $req, Application $app)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if (!$auth->check()) {
-            return $this->redirectTo('login');
-        }
-
         // You can only delete talks while the CfP is open
         if (! $this->service('callforproposal')->isOpen()) {
             return $app->json(['delete' => 'no']);
         }
 
-        $user = $auth->user();
+        $user = $this->service(Authentication::class)->user();
         $talk_mapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\Talk::class);
         $talk = $talk_mapper->get($req->get('tid'));
 

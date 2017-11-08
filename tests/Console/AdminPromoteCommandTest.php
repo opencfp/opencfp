@@ -12,7 +12,7 @@ use OpenCFP\Environment;
  * @package OpenCFP\Test\Console
  * @group db
  */
-class AdminPromoteTest extends \PHPUnit\Framework\TestCase
+class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
 {
     public function tearDown()
     {
@@ -85,7 +85,7 @@ class AdminPromoteTest extends \PHPUnit\Framework\TestCase
 
     protected function createInputInterfaceWithEmail($email)
     {
-        $input = Mockery::mock('\Symfony\Component\Console\Input\InputInterface');
+        $input = Mockery::mock(\Symfony\Component\Console\Input\InputInterface::class);
         $input->shouldReceive('getArgument')->with('email')->andReturn($email);
 
         return $input;
@@ -97,12 +97,12 @@ class AdminPromoteTest extends \PHPUnit\Framework\TestCase
          * Create a partial mock that stubs out method calls where we don't
          * care about the output and create a formatter object
          */
-        $output = Mockery::mock('\Symfony\Component\Console\Output\OutputInterface');
+        $output = Mockery::mock(\Symfony\Component\Console\Output\OutputInterface::class);
         $output->shouldReceive('getVerbosity');
         $output->shouldReceive('write');
         $output->shouldReceive('writeln');
         $output->shouldReceive('isDecorated');
-        $formatter = Mockery::mock('\Symfony\Component\Console\Formatter\OutputFormatterInterface');
+        $formatter = Mockery::mock(\Symfony\Component\Console\Formatter\OutputFormatterInterface::class);
         $formatter->shouldReceive('setDecorated');
         $formatter->shouldReceive('format');
         $formatter->shouldReceive('isDecorated');

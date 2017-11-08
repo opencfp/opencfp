@@ -93,7 +93,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
          * Create a Sentry mock that throws our expected exception and then
          * add it to our Application mock
          */
-        $sentry = Mockery::mock('\Cartalyst\Sentry\Sentry');
+        $sentry = Mockery::mock(\Cartalyst\Sentry\Sentry::class);
         $sentry->shouldReceive('getUserProvider->findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException);
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app['sentry'] = $sentry;
@@ -115,9 +115,9 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
          * Create a mock Sentry object that returns a user that is in the
          * system but does not have admin access
          */
-        $user = Mockery::mock('\stdClass');
+        $user = Mockery::mock(\stdClass::class);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $sentry = Mockery::mock('\Cartalyst\Sentry\Sentry');
+        $sentry = Mockery::mock(\Cartalyst\Sentry\Sentry::class);
         $sentry->shouldReceive('getUserProvider->findByLogin')
             ->andReturn($user);
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
@@ -162,7 +162,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
 
     protected function createInputInterfaceWithEmail($email)
     {
-        $input = Mockery::mock('\Symfony\Component\Console\Input\InputInterface');
+        $input = Mockery::mock(\Symfony\Component\Console\Input\InputInterface::class);
         $input->shouldReceive('getArgument')->with('email')->andReturn($email);
 
         return $input;
@@ -174,12 +174,12 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
          * Create a partial mock that stubs out method calls where we don't
          * care about the output and create a formatter object
          */
-        $output = Mockery::mock('\Symfony\Component\Console\Output\OutputInterface');
+        $output = Mockery::mock(\Symfony\Component\Console\Output\OutputInterface::class);
         $output->shouldReceive('getVerbosity');
         $output->shouldReceive('write');
         $output->shouldReceive('writeln');
         $output->shouldReceive('isDecorated');
-        $formatter = Mockery::mock('\Symfony\Component\Console\Formatter\OutputFormatterInterface');
+        $formatter = Mockery::mock(\Symfony\Component\Console\Formatter\OutputFormatterInterface::class);
         $formatter->shouldReceive('setDecorated');
         $formatter->shouldReceive('format');
         $formatter->shouldReceive('isDecorated');

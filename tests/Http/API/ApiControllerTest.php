@@ -28,7 +28,7 @@ class ApiControllerTest extends \PHPUnit\Framework\TestCase
     {
         $response = $this->sut->setStatusCode(HttpFoundation\Response::HTTP_OK)->respond(['message' => 'Huzzah']);
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
+        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\JsonResponse::class, $response);
         $this->assertJson($response->getContent());
         $this->assertEquals(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
         $this->assertContains('Huzzah', $response->getContent());
@@ -50,7 +50,7 @@ class ApiControllerTest extends \PHPUnit\Framework\TestCase
         $response = $this->sut->setStatusCode(HttpFoundation\Response::HTTP_BAD_REQUEST)
             ->respondWithError('Some kind of bad request.');
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
+        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\JsonResponse::class, $response);
         $this->assertEquals(HttpFoundation\Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertContains('bad request', $response->getContent());
     }

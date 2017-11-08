@@ -3,7 +3,6 @@
 namespace OpenCFP\Http\Controller;
 
 use Cartalyst\Sentry\Users\UserExistsException;
-use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;

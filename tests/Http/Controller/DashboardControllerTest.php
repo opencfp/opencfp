@@ -2,10 +2,8 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
-use OpenCFP\Application;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Test\TestCase;
@@ -41,20 +39,20 @@ class DashboardControllerTest extends TestCase
         $this->swap(Authentication::class, $auth);
 
         // Create a test double for a talk in profile
-        $talk = m::mock('StdClass');
+        $talk = m::mock(\stdClass::class);
         $talk->shouldReceive('title')->andReturn('Test Title');
         $talk->shouldReceive('description')->andReturn('Awesome talk');
         $talk->shouldReceive('id')->andReturn(1);
         $talk->shouldReceive('type', 'category', 'created_at');
 
         // Create a test double for profile
-        $profile = m::mock('StdClass');
+        $profile = m::mock(\stdClass::class);
         $profile->shouldReceive('name')->andReturn('Test User');
         $profile->shouldReceive('photo', 'company', 'twitter', 'url', 'airport', 'bio', 'info', 'transportation', 'hotel');
         $profile->shouldReceive('talks')->andReturn([$talk]);
         $profile->shouldReceive('needsProfile')->andReturn(false);
 
-        $speakerService = m::mock('StdClass');
+        $speakerService = m::mock(\stdClass::class);
         $speakerService->shouldReceive('findProfile')->andReturn($profile);
         $this->swap('application.speakers', $speakerService);
 

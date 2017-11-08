@@ -2,19 +2,6 @@ language: php
 
 sudo: false
 
-addons:
-  apt:
-    sources:
-      - travis-ci/sqlite3
-    packages:
-      - sqlite3
-
-matrix:
-  fast_finish: true
-  include:
-    - php: 7.0
-      env: WITH_CS=true
-
 env:
   global:
     - TRAVIS_DB=cfp_test
@@ -27,24 +14,56 @@ cache:
     - $HOME/.composer/cache
     - $HOME/.php-cs-fixer
 
-before_install:
-  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then WITH_COVERAGE=true; else WITH_COVERAGE=false; fi
-  - if [[ "$WITH_COVERAGE" == "false" ]]; then phpenv config-rm xdebug.ini; fi
-  - if [[ "$WITH_CS" == "true" ]]; then mkdir -p "$HOME/.php-cs-fixer"; fi
-  - composer validate --no-check-publish
+stages:
+  - style
+  - test
 
-install:
-  - composer install
+jobs:
+  include:
+    - stage: Style
 
-before_script:
-  - sh tools/travis/setup-mail.sh
-  - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
-  - cp phinx.yml.dist phinx.yml
-  - vendor/bin/phinx migrate -e testing
+      php: 7.0
 
-script:
-  - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
-  - if [[ "$WITH_CS" == "true" ]]; then vendor/bin/php-cs-fixer fix --verbose --diff --dry-run; fi
+      before_install:
+        - phpenv config-rm xdebug.ini
+        - composer validate --no-check-publish
 
-after_success:
-  - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
+      install:
+        - composer install
+
+      before_script:
+        - mkdir -p "$HOME/.php-cs-fixer"
+
+      script:
+        - vendor/bin/php-cs-fixer fix --diff --dry-run --verbose
+
+    - stage: Test
+
+      php: 7.0
+
+      addons:
+        apt:
+          sources:
+            - travis-ci/sqlite3
+          packages:
+            - sqlite3
+
+      before_install:
+        - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then WITH_COVERAGE=true; else WITH_COVERAGE=false; fi
+        - if [[ "$WITH_COVERAGE" == "false" ]]; then phpenv config-rm xdebug.ini; fi
+        - composer validate --no-check-publish
+
+      install:
+        - composer install
+
+      before_script:
+        - sh tools/travis/setup-mail.sh
+        - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
+        - cp phinx.yml.dist phinx.yml
+        - vendor/bin/phinx migrate -e testing
+
+      script:
+        - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
+
+      after_success:
+        - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi

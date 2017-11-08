@@ -221,10 +221,10 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerWithNoTalks()
     {
         // Set up stub speaker.
-        $stub = m::mock('stdClass');
+        $stub = m::mock(\stdClass::class);
 
         // Set up talks.
-        $stub->talks = m::mock('stdClass');
+        $stub->talks = m::mock(\stdClass::class);
         $stub->talks->shouldReceive('where->execute->first')->andReturnNull();
 
         return $stub;
@@ -233,11 +233,11 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerFromMisbehavingSpot()
     {
         // Set up stub speaker.
-        $stub = m::mock('stdClass');
+        $stub = m::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
-        $stub->talks = m::mock('stdClass');
+        $stub->talks = m::mock(\stdClass::class);
         $stub->talks->shouldReceive('where->execute->first')->andReturn(
             new Talk([
                 'id' => 1,
@@ -252,11 +252,11 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerWithOneTalk()
     {
         // Set up stub speaker.
-        $stub = m::mock('stdClass');
+        $stub = m::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
-        $stub->talks = m::mock('stdClass');
+        $stub->talks = m::mock(\stdClass::class);
         $stub->talks->shouldReceive('where->execute->first')->andReturn(
             new Talk([
                 'id' => 1,
@@ -271,11 +271,11 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerWithManyTalks()
     {
         // Set up stub speaker.
-        $stub = m::mock('stdClass');
+        $stub = m::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
-        $stub->talks = m::mock('stdClass');
+        $stub->talks = m::mock(\stdClass::class);
         $stub->talks->shouldReceive('execute')->andReturn([
             new Talk([
                 'id' => 1,

@@ -93,6 +93,6 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
      */
     private function getSessionMock()
     {
-        return $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\SessionInterface')->getMock();
+        return $this->getMockBuilder(\Symfony\Component\HttpFoundation\Session\SessionInterface::class)->getMock();
     }
 }
