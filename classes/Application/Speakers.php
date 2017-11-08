@@ -58,7 +58,7 @@ class Speakers
     /**
      * Retrieves a talk owned by a speaker.
      *
-     * @param $talkId
+     * @param int $talkId
      *
      * @return Talk
      * @throws NotAuthorizedException
