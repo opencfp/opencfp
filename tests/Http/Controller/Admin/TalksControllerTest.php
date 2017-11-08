@@ -7,9 +7,9 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Test\DatabaseTransaction;
-use OpenCFP\Test\TestCase;
+use OpenCFP\Test\WebTestCase;
 
-class TalksControllerTest extends TestCase
+class TalksControllerTest extends WebTestCase
 {
     use DatabaseTransaction;
 

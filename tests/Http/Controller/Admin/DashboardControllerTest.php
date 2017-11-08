@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Http\Controller\Admin;
 use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Test\TestCase;
+use OpenCFP\Test\WebTestCase;
 
 /**
  * @runTestsInSeparateProcesses
@@ -13,7 +13,7 @@ use OpenCFP\Test\TestCase;
  *
  * These slow down the tests a bit, but it is required for our overrides to work.
  */
-class DashboardControllerTest extends TestCase
+class DashboardControllerTest extends WebTestCase
 {
 
     /**

@@ -6,15 +6,11 @@ use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\AdminAccess;
-use OpenCFP\Test\TestCase;
+use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class AdminAccessTest extends TestCase
+class AdminAccessTest extends WebTestCase
 {
-    public function tearDown()
-    {
-        Mockery::close();
-    }
 
     /**
      * @test
