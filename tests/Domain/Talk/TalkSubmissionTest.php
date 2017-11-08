@@ -36,11 +36,11 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      * @dataProvider invalidTalkTitles
-     * @expectedException \OpenCFP\Domain\Talk\InvalidTalkSubmissionException
-     * @expectedExceptionMessage title
      */
     public function it_guards_that_title_is_appropriate_length($title)
     {
+        $this->expectException(\OpenCFP\Domain\Talk\InvalidTalkSubmissionException::class);
+        $this->expectExceptionMessage('title');
         TalkSubmission::fromNative(['title' => $title]);
     }
 
@@ -54,11 +54,11 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * @expectedException \OpenCFP\Domain\Talk\InvalidTalkSubmissionException
-     * @expectedExceptionMessage description
      */
     public function it_guards_that_description_is_provided()
     {
+        $this->expectException(\OpenCFP\Domain\Talk\InvalidTalkSubmissionException::class);
+        $this->expectExceptionMessage('description');
         TalkSubmission::fromNative([
             'title' => 'Talk With No Description',
             'description' => '',
@@ -67,11 +67,11 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * @expectedException \OpenCFP\Domain\Talk\InvalidTalkSubmissionException
-     * @expectedExceptionMessage talk type
      */
     public function it_guards_that_invalid_talk_types_cannot_be_used()
     {
+        $this->expectException(\OpenCFP\Domain\Talk\InvalidTalkSubmissionException::class);
+        $this->expectExceptionMessage('talk type');
         TalkSubmission::fromNative([
             'title' => 'Some off-the-wall Talk Type',
             'description' => 'I do not play by the rules.',
@@ -81,11 +81,11 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * @expectedException \OpenCFP\Domain\Talk\InvalidTalkSubmissionException
-     * @expectedExceptionMessage level
      */
     public function it_guards_that_invalid_level_cannot_be_used()
     {
+        $this->expectException(\OpenCFP\Domain\Talk\InvalidTalkSubmissionException::class);
+        $this->expectExceptionMessage('level');
         TalkSubmission::fromNative([
             'title' => 'Invalid Skill Level Talk',
             'description' => 'I do not play by the rules.',
@@ -96,11 +96,11 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * @expectedException \OpenCFP\Domain\Talk\InvalidTalkSubmissionException
-     * @expectedExceptionMessage category
      */
     public function it_guards_that_invalid_categories_cannot_be_assigned()
     {
+        $this->expectException(\OpenCFP\Domain\Talk\InvalidTalkSubmissionException::class);
+        $this->expectExceptionMessage('category');
         TalkSubmission::fromNative([
             'title' => 'Invalid Categorized Talk',
             'description' => 'I do not play by the rules.',

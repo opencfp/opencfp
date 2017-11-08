@@ -34,10 +34,10 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function it_fails_when_given_an_invalid_environment_string()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Environment::fromString('foo');
     }
 }

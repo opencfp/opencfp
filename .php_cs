@@ -6,6 +6,7 @@ $finder = PhpCsFixer\Finder::create()
 
 $config = PhpCsFixer\Config::create()
     ->setUsingCache(true)
+    ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
         'array_syntax' => [
@@ -15,6 +16,8 @@ $config = PhpCsFixer\Config::create()
         'no_extra_consecutive_blank_lines' => true,
         'no_unused_imports' => true,
         'ordered_imports' => true,
+        'php_unit_expectation' => true,
+        'php_unit_no_expectation_annotation' => true,
         'psr0' => false,
         'single_blank_line_before_namespace' => true,
         'return_type_declaration' => true,
