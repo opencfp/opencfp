@@ -80,7 +80,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
      * @param array $headers
      * @return $this
      */
-    public function withHeaders(array $headers)
+    public function withHeaders(array $headers): self
     {
         $this->headers = array_merge($this->headers, $headers);
         return $this;
@@ -94,7 +94,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @return $this
      */
-    public function withHeader(string $name, string $value)
+    public function withHeader(string $name, string $value): self
     {
         $this->headers[$name] = $value;
         return $this;
@@ -106,7 +106,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $this;
     }
 
-    public function withServerVariables(array $server)
+    public function withServerVariables(array $server): self
     {
         $this->server = $server;
         return $this;
@@ -130,22 +130,22 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return new TestResponse($this->app, $response);
     }
 
-    public function get($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+    public function get($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
     {
         return $this->call('GET', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function post($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+    public function post($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
     {
         return $this->call('POST', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function patch($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+    public function patch($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
     {
         return $this->call('PATCH', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function delete($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+    public function delete($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
     {
         return $this->call('DELETE', $uri, $parameters, $cookies, $files, $server, $content);
     }
