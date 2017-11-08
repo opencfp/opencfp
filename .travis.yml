@@ -17,6 +17,7 @@ cache:
 stages:
   - style
   - test
+  - asset
 
 jobs:
   include:
@@ -67,3 +68,16 @@ jobs:
 
       after_success:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
+
+    - stage: Asset
+
+      php: 7.0
+
+      before_install:
+        - nvm install 8.8.1
+
+      install:
+        - yarn install
+
+      script:
+        - yarn run production
