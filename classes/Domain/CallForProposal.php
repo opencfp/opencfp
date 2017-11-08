@@ -11,7 +11,7 @@ namespace OpenCFP\Domain;
 class CallForProposal
 {
     /**
-     * @var DateTimeInterface
+     * @var \DateTimeInterface
      */
     private $endDate;
 
@@ -28,7 +28,7 @@ class CallForProposal
      *
      * @return boolean true if CFP is open, false otherwise.
      */
-    public function isOpen(\DateTimeInterface $currentTime = null)
+    public function isOpen(\DateTimeInterface $currentTime = null): bool
     {
         if (! $currentTime) {
             $currentTime = new \DateTimeImmutable('now');
