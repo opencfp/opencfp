@@ -10,9 +10,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SpeakerAccessTest extends WebTestCase
 {
-    /**
-     * @test
-     */
     public function testReturnsRedirectIfCheckFailed()
     {
         $auth = Mockery::mock(Authentication::class);
@@ -21,9 +18,6 @@ class SpeakerAccessTest extends WebTestCase
         $this->assertInstanceOf(RedirectResponse::class, SpeakerAccess::userHasAccess($this->app));
     }
 
-    /**
-     * @test
-     */
     public function testReturnsNothingIfUserIsLoggedIn()
     {
         $auth = Mockery::mock(Authentication::class);
@@ -32,9 +26,6 @@ class SpeakerAccessTest extends WebTestCase
         $this->assertNull(SpeakerAccess::userHasAccess($this->app));
     }
 
-    /**
-     * @test
-     */
     public function testAnAdminHasAccessToSpeakerPages()
     {
         $this->asAdmin();

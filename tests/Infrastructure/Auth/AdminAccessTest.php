@@ -11,10 +11,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AdminAccessTest extends WebTestCase
 {
-
-    /**
-     * @test
-     */
     public function testReturnsRedirectIfCheckFailed()
     {
         $auth = Mockery::mock(Authentication::class);
@@ -24,9 +20,6 @@ class AdminAccessTest extends WebTestCase
         $this->assertInstanceOf(RedirectResponse::class, AdminAccess::userHasAccess($this->app));
     }
 
-    /**
-     * @test
-     */
     public function testReturnsFalseIfCheckSucceededButUserHasNoAdminPermission()
     {
         $user = Mockery::mock(UserInterface::class);
@@ -40,9 +33,6 @@ class AdminAccessTest extends WebTestCase
         $this->assertInstanceOf(RedirectResponse::class, AdminAccess::userHasAccess($this->app));
     }
 
-    /**
-     * @test
-     */
     public function testReturnsNothingIfCheckSucceededAndUserHasAdminPermission()
     {
         $user = Mockery::mock(UserInterface::class);
