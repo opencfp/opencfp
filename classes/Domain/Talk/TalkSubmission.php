@@ -8,7 +8,7 @@ class TalkSubmission
 {
     private $data;
 
-    public static function fromNative(array $data)
+    public static function fromNative(array $data): self
     {
         $instance = new static();
 
@@ -23,7 +23,7 @@ class TalkSubmission
         return $instance;
     }
 
-    public function toTalk()
+    public function toTalk(): Talk
     {
         $data = array_merge([
             'title' => '',

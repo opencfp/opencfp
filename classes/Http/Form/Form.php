@@ -58,7 +58,7 @@ abstract class Form
      *
      * @return boolean
      */
-    public function hasRequiredFields()
+    public function hasRequiredFields(): bool
     {
         $dataKeys = array_keys($this->_taintedData);
         $foundFields = array_intersect($this->_fieldList, $dataKeys);
@@ -106,7 +106,7 @@ abstract class Form
      *
      * @return array
      */
-    public function getTaintedData()
+    public function getTaintedData(): array
     {
         return $this->_taintedData;
     }
@@ -125,7 +125,6 @@ abstract class Form
 
     /**
      * Validates the form's submitted data.
-     *
      */
     abstract public function validateAll($action = 'create');
 
@@ -134,7 +133,7 @@ abstract class Form
      *
      * @return array
      */
-    public function getErrorMessages()
+    public function getErrorMessages(): array
     {
         return $this->_messages;
     }
@@ -144,7 +143,7 @@ abstract class Form
      *
      * @return boolean
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return count($this->_messages) > 0;
     }
@@ -177,7 +176,7 @@ abstract class Form
      * @param  array $taintedData The tainted data
      * @return array Sanitized data
      */
-    protected function internalSanitize(array $taintedData)
+    protected function internalSanitize(array $taintedData): array
     {
         $purifier  = $this->_purifier;
         $filtered = array_map(

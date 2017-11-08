@@ -72,7 +72,7 @@ class TalkForm extends Form
      *
      * @return boolean
      */
-    public function validateTitle()
+    public function validateTitle(): bool
     {
         if (empty($this->_taintedData['title'])) {
             $this->_addErrorMessage('Please fill in the title');
@@ -96,7 +96,7 @@ class TalkForm extends Form
      *
      * @return boolean
      */
-    public function validateDescription()
+    public function validateDescription(): bool
     {
         if (empty($this->_cleanData['description'])) {
             $this->_addErrorMessage('Your description was missing');
@@ -112,7 +112,7 @@ class TalkForm extends Form
      *
      * @return boolean
      */
-    public function validateType()
+    public function validateType(): bool
     {
         $validTalkTypes = $this->getOption('types');
 
@@ -131,7 +131,7 @@ class TalkForm extends Form
         return true;
     }
 
-    public function validateLevel()
+    public function validateLevel(): bool
     {
         $validLevels = $this->getOption('levels');
 
@@ -150,7 +150,7 @@ class TalkForm extends Form
         return true;
     }
 
-    public function validateCategory()
+    public function validateCategory(): bool
     {
         $validCategories = $this->getOption('categories');
 
@@ -167,22 +167,22 @@ class TalkForm extends Form
         return true;
     }
 
-    public function validateDesired()
+    public function validateDesired(): bool
     {
         return true;
     }
 
-    public function validateSlides()
+    public function validateSlides(): bool
     {
         return true;
     }
 
-    public function validateOther()
+    public function validateOther(): bool
     {
         return true;
     }
 
-    public function validateSponsor()
+    public function validateSponsor(): bool
     {
         return true;
     }
