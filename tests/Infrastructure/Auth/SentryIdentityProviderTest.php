@@ -29,10 +29,10 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException \OpenCFP\Domain\Services\NotAuthenticatedException
      */
     public function testGetCurrentUserThrowsNotAuthenticatedExceptionWhenNotAuthenticated()
     {
+        $this->expectException(\OpenCFP\Domain\Services\NotAuthenticatedException::class);
         $sentry = $this->getSentryMock();
 
         $sentry

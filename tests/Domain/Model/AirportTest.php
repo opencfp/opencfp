@@ -37,11 +37,11 @@ class AirportTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * @expectedException \Exception
-     * @expectedExceptionMessage not found
      */
     public function it_squawks_when_airport_is_not_found()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('not found');
         $this->airports->withCode('foobarbaz');
     }
 
