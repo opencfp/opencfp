@@ -3,7 +3,7 @@
 it: cs test
 
 composer:
-	composer install --prefer-dist
+	composer install
 
 cs: composer
 	vendor/bin/php-cs-fixer fix --verbose --diff

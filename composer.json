@@ -2,6 +2,7 @@
     "name": "opencfp/opencfp",
     "license": "MIT",
     "config": {
+        "preferred-install": "dist",
         "sort-packages": true
     },
     "require": {
