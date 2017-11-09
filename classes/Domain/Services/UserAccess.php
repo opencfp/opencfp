@@ -15,5 +15,5 @@ interface UserAccess
      * @param string $role Role to check against
      * @return RedirectResponse|void
      */
-    public static function userHasAccess(Application $app, $role= '');
+    public static function userHasAccess(Application $app, $role = '');
 }
