@@ -39,6 +39,55 @@ class TalksControllerTest extends WebTestCase
             ->assertSuccessful();
     }
 
+    /**
+     * @test
+     */
+    public function viewActionWillRedirectWhenTalkNotFound()
+    {
+        $this->asReviewer()
+            ->get('/reviewer/talks/255')
+            ->assertNotSee('title="I want to see this talk"')
+            ->assertRedirect();
+    }
+
+    /**
+     * @test
+     */
+    public function viewActionWillShowTalk()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asReviewer()
+            ->get('/reviewer/talks/'.$talk->id)
+            ->assertSee($talk->title)
+            ->assertSee($talk->description)
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function rateActionWillReturnTrueOnGoodRate()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+        $this->asReviewer()
+            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 1])
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function rateActionWillNotReturnTrueOnBadRate()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+        $this->asReviewer()
+            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 8])
+            ->assertNotSee('1')
+            ->assertSuccessful();
+    }
+
     protected function makeTalks()
     {
         $formatter = new TalkFormatter();
