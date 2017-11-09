@@ -13,8 +13,8 @@ class DashboardControllerTest extends WebTestCase
     {
         $this->asReviewer()
             ->get('/reviewer/')
-            ->assertSuccessful()
             ->assertNotSee('title="I want to see this talk"')
-            ->assertSee('Recent Talks');
+            ->assertSee('Recent Talks')
+            ->assertSuccessful();
     }
 }
