@@ -51,8 +51,8 @@ class User extends Eloquent
     public function scopeSearch(
         Builder $builder,
         $search = '',
-        $orderByColumn ='first_name',
-        $orderByDirection= 'ASC'
+        $orderByColumn = 'first_name',
+        $orderByDirection = 'ASC'
     ) {
         if ($search == '' || $search == null) {
             return $builder->orderBy($orderByColumn, $orderByDirection);
