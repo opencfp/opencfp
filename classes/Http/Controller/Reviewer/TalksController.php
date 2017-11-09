@@ -46,7 +46,7 @@ class TalksController extends BaseController
         // Create our default view for the navigation options
         $routeGenerator = function ($page) use ($queryParams) {
             $queryParams['page'] = $page;
-            return '/admin/talks?' . http_build_query($queryParams);
+            return '/reviewer/talks?' . http_build_query($queryParams);
         };
         $view = new DefaultView();
         $pagination = $view->render(

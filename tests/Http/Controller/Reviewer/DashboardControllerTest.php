@@ -2,9 +2,9 @@
 
 namespace OpenCFP\Test\Http\Controller\Reviewer;
 
-use OpenCFP\Test\TestCase;
+use OpenCFP\Test\WebTestCase;
 
-class DashboardControllerTest extends TestCase
+class DashboardControllerTest extends WebTestCase
 {
     /**
      * @test
