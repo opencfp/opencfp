@@ -1,0 +1,68 @@
+{% extends "layouts/reviewer.twig" %}
+{% block content %}
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="mb-2">
+                {{ talk.title|raw }} <span class="text-grey-dark">&mdash; {{ speaker.name }}</span>
+            </h2>
+            {% if talk.slides is defined and talk.slides is not empty %}
+                <div><i class="fa fa-television mr-1"></i> <a class="hover:text-brand" href="{{ talk.slides }}">{{ talk.slides }}</a></div>
+            {% endif %}
+            <div class="mt-4 mb-6">
+                {% if talk.level is defined %}<span class="bg-grey-dark text-white text-xs rounded-full py-2 px-3 mr-2">{{ talkHelper.getLevelDisplayName(talk.level) }}</span>{% endif %}
+                <span class="bg-brand text-white text-xs rounded-full py-2 px-3 mr-2"><i class="fa fa-clock-o"></i> {{ talkHelper.getTypeDisplayName(talk.type) }}</span>
+                <span class="bg-brand text-white text-xs rounded-full py-2 px-3"><i class="fa fa-graduation-cap"></i> {{ talkHelper.getCategoryDisplayName(talk.category) }}</span>
+            </div>
+        </div>
+        <div class="bg-grey-lighter border border-grey-light rounded-full py-4 px-6 whitespace-no-wrap">
+
+            {% if talk.desired %}<i class="fa fa-trophy mr-3"></i>{% endif %}
+            {% if talk.sponsor %}<i class="fa fa-credit-card mr-3"></i>{% endif %}
+
+            {% if talk.desired or talk.sponsor %}<span class="mr- border-r border-grey"></span>{% endif %}
+
+            <a href="#" id="talk-upvote-{{ talk.id }}" class="js-talk-rating mr-3" data-id="{{ talk.id }}" data-rating="1" title="I want to see this talk"><i class="fa fa-thumbs-up admin-icon{% if talk_meta.rating == 1 %} text-green-dark{% endif %}"></i></a>
+            <a href="#" id="talk-downvote-{{ talk.id }}" class="js-talk-rating mr-3" data-id="{{ talk.id }}" data-rating="-1" title="I don't want to see this talk"><i class="fa fa-thumbs-down admin-icon{% if talk_meta.rating == -1 %} text-red-dark{% endif %}"></i></a>
+        </div>
+    </div>
+
+    <div class="flex">
+        <div class="w-2/3 mr-8">
+            {{ talk.description|striptags|markdown }}
+            {% if talk.other is not empty %}
+                <h4 class="mb-2 mt-4">Other Information</h4>
+                {{ talk.other|striptags|markdown }}
+            {% endif %}
+        </div>
+        <div>
+            {% if otherTalks | length > 0 %}
+                <h3><i class="fa fa-bullhorn"></i> Other Talks...</h3>
+                {% for talk in otherTalks %}
+                    <p><a class="text-brand underline" href="{{ url('reviewer_talk_view', { id: talk.id }) }}">{{ talk.title }}</a></p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    {% if comments is defined and comments|length > 0 %}
+        <h3 class="my-4"><i class="fa fa-comments"></i> Comments</h3>
+
+        {% for comment in comments %}
+            <div class="flex text-sm mt-4">
+                <div>
+                    <img class="w-16 mr-4 rounded" src="{{ comment.user.photo_path ? '/uploads/' ~ comment.user.photo_path : '/assets/img/dummyphoto.jpg' }}">
+                </div>
+                <div class="border border-grey rounded-sm w-full">
+                    <div class="p-3 border-b border-grey bg-blue-lightest flex justify-between">
+                        <span class="font-bold">{{ comment.user.first_name }} {{ comment.user.last_name }}</span><span>{{ comment.created|date("F jS \\a\\t g:ia") }}</span>
+                    </div>
+                    <div class="p-3">{{ comment.message }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+{% block scripts %}
+    {{ parent() }}
+    <script src="/assets/js/reviewer/talk.js"></script>
+{% endblock %}

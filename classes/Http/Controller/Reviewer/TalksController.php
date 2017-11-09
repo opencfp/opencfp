@@ -2,9 +2,11 @@
 
 namespace OpenCFP\Http\Controller\Reviewer;
 
+use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
+use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\DefaultView;
@@ -67,9 +69,46 @@ class TalksController extends BaseController
         return $this->render('reviewer/talks/index.twig', $templateData);
     }
 
-    public function viewAction()
+    public function viewAction(Request $req)
     {
-        //TODO: add function
+        $talkId = $req->get('id');
+        $talk = Talk::where('id', $talkId)
+            ->with(['comments'])
+            ->first();
+
+        if (!$talk instanceof Talk) {
+            $this->service('session')->set('flash', [
+                'type' => 'error',
+                'short' => 'Error',
+                'ext' => 'Could not find requested talk',
+            ]);
+
+            return $this->app->redirect($this->url('admin_talks'));
+        }
+
+        $userId = $this->service(Authentication::class)->userId();
+
+        // Mark talk as viewed by admin
+        $talkMeta = $talk
+            ->meta()
+            ->firstOrNew([
+                'admin_user_id' => $userId,
+                'talk_id' => $talkId,
+            ]);
+        $talkMeta->viewTalk();
+
+        $speaker = $talk->speaker;
+        $otherTalks = $speaker->getOtherTalks($talkId);
+
+        // Build and render the template
+        $templateData = [
+            'talk' => $talk->toArray(),
+            'talk_meta' => $talkMeta,
+            'speaker' => new SpeakerProfile($speaker),
+            'otherTalks' => $otherTalks,
+            'comments' => $talk->comments()->get(),
+        ];
+        return $this->render('reviewer/talks/view.twig', $templateData);
     }
 
     public function rateAction(Request $req)
