@@ -46,8 +46,9 @@ class TestResponse
     {
         $actual = $this->getStatusCode();
 
-        Assert::assertTrue(
-            $status === $actual,
+        Assert::assertSame(
+            $status,
+            $actual,
             "Expected status code {$status} but received {$actual}."
         );
 
