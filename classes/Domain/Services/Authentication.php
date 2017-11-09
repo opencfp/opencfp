@@ -20,6 +20,7 @@ interface Authentication
      * Returns current authenticated User account.
      *
      * @return UserInterface
+     *
      * @throws NotAuthenticatedException
      */
     public function user(): UserInterface;
@@ -28,6 +29,7 @@ interface Authentication
      * Returns current authenticated User Id.
      *
      * @return int
+     *
      * @throws NotAuthenticatedException
      */
     public function userId(): int;

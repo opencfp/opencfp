@@ -9,6 +9,7 @@ interface TalkRatingStrategy
     /**
      * @param int $talkId
      * @param $rating
+     *
      * @throws TalkRatingException
      *
      */

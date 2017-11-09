@@ -9,6 +9,7 @@ class Talk extends Mapper
 {
     /**
      * Column Sort By White List
+     *
      * @var array
      */
     protected $order_by_whitelist = [
@@ -25,7 +26,9 @@ class Talk extends Mapper
      *
      * @param integer $admin_user_id
      * @param array $options
+     *
      * @return array If order by is not in white list
+     *
      * @internal param string $order_by
      * @internal param string $sort Sort Direction
      */
@@ -64,6 +67,7 @@ class Talk extends Mapper
      *
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
+     *
      * @return array
      */
     public function getSelected($admin_user_id, $options = [])
@@ -94,7 +98,9 @@ class Talk extends Mapper
      *
      * @param  integer $admin_user_id
      * @param int $limit
+     *
      * @return array
+     *
      * @internal param int $limt
      */
     public function getRecent($admin_user_id, $limit = 10)
@@ -117,6 +123,7 @@ class Talk extends Mapper
      *
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
+     *
      * @return array
      */
     public function getFavoritesByUserId($admin_user_id, $options = [])
@@ -152,6 +159,7 @@ class Talk extends Mapper
      *
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
+     *
      * @return array
      */
     public function getTopRatedByUserId($admin_user_id, $options = [])
@@ -186,6 +194,7 @@ class Talk extends Mapper
      *
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
+     *
      * @return array
      */
     public function getNotViewedByUserId($admin_user_id, $options = [])
@@ -220,6 +229,7 @@ class Talk extends Mapper
      *
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
+     *
      * @return array
      */
     public function getViewedByUserId($admin_user_id, $options = [])
@@ -254,6 +264,7 @@ class Talk extends Mapper
      *
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
+     *
      * @return array
      */
     public function getRatedByUserId($admin_user_id, $options = [])
@@ -288,6 +299,7 @@ class Talk extends Mapper
      *
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
+     *
      * @return array
      */
     public function getPlusOneByUserId($admin_user_id, $options = [])
@@ -321,6 +333,7 @@ class Talk extends Mapper
      *
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
+     *
      * @return array
      */
     public function getNotRatedByUserId($admin_user_id, $options = [])
@@ -357,7 +370,9 @@ class Talk extends Mapper
      * @param mixed $value Column value
      * @param integer $admin_user_id
      * @param array $options Ordery By and Sorting Options
+     *
      * @return array column is not in the column white list
+     *
      * @throws \InvalidArgumentException
      */
     public function getTalksFilteredBy($column, $value, $admin_user_id, $options = [])
@@ -399,6 +414,7 @@ class Talk extends Mapper
      * specific user
      *
      * @param  integer $user_id
+     *
      * @return array
      */
     public function getByUser($user_id)
@@ -411,6 +427,7 @@ class Talk extends Mapper
      *
      * @param  mixed   $talk
      * @param  integer $admin_user_id
+     *
      * @return array
      */
     public function createdFormattedOutput($talk, $admin_user_id, $userData = true)
@@ -425,6 +442,7 @@ class Talk extends Mapper
      *
      * @param array $options Sorting Options to Apply
      * @param array $defaultOptions Default Sorting Options
+     *
      * @return array
      */
     protected function getSortOptions(array $options, array $defaultOptions)

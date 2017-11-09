@@ -11,6 +11,7 @@ class ControllerResolver extends \Silex\ControllerResolver
      * into our controllers.
      *
      * @param  string      $controller
+     *
      * @return array|mixed
      */
     protected function createController($controller)

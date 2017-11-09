@@ -70,7 +70,9 @@ abstract class Form
      * Returns the clean data.
      *
      * @array array $keys The wanted data
+     *
      * @param  array $keys
+     *
      * @return array The cleaned data
      */
     public function getCleanData(array $keys = [])
@@ -94,6 +96,7 @@ abstract class Form
      *
      * @param  string     $name    The tainted value name
      * @param  mixed      $default The default value to return if not set
+     *
      * @return mixed|null
      */
     public function getTaintedField($name, $default = null)
@@ -116,6 +119,7 @@ abstract class Form
      *
      * @param  string     $name    The option name
      * @param  mixed|null $default The default value
+     *
      * @return mixed      The option value
      */
     public function getOption($name, $default = null)
@@ -174,6 +178,7 @@ abstract class Form
      * Sanitizes all fields that were submitted.
      *
      * @param  array $taintedData The tainted data
+     *
      * @return array Sanitized data
      */
     protected function internalSanitize(array $taintedData): array

@@ -28,6 +28,7 @@ class SignupForm extends Form
      * Validate all methods by calling all our validation methods
      *
      * @param  string  $action
+     *
      * @return boolean
      */
     public function validateAll($action = 'create')
@@ -115,6 +116,7 @@ class SignupForm extends Form
      * Method that applies validation rules to email
      *
      * @return bool
+     *
      * @internal param string $email
      */
     public function validateEmail(): bool

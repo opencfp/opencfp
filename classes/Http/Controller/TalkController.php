@@ -18,6 +18,7 @@ class TalkController extends BaseController
 
     /**
      * @param $request_data
+     *
      * @return TalkForm
      */
     private function getTalkForm($request_data)
@@ -88,6 +89,7 @@ class TalkController extends BaseController
      * Controller action for viewing a specific talk
      *
      * @param  Request $req
+     *
      * @return mixed
      */
     public function viewAction(Request $req)
@@ -109,6 +111,7 @@ class TalkController extends BaseController
      * Controller action for displaying the form to edit an existing talk
      *
      * @param  Request $req
+     *
      * @return mixed
      */
     public function editAction(Request $req)
@@ -171,6 +174,7 @@ class TalkController extends BaseController
      * Action for displaying the form to create a new talk
      *
      * @param  Request $req
+     *
      * @return mixed
      */
     public function createAction(Request $req)
@@ -213,6 +217,7 @@ class TalkController extends BaseController
      * a new talk
      *
      * @param  Request $req
+     *
      * @return mixed
      */
     public function processCreateAction(Request $req)
@@ -446,6 +451,7 @@ class TalkController extends BaseController
      * @param  Application $app
      * @param  string      $email
      * @param  integer     $talk_id
+     *
      * @return mixed
      */
     protected function sendSubmitEmail(Application $app, $email, $talk_id)

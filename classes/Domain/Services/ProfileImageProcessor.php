@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Handle taking an image file uplaoded via a form and resizing/cropping/resaving.
  *
  * Class ProfileImageProcessor
+ *
  * @author Michael Williams <themrwilliams@gmail.com>
  */
 class ProfileImageProcessor

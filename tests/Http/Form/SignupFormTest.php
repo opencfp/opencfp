@@ -53,6 +53,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      * Verify that emails are being validated correctly
      *
      * @test
+     *
      * @param string  $email
      * @param boolean $expectedResponse
      * @dataProvider emailProvider
@@ -120,6 +121,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      * and sanitization
      *
      * @test
+     *
      * @param string $passwd
      * @dataProvider properPasswordValidator
      */
@@ -142,6 +144,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      * Test that bad passwords are being correctly matched and sanitized
      *
      * @test
+     *
      * @param string  $passwd
      * @param string  $passwd2
      * @param string  $expectedMessage
@@ -186,6 +189,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      * Test that the firstName is being validated correctly
      *
      * @test
+     *
      * @param string  $firstName
      * @param boolean $expectedResponse
      * @dataProvider firstNameProvider
@@ -229,6 +233,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      * Test that the lastName is being validated correctly
      *
      * @test
+     *
      * @param string  $lastName
      * @param boolean $expectedResponse
      * @dataProvider lastNameProvider
@@ -273,6 +278,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      * fields works correctly
      *
      * @test
+     *
      * @param array   $data
      * @param boolean $expectedResponse
      * @dataProvider validateAllProvider
@@ -315,6 +321,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      * Test that speaker info is validated correctly
      *
      * @test
+     *
      * @param string  $speakerInfo
      * @param boolean $expectedResponse
      * @dataProvider speakerTextProvider
@@ -336,6 +343,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      * Test that speaker info is validated correctly
      *
      * @test
+     *
      * @param string  $speakerBio
      * @param boolean $expectedResponse
      * @dataProvider speakerTextProvider
@@ -369,6 +377,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      * Test that we get back some sanitized data
      *
      * @test
+     *
      * @param array $inputData
      * @param array $expectedData
      * @dataProvider sanitizationProvider

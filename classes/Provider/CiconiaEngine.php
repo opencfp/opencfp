@@ -9,12 +9,14 @@ class CiconiaEngine implements MarkdownEngineInterface
 {
     /**
      * Ciconia Markdown Engine
+     *
      * @var Ciconia
      */
     protected $engine;
 
     /**
      * Set engine to internal property
+     *
      * @param Ciconia $engine Markdown Parser Engine
      */
     public function __construct(Ciconia $engine)

@@ -21,6 +21,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @test
      * @dataProvider hasRequiredProvider
+     *
      * @param array   $rawData  serialized user-submitted data
      * @param boolean $response
      */
@@ -78,6 +79,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @test
      * @dataProvider hasNoDesiredOrSponsorProvider
+     *
      * @param array   $rawData  serialized user-submitted data
      * @param boolean $response
      */
@@ -123,6 +125,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @test
      * @dataProvider titleValidatesProvider
+     *
      * @param string  $title
      * @param boolean $expectedResponse
      */
@@ -164,6 +167,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @test
      * @dataProvider descriptionValidatesProvider
+     *
      * @param string  $description
      * @param boolean $expectedResponse
      */
@@ -204,6 +208,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @test
      * @dataProvider typeProvider
+     *
      * @param string  $type
      * @param boolean $expectedResponse
      */
@@ -250,6 +255,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @test
      * @dataProvider categoryProvider
+     *
      * @param string  $category
      * @param boolean $expectedResponse
      */
@@ -314,6 +320,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @test
      * @dataProvider levelProvider
+     *
      * @param string $level
      * @param boolean $expectedResponse
      */

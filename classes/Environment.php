@@ -6,6 +6,7 @@ class Environment
 {
     /**
      * The specified environment.
+     *
      * @var string
      */
     protected $slug;
@@ -65,6 +66,7 @@ class Environment
 
     /**
      * @param  Environment $environment
+     *
      * @return bool
      */
     public function equals(Environment $environment)

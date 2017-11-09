@@ -9,6 +9,7 @@ use OpenCFP\Environment;
 
 /**
  * Class AdminPromoteTest
+ *
  * @package OpenCFP\Test\Console
  * @group db
  */

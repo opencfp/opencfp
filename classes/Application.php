@@ -184,6 +184,7 @@ class Application extends SilexApplication
 
     /**
      * Get the base path for the application.
+     *
      * @return string
      */
     public function basePath()
@@ -193,6 +194,7 @@ class Application extends SilexApplication
 
     /**
      * Get the configuration path.
+     *
      * @return string
      */
     public function configPath()
@@ -202,6 +204,7 @@ class Application extends SilexApplication
 
     /**
      * Get the uploads path.
+     *
      * @return string
      */
     public function uploadPath()
@@ -211,6 +214,7 @@ class Application extends SilexApplication
 
     /**
      * Get the templates path.
+     *
      * @return string
      */
     public function templatesPath()
@@ -220,6 +224,7 @@ class Application extends SilexApplication
 
     /**
      * Get the public path.
+     *
      * @return string
      */
     public function publicPath()
@@ -229,6 +234,7 @@ class Application extends SilexApplication
 
     /**
      * Get the assets path.
+     *
      * @return string
      */
     public function assetsPath()
@@ -238,6 +244,7 @@ class Application extends SilexApplication
 
     /**
      * Get the Twig cache path.
+     *
      * @return string
      */
     public function cacheTwigPath()
@@ -247,6 +254,7 @@ class Application extends SilexApplication
 
     /**
      * Get the HTML Purifier cache path.
+     *
      * @return string
      */
     public function cachePurifierPath()
@@ -256,6 +264,7 @@ class Application extends SilexApplication
 
     /**
      * Tells if application is in production environment.
+     *
      * @return boolean
      */
     public function isProduction()
@@ -265,6 +274,7 @@ class Application extends SilexApplication
 
     /**
      * Tells if application is in development environment.
+     *
      * @return boolean
      */
     public function isDevelopment()
@@ -274,6 +284,7 @@ class Application extends SilexApplication
 
     /**
      * Tells if application is in testing environment.
+     *
      * @return boolean
      */
     public function isTesting()

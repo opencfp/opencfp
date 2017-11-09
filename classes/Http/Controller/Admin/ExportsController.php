@@ -71,6 +71,7 @@ class ExportsController extends BaseController
      * This stops the cell from being executed as a formula in excel/google sheets etc.
      *
      * @param string $info
+     *
      * @return string
      */
     private function csvFormat($info)

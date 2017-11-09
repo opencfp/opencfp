@@ -12,6 +12,7 @@ use Spot\Locator;
 
 /**
  * Class ProfileControllerTest
+ *
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */

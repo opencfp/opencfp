@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 /**
  * Class SpeakersControllerTest
+ *
  * @package OpenCFP\Test\Http\Controller\Admin
  * @group db
  */

@@ -67,6 +67,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param string $service
      * @param object $instance
+     *
      * @return object
      */
     protected function swap($service, $instance)
@@ -79,6 +80,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
      * Define additional headers to be sent with the request.
      *
      * @param array $headers
+     *
      * @return $this
      */
     public function withHeaders(array $headers): self

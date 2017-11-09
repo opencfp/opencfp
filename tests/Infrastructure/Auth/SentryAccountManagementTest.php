@@ -7,6 +7,7 @@ use OpenCFP\Test\DatabaseTransaction;
 
 /**
  * Class SentryAccountManagementTest
+ *
  * @package OpenCFP\Test\Infrastructure\Auth
  * @group db
  */
