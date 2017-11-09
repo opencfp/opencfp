@@ -149,7 +149,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')
             ->andReturn($user);
-        $accounts->shouldReceive('demote')
+        $accounts->shouldReceive('demoteFrom')
             ->with('test@opencfp.dev');
 
         // Create our command object and inject our application

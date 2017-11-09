@@ -11,6 +11,6 @@ interface AccountManagement
     public function findByRole($role): array;
     public function create($email, $password, array $data = []): UserInterface;
     public function activate($email);
-    public function promote($email);
-    public function demote($email);
+    public function promoteTo($email, $role = 'Admin');
+    public function demoteFrom($email, $role = 'Admin');
 }

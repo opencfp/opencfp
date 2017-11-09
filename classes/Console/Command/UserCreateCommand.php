@@ -94,7 +94,7 @@ class UserCreateCommand extends BaseCommand
 
         /** @var AccountManagement $accounts */
         $accounts = $this->app[AccountManagement::class];
-        $accounts->promote($user->getLogin());
+        $accounts->promoteTo($user->getLogin());
 
         return true;
     }

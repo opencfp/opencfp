@@ -62,17 +62,17 @@ class SentryAccountManagement implements AccountManagement
         }
     }
 
-    public function promote($email)
+    public function promoteTo($email, $role = 'Admin')
     {
         $this->findByLogin($email)->addGroup(
-            $this->sentry->findGroupByName('Admin')
+            $this->sentry->findGroupByName($role)
         );
     }
 
-    public function demote($email)
+    public function demoteFrom($email, $role = 'Admin')
     {
         $this->findByLogin($email)->removeGroup(
-            $this->sentry->findGroupByName('Admin')
+            $this->sentry->findGroupByName($role)
         );
     }
 }

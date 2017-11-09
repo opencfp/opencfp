@@ -68,7 +68,7 @@ EOF
             return 1;
         }
 
-        $accounts->demote($user->getLogin());
+        $accounts->demoteFrom($user->getLogin());
 
         $io->success(sprintf(
             'Removed account with email %s from the Admin group',

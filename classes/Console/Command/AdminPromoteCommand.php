@@ -59,7 +59,7 @@ EOF
             return 1;
         }
 
-        $accounts->promote($user->getLogin());
+        $accounts->promoteTo($user->getLogin());
 
         $io->success(sprintf(
             'Added account with email %s to the Admin group',
