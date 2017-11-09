@@ -82,7 +82,7 @@ EOF
      * Method used to inject a OpenCFP\Application object into the command
      * for testing purposes
      *
-     * @param $app OpenCFP\Application
+     * @param $app \OpenCFP\Application
      */
     public function setApp($app)
     {

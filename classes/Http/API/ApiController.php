@@ -4,6 +4,7 @@ namespace OpenCFP\Http\API;
 
 use OpenCFP\ContainerAware;
 use Symfony\Component\HttpFoundation\JsonResponse as Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ApiController

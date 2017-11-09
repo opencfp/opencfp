@@ -5,6 +5,7 @@ namespace OpenCFP\Test;
 use OpenCFP\Application;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Decorates a Symfony Response object and provides several
