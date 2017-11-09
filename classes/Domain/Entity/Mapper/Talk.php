@@ -372,6 +372,7 @@ class Talk extends Mapper
      * @param array $options Ordery By and Sorting Options
      *
      * @return array column is not in the column white list
+     *
      * @throws \InvalidArgumentException
      */
     public function getTalksFilteredBy($column, $value, $admin_user_id, $options = [])
