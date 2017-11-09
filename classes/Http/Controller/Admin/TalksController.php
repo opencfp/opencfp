@@ -189,31 +189,20 @@ class TalksController extends BaseController
     public function favoriteAction(Request $req)
     {
         $admin_user_id = $this->service(Authentication::class)->userId();
-        $status = true;
+        $talkId = (int) $req->get('id');
 
         if ($req->get('delete') !== null) {
-            $status = false;
-        }
-
-        if ($status == false) {
             // Delete the record that matches
             return Favorite::where('admin_user_id', $admin_user_id)
-                ->where('talk_id', (int) $req->get('id'))
+                ->where('talk_id', $talkId)
                 ->first()
                 ->delete();
         }
 
-        $previous_favorite = Favorite::where('admin_user_id', $admin_user_id)
-            ->where('talk_id', (int) $req->get('id'))
-            ->first();
-
-        if ($previous_favorite->count() == 0) {
-            $favorite = new Favorite();
-            $favorite->admin_user_id = $admin_user_id;
-            $favorite->talk_id = (int) $req->get('id');
-
-            return $favorite->save();
-        }
+        Favorite::firstOrCreate([
+            'admin_user_id' => $admin_user_id,
+            'talk_id' => $talkId,
+        ]);
 
         return true;
     }
