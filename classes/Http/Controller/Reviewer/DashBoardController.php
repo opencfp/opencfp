@@ -12,13 +12,8 @@ use OpenCFP\Http\Controller\BaseController;
 
 class DashBoardController extends BaseController
 {
-    use ReviewerAccessTrait;
-
     public function indexAction()
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
         $userId = $this->service(Authentication::class)->userId();
         $talkFormatter = new TalkFormatter();
 

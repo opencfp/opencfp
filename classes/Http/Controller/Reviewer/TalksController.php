@@ -10,13 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends BaseController
 {
-    use ReviewerAccessTrait;
-
     public function indexAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
         $reviewerId = $this->service(Authentication::class)->userId();
 
         $options = [
