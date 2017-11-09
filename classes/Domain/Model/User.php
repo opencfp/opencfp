@@ -31,6 +31,7 @@ class User extends Eloquent
      * If called with no parameters returns all talks of that user.
      *
      * @param int $talkId
+     *
      * @return Collection|Talk[]
      */
     public function getOtherTalks($talkId = 0): Collection

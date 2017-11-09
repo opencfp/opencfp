@@ -10,6 +10,7 @@ class ContainerAwareFake
 
     /**
      * @param string $slug
+     *
      * @return mixed
      */
     public function getService($slug)

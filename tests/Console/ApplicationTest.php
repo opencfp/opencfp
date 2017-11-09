@@ -12,6 +12,7 @@ use Symfony\Component\Console;
 
 /**
  * Class ApplicationTest
+ *
  * @package OpenCFP\Test\Console
  * @group db
  */

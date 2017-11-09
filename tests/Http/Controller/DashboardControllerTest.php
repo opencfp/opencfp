@@ -11,6 +11,7 @@ use OpenCFP\Test\WebTestCase;
 
 /**
  * Class DashboardControllerTest
+ *
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */

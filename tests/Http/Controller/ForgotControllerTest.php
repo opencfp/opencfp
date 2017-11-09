@@ -10,6 +10,7 @@ use OpenCFP\Environment;
 
 /**
  * Class ForgotControllerTest
+ *
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */

@@ -183,6 +183,7 @@ class TalksController extends BaseController
      * Set Favorited Talk [POST]
      *
      * @param  Request $req Request Object
+     *
      * @return bool
      */
     public function favoriteAction(Request $req)
@@ -232,6 +233,7 @@ class TalksController extends BaseController
      * Set Selected Talk [POST]
      *
      * @param  Request $req Request Object
+     *
      * @return bool
      */
     public function selectAction(Request $req)

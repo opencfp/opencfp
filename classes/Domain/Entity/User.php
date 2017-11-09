@@ -50,6 +50,7 @@ class User extends Entity
 
     /**
      * Getter for permissions property
+     *
      * @return array
      */
     protected function getPermissions()
@@ -59,7 +60,9 @@ class User extends Entity
 
     /**
      * Setter for permissions property
+     *
      * @param  string|array $permissions JSON string or an array of permissions
+     *
      * @return string       JSON
      */
     protected function setPermissions($permissions)

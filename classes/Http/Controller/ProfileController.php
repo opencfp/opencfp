@@ -226,6 +226,7 @@ class ProfileController extends BaseController
      *
      * @param  Application $app
      * @param  array       $sanitized_data
+     *
      * @return boolean
      */
     protected function saveUser($app, $sanitized_data)

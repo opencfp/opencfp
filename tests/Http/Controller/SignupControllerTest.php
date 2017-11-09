@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 /**
  * Class SignupControllerTest
+ *
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */

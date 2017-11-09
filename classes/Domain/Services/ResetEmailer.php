@@ -42,6 +42,7 @@ class ResetEmailer
      * @param string $userId
      * @param string $email
      * @param string $resetCode
+     *
      * @return int
      */
     public function send($userId, $email, $resetCode)
@@ -60,6 +61,7 @@ class ResetEmailer
     /**
      * @param string $userId
      * @param string $resetCode
+     *
      * @return array
      */
     private function parameters($userId, $resetCode)
@@ -78,6 +80,7 @@ class ResetEmailer
     /**
      * @param string $email
      * @param array $parameters
+     *
      * @return \Swift_Message
      */
     private function preparedMessage($email, $parameters)

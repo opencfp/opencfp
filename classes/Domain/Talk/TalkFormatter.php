@@ -14,6 +14,7 @@ class TalkFormatter implements TalkFormat
      * @param Collection $talkCollection Collection of Talks
      * @param integer $admin_user_id
      * @param bool $userData
+     *
      * @return Collection
      */
     public function formatList(Collection $talkCollection, int $admin_user_id, bool $userData = true): Collection
@@ -30,6 +31,7 @@ class TalkFormatter implements TalkFormat
      * @param mixed $talk
      * @param integer $admin_user_id
      * @param bool $userData grab the speaker data or not
+     *
      * @return array
      */
     public function createdFormattedOutput($talk, int $admin_user_id, bool $userData = true): array

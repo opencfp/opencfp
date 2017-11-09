@@ -66,6 +66,7 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param array $items
+     *
      * @return Application|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getApplicationMock(array $items = [])

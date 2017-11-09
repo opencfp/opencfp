@@ -13,6 +13,7 @@ use OpenCFP\Http\Controller\TalkController;
 
 /**
  * Class TalkControllerTest
+ *
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */
@@ -125,6 +126,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
      * action
      *
      * @param  mixed $data
+     *
      * @return void
      */
     protected function setPost($data)
