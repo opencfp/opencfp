@@ -72,16 +72,6 @@ class TalksController extends BaseController
         //TODO: add function
     }
 
-    public function favoriteAction()
-    {
-        //TODO: add function
-    }
-
-    public function commentCreateAction()
-    {
-        //TODO: add function
-    }
-
     public function rateAction(Request $req)
     {
         /** @var TalkRatingStrategy $talkRatingStrategy */
