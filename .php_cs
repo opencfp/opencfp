@@ -16,6 +16,7 @@ $config = PhpCsFixer\Config::create()
         'no_extra_consecutive_blank_lines' => true,
         'no_unused_imports' => true,
         'ordered_imports' => true,
+        'phpdoc_separation' => true,
         'php_unit_expectation' => true,
         'php_unit_no_expectation_annotation' => true,
         'psr0' => false,
