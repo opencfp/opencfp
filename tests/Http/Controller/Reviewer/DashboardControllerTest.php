@@ -25,18 +25,6 @@ class DashboardControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function indexActionWorksWithoutTalks()
-    {
-        $this->asReviewer()
-            ->get('/reviewer/')
-            ->assertNotSee('title="I want to see this talk"')
-            ->assertSee('Recent Talks')
-            ->assertSuccessful();
-    }
-
-    /**
-     * @test
-     */
     public function indexActionWorkWhenThereAreTalks()
     {
         factory(Talk::class, 10)->create();
