@@ -3,6 +3,8 @@
 namespace OpenCFP\Http\Controller\Reviewer;
 
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
+use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Http\Controller\BaseController;
 use Pagerfanta\View\DefaultView;
@@ -80,8 +82,19 @@ class TalksController extends BaseController
         //TODO: add function
     }
 
-    public function rateAction()
+    public function rateAction(Request $req)
     {
-        //TODO: add function
+        /** @var TalkRatingStrategy $talkRatingStrategy */
+        $talkRatingStrategy = $this->service(TalkRatingStrategy::class);
+
+        try {
+            $talk_rating = (int) $req->get('rating');
+            $talk_id = (int) $req->get('id');
+
+            $talkRatingStrategy->rate($talk_id, $talk_rating);
+        } catch (TalkRatingException $e) {
+            return false;
+        }
+        return true;
     }
 }
