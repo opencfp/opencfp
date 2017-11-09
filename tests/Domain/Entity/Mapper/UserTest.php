@@ -42,7 +42,8 @@ class UserTest extends \PHPUnit\Framework\TestCase
     {
         $this->createFiveUsers();
         $result = $this->mapper->search()->toArray();
-        $this->assertEquals(5, count($result));
+
+        $this->assertCount(5, $result);
     }
     /**
      * @test
@@ -51,7 +52,8 @@ class UserTest extends \PHPUnit\Framework\TestCase
     {
         $this->createFiveUsers();
         $result = $this->mapper->search('a%')->toArray();
-        $this->assertEquals(3, count($result));
+
+        $this->assertCount(3, $result);
     }
 
     /**
@@ -61,7 +63,8 @@ class UserTest extends \PHPUnit\Framework\TestCase
     {
         $this->createFiveUsers();
         $result = $this->mapper->search('Arthur')->toArray();
-        $this->assertEquals(1, count($result));
+
+        $this->assertCount(1, $result);
         $this->assertEquals('Hunter', $result[0]['last_name']);
     }
 

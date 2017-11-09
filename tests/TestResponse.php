@@ -5,6 +5,7 @@ namespace OpenCFP\Test;
 use OpenCFP\Application;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Decorates a Symfony Response object and provides several
@@ -46,8 +47,9 @@ class TestResponse
     {
         $actual = $this->getStatusCode();
 
-        Assert::assertTrue(
-            $status === $actual,
+        Assert::assertSame(
+            $status,
+            $actual,
             "Expected status code {$status} but received {$actual}."
         );
 

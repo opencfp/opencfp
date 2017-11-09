@@ -26,8 +26,7 @@ class TalkController extends ApiController
      * @param Request $request
      *
      * @return JsonResponse
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function handleSubmitTalk(Request $request)
     {

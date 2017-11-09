@@ -372,8 +372,7 @@ class Talk extends Mapper
      * @param array $options Ordery By and Sorting Options
      *
      * @return array column is not in the column white list
-     *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function getTalksFilteredBy($column, $value, $admin_user_id, $options = [])
     {
@@ -393,7 +392,7 @@ class Talk extends Mapper
         ];
 
         if (!in_array($column, $column_white_list)) {
-            throw new InvalidArgumentException('Invalid Order By Column ' . $options['order_by']);
+            throw new \InvalidArgumentException('Invalid Order By Column ' . $options['order_by']);
         }
 
         $talks = $this->all()
