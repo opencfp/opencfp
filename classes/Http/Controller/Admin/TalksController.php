@@ -3,6 +3,7 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Domain\Entity\Talk as TalkEntity;
+use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
@@ -187,42 +188,31 @@ class TalksController extends BaseController
      */
     public function favoriteAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        $admin_user_id = $auth->userId();
+        $admin_user_id = $this->service(Authentication::class)->userId();
         $status = true;
 
         if ($req->get('delete') !== null) {
             $status = false;
         }
 
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\Favorite::class);
-
         if ($status == false) {
             // Delete the record that matches
-            $favorite = $mapper->first([
-                'admin_user_id' => $admin_user_id,
-                'talk_id' => (int) $req->get('id'),
-            ]);
-
-            return $mapper->delete($favorite);
+            return Favorite::where('admin_user_id', $admin_user_id)
+                ->where('talk_id', (int) $req->get('id'))
+                ->first()
+                ->delete();
         }
 
-        $previous_favorite = $mapper->where([
-            'admin_user_id' => $admin_user_id,
-            'talk_id' => (int) $req->get('id'),
-        ]);
+        $previous_favorite = Favorite::where('admin_user_id', $admin_user_id)
+            ->where('talk_id', (int) $req->get('id'))
+            ->first();
 
         if ($previous_favorite->count() == 0) {
-            $favorite = $mapper->get();
+            $favorite = new Favorite();
             $favorite->admin_user_id = $admin_user_id;
             $favorite->talk_id = (int) $req->get('id');
 
-            return $mapper->insert($favorite);
+            return $favorite->save();
         }
 
         return true;
