@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Domain\Model;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class User extends Eloquent
@@ -45,5 +46,20 @@ class User extends Eloquent
         });
 
         return $otherTalks;
+    }
+
+    public function scopeSearch(
+        Builder $builder,
+        $search = '',
+        $orderByColumn ='first_name',
+        $orderByDirection= 'ASC'
+    ) {
+        if ($search == '' || $search == null) {
+            return $builder->orderBy($orderByColumn, $orderByDirection);
+        }
+        return $builder
+            ->where('first_name', 'like', '%' . $search. '%')
+            ->orWhere('last_name', 'like', '%' . $search. '%')
+            ->orderBy($orderByColumn, $orderByDirection);
     }
 }
