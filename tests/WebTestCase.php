@@ -221,6 +221,8 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
     public function asReviewer(int $id =1): self
     {
         $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('id')->andReturn($id);
+        $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(true);

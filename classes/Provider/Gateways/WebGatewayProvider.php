@@ -3,8 +3,7 @@
 namespace OpenCFP\Provider\Gateways;
 
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Infrastructure\Auth\AdminAccess;
-use OpenCFP\Infrastructure\Auth\ReviewerAccess;
+use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -102,7 +101,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         /** @var ControllerCollection $admin */
         $admin = $app['controllers_factory'];
         $admin->before(function () use ($app) {
-            return AdminAccess::userHasAccess($app);
+            return RoleAccess::userHasAccess($app, 'admin');
         });
 
         // Admin Routes
@@ -133,7 +132,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         /** @var ControllerCollection $admin */
         $reviewer = $app['controllers_factory'];
         $reviewer->before(function () use ($app) {
-            return ReviewerAccess::userHasAccess($app);
+            return RoleAccess::userHasAccess($app, 'reviewer');
         });
 
         //Reviewer Routes
