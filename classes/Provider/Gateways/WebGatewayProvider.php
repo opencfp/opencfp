@@ -129,7 +129,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $admin->get('/export/csv/emails', 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction')->bind('admin_export_csv_emails');
         $app->mount('/admin/', $admin);
 
-        /** @var ControllerCollection $admin */
+        /** @var ControllerCollection $reviewer */
         $reviewer = $app['controllers_factory'];
         $reviewer->before(function () use ($app) {
             return RoleAccess::userHasAccess($app, 'reviewer');
