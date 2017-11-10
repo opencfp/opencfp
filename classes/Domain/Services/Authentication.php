@@ -51,7 +51,6 @@ interface Authentication
     /**
      * Destroys the user's active authenticated session.
      *
-     * @return void
      */
     public function logout();
 }
