@@ -32,6 +32,7 @@ Current release: v1.2.2
    * [Using the API](#json-api-usage)
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
+   * [Reviewer Group Management](#reviewer-group-management)
    * [User Management](#user-management)
    * [Clear Caches](#clear-caches)
    * [Scripts to Rule Them All](#scripts-rule-all)
@@ -581,6 +582,22 @@ Removing `speaker@opencfp.org` from the admin group:
 $ bin/opencfp admin:demote --env=production speaker@opencfp.org
 ```
 
+### [Reviewer Group Management](#reviewer-group-management)
+Reviewers are authorized to see talks and give ratings to them.
+
+Adding `speaker@opencfp.org` to the reviewer group:
+
+```
+$ bin/opencfp reviewer:promote --env=production speaker@opencfp.org
+```
+
+Removing `speaker@opencfp.org` from the reviewer group:
+
+```
+$ bin/opencfp reviewer:demote --env=production speaker@opencfp.org
+```
+
+
 ### [User Management](#user-management)
 
 Users are needed for you system, and sometimes you want to add users via command line.
@@ -595,6 +612,12 @@ Add an admin:
 
 ```
 $ bin/opencfp user:create --first_name="Admin" --last_name="Name" --email="admin@opencfp.org" --password="somePassw0rd!" --admin
+```
+
+Add a reviewer:
+
+```
+$ bin/opencfp user:create --first_name="Admin" --last_name="Name" --email="admin@opencfp.org" --password="somePassw0rd!" --reviewer
 ```
 
 ### [Clear Caches](#clear-caches)

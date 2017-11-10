@@ -67,8 +67,8 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')
             ->andReturn($user);
-        $accounts->shouldReceive('promote')
-            ->with('test@opencfp.dev');
+        $accounts->shouldReceive('promoteTo')
+            ->with('test@opencfp.dev', 'Admin');
 
         // Create our command object and inject our application
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());

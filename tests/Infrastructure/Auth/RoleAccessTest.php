@@ -5,11 +5,11 @@ namespace OpenCFP\Test\Http\Controller\Admin;
 use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Infrastructure\Auth\AdminAccess;
+use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class AdminAccessTest extends WebTestCase
+class RoleAccessTest extends WebTestCase
 {
     public function testReturnsRedirectIfCheckFailed()
     {
@@ -17,7 +17,7 @@ class AdminAccessTest extends WebTestCase
         $auth->shouldReceive('check')->andReturn(false);
         $this->swap(Authentication::class, $auth);
 
-        $this->assertInstanceOf(RedirectResponse::class, AdminAccess::userHasAccess($this->app));
+        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($this->app, 'admin'));
     }
 
     public function testReturnsFalseIfCheckSucceededButUserHasNoAdminPermission()
@@ -30,7 +30,7 @@ class AdminAccessTest extends WebTestCase
         $auth->shouldReceive('user')->andReturn($user);
         $this->swap(Authentication::class, $auth);
 
-        $this->assertInstanceOf(RedirectResponse::class, AdminAccess::userHasAccess($this->app));
+        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($this->app, 'admin'));
     }
 
     public function testReturnsNothingIfCheckSucceededAndUserHasAdminPermission()
@@ -44,6 +44,20 @@ class AdminAccessTest extends WebTestCase
         $this->swap(Authentication::class, $auth);
 
         //The middleware doesn't do anything if the user is an admin, so it returns null (void)
-        $this->assertNull(AdminAccess::userHasAccess($this->app));
+        $this->assertNull(RoleAccess::userHasAccess($this->app, 'admin'));
+    }
+
+    public function testReviewerCantGetToAdminPages()
+    {
+        $this->asReviewer();
+        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($this->app, 'admin'));
+        $this->assertNull(RoleAccess::userHasAccess($this->app, 'reviewer'));
+    }
+
+    public function testAdminCantGetToReviewerPage()
+    {
+        $this->asAdmin();
+        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($this->app, 'reviewer'));
+        $this->assertNull(RoleAccess::userHasAccess($this->app, 'admin'));
     }
 }

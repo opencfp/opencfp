@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Domain\Model;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class User extends Eloquent
@@ -45,5 +46,30 @@ class User extends Eloquent
         });
 
         return $otherTalks;
+    }
+
+    /**
+     * Will preform a like search with given search string or first or last name.
+     *
+     * @param Builder     $builder
+     * @param string|null $search           Name to search for
+     * @param string      $orderByColumn
+     * @param string      $orderByDirection
+     *
+     * @return Builder
+     */
+    public function scopeSearch(
+        Builder $builder,
+        $search = '',
+        string $orderByColumn = 'first_name',
+        string $orderByDirection = 'ASC'
+    ): Builder {
+        if ($search == '' || $search == null) {
+            return $builder->orderBy($orderByColumn, $orderByDirection);
+        }
+        return $builder
+            ->where('first_name', 'like', '%' . $search. '%')
+            ->orWhere('last_name', 'like', '%' . $search. '%')
+            ->orderBy($orderByColumn, $orderByDirection);
     }
 }

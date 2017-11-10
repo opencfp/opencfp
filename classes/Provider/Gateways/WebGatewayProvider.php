@@ -3,7 +3,7 @@
 namespace OpenCFP\Provider\Gateways;
 
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Infrastructure\Auth\AdminAccess;
+use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -42,6 +42,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             if ($app[Authentication::class]->check()) {
                 $twig->addGlobal('user', $app[Authentication::class]->user());
                 $twig->addGlobal('user_is_admin', $app[Authentication::class]->user()->hasAccess('admin'));
+                $twig->addGlobal('user_is_reviewer', $app[Authentication::class]->user()->hasAccess('reviewer'));
             }
 
             if ($app['session']->has('flash')) {
@@ -100,7 +101,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         /** @var ControllerCollection $admin */
         $admin = $app['controllers_factory'];
         $admin->before(function () use ($app) {
-            return AdminAccess::userHasAccess($app);
+            return RoleAccess::userHasAccess($app, 'admin');
         });
 
         // Admin Routes
@@ -127,6 +128,28 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $admin->get('/export/csv/selected', 'OpenCFP\Http\Controller\Admin\ExportsController::selectedTalksExportAction')->bind('admin_export_csv_selected');
         $admin->get('/export/csv/emails', 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction')->bind('admin_export_csv_emails');
         $app->mount('/admin/', $admin);
+
+        /** @var ControllerCollection $reviewer */
+        $reviewer = $app['controllers_factory'];
+        $reviewer->before(function () use ($app) {
+            return RoleAccess::userHasAccess($app, 'reviewer');
+        });
+
+        //Reviewer Routes
+        $reviewer->get('/', 'OpenCFP\Http\Controller\Reviewer\DashboardController::indexAction')->bind('reviewer');
+
+        // Reviewer::Talks
+        $reviewer->get('/talks', 'OpenCFP\Http\Controller\Reviewer\TalksController::indexAction')->bind('reviewer_talks');
+        $reviewer->get('/talks/{id}', 'OpenCFP\Http\Controller\Reviewer\TalksController::viewAction')->bind('reviewer_talk_view');
+        $reviewer->post('/talks/{id}/favorite', 'OpenCFP\Http\Controller\Reviewer\TalksController::favoriteAction')->bind('reviewer_talk_favorite');
+        $reviewer->post('/talks/{id}/comment', 'OpenCFP\Http\Controller\Reviewer\TalksController::commentCreateAction')->bind('reviewer_talk_comment_create');
+        $reviewer->post('/talks/{id}/rate', 'OpenCFP\Http\Controller\Reviewer\TalksController::rateAction')->bind('reviewer_talk_rate');
+
+        // Reviewer::Speakers
+        $reviewer->get('/speakers', 'OpenCFP\Http\Controller\Reviewer\SpeakersController::indexAction')->bind('reviewer_speakers');
+        $reviewer->get('/speakers/{id}', 'OpenCFP\Http\Controller\Reviewer\SpeakersController::viewAction')->bind('reviewer_speaker_view');
+
+        $app->mount('/reviewer/', $reviewer);
 
         $app->mount('/', $web);
         // @codingStandardsIgnoreEnd

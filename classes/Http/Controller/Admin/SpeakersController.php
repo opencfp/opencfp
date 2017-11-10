@@ -234,7 +234,7 @@ class SpeakersController extends BaseController
         $user = $accounts->findByLogin($user_data['email']);
 
         try {
-            $accounts->demote($user->getLogin());
+            $accounts->demoteFrom($user->getLogin());
 
             $this->service('session')->set('flash', [
                 'type' => 'success',
@@ -275,7 +275,7 @@ class SpeakersController extends BaseController
         }
 
         try {
-            $accounts->promote($user->getLogin());
+            $accounts->promoteTo($user->getLogin());
 
             $this->service('session')->set('flash', [
                 'type' => 'success',

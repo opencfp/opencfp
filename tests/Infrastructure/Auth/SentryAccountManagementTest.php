@@ -79,10 +79,10 @@ class SentryAccountManagementTest extends \PHPUnit\Framework\TestCase
 
         $this->assertCount(0, $this->sut->findByRole('Admin'));
 
-        $this->sut->promote('test@example.com');
+        $this->sut->promoteTo('test@example.com');
         $this->assertCount(1, $this->sut->findByRole('Admin'));
 
-        $this->sut->demote('test@example.com');
+        $this->sut->demoteFrom('test@example.com');
         $this->assertCount(0, $this->sut->findByRole('Admin'));
     }
 }

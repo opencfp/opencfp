@@ -22,6 +22,7 @@ class UserCreateCommand extends BaseCommand
                 new InputOption('email', 'e', InputOption::VALUE_REQUIRED, 'Email of the user to create', null),
                 new InputOption('password', 'p', InputOption::VALUE_REQUIRED, 'Password of the user to create', null),
                 new InputOption('admin', 'a', InputOption::VALUE_NONE, 'Promote to administrator', null),
+                new InputOption('reviewer', 'r', InputOption::VALUE_NONE, 'Promote to reviewer', null),
             ])
             ->setDescription('Creates a new user');
     }
@@ -53,7 +54,11 @@ class UserCreateCommand extends BaseCommand
 
         if ($input->getOption('admin')) {
             $io->block('Promoting to admin.');
-            $this->promote($user);
+            $this->promoteTo($user);
+        }
+        if ($input->getOption('reviewer')) {
+            $io->block('Promoting to reviewer.');
+            $this->promoteTo($user, 'Reviewer');
         }
 
         $io->success('User Created!');
@@ -81,9 +86,9 @@ class UserCreateCommand extends BaseCommand
         }
     }
 
-    private function promote($user)
+    private function promoteTo($user, $role = 'Admin')
     {
-        if ($user->hasAccess('admin')) {
+        if ($user->hasAccess(\strtolower($role))) {
             $io->error(sprintf(
                 'Account with email %s already is in the Admin group.',
                 $email
@@ -94,7 +99,7 @@ class UserCreateCommand extends BaseCommand
 
         /** @var AccountManagement $accounts */
         $accounts = $this->app[AccountManagement::class];
-        $accounts->promote($user->getLogin());
+        $accounts->promoteTo($user->getLogin(), $role);
 
         return true;
     }

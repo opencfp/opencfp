@@ -70,6 +70,8 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
             Console\Command\ListCommand::class,
             Command\AdminDemoteCommand::class,
             Command\AdminPromoteCommand::class,
+            Command\ReviewerPromoteCommand::class,
+            Command\ReviewerDemoteCommand::class,
             Command\UserCreateCommand::class,
             Command\ClearCacheCommand::class,
         ];
@@ -149,8 +151,8 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')
             ->andReturn($user);
-        $accounts->shouldReceive('demote')
-            ->with('test@opencfp.dev');
+        $accounts->shouldReceive('demoteFrom')
+            ->with('test@opencfp.dev', 'Admin');
 
         // Create our command object and inject our application
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());

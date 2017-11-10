@@ -7,29 +7,29 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AdminDemoteCommand extends BaseCommand
+class ReviewerDemoteCommand extends BaseCommand
 {
     protected function configure()
     {
         $this
-            ->setName('admin:demote')
+            ->setName('reviewer:demote')
             ->setDefinition([
                 new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to demote'),
             ])
             ->setDescription('Demote an existing user from being an admin')
             ->setHelp(
                 <<<EOF
-The <info>%command.name%</info> command removes a user from the admin group for a given environment:
+The <info>%command.name%</info> command removes a user from the reviewer group for a given environment:
 
 <info>php %command.full_name% speaker@opencfp.org --env=production</info>
 <info>php %command.full_name% speaker@opencfp.org --env=development</info>
 EOF
-);
+            );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        return $this->demote($input, $output, 'Admin');
+        $this->demote($input, $output, 'Reviewer');
     }
 
     /**
