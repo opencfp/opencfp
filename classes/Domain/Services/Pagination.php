@@ -9,7 +9,7 @@ class Pagination
 {
     private $pagerFanta;
 
-    public function __construct($talkList, int $perPage)
+    public function __construct($talkList, int $perPage = 20)
     {
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($talkList);
         $pagerFanta = new Pagerfanta($adapter);
@@ -24,7 +24,7 @@ class Pagination
         }
     }
 
-    public function createView(string $baseUrl, $queryParams): string
+    public function createView(string $baseUrl, $queryParams = []): string
     {
         $routeGenerator = function ($page) use ($queryParams, $baseUrl) {
             $queryParams['page'] = $page;
