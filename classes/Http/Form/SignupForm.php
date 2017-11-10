@@ -27,7 +27,7 @@ class SignupForm extends Form
     /**
      * Validate all methods by calling all our validation methods
      *
-     * @param  string  $action
+     * @param string $action
      *
      * @return boolean
      */

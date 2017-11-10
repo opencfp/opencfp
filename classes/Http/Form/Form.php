@@ -71,7 +71,7 @@ abstract class Form
      *
      * @array array $keys The wanted data
      *
-     * @param  array $keys
+     * @param array $keys
      *
      * @return array The cleaned data
      */
@@ -94,8 +94,8 @@ abstract class Form
     /**
      * Returns the value of a tainted data by its name.
      *
-     * @param  string     $name    The tainted value name
-     * @param  mixed      $default The default value to return if not set
+     * @param string $name    The tainted value name
+     * @param mixed  $default The default value to return if not set
      *
      * @return mixed|null
      */
@@ -117,10 +117,10 @@ abstract class Form
     /**
      * Returns the value of a form's option if set.
      *
-     * @param  string     $name    The option name
-     * @param  mixed|null $default The default value
+     * @param string     $name    The option name
+     * @param mixed|null $default The default value
      *
-     * @return mixed      The option value
+     * @return mixed The option value
      */
     public function getOption($name, $default = null)
     {
@@ -177,7 +177,7 @@ abstract class Form
     /**
      * Sanitizes all fields that were submitted.
      *
-     * @param  array $taintedData The tainted data
+     * @param array $taintedData The tainted data
      *
      * @return array Sanitized data
      */

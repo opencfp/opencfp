@@ -88,7 +88,7 @@ class TalkController extends BaseController
     /**
      * Controller action for viewing a specific talk
      *
-     * @param  Request $req
+     * @param Request $req
      *
      * @return mixed
      */
@@ -110,7 +110,7 @@ class TalkController extends BaseController
     /**
      * Controller action for displaying the form to edit an existing talk
      *
-     * @param  Request $req
+     * @param Request $req
      *
      * @return mixed
      */
@@ -173,7 +173,7 @@ class TalkController extends BaseController
     /**
      * Action for displaying the form to create a new talk
      *
-     * @param  Request $req
+     * @param Request $req
      *
      * @return mixed
      */
@@ -216,7 +216,7 @@ class TalkController extends BaseController
      * Controller action the processes the POST request to try and create
      * a new talk
      *
-     * @param  Request $req
+     * @param Request $req
      *
      * @return mixed
      */
@@ -448,9 +448,9 @@ class TalkController extends BaseController
     /**
      * Method that sends an email when a talk is created
      *
-     * @param  Application $app
-     * @param  string      $email
-     * @param  integer     $talk_id
+     * @param Application $app
+     * @param string      $email
+     * @param integer     $talk_id
      *
      * @return mixed
      */

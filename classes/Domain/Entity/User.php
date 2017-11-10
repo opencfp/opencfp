@@ -61,9 +61,9 @@ class User extends Entity
     /**
      * Setter for permissions property
      *
-     * @param  string|array $permissions JSON string or an array of permissions
+     * @param string|array $permissions JSON string or an array of permissions
      *
-     * @return string       JSON
+     * @return string JSON
      */
     protected function setPermissions($permissions)
     {

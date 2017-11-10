@@ -183,7 +183,7 @@ class TalksController extends BaseController
     /**
      * Set Favorited Talk [POST]
      *
-     * @param  Request $req Request Object
+     * @param Request $req Request Object
      *
      * @return bool
      */
@@ -211,7 +211,7 @@ class TalksController extends BaseController
     /**
      * Set Selected Talk [POST]
      *
-     * @param  Request $req Request Object
+     * @param Request $req Request Object
      *
      * @return bool
      */

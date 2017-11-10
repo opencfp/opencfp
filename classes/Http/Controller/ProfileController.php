@@ -224,8 +224,8 @@ class ProfileController extends BaseController
     /**
      * Method that saves user info using sanitized data and an Entity mapper
      *
-     * @param  Application $app
-     * @param  array       $sanitized_data
+     * @param Application $app
+     * @param array       $sanitized_data
      *
      * @return boolean
      */

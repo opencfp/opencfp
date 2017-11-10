@@ -321,7 +321,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      * @test
      * @dataProvider levelProvider
      *
-     * @param string $level
+     * @param string  $level
      * @param boolean $expectedResponse
      */
     public function levelValidatesCorrectly($level, $expectedResponse)
