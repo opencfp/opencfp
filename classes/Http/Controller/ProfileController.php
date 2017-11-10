@@ -5,7 +5,7 @@ namespace OpenCFP\Http\Controller;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\SignupForm;
-use Silex\Application;
+use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -81,22 +81,7 @@ class ProfileController extends BaseController
 
         if ($isValid) {
             $sanitized_data = $this->transformSanitizedData($form->getCleanData());
-
-            if (isset($form_data['speaker_photo'])) {
-                /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
-                $file = $form_data['speaker_photo'];
-                /** @var \OpenCFP\Domain\Services\ProfileImageProcessor $processor */
-                $processor = $this->service('profile_image_processor');
-                /** @var PseudoRandomStringGenerator $generator */
-                $generator = $this->service('security.random');
-
-                /**
-                 * The extension technically is not required. We guess the extension using a trusted method.
-                 */
-                $sanitized_data['photo_path'] = $generator->generate(40) . '.' . $file->guessExtension();
-
-                $processor->process($file, $sanitized_data['photo_path']);
-            }
+            $sanitized_data['photo_path'] = $this->handlePhoto($form_data['speaker_photo'] ?? null);
 
             User::find($userId)->update($sanitized_data);
             return $this->redirectTo('dashboard');
@@ -217,33 +202,24 @@ class ProfileController extends BaseController
         return $sanitizedData;
     }
 
-    /**
-     * Method that saves user info using sanitized data and an Entity mapper
-     *
-     * @param  Application $app
-     * @param  array       $sanitized_data
-     *
-     * @return boolean
-     */
-    protected function saveUser($app, $sanitized_data)
+    private function handlePhoto($photo)
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
+        if ($photo !== null && $photo !== '') {
+            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $photo;
+            /** @var \OpenCFP\Domain\Services\ProfileImageProcessor $processor */
+            $processor = $this->service('profile_image_processor');
+            /** @var PseudoRandomStringGenerator $generator */
+            $generator = $this->service('security.random');
 
-        $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
-        $user = $mapper->get($sanitized_data['user_id']);
-        $user->email = $sanitized_data['email'];
-        $user->first_name = $sanitized_data['first_name'];
-        $user->last_name = $sanitized_data['last_name'];
-        $user->company = $sanitized_data['company'];
-        $user->twitter = $sanitized_data['twitter'];
-        $user->url = $sanitized_data['url'];
-        $user->airport = $sanitized_data['airport'];
-        $user->transportation = $sanitized_data['transportation'];
-        $user->hotel = $sanitized_data['hotel'];
-        $user->info = $sanitized_data['speaker_info'];
-        $user->bio = $sanitized_data['speaker_bio'];
+            /**
+             * The extension technically is not required. We guess the extension using a trusted method.
+             */
+            $path = $generator->generate(40) . '.' . $file->guessExtension();
 
-        return $mapper->save($user);
+            $processor->process($file, $path);
+            return $path;
+        }
+        return null;
     }
 }
