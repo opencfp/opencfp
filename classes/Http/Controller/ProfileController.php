@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\SignupForm;
 use Silex\Application;
@@ -56,9 +57,9 @@ class ProfileController extends BaseController
 
     public function processAction(Request $req)
     {
-        $user = $this->service(Authentication::class)->user();
+        $userId = $this->service(Authentication::class)->userId();
 
-        if ((string) $user->getId() !== $req->get('id')) {
+        if ((string) $userId !== $req->get('id')) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -68,20 +69,7 @@ class ProfileController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $form_data = [
-            'email' => $req->get('email'),
-            'user_id' => $req->get('id'),
-            'first_name' => $req->get('first_name'),
-            'last_name' => $req->get('last_name'),
-            'company' => $req->get('company'),
-            'twitter' => $req->get('twitter'),
-            'url' => $req->get('url'),
-            'airport' => $req->get('airport'),
-            'transportation' => $req->get('transportation'),
-            'hotel' => $req->get('hotel'),
-            'speaker_info' => $req->get('speaker_info') ?: null,
-            'speaker_bio' => $req->get('speaker_bio') ?: null,
-        ];
+        $form_data = $this->getFormData($req);
 
         if ($req->files->get('speaker_photo') != null) {
             // Upload Image
@@ -113,53 +101,18 @@ class ProfileController extends BaseController
                 $processor->process($file, $sanitized_data['speaker_photo']);
             }
 
-            /* @var Locator $spot */
-            $spot = $this->service('spot');
-
-            $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
-            $user = $mapper->get($user->getId());
-            $user->email = $sanitized_data['email'];
-            $user->first_name = $sanitized_data['first_name'];
-            $user->last_name = $sanitized_data['last_name'];
-            $user->company = $sanitized_data['company'];
-            $user->twitter = $sanitized_data['twitter'];
-            $user->url = $sanitized_data['url'];
-            $user->airport = $sanitized_data['airport'];
-            $user->transportation = (int) $sanitized_data['transportation'];
-            $user->hotel = (int) $sanitized_data['hotel'];
-            $user->info = $sanitized_data['speaker_info'];
-            $user->bio = $sanitized_data['speaker_bio'];
-
-            if (isset($sanitized_data['speaker_photo'])) {
-                $user->photo_path = $sanitized_data['speaker_photo'];
-            }
-
-            $user->has_made_profile = 1;
-
-            /** @var $response number of affected rows */
-            $response = $mapper->save($user);
-
-            if ($response >= 0) {
-                $this->service('session')->set('flash', [
-                    'type' => 'success',
-                    'short' => 'Success',
-                    'ext' => 'Successfully updated your information!',
-                ]);
-
-                return $this->redirectTo('dashboard');
-            }
-        } else {
-            $this->service('session')->set('flash', [
+            User::find($userId)->update($this->transformSanitizedData($sanitized_data));
+            return $this->redirectTo('dashboard');
+        }
+        $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
                 'ext' => implode('<br>', $form->getErrorMessages()),
             ]);
-        }
 
         $form_data['formAction'] = $this->url('user_update');
         $form_data['buttonInfo'] = 'Update Profile';
-        $form_data['id'] = $user->id;
-        $form_data['user'] = $user;
+        $form_data['id'] = $userId;
         $form_data['flash'] = $this->getFlash($this->app);
 
         return $this->render('user/edit.twig', $form_data);
@@ -219,6 +172,42 @@ class ProfileController extends BaseController
         ]);
 
         return $this->redirectTo('password_edit');
+    }
+
+    /**
+     * @param Request $req
+     *
+     * @return array
+     */
+    private function getFormData(Request $req): array
+    {
+        $form_data = [
+            'email' => $req->get('email'),
+            'user_id' => $req->get('id'),
+            'first_name' => $req->get('first_name'),
+            'last_name' => $req->get('last_name'),
+            'company' => $req->get('company'),
+            'twitter' => $req->get('twitter'),
+            'url' => $req->get('url'),
+            'airport' => $req->get('airport'),
+            'transportation' => (int) $req->get('transportation'),
+            'hotel' => (int) $req->get('hotel'),
+            'speaker_info' => $req->get('speaker_info') ?: null,
+            'speaker_bio' => $req->get('speaker_bio') ?: null,
+        ];
+        return $form_data;
+    }
+
+    private function transformSanitizedData(array $sanitizedData): array
+    {
+        $sanitizedData['bio'] = $sanitizedData['speaker_bio'];
+        unset($sanitizedData['speaker_bio']);
+        $sanitizedData['info'] = $sanitizedData['speaker_info'];
+        unset($sanitizedData['speaker_info']);
+        $sanitizedData['id'] = $sanitizedData['user_id'];
+        unset($sanitizedData['user_id']);
+        $sanitizedData['has_made_profile'] = 1;
+        return $sanitizedData;
     }
 
     /**
