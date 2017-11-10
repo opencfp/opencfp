@@ -27,6 +27,7 @@ $config = PhpCsFixer\Config::create()
         'single_blank_line_before_namespace' => true,
         'single_quote' => true,
         'trailing_comma_in_multiline_array' => true,
+        'trim_array_spaces' => true,
         'yoda_style' => [
             'equal' => false,
             'identical' => false,
