@@ -85,8 +85,6 @@ class SentryAuthentication implements Authentication
     /**
      * Destroys the user's active authenticated session.
      *
-     * @return void
-     *
      * @throws NotAuthenticatedException
      */
     public function logout()
