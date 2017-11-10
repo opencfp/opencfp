@@ -77,11 +77,11 @@ class ProfileController extends BaseController
 
         if ($isValid) {
             $sanitized_data = $this->transformSanitizedData($form->getCleanData());
-            $sanitized_data['photo_path'] =
-                isset($form_data['speaker_photo'])
-                    ? $this->service('profile_image_processor')->process($form_data['speaker_photo'])
-                    : null;
-
+            if (isset($form_data['speaker_photo'])) {
+                $sanitized_data['photo_path'] = $this->service('profile_image_processor')
+                    ->process($form_data['speaker_photo']);
+            }
+            unset($sanitized_data['speaker_photo']);
             User::find($userId)->update($sanitized_data);
             return $this->redirectTo('dashboard');
         }
