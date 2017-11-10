@@ -55,11 +55,7 @@ class SpeakersController extends BaseController
         $adminUserIds = array_column($adminUsers, 'id');
 
         foreach ($rawSpeakers as $key => $each) {
-            if (in_array($each['id'], $adminUserIds)) {
-                $rawSpeakers[$key]['is_admin'] = true;
-            } else {
-                $rawSpeakers[$key]['is_admin'] = false;
-            }
+            $rawSpeakers[$key]['is_admin'] = in_array($each['id'], $adminUserIds);
         }
 
         // Set up our page stuff
