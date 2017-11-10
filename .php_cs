@@ -13,6 +13,7 @@ $config = PhpCsFixer\Config::create()
             'syntax' => 'short'
         ],
         'blank_line_after_opening_tag' => true,
+        'no_empty_phpdoc' => true,
         'no_extra_consecutive_blank_lines' => true,
         'no_unused_imports' => true,
         'ordered_imports' => true,
