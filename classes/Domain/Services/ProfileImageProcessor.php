@@ -49,10 +49,15 @@ class ProfileImageProcessor
      * @param UploadedFile $file
      * @param string       $publishFilename
      *
+     * @return string
+     *
      * @throws \Exception
      */
-    public function process(UploadedFile $file, $publishFilename)
+    public function process(UploadedFile $file, $publishFilename = null): string
     {
+        if ($publishFilename === null) {
+            $publishFilename = $this->generator->generate(50). '.'. $file->guessExtension();
+        }
         // Temporary filename to work with.
         $tempFilename = $this->generator->generate(40);
 
@@ -76,6 +81,7 @@ class ProfileImageProcessor
             if ($speakerPhoto->save($this->publishDir . '/' . $publishFilename)) {
                 unlink($this->publishDir . '/' . $tempFilename);
             }
+            return $publishFilename;
         } catch (\Exception $e) {
             unlink($this->publishDir . '/' . $tempFilename);
             throw $e;

@@ -72,7 +72,6 @@ class ProfileController extends BaseController
         $form_data = $this->getFormData($req);
 
         if ($req->files->get('speaker_photo') != null) {
-            // Upload Image
             $form_data['speaker_photo'] = $req->files->get('speaker_photo');
         }
 
@@ -81,7 +80,10 @@ class ProfileController extends BaseController
 
         if ($isValid) {
             $sanitized_data = $this->transformSanitizedData($form->getCleanData());
-            $sanitized_data['photo_path'] = isset($form_data['speaker_photo']) ? $this->handlePhoto($form_data['speaker_photo']) : null;
+            $sanitized_data['photo_path'] =
+                isset($form_data['speaker_photo'])
+                    ? $this->service('profile_image_processor')->process($form_data['speaker_photo'])
+                    : null;
 
             User::find($userId)->update($sanitized_data);
             return $this->redirectTo('dashboard');
@@ -200,21 +202,5 @@ class ProfileController extends BaseController
         unset($sanitizedData['user_id']);
         $sanitizedData['has_made_profile'] = 1;
         return $sanitizedData;
-    }
-
-    private function handlePhoto($photo)
-    {
-        if ($photo !== null && $photo !== '') {
-            /** @var \OpenCFP\Domain\Services\ProfileImageProcessor $processor */
-            $processor = $this->service('profile_image_processor');
-            /** @var PseudoRandomStringGenerator $generator */
-            $generator = $this->service('security.random');
-
-            $path = $generator->generate(40) . '.' . $photo->guessExtension();
-            $processor->process($photo, $path);
-
-            return $path;
-        }
-        return null;
     }
 }
