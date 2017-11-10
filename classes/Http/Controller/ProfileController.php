@@ -80,10 +80,7 @@ class ProfileController extends BaseController
         $isValid = $form->validateAll('update');
 
         if ($isValid) {
-            $sanitized_data = $form->getCleanData();
-
-            // Remove leading @ for twitter
-            $sanitized_data['twitter'] = preg_replace('/^@/', '', $sanitized_data['twitter']);
+            $sanitized_data = $this->transformSanitizedData($form->getCleanData());
 
             if (isset($form_data['speaker_photo'])) {
                 /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
@@ -101,7 +98,7 @@ class ProfileController extends BaseController
                 $processor->process($file, $sanitized_data['speaker_photo']);
             }
 
-            User::find($userId)->update($this->transformSanitizedData($sanitized_data));
+            User::find($userId)->update($sanitized_data);
             return $this->redirectTo('dashboard');
         }
         $this->service('session')->set('flash', [
@@ -198,8 +195,18 @@ class ProfileController extends BaseController
         return $form_data;
     }
 
+    /**
+     * Transforms the sanitized data array to be used by our User Model for updates
+     *
+     * @param array $sanitizedData
+     *
+     * @return array
+     */
     private function transformSanitizedData(array $sanitizedData): array
     {
+        // Remove leading @ for twitter
+        $sanitizedData['twitter'] = preg_replace('/^@/', '', $sanitizedData['twitter']);
+
         $sanitizedData['bio'] = $sanitizedData['speaker_bio'];
         unset($sanitizedData['speaker_bio']);
         $sanitizedData['info'] = $sanitizedData['speaker_info'];
