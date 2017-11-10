@@ -48,12 +48,22 @@ class User extends Eloquent
         return $otherTalks;
     }
 
+    /**
+     * Will preform a like search with given search string or first or last name.
+     *
+     * @param Builder $builder
+     * @param string|null $search Name to search for
+     * @param string $orderByColumn
+     * @param string $orderByDirection
+     *
+     * @return Builder
+     */
     public function scopeSearch(
         Builder $builder,
         $search = '',
-        $orderByColumn = 'first_name',
-        $orderByDirection = 'ASC'
-    ) {
+        string $orderByColumn = 'first_name',
+        string $orderByDirection = 'ASC'
+    ): Builder {
         if ($search == '' || $search == null) {
             return $builder->orderBy($orderByColumn, $orderByDirection);
         }
