@@ -93,9 +93,9 @@ class ProfileController extends BaseController
                 /**
                  * The extension technically is not required. We guess the extension using a trusted method.
                  */
-                $sanitized_data['speaker_photo'] = $generator->generate(40) . '.' . $file->guessExtension();
+                $sanitized_data['photo_path'] = $generator->generate(40) . '.' . $file->guessExtension();
 
-                $processor->process($file, $sanitized_data['speaker_photo']);
+                $processor->process($file, $sanitized_data['photo_path']);
             }
 
             User::find($userId)->update($sanitized_data);
