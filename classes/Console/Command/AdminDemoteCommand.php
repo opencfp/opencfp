@@ -3,11 +3,9 @@
 namespace OpenCFP\Console\Command;
 
 use OpenCFP\Console\BaseCommand;
-use OpenCFP\Domain\Services\AccountManagement;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class AdminDemoteCommand extends BaseCommand
 {
@@ -31,51 +29,7 @@ EOF
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var AccountManagement $accounts */
-        $accounts = $this->app[AccountManagement::class];
-
-        $email = $input->getArgument('email');
-
-        $io = new SymfonyStyle(
-            $input,
-            $output
-        );
-
-        $io->title('OpenCFP');
-
-        $io->section(sprintf(
-            'Demoting account with email %s from Admin',
-            $email
-        ));
-
-        try {
-            $user = $accounts->findByLogin($email);
-        } catch (\Exception $e) {
-            $io->error(sprintf(
-                'Could not find account with email %s.',
-                $email
-            ));
-
-            return 1;
-        }
-
-        if (! $user->hasAccess('admin')) {
-            $io->error(sprintf(
-                'Account with email %s is not in the Admin group.',
-                $email
-            ));
-
-            return 1;
-        }
-
-        $accounts->demoteFrom($user->getLogin());
-
-        $io->success(sprintf(
-            'Removed account with email %s from the Admin group',
-            $email
-        ));
-
-        return 0;
+        return $this->demote($input, $output, 'Admin');
     }
 
     /**
