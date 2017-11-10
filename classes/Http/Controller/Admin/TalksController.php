@@ -6,12 +6,12 @@ use OpenCFP\Domain\Entity\Talk as TalkEntity;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
-use Pagerfanta\View\DefaultView;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -36,34 +36,15 @@ class TalksController extends BaseController
             $options
         );
 
-        $per_page = (int) $req->get('per_page') ?: 20;
-
         // Set up our page stuff
-        $adapter = new \Pagerfanta\Adapter\ArrayAdapter($pager_formatted_talks);
-        $pagerfanta = new \Pagerfanta\Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage($per_page);
-        $pagerfanta->getNbResults();
-
-        if ($req->get('page') !== null) {
-            $pagerfanta->setCurrentPage($req->get('page'));
-        }
-
-        $queryParams = $req->query->all();
-        // Create our default view for the navigation options
-        $routeGenerator = function ($page) use ($queryParams) {
-            $queryParams['page'] = $page;
-            return '/admin/talks?' . http_build_query($queryParams);
-        };
-        $view = new DefaultView();
-        $pagination = $view->render(
-            $pagerfanta,
-            $routeGenerator,
-            ['proximity' => 3]
-        );
+        $per_page = (int) $req->get('per_page') ?: 20;
+        $pagerfanta = new Pagination($pager_formatted_talks, $per_page);
+        $pagerfanta->setCurrentPage($req->get('page'));
+        $pagination = $pagerfanta->createView('/admin/talks?', $req->query->all());
 
         $templateData = [
             'pagination' => $pagination,
-            'talks' => $pagerfanta,
+            'talks' => $pagerfanta->getFanta(),
             'page' => $pagerfanta->getCurrentPage(),
             'current_page' => $req->getRequestUri(),
             'totalRecords' => count($pager_formatted_talks),
