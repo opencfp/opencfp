@@ -15,7 +15,7 @@ class TalkFilter
         $this->talk_mapper = $spot->mapper(Talk::class);
     }
 
-    public function getFilteredTalks($filter = null, $admin_user_id, $options = [])
+    public function getFilteredTalks($admin_user_id, $filter = null, $options = [])
     {
         if ($filter === null) {
             return $this->talk_mapper->getAllPagerFormatted($admin_user_id, $options);

@@ -32,8 +32,8 @@ class TalksController extends BaseController
         ];
 
         $pager_formatted_talks = $this->service(TalkFilter::class)->getFilteredTalks(
-            $req->get('filter'),
             $admin_user_id,
+            $req->get('filter'),
             $options
         );
 
