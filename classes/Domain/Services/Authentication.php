@@ -50,7 +50,6 @@ interface Authentication
 
     /**
      * Destroys the user's active authenticated session.
-     *
      */
     public function logout();
 }

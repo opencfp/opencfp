@@ -126,7 +126,6 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
      * action
      *
      * @param mixed $data
-     *
      */
     protected function setPost($data)
     {
