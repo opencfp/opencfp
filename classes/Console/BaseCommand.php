@@ -83,4 +83,53 @@ abstract class BaseCommand extends Command
 
         return 0;
     }
+
+    /**
+     * Generic promote action, to promote to specific role.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param string $role Role to promote to, e.g. 'Admin' or 'Reviewer' (Note the capitalization)
+     *
+     * @return int
+     */
+    public function promote(InputInterface $input, OutputInterface $output, string $role)
+    {
+        /* @var AccountManagement $accounts */
+        $accounts = $this->app[AccountManagement::class];
+
+        $email = $input->getArgument('email');
+
+        $io = new SymfonyStyle(
+            $input,
+            $output
+        );
+
+        $io->title('OpenCFP');
+
+        $io->section(sprintf(
+            'Promoting account with email %s to '. $role,
+            $email
+        ));
+
+        try {
+            $user = $accounts->findByLogin($email);
+        } catch (\Exception $e) {
+            $io->error(sprintf(
+                'Could not find account with email %s.',
+                $email
+            ));
+
+            return 1;
+        }
+
+        $accounts->promoteTo($user->getLogin(), $role);
+
+        $io->success(sprintf(
+            'Added account with email %s to the '. $role .' group',
+            $email
+        ));
+
+        return 0;
+    }
 }

@@ -68,7 +68,7 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
         $accounts->shouldReceive('findByLogin')
             ->andReturn($user);
         $accounts->shouldReceive('promoteTo')
-            ->with('test@opencfp.dev');
+            ->with('test@opencfp.dev', 'Admin');
 
         // Create our command object and inject our application
         $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
