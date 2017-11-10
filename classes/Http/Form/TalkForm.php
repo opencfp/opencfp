@@ -51,7 +51,7 @@ class TalkForm extends Form
     /**
      * Validate everything
      *
-     * @return boolean
+     * @return bool
      */
     public function validateAll($action = 'create')
     {
@@ -70,7 +70,7 @@ class TalkForm extends Form
     /**
      * Method that validates title data
      *
-     * @return boolean
+     * @return bool
      */
     public function validateTitle(): bool
     {
@@ -94,7 +94,7 @@ class TalkForm extends Form
     /**
      * Method that validates description data
      *
-     * @return boolean
+     * @return bool
      */
     public function validateDescription(): bool
     {
@@ -110,7 +110,7 @@ class TalkForm extends Form
     /**
      * Method that validates talk types
      *
-     * @return boolean
+     * @return bool
      */
     public function validateType(): bool
     {

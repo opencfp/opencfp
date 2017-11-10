@@ -22,8 +22,8 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      * @test
      * @dataProvider hasRequiredProvider
      *
-     * @param array   $rawData  serialized user-submitted data
-     * @param boolean $response
+     * @param array $rawData  serialized user-submitted data
+     * @param bool  $response
      */
     public function correctlyDetectsRequiredFields($rawData, $response)
     {
@@ -80,8 +80,8 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      * @test
      * @dataProvider hasNoDesiredOrSponsorProvider
      *
-     * @param array   $rawData  serialized user-submitted data
-     * @param boolean $response
+     * @param array $rawData  serialized user-submitted data
+     * @param bool  $response
      */
     public function submitsTalkWhenNoDesiredOrSponrosIncluded($rawData, $response)
     {
@@ -126,8 +126,8 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      * @test
      * @dataProvider titleValidatesProvider
      *
-     * @param string  $title
-     * @param boolean $expectedResponse
+     * @param string $title
+     * @param bool   $expectedResponse
      */
     public function titleValidatesCorrectly($title, $expectedResponse)
     {
@@ -168,8 +168,8 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      * @test
      * @dataProvider descriptionValidatesProvider
      *
-     * @param string  $description
-     * @param boolean $expectedResponse
+     * @param string $description
+     * @param bool   $expectedResponse
      */
     public function descriptionValidatesCorrectly($description, $expectedResponse)
     {
@@ -209,8 +209,8 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      * @test
      * @dataProvider typeProvider
      *
-     * @param string  $type
-     * @param boolean $expectedResponse
+     * @param string $type
+     * @param bool   $expectedResponse
      */
     public function typeValidatesCorrectly($type, $expectedResponse)
     {
@@ -235,7 +235,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
     /**
      * Data provider for typeValidatesCorrectly
      *
-     * @return boolean
+     * @return bool
      */
     public function typeProvider()
     {
@@ -256,8 +256,8 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      * @test
      * @dataProvider categoryProvider
      *
-     * @param string  $category
-     * @param boolean $expectedResponse
+     * @param string $category
+     * @param bool   $expectedResponse
      */
     public function categoryValidatesCorrectly($category, $expectedResponse)
     {
@@ -278,7 +278,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
     /**
      * Data provider for typeValidatesCorrectly
      *
-     * @return boolean
+     * @return bool
      */
     public function categoryProvider()
     {
@@ -321,8 +321,8 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      * @test
      * @dataProvider levelProvider
      *
-     * @param string  $level
-     * @param boolean $expectedResponse
+     * @param string $level
+     * @param bool   $expectedResponse
      */
     public function levelValidatesCorrectly($level, $expectedResponse)
     {

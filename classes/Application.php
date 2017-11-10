@@ -265,7 +265,7 @@ class Application extends SilexApplication
     /**
      * Tells if application is in production environment.
      *
-     * @return boolean
+     * @return bool
      */
     public function isProduction()
     {
@@ -275,7 +275,7 @@ class Application extends SilexApplication
     /**
      * Tells if application is in development environment.
      *
-     * @return boolean
+     * @return bool
      */
     public function isDevelopment()
     {
@@ -285,7 +285,7 @@ class Application extends SilexApplication
     /**
      * Tells if application is in testing environment.
      *
-     * @return boolean
+     * @return bool
      */
     public function isTesting()
     {

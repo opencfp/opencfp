@@ -9,7 +9,7 @@ class User extends Mapper
     /**
      * Return an array that grabs info from the User and Speaker entities
      *
-     * @param integer $user_id
+     * @param int $user_id
      *
      * @return array
      */

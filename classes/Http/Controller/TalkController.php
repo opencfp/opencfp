@@ -450,7 +450,7 @@ class TalkController extends BaseController
      *
      * @param Application $app
      * @param string      $email
-     * @param integer     $talk_id
+     * @param int         $talk_id
      *
      * @return mixed
      */

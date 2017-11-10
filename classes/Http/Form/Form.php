@@ -56,7 +56,7 @@ abstract class Form
      * Method that validates that we have all required
      * fields in our submitted data
      *
-     * @return boolean
+     * @return bool
      */
     public function hasRequiredFields(): bool
     {
@@ -145,7 +145,7 @@ abstract class Form
     /**
      * Returns whether or not the form has error messages.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasErrors(): bool
     {
