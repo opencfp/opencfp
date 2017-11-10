@@ -25,7 +25,7 @@ class Talk extends Mapper
      * user has favourited this talk
      *
      * @param integer $admin_user_id
-     * @param array $options
+     * @param array   $options
      *
      * @return array If order by is not in white list
      *
@@ -66,7 +66,7 @@ class Talk extends Mapper
      * Return a collection of talks that have been selected
      *
      * @param integer $admin_user_id
-     * @param array $options Ordery By and Sorting Options
+     * @param array   $options       Ordery By and Sorting Options
      *
      * @return array
      */
@@ -96,8 +96,8 @@ class Talk extends Mapper
     /**
      * Return an array of recent talks
      *
-     * @param  integer $admin_user_id
-     * @param int $limit
+     * @param integer $admin_user_id
+     * @param int     $limit
      *
      * @return array
      *
@@ -122,7 +122,7 @@ class Talk extends Mapper
      * Return a collection of talks that a majority of the admins have liked
      *
      * @param integer $admin_user_id
-     * @param array $options Ordery By and Sorting Options
+     * @param array   $options       Ordery By and Sorting Options
      *
      * @return array
      */
@@ -158,7 +158,7 @@ class Talk extends Mapper
      * the talk rating must be above 0 to show on list
      *
      * @param integer $admin_user_id
-     * @param array $options Ordery By and Sorting Options
+     * @param array   $options       Ordery By and Sorting Options
      *
      * @return array
      */
@@ -193,7 +193,7 @@ class Talk extends Mapper
      * Return a collection of talks not viewed by admin
      *
      * @param integer $admin_user_id
-     * @param array $options Ordery By and Sorting Options
+     * @param array   $options       Ordery By and Sorting Options
      *
      * @return array
      */
@@ -228,7 +228,7 @@ class Talk extends Mapper
      * Return a collection of talks viewed by admin
      *
      * @param integer $admin_user_id
-     * @param array $options Ordery By and Sorting Options
+     * @param array   $options       Ordery By and Sorting Options
      *
      * @return array
      */
@@ -263,7 +263,7 @@ class Talk extends Mapper
      * Return a collection of talks rated by admin
      *
      * @param integer $admin_user_id
-     * @param array $options Ordery By and Sorting Options
+     * @param array   $options       Ordery By and Sorting Options
      *
      * @return array
      */
@@ -298,7 +298,7 @@ class Talk extends Mapper
      * Return a collection of talks rated +1 by admin
      *
      * @param integer $admin_user_id
-     * @param array $options Ordery By and Sorting Options
+     * @param array   $options       Ordery By and Sorting Options
      *
      * @return array
      */
@@ -332,7 +332,7 @@ class Talk extends Mapper
      * Return a collection of talks not rated by admin
      *
      * @param integer $admin_user_id
-     * @param array $options Ordery By and Sorting Options
+     * @param array   $options       Ordery By and Sorting Options
      *
      * @return array
      */
@@ -366,10 +366,10 @@ class Talk extends Mapper
     /**
      * Get a collection of talks filtered by a specific column
      *
-     * @param string $column Column to filter results with
-     * @param mixed $value Column value
+     * @param string  $column        Column to filter results with
+     * @param mixed   $value         Column value
      * @param integer $admin_user_id
-     * @param array $options Ordery By and Sorting Options
+     * @param array   $options       Ordery By and Sorting Options
      *
      * @return array column is not in the column white list
      *
@@ -413,7 +413,7 @@ class Talk extends Mapper
      * Return a collection of entities representing talks that belong to a
      * specific user
      *
-     * @param  integer $user_id
+     * @param integer $user_id
      *
      * @return array
      */
@@ -425,8 +425,8 @@ class Talk extends Mapper
     /**
      * Iterates over DBAL objects and returns a formatted result set
      *
-     * @param  mixed   $talk
-     * @param  integer $admin_user_id
+     * @param mixed   $talk
+     * @param integer $admin_user_id
      *
      * @return array
      */
@@ -440,7 +440,7 @@ class Talk extends Mapper
     /**
      * Get sorting options, order_by and sort direction
      *
-     * @param array $options Sorting Options to Apply
+     * @param array $options        Sorting Options to Apply
      * @param array $defaultOptions Default Sorting Options
      *
      * @return array

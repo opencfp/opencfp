@@ -10,7 +10,7 @@ class ControllerResolver extends \Silex\ControllerResolver
      * We're overriding this protected method to auto-inject the application container
      * into our controllers.
      *
-     * @param  string      $controller
+     * @param string $controller
      *
      * @return array|mixed
      */

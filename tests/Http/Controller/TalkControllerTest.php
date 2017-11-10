@@ -125,7 +125,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
      * Method for setting the values that would be posted to a controller
      * action
      *
-     * @param  mixed $data
+     * @param mixed $data
      *
      * @return void
      */

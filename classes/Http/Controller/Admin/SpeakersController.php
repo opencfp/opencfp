@@ -6,12 +6,10 @@ use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
-use Pagerfanta\Adapter\ArrayAdapter;
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\View\DefaultView;
 use Spot\Locator;
 use Spot\Mapper;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,40 +55,20 @@ class SpeakersController extends BaseController
         $adminUserIds = array_column($adminUsers, 'id');
 
         foreach ($rawSpeakers as $key => $each) {
-            if (in_array($each['id'], $adminUserIds)) {
-                $rawSpeakers[$key]['is_admin'] = true;
-            } else {
-                $rawSpeakers[$key]['is_admin'] = false;
-            }
+            $rawSpeakers[$key]['is_admin'] = in_array($each['id'], $adminUserIds);
         }
 
         // Set up our page stuff
-        $adapter = new ArrayAdapter($rawSpeakers);
-        $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage(20);
-        $pagerfanta->getNbResults();
-
-        if ($req->get('page') !== null) {
-            $pagerfanta->setCurrentPage($req->get('page'));
-        }
-
-        // Create our default view for the navigation options
-        $routeGenerator = function ($page) {
-            return '/admin/speakers?page=' . $page;
-        };
-        $view = new DefaultView();
-        $pagination = $view->render(
-            $pagerfanta,
-            $routeGenerator,
-            ['proximity' => 3]
-        );
+        $pagerfanta = new Pagination($rawSpeakers);
+        $pagerfanta->setCurrentPage($req->get('page'));
+        $pagination = $pagerfanta->createView('/admin/speakers?');
 
         $templateData = [
             'airport' => $this->app->config('application.airport'),
             'arrival' => date('Y-m-d', $this->app->config('application.arrival')),
             'departure' => date('Y-m-d', $this->app->config('application.departure')),
             'pagination' => $pagination,
-            'speakers' => $pagerfanta,
+            'speakers' => $pagerfanta->getFanta(),
             'page' => $pagerfanta->getCurrentPage(),
             'search' => $search ?: '',
         ];
@@ -230,10 +208,6 @@ class SpeakersController extends BaseController
 
     public function demoteAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
@@ -280,10 +254,6 @@ class SpeakersController extends BaseController
 
     public function promoteAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
 

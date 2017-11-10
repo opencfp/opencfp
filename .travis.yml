@@ -5,7 +5,7 @@ sudo: false
 env:
   global:
     - TRAVIS_DB=cfp_test
-    - CODECLIMATE_REPO_TOKEN=9deb249b01a414d979959cfd05a4c351b19a5959858653b20276454d4189edc3
+    - CC_TEST_REPORTER_ID=9deb249b01a414d979959cfd05a4c351b19a5959858653b20276454d4189edc3
 
 # cache composer downloads so installing is quicker
 cache:
@@ -62,6 +62,12 @@ jobs:
         - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
         - cp phinx.yml.dist phinx.yml
         - vendor/bin/phinx migrate -e testing
+        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        - chmod +x ./cc-test-reporter
+        - ./cc-test-reporter before-build
+
+      after_script:
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
       script:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
