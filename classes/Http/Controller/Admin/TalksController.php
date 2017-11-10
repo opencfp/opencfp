@@ -36,22 +36,11 @@ class TalksController extends BaseController
             $options
         );
 
-        $per_page = (int) $req->get('per_page') ?: 20;
-
         // Set up our page stuff
+        $per_page = (int) $req->get('per_page') ?: 20;
         $pagerfanta = new Pagination($pager_formatted_talks, $per_page);
-
-        if ($req->get('page') !== null) {
-            $pagerfanta->setCurrentPage($req->get('page'));
-        }
-
-        $queryParams = $req->query->all();
-        // Create our default view for the navigation options
-        $routeGenerator = function ($page) use ($queryParams) {
-            $queryParams['page'] = $page;
-            return '/admin/talks?' . http_build_query($queryParams);
-        };
-        $pagination = $pagerfanta->createView($routeGenerator);
+        $pagerfanta->setCurrentPage($req->get('page'));
+        $pagination = $pagerfanta->createView('/admin/talks?', $req->query->all());
 
         $templateData = [
             'pagination' => $pagination,

@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Domain\Services;
 
+use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\DefaultView;
 
 class Pagination
@@ -11,19 +12,25 @@ class Pagination
     public function __construct($talkList, int $perPage)
     {
         $adapter = new \Pagerfanta\Adapter\ArrayAdapter($talkList);
-        $pagerFanta = new \Pagerfanta\Pagerfanta($adapter);
+        $pagerFanta = new Pagerfanta($adapter);
         $pagerFanta->setMaxPerPage($perPage);
-        $pagerFanta->getNbResults();
         $this->pagerFanta = $pagerFanta;
     }
 
     public function setCurrentPage($page)
     {
-        $this->pagerFanta->setCurrentPage($page);
+        if ($page !== null && $page !== '') {
+            $this->pagerFanta->setCurrentPage($page);
+        }
     }
 
-    public function createView($routeGenerator)
+    public function createView(string $baseUrl, $queryParams): string
     {
+        $routeGenerator = function ($page) use ($queryParams, $baseUrl) {
+            $queryParams['page'] = $page;
+            return $baseUrl . http_build_query($queryParams);
+        };
+
         $view = new DefaultView();
         return $view->render(
             $this->pagerFanta,
@@ -32,12 +39,12 @@ class Pagination
         );
     }
 
-    public function getCurrentPage()
+    public function getCurrentPage(): int
     {
         return $this->pagerFanta->getCurrentPage();
     }
 
-    public function getFanta()
+    public function getFanta(): Pagerfanta
     {
         return $this->pagerFanta;
     }
