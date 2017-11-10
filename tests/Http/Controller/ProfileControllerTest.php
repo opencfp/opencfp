@@ -2,12 +2,11 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
-use OpenCFP\Application;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Environment;
-use OpenCFP\Http\Controller\ProfileController;
+use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\WebTestCase;
 use Spot\Locator;
 
 /**
@@ -16,36 +15,21 @@ use Spot\Locator;
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */
-class ProfileControllerTest extends \PHPUnit\Framework\TestCase
+class ProfileControllerTest extends WebTestCase
 {
-    private $app;
-    private $req;
+    use DatabaseTransaction;
 
     public function setUp()
     {
-        // Create our Application object
-        $this->app = new Application(BASE_PATH, Environment::testing());
-        $this->app['session.test'] = true;
+        parent::setUp();
+        $this->asLoggedInSpeaker();
+        $this->setUpDatabase();
+    }
 
-        $user = m::mock(UserInterface::class);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
-        $user->shouldReceive('getId')->andReturn(1);
-        $user->shouldReceive('id')->andReturn(1);
-        $user->id = 1;
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $user->shouldReceive('getLogin')->andReturn('my@email.com');
-
-        $auth = m::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-        $this->app[Authentication::class] = $auth;
-
-        // Use our pre-configured Application object
-        ob_start();
-        $this->app->run();
-        ob_end_clean();
-
-        $this->req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->tearDownDatabase();
     }
 
     /**
@@ -53,22 +37,10 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function notAbleToSeeEditPageOfOtherPersonsProfile()
     {
-        $this->req->shouldReceive('get')->with('id')->andReturn('2');
-
-        $controller = new ProfileController();
-        $controller->setApplication($this->app);
-
-        $response = $controller->editAction($this->req);
-
-        $flash= $this->app['session']->get('flash');
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\RedirectResponse::class,
-            $response
-        );
-        $this->assertEquals('error', $flash['type']);
-        $this->assertEquals("You cannot edit someone else's profile", $flash['ext']);
-        $this->assertContains('dashboard', $response->getTargetUrl());
+        $this->asLoggedInSpeaker(1)
+            ->get('/profile/edit/2')
+            ->assertNotSee('My Profile')
+            ->assertRedirect();
     }
 
     /**
@@ -76,11 +48,6 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function seeEditPageWhenAllowed()
     {
-        $controller = new ProfileController();
-        $controller->setApplication($this->app);
-
-        $this->req->shouldReceive('get')->with('id')->andReturn('1');
-
         $spot = m::mock(Locator::class);
         $spot->shouldReceive('mapper')->with('\OpenCFP\Domain\Entity\User')->andReturn($spot);
         $spot->shouldReceive('get')->with($this->app[Authentication::class]->user()->getId())->andReturn($spot);
@@ -100,17 +67,10 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
             ]
         );
 
-        unset($this->app['spot']);
-        $this->app['spot'] = $spot;
-
-        $response = $controller->editAction($this->req);
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\Response::class,
-            $response
-        );
-        $this->assertContains('<h2 class="headline">My Profile</h2>', (string) $response);
-        $this->assertContains('Interesting details about my life', (string) $response);
+        $this->swap('spot', $spot);
+        $this->asLoggedInSpeaker()
+            ->get('/profile/edit/1')
+            ->assertSuccessful();
     }
 
     /**
@@ -118,22 +78,10 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function notAbleToEditOtherPersonsProfile()
     {
-        $this->req->shouldReceive('get')->with('id')->andReturn('2');
-
-        $controller = new ProfileController();
-        $controller->setApplication($this->app);
-
-        $response = $controller->processAction($this->req);
-
-        $flash= $this->app['session']->get('flash');
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\RedirectResponse::class,
-            $response
-        );
-        $this->assertEquals('error', $flash['type']);
-        $this->assertEquals("You cannot edit someone else's profile", $flash['ext']);
-        $this->assertContains('dashboard', $response->getTargetUrl());
+        $this->asLoggedInSpeaker(1)
+            ->post('/profile/edit', ['id' =>2])
+            ->assertNotSee('My Profile')
+            ->assertRedirect();
     }
 
     /**
@@ -141,19 +89,11 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function canNotUpdateProfileWithInvalidData()
     {
-        $this->putUserInRequest(false);
-
-        $controller = new ProfileController();
-        $controller->setApplication($this->app);
-        $response = $controller->processAction($this->req);
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\Response::class,
-            $response
-        );
-        $this->assertContains('Invalid email address format', (string) $response);
-        $this->assertContains('<h2 class="headline">My Profile</h2>', (string) $response);
-        $this->assertContains('<label for="form-user-email">Email</label>', (string) $response);
+        $this->asLoggedInSpeaker()
+            ->post('/profile/edit', $this->putUserInRequest(false))
+            ->assertSee('My Profile')
+            ->assertSee('Invalid email address format')
+            ->assertSuccessful();
     }
 
     /**
@@ -161,33 +101,11 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function redirectToDashboardOnSuccessfulUpdate()
     {
-        $this->putUserInRequest(true);
-
-        $user = m::mock(\stdClass::class);
-
-        $spot = m::mock(Locator::class);
-        $spot->shouldReceive('mapper')->with('\OpenCFP\Domain\Entity\User')->andReturn($spot);
-        $spot->shouldReceive('get')
-            ->with($this->app[Authentication::class]->user()->getId())
-            ->andReturn($user);
-        $spot->shouldReceive('save')->with($user)->andReturn(0);
-
-        unset($this->app['spot']);
-        $this->app['spot'] = $spot;
-
-        $controller = new ProfileController();
-        $controller->setApplication($this->app);
-        $response = $controller->processAction($this->req);
-
-        $flash= $this->app['session']->get('flash');
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\RedirectResponse::class,
-            $response
-        );
-        $this->assertContains('dashboard', $response->getTargetUrl());
-        $this->assertEquals('success', $flash['type']);
-        $this->assertEquals('Successfully updated your information!', $flash['ext']);
+        $user = factory(User::class, 1)->create()->first();
+        $this->asLoggedInSpeaker($user->id)
+            ->post('/profile/edit', $this->putUserInRequest(true, $user->id))
+            ->assertNotSee('My Profile')
+            ->assertRedirect();
     }
 
     /**
@@ -195,42 +113,26 @@ class ProfileControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function displayChangePasswordWhenAllowed()
     {
-        $controller = new ProfileController();
-        $controller->setApplication($this->app);
-        $response = $controller->passwordAction($this->req);
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\Response::class,
-            $response
-        );
-        $this->assertContains(
-            '<h2 class="headline">Change Your Password</h2>',
-            (string) $response
-        );
+        $this->asLoggedInSpeaker()
+            ->get('/profile/change_password')
+            ->assertSee('Change Your Password')
+            ->assertSuccessful();
     }
 
     /**
      * Helper function to fake a user in the request object.
      *
      * @param $isEmailValid bool whether or not to use a valid email address
+     *
+     * @return array
      */
-    private function putUserInRequest($isEmailValid)
+    private function putUserInRequest($isEmailValid, $id = 1): array
     {
-        $email = $isEmailValid ? 'valideamial@cfp.org' : 'invalidEmail';
-
-        $this->req->shouldReceive('get')->with('id')->andReturn('1');
-        $this->req->shouldReceive('get')->with('email')->andReturn($email);
-        $this->req->shouldReceive('get')->with('first_name')->andReturn('My Name');
-        $this->req->shouldReceive('get')->with('last_name')->andReturn('The Second');
-        $this->req->shouldReceive('get')->with('company')->andReturn('');
-        $this->req->shouldReceive('get')->with('twitter')->andReturn('');
-        $this->req->shouldReceive('get')->with('airport')->andReturn('');
-        $this->req->shouldReceive('get')->with('transportation')->andReturn('');
-        $this->req->shouldReceive('get')->with('hotel')->andReturn('');
-        $this->req->shouldReceive('get')->with('url')->andReturn('https://joind.in/user/myname');
-        $this->req->shouldReceive('get')->with('speaker_info')->andReturn('All my info');
-        $this->req->shouldReceive('get')->with('speaker_bio')->andReturn('I did a lot of things');
-        $this->req->shouldReceive('get')->with('speaker_photo')->andReturn('');
-        $this->req->files = $this->req;
+        return [
+            'id' => $id,
+            'email' => $isEmailValid ? 'valideamial@cfp.org' : 'invalidEmail',
+            'first_name' => 'First',
+            'last_name' => 'Last',
+        ];
     }
 }

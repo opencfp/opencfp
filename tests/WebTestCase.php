@@ -180,6 +180,24 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
         return $this;
     }
 
+    public function asLoggedInSpeaker(int $id = 1): self
+    {
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('id')->andReturn($id);
+        $user->shouldReceive('getId')->andReturn($id);
+        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
+        $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
+        $user->shouldReceive('getLogin')->andReturn('my@email.com');
+
+        // Create a test double for Sentry
+        $auth = Mockery::mock(Authentication::class);
+        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('user')->andReturn($user);
+        $auth->shouldReceive('userId')->andReturn($id);
+        $this->swap(Authentication::class, $auth);
+        return $this;
+    }
+
     public function asAdmin(int $id = 1): self
     {
         // Set things up so Sentry believes we're logged in
