@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Spot\Locator;
+use OpenCFP\Domain\Model\Talk;
 
 class PagesController extends BaseController
 {
@@ -23,13 +23,6 @@ class PagesController extends BaseController
 
     private function getContextWithTalksCount()
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $numberOfTalks = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class)->all()->count();
-
-        return [
-            'number_of_talks' => $numberOfTalks,
-        ];
+        return [ 'number_of_talks' => Talk::count()];
     }
 }
