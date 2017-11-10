@@ -187,6 +187,8 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
         $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
+        $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
+        $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
         $user->shouldReceive('getLogin')->andReturn('my@email.com');
 
         // Create a test double for Sentry

@@ -4,7 +4,6 @@ namespace OpenCFP\Test\Http\Controller;
 
 use Mockery as m;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Test\DatabaseTransaction;
 use OpenCFP\Test\WebTestCase;
 use Spot\Locator;
@@ -22,7 +21,6 @@ class ProfileControllerTest extends WebTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->asLoggedInSpeaker();
         $this->setUpDatabase();
     }
 
@@ -50,8 +48,7 @@ class ProfileControllerTest extends WebTestCase
     {
         $spot = m::mock(Locator::class);
         $spot->shouldReceive('mapper')->with('\OpenCFP\Domain\Entity\User')->andReturn($spot);
-        $spot->shouldReceive('get')->with($this->app[Authentication::class]->user()->getId())->andReturn($spot);
-        $spot->shouldReceive('toArray')->with()->andReturn(
+        $spot->shouldReceive('get->toArray')->with()->andReturn(
             [
                 'first_name' => 'Speaker Name',
                 'last_name' => 'Last Name',
