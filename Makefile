@@ -1,9 +1,12 @@
-.PHONY: composer cs database it test
+.PHONY: composer coverage cs database it test
 
 it: cs test
 
 composer:
 	composer install
+
+coverage: composer database
+	vendor/bin/phpunit --coverage-text
 
 cs: composer
 	vendor/bin/php-cs-fixer fix --verbose --diff
