@@ -65,7 +65,7 @@ class Environment
     }
 
     /**
-     * @param  Environment $environment
+     * @param Environment $environment
      *
      * @return bool
      */

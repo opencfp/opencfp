@@ -12,8 +12,8 @@ class TalkFormatter implements TalkFormat
      * Iterates over a collection of DBAL objects and returns a formatted result set
      *
      * @param Collection $talkCollection Collection of Talks
-     * @param integer $admin_user_id
-     * @param bool $userData
+     * @param integer    $admin_user_id
+     * @param bool       $userData
      *
      * @return Collection
      */
@@ -28,9 +28,9 @@ class TalkFormatter implements TalkFormat
     /**
      * Iterates over DBAL objects and returns a formatted result set
      *
-     * @param mixed $talk
+     * @param mixed   $talk
      * @param integer $admin_user_id
-     * @param bool $userData grab the speaker data or not
+     * @param bool    $userData      grab the speaker data or not
      *
      * @return array
      */
@@ -95,8 +95,8 @@ class TalkFormatter implements TalkFormat
     /**
      * Grabs the related meta information of the talk, or 0's when there is none
      *
-     * @param mixed $talk Talk we want to get the meta of, both entity and model work.
-     * @param int $admin_user_id user ID of the admin
+     * @param mixed $talk          Talk we want to get the meta of, both entity and model work.
+     * @param int   $admin_user_id user ID of the admin
      *
      * @return TalkMeta
      */
