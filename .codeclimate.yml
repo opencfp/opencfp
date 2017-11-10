@@ -10,6 +10,8 @@ engines:
     enabled: true
     config:
       standard: PSR2
+  phpmd:
+    enabled: true
 
 ratings:
   paths:
