@@ -43,7 +43,6 @@
         "vlucas/spot2": "dev-master"
     },
     "require-dev": {
-        "codeclimate/php-test-reporter": "0.2.0",
         "friendsofphp/php-cs-fixer": "^2.8.0",
         "fzaninotto/faker": "^1.5.0",
         "mockery/mockery": "1.0.*@dev",
