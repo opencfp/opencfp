@@ -17,6 +17,7 @@ $config = PhpCsFixer\Config::create()
         'no_unused_imports' => true,
         'ordered_imports' => true,
         'phpdoc_align' => true,
+        'phpdoc_indent' => true,
         'phpdoc_no_empty_return' => true,
         'phpdoc_scalar' => true,
         'phpdoc_separation' => true,
