@@ -230,10 +230,6 @@ class SpeakersController extends BaseController
 
     public function demoteAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
@@ -280,10 +276,6 @@ class SpeakersController extends BaseController
 
     public function promoteAction(Request $req)
     {
-        if (!$this->userHasAccess()) {
-            return $this->redirectTo('dashboard');
-        }
-
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
 
