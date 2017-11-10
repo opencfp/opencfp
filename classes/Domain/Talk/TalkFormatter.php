@@ -12,7 +12,7 @@ class TalkFormatter implements TalkFormat
      * Iterates over a collection of DBAL objects and returns a formatted result set
      *
      * @param Collection $talkCollection Collection of Talks
-     * @param integer    $admin_user_id
+     * @param int        $admin_user_id
      * @param bool       $userData
      *
      * @return Collection
@@ -28,9 +28,9 @@ class TalkFormatter implements TalkFormat
     /**
      * Iterates over DBAL objects and returns a formatted result set
      *
-     * @param mixed   $talk
-     * @param integer $admin_user_id
-     * @param bool    $userData      grab the speaker data or not
+     * @param mixed $talk
+     * @param int   $admin_user_id
+     * @param bool  $userData      grab the speaker data or not
      *
      * @return array
      */

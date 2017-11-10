@@ -29,7 +29,7 @@ class SignupForm extends Form
      *
      * @param string $action
      *
-     * @return boolean
+     * @return bool
      */
     public function validateAll($action = 'create')
     {
@@ -178,7 +178,7 @@ class SignupForm extends Form
     /**
      * Method that applies vaidation rules to user-submitted first names
      *
-     * @return boolean
+     * @return bool
      */
     public function validateFirstName(): bool
     {
@@ -206,7 +206,7 @@ class SignupForm extends Form
     /**
      * Method that applies vaidation rules to user-submitted first names
      *
-     * @return boolean
+     * @return bool
      */
     public function validateLastName(): bool
     {
@@ -259,7 +259,7 @@ class SignupForm extends Form
     /**
      * Method that applies validation rules to user-submitted speaker info
      *
-     * @return boolean
+     * @return bool
      */
     public function validateSpeakerInfo(): bool
     {
@@ -282,7 +282,7 @@ class SignupForm extends Form
     /**
      * Method that applies validation rules to user-submitted speaker bio
      *
-     * @return boolean
+     * @return bool
      */
     public function validateSpeakerBio(): bool
     {
