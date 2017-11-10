@@ -5,14 +5,11 @@ namespace OpenCFP\Http\Controller;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\SignupForm;
-use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProfileController extends BaseController
 {
-    use FlashableTrait;
-
     public function editAction(Request $req)
     {
         $user = $this->service(Authentication::class)->user();
@@ -97,7 +94,7 @@ class ProfileController extends BaseController
         $form_data['formAction'] = $this->url('user_update');
         $form_data['buttonInfo'] = 'Update Profile';
         $form_data['id'] = $userId;
-        $form_data['flash'] = $this->getFlash($this->app);
+        $form_data['flash'] = $this->service('session')->get('flash');
 
         return $this->render('user/edit.twig', $form_data);
     }
