@@ -29,9 +29,9 @@ abstract class BaseCommand extends Command
     /**
      * Generic demote action, to demote from a specific role
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param string $role Role to demote from, e.g. 'Admin' or 'Reviewer' (Note the capitalization)
+     * @param string          $role   Role to demote from, e.g. 'Admin' or 'Reviewer' (Note the capitalization)
      *
      * @return int
      */
@@ -87,9 +87,9 @@ abstract class BaseCommand extends Command
     /**
      * Generic promote action, to promote to specific role.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param string $role Role to promote to, e.g. 'Admin' or 'Reviewer' (Note the capitalization)
+     * @param string          $role   Role to promote to, e.g. 'Admin' or 'Reviewer' (Note the capitalization)
      *
      * @return int
      */
