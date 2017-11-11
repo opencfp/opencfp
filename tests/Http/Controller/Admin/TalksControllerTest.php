@@ -191,4 +191,30 @@ class TalksControllerTest extends WebTestCase
             ->assertNotSee('1')
             ->assertSuccessful();
     }
+
+    /**
+     * @test
+     */
+    public function rateActionWorksCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asAdmin()
+            ->post('/admin/talks/'.$talk->id. '/rate', ['rating' => 1])
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function rateActionRetunsFalseOnWrongRate()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asAdmin()
+            ->post('/admin/talks/'.$talk->id. '/rate', ['rating' => 12])
+            ->assertNotSee('1')
+            ->assertSuccessful();
+    }
 }
