@@ -3,6 +3,7 @@
 namespace OpenCFP\Test\Http\Controller\Admin;
 
 use Mockery as m;
+use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Services\Authentication;
@@ -123,7 +124,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function talkIsCorrectlyCommentedOn()
     {
-        $talk = factory(Talk::class,1)->create()->first();
+        $talk = factory(Talk::class, 1)->create()->first();
 
         $this->asAdmin()
             ->post(
@@ -206,5 +207,44 @@ class TalksControllerTest extends WebTestCase
             ->assertSuccessful();
     }
 
+    /**
+     * @test
+     */
+    public function favoriteActionWorksCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
 
+        $this->asAdmin()
+            ->post('/admin/talks/'. $talk->id . '/favorite')
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function favoriteActionDeletesCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+        Favorite::create([
+            'admin_user_id' => 1,
+            'talk_id' => $talk->id,
+        ]);
+
+        $this->asAdmin()
+            ->post('/admin/talks/'. $talk->id . '/favorite', ['delete' =>1])
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function favoriteActionDoesNotErrorWhenTryingToDeleteFavoriteThatDoesNoExist()
+    {
+        $this->asAdmin()
+            ->post('/admin/talks/255/favorite', ['delete' => 1])
+            ->assertNotSee('1')
+            ->assertSuccessful();
+    }
 }

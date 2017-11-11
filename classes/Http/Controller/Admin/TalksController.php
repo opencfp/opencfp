@@ -130,10 +130,14 @@ class TalksController extends BaseController
 
         if ($req->get('delete') !== null) {
             // Delete the record that matches
-            return Favorite::where('admin_user_id', $admin_user_id)
+            $favorite = Favorite::where('admin_user_id', $admin_user_id)
                 ->where('talk_id', $talkId)
-                ->first()
-                ->delete();
+                ->first();
+            if ($favorite instanceof  Favorite) {
+                $favorite->delete();
+                return true;
+            }
+            return false;
         }
 
         Favorite::firstOrCreate([
