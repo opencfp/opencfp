@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\Domain\Entity\Talk as TalkEntity;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
@@ -13,7 +12,6 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
-use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends BaseController
@@ -154,28 +152,14 @@ class TalksController extends BaseController
      */
     public function selectAction(Request $req)
     {
-        $status = true;
-
-        if ($req->get('delete') !== null) {
-            $status = false;
+        $talk = Talk::find($req->get('id'));
+        if ($talk instanceof Talk) {
+            $talk->selected = $req->get('delete') !== null ? 1 :0;
+            $talk->save();
+            return true;
         }
 
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $mapper = $spot->mapper(TalkEntity::class);
-        $talk = $mapper->get($req->get('id'));
-
-        $selected = 1;
-
-        if ($status == false) {
-            $selected = 0;
-        }
-
-        $talk->selected = $selected;
-        $mapper->save($talk);
-
-        return true;
+        return false;
     }
 
     public function commentCreateAction(Request $req)
