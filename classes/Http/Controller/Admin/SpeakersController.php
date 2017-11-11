@@ -27,6 +27,7 @@ class SpeakersController extends BaseController
         $adminUserIds = array_column($adminUsers, 'id');
 
         $rawSpeakers = User::search($search)->get();
+
         $airports = $this->service(AirportInformationDatabase::class);
         $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($airports, $adminUserIds) {
             try {
@@ -122,7 +123,8 @@ class SpeakersController extends BaseController
 
         $capsule->getConnection()->beginTransaction();
         try {
-            User::delete($req->get('id'));
+            $user = User::find($req->get('id'));
+            $user->delete($req->get('id'));
             $ext = 'Successfully deleted the requested user';
             $type = 'success';
             $short = 'Success';
