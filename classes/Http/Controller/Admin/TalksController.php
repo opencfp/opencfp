@@ -4,6 +4,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
@@ -165,21 +166,12 @@ class TalksController extends BaseController
     public function commentCreateAction(Request $req)
     {
         $talk_id = (int)$req->get('id');
-
-        $user = $this->service(Authentication::class)->user();
-        $admin_user_id = (int) $user->getId();
-
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkComment::class);
-        $comment = $mapper->get();
-
-        $comment->talk_id = $talk_id;
-        $comment->user_id = $admin_user_id;
-        $comment->message = $req->get('comment');
-
-        $mapper->save($comment);
+        
+        TalkComment::create([
+            'talk_id' => $talk_id,
+            'user_id' => $this->service(Authentication::class)->userId(),
+            'message' => $req->get('comment'),
+        ]);
 
         $this->service('session')->set('flash', [
                 'type' => 'success',

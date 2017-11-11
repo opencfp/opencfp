@@ -123,49 +123,15 @@ class TalksControllerTest extends WebTestCase
      */
     public function talkIsCorrectlyCommentedOn()
     {
-        // Create some reusable values
-        $talkId = uniqid();
-        $comment = 'Test Comment';
+        $talk = factory(Talk::class,1)->create()->first();
 
-        // Create a TalkComment and mapper, then add the mapper to $app
-        $talkComment = m::mock(\OpenCFP\Domain\Entity\TalkComment::class);
-        $talkComment->shouldReceive('set')
-            ->andSet('talk_id', $talkId);
-        $talkComment->shouldReceive('set')
-            ->andSet('comment', $comment);
-        $talkComment->shouldReceive('set')
-            ->andSet('user_id', uniqid());
-
-        $talkCommentMapper = m::mock(\OpenCFP\Domain\Entity\Mapper\TalkComment::class);
-        $talkCommentMapper->shouldReceive('get')->andReturn($talkComment);
-        $talkCommentMapper->shouldReceive('save');
-
-        // Override our mapper with the double
-        $spot = m::mock(\Spot\Locator::class);
-        $spot->shouldReceive('mapper')
-            ->with(\OpenCFP\Domain\Entity\TalkComment::class)
-            ->andReturn($talkCommentMapper);
-        $this->app['spot'] = $spot;
-
-        // Use our pre-configured Application object
-        ob_start();
-        $this->app->run();
-        ob_end_clean();
-
-        // Create our Request object
-        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
-        $req->shouldReceive('get')->with('id')->andReturn($talkId);
-        $req->shouldReceive('get')->with('comment')->andReturn($comment);
-
-        // Execute the controller and capture the output
-        $controller = new \OpenCFP\Http\Controller\Admin\TalksController();
-        $controller->setApplication($this->app);
-        $response = $controller->commentCreateAction($req);
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\RedirectResponse::class,
-            $response
-        );
+        $this->asAdmin()
+            ->post(
+                '/admin/talks/'. $talk->id.'/comment',
+                ['comment' => 'Great Talk i rate 10/10']
+            )
+            ->assertNotSee('Server Error')
+            ->assertRedirect();
     }
 
     /**
@@ -202,4 +168,43 @@ class TalksControllerTest extends WebTestCase
         $this->get('/admin/talks/'. $meta->first()->talk_id)
             ->assertSuccessful();
     }
+
+    /**
+     * @test
+     */
+    public function selectActionWorksCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asAdmin()
+            ->post('/admin/talks/'. $talk->id. '/select')
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function selectActionDeletesCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asAdmin()
+            ->post('/admin/talks/'. $talk->id. '/select', ['delete' => 1])
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function selectActionReturnsFalseWhenTalkNotFound()
+    {
+        $this->asAdmin()
+            ->post('/admin/talks/255/select')
+            ->assertNotSee('1')
+            ->assertSuccessful();
+    }
+
+
 }
