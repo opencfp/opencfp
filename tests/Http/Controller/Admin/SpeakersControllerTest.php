@@ -49,28 +49,7 @@ class SpeakersControllerTest extends WebTestCase
         $this->asAdmin()
             ->get('/admin/speakers/7679')
             ->assertNotSee('Other Information')
-            ->assertRedirect();
-    }
-
-    /**
-     * @test
-     */
-    public function deleteUserWorksCorrectly()
-    {
-        $user = factory(User::class, 1)->create()->first();
-
-        $this->asAdmin()
-            ->get('/admin/speakers/delete/'. $user->id)
-            ->assertRedirect();
-    }
-
-    /**
-     * @test
-     */
-    public function deleteRedirectsOnFailure()
-    {
-        $this->asAdmin()
-            ->get('/admin/speakers/delete/255')
-            ->assertRedirect();
+            ->assertRedirect()
+            ->assertFlashContains('Error');
     }
 }
