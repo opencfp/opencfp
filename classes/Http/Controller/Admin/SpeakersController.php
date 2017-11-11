@@ -2,7 +2,8 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\Domain\Entity\User;
+use OpenCFP\Domain\Entity\User as UserEntity;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
@@ -20,16 +21,16 @@ class SpeakersController extends BaseController
 
     public function indexAction(Request $req)
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
         $search = $req->get('search');
-        $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $rawSpeakers = $user_mapper->search($search)->toArray();
 
+        /** @var AccountManagement $accounts */
+        $accounts = $this->service(AccountManagement::class);
+        $adminUsers = $accounts->findByRole('Admin');
+        $adminUserIds = array_column($adminUsers, 'id');
+
+        $rawSpeakers = User::search($search)->get();
         $airports = $this->service(AirportInformationDatabase::class);
-
-        $rawSpeakers = array_map(function ($speaker) use ($airports) {
+        $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($airports, $adminUserIds) {
             try {
                 $airport = $airports->withCode($speaker['airport']);
 
@@ -46,17 +47,9 @@ class SpeakersController extends BaseController
                 ];
             }
 
+            $speaker['is_admin'] = in_array($speaker['id'], $adminUserIds);
             return $speaker;
-        }, $rawSpeakers);
-
-        /** @var AccountManagement $accounts */
-        $accounts = $this->service(AccountManagement::class);
-        $adminUsers = $accounts->findByRole('Admin');
-        $adminUserIds = array_column($adminUsers, 'id');
-
-        foreach ($rawSpeakers as $key => $each) {
-            $rawSpeakers[$key]['is_admin'] = in_array($each['id'], $adminUserIds);
-        }
+        })->toArray();
 
         // Set up our page stuff
         $pagerfanta = new Pagination($rawSpeakers);
@@ -177,7 +170,7 @@ class SpeakersController extends BaseController
     /**
      * @param User $speaker
      */
-    private function removeSpeakerTalks(User $speaker)
+    private function removeSpeakerTalks(UserEntity $speaker)
     {
         $spot = $this->service('spot');
 
