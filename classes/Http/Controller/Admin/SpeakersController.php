@@ -123,7 +123,7 @@ class SpeakersController extends BaseController
 
         $capsule->getConnection()->beginTransaction();
         try {
-            $user = User::find($req->get('id'));
+            $user = User::findorFail($req->get('id'));
             $user->delete($req->get('id'));
             $ext = 'Successfully deleted the requested user';
             $type = 'success';
