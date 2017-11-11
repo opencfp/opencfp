@@ -71,14 +71,9 @@ class SpeakersController extends BaseController
 
     public function viewAction(Request $req)
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
+        $speaker_details = User::find($req->get('id'));
 
-        // Get info about the speaker
-        $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $speaker_details = $user_mapper->get($req->get('id'));
-
-        if (empty($speaker_details)) {
+        if (!$speaker_details instanceof User) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -106,9 +101,7 @@ class SpeakersController extends BaseController
             ];
         }
 
-        // Get info about the talks
-        $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-        $talks = $talk_mapper->getByUser($req->get('id'))->toArray();
+        $talks = $speaker_details->talks()->get();
 
         // Build and render the template
         $templateData = [
@@ -168,7 +161,7 @@ class SpeakersController extends BaseController
     }
 
     /**
-     * @param User $speaker
+     * @param UserEntity $speaker
      */
     private function removeSpeakerTalks(UserEntity $speaker)
     {
