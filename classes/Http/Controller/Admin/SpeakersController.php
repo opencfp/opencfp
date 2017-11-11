@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\Domain\Entity\User as UserEntity;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
@@ -11,8 +11,6 @@ use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
-use Spot\Locator;
-use Spot\Mapper;
 use Symfony\Component\HttpFoundation\Request;
 
 class SpeakersController extends BaseController
@@ -119,35 +117,22 @@ class SpeakersController extends BaseController
 
     public function deleteAction(Request $req)
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
+        /** @var Capsule $capsule */
+        $capsule = $this->service(Capsule::class);
 
-        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $speaker = $mapper->get($req->get('id'));
-
-        $connection = $spot->config()->connection();
-
-        $connection->beginTransaction();
-
+        $capsule->getConnection()->beginTransaction();
         try {
-            $this->removeSpeakerTalks($speaker);
-            $response = $mapper->delete($speaker);
-        } catch (\Exception $e) {
-            $response = false;
-        }
-
-        if ($response === false) {
-            $connection->rollBack();
-
-            $ext = 'Unable to delete the requested user';
-            $type = 'error';
-            $short = 'Error';
-        } else {
-            $connection->commit();
-
+            User::delete($req->get('id'));
             $ext = 'Successfully deleted the requested user';
             $type = 'success';
             $short = 'Success';
+            $capsule->getConnection()->commit();
+
+        } catch (\Exception $e) {
+            $capsule->getConnection()->rollBack();
+            $ext = 'Unable to delete the requested user';
+            $type = 'error';
+            $short = 'Error';
         }
 
         // Set flash message
@@ -158,38 +143,6 @@ class SpeakersController extends BaseController
         ]);
 
         return $this->redirectTo('admin_speakers');
-    }
-
-    /**
-     * @param UserEntity $speaker
-     */
-    private function removeSpeakerTalks(UserEntity $speaker)
-    {
-        $spot = $this->service('spot');
-
-        /**
-         * @var Mapper $talkMapper
-         * @var Mapper $talkCommentMapper
-         * @var Mapper $talkMetaMapper
-         */
-        $talkMapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-        $talkCommentMapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkComment::class);
-        $talkMetaMapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
-
-        $talks = $speaker->talks->execute();
-
-        /** @var \OpenCFP\Domain\Entity\Talk $talk */
-        foreach ($talks as $talk) {
-            foreach ($talk->comments->execute() as $comment) {
-                $talkCommentMapper->delete($comment);
-            }
-
-            foreach ($talk->meta->execute() as $meta) {
-                $talkMetaMapper->delete($meta);
-            }
-
-            $talkMapper->delete($talk);
-        }
     }
 
     public function demoteAction(Request $req)
