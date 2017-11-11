@@ -83,6 +83,12 @@ class TestResponse
         return $this;
     }
 
+    public function assertFlashContains($flash)
+    {
+        Assert::assertContains($flash, $this->app['session']->get('flash'));
+        return $this;
+    }
+
     public function dd()
     {
         dd($this->getContent());
