@@ -194,15 +194,10 @@ class SpeakersController extends BaseController
 
     public function demoteAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
         /** @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
 
-        $admin = $auth->user();
-
-        if ($admin->getId() == $req->get('id')) {
+        if ($this->service(Authentication::class)->userId() == $req->get('id')) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -212,12 +207,8 @@ class SpeakersController extends BaseController
             return $this->redirectTo('admin_speakers');
         }
 
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $user_data = $mapper->get($req->get('id'))->toArray();
-        $user = $accounts->findByLogin($user_data['email']);
+        $userEmail = User::find($req->get('id'))->email;
+        $user = $accounts->findByLogin($userEmail);
 
         try {
             $accounts->demoteFrom($user->getLogin());
@@ -243,12 +234,8 @@ class SpeakersController extends BaseController
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
 
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $user_data = $mapper->get($req->get('id'))->toArray();
-        $user = $accounts->findByLogin($user_data['email']);
+        $userEmail = User::find($req->get('id'))->email;
+        $user = $accounts->findByLogin($userEmail);
 
         if ($user->hasAccess('admin')) {
             $this->service('session')->set('flash', [
