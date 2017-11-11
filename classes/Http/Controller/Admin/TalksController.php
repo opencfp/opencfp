@@ -159,7 +159,7 @@ class TalksController extends BaseController
     {
         $talk = Talk::find($req->get('id'));
         if ($talk instanceof Talk) {
-            $talk->selected = $req->get('delete') !== null ? 1 :0;
+            $talk->selected = $req->get('delete') == true ? 0 :1;
             $talk->save();
             return true;
         }
