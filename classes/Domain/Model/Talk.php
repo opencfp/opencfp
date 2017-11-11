@@ -57,7 +57,7 @@ class Talk extends Eloquent
         $this->comments()
             ->get()
             ->each(function ($comment) {
-                if (!$comment->delete()){
+                if (!$comment->delete()) {
                     throw new \Exception('Unable to delete all comments');
                 }
             });
@@ -93,6 +93,5 @@ class Talk extends Eloquent
                     throw new \Exception('Unable to delete all meta info');
                 }
             });
-
     }
 }

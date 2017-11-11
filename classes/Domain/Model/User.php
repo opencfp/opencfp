@@ -77,13 +77,14 @@ class User extends Eloquent
      * Deletes user, all of their talks, and meta/favorites/comments
      *
      * @return bool
+     *
      * @throws \Exception
      */
     public function delete(): bool
     {
         $this->talks()
             ->get()
-            ->each(function($talk) {
+            ->each(function ($talk) {
                 if (! $talk->delete()) {
                     throw new \Exception('Unable to delete talks of user');
                 }

@@ -127,7 +127,6 @@ class SpeakersController extends BaseController
             $type = 'success';
             $short = 'Success';
             $capsule->getConnection()->commit();
-
         } catch (\Exception $e) {
             $capsule->getConnection()->rollBack();
             $ext = 'Unable to delete the requested user';
