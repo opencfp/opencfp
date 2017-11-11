@@ -2,9 +2,10 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Http\Controller\BaseController;
-use Spot\Locator;
 
 class ExportsController extends BaseController
 {
@@ -25,11 +26,8 @@ class ExportsController extends BaseController
 
     public function emailExportAction()
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $mapper = $spot->mapper('OpenCFP\Domain\Entity\Talk');
-        $talks = $mapper->all();
+        $talks = Talk::all();
+        $formatted = [];
 
         foreach ($talks as $talk) {
             $formatted[] = [
@@ -44,13 +42,14 @@ class ExportsController extends BaseController
         return $this->csvReturn($formatted, 'emailExports');
     }
 
-    private function talksExportAction($attributed, $where = null)
+    private function talksExportAction(bool $attributed, $where = null)
     {
-        $sort = [ 'created_at' => 'DESC' ];
+        $talkFormatter = new TalkFormatter();
 
         $admin_user_id = $this->service(Authentication::class)->userId();
-        $mapper = $this->service('spot')->mapper('OpenCFP\Domain\Entity\Talk');
-        $talks = $mapper->getAllPagerFormatted($admin_user_id, $sort, $attributed, $where);
+        $talks = Talk::orderBy('created_at', 'DESC');
+        $talks = $where == null ? $talks : $talks->where($where);
+        $talks = $talkFormatter->formatList($talks->get(), $admin_user_id, $attributed)->toArray();
 
         foreach ($talks as $talk => $info) {
             $talks[$talk]['created_at'] = $info['created_at']->format('Y-m-d H:i:s');
