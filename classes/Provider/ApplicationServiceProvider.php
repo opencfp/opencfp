@@ -8,6 +8,7 @@ use League\OAuth2\Server\ResourceServer;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Model\Airport;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
@@ -22,12 +23,11 @@ use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
 use OpenCFP\Infrastructure\OAuth\ClientStorage;
 use OpenCFP\Infrastructure\OAuth\ScopeStorage;
 use OpenCFP\Infrastructure\OAuth\SessionStorage;
-use OpenCFP\Infrastructure\Persistence\SpotSpeakerRepository;
-use OpenCFP\Infrastructure\Persistence\SpotTalkRepository;
+use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
+use OpenCFP\Infrastructure\Persistence\IlluminateTalkRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use RandomLib\Factory;
-use Spot\Locator;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
@@ -41,8 +41,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app[IdentityProvider::class] = function ($app) {
-            $userMapper = $app['spot']->mapper(\OpenCFP\Domain\Entity\User::class);
-            return new SentryIdentityProvider($app['sentry'], new SpotSpeakerRepository($userMapper));
+            return new SentryIdentityProvider($app['sentry'], new IlluminateSpeakerRepository(new User()));
         };
 
         $app[Authentication::class] = function ($app) {
@@ -69,12 +68,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app['application.speakers'] = function ($app) {
-            /* @var Locator $spot */
-            $spot = $app['spot'];
-            
-            $userMapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-            $talkMapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-            $speakerRepository = new SpotSpeakerRepository($userMapper);
+            $speakerRepository = new IlluminateSpeakerRepository(new User());
 
             /* @var Sentry $sentry */
             $sentry = $app['sentry'];
@@ -83,7 +77,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
                 new CallForProposal(new \DateTime($app->config('application.enddate'))),
                 new SentryIdentityProvider($sentry, $speakerRepository),
                 $speakerRepository,
-                new SpotTalkRepository($talkMapper),
+                new IlluminateTalkRepository(),
                 new EventDispatcher()
             );
         };
@@ -113,18 +107,13 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app['application.speakers.api'] = function ($app) {
-            /* @var Locator $spot */
-            $spot = $app['spot'];
-            
-            $userMapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-            $talkMapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-            $speakerRepository = new SpotSpeakerRepository($userMapper);
+            $speakerRepository = new IlluminateSpeakerRepository(new User());
 
             return new Speakers(
                 new CallForProposal(new \DateTime($app->config('application.enddate'))),
                 new OAuthIdentityProvider($app['oauth.resource'], $speakerRepository),
                 $speakerRepository,
-                new SpotTalkRepository($talkMapper),
+                new IlluminateTalkRepository(),
                 new EventDispatcher()
             );
         };

@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Domain\Talk;
 
-use OpenCFP\Domain\Entity\Talk;
+use OpenCFP\Domain\Model\Talk;
 use Symfony\Component\EventDispatcher\Event;
 
 class TalkWasSubmitted extends Event
