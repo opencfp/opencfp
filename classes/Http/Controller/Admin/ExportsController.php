@@ -46,7 +46,7 @@ class ExportsController extends BaseController
 
     private function talksExportAction($attributed, $where = null)
     {
-        $sort = [ 'created_at' => 'DESC' ];
+        $sort = ['created_at' => 'DESC'];
 
         $admin_user_id = $this->service(Authentication::class)->userId();
         $mapper = $this->service('spot')->mapper('OpenCFP\Domain\Entity\Talk');
