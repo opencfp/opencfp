@@ -37,7 +37,7 @@ class SpeakersControllerTest extends WebTestCase
 
         $this->asAdmin()
             ->get('/admin/speakers/' . $user->id)
-            ->assertSee($user->first()->first_name)
+            ->assertSee($user->first_name)
             ->assertSuccessful();
     }
 
@@ -51,29 +51,5 @@ class SpeakersControllerTest extends WebTestCase
             ->assertNotSee('Other Information')
             ->assertRedirect()
             ->assertFlashContains('Error');
-    }
-
-    /**
-     * @test
-     */
-    public function promoteActionWorksNormally()
-    {
-        $user = factory(User::class, 1)->create()->first();
-
-        $this->asAdmin()
-            ->get('/admin/speakers/' . $user->id . '/promote')
-            ->assertFlashContains('Success')
-            ->assertRedirect();
-    }
-
-    /**
-     * @test
-     */
-    public function promoteActionGivesErrorWhenUserDoesntExist()
-    {
-        $this->asAdmin()
-            ->get('/admin/speakers/5678/promote')
-            ->assertFlashContains('Error')
-            ->assertRedirect();
     }
 }
