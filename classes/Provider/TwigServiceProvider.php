@@ -58,11 +58,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 
             $twig->addGlobal(
                 'talkHelper',
-                new TalkHelper(
-                    $app->config('talk.categories'),
-                    $app->config('talk.levels'),
-                    $app->config('talk.types')
-                )
+                $this->app[TalkHelper::class]
             );
 
             return $twig;

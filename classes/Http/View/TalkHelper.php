@@ -37,6 +37,30 @@ class TalkHelper
         $this->levels = $levels;
         $this->types = $types;
     }
+    
+    public function getTalkCategories()
+    {
+        $categories = $this->categories;
+
+        if ($categories === null) {
+            $categories = [
+                'api' => 'APIs (REST, SOAP, etc.)',
+                'continuousdelivery'=> 'Continuous Delivery',
+                'database'=> 'Database',
+                'development'=> 'Development',
+                'devops' => 'Devops',
+                'framework' => 'Framework',
+                'ibmi' => 'IBMi',
+                'javascript' => 'JavaScript',
+                'security' => 'Security',
+                'testing' => 'Testing',
+                'uiux' => 'UI/UX',
+                'other' => 'Other',
+            ];
+        }
+
+        return $categories;
+    }
 
     /**
      * @param $category
@@ -52,6 +76,20 @@ class TalkHelper
         return $category;
     }
 
+    public function getTalkTypes()
+    {
+        $types = $this->types;
+
+        if ($types === null) {
+            $types = [
+                'regular' => 'Regular',
+                'tutorial' => 'Tutorial',
+            ];
+        }
+
+        return $types;
+    }
+
     /**
      * @param $type
      *
@@ -64,6 +102,21 @@ class TalkHelper
         }
 
         return $type;
+    }
+
+    public function getTalkLevels()
+    {
+        $levels = $this->levels;
+
+        if ($levels === null) {
+            $levels = [
+                'entry' => 'Entry level',
+                'mid' => 'Mid-level',
+                'advanced' => 'Advanced',
+            ];
+        }
+
+        return $levels;
     }
 
     /**
