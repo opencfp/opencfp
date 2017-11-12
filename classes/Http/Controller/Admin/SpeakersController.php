@@ -160,11 +160,8 @@ class SpeakersController extends BaseController
 
             return $this->redirectTo('admin_speakers');
         }
-
-        $userEmail = User::find($req->get('id'))->email;
-        $user = $accounts->findByLogin($userEmail);
-
         try {
+            $user = $accounts->findById($req->get('id'));
             $accounts->demoteFrom($user->getLogin());
 
             $this->service('session')->set('flash', [
@@ -187,21 +184,17 @@ class SpeakersController extends BaseController
     {
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
-
-        $userEmail = User::find($req->get('id'))->email;
-        $user = $accounts->findByLogin($userEmail);
-
-        if ($user->hasAccess('admin')) {
-            $this->service('session')->set('flash', [
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => 'User already is in the Admin group.',
-            ]);
-
-            return $this->redirectTo('admin_speakers');
-        }
-
         try {
+            $user = $accounts->findById($req->get('id'));
+            if ($user->hasAccess('admin')) {
+                $this->service('session')->set('flash', [
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => 'User already is in the Admin group.',
+                ]);
+                return $this->redirectTo('admin_speakers');
+            }
+
             $accounts->promoteTo($user->getLogin());
 
             $this->service('session')->set('flash', [
