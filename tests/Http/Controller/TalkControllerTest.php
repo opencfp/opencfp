@@ -2,14 +2,11 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
-use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
-use OpenCFP\Domain\Entity\TalkMeta;
-use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Environment;
-use OpenCFP\Http\Controller\TalkController;
+use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\WebTestCase;
 
 /**
  * Class TalkControllerTest
@@ -17,64 +14,9 @@ use OpenCFP\Http\Controller\TalkController;
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */
-class TalkControllerTest extends \PHPUnit\Framework\TestCase
+class TalkControllerTest extends WebTestCase
 {
-    private $app;
-    private $req;
-
-    protected function setUp()
-    {
-        $this->app = new Application(BASE_PATH, Environment::testing());
-        $this->app['session.test'] = true;
-        ob_start();
-        $this->app->run();
-        ob_end_clean();
-
-        // Override things so that Spot2 is using in-memory tables
-        $cfg = new \Spot\Config;
-        $cfg->addConnection('sqlite', [
-            'dbname' => 'sqlite::memory',
-            'driver' => 'pdo_sqlite',
-        ]);
-        $spot = new \Spot\Locator($cfg);
-
-        unset($this->app['spot']);
-        $this->app['spot'] = $spot;
-
-        // Initialize the talk table in the sqlite database
-        $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-        $talk_mapper->migrate();
-
-        /*
-         * Need to include all of the relationships for a talk now since we
-         * have modified looking up a talk to include "with"
-         */
-        $favorites_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Favorite::class);
-        $favorites_mapper->migrate();
-
-        $talk_comments_mapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkComment::class);
-        $talk_comments_mapper->migrate();
-
-        $talk_meta_mapper = $spot->mapper(TalkMeta::class);
-        $talk_meta_mapper->migrate();
-
-        $user = m::mock(UserInterface::class);
-        $user->shouldReceive('getId')->andReturn(uniqid());
-        $user->shouldReceive('getLogin')->andReturn(uniqid() . '@grumpy-learning.com');
-
-        // Create a test double for Sentry
-        $auth = m::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-        unset($this->app[Authentication::class]);
-        $this->app[Authentication::class] = $auth;
-
-        $this->app['callforproposal'] = m::mock(CallForProposal::class);
-        $this->app['callforproposal']->shouldReceive('isOpen')->andReturn(true);
-
-        // Create our test double for the request object
-        $this->req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
-    }
+    use RefreshDatabase;
 
     /**
      * Verify that talks with ampersands and other characters in them can
@@ -84,16 +26,10 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function ampersandsAcceptableCharacterForTalks()
     {
-        $controller = new TalkController();
-        $controller->setApplication($this->app);
-
         // Create a test double for SwiftMailer
-        $swiftmailer = m::mock(\stdClass::class);
-        $swiftmailer->shouldReceive('send')->andReturn(true);
-        $this->app['mailer'] = $swiftmailer;
-
-        /* @var Authentication $auth */
-        $auth = $this->app[Authentication::class];
+        $swiftMailer = m::mock(\stdClass::class);
+        $swiftMailer->shouldReceive('send')->andReturn(true);
+        $this->swap('mailer', $swiftMailer);
 
         // Get our request object to return expected data
         $talk_data = [
@@ -102,36 +38,13 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
             'type' => 'regular',
             'level' => 'entry',
             'category' => 'other',
-            'desired' => 0,
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => $auth->user()->getId(),
+            'user_id' => 1,
         ];
 
-        $this->setPost($talk_data);
-
-        /**
-         * If the talk was successfully created, a success value is placed
-         * into the session flash area for display
-         */
-        $controller->processCreateAction($this->req);
-
-        $create_flash = $this->app['session']->get('flash');
-        $this->assertEquals($create_flash['type'], 'success');
-    }
-
-    /**
-     * Method for setting the values that would be posted to a controller
-     * action
-     *
-     * @param mixed $data
-     */
-    protected function setPost($data)
-    {
-        foreach ($data as $key => $value) {
-            $this->req->shouldReceive('get')->with($key)->andReturn($value);
-        }
+        $this->asLoggedInSpeaker(1)
+            ->callForPapersIsOpen()
+            ->post('/talk/create', $talk_data)
+            ->assertRedirect();
     }
 
     /**
@@ -139,34 +52,11 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function allowSubmissionsUntilRightBeforeMidnightDayOfClose()
     {
-        $controller = new TalkController();
-        $controller->setApplication($this->app);
-
-        /* @var Authentication $auth */
-        $auth = $this->app[Authentication::class];
-
-        // Get our request object to return expected data
-        $talk_data = [
-            'title' => 'Test Submission',
-            'description' => 'Make sure we can submit before end and not after.',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'other',
-            'desired' => 0,
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => $auth->user()->getId(),
-        ];
-
-        $this->setPost($talk_data);
-
         // Set CFP end to today (whenever test is run)
         // Previously, this fails because it checked midnight
         // for the current date. `isCfpOpen` now uses 11:59pm current date.
         $now = new \DateTime();
-
-        $this->app['callforproposal'] = new CallForProposal(new \DateTime($now->format('M. jS, Y')));
+        $this->swap('callforproposal', new CallForProposal(new \DateTime($now->format('M. jS, Y'))));
 
         /*
          * This should not have a flash message. The fact that this
@@ -353,31 +243,9 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function getDirectBackToEditPageWhenInValidTitle()
     {
-        $controller = new TalkController();
-        $controller->setApplication($this->app);
-
-        $talk_data = [
-            'id' => 3,
-            'title' => '',
-            'description' => 'This talk is missing its title',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'other',
-            'desired' => 0,
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => $this->app[Authentication::class]->user()->getId(),
-        ];
-
-        $this->setPost($talk_data);
-
-        $response = $controller->updateAction($this->req);
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\Response::class,
-            $response
-        );
-        $this->assertContains('Please fill in the title', (string) $response);
+        $this->asLoggedInSpeaker()
+            ->get('/talk/create')
+            ->assertSee('Create Your Talk')
+            ->assertSuccessful();
     }
 }
