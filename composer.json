@@ -3,7 +3,10 @@
     "license": "MIT",
     "config": {
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.0.25"
+        }
     },
     "require": {
         "php": ">=7",
@@ -19,7 +22,6 @@
         "illuminate/support": "~5.5",
         "illuminate/validation": "^5.5",
         "intervention/image": "~2.3",
-        "ircmaxell/random-lib": "~1.2",
         "michelf/php-markdown": "~1.7",
         "monolog/monolog": "~1.22",
         "pagerfanta/pagerfanta": "1.0.*@dev",
