@@ -2,6 +2,21 @@ language: php
 
 sudo: false
 
+addons:
+  apt:
+    sources:
+      - travis-ci/sqlite3
+    packages:
+      - sqlite3
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.0
+      env: WITH_CS=true
+    - php: 7.1
+      env: WITH_COVERAGE=true
+
 env:
   global:
     - TRAVIS_DB=cfp_test
