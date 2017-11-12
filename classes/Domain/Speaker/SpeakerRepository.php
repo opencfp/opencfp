@@ -2,8 +2,8 @@
 
 namespace OpenCFP\Domain\Speaker;
 
-use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\EntityNotFoundException;
+use OpenCFP\Domain\Model\User;
 
 interface SpeakerRepository
 {
@@ -21,9 +21,9 @@ interface SpeakerRepository
     /**
      * Saves a speaker and their talks.
      *
-     * @param User $speaker
+     * @param $speaker
      *
      * @return mixed
      */
-    public function persist(User $speaker);
+    public function persist($speaker);
 }
