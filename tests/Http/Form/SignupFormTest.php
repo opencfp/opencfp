@@ -361,10 +361,10 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-      * Data provider for speakerInfoValidatedCorrectly
-      *
-      * @return array
-      */
+     * Data provider for speakerInfoValidatedCorrectly
+     *
+     * @return array
+     */
     public function speakerTextProvider()
     {
         return [
