@@ -23,6 +23,6 @@ class PagesController extends BaseController
 
     private function getContextWithTalksCount()
     {
-        return [ 'number_of_talks' => Talk::count()];
+        return ['number_of_talks' => Talk::count()];
     }
 }
