@@ -252,6 +252,7 @@ class SignupForm extends Form
             return true;
         } else {
             $this->_addErrorMessage('You did not enter a valid joind.in URL');
+
             return false;
         }
     }
@@ -339,6 +340,7 @@ class SignupForm extends Form
         }
 
         $this->_addErrorMessage('You must agree to abide by our code of conduct in order to submit');
+
         return false;
     }
 }

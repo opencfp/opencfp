@@ -52,6 +52,7 @@ class SecurityController extends BaseController
     public function outAction()
     {
         $this->service(Authentication::class)->logout();
+
         return $this->redirectTo('homepage');
     }
 }

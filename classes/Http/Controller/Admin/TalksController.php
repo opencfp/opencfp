@@ -96,6 +96,7 @@ class TalksController extends BaseController
             'otherTalks' => $otherTalks,
             'comments' => $talk->comments()->get(),
         ];
+
         return $this->render('admin/talks/view.twig', $templateData);
     }
 
@@ -135,8 +136,10 @@ class TalksController extends BaseController
                 ->first();
             if ($favorite instanceof  Favorite) {
                 $favorite->delete();
+
                 return true;
             }
+
             return false;
         }
 
@@ -161,6 +164,7 @@ class TalksController extends BaseController
         if ($talk instanceof Talk) {
             $talk->selected = $req->get('delete') == true ? 0 :1;
             $talk->save();
+
             return true;
         }
 

@@ -64,6 +64,7 @@ class TwigServiceProvider implements ServiceProviderInterface
                     $app->config('talk.types')
                 )
             );
+
             return $twig;
         });
     }

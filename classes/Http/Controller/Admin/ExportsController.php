@@ -82,12 +82,14 @@ class ExportsController extends BaseController
             ) {
             $info = "'". $info;
         }
+
         return $info;
     }
 
     private function startsWith($haystack, $needle)
     {
         $length = strlen($needle);
+
         return (substr($haystack, 0, $length) === $needle);
     }
 

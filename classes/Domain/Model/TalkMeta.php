@@ -41,6 +41,7 @@ class TalkMeta extends Eloquent
             $this->viewed = true;
             $this->save();
         }
+
         return $this;
     }
 }

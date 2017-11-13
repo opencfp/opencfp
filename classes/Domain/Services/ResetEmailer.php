@@ -51,6 +51,7 @@ class ResetEmailer
 
         try {
             $message = $this->preparedMessage($email, $parameters);
+
             return $this->swift_mailer->send($message);
         } catch (\Exception $e) {
             echo $e;

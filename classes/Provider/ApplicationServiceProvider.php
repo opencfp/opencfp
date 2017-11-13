@@ -64,6 +64,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
 
             $capsule->setAsGlobal();
             $capsule->bootEloquent();
+
             return $capsule;
         };
 

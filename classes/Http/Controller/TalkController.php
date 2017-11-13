@@ -29,6 +29,7 @@ class TalkController extends BaseController
             'types' => $this->getTalkTypes(),
         ];
         $form = new TalkForm($request_data, $this->service('purifier'), $options);
+
         return $form;
     }
     

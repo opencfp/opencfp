@@ -19,6 +19,7 @@ class ForgotController extends BaseController
             'form' => $form->createView(),
             'current_page' => 'Forgot Password',
         ];
+
         return $this->render('security/forgot_password.twig', $data);
     }
 
@@ -49,6 +50,7 @@ class ForgotController extends BaseController
             $user = $accounts->findByLogin($data['email']);
         } catch (UserNotFoundException $e) {
             $this->service('session')->set('flash', $this->successfulSendFlashParameters($data['email']));
+
             return $this->redirectTo('forgot_password');
         }
 
@@ -78,6 +80,7 @@ class ForgotController extends BaseController
 
         $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
         $error = 0;
+
         try {
             /** @var AccountManagement $accounts */
             $accounts = $this->service(AccountManagement::class);
@@ -127,6 +130,7 @@ class ForgotController extends BaseController
         if (! $form->isValid()) {
             $form->get('user_id')->setData($user_id);
             $form->get('reset_code')->setData($reset_code);
+
             return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
         }
              

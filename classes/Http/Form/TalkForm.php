@@ -156,11 +156,13 @@ class TalkForm extends Form
 
         if (empty($this->_cleanData['category']) || !isset($this->_cleanData['category'])) {
             $this->_addErrorMessage('You must choose what category of talk you are submitting');
+
             return false;
         }
 
         if (!isset($validCategories[$this->_cleanData['category']])) {
             $this->_addErrorMessage('You did not choose a valid talk category');
+
             return false;
         }
 

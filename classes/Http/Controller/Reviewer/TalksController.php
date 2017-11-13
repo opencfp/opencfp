@@ -88,6 +88,7 @@ class TalksController extends BaseController
             'otherTalks' => $otherTalks,
             'comments' => $talk->comments()->get(),
         ];
+
         return $this->render('reviewer/talks/view.twig', $templateData);
     }
 
@@ -104,6 +105,7 @@ class TalksController extends BaseController
         } catch (TalkRatingException $e) {
             return false;
         }
+
         return true;
     }
 }

@@ -74,12 +74,14 @@ class TestResponse
     public function assertSee($content)
     {
         Assert::assertContains($content, $this->getContent());
+
         return $this;
     }
 
     public function assertNotSee($content)
     {
         Assert::assertNotContains($content, $this->getContent());
+
         return $this;
     }
 
@@ -88,6 +90,7 @@ class TestResponse
         $fullFlash = $this->app['session']->get('flash');
         $fullFlash= is_array($fullFlash) ? $fullFlash : [];
         Assert::assertContains($flash, $fullFlash);
+
         return $this;
     }
 

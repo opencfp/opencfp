@@ -228,6 +228,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         $stub = m::mock(\stdClass::class);
         $stub->shouldReceive('talks')->andReturnSelf();
         $stub->shouldReceive('find')->andReturnNull();
+
         return $stub;
     }
 

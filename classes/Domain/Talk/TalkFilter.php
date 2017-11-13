@@ -24,30 +24,37 @@ class TalkFilter
         switch (strtolower($filter)) {
             case 'selected':
                 return $this->talk_mapper->getSelected($admin_user_id, $options);
+
                 break;
 
             case 'notviewed':
                 return $this->talk_mapper->getNotViewedByUserId($admin_user_id, $options);
+
                 break;
 
             case 'notrated':
                 return $this->talk_mapper->getNotRatedByUserId($admin_user_id, $options);
+
                 break;
 
             case 'toprated':
                 return $this->talk_mapper->getTopRatedByUserId($admin_user_id, $options);
+
                 break;
 
             case 'plusone':
                 return $this->talk_mapper->getPlusOneByUserId($admin_user_id, $options);
+
                 break;
 
             case 'viewed':
                 return $this->talk_mapper->getViewedByUserId($admin_user_id, $options);
+
                 break;
 
             case 'favorited':
                 return $this->talk_mapper->getFavoritesByUserId($admin_user_id, $options);
+
                 break;
 
             default:

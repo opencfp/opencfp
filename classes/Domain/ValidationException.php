@@ -10,6 +10,7 @@ class ValidationException extends \Exception
     {
         $instance = new static('There was an error.');
         $instance->errors = $errors;
+
         return $instance;
     }
 
