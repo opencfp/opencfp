@@ -2,11 +2,9 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Mockery as m;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\DatabaseTransaction;
 use OpenCFP\Test\WebTestCase;
-use Spot\Locator;
 
 /**
  * Class ProfileControllerTest
@@ -46,27 +44,10 @@ class ProfileControllerTest extends WebTestCase
      */
     public function seeEditPageWhenAllowed()
     {
-        $spot = m::mock(Locator::class);
-        $spot->shouldReceive('mapper')->with('\OpenCFP\Domain\Entity\User')->andReturn($spot);
-        $spot->shouldReceive('get->toArray')->with()->andReturn(
-            [
-                'first_name' => 'Speaker Name',
-                'last_name' => 'Last Name',
-                'company' => '',
-                'twitter' => '',
-                'info' => 'My information',
-                'bio' => 'Interesting details about my life',
-                'photo_path' => '',
-                'url' => '',
-                'airport' => '',
-                'transportation' => '',
-                'hotel' => '',
-            ]
-        );
+        $id = factory(User::class, 1)->create()->first()->id;
 
-        $this->swap('spot', $spot);
-        $this->asLoggedInSpeaker()
-            ->get('/profile/edit/1')
+        $this->asLoggedInSpeaker($id)
+            ->get('/profile/edit/'. $id)
             ->assertSuccessful();
     }
 
