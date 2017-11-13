@@ -2,7 +2,9 @@
 
 namespace OpenCFP\Test\Domain\Model;
 
+use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Test\DatabaseTransaction;
@@ -63,6 +65,94 @@ class TalkTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(1, $secondFormat['meta']->rating);
         $this->assertEquals(1, $secondFormat['meta']->viewed);
+    }
+
+    /**
+     * @test
+     */
+    public function deleteWorksWithMeta()
+    {
+        /** @var TalkMeta $meta */
+        $meta = factory(TalkMeta::class, 1)->create()->first();
+        $talk = $meta->talk()->first();
+
+        $talk->delete();
+        $this->assertCount(0, TalkMeta::all());
+    }
+    /**
+     * @test
+     */
+    public function deleteMetaButKeepTalkIsPossible()
+    {
+        /** @var TalkMeta $meta */
+        $meta = factory(TalkMeta::class, 1)->create()->first();
+        $talk = $meta->talk()->first();
+
+        $talk->deleteMeta();
+        $this->assertCount(0, TalkMeta::all());
+        $this->assertCount(1, Talk::all());
+    }
+
+    /**
+     * @test
+     */
+    public function deleteWorksWithComments()
+    {
+        /** @var TalkComment $meta */
+        $comment = factory(TalkComment::class, 1)->create()->first();
+        $talk = $comment->talk()->first();
+
+        $talk->delete();
+        $this->assertCount(0, TalkComment::all());
+    }
+    /**
+     * @test
+     */
+    public function deleteCommentsButKeepTalkIsPossible()
+    {
+        /** @var TalkComment $comment */
+        $comment = factory(TalkComment::class, 1)->create()->first();
+        $talk = $comment->talk()->first();
+
+        $talk->deleteComments();
+        $this->assertCount(0, TalkComment::all());
+        $this->assertCount(1, Talk::all());
+    }
+
+    /**
+     * @test
+     */
+    public function deleteWorksWithFavorites()
+    {
+        /** @var Favorite $favorite */
+        $favorite = factory(Favorite::class, 1)->create()->first();
+        $talk = $favorite->talk()->first();
+
+        $talk->delete();
+        $this->assertCount(0, Favorite::all());
+    }
+    /**
+     * @test
+     */
+    public function deleteFavoritesButKeepTalkIsPossible()
+    {
+        /** @var Favorite $favorite */
+        $favorite = factory(Favorite::class, 1)->create()->first();
+        $talk = $favorite->talk()->first();
+
+        $talk->deleteFavorites();
+        $this->assertCount(0, Favorite::all());
+        $this->assertCount(1, Talk::all());
+    }
+
+    /**
+     * @test
+     */
+    public function deleteWorksWithNoOtherItems()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->assertTrue($talk->delete());
     }
 
     private function generateOneTalk()

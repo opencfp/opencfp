@@ -38,4 +38,60 @@ class Talk extends Eloquent
             ->with(['favorites', 'meta'])
             ->take($limit);
     }
+
+    public function delete()
+    {
+        $this->deleteComments();
+        $this->deleteFavorites();
+        $this->deleteMeta();
+        return parent::delete();
+    }
+
+    /**
+     * Deletes all comments of the talk
+     *
+     * @throws \Exception
+     */
+    public function deleteComments()
+    {
+        $this->comments()
+            ->get()
+            ->each(function ($comment) {
+                if (!$comment->delete()) {
+                    throw new \Exception('Unable to delete all comments');
+                }
+            });
+    }
+
+    /**
+     * Delets all favorites of the talk
+     *
+     * @throws \Exception
+     */
+    public function deleteFavorites()
+    {
+        $this->favorites()
+            ->get()
+            ->each(function ($favorite) {
+                if (!$favorite->delete()) {
+                    throw new \Exception('Unable to delete all favorites');
+                }
+            });
+    }
+
+    /**
+     * Deletes all meta info of the talk
+     *
+     * @throws \Exception
+     */
+    public function deleteMeta()
+    {
+        $this->meta()
+            ->get()
+            ->each(function ($meta) {
+                if (!$meta->delete()) {
+                    throw new \Exception('Unable to delete all meta info');
+                }
+            });
+    }
 }

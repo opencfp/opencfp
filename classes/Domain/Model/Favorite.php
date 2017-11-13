@@ -11,7 +11,7 @@ class Favorite extends Eloquent
 
     public function talk()
     {
-        $this->belongsTo(Talk::class, 'talk_id');
+        return $this->belongsTo(Talk::class, 'talk_id');
     }
 
     public function setUpdatedAt($value)
