@@ -44,9 +44,6 @@ jobs:
 
       php: 7.0
 
-      env:
-        - WITH_COVERAGE=false
-
       addons:
         apt:
           sources:
@@ -55,7 +52,8 @@ jobs:
             - sqlite3
 
       before_install:
-        - if [[ "$WITH_COVERAGE" == "false" ]]; then phpenv config-rm xdebug.ini; fi
+        - source .travis/xdebug.sh
+        - xdebug-disable
         - composer validate --no-check-publish
 
       install:
@@ -70,7 +68,9 @@ jobs:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-before-script; fi
 
       script:
+        - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-enable; fi
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
+        - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-disable; fi
 
       after_script:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-after-script; fi
