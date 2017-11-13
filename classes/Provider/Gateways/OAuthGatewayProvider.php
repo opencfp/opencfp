@@ -31,7 +31,7 @@ class OAuthGatewayProvider implements ServiceProviderInterface, BootableProvider
             /* @var Locator $spot */
             $spot = $app['spot'];
             
-            $userMapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
+            $userMapper        = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
             $speakerRepository = new SpotSpeakerRepository($userMapper);
 
             /* @var Sentry $sentry */

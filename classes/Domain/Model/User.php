@@ -37,7 +37,7 @@ class User extends Eloquent
      */
     public function getOtherTalks($talkId = 0): Collection
     {
-        $allTalks = $this->talks;
+        $allTalks   = $this->talks;
         $otherTalks = $allTalks->filter(function ($talk) use ($talkId) {
             if ((int) $talk['id'] == (int) $talkId) {
                 return false;

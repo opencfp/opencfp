@@ -54,7 +54,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
 
     public function testConstructorSetsApplication()
     {
-        $baseApp = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $baseApp     = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $application = new Application($baseApp);
 
         $this->assertAttributeSame($baseApp, 'app', $application);
@@ -63,7 +63,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
     public function testHasDefaultCommands()
     {
         $appContainer = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $application = new Application($appContainer);
+        $application  = new Application($appContainer);
 
         $expected = [
             Console\Command\HelpCommand::class,
@@ -89,7 +89,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
     public function testAdminDemoteDetectsNonExistentUser()
     {
         // Create our input and output dependencies
-        $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
+        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
         $output = $this->createOutputInterface();
 
         /**
@@ -98,7 +98,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
          */
         $sentry = Mockery::mock(\Cartalyst\Sentry\Sentry::class);
         $sentry->shouldReceive('getUserProvider->findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException);
-        $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app['sentry'] = $sentry;
 
         // Create our command object and inject our application
@@ -111,7 +111,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
     public function testAdminDemoteWillNotDemoteNonAdminAccounts()
     {
         // Create our input and output dependencies
-        $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
+        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
         $output = $this->createOutputInterface();
 
         /**
@@ -123,7 +123,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $sentry = Mockery::mock(\Cartalyst\Sentry\Sentry::class);
         $sentry->shouldReceive('getUserProvider->findByLogin')
             ->andReturn($user);
-        $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app['sentry'] = $sentry;
 
         // Create our command object and inject our application
@@ -136,7 +136,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
     public function testAdminDemoteSuccess()
     {
         // Create our input and output dependencies
-        $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
+        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
         $output = $this->createOutputInterface();
 
         /**
@@ -155,9 +155,9 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
             ->with('test@opencfp.dev', 'Admin');
 
         // Create our command object and inject our application
-        $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app[AccountManagement::class] = $accounts;
-        $command = new \OpenCFP\Console\Command\AdminDemoteCommand();
+        $command                       = new \OpenCFP\Console\Command\AdminDemoteCommand();
         $command->setApp($app);
         $response = $command->execute($input, $output);
         $this->assertEquals($response, 0);

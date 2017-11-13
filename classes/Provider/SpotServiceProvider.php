@@ -15,13 +15,13 @@ class SpotServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['spot'] = function ($app) {
-            $config = new SpotConfig();
+            $config   = new SpotConfig();
             $dbConfig = [
-                'dbname' => $app->config('database.database'),
-                'user' => $app->config('database.user'),
+                'dbname'   => $app->config('database.database'),
+                'user'     => $app->config('database.user'),
                 'password' => $app->config('database.password'),
-                'host' => $app->config('database.host'),
-                'driver' => 'pdo_mysql',
+                'host'     => $app->config('database.host'),
+                'driver'   => 'pdo_mysql',
             ];
 
             if ($app->config('database.port') !== null) {

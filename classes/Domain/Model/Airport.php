@@ -6,7 +6,7 @@ use OpenCFP\Domain\Services\AirportInformationDatabase;
 
 class Airport extends Eloquent implements AirportInformationDatabase
 {
-    protected $table = 'airports';
+    protected $table   = 'airports';
     public $timestamps = false;
 
     /**

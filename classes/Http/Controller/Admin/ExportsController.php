@@ -26,16 +26,16 @@ class ExportsController extends BaseController
 
     public function emailExportAction()
     {
-        $talks = Talk::all();
+        $talks     = Talk::all();
         $formatted = [];
 
         foreach ($talks as $talk) {
             $formatted[] = [
-                'title' => $talk->title,
-                'selected' => $talk->selected,
+                'title'      => $talk->title,
+                'selected'   => $talk->selected,
                 'first_name' => $talk->speaker->first_name,
-                'last_name' => $talk->speaker->last_name,
-                'email' => $talk->speaker->email,
+                'last_name'  => $talk->speaker->last_name,
+                'email'      => $talk->speaker->email,
             ];
         }
 
@@ -47,9 +47,9 @@ class ExportsController extends BaseController
         $talkFormatter = new TalkFormatter();
 
         $admin_user_id = $this->service(Authentication::class)->userId();
-        $talks = Talk::orderBy('created_at', 'DESC');
-        $talks = $where == null ? $talks : $talks->where($where);
-        $talks = $talkFormatter->formatList($talks->get(), $admin_user_id, $attributed)->toArray();
+        $talks         = Talk::orderBy('created_at', 'DESC');
+        $talks         = $where == null ? $talks : $talks->where($where);
+        $talks         = $talkFormatter->formatList($talks->get(), $admin_user_id, $attributed)->toArray();
 
         foreach ($talks as $talk => $info) {
             $talks[$talk]['created_at'] = $info['created_at']->format('Y-m-d H:i:s');
@@ -97,9 +97,9 @@ class ExportsController extends BaseController
     {
         if (count($contents) === 0) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'There were no talks that matched selected criteria.',
+                'ext'   => 'There were no talks that matched selected criteria.',
             ]);
 
             return $this->redirectTo('admin');

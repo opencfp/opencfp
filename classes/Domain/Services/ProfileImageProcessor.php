@@ -39,8 +39,8 @@ class ProfileImageProcessor
     public function __construct($publishDir, RandomStringGenerator $generator, $size = 250)
     {
         $this->publishDir = $publishDir;
-        $this->size = $size;
-        $this->generator = $generator;
+        $this->size       = $size;
+        $this->generator  = $generator;
     }
 
     /**

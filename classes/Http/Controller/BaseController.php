@@ -75,7 +75,7 @@ abstract class BaseController
     {
         /** @var Request $request */
         $request = $this->service('request_stack')->getCurrentRequest();
-        $data = $request->query->all() + $request->request->all() + $request->files->all();
+        $data    = $request->query->all() + $request->request->all() + $request->files->all();
 
         $validation = new Factory(
             new Translator(new FileLoader(new Filesystem(), __DIR__ . '/../../../resources/lang'), 'en'),

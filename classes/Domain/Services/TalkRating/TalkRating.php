@@ -14,7 +14,7 @@ abstract class TalkRating implements TalkRatingStrategy
     public function __construct(TalkMeta $meta, Authentication $auth)
     {
         $this->adminId = $auth->userId();
-        $this->meta = $meta;
+        $this->meta    = $meta;
     }
 
     /**
@@ -23,7 +23,7 @@ abstract class TalkRating implements TalkRatingStrategy
      */
     protected function saveRating(int $talkId, $rating)
     {
-        $meta = $this->fetchMetaInfo($talkId);
+        $meta         = $this->fetchMetaInfo($talkId);
         $meta->rating = $rating;
         $meta->save();
     }
@@ -32,7 +32,7 @@ abstract class TalkRating implements TalkRatingStrategy
     {
         return $this->meta->firstOrCreate([
             'admin_user_id' => $this->adminId,
-            'talk_id' => $talkId,
+            'talk_id'       => $talkId,
         ]);
     }
 }

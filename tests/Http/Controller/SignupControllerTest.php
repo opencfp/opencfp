@@ -64,38 +64,38 @@ class SignupControllerTest extends WebTestCase
         $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
 
         // Create our URL generator
-        $url = 'http://opencfp/signup';
+        $url           = 'http://opencfp/signup';
         $url_generator = m::mock(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class);
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
 
         // We need to set up our speaker information
         $form_data = [
-            'formAction' => $url,
-            'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
-            'email' => 'test@opencfp.org',
-            'company' => null,
-            'twitter' => null,
-            'url' => 'https://joind.in/user/abc123',
-            'password' => 'wutwut',
-            'password2' => 'wutwut',
-            'airport' => null,
-            'speaker_info' => null,
-            'speaker_bio' => null,
+            'formAction'     => $url,
+            'first_name'     => 'Testy',
+            'last_name'      => 'McTesterton',
+            'email'          => 'test@opencfp.org',
+            'company'        => null,
+            'twitter'        => null,
+            'url'            => 'https://joind.in/user/abc123',
+            'password'       => 'wutwut',
+            'password2'      => 'wutwut',
+            'airport'        => null,
+            'speaker_info'   => null,
+            'speaker_bio'    => null,
             'transportation' => null,
-            'hotel' => null,
-            'buttonInfo' => 'Create my speaker profile',
-            'agree_coc' => null,
+            'hotel'          => null,
+            'buttonInfo'     => 'Create my speaker profile',
+            'agree_coc'      => null,
         ];
 
         // Set our HTMLPurifier we use for validation
-        $config = HTMLPurifier_Config::createDefault();
+        $config   = HTMLPurifier_Config::createDefault();
         $purifier = new HTMLPurifier($config);
         $app->shouldReceive('offsetGet')->with('purifier')->andReturn($purifier);
         $app->shouldReceive('config')->with('application.coc_link')->andReturn(null);
 
-        $user = m::mock(UserInterface::class);
+        $user     = m::mock(UserInterface::class);
         $user->id = 1;
 
         $auth = m::mock(Authentication::class);
@@ -109,7 +109,7 @@ class SignupControllerTest extends WebTestCase
 
         // Create an instance of our database
         $speaker = new \stdClass;
-        $mapper = m::mock(\stdClass::class);
+        $mapper  = m::mock(\stdClass::class);
         $mapper->shouldReceive('get')->andReturn($speaker);
         $mapper->shouldReceive('save');
         $spot = m::mock(Locator::class);
@@ -117,9 +117,9 @@ class SignupControllerTest extends WebTestCase
         $app->shouldReceive('offsetGet')->with('spot')->andReturn($spot);
 
         $request = Request::create('/signup', 'POST', [
-            'email' => 'test@example.com',
+            'email'    => 'test@example.com',
             'password' => 'pa$$w3rd',
-            'coc' => '1',
+            'coc'      => '1',
         ]);
 
         $requestStack = m::mock(\stdClass::class);
@@ -163,38 +163,38 @@ class SignupControllerTest extends WebTestCase
         $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
 
         // Create our URL generator
-        $url = 'http://opencfp/signup';
+        $url           = 'http://opencfp/signup';
         $url_generator = m::mock(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class);
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
 
         // We need to set up our speaker information
         $form_data = [
-            'formAction' => 'http://opencfp/signup',
-            'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
-            'email' => 'test@opencfp.org',
-            'company' => null,
-            'twitter' => null,
-            'url' => '',
-            'password' => 'wutwut',
-            'password2' => 'wutwut',
-            'airport' => null,
-            'speaker_info' => null,
-            'speaker_bio' => null,
+            'formAction'     => 'http://opencfp/signup',
+            'first_name'     => 'Testy',
+            'last_name'      => 'McTesterton',
+            'email'          => 'test@opencfp.org',
+            'company'        => null,
+            'twitter'        => null,
+            'url'            => '',
+            'password'       => 'wutwut',
+            'password2'      => 'wutwut',
+            'airport'        => null,
+            'speaker_info'   => null,
+            'speaker_bio'    => null,
             'transportation' => null,
-            'hotel' => null,
-            'buttonInfo' => 'Create my speaker profile',
-            'agree_coc' => null,
+            'hotel'          => null,
+            'buttonInfo'     => 'Create my speaker profile',
+            'agree_coc'      => null,
         ];
 
         // Set our HTMLPurifier we use for validation
-        $config = HTMLPurifier_Config::createDefault();
+        $config   = HTMLPurifier_Config::createDefault();
         $purifier = new HTMLPurifier($config);
         $app->shouldReceive('offsetGet')->with('purifier')->andReturn($purifier);
         $app->shouldReceive('config')->with('application.coc_link')->andReturn(null);
 
-        $user = m::mock(UserInterface::class);
+        $user     = m::mock(UserInterface::class);
         $user->id = 1;
 
         $accounts = m::mock(AccountManagement::class);
@@ -209,7 +209,7 @@ class SignupControllerTest extends WebTestCase
 
         // Create an instance of our database
         $speaker = new \stdClass;
-        $mapper = m::mock(\stdClass::class);
+        $mapper  = m::mock(\stdClass::class);
         $mapper->shouldReceive('get')->andReturn($speaker);
         $mapper->shouldReceive('save');
         $spot = m::mock(Locator::class);
@@ -217,9 +217,9 @@ class SignupControllerTest extends WebTestCase
         $app->shouldReceive('offsetGet')->with('spot')->andReturn($spot);
 
         $request = Request::create('/signup', 'POST', [
-            'email' => 'test@example.com',
+            'email'    => 'test@example.com',
             'password' => 'pa$$w3rd',
-            'coc' => '1',
+            'coc'      => '1',
         ]);
 
         $requestStack = m::mock(\stdClass::class);
@@ -263,38 +263,38 @@ class SignupControllerTest extends WebTestCase
         $app->shouldReceive('offsetGet')->with('session')->andReturn(new Session(new MockFileSessionStorage()));
 
         // Create our URL generator
-        $url = 'http://opencfp/signup';
+        $url           = 'http://opencfp/signup';
         $url_generator = m::mock(\Symfony\Component\Routing\Generator\UrlGeneratorInterface::class);
         $url_generator->shouldReceive('generate')->andReturn($url);
         $app->shouldReceive('offsetGet')->with('url_generator')->andReturn($url_generator);
 
         // We need to set up our speaker information
         $form_data = [
-            'formAction' => $url,
-            'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
-            'email' => 'test@opencfp.org',
-            'company' => null,
-            'twitter' => null,
-            'url' => 'https://joind.in/user/abc123',
-            'password' => 'wutwut',
-            'password2' => 'wutwut',
-            'airport' => null,
-            'speaker_info' => null,
-            'speaker_bio' => null,
+            'formAction'     => $url,
+            'first_name'     => 'Testy',
+            'last_name'      => 'McTesterton',
+            'email'          => 'test@opencfp.org',
+            'company'        => null,
+            'twitter'        => null,
+            'url'            => 'https://joind.in/user/abc123',
+            'password'       => 'wutwut',
+            'password2'      => 'wutwut',
+            'airport'        => null,
+            'speaker_info'   => null,
+            'speaker_bio'    => null,
             'transportation' => null,
-            'hotel' => null,
-            'buttonInfo' => 'Create my speaker profile',
-            'agree_coc' => 'agreed',
+            'hotel'          => null,
+            'buttonInfo'     => 'Create my speaker profile',
+            'agree_coc'      => 'agreed',
         ];
 
         // Set our HTMLPurifier we use for validation
-        $config = HTMLPurifier_Config::createDefault();
+        $config   = HTMLPurifier_Config::createDefault();
         $purifier = new HTMLPurifier($config);
         $app->shouldReceive('offsetGet')->with('purifier')->andReturn($purifier);
         $app->shouldReceive('config')->with('application.coc_link')->andReturn('http://www.google.com');
 
-        $user = m::mock(UserInterface::class);
+        $user     = m::mock(UserInterface::class);
         $user->id = 1;
 
         $accounts = m::mock(AccountManagement::class);
@@ -304,7 +304,7 @@ class SignupControllerTest extends WebTestCase
 
         // Create an instance of our database
         $speaker = new \stdClass;
-        $mapper = m::mock(\stdClass::class);
+        $mapper  = m::mock(\stdClass::class);
         $mapper->shouldReceive('get')->andReturn($speaker);
         $mapper->shouldReceive('save');
         $spot = m::mock(Locator::class);
@@ -317,9 +317,9 @@ class SignupControllerTest extends WebTestCase
         $app->shouldReceive('offsetGet')->with(Authentication::class)->andReturn($auth);
 
         $request = Request::create('/signup', 'POST', [
-            'email' => 'test@example.com',
+            'email'    => 'test@example.com',
             'password' => 'pa$$w3rd',
-            'coc' => '1',
+            'coc'      => '1',
         ]);
 
         $requestStack = m::mock(\stdClass::class);

@@ -15,9 +15,9 @@ class ProfileController extends BaseController
 
         if ((string) $user->getId() !== $req->get('id')) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => "You cannot edit someone else's profile",
+                'ext'   => "You cannot edit someone else's profile",
             ]);
 
             return $this->redirectTo('dashboard');
@@ -26,22 +26,22 @@ class ProfileController extends BaseController
         $speaker_data = User::find($user->getId())->toArray();
 
         $form_data = [
-            'email' => $user->getLogin(),
-            'first_name' => $speaker_data['first_name'],
-            'last_name' => $speaker_data['last_name'],
-            'company' => $speaker_data['company'],
-            'twitter' => $speaker_data['twitter'],
-            'url' => $speaker_data['url'],
-            'speaker_info' => $speaker_data['info'],
-            'speaker_bio' => $speaker_data['bio'],
-            'speaker_photo' => $speaker_data['photo_path'],
-            'preview_photo' => '/uploads/' . $speaker_data['photo_path'],
-            'airport' => $speaker_data['airport'],
+            'email'          => $user->getLogin(),
+            'first_name'     => $speaker_data['first_name'],
+            'last_name'      => $speaker_data['last_name'],
+            'company'        => $speaker_data['company'],
+            'twitter'        => $speaker_data['twitter'],
+            'url'            => $speaker_data['url'],
+            'speaker_info'   => $speaker_data['info'],
+            'speaker_bio'    => $speaker_data['bio'],
+            'speaker_photo'  => $speaker_data['photo_path'],
+            'preview_photo'  => '/uploads/' . $speaker_data['photo_path'],
+            'airport'        => $speaker_data['airport'],
             'transportation' => $speaker_data['transportation'],
-            'hotel' => $speaker_data['hotel'],
-            'id' => $user->getId(),
-            'formAction' => $this->url('user_update'),
-            'buttonInfo' => 'Update Profile',
+            'hotel'          => $speaker_data['hotel'],
+            'id'             => $user->getId(),
+            'formAction'     => $this->url('user_update'),
+            'buttonInfo'     => 'Update Profile',
         ];
 
         return $this->render('user/edit.twig', $form_data) ;
@@ -53,9 +53,9 @@ class ProfileController extends BaseController
 
         if ((string) $userId !== $req->get('id')) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => "You cannot edit someone else's profile",
+                'ext'   => "You cannot edit someone else's profile",
             ]);
 
             return $this->redirectTo('dashboard');
@@ -67,7 +67,7 @@ class ProfileController extends BaseController
             $form_data['speaker_photo'] = $req->files->get('speaker_photo');
         }
 
-        $form = new SignupForm($form_data, $this->service('purifier'));
+        $form    = new SignupForm($form_data, $this->service('purifier'));
         $isValid = $form->validateAll('update');
 
         if ($isValid) {
@@ -82,15 +82,15 @@ class ProfileController extends BaseController
             return $this->redirectTo('dashboard');
         }
         $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => implode('<br>', $form->getErrorMessages()),
+                'ext'   => implode('<br>', $form->getErrorMessages()),
             ]);
 
         $form_data['formAction'] = $this->url('user_update');
         $form_data['buttonInfo'] = 'Update Profile';
-        $form_data['id'] = $userId;
-        $form_data['flash'] = $this->service('session')->get('flash');
+        $form_data['id']         = $userId;
+        $form_data['flash']      = $this->service('session')->get('flash');
 
         return $this->render('user/edit.twig', $form_data);
     }
@@ -109,7 +109,7 @@ class ProfileController extends BaseController
          * validation code to make sure our password changes are good
          */
         $formData = [
-            'password' => $req->get('password'),
+            'password'  => $req->get('password'),
             'password2' => $req->get('password_confirm'),
         ];
         $form = new SignupForm($formData, $this->service('purifier'));
@@ -117,9 +117,9 @@ class ProfileController extends BaseController
 
         if ($form->validatePasswords() === false) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => implode('<br>', $form->getErrorMessages()),
+                'ext'   => implode('<br>', $form->getErrorMessages()),
             ]);
 
             return $this->redirectTo('password_edit');
@@ -130,22 +130,22 @@ class ProfileController extends BaseController
          * own built-in password reset functionality to do it
          */
         $sanitized_data = $form->getCleanData();
-        $reset_code = $user->getResetPasswordCode();
+        $reset_code     = $user->getResetPasswordCode();
 
         if (! $user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'Unable to update your password in the database. Please try again.',
+                'ext'   => 'Unable to update your password in the database. Please try again.',
             ]);
 
             return $this->redirectTo('password_edit');
         }
 
         $this->service('session')->set('flash', [
-            'type' => 'success',
+            'type'  => 'success',
             'short' => 'Success',
-            'ext' => 'Changed your password.',
+            'ext'   => 'Changed your password.',
         ]);
 
         return $this->redirectTo('password_edit');
@@ -159,18 +159,18 @@ class ProfileController extends BaseController
     private function getFormData(Request $req): array
     {
         $form_data = [
-            'email' => $req->get('email'),
-            'user_id' => $req->get('id'),
-            'first_name' => $req->get('first_name'),
-            'last_name' => $req->get('last_name'),
-            'company' => $req->get('company'),
-            'twitter' => $req->get('twitter'),
-            'url' => $req->get('url'),
-            'airport' => $req->get('airport'),
+            'email'          => $req->get('email'),
+            'user_id'        => $req->get('id'),
+            'first_name'     => $req->get('first_name'),
+            'last_name'      => $req->get('last_name'),
+            'company'        => $req->get('company'),
+            'twitter'        => $req->get('twitter'),
+            'url'            => $req->get('url'),
+            'airport'        => $req->get('airport'),
             'transportation' => (int) $req->get('transportation'),
-            'hotel' => (int) $req->get('hotel'),
-            'speaker_info' => $req->get('speaker_info') ?: null,
-            'speaker_bio' => $req->get('speaker_bio') ?: null,
+            'hotel'          => (int) $req->get('hotel'),
+            'speaker_info'   => $req->get('speaker_info') ?: null,
+            'speaker_bio'    => $req->get('speaker_bio') ?: null,
         ];
 
         return $form_data;

@@ -34,8 +34,8 @@ class TalkHelper
     public function __construct($categories, $levels, $types)
     {
         $this->categories = $categories;
-        $this->levels = $levels;
-        $this->types = $types;
+        $this->levels     = $levels;
+        $this->types      = $types;
     }
 
     /**

@@ -37,7 +37,7 @@ abstract class Form
     public function populate(array $data)
     {
         $this->_taintedData = $data;
-        $this->_cleanData = null;
+        $this->_cleanData   = null;
     }
 
     /**
@@ -60,7 +60,7 @@ abstract class Form
      */
     public function hasRequiredFields(): bool
     {
-        $dataKeys = array_keys($this->_taintedData);
+        $dataKeys    = array_keys($this->_taintedData);
         $foundFields = array_intersect($this->_fieldList, $dataKeys);
 
         return ($foundFields == $this->_fieldList);
@@ -184,7 +184,7 @@ abstract class Form
     protected function internalSanitize(array $taintedData): array
     {
         $purifier  = $this->_purifier;
-        $filtered = array_map(
+        $filtered  = array_map(
             function ($field) use ($purifier) {
                 return $purifier->purify($field);
             },

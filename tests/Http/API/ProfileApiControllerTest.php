@@ -26,7 +26,7 @@ class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         $this->speakers = m::mock(\OpenCFP\Application\Speakers::class);
-        $this->sut = new ProfileController($this->speakers);
+        $this->sut      = new ProfileController($this->speakers);
     }
 
     /** @test */

@@ -13,9 +13,9 @@ class Client extends Entity
     public static function fields()
     {
         return [
-            'id' => ['type' => 'string', 'autoincrement' => false, 'primary' => true],
+            'id'     => ['type' => 'string', 'autoincrement' => false, 'primary' => true],
             'secret' => ['type' => 'string', 'length' => 255, 'required' => true],
-            'name' => ['type' => 'string', 'length' => 255],
+            'name'   => ['type' => 'string', 'length' => 255],
         ];
     }
 
@@ -35,9 +35,9 @@ class Client extends Entity
         }
 
         return [
-            'id' => $this->id,
-            'secret' => $this->secret,
-            'name' => $this->name,
+            'id'            => $this->id,
+            'secret'        => $this->secret,
+            'name'          => $this->name,
             'redirect_uris' => $redirectUris,
         ];
     }

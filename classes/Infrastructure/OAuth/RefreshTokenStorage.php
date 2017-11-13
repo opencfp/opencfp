@@ -37,9 +37,9 @@ class RefreshTokenStorage extends AbstractStorage implements RefreshTokenInterfa
     {
         Capsule::table('oauth_refresh_tokens')
                     ->insert([
-                        'refresh_token'     =>  $token,
-                        'access_token'    =>  $accessToken,
-                        'expire_time'   =>  $expireTime,
+                        'refresh_token'     => $token,
+                        'access_token'      => $accessToken,
+                        'expire_time'       => $expireTime,
                     ]);
     }
 

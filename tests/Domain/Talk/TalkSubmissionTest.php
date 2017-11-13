@@ -14,11 +14,11 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
         // represents the TalkSubmission only.
 
         $submission = TalkSubmission::fromNative([
-            'title' => 'Happy Path Submission',
+            'title'       => 'Happy Path Submission',
             'description' => 'I play by the rules.',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'api',
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'api',
         ]);
 
         // Factory method for talk out of submission.
@@ -62,7 +62,7 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('description');
 
         TalkSubmission::fromNative([
-            'title' => 'Talk With No Description',
+            'title'       => 'Talk With No Description',
             'description' => '',
         ]);
     }
@@ -76,9 +76,9 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('talk type');
 
         TalkSubmission::fromNative([
-            'title' => 'Some off-the-wall Talk Type',
+            'title'       => 'Some off-the-wall Talk Type',
             'description' => 'I do not play by the rules.',
-            'type' => 'hamburger',
+            'type'        => 'hamburger',
         ]);
     }
 
@@ -91,10 +91,10 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('level');
 
         TalkSubmission::fromNative([
-            'title' => 'Invalid Skill Level Talk',
+            'title'       => 'Invalid Skill Level Talk',
             'description' => 'I do not play by the rules.',
-            'type' => 'regular',
-            'level' => 'over 9000',
+            'type'        => 'regular',
+            'level'       => 'over 9000',
         ]);
     }
 
@@ -107,11 +107,11 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('category');
 
         TalkSubmission::fromNative([
-            'title' => 'Invalid Categorized Talk',
+            'title'       => 'Invalid Categorized Talk',
             'description' => 'I do not play by the rules.',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'skylanders',
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'skylanders',
         ]);
     }
 }

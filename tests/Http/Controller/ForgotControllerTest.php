@@ -20,7 +20,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
 
     public function setup()
     {
-        $this->app = new Application(BASE_PATH, Environment::testing());
+        $this->app                 = new Application(BASE_PATH, Environment::testing());
         $this->app['session.test'] = true;
         ob_start();
         $this->app->run();
@@ -73,7 +73,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
         $this->app['form.factory'] = $form_factory;
 
-        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $req        = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
         $controller->sendResetAction($req);
@@ -95,7 +95,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('not valid'));
         $this->app['form.factory'] = $form_factory;
 
-        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $req        = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
         $controller->sendResetAction($req);
@@ -116,7 +116,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
         $this->app['form.factory'] = $form_factory;
 
-        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $req        = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
         $controller->sendResetAction($req);
@@ -147,7 +147,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $form_factory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
         $this->app['form.factory'] = $form_factory;
 
-        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $req        = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
         $controller->sendResetAction($req);
@@ -172,7 +172,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
     private function createForm($valid_status)
     {
         $is_valid = ($valid_status == 'valid');
-        $form = m::mock(\OpenCFP\Http\Form\ForgotForm::class);
+        $form     = m::mock(\OpenCFP\Http\Form\ForgotForm::class);
         $form->shouldReceive('handleRequest');
         $form->shouldReceive('isValid')->andReturn($is_valid);
         $data = ['email' => 'test@opencfp.org'];

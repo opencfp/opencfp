@@ -92,10 +92,10 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app['oauth.resource'] = function ($app) {
-            $sessionStorage = new SessionStorage();
+            $sessionStorage     = new SessionStorage();
             $accessTokenStorage = new AccessTokenStorage();
-            $clientStorage = new ClientStorage();
-            $scopeStorage = new ScopeStorage();
+            $clientStorage      = new ClientStorage();
+            $scopeStorage       = new ScopeStorage();
 
             $server = new ResourceServer(
                 $sessionStorage,

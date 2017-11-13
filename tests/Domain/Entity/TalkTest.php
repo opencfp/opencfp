@@ -18,7 +18,7 @@ class TalkTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
-        $cfg = new \Spot\Config;
+        $cfg       = new \Spot\Config;
         $cfg->addConnection('sqlite', [
             'dbname' => 'sqlite::memory',
             'driver' => 'pdo_sqlite',
@@ -40,10 +40,10 @@ class TalkTest extends \PHPUnit\Framework\TestCase
     public function utf8CharactersCorrectlyEncoded()
     {
         $title = 'Battle: Feature Branches VS Feature Switching (╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)';
-        $data = [
-            'title' => $title,
+        $data  = [
+            'title'       => $title,
             'description' => 'Talk with UTF-8 characters in the title',
-            'user_id' => 1,
+            'user_id'     => 1,
         ];
         $talk = $this->mapper->create($data);
 
@@ -85,10 +85,10 @@ class TalkTest extends \PHPUnit\Framework\TestCase
     {
         for ($x = 1; $x <= $numTalks; $x++) {
             $title = uniqid();
-            $data = [
-                'title' => $title,
+            $data  = [
+                'title'       => $title,
                 'description' => "Description for $title",
-                'user_id' => 1,
+                'user_id'     => 1,
             ];
             $this->mapper->create($data);
         }

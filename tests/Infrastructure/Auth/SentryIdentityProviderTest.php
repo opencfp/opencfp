@@ -17,7 +17,7 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
 
     public function testImplementsIdentityProvider()
     {
-        $sentry = $this->getSentryMock();
+        $sentry            = $this->getSentryMock();
         $speakerRepository = $this->getSpeakerRepositoryMock();
 
         $provider = new SentryIdentityProvider(

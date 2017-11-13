@@ -38,11 +38,11 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->identityProvider = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
+        $this->identityProvider  = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
         $this->speakerRepository = m::mock(\OpenCFP\Domain\Speaker\SpeakerRepository::class);
-        $this->talkRepository = m::mock(\OpenCFP\Domain\Talk\TalkRepository::class);
-        $this->callForProposal = m::mock(\OpenCFP\Domain\CallForProposal::class);
-        $this->dispatcher = m::mock(\OpenCFP\Domain\Services\EventDispatcher::class);
+        $this->talkRepository    = m::mock(\OpenCFP\Domain\Talk\TalkRepository::class);
+        $this->callForProposal   = m::mock(\OpenCFP\Domain\CallForProposal::class);
+        $this->dispatcher        = m::mock(\OpenCFP\Domain\Services\EventDispatcher::class);
 
         $this->sut = new Speakers($this->callForProposal, $this->identityProvider, $this->speakerRepository, $this->talkRepository, $this->dispatcher);
     }
@@ -157,11 +157,11 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
             ->once();
 
         $submission = TalkSubmission::fromNative([
-            'title' => 'Sample Talk',
+            'title'       => 'Sample Talk',
             'description' => 'Some example talk for our submission',
-            'type' => 'regular',
-            'category' => 'api',
-            'level' => 'mid',
+            'type'        => 'regular',
+            'category'    => 'api',
+            'level'       => 'mid',
         ]);
 
         /**
@@ -183,11 +183,11 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
             ->once()
             ->andReturn(false);
         $submission = TalkSubmission::fromNative([
-            'title' => 'Sample Talk',
+            'title'       => 'Sample Talk',
             'description' => 'Some example talk for our submission',
-            'type' => 'regular',
-            'category' => 'api',
-            'level' => 'mid',
+            'type'        => 'regular',
+            'category'    => 'api',
+            'level'       => 'mid',
         ]);
 
         $this->expectException(\Exception::class);
@@ -215,10 +215,10 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeaker()
     {
         return new User([
-            'id' => self::SPEAKER_ID,
-            'email' => 'speaker@opencfp.org',
+            'id'         => self::SPEAKER_ID,
+            'email'      => 'speaker@opencfp.org',
             'first_name' => 'Fake',
-            'last_name' => 'Speaker',
+            'last_name'  => 'Speaker',
         ]);
     }
 
@@ -235,15 +235,15 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerFromMisbehavingRelation()
     {
         // Set up stub speaker.
-        $stub = m::mock(\stdClass::class);
+        $stub     = m::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
         $talk = m::mock(\stdClass::class);
         $talk->shouldReceive('find')->andReturn(
             new Talk([
-                'id' => 1,
-                'title' => 'Testy Talk',
+                'id'      => 1,
+                'title'   => 'Testy Talk',
                 'user_id' => self::SPEAKER_ID + 1, // Not the speaker!
             ])
         );
@@ -255,15 +255,15 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerWithOneTalk()
     {
         // Set up stub speaker.
-        $stub = m::mock(\stdClass::class);
+        $stub     = m::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
         $talk= m::mock(\stdClass::class);
         $talk->shouldReceive('find')->andReturn(
             new Talk([
-                'id' => 1,
-                'title' => 'Testy Talk',
+                'id'      => 1,
+                'title'   => 'Testy Talk',
                 'user_id' => self::SPEAKER_ID,
             ])
         );
@@ -275,24 +275,24 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerWithManyTalks()
     {
         // Set up stub speaker.
-        $stub = m::mock(\stdClass::class);
+        $stub     = m::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
         $stub->talks = [
             new Talk([
-                'id' => 1,
-                'title' => 'Testy Talk',
+                'id'      => 1,
+                'title'   => 'Testy Talk',
                 'user_id' => self::SPEAKER_ID,
             ]),
             new Talk([
-                'id' => 2,
-                'title' => 'Another Talk',
+                'id'      => 2,
+                'title'   => 'Another Talk',
                 'user_id' => self::SPEAKER_ID,
             ]),
             new Talk([
-                'id' => 3,
-                'title' => 'Yet Another Talk',
+                'id'      => 3,
+                'title'   => 'Yet Another Talk',
                 'user_id' => self::SPEAKER_ID,
             ]),
         ];

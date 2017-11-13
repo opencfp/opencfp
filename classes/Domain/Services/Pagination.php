@@ -11,7 +11,7 @@ class Pagination
 
     public function __construct($talkList, int $perPage = 20)
     {
-        $adapter = new \Pagerfanta\Adapter\ArrayAdapter($talkList);
+        $adapter    = new \Pagerfanta\Adapter\ArrayAdapter($talkList);
         $pagerFanta = new Pagerfanta($adapter);
         $pagerFanta->setMaxPerPage($perPage);
         $this->pagerFanta = $pagerFanta;

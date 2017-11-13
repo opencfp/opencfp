@@ -48,22 +48,22 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
     public function hasRequiredProvider()
     {
         $badData = [
-            'title' => 'Bad Data',
+            'title'       => 'Bad Data',
             'description' => 'Hey, why are we missing fields!',
         ];
         $goodData = [
-            'title' => 'Talk Title',
+            'title'       => 'Talk Title',
             'description' => 'Description of our talk',
-            'type' => 'session',
-            'category' => 'development',
-            'level' => 'entry',
-            'slides' => 'http://slideshare.net',
-            'other' => 'Misc comments',
-            'desired' => 1,
-            'sponsor' => 1,
-            'user_id' => 1,
+            'type'        => 'session',
+            'category'    => 'development',
+            'level'       => 'entry',
+            'slides'      => 'http://slideshare.net',
+            'other'       => 'Misc comments',
+            'desired'     => 1,
+            'sponsor'     => 1,
+            'user_id'     => 1,
         ];
-        $extendedData = $goodData;
+        $extendedData          = $goodData;
         $extendedData['extra'] = 'Extra data in $_POST but we ignore it';
 
         return [
@@ -105,14 +105,14 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
     public function hasNoDesiredOrSponsorProvider()
     {
         $goodData = [
-            'title' => 'Talk Title',
+            'title'       => 'Talk Title',
             'description' => 'Description of our talk',
-            'type' => 'session',
-            'category' => 'development',
-            'level' => 'entry',
-            'slides' => 'http://slideshare.net',
-            'other' => 'Misc comments',
-            'user_id' => 1,
+            'type'        => 'session',
+            'category'    => 'development',
+            'level'       => 'entry',
+            'slides'      => 'http://slideshare.net',
+            'other'       => 'Misc comments',
+            'user_id'     => 1,
         ];
 
         return [
@@ -302,7 +302,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
     {
         $validSpeakerInfo = [
             'user_id' => 1,
-            'info' => 'Special speaker info',
+            'info'    => 'Special speaker info',
         ];
 
         return [

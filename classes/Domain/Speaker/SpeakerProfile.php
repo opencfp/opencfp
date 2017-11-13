@@ -101,11 +101,11 @@ class SpeakerProfile
     public function toArrayForApi()
     {
         return [
-            'name' => $this->getName(),
-            'email' => $this->getEmail(),
+            'name'    => $this->getName(),
+            'email'   => $this->getEmail(),
             'twitter' => $this->getTwitter(),
-            'url' => $this->getUrl(),
-            'bio' => $this->getBio(),
+            'url'     => $this->getUrl(),
+            'bio'     => $this->getBio(),
         ];
     }
 }

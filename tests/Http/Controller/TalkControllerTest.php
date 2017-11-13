@@ -24,7 +24,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->app = new Application(BASE_PATH, Environment::testing());
+        $this->app                 = new Application(BASE_PATH, Environment::testing());
         $this->app['session.test'] = true;
         ob_start();
         $this->app->run();
@@ -97,16 +97,16 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
 
         // Get our request object to return expected data
         $talk_data = [
-            'title' => 'Test Title With Ampersand',
+            'title'       => 'Test Title With Ampersand',
             'description' => 'The title should contain this & that',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'other',
-            'desired' => 0,
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => $auth->user()->getId(),
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'other',
+            'desired'     => 0,
+            'slides'      => '',
+            'other'       => '',
+            'sponsor'     => '',
+            'user_id'     => $auth->user()->getId(),
         ];
 
         $this->setPost($talk_data);
@@ -147,16 +147,16 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
 
         // Get our request object to return expected data
         $talk_data = [
-            'title' => 'Test Submission',
+            'title'       => 'Test Submission',
             'description' => 'Make sure we can submit before end and not after.',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'other',
-            'desired' => 0,
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => $auth->user()->getId(),
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'other',
+            'desired'     => 0,
+            'slides'      => '',
+            'other'       => '',
+            'sponsor'     => '',
+            'user_id'     => $auth->user()->getId(),
         ];
 
         $this->setPost($talk_data);
@@ -206,16 +206,16 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
 
         // Get our request object to return expected data
         $talk_data = [
-            'title' => 'Test Submission',
+            'title'       => 'Test Submission',
             'description' => 'Make sure we can see our own talk.',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'other',
-            'desired' => 0,
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => $auth->user()->getId(),
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'other',
+            'desired'     => 0,
+            'slides'      => '',
+            'other'       => '',
+            'sponsor'     => '',
+            'user_id'     => $auth->user()->getId(),
         ];
 
         $this->setPost($talk_data);
@@ -248,7 +248,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $callForProposal = m::mock(CallForProposal::class);
         $callForProposal->shouldReceive('isOpen')->andReturn(false);
         $this->app['callforproposal'] = $callForProposal;
-        $response = $controller->editAction($this->req);
+        $response                     = $controller->editAction($this->req);
 
         $flashMessage = $this->app['session']->get('flash');
 
@@ -324,16 +324,16 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
         $this->app['spot']->shouldReceive('toArray')->andReturn(
             [
-                'user_id' => (int) $this->app[Authentication::class]->user()->getId(),
-                'title' => 'Title of talk to edit',
+                'user_id'     => (int) $this->app[Authentication::class]->user()->getId(),
+                'title'       => 'Title of talk to edit',
                 'description' => 'The Description',
-                'type' => 'regular',
-                'level' => 'entry',
-                'category' => 'other',
-                'desired' => 0,
-                'slides' => '',
-                'other' => '',
-                'sponsor' => '',
+                'type'        => 'regular',
+                'level'       => 'entry',
+                'category'    => 'other',
+                'desired'     => 0,
+                'slides'      => '',
+                'other'       => '',
+                'sponsor'     => '',
             ]
         );
 
@@ -357,17 +357,17 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $controller->setApplication($this->app);
 
         $talk_data = [
-            'id' => 3,
-            'title' => '',
+            'id'          => 3,
+            'title'       => '',
             'description' => 'This talk is missing its title',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'other',
-            'desired' => 0,
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => $this->app[Authentication::class]->user()->getId(),
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'other',
+            'desired'     => 0,
+            'slides'      => '',
+            'other'       => '',
+            'sponsor'     => '',
+            'user_id'     => $this->app[Authentication::class]->user()->getId(),
         ];
 
         $this->setPost($talk_data);

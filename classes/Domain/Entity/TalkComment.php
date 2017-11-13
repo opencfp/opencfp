@@ -9,7 +9,7 @@ class TalkComment extends \Spot\Entity
     public static function fields()
     {
         return [
-            'id' => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
+            'id'      => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
             'user_id' => ['type' => 'integer', 'required' => true],
             'talk_id' => ['type' => 'integer', 'required' => true],
             'message' => ['type' => 'text', 'required' => true],

@@ -35,9 +35,9 @@ class SecurityController extends BaseController
             return $this->redirectTo('dashboard');
         } catch (\Exception $e) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => $e->getMessage(),
+                'ext'   => $e->getMessage(),
             ]);
 
             $template_data = [

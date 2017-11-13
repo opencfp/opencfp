@@ -33,7 +33,7 @@ class ResetEmailer
     public function __construct(\Swift_Mailer $swiftMailer, \Twig_Template $template, $configEmail, $configTitle)
     {
         $this->swift_mailer = $swiftMailer;
-        $this->template = $template;
+        $this->template     = $template;
         $this->config_email = $configEmail;
         $this->config_title = $configTitle;
     }
@@ -69,12 +69,12 @@ class ResetEmailer
     {
         return [
             'reset_code' => $resetCode,
-            'method' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
+            'method'     => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
                 ? 'https' : 'http',
-            'host' => !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost',
+            'host'    => !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost',
             'user_id' => $userId,
-            'email' => $this->config_email,
-            'title' => $this->config_title,
+            'email'   => $this->config_email,
+            'title'   => $this->config_title,
         ];
     }
 

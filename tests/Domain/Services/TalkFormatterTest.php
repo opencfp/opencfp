@@ -27,7 +27,7 @@ class TalkFormatterTest extends BaseTestCase
      */
     public function createFormattedOutputWorksWithNoMeta()
     {
-        $talk = new Talk;
+        $talk      = new Talk;
         $formatter = new TalkFormatter();
 
         $format =$formatter->createdFormattedOutput($talk->first(), 1);
@@ -44,7 +44,7 @@ class TalkFormatterTest extends BaseTestCase
     public function createFormattedOutputWorksWithMeta()
     {
         $formatter = new TalkFormatter();
-        $talk = new Talk;
+        $talk      = new Talk;
 
         // Now to see if the meta gets put in correctly
         $secondFormat =$formatter->createdFormattedOutput($talk->first(), 2);
@@ -59,7 +59,7 @@ class TalkFormatterTest extends BaseTestCase
     public function formatListReturnsAllTalksAsCollection()
     {
         $formatter = new TalkFormatter();
-        $talks = Talk::all();
+        $talks     = Talk::all();
         $formatted = $formatter->formatList($talks, 2);
         $this->assertEquals(count($talks), count($formatted));
         $this->assertInstanceOf(Collection::class, $formatted);
@@ -71,12 +71,12 @@ class TalkFormatterTest extends BaseTestCase
 
         $talk->create(
             [
-                'user_id' => 1,
-                'title' => 'One talk to rule them all',
+                'user_id'     => 1,
+                'title'       => 'One talk to rule them all',
                 'description' => 'Two is fine too',
-                'type' => 'regular',
-                'level' => 'entry',
-                'category' => 'api',
+                'type'        => 'regular',
+                'level'       => 'entry',
+                'category'    => 'api',
             ]
         );
 
@@ -84,30 +84,30 @@ class TalkFormatterTest extends BaseTestCase
         $meta->create(
             [
                 'admin_user_id' => 2,
-                'rating' => 1,
-                'viewed' => 1,
-                'talk_id' => $talk->first()->id,
-                'created' => new \DateTime(),
+                'rating'        => 1,
+                'viewed'        => 1,
+                'talk_id'       => $talk->first()->id,
+                'created'       => new \DateTime(),
             ]
         );
         $talk->create(
             [
-                'user_id' => 8,
-                'title' => 'Extra Extra',
+                'user_id'     => 8,
+                'title'       => 'Extra Extra',
                 'description' => 'Talk',
-                'type' => 'regular',
-                'level' => 'entry',
-                'category' => 'api',
+                'type'        => 'regular',
+                'level'       => 'entry',
+                'category'    => 'api',
             ]
         );
         $talk->create(
             [
-                'user_id' => 8,
-                'title' => 'Third',
+                'user_id'     => 8,
+                'title'       => 'Third',
                 'description' => 'Talk',
-                'type' => 'regular',
-                'level' => 'entry',
-                'category' => 'api',
+                'type'        => 'regular',
+                'level'       => 'entry',
+                'category'    => 'api',
             ]
         );
     }

@@ -20,7 +20,7 @@ class SymfonySentrySession implements SentrySessionInterface
     public function __construct(SymfonySessionInterface $session, $key = null)
     {
         $this->session = $session;
-        $this->key = $key ?: 'cartalyst_sentry';
+        $this->key     = $key ?: 'cartalyst_sentry';
     }
 
     /**
