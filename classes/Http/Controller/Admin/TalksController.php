@@ -180,7 +180,7 @@ class TalksController extends BaseController
 
     public function commentCreateAction(Request $req)
     {
-        $talk_id = (int)$req->get('id');
+        $talk_id = (int) $req->get('id');
 
         $user = $this->service(Authentication::class)->user();
         $admin_user_id = (int) $user->getId();

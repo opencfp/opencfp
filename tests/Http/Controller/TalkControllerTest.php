@@ -277,7 +277,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertNotContains(
             '<input id="form-talk-title" type="text" name="title" class="form-control" placeholder="Talk Title"',
-            (string)$response
+            (string) $response
         );
         $this->assertNotContains(
             '<div class="form-group">',
@@ -299,7 +299,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['spot']->shouldReceive('where')->with(['id' => 1])->andReturn($this->app['spot']);
         $this->app['spot']->shouldReceive('execute')->andReturn($this->app['spot']);
         $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('toArray')->andReturn(['user_id'=> (int)$this->app[Authentication::class]->user()->getId() + 2]);
+        $this->app['spot']->shouldReceive('toArray')->andReturn(['user_id'=> (int) $this->app[Authentication::class]->user()->getId() + 2]);
 
         $response = $controller->editAction($this->req);
         $this->assertInstanceOf(
@@ -324,7 +324,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
         $this->app['spot']->shouldReceive('toArray')->andReturn(
             [
-                'user_id' => (int)$this->app[Authentication::class]->user()->getId(),
+                'user_id' => (int) $this->app[Authentication::class]->user()->getId(),
                 'title' => 'Title of talk to edit',
                 'description' => 'The Description',
                 'type' => 'regular',
@@ -344,7 +344,7 @@ class TalkControllerTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertContains(
             'Talk Title',
-            (string)$response
+            (string) $response
         );
     }
 
