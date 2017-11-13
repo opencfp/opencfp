@@ -12,6 +12,8 @@ engines:
       standard: PSR2
   phpmd:
     enabled: true
+    config:
+      rulesets: "codesize,controversial,design,naming,unusedcode,PHPMDRuleSet.xml"
 
 ratings:
   paths:
