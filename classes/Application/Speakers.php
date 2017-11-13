@@ -75,7 +75,7 @@ class Speakers
         }
 
         // Do an explicit check of ownership because why not.
-        if ((int)$talk->user_id !== (int)$speaker->id) {
+        if ((int) $talk->user_id !== (int) $speaker->id) {
             throw new NotAuthorizedException;
         }
 
