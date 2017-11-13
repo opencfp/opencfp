@@ -62,8 +62,7 @@ jobs:
         - composer install
 
       before_script:
-        - source .travis/code-climate.sh
-        - sh tools/travis/setup-mail.sh
+        - sh .travis/setup-mail.sh
         - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
         - cp phinx.yml.dist phinx.yml
         - vendor/bin/phinx migrate -e testing
