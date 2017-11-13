@@ -23,7 +23,7 @@ class TalksController extends BaseController
             'sort'     => $req->get('sort'),
         ];
 
-        $pager_formatted_talks = $this->service(TalkFilter::class)->getFilteredTalks(
+        $pager_formatted_talks = $this->service(TalkFilter::class)->getTalks(
             $reviewerId,
             $req->get('filter'),
             $options
