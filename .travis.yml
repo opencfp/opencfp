@@ -50,7 +50,6 @@ jobs:
             - sqlite3
 
       before_install:
-        - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then WITH_COVERAGE=true; else WITH_COVERAGE=false; fi
         - if [[ "$WITH_COVERAGE" == "false" ]]; then phpenv config-rm xdebug.ini; fi
         - composer validate --no-check-publish
 
@@ -70,10 +69,10 @@ jobs:
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
       script:
-        - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
+        - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
       after_success:
-        - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
+        - vendor/bin/test-reporter --coverage-report build/logs/clover.xml
 
     - stage: Asset
 
