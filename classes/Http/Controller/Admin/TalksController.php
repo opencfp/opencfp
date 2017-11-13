@@ -169,7 +169,7 @@ class TalksController extends BaseController
 
     public function commentCreateAction(Request $req)
     {
-        $talk_id = (int)$req->get('id');
+        $talk_id = (int) $req->get('id');
         
         TalkComment::create([
             'talk_id' => $talk_id,
