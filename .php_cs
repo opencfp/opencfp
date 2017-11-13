@@ -13,6 +13,7 @@ $config = PhpCsFixer\Config::create()
             'syntax' => 'short'
         ],
         'blank_line_after_opening_tag' => true,
+        'cast_spaces' => true,
         'method_separation' => true,
         'no_alias_functions' => true,
         'no_empty_phpdoc' => true,
