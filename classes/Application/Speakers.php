@@ -3,7 +3,7 @@
 namespace OpenCFP\Application;
 
 use OpenCFP\Domain\CallForProposal;
-use OpenCFP\Domain\Entity\Talk;
+use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
@@ -67,15 +67,15 @@ class Speakers
     public function getTalk(int $talkId)
     {
         $speaker = $this->identityProvider->getCurrentUser();
-        $talk = $speaker->talks->where(['id' => $talkId])->execute()->first();
+        $talk = $speaker->talks()->find($talkId);
 
         // If it can't grab by relation, it's likely not their talk.
-        if (!$talk) {
+        if (!$talk instanceof Talk) {
             throw new NotAuthorizedException;
         }
 
         // Do an explicit check of ownership because why not.
-        if ($talk->user_id !== $speaker->id) {
+        if ((int)$talk->user_id !== (int)$speaker->id) {
             throw new NotAuthorizedException;
         }
 
@@ -86,7 +86,7 @@ class Speakers
     {
         $speaker = $this->identityProvider->getCurrentUser();
 
-        return $speaker->talks->execute();
+        return $speaker->talks;
     }
 
     /**
@@ -98,7 +98,7 @@ class Speakers
      *
      * @throws \Exception
      */
-    public function submitTalk(TalkSubmission $submission): Talk
+    public function submitTalk(TalkSubmission $submission)
     {
         if (!$this->callForProposal->isOpen()) {
             throw new \Exception('You cannot create talks once the call for papers has ended.');

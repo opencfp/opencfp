@@ -2,8 +2,8 @@
 
 namespace OpenCFP\Domain\Speaker;
 
-use OpenCFP\Domain\Entity\Talk;
-use OpenCFP\Domain\Entity\User;
+use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\User;
 
 /**
  * This is a user-facing read-only projection of a Speaker and their Talks forming
@@ -40,7 +40,7 @@ class SpeakerProfile
      */
     public function getTalks()
     {
-        return $this->speaker->talks->execute();
+        return $this->speaker->talks;
     }
 
     public function getName(): string

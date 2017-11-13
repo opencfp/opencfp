@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Infrastructure\Persistence;
 
-use OpenCFP\Domain\Entity\User;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use Spot\Mapper;
@@ -36,7 +35,7 @@ class SpotSpeakerRepository implements SpeakerRepository
     /**
      * {@inheritdoc}
      */
-    public function persist(User $speaker)
+    public function persist($speaker)
     {
     }
 }

@@ -6,8 +6,8 @@ use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
-use OpenCFP\Domain\Entity\Talk;
-use OpenCFP\Domain\Entity\User;
+use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
@@ -38,8 +38,6 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        parent::setUp();
-
         $this->identityProvider = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
         $this->speakerRepository = m::mock(\OpenCFP\Domain\Speaker\SpeakerRepository::class);
         $this->talkRepository = m::mock(\OpenCFP\Domain\Talk\TalkRepository::class);
@@ -51,7 +49,6 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
 
     protected function tearDown()
     {
-        parent::tearDown();
         m::close();
     }
 
@@ -127,9 +124,9 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function it_guards_if_spot_relation_ever_returns_talks_that_arent_owned_by_speaker()
+    public function it_guards_if_relation_ever_returns_talks_that_arent_owned_by_speaker()
     {
-        $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerFromMisbehavingSpot());
+        $this->trainIdentityProviderToReturnSampleSpeaker($this->getSpeakerFromMisbehavingRelation());
 
         $this->expectException(\OpenCFP\Application\NotAuthorizedException::class);
 
@@ -152,7 +149,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
             ->andReturn($this->getSpeaker());
 
         $this->talkRepository->shouldReceive('persist')
-            ->with(m::type(\OpenCFP\Domain\Entity\Talk::class))
+            ->with(m::type(\OpenCFP\Domain\Model\Talk::class))
             ->once();
 
         $this->dispatcher->shouldReceive('dispatch')
@@ -229,29 +226,27 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     {
         // Set up stub speaker.
         $stub = m::mock(\stdClass::class);
-
-        // Set up talks.
-        $stub->talks = m::mock(\stdClass::class);
-        $stub->talks->shouldReceive('where->execute->first')->andReturnNull();
-
+        $stub->shouldReceive('talks')->andReturnSelf();
+        $stub->shouldReceive('find')->andReturnNull();
         return $stub;
     }
 
-    private function getSpeakerFromMisbehavingSpot()
+    private function getSpeakerFromMisbehavingRelation()
     {
         // Set up stub speaker.
         $stub = m::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
-        $stub->talks = m::mock(\stdClass::class);
-        $stub->talks->shouldReceive('where->execute->first')->andReturn(
+        $talk = m::mock(\stdClass::class);
+        $talk->shouldReceive('find')->andReturn(
             new Talk([
                 'id' => 1,
                 'title' => 'Testy Talk',
                 'user_id' => self::SPEAKER_ID + 1, // Not the speaker!
             ])
         );
+        $stub->shouldReceive('talks')->andReturn($talk);
 
         return $stub;
     }
@@ -263,14 +258,15 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
-        $stub->talks = m::mock(\stdClass::class);
-        $stub->talks->shouldReceive('where->execute->first')->andReturn(
+        $talk= m::mock(\stdClass::class);
+        $talk->shouldReceive('find')->andReturn(
             new Talk([
                 'id' => 1,
                 'title' => 'Testy Talk',
                 'user_id' => self::SPEAKER_ID,
             ])
         );
+        $stub->shouldReceive('talks')->andReturn($talk);
 
         return $stub;
     }
@@ -282,8 +278,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
-        $stub->talks = m::mock(\stdClass::class);
-        $stub->talks->shouldReceive('execute')->andReturn([
+        $stub->talks = [
             new Talk([
                 'id' => 1,
                 'title' => 'Testy Talk',
@@ -299,7 +294,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
                 'title' => 'Yet Another Talk',
                 'user_id' => self::SPEAKER_ID,
             ]),
-        ]);
+        ];
 
         return $stub;
     }
