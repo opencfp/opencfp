@@ -38,7 +38,9 @@ jobs:
       script:
         - vendor/bin/php-cs-fixer fix --diff --dry-run --verbose
 
-    - stage: Test
+    - &TEST
+
+      stage: Test
 
       php: 7.0
 
@@ -66,14 +68,18 @@ jobs:
         - chmod +x ./cc-test-reporter
         - ./cc-test-reporter before-build
 
-      after_script:
-        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
       script:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
 
+      after_script:
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
       after_success:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
+
+    - <<: *TEST
+
+      php: 7.1
 
     - stage: Asset
 

@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Test\Domain\Model;
 
+use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\DatabaseTransaction;
 
@@ -41,6 +42,31 @@ class UserTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(5, User::search()->get());
         $this->assertCount(3, User::search('Vries')->get());
         $this->assertCount(1, User::search('Hunter')->get());
+    }
+
+    /**
+     * @test
+     */
+    public function deleteDeletesTalksAsWellAsUser()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $user = $talk->speaker;
+        $user->delete();
+
+        $this->assertCount(0, Talk::all());
+        $this->assertCount(0, User::all());
+    }
+
+    /**
+     * @test
+     */
+    public function deleteStillWorksNormally()
+    {
+        $user = factory(User::class, 1)->create()->first();
+
+        $this->assertTrue($user->delete());
+        $this->assertCount(0, User::all());
     }
 
     private function makeKnownUsers()

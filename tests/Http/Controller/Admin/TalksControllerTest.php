@@ -2,10 +2,12 @@
 
 namespace OpenCFP\Test\Http\Controller\Admin;
 
-use Mockery as m;
+use Mockery;
+use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Talk\TalkFilter;
+use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Test\DatabaseTransaction;
 use OpenCFP\Test\WebTestCase;
 
@@ -34,86 +36,29 @@ class TalksControllerTest extends WebTestCase
      */
     public function indexPageDisplaysTalksCorrectly()
     {
-        /** @var Authentication $auth */
-        $auth = $this->app[Authentication::class];
-        $userId = $auth->user()->getId();
-        // Create our fake talk
-        $talk = m::mock(\OpenCFP\Domain\Entity\Talk::class);
-        $talk->shouldReceive('save');
-        $talk->shouldReceive('set')
-            ->with($auth->user())
-            ->andSet('speaker', $auth->user());
-        $userDetails = [
-            'id' => $userId,
-            'first_name' => 'Test',
-            'last_name' => 'User',
-        ];
+        $talks = factory(Talk::class, 10)->create();
+        $formatter = new TalkFormatter();
+        $formatted = $formatter->formatList($talks, 1);
+        $filter = Mockery::mock(TalkFilter::class);
+        $filter->shouldReceive('getFilteredTalks')
+            ->andReturn($formatted->toArray());
+        $this->swap(TalkFilter::class, $filter);
 
-        $talkData = [0 => [
-            'id' => 1,
-            'title' => 'Test Title',
-            'description' => 'The title should contain this & that',
-            'meta' => [
-                'rating' => 5,
-            ],
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'other',
-            'desired' => 0,
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => $userId,
-            'created_at' => date('Y-m-d'),
-            'user' => $userDetails,
-            'favorite' => null,
-            'selected' => null,
-        ]];
-        $userMapper = m::mock(\OpenCFP\Domain\Entity\Mapper\User::class);
-        $userMapper->shouldReceive('migrate');
-        $userMapper->shouldReceive('build')->andReturn($auth->user());
-        $userMapper->shouldReceive('save')->andReturn(true);
+        $this->asAdmin()
+            ->get('/admin/talks')
+            ->assertSee($talks->first()->title)
+            ->assertSuccessful();
+    }
 
-        $talkMapper = m::mock(\OpenCFP\Domain\Entity\Mapper\Talk::class);
-        $talkMapper->shouldReceive('migrate');
-        $talkMapper->shouldReceive('build')->andReturn($talk);
-        $talkMapper->shouldReceive('save');
-        $talkMapper->shouldReceive('getAllPagerFormatted')->andReturn($talkData);
-
-        // Overide our DB mappers to return doubles
-        $spot = m::mock(\Spot\Locator::class);
-        $spot->shouldReceive('mapper')
-            ->with(\OpenCFP\Domain\Entity\User::class)
-            ->andReturn($userMapper);
-        $spot->shouldReceive('mapper')
-            ->with(\OpenCFP\Domain\Entity\Talk::class)
-            ->andReturn($talkMapper);
-        $this->app['spot'] = $spot;
-
-        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
-        $paramBag = m::mock(\Symfony\Component\HttpFoundation\ParameterBag::class);
-
-        $queryParams = [
-            'page' => 1,
-            'per_page' => 20,
-            'sort' => 'ASC',
-            'order_by' => 'title',
-            'filter' => null,
-        ];
-        $paramBag->shouldReceive('all')->andReturn($queryParams);
-
-        $req->shouldReceive('get')->with('page')->andReturn($queryParams['page']);
-        $req->shouldReceive('get')->with('per_page')->andReturn($queryParams['per_page']);
-        $req->shouldReceive('get')->with('sort')->andReturn($queryParams['sort']);
-        $req->shouldReceive('get')->with('order_by')->andReturn($queryParams['order_by']);
-        $req->shouldReceive('get')->with('filter')->andReturn($queryParams['filter']);
-        $req->query = $paramBag;
-        $req->shouldReceive('getRequestUri')->andReturn('foo');
-
-        $this->get('/admin/talks')
-            ->assertSuccessful()
-            ->assertSee('Test Title')
-            ->assertSee('Test User');
+    /**
+     * @test
+     */
+    public function indexPageWorkWithNoTalks()
+    {
+        $this->asAdmin()
+            ->get('/admin/talks')
+            ->assertSee('Submitted Talks')
+            ->assertSuccessful();
     }
 
     /**
@@ -123,49 +68,15 @@ class TalksControllerTest extends WebTestCase
      */
     public function talkIsCorrectlyCommentedOn()
     {
-        // Create some reusable values
-        $talkId = uniqid();
-        $comment = 'Test Comment';
+        $talk = factory(Talk::class, 1)->create()->first();
 
-        // Create a TalkComment and mapper, then add the mapper to $app
-        $talkComment = m::mock(\OpenCFP\Domain\Entity\TalkComment::class);
-        $talkComment->shouldReceive('set')
-            ->andSet('talk_id', $talkId);
-        $talkComment->shouldReceive('set')
-            ->andSet('comment', $comment);
-        $talkComment->shouldReceive('set')
-            ->andSet('user_id', uniqid());
-
-        $talkCommentMapper = m::mock(\OpenCFP\Domain\Entity\Mapper\TalkComment::class);
-        $talkCommentMapper->shouldReceive('get')->andReturn($talkComment);
-        $talkCommentMapper->shouldReceive('save');
-
-        // Override our mapper with the double
-        $spot = m::mock(\Spot\Locator::class);
-        $spot->shouldReceive('mapper')
-            ->with(\OpenCFP\Domain\Entity\TalkComment::class)
-            ->andReturn($talkCommentMapper);
-        $this->app['spot'] = $spot;
-
-        // Use our pre-configured Application object
-        ob_start();
-        $this->app->run();
-        ob_end_clean();
-
-        // Create our Request object
-        $req = m::mock(\Symfony\Component\HttpFoundation\Request::class);
-        $req->shouldReceive('get')->with('id')->andReturn($talkId);
-        $req->shouldReceive('get')->with('comment')->andReturn($comment);
-
-        // Execute the controller and capture the output
-        $controller = new \OpenCFP\Http\Controller\Admin\TalksController();
-        $controller->setApplication($this->app);
-        $response = $controller->commentCreateAction($req);
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\RedirectResponse::class,
-            $response
-        );
+        $this->asAdmin()
+            ->post(
+                '/admin/talks/'. $talk->id.'/comment',
+                ['comment' => 'Great Talk i rate 10/10']
+            )
+            ->assertNotSee('Server Error')
+            ->assertRedirect();
     }
 
     /**
@@ -200,6 +111,110 @@ class TalksControllerTest extends WebTestCase
         $this->asAdmin($meta->first()->admin_user_id);
 
         $this->get('/admin/talks/'. $meta->first()->talk_id)
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function selectActionWorksCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asAdmin()
+            ->post('/admin/talks/'. $talk->id. '/select')
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function selectActionDeletesCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asAdmin()
+            ->post('/admin/talks/'. $talk->id. '/select', ['delete' => 1])
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function selectActionReturnsFalseWhenTalkNotFound()
+    {
+        $this->asAdmin()
+            ->post('/admin/talks/255/select')
+            ->assertNotSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function favoriteActionWorksCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asAdmin()
+            ->post('/admin/talks/'. $talk->id . '/favorite')
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function favoriteActionDeletesCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+        Favorite::create([
+            'admin_user_id' => 1,
+            'talk_id' => $talk->id,
+        ]);
+
+        $this->asAdmin()
+            ->post('/admin/talks/'. $talk->id . '/favorite', ['delete' =>1])
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function favoriteActionDoesNotErrorWhenTryingToDeleteFavoriteThatDoesNoExist()
+    {
+        $this->asAdmin()
+            ->post('/admin/talks/255/favorite', ['delete' => 1])
+            ->assertNotSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function rateActionWorksCorrectly()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asAdmin()
+            ->post('/admin/talks/'.$talk->id. '/rate', ['rating' => 1])
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function rateActionRetunsFalseOnWrongRate()
+    {
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        $this->asAdmin()
+            ->post('/admin/talks/'.$talk->id. '/rate', ['rating' => 12])
+            ->assertNotSee('1')
             ->assertSuccessful();
     }
 }

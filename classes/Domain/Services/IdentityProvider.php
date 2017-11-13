@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Domain\Services;
 
-use OpenCFP\Domain\Entity\User;
+use OpenCFP\Domain\Model\User;
 
 interface IdentityProvider
 {

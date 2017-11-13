@@ -2,14 +2,12 @@
 
 namespace OpenCFP\Domain\Talk;
 
-use OpenCFP\Domain\Entity\Talk;
-
 interface TalkRepository
 {
     /**
-     * @param Talk $talk
+     * @param $talk
      *
      * @return mixed
      */
-    public function persist(Talk $talk);
+    public function persist($talk);
 }

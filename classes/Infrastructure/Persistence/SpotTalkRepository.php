@@ -23,7 +23,7 @@ class SpotTalkRepository implements TalkRepository
      *
      * @return mixed
      */
-    public function persist(Talk $talk)
+    public function persist($talk)
     {
         $this->mapper->save($talk);
     }
