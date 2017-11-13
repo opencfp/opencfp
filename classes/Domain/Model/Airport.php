@@ -23,6 +23,7 @@ class Airport extends Eloquent implements AirportInformationDatabase
         if (!$airport) {
             throw new \Exception("An airport matching '{$code}' was not found.");
         }
+
         return $airport;
     }
 }

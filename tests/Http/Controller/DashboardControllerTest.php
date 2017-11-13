@@ -123,6 +123,7 @@ class DashboardControllerTest extends WebTestCase
     {
         $speakerProfileDouble = m::mock(SpeakerProfile::class);
         $speakerProfileDouble->shouldReceive($stubMethods);
+
         return $speakerProfileDouble;
     }
 }

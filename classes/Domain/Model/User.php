@@ -42,6 +42,7 @@ class User extends Eloquent
             if ((int) $talk['id'] == (int) $talkId) {
                 return false;
             }
+
             return true;
         });
 
@@ -67,6 +68,7 @@ class User extends Eloquent
         if ($search == '' || $search == null) {
             return $builder->orderBy($orderByColumn, $orderByDirection);
         }
+
         return $builder
             ->where('first_name', 'like', '%' . $search. '%')
             ->orWhere('last_name', 'like', '%' . $search. '%')

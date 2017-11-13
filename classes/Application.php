@@ -321,12 +321,15 @@ class Application extends SilexApplication
             switch ($code) {
                 case Response::HTTP_UNAUTHORIZED:
                     $message = $twig->render('error/401.twig');
+
                     break;
                 case Response::HTTP_FORBIDDEN:
                     $message = $twig->render('error/403.twig');
+
                     break;
                 case Response::HTTP_NOT_FOUND:
                     $message = $twig->render('error/404.twig');
+
                     break;
                 default:
                     $message = $twig->render('error/500.twig');

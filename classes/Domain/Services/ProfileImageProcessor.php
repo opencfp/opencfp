@@ -81,9 +81,11 @@ class ProfileImageProcessor
             if ($speakerPhoto->save($this->publishDir . '/' . $publishFilename)) {
                 unlink($this->publishDir . '/' . $tempFilename);
             }
+
             return $publishFilename;
         } catch (\Exception $e) {
             unlink($this->publishDir . '/' . $tempFilename);
+
             throw $e;
         }
     }

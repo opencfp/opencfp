@@ -47,6 +47,7 @@ class SpeakersController extends BaseController
             }
 
             $speaker['is_admin'] = in_array($speaker['id'], $adminUserIds);
+
             return $speaker;
         })->toArray();
 
@@ -122,6 +123,7 @@ class SpeakersController extends BaseController
         $capsule = $this->service(Capsule::class);
 
         $capsule->getConnection()->beginTransaction();
+
         try {
             $user = User::findorFail($req->get('id'));
             $user->delete($req->get('id'));
@@ -160,6 +162,7 @@ class SpeakersController extends BaseController
 
             return $this->redirectTo('admin_speakers');
         }
+
         try {
             $user = $accounts->findById($req->get('id'));
             $accounts->demoteFrom($user->getLogin());
@@ -184,6 +187,7 @@ class SpeakersController extends BaseController
     {
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
+
         try {
             $user = $accounts->findById($req->get('id'));
             if ($user->hasAccess('admin')) {
@@ -192,6 +196,7 @@ class SpeakersController extends BaseController
                     'short' => 'Error',
                     'ext' => 'User already is in the Admin group.',
                 ]);
+
                 return $this->redirectTo('admin_speakers');
             }
 

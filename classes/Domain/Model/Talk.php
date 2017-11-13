@@ -44,6 +44,7 @@ class Talk extends Eloquent
         $this->deleteComments();
         $this->deleteFavorites();
         $this->deleteMeta();
+
         return parent::delete();
     }
 

@@ -78,6 +78,7 @@ class ProfileController extends BaseController
             }
             unset($sanitized_data['speaker_photo']);
             User::find($userId)->update($sanitized_data);
+
             return $this->redirectTo('dashboard');
         }
         $this->service('session')->set('flash', [
@@ -171,6 +172,7 @@ class ProfileController extends BaseController
             'speaker_info' => $req->get('speaker_info') ?: null,
             'speaker_bio' => $req->get('speaker_bio') ?: null,
         ];
+
         return $form_data;
     }
 
@@ -193,6 +195,7 @@ class ProfileController extends BaseController
         $sanitizedData['id'] = $sanitizedData['user_id'];
         unset($sanitizedData['user_id']);
         $sanitizedData['has_made_profile'] = 1;
+
         return $sanitizedData;
     }
 }

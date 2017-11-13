@@ -54,6 +54,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
     {
         $app = new Application(BASE_PATH, Environment::testing());
         $app['session.test'] = true;
+
         return $app;
     }
 
@@ -73,6 +74,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
     protected function swap($service, $instance)
     {
         $this->app[$service] = $instance;
+
         return $instance;
     }
 
@@ -86,6 +88,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
     public function withHeaders(array $headers): self
     {
         $this->headers = array_merge($this->headers, $headers);
+
         return $this;
     }
 
@@ -100,18 +103,21 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
     public function withHeader(string $name, string $value): self
     {
         $this->headers[$name] = $value;
+
         return $this;
     }
 
     public function withNoHeaders()
     {
         $this->headers = [];
+
         return $this;
     }
 
     public function withServerVariables(array $server): self
     {
         $this->server = $server;
+
         return $this;
     }
 
@@ -159,6 +165,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
         $cfp->shouldReceive('isOpen')->andReturn(true);
         $this->swap('callforproposal', $cfp);
         $this->app['twig']->addGlobal('cfp_open', true);
+
         return $this;
     }
 
@@ -168,6 +175,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
         $cfp->shouldReceive('isOpen')->andReturn(false);
         $this->swap('callforproposal', $cfp);
         $this->app['twig']->addGlobal('cfp_open', false);
+
         return $this;
     }
 
@@ -177,6 +185,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
         $config['application']['online_conference'] = true;
         $this->app['config'] = $config;
         $this->app['twig']->addGlobal('site', $this->app->config('application'));
+
         return $this;
     }
 
@@ -197,6 +206,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
         $auth->shouldReceive('user')->andReturn($user);
         $auth->shouldReceive('userId')->andReturn($id);
         $this->swap(Authentication::class, $auth);
+
         return $this;
     }
 
@@ -217,6 +227,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
         $auth->shouldReceive('user')->andReturn($user);
         $auth->shouldReceive('userId')->andReturn($id);
         $this->swap(Authentication::class, $auth);
+
         return $this;
     }
 
@@ -235,6 +246,7 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
         $auth->shouldReceive('user')->andReturn($user);
         $auth->shouldReceive('userId')->andReturn($id);
         $this->swap(Authentication::class, $auth);
+
         return $this;
     }
 }

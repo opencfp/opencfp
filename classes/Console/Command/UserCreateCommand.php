@@ -47,6 +47,7 @@ class UserCreateCommand extends BaseCommand
 
         if ($user == false) {
             $io->error('User Already Exists!');
+
             return 1;
         }
 

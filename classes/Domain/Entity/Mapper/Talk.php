@@ -435,6 +435,7 @@ class Talk extends Mapper
     {
         $format = new TalkFormatter();
         $output = $format->createdFormattedOutput($talk, $admin_user_id, $userData);
+
         return $output;
     }
 
