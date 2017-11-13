@@ -6,24 +6,20 @@ use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\DatabaseTransaction;
-use PHPUnit\Framework\TestCase;
+use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\RefreshDatabase;
 
 /**
  * @group db
  */
-class TalkFormatterTest extends TestCase
+class TalkFormatterTest extends BaseTestCase
 {
-    use DatabaseTransaction;
+    use RefreshDatabase;
 
-    public function setUp()
+    public static function setUpBeforeClass()
     {
-        $this->setUpDatabase();
-    }
-
-    public function tearDown()
-    {
-        $this->tearDownDatabase();
+        parent::setUpBeforeClass();
+        self::generateSomeTalks();
     }
 
     /**
@@ -31,7 +27,6 @@ class TalkFormatterTest extends TestCase
      */
     public function createFormattedOutputWorksWithNoMeta()
     {
-        $this->generateOneTalk();
         $talk = new Talk;
         $formatter = new TalkFormatter();
 
@@ -48,7 +43,6 @@ class TalkFormatterTest extends TestCase
      */
     public function createFormattedOutputWorksWithMeta()
     {
-        $this->generateOneTalk();
         $formatter = new TalkFormatter();
         $talk = new Talk;
 
@@ -64,8 +58,6 @@ class TalkFormatterTest extends TestCase
      */
     public function formatListReturnsAllTalksAsCollection()
     {
-        factory(Talk::class, 10)->create();
-
         $formatter = new TalkFormatter();
         $talks = Talk::all();
         $formatted = $formatter->formatList($talks, 2);
@@ -73,7 +65,7 @@ class TalkFormatterTest extends TestCase
         $this->assertInstanceOf(Collection::class, $formatted);
     }
 
-    private function generateOneTalk()
+    private static function generateSomeTalks()
     {
         $talk = new Talk();
 
@@ -96,6 +88,26 @@ class TalkFormatterTest extends TestCase
                 'viewed' => 1,
                 'talk_id' => $talk->first()->id,
                 'created' => new \DateTime(),
+            ]
+        );
+        $talk->create(
+            [
+                'user_id' => 8,
+                'title' => 'Extra Extra',
+                'description' => 'Talk',
+                'type' => 'regular',
+                'level' => 'entry',
+                'category' => 'api',
+            ]
+        );
+        $talk->create(
+            [
+                'user_id' => 8,
+                'title' => 'Third',
+                'description' => 'Talk',
+                'type' => 'regular',
+                'level' => 'entry',
+                'category' => 'api',
             ]
         );
     }

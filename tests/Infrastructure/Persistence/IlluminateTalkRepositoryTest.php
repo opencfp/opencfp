@@ -5,22 +5,12 @@ namespace OpenCFP\Test\Infrastructure\Persistence;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Infrastructure\Persistence\IlluminateTalkRepository;
-use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\RefreshDatabase;
 
-class IlluminateTalkRepositoryTest extends \PHPUnit\Framework\TestCase
+class IlluminateTalkRepositoryTest extends BaseTestCase
 {
-    use DatabaseTransaction;
-
-    public function setUp()
-    {
-        $this->setUpDatabase();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        $this->tearDownDatabase();
-    }
+    use RefreshDatabase;
 
     /**
      * @test

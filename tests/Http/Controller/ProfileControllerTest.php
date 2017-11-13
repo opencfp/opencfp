@@ -3,7 +3,7 @@
 namespace OpenCFP\Test\Http\Controller;
 
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 /**
@@ -14,18 +14,14 @@ use OpenCFP\Test\WebTestCase;
  */
 class ProfileControllerTest extends WebTestCase
 {
-    use DatabaseTransaction;
+    use RefreshDatabase;
 
-    public function setUp()
-    {
-        parent::setUp();
-        $this->setUpDatabase();
-    }
+    private static $user;
 
-    public function tearDown()
+    public static function setUpBeforeClass()
     {
-        parent::tearDown();
-        $this->tearDownDatabase();
+        parent::setUpBeforeClass();
+        self::$user = factory(User::class, 1)->create()->first();
     }
 
     /**
@@ -44,7 +40,7 @@ class ProfileControllerTest extends WebTestCase
      */
     public function seeEditPageWhenAllowed()
     {
-        $id = factory(User::class, 1)->create()->first()->id;
+        $id = self::$user->id;
 
         $this->asLoggedInSpeaker($id)
             ->get('/profile/edit/'. $id)
@@ -79,7 +75,7 @@ class ProfileControllerTest extends WebTestCase
      */
     public function redirectToDashboardOnSuccessfulUpdate()
     {
-        $user = factory(User::class, 1)->create()->first();
+        $user = self::$user;
         $this->asLoggedInSpeaker($user->id)
             ->post('/profile/edit', $this->putUserInRequest(true, $user->id))
             ->assertNotSee('My Profile')

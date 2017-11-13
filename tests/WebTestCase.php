@@ -4,19 +4,12 @@ namespace OpenCFP\Test;
 
 use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
-use OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Environment;
 use Symfony\Component\HttpFoundation\Request;
 
-class WebTestCase extends \PHPUnit\Framework\TestCase
+class WebTestCase extends BaseTestCase
 {
-    /**
-     * @var Application
-     */
-    protected $app;
-
     /**
      * Additional headers for a request.
      *
@@ -30,38 +23,6 @@ class WebTestCase extends \PHPUnit\Framework\TestCase
      * @var array
      */
     protected $server = [];
-
-    public function setUp()
-    {
-        if (!$this->app) {
-            $this->refreshApplication();
-        }
-    }
-
-    protected function tearDown()
-    {
-        if ($this->app) {
-            $this->app->flush();
-            $this->app = null;
-        }
-
-        if (class_exists('Mockery')) {
-            Mockery::close();
-        }
-    }
-
-    public function createApplication()
-    {
-        $app = new Application(BASE_PATH, Environment::testing());
-        $app['session.test'] = true;
-
-        return $app;
-    }
-
-    public function refreshApplication()
-    {
-        $this->app = $this->createApplication();
-    }
 
     /**
      * Swap implementations of a service in the container.

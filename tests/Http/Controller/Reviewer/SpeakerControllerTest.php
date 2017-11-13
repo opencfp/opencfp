@@ -3,23 +3,19 @@
 namespace OpenCFP\Test\Http\Controller\Reviewer;
 
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 class SpeakerControllerTest extends WebTestCase
 {
-    use DatabaseTransaction;
+    use RefreshDatabase;
 
-    public function setUp()
-    {
-        parent::setUp();
-        $this->setUpDatabase();
-    }
+    private static $users;
 
-    public function tearDown()
+    public static function setUpBeforeClass()
     {
-        parent::tearDown();
-        $this->tearDownDatabase();
+        parent::setUpBeforeClass();
+        self::$users = factory(User::class, 2)->create();
     }
 
     /**
@@ -37,7 +33,7 @@ class SpeakerControllerTest extends WebTestCase
      */
     public function indexActionDisplaysSpeakers()
     {
-        $speaker = factory(User::class, 10)->create()->first();
+        $speaker = self::$users->first();
         $this->asReviewer()
             ->get('/reviewer/speakers')
             ->assertSee($speaker->first_name)
@@ -60,7 +56,7 @@ class SpeakerControllerTest extends WebTestCase
      */
     public function viewActionShowsSpeaker()
     {
-        $speaker = factory(User::class)->create()->first();
+        $speaker = self::$users->first();
 
         $this->asReviewer()
             ->get('/reviewer/speakers/'.$speaker->id)

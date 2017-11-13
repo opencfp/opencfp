@@ -6,23 +6,19 @@ use Mockery;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 class TalksControllerTest extends WebTestCase
 {
-    use DatabaseTransaction;
+    use RefreshDatabase;
 
-    public function setUp()
-    {
-        parent::setUp();
-        $this->setUpDatabase();
-    }
+    private static $talks;
 
-    public function tearDown()
+    public static function setUpBeforeClass()
     {
-        parent::tearDown();
-        $this->tearDownDatabase();
+        parent::setUpBeforeClass();
+        self::$talks = factory(Talk::class, 3)->create();
     }
 
     /**
@@ -55,8 +51,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function viewActionWillShowTalk()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
-
+        $talk = self::$talks->first();
         $this->asReviewer()
             ->get('/reviewer/talks/'.$talk->id)
             ->assertSee($talk->title)
@@ -69,7 +64,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function rateActionWillReturnTrueOnGoodRate()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
+        $talk = self::$talks->first();
         $this->asReviewer()
             ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 1])
             ->assertSee('1')
@@ -81,7 +76,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function rateActionWillNotReturnTrueOnBadRate()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
+        $talk = self::$talks->first();
         $this->asReviewer()
             ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 8])
             ->assertNotSee('1')
@@ -91,7 +86,7 @@ class TalksControllerTest extends WebTestCase
     protected function makeTalks()
     {
         $formatter = new TalkFormatter();
-        $toReturn = $formatter->formatList(factory(Talk::class, 10)->create(), 1);
+        $toReturn = $formatter->formatList(self::$talks, 1);
         $filter = Mockery::mock(TalkFilter::class);
         $filter->shouldReceive('getFilteredTalks')->andReturn($toReturn->toArray());
         $this->swap(TalkFilter::class, $filter);

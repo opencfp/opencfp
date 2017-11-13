@@ -3,7 +3,7 @@
 namespace OpenCFP\Test\Http\Controller\Admin;
 
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 /**
@@ -14,19 +14,7 @@ use OpenCFP\Test\WebTestCase;
  */
 class SpeakersControllerTest extends WebTestCase
 {
-    use DatabaseTransaction;
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->setUpDatabase();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        $this->tearDownDatabase();
-    }
+    use RefreshDatabase;
 
     /**
      * @test

@@ -49,13 +49,14 @@
         <h3 class="my-4"><i class="fa fa-comments"></i> Comments</h3>
 
         {% for comment in comments %}
+            {% set user = comment.user.toArray %}
             <div class="flex text-sm mt-4">
                 <div>
-                    <img class="w-16 mr-4 rounded" src="{{ comment.user.photo_path ? '/uploads/' ~ comment.user.photo_path : '/assets/img/dummyphoto.jpg' }}">
+                    <img class="w-16 mr-4 rounded" src="{{ user.photo_path ? '/uploads/' ~ user.photo_path : '/assets/img/dummyphoto.jpg' }}">
                 </div>
                 <div class="border border-grey rounded-sm w-full">
                     <div class="p-3 border-b border-grey bg-blue-lightest flex justify-between">
-                        <span class="font-bold">{{ comment.user.first_name }} {{ comment.user.last_name }}</span><span>{{ comment.created|date("F jS \\a\\t g:ia") }}</span>
+                        <span class="font-bold">{{ user.first_name }} {{ user.last_name }}</span><span>{{ comment.created|date("F jS \\a\\t g:ia") }}</span>
                     </div>
                     <div class="p-3">{{ comment.message }}</div>
                 </div>
