@@ -3,36 +3,32 @@
 namespace OpenCFP\Test\Domain\Model;
 
 use OpenCFP\Domain\Model\Airport;
-use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\RefreshDatabase;
 
 /**
  * @group db
  */
-class AirportTest extends \PHPUnit\Framework\TestCase
+class AirportTest extends BaseTestCase
 {
-    use DatabaseTransaction;
+    use RefreshDatabase;
 
     private $airports;
 
     public function setUp()
     {
-        $this->setUpDatabase();
+        parent::setUp();
         $this->airports = $this->getAirport();
-    }
-
-    public function tearDown()
-    {
-        $this->tearDownDatabase();
     }
 
     /** @test */
     public function it_queries_airports_table_by_code()
     {
-        $airport = $this->airports->withCode('RDU');
+        $airport = $this->airports->withCode('AAC');
 
-        $this->assertEquals('RDU', $airport->code);
-        $this->assertEquals('Raleigh/Durham (NC)', $airport->name);
-        $this->assertEquals('USA', $airport->country);
+        $this->assertEquals('AAC', $airport->code);
+        $this->assertEquals('Al Arish', $airport->name);
+        $this->assertEquals('Egypt', $airport->country);
     }
 
     /**

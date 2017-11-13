@@ -6,25 +6,15 @@ use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\DatabaseTransaction;
-use PHPUnit\Framework\TestCase;
+use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\RefreshDatabase;
 
 /**
  * @group db
  */
-class TalkFormatterTest extends TestCase
+class TalkFormatterTest extends BaseTestCase
 {
-    use DatabaseTransaction;
-
-    public function setUp()
-    {
-        $this->setUpDatabase();
-    }
-
-    public function tearDown()
-    {
-        $this->tearDownDatabase();
-    }
+    use RefreshDatabase;
 
     /**
      * @test
@@ -64,7 +54,7 @@ class TalkFormatterTest extends TestCase
      */
     public function formatListReturnsAllTalksAsCollection()
     {
-        factory(Talk::class, 10)->create();
+        factory(Talk::class, 3)->create();
 
         $formatter = new TalkFormatter();
         $talks = Talk::all();

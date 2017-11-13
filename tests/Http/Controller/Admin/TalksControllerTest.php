@@ -8,24 +8,17 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 class TalksControllerTest extends WebTestCase
 {
-    use DatabaseTransaction;
+    use RefreshDatabase;
 
     public function setUp()
     {
         parent::setUp();
         $this->asAdmin();
-        $this->setUpDatabase();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        $this->tearDownDatabase();
     }
 
     /**

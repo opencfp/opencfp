@@ -4,33 +4,24 @@ namespace OpenCFP\Test\Domain\Model;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\RefreshDatabase;
 
 /**
  * @group db
  */
-class UserTest extends \PHPUnit\Framework\TestCase
+class UserTest extends BaseTestCase
 {
-    use DatabaseTransaction;
-
-    public function setUp()
-    {
-        $this->setUpDatabase();
-    }
-
-    public function tearDown()
-    {
-        $this->tearDownDatabase();
-    }
+    use RefreshDatabase;
 
     /**
      * @test
      */
     public function scopeSearchWillReturnAllWhenNoSearch()
     {
-        factory(User::class, 5)->create();
+        factory(User::class, 3)->create();
 
-        $this->assertCount(5, User::search()->get());
+        $this->assertCount(3, User::search()->get());
     }
 
     /**

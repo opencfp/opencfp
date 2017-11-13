@@ -7,32 +7,23 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\DatabaseTransaction;
+use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\RefreshDatabase;
 
 /**
  * @group db
  */
-class TalkTest extends \PHPUnit\Framework\TestCase
+class TalkTest extends BaseTestCase
 {
-    use DatabaseTransaction;
-
-    public function setUp()
-    {
-        $this->setUpDatabase();
-    }
-
-    public function tearDown()
-    {
-        $this->tearDownDatabase();
-    }
+    use RefreshDatabase;
 
     /** @test */
     public function recentReturnsAnArrayOfTalks()
     {
-        factory(Talk::class, 10)->create();
+        factory(Talk::class, 3)->create();
 
-        $this->assertCount(10, Talk::recent()->get());
-        $this->assertCount(3, Talk::recent(3)->get());
+        $this->assertCount(3, Talk::recent()->get());
+        $this->assertCount(2, Talk::recent(2)->get());
     }
 
     /**
