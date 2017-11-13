@@ -15,7 +15,6 @@ use OpenCFP\Test\WebTestCase;
  */
 class DashboardControllerTest extends WebTestCase
 {
-
     /**
      * @test
      */

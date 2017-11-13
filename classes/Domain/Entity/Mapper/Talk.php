@@ -328,6 +328,7 @@ class Talk extends Mapper
 
         return $formatted;
     }
+
     /**
      * Return a collection of talks not rated by admin
      *
