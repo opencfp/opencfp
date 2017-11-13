@@ -38,7 +38,9 @@ jobs:
       script:
         - vendor/bin/php-cs-fixer fix --diff --dry-run --verbose
 
-    - stage: Test
+    - &TEST
+
+      stage: Test
 
       php: 7.0
 
@@ -74,6 +76,10 @@ jobs:
 
       after_success:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
+
+    - <<: *TEST
+
+      php: 7.1
 
     - stage: Asset
 
