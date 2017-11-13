@@ -79,6 +79,7 @@ class TalkTest extends \PHPUnit\Framework\TestCase
         $talk->delete();
         $this->assertCount(0, TalkMeta::all());
     }
+
     /**
      * @test
      */
@@ -105,6 +106,7 @@ class TalkTest extends \PHPUnit\Framework\TestCase
         $talk->delete();
         $this->assertCount(0, TalkComment::all());
     }
+
     /**
      * @test
      */
@@ -131,6 +133,7 @@ class TalkTest extends \PHPUnit\Framework\TestCase
         $talk->delete();
         $this->assertCount(0, Favorite::all());
     }
+
     /**
      * @test
      */
