@@ -3,7 +3,7 @@
 namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentry\Sentry;
-use OpenCFP\Domain\Entity\User;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;

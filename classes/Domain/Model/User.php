@@ -72,4 +72,27 @@ class User extends Eloquent
             ->orWhere('last_name', 'like', '%' . $search. '%')
             ->orderBy($orderByColumn, $orderByDirection);
     }
+
+    /**
+     * Deletes user, all of their talks, and meta/favorites/comments
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function delete(): bool
+    {
+        $this->talks()
+            ->get()
+            ->each(function ($talk) {
+                if (! $talk->delete()) {
+                    throw new \Exception('Unable to delete talks of user');
+                }
+            });
+        if (! parent::delete()) {
+            throw new \Exception('Unable to delete User');
+        }
+
+        return true;
+    }
 }

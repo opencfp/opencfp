@@ -43,3 +43,20 @@ $factory->define(\OpenCFP\Domain\Model\TalkMeta::class, function (\Faker\Generat
         'created' => new \DateTime(),
     ];
 });
+
+$factory->define(\OpenCFP\Domain\Model\TalkComment::class, function (\Faker\Generator $faker) {
+    return [
+        'user_id' => factory(\OpenCFP\Domain\Model\User::class)->create()->id,
+        'talk_id' => factory(\OpenCFP\Domain\Model\Talk::class)->create()->id,
+        'message' => $faker->realText(),
+        'created' => new \DateTime(),
+    ];
+});
+
+$factory->define(\OpenCFP\Domain\Model\Favorite::class, function (\Faker\Generator $faker) {
+    return [
+        'admin_user_id' => factory(\OpenCFP\Domain\Model\User::class)->create()->id,
+        'talk_id' => factory(\OpenCFP\Domain\Model\Talk::class)->create()->id,
+        'created' => new \DateTime(),
+    ];
+});

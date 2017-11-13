@@ -29,7 +29,6 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
         $this->sut = new TalkController($this->speakers);
     }
 
-    /** @test */
     public function it_returns_created_response_when_talk_is_submitted()
     {
         $request = $this->getValidRequest();

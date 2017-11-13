@@ -5,7 +5,6 @@ namespace OpenCFP\Http\Controller;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\SignupForm;
-use Spot\Locator;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProfileController extends BaseController
@@ -24,11 +23,7 @@ class ProfileController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $mapper = $spot->mapper('\OpenCFP\Domain\Entity\User');
-        $speaker_data = $mapper->get($user->getId())->toArray();
+        $speaker_data = User::find($user->getId())->toArray();
 
         $form_data = [
             'email' => $user->getLogin(),

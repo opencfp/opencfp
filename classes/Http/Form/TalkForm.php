@@ -23,11 +23,11 @@ class TalkForm extends Form
 
     public function __construct(array $data, \HTMLPurifier $purifier, array $options = [])
     {
-        if (!key_exists('desired', $data) || $data['desired'] === null) {
+        if (!array_key_exists('desired', $data) || $data['desired'] === null) {
             $data['desired'] = 0;
         }
 
-        if (!key_exists('sponsor', $data) || $data['sponsor'] === null) {
+        if (!array_key_exists('sponsor', $data) || $data['sponsor'] === null) {
             $data['sponsor'] = 0;
         }
 

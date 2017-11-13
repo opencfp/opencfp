@@ -3,7 +3,6 @@
 namespace OpenCFP\Test\Infrastructure\Crypto;
 
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
-use RandomLib\Factory;
 
 class PseudoRandomStringGeneratorTest extends \PHPUnit\Framework\TestCase
 {
@@ -14,7 +13,7 @@ class PseudoRandomStringGeneratorTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->sut = new PseudoRandomStringGenerator(new Factory());
+        $this->sut = new PseudoRandomStringGenerator();
     }
 
     /** @test */

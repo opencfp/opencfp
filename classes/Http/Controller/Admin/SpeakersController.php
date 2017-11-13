@@ -2,7 +2,8 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\Domain\Entity\User;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
@@ -10,8 +11,6 @@ use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
-use Spot\Locator;
-use Spot\Mapper;
 use Symfony\Component\HttpFoundation\Request;
 
 class SpeakersController extends BaseController
@@ -20,16 +19,17 @@ class SpeakersController extends BaseController
 
     public function indexAction(Request $req)
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
         $search = $req->get('search');
-        $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $rawSpeakers = $user_mapper->search($search)->toArray();
+
+        /** @var AccountManagement $accounts */
+        $accounts = $this->service(AccountManagement::class);
+        $adminUsers = $accounts->findByRole('Admin');
+        $adminUserIds = array_column($adminUsers, 'id');
+
+        $rawSpeakers = User::search($search)->get();
 
         $airports = $this->service(AirportInformationDatabase::class);
-
-        $rawSpeakers = array_map(function ($speaker) use ($airports) {
+        $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($airports, $adminUserIds) {
             try {
                 $airport = $airports->withCode($speaker['airport']);
 
@@ -46,17 +46,9 @@ class SpeakersController extends BaseController
                 ];
             }
 
+            $speaker['is_admin'] = in_array($speaker['id'], $adminUserIds);
             return $speaker;
-        }, $rawSpeakers);
-
-        /** @var AccountManagement $accounts */
-        $accounts = $this->service(AccountManagement::class);
-        $adminUsers = $accounts->findByRole('Admin');
-        $adminUserIds = array_column($adminUsers, 'id');
-
-        foreach ($rawSpeakers as $key => $each) {
-            $rawSpeakers[$key]['is_admin'] = in_array($each['id'], $adminUserIds);
-        }
+        })->toArray();
 
         // Set up our page stuff
         $pagerfanta = new Pagination($rawSpeakers);
@@ -78,14 +70,9 @@ class SpeakersController extends BaseController
 
     public function viewAction(Request $req)
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
+        $speaker_details = User::find($req->get('id'));
 
-        // Get info about the speaker
-        $user_mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $speaker_details = $user_mapper->get($req->get('id'));
-
-        if (empty($speaker_details)) {
+        if (!$speaker_details instanceof User) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -113,9 +100,7 @@ class SpeakersController extends BaseController
             ];
         }
 
-        // Get info about the talks
-        $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-        $talks = $talk_mapper->getByUser($req->get('id'))->toArray();
+        $talks = $speaker_details->talks()->get();
 
         // Build and render the template
         $templateData = [
@@ -133,35 +118,22 @@ class SpeakersController extends BaseController
 
     public function deleteAction(Request $req)
     {
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
+        /** @var Capsule $capsule */
+        $capsule = $this->service(Capsule::class);
 
-        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $speaker = $mapper->get($req->get('id'));
-
-        $connection = $spot->config()->connection();
-
-        $connection->beginTransaction();
-
+        $capsule->getConnection()->beginTransaction();
         try {
-            $this->removeSpeakerTalks($speaker);
-            $response = $mapper->delete($speaker);
-        } catch (\Exception $e) {
-            $response = false;
-        }
-
-        if ($response === false) {
-            $connection->rollBack();
-
-            $ext = 'Unable to delete the requested user';
-            $type = 'error';
-            $short = 'Error';
-        } else {
-            $connection->commit();
-
+            $user = User::findorFail($req->get('id'));
+            $user->delete($req->get('id'));
             $ext = 'Successfully deleted the requested user';
             $type = 'success';
             $short = 'Success';
+            $capsule->getConnection()->commit();
+        } catch (\Exception $e) {
+            $capsule->getConnection()->rollBack();
+            $ext = 'Unable to delete the requested user';
+            $type = 'error';
+            $short = 'Error';
         }
 
         // Set flash message
@@ -174,49 +146,12 @@ class SpeakersController extends BaseController
         return $this->redirectTo('admin_speakers');
     }
 
-    /**
-     * @param User $speaker
-     */
-    private function removeSpeakerTalks(User $speaker)
-    {
-        $spot = $this->service('spot');
-
-        /**
-         * @var Mapper $talkMapper
-         * @var Mapper $talkCommentMapper
-         * @var Mapper $talkMetaMapper
-         */
-        $talkMapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-        $talkCommentMapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkComment::class);
-        $talkMetaMapper = $spot->mapper(\OpenCFP\Domain\Entity\TalkMeta::class);
-
-        $talks = $speaker->talks->execute();
-
-        /** @var \OpenCFP\Domain\Entity\Talk $talk */
-        foreach ($talks as $talk) {
-            foreach ($talk->comments->execute() as $comment) {
-                $talkCommentMapper->delete($comment);
-            }
-
-            foreach ($talk->meta->execute() as $meta) {
-                $talkMetaMapper->delete($meta);
-            }
-
-            $talkMapper->delete($talk);
-        }
-    }
-
     public function demoteAction(Request $req)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
         /** @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
 
-        $admin = $auth->user();
-
-        if ($admin->getId() == $req->get('id')) {
+        if ($this->service(Authentication::class)->userId() == $req->get('id')) {
             $this->service('session')->set('flash', [
                 'type' => 'error',
                 'short' => 'Error',
@@ -225,15 +160,8 @@ class SpeakersController extends BaseController
 
             return $this->redirectTo('admin_speakers');
         }
-
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $user_data = $mapper->get($req->get('id'))->toArray();
-        $user = $accounts->findByLogin($user_data['email']);
-
         try {
+            $user = $accounts->findById($req->get('id'));
             $accounts->demoteFrom($user->getLogin());
 
             $this->service('session')->set('flash', [
@@ -256,25 +184,17 @@ class SpeakersController extends BaseController
     {
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
-
-        /* @var Locator $spot */
-        $spot = $this->service('spot');
-
-        $mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
-        $user_data = $mapper->get($req->get('id'))->toArray();
-        $user = $accounts->findByLogin($user_data['email']);
-
-        if ($user->hasAccess('admin')) {
-            $this->service('session')->set('flash', [
-                'type' => 'error',
-                'short' => 'Error',
-                'ext' => 'User already is in the Admin group.',
-            ]);
-
-            return $this->redirectTo('admin_speakers');
-        }
-
         try {
+            $user = $accounts->findById($req->get('id'));
+            if ($user->hasAccess('admin')) {
+                $this->service('session')->set('flash', [
+                    'type' => 'error',
+                    'short' => 'Error',
+                    'ext' => 'User already is in the Admin group.',
+                ]);
+                return $this->redirectTo('admin_speakers');
+            }
+
             $accounts->promoteTo($user->getLogin());
 
             $this->service('session')->set('flash', [
