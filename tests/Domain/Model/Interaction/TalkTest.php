@@ -103,4 +103,32 @@ class TalkTest extends BaseTestCase
 
         $this->assertTrue($talk->delete());
     }
+
+    /**
+     * @test
+     */
+    public function favoritedByOnlyReturnsFavoritedTalks()
+    {
+        factory(Favorite::class, 2)->create(['admin_user_id' => 8]);
+        factory(Talk::class, 2)->create();
+        $favoritedBy = Talk::favoritedBy(8)->get();
+        $this->assertCount(2, $favoritedBy);
+        $favoritedByOther = Talk::favoritedBy(5)->get();
+        $this->assertCount(0, $favoritedByOther);
+    }
+
+    /**
+     * @test
+     */
+    public function ratedPlusOneByOnlyReturnsPlusOneRatedTalks()
+    {
+        factory(TalkMeta::class, 1)->create(['admin_user_id' => 8, 'rating' => 1]);
+        factory(TalkMeta::class, 1)->create(['admin_user_id' => 8, 'rating' => 0]);
+        factory(TalkMeta::class, 1)->create(['admin_user_id' => 8, 'rating' => -1]);
+
+        $ratedPlusOneBy = Talk::ratedPlusOneBy(8)->get();
+        $this->assertCount(1, $ratedPlusOneBy);
+        $ratedPlusOneByOther = Talk::ratedPlusOneBy(2)->get();
+        $this->assertCount(0, $ratedPlusOneByOther);
+    }
 }

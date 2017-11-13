@@ -4,7 +4,6 @@ namespace OpenCFP\Test\Domain\Model;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
 
@@ -20,7 +19,7 @@ class TalkTest extends BaseTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $talks = factory(Talk::class, 2)->create();
+        $talks = factory(Talk::class, 2)->create(['selected' => 1]);
         factory(TalkMeta::class, 1)->create(['admin_user_id' => 2, 'talk_id' => $talks->first()->id]);
         self::$talks = $talks;
     }
@@ -35,29 +34,21 @@ class TalkTest extends BaseTestCase
     /**
      * @test
      */
-    public function createFormattedOutputWorksWithNoMeta()
+    public function selectedOnlyReturnsSelectedTalks()
     {
-        $talk      = self::$talks;
-        $formatter = new TalkFormatter();
-        $format    =$formatter->createdFormattedOutput($talk->first(), 1);
 
-        $this->assertEquals(self::$talks->first()->title, $format['title']);
-        $this->assertEquals(0, $format['meta']->rating);
-        $this->assertEquals(0, $format['meta']->viewed);
+        $selected = Talk::selected()->get();
+        $this->assertCount(2, $selected);
     }
 
     /**
      * @test
      */
-    public function createFormattedOutputWorksWithMeta()
+    public function viewedByOnlyReturnsViewedTalks()
     {
-        $talk = self::$talks;
-
-        // Now to see if the meta gets put in correctly
-        $talkFormatter = new TalkFormatter();
-        $secondFormat  =$talkFormatter->createdFormattedOutput($talk->first(), 2);
-
-        $this->assertEquals(1, $secondFormat['meta']->rating);
-        $this->assertEquals(1, $secondFormat['meta']->viewed);
+        $viewedBy = Talk::viewedBy(2)->get();
+        $this->assertCount(1, $viewedBy);
+        $viewedByOther = Talk::viewedBy(5)->get();
+        $this->assertCount(0, $viewedByOther);
     }
 }
