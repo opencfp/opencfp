@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SpeakerAccess implements UserAccess
 {
-
     /**
      * If a user doesn't have access to a page they get redirected, otherwise nothing happens
      *

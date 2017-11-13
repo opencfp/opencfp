@@ -45,6 +45,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
 
         $this->assertCount(5, $result);
     }
+
     /**
      * @test
      */

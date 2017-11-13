@@ -26,6 +26,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $this->app->run();
         ob_end_clean();
     }
+
     /**
      * Test that index action displays a form that allows the user to reset
      * their password
