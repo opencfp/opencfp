@@ -2,7 +2,6 @@
 
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use Phinx\Migration\AbstractMigration;
-use RandomLib\Factory;
 use Symfony\Component\HttpFoundation\File\File;
 
 class ResetPhotoPaths extends AbstractMigration
@@ -12,7 +11,7 @@ class ResetPhotoPaths extends AbstractMigration
      */
     public function up()
     {
-        $generator = new PseudoRandomStringGenerator(new Factory);
+        $generator = new PseudoRandomStringGenerator();
 
         // Cleans out "orphaned" files that we have no record of.
         foreach ($this->photosNotPartOfProfile() as $fileName) {
@@ -84,7 +83,7 @@ class ResetPhotoPaths extends AbstractMigration
         $extension = $file->guessExtension();
 
         // Otherwise, generate a new filename.
-        $generator = new PseudoRandomStringGenerator(new Factory);
+        $generator = new PseudoRandomStringGenerator();
         $newFileName = $generator->generate(40) . '.' . $extension;
 
         $oldFilePath = __DIR__ . '/../web/uploads/' . $speaker['photo_path'];
