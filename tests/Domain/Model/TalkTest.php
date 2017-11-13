@@ -36,7 +36,6 @@ class TalkTest extends BaseTestCase
      */
     public function selectedOnlyReturnsSelectedTalks()
     {
-
         $selected = Talk::selected()->get();
         $this->assertCount(2, $selected);
     }

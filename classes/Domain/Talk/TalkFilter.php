@@ -30,7 +30,7 @@ class TalkFilter
     public function __construct(TalkFormatter $talkFormatter, Talk $talk)
     {
         $this->formatter = $talkFormatter;
-        $this->talk = $talk;
+        $this->talk      = $talk;
     }
 
     public function getTalks($admin_user_id, $filter= null, $options = []): array
@@ -40,7 +40,7 @@ class TalkFilter
             $options,
             [
                 'order_by' => 'created_at',
-                'sort' => 'ASC',
+                'sort'     => 'ASC',
             ]
         );
 
