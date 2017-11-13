@@ -15,12 +15,6 @@ class TalksControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 
-    public function setUp()
-    {
-        parent::setUp();
-        $this->asAdmin();
-    }
-
     /**
      * Test that the index page grabs a collection of talks
      * and successfully displays them
@@ -29,7 +23,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function indexPageDisplaysTalksCorrectly()
     {
-        $talks = factory(Talk::class, 10)->create();
+        $talks = factory(Talk::class, 3)->create();
         $formatter = new TalkFormatter();
         $formatted = $formatter->formatList($talks, 1);
         $filter = Mockery::mock(TalkFilter::class);
