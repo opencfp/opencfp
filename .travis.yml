@@ -68,11 +68,11 @@ jobs:
         - chmod +x ./cc-test-reporter
         - ./cc-test-reporter before-build
 
-      after_script:
-        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
       script:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
+
+      after_script:
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
       after_success:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/test-reporter --coverage-report build/logs/clover.xml; fi
