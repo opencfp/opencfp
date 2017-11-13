@@ -2,12 +2,8 @@
 
 namespace OpenCFP\Test\Http\Controller\Admin;
 
-use Mockery;
-use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Domain\Talk\TalkFilter;
-use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
@@ -15,25 +11,22 @@ class TalksControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 
+    private static $talks;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        self::$talks = factory(Talk::class, 3)->create();
+    }
+
     /**
-     * Test that the index page grabs a collection of talks
-     * and successfully displays them
-     *
      * @test
      */
     public function indexPageDisplaysTalksCorrectly()
     {
-        $talks = factory(Talk::class, 3)->create();
-        $formatter = new TalkFormatter();
-        $formatted = $formatter->formatList($talks, 1);
-        $filter = Mockery::mock(TalkFilter::class);
-        $filter->shouldReceive('getFilteredTalks')
-            ->andReturn($formatted->toArray());
-        $this->swap(TalkFilter::class, $filter);
-
         $this->asAdmin()
             ->get('/admin/talks')
-            ->assertSee($talks->first()->title)
+            ->assertSee(self::$talks->first()->title)
             ->assertSuccessful();
     }
 
@@ -55,7 +48,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function talkIsCorrectlyCommentedOn()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
+        $talk = self::$talks->first();
 
         $this->asAdmin()
             ->post(
@@ -83,9 +76,10 @@ class TalksControllerTest extends WebTestCase
      */
     public function talkWithNoMetaDisplaysCorrectly()
     {
-        $talk = factory(Talk::class, 1)->create();
+        $talk = self::$talks->first();
 
-        $this->get('/admin/talks/'. $talk->first()->id)
+        $this->asAdmin()
+            ->get('/admin/talks/'. $talk->id)
             ->assertSuccessful();
     }
 
@@ -106,7 +100,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function selectActionWorksCorrectly()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
+        $talk = self::$talks->first();
 
         $this->asAdmin()
             ->post('/admin/talks/'. $talk->id. '/select')
@@ -119,7 +113,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function selectActionDeletesCorrectly()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
+        $talk = self::$talks->first();
 
         $this->asAdmin()
             ->post('/admin/talks/'. $talk->id. '/select', ['delete' => 1])
@@ -143,7 +137,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function favoriteActionWorksCorrectly()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
+        $talk = self::$talks->first();
 
         $this->asAdmin()
             ->post('/admin/talks/'. $talk->id . '/favorite')
@@ -156,11 +150,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function favoriteActionDeletesCorrectly()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
-        Favorite::create([
-            'admin_user_id' => 1,
-            'talk_id' => $talk->id,
-        ]);
+        $talk = self::$talks->first();
 
         $this->asAdmin()
             ->post('/admin/talks/'. $talk->id . '/favorite', ['delete' =>1])
@@ -184,7 +174,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function rateActionWorksCorrectly()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
+        $talk = self::$talks->first();
 
         $this->asAdmin()
             ->post('/admin/talks/'.$talk->id. '/rate', ['rating' => 1])
@@ -197,7 +187,7 @@ class TalksControllerTest extends WebTestCase
      */
     public function rateActionRetunsFalseOnWrongRate()
     {
-        $talk = factory(Talk::class, 1)->create()->first();
+        $talk = self::$talks->first();
 
         $this->asAdmin()
             ->post('/admin/talks/'.$talk->id. '/rate', ['rating' => 12])

@@ -4,14 +4,14 @@ namespace OpenCFP\Test;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-trait RefreshDatabase
+trait DataBaseInteraction
 {
-    protected static function setUpDatabase()
+    protected function resetDatabase()
     {
-        self::createCapsule()->getConnection()->unprepared(file_get_contents(__DIR__. '/dump.sql'));
+        $this->createCapsule()->getConnection()->unprepared(file_get_contents(__DIR__. '/dump.sql'));
     }
 
-    protected static function createCapsule()
+    protected function createCapsule()
     {
         $capsule = new Capsule;
 

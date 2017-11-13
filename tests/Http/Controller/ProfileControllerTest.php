@@ -16,6 +16,14 @@ class ProfileControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 
+    private static $user;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        self::$user = factory(User::class, 1)->create()->first();
+    }
+
     /**
      * @test
      */
@@ -32,7 +40,7 @@ class ProfileControllerTest extends WebTestCase
      */
     public function seeEditPageWhenAllowed()
     {
-        $id = factory(User::class, 1)->create()->first()->id;
+        $id = self::$user->id;
 
         $this->asLoggedInSpeaker($id)
             ->get('/profile/edit/'. $id)
@@ -67,7 +75,7 @@ class ProfileControllerTest extends WebTestCase
      */
     public function redirectToDashboardOnSuccessfulUpdate()
     {
-        $user = factory(User::class, 1)->create()->first();
+        $user = self::$user;
         $this->asLoggedInSpeaker($user->id)
             ->post('/profile/edit', $this->putUserInRequest(true, $user->id))
             ->assertNotSee('My Profile')

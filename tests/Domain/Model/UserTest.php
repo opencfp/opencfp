@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Domain\Model;
 
-use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
@@ -14,14 +13,20 @@ class UserTest extends BaseTestCase
 {
     use RefreshDatabase;
 
+    private static $users;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        self::$users = self::makeKnownUsers();
+    }
+
     /**
      * @test
      */
     public function scopeSearchWillReturnAllWhenNoSearch()
     {
-        factory(User::class, 3)->create();
-
-        $this->assertCount(3, User::search()->get());
+        $this->assertCount(5, User::search()->get());
     }
 
     /**
@@ -29,38 +34,12 @@ class UserTest extends BaseTestCase
      */
     public function scopeSearchWorksWithNames()
     {
-        $this->makeKnownUsers();
         $this->assertCount(5, User::search()->get());
         $this->assertCount(3, User::search('Vries')->get());
         $this->assertCount(1, User::search('Hunter')->get());
     }
 
-    /**
-     * @test
-     */
-    public function deleteDeletesTalksAsWellAsUser()
-    {
-        $talk = factory(Talk::class, 1)->create()->first();
-
-        $user = $talk->speaker;
-        $user->delete();
-
-        $this->assertCount(0, Talk::all());
-        $this->assertCount(0, User::all());
-    }
-
-    /**
-     * @test
-     */
-    public function deleteStillWorksNormally()
-    {
-        $user = factory(User::class, 1)->create()->first();
-
-        $this->assertTrue($user->delete());
-        $this->assertCount(0, User::all());
-    }
-
-    private function makeKnownUsers()
+    private static function makeKnownUsers()
     {
         $userInfo = [
             'password' => password_hash('secret', PASSWORD_BCRYPT),

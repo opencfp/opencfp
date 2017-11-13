@@ -13,13 +13,17 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected $app;
 
+    public static function setUpBeforeClass()
+    {
+        self::runBeforeClassTraits();
+    }
+
     public function setUp()
     {
         if (!$this->app) {
             $this->refreshApplication();
         }
-
-        $this->runTraits();
+        $this->runBeforeTestTraits();
     }
 
     public function tearDown()
@@ -34,24 +38,40 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
-    protected function runTraits()
-    {
-        $uses = array_flip(class_uses_recursive(static::class));
-
-        if (isset($uses[RefreshDatabase::class])) {
-            $this->setUpDatabase();
-        }
-    }
-
     public function createApplication()
     {
         $app = new Application(BASE_PATH, Environment::testing());
         $app['session.test'] = true;
+
         return $app;
     }
 
     public function refreshApplication()
     {
         $this->app = $this->createApplication();
+    }
+
+    /**
+     * Runs setUps from Traits that are needed before every test (as called from setUp)
+     */
+    public function runBeforeTestTraits()
+    {
+        $uses = array_flip(class_uses_recursive(static::class));
+
+        if (isset($uses[DataBaseInteraction::class])) {
+            $this->resetDatabase();
+        }
+    }
+
+    /**
+     * Runs setups from Traits that are needed before the class is setup (as called from setUpBeforeClass)
+     */
+    protected static function runBeforeClassTraits()
+    {
+        $uses = array_flip(class_uses_recursive(static::class));
+
+        if (isset($uses[RefreshDatabase::class])) {
+            static::setUpDatabase();
+        }
     }
 }

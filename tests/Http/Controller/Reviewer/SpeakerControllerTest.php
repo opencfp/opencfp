@@ -10,6 +10,14 @@ class SpeakerControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 
+    private static $users;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        self::$users = factory(User::class, 2)->create();
+    }
+
     /**
      * @test
      */
@@ -25,7 +33,7 @@ class SpeakerControllerTest extends WebTestCase
      */
     public function indexActionDisplaysSpeakers()
     {
-        $speaker = factory(User::class, 2)->create()->first();
+        $speaker = self::$users->first();
         $this->asReviewer()
             ->get('/reviewer/speakers')
             ->assertSee($speaker->first_name)
@@ -48,7 +56,7 @@ class SpeakerControllerTest extends WebTestCase
      */
     public function viewActionShowsSpeaker()
     {
-        $speaker = factory(User::class)->create()->first();
+        $speaker = self::$users->first();
 
         $this->asReviewer()
             ->get('/reviewer/speakers/'.$speaker->id)

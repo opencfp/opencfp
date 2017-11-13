@@ -16,12 +16,17 @@ class TalkFormatterTest extends BaseTestCase
 {
     use RefreshDatabase;
 
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        self::generateSomeTalks();
+    }
+
     /**
      * @test
      */
     public function createFormattedOutputWorksWithNoMeta()
     {
-        $this->generateOneTalk();
         $talk = new Talk;
         $formatter = new TalkFormatter();
 
@@ -38,7 +43,6 @@ class TalkFormatterTest extends BaseTestCase
      */
     public function createFormattedOutputWorksWithMeta()
     {
-        $this->generateOneTalk();
         $formatter = new TalkFormatter();
         $talk = new Talk;
 
@@ -54,8 +58,6 @@ class TalkFormatterTest extends BaseTestCase
      */
     public function formatListReturnsAllTalksAsCollection()
     {
-        factory(Talk::class, 3)->create();
-
         $formatter = new TalkFormatter();
         $talks = Talk::all();
         $formatted = $formatter->formatList($talks, 2);
@@ -63,7 +65,7 @@ class TalkFormatterTest extends BaseTestCase
         $this->assertInstanceOf(Collection::class, $formatted);
     }
 
-    private function generateOneTalk()
+    private static function generateSomeTalks()
     {
         $talk = new Talk();
 
@@ -86,6 +88,26 @@ class TalkFormatterTest extends BaseTestCase
                 'viewed' => 1,
                 'talk_id' => $talk->first()->id,
                 'created' => new \DateTime(),
+            ]
+        );
+        $talk->create(
+            [
+                'user_id' => 8,
+                'title' => 'Extra Extra',
+                'description' => 'Talk',
+                'type' => 'regular',
+                'level' => 'entry',
+                'category' => 'api',
+            ]
+        );
+        $talk->create(
+            [
+                'user_id' => 8,
+                'title' => 'Third',
+                'description' => 'Talk',
+                'type' => 'regular',
+                'level' => 'entry',
+                'category' => 'api',
             ]
         );
     }
