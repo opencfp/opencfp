@@ -11,6 +11,6 @@ sudo a2enmod rewrite actions fastcgi alias
 ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
 # Set up default virtual host
-sudo cp -f tools/travis/travis-ci-apache /etc/apache2/sites-available/default
+sudo cp -f .travis/travis-ci-apache /etc/apache2/sites-available/default
 sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
 sudo service apache2 restart
