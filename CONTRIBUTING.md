@@ -32,6 +32,12 @@ $ make test
 
 to run all the tests.
 
+Run 
+```
+$ make infection
+```
+to run [infection tests](https://infection.github.io/guide/)
+
 ## Fixing Code Style issues
 
 Run
