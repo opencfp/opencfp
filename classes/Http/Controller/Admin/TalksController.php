@@ -30,7 +30,7 @@ class TalksController extends BaseController
             'sort'     => $req->get('sort'),
         ];
 
-        $pager_formatted_talks = $this->service(TalkFilter::class)->getTalks(
+        $formattedTalks = $this->service(TalkFilter::class)->getTalks(
             $admin_user_id,
             $req->get('filter'),
             $options
@@ -38,7 +38,8 @@ class TalksController extends BaseController
 
         // Set up our page stuff
         $per_page   = (int) $req->get('per_page') ?: 20;
-        $pagerfanta = new Pagination($pager_formatted_talks, $per_page);
+        $pagerfanta = new Pagination($formattedTalks, $per_page);
+
         $pagerfanta->setCurrentPage($req->get('page'));
         $pagination = $pagerfanta->createView('/admin/talks?', $req->query->all());
 
@@ -47,7 +48,7 @@ class TalksController extends BaseController
             'talks'        => $pagerfanta->getFanta(),
             'page'         => $pagerfanta->getCurrentPage(),
             'current_page' => $req->getRequestUri(),
-            'totalRecords' => count($pager_formatted_talks),
+            'totalRecords' => count($formattedTalks),
             'filter'       => $req->get('filter'),
             'per_page'     => $per_page,
             'sort'         => $req->get('sort'),

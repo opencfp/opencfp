@@ -11,7 +11,7 @@ class TalkFilter
      *
      * @var array
      */
-    protected $order_by_whitelist = [
+    protected $orderByWhiteList = [
         'created_at',
         'title',
         'type',
@@ -33,7 +33,7 @@ class TalkFilter
         $this->talk      = $talk;
     }
 
-    public function getTalks(int $admin_user_id, $filter= null, $options = []): array
+    public function getTalks(int $adminUserId, $filter = null, $options = []): array
     {
         // Merge options with default options
         $options = $this->getSortOptions(
@@ -44,13 +44,13 @@ class TalkFilter
             ]
         );
 
-        $talks = $this->getFilteredTalks($admin_user_id, $filter)
+        $talks = $this->getFilteredTalks($adminUserId, $filter)
             ->orderBy($options['order_by'], $options['sort'])->get();
 
-        return $this->formatter->formatList($talks, $admin_user_id)->toArray();
+        return $this->formatter->formatList($talks, $adminUserId)->toArray();
     }
 
-    public function getFilteredTalks(int $admin_user_id, $filter = null)
+    public function getFilteredTalks(int $adminUserId, $filter = null)
     {
         if ($filter === null) {
             return $this->talk;
@@ -60,22 +60,22 @@ class TalkFilter
                 return $this->talk->selected();
 
             case 'notviewed':
-                return $this->talk->notViewedBy($admin_user_id);
+                return $this->talk->notViewedBy($adminUserId);
 
             case 'notrated':
-                return $this->talk->notRatedBy($admin_user_id);
+                return $this->talk->notRatedBy($adminUserId);
 
             case 'toprated':
                 return $this->talk->topRated();
 
             case 'plusone':
-                return $this->talk->ratedPlusOneBy($admin_user_id);
+                return $this->talk->ratedPlusOneBy($adminUserId);
 
             case 'viewed':
-                return $this->talk->viewedBy($admin_user_id);
+                return $this->talk->viewedBy($adminUserId);
 
             case 'favorited':
-                return $this->talk->favoritedBy($admin_user_id);
+                return $this->talk->favoritedBy($adminUserId);
 
             default:
                 return $this->talk;
@@ -92,7 +92,7 @@ class TalkFilter
      */
     protected function getSortOptions(array $options, array $defaultOptions)
     {
-        if (!isset($options['order_by']) || !in_array($options['order_by'], $this->order_by_whitelist)) {
+        if (!isset($options['order_by']) || !in_array($options['order_by'], $this->orderByWhiteList)) {
             $options['order_by'] = $defaultOptions['order_by'];
         }
 
