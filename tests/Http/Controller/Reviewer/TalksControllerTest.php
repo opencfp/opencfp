@@ -2,10 +2,7 @@
 
 namespace OpenCFP\Test\Http\Controller\Reviewer;
 
-use Mockery;
 use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Talk\TalkFilter;
-use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
@@ -26,11 +23,10 @@ class TalksControllerTest extends WebTestCase
      */
     public function indexActionWorksNormally()
     {
-        $this->makeTalks();
         $this->asReviewer()
             ->get('/reviewer/talks')
             ->assertSee('<h2 class="headline">Submitted Talks</h2>')
-            ->assertSee('title="I want to see this talk')
+            ->assertSee(self::$talks->first()->title)
             ->assertNotSee('Recent Talks')
             ->assertSuccessful();
     }
@@ -81,14 +77,5 @@ class TalksControllerTest extends WebTestCase
             ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 8])
             ->assertNotSee('1')
             ->assertSuccessful();
-    }
-
-    protected function makeTalks()
-    {
-        $formatter = new TalkFormatter();
-        $toReturn  = $formatter->formatList(self::$talks, 1);
-        $filter    = Mockery::mock(TalkFilter::class);
-        $filter->shouldReceive('getFilteredTalks')->andReturn($toReturn->toArray());
-        $this->swap(TalkFilter::class, $filter);
     }
 }

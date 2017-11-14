@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Test\Domain\Model;
 
+use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
@@ -13,12 +14,15 @@ class UserTest extends BaseTestCase
 {
     use RefreshDatabase;
 
-    private static $users;
+    /**
+     * @var User
+     */
+    private static $user;
 
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$users = self::makeKnownUsers();
+        self::$user = self::makeKnownUsers();
     }
 
     /**
@@ -39,6 +43,37 @@ class UserTest extends BaseTestCase
         $this->assertCount(1, User::search('Hunter')->get());
     }
 
+    /**
+     * @test
+     */
+    public function getOtherTalksReturnsAllTalksByDefault()
+    {
+        $talks = self::$user->getOtherTalks();
+
+        $this->assertCount(3, $talks);
+    }
+
+    /**
+     * @test
+     */
+    public function getOtherTalksReturnsOtherTalksCorrectly()
+    {
+        $talks = self::$user->getOtherTalks(1);
+
+        $this->assertCount(2, $talks);
+    }
+
+    /**
+     * @test
+     */
+    public function getOtherTalksReturnsNothingWhenUserHasNoTalks()
+    {
+        $user  = User::where('first_name', 'Vries')->get()->first();
+        $talks = $user->getOtherTalks();
+
+        $this->assertCount(0, $talks);
+    }
+
     private static function makeKnownUsers()
     {
         $userInfo = [
@@ -47,11 +82,12 @@ class UserTest extends BaseTestCase
             'has_made_profile' => 1,
         ];
 
-        User::create(array_merge([
+        $user = User::create(array_merge([
             'email'      => 'henk@example.com',
             'first_name' => 'Henk',
             'last_name'  => 'de Vries',
         ], $userInfo));
+        self::giveUserThreeTalks($user);
 
         User::create(array_merge([
             'email'      => 'speaker@cfp.org',
@@ -76,5 +112,41 @@ class UserTest extends BaseTestCase
             'first_name' => 'Gon',
             'last_name'  => 'Freecss',
         ], $userInfo));
+
+        return $user;
+    }
+
+    public static function giveUserThreeTalks(User $user)
+    {
+        $userId = $user->id;
+
+        Talk::create([
+            'user_id'     => $userId,
+            'title'       => 'talks title',
+            'description' => 'Long description',
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'api',
+
+        ]);
+
+        Talk::create([
+            'user_id'     => $userId,
+            'title'       => 'talks title NO 2',
+            'description' => 'Long description',
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'api',
+        ]);
+
+        Talk::create([
+            'user_id'     => $userId,
+            'title'       => 'talks title NO 3',
+            'description' => 'Long description',
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'api',
+
+        ]);
     }
 }
