@@ -2,198 +2,110 @@
 
 namespace OpenCFP\Test\Domain\Speaker;
 
-use OpenCFP\Domain\Entity;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
-use OpenCFP\Test\Util\Faker\GeneratorTrait;
+use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\RefreshDatabase;
 
-class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
+class SpeakerProfileTest extends BaseTestCase
 {
-    use GeneratorTrait;
+    use RefreshDatabase;
+
+    private static $user;
+
+    /**
+     * @var SpeakerProfile
+     */
+    private static $profile;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        self::$user = factory(User::class, 1)->create()->first();
+        self::$profile = new SpeakerProfile(self::$user);
+    }
 
     public function testGetNameReturnsFirstAndLastNameCombined()
     {
-        $faker = $this->getFaker();
-
-        $firstName = $faker->firstName;
-        $lastName  = $faker->lastName;
-
-        $speaker = new Entity\User();
-
-        $speaker->set('first_name', $firstName);
-        $speaker->set('last_name', $lastName);
-
-        $profile = new SpeakerProfile($speaker);
-
+        $firstName = self::$user->first_name;
+        $lastName = self::$user->last_name;
         $expected = $firstName . ' ' . $lastName;
 
-        $this->assertSame($expected, $profile->getName());
+        $this->assertSame($expected, self::$profile->getName());
     }
 
     public function testGetEmailReturnsEmail()
     {
-        $email = $this->getFaker()->email;
+        $email = self::$user->email;
 
-        $speaker = new Entity\User();
-
-        $speaker->set('email', $email);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertSame($email, $profile->getEmail());
+        $this->assertSame($email, self::$profile->getEmail());
     }
 
     public function testGetCompanyReturnsCompany()
     {
-        $company = $this->getFaker()->company;
+        $company = self::$user->company;
 
-        $speaker = new Entity\User();
-
-        $speaker->set('company', $company);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertSame($company, $profile->getCompany());
-    }
-
-    public function testGetCompanyReturnsNullIfSpeakerHasNoCompany()
-    {
-        $speaker = new Entity\User();
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertNull($profile->getCompany());
+        $this->assertSame($company, self::$profile->getCompany());
     }
 
     public function testGetTwitterReturnsTwitter()
     {
-        $twitter = $this->getFaker()->userName;
+        $twitter = self::$user->twitter;
 
-        $speaker = new Entity\User();
-
-        $speaker->set('twitter', $twitter);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertSame($twitter, $profile->getTwitter());
+        $this->assertSame($twitter, self::$profile->getTwitter());
     }
 
     public function testGetInfoReturnsInfo()
     {
-        $info = $this->getFaker()->text();
+        $info = self::$user->info;
 
-        $speaker = new Entity\User();
-
-        $speaker->set('info', $info);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertSame($info, $profile->getInfo());
+        $this->assertSame($info, self::$profile->getInfo());
     }
 
     public function testGetBioReturnsBio()
     {
-        $bio = $this->getFaker()->text();
+        $bio = self::$user->bio;
 
-        $speaker = new Entity\User();
-
-        $speaker->set('bio', $bio);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertSame($bio, $profile->getBio());
+        $this->assertSame($bio, self::$profile->getBio());
     }
 
-    public function testGetTransportationReturnsTrueIfValueIsOne()
+    public function testGetTransportationReturnsTransportation()
     {
-        $transportation = '1';
+        $transportation = self::$user->transportation ? true : false;
 
-        $speaker = new Entity\User();
-
-        $speaker->set('transportation', $transportation);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertTrue($profile->getTransportation());
-    }
-
-    public function testGetTransportationReturnsFalseIfValueIsNotOne()
-    {
-        $faker = $this->getFaker();
-
-        $transportation = $faker->randomElement([
-            0,
-            $faker->numberBetween(2),
-        ]);
-
-        $speaker = new Entity\User();
-
-        $speaker->set('transportation', $transportation);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertFalse($profile->getTransportation());
+        $this->assertSame($transportation, self::$profile->getTransportation());
     }
 
     public function testGetHotelReturnsHotel()
     {
-        $hotel = $this->getFaker()->sentence();
+        $hotel = self::$user->hotel;
 
-        $speaker = new Entity\User();
-
-        $speaker->set('hotel', $hotel);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertSame($hotel, $profile->getHotel());
+        $this->assertSame($hotel, self::$profile->getHotel());
     }
 
     public function testGetAirportReturnsAirport()
     {
-        $airport = $this->getFaker()->word;
+        $airport = self::$user->airport;
 
-        $speaker = new Entity\User();
-
-        $speaker->set('airport', $airport);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertSame($airport, $profile->getAirport());
+        $this->assertSame($airport, self::$profile->getAirport());
     }
 
     public function testGetPhotoReturnsPhotoPath()
     {
-        $photoPath = implode('/', $this->getFaker()->words());
+        $photoPath = self::$user->photo_path;
 
-        $speaker = new Entity\User();
-
-        $speaker->set('photo_path', $photoPath);
-
-        $profile = new SpeakerProfile($speaker);
-
-        $this->assertSame($photoPath, $profile->getPhoto());
+        $this->assertSame($photoPath, self::$profile->getPhoto());
     }
 
     public function testToArrayForApiReturnsImportantBits()
     {
-        $faker = $this->getFaker();
-
-        $firstName = $faker->firstName;
-        $lastName  = $faker->lastName;
-        $email     = $faker->email;
-        $twitter   = $faker->userName;
-        $url       = $faker->url;
-        $bio       = $faker->text();
-
-        $speaker = new Entity\User();
-
-        $speaker->set('first_name', $firstName);
-        $speaker->set('last_name', $lastName);
-        $speaker->set('email', $email);
-        $speaker->set('twitter', $twitter);
-        $speaker->set('url', $url);
-        $speaker->set('bio', $bio);
-
-        $profile = new SpeakerProfile($speaker);
+        $firstName = self::$user->first_name;
+        $lastName  = self::$user->last_name;
+        $email     = self::$user->email;
+        $twitter   = self::$user->twitter;
+        $url       = self::$user->url;
+        $bio       = self::$user->bio;
 
         $expected = [
             'name'    => $firstName . ' ' . $lastName,
@@ -203,6 +115,6 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
             'bio'     => $bio,
         ];
 
-        $this->assertSame($expected, $profile->toArrayForApi());
+        $this->assertSame($expected, self::$profile->toArrayForApi());
     }
 }
