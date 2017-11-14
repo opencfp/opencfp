@@ -74,7 +74,6 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(HttpFoundation\Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 
-    /** @test */
     public function it_should_respond_with_single_talk()
     {
         $this->speakers->shouldReceive('getTalk')->once()->andReturn(
@@ -99,7 +98,6 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertContains('Unauthorized', $response->getContent());
     }
 
-    /** @test */
     public function it_should_respond_with_multiple_talks()
     {
         $this->speakers->shouldReceive('getTalks')->once()->andReturn([

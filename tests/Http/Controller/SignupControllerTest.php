@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Mockery;
 use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
