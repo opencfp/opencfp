@@ -18,6 +18,8 @@ class UserTest extends BaseTestCase
     {
         $user = factory(User::class, 1)->create()->first();
 
+        $this->assertCount(1, User::all());
+
         $this->assertTrue($user->delete());
         $this->assertCount(0, User::all());
     }
