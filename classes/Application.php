@@ -2,11 +2,11 @@
 
 namespace OpenCFP;
 
+use Illuminate\Database\Capsule\Manager as Capsule;
 use League\OAuth2\Server\Exception\OAuthException;
 use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\CallForProposalProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
-use OpenCFP\Provider\DatabaseServiceProvider;
 use OpenCFP\Provider\Gateways\ApiGatewayProvider;
 use OpenCFP\Provider\Gateways\OAuthGatewayProvider;
 use OpenCFP\Provider\Gateways\WebGatewayProvider;
@@ -65,7 +65,6 @@ class Application extends SilexApplication
         $this->register(new FormServiceProvider);
         $this->register(new CsrfServiceProvider);
         $this->register(new ControllerResolverServiceProvider);
-        $this->register(new DatabaseServiceProvider);
         $this->register(new ValidatorServiceProvider);
         $this->register(new LocaleServiceProvider);
         $this->register(new TranslationServiceProvider);
@@ -101,6 +100,7 @@ class Application extends SilexApplication
         // Application Services...
         $this->register(new ApplicationServiceProvider);
 
+        $this->setUpDataBaseConnection();
         $this->registerGlobalErrorHandler($this);
     }
 
@@ -292,6 +292,12 @@ class Application extends SilexApplication
     public function isTesting()
     {
         return $this['env']->equals(Environment::testing());
+    }
+
+    private function setUpDataBaseConnection()
+    {
+        $this[Capsule::class]->setAsGlobal();
+        $this[Capsule::class]->bootEloquent();
     }
 
     private function registerGlobalErrorHandler(Application $app)
