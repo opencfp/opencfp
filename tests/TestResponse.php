@@ -4,6 +4,7 @@ namespace OpenCFP\Test;
 
 use OpenCFP\Application;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -90,6 +91,21 @@ class TestResponse
         $fullFlash = $this->app['session']->get('flash');
         $fullFlash = is_array($fullFlash) ? $fullFlash : [];
         Assert::assertContains($flash, $fullFlash);
+
+        return $this;
+    }
+
+    public function assertNoFlashSet()
+    {
+        Assert::assertNull($this->app['session']->get('flash'));
+
+        return $this;
+    }
+
+    public function assertTargetURLContains(string$targetUrl)
+    {
+        Assert::assertInstanceOf(RedirectResponse::class, $this->baseResponse);
+        Assert::assertContains($targetUrl, $this->baseResponse->getTargetUrl());
 
         return $this;
     }
