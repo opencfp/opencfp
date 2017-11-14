@@ -28,13 +28,7 @@ class SpeakerProfile
     }
 
     /**
-     * Returns a collection of the speaker's talks.
-     *
-     * This method should be watched for abuse. It is reasonable that a
-     * better implementation would be to return an array of hashes rather than
-     * a Spot entity. As long as views don't go wild, it'll be okay.
-     *
-     * This docblock is one of those unnecessary apologetic comments...
+     * Retrieves all of the speakers talks
      *
      * @return Talk[]
      */
