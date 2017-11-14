@@ -22,15 +22,15 @@ class SpeakerProfileTest extends BaseTestCase
     {
         parent::setUpBeforeClass();
 
-        self::$user = factory(User::class, 1)->create()->first();
+        self::$user    = factory(User::class, 1)->create()->first();
         self::$profile = new SpeakerProfile(self::$user);
     }
 
     public function testGetNameReturnsFirstAndLastNameCombined()
     {
         $firstName = self::$user->first_name;
-        $lastName = self::$user->last_name;
-        $expected = $firstName . ' ' . $lastName;
+        $lastName  = self::$user->last_name;
+        $expected  = $firstName . ' ' . $lastName;
 
         $this->assertSame($expected, self::$profile->getName());
     }
