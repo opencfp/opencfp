@@ -154,11 +154,88 @@ class TalkControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function getDirectBackToEditPageWhenInValidTitle()
+    public function notAllowedToDeleteAfterCFPIsOver()
+    {
+        $this->asLoggedInSpeaker(self::$user->id)
+            ->callForPapersIsClosed()
+            ->post('/talk/delete', ['tid' => self::$talk->id])
+            ->assertNotSee('ok')
+            ->assertSee('no')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function notAllowedToDeleteSomeoneElseTalk()
+    {
+        $this->asLoggedInSpeaker((self::$user->id +1))
+            ->post('/talk/delete', ['tid' => self::$talk->id])
+            ->assertNotSee('ok')
+            ->assertSee('no')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function cantCreateTalkAfterCFPIsClosed()
     {
         $this->asLoggedInSpeaker()
+            ->callForPapersIsClosed()
             ->get('/talk/create')
+            ->assertRedirect()
+            ->assertFlashContains('You cannot create talks once the call for papers has ended')
+            ->assertNotSee('Create Your Talk');
+    }
+
+    /**
+     * @test
+     */
+    public function cantProcessCreateTalkAfterCFPIsClosed()
+    {
+        $this->asLoggedInSpeaker()
+            ->callForPapersIsClosed()
+            ->post('/talk/create')
+            ->assertRedirect()
+            ->assertFlashContains('You cannot create talks once the call for papers has ended')
+            ->assertNotSee('Create Your Talk');
+    }
+
+    /**
+     * @test
+     */
+    public function cantProcessCreateTalkWithMissingData()
+    {
+        $this->asLoggedInSpeaker()
+            ->callForPapersIsOpen()
+            ->post('/talk/create', ['description' => 'Talk Description'])
+            ->assertSuccessful()
             ->assertSee('Create Your Talk')
+            ->assertFlashContains('Error');
+    }
+
+    /**
+     * @test
+     */
+    public function cantUpdateActionAFterCFPIsClosed()
+    {
+        $this->asLoggedInSpeaker()
+            ->callForPapersIsClosed()
+            ->post('/talk/update', ['id' => 2])
+            ->assertFlashContains('Read Only')
+            ->assertRedirect();
+    }
+
+    /**
+     * @test
+     */
+    public function cantUpdateActionWithInvalidData()
+    {
+        $this->asLoggedInSpeaker()
+            ->callForPapersIsOpen()
+            ->post('/talk/update', ['id' => 2])
+            ->assertFlashContains('Error')
             ->assertSuccessful();
     }
 }

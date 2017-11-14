@@ -207,12 +207,6 @@ class TalkController extends BaseController
             'short' => 'Error',
             'ext' => implode('<br>', $form->getErrorMessages()),
         ]);
-
-        $this->service('session')->set('flash', [
-            'type' => 'error',
-            'short' => 'Error',
-            'ext' => implode('<br>', $form->getErrorMessages()),
-        ]);
         $data['flash'] = $this->service('session')->get('flash');
 
         return $this->render('talk/create.twig', $data);
@@ -220,6 +214,18 @@ class TalkController extends BaseController
 
     public function updateAction(Request $req)
     {
+        if (! $this->service('callforproposal')->isOpen()) {
+            $this->service('session')->set(
+                'flash',
+                [
+                    'type' => 'error',
+                    'short' => 'Read Only',
+                    'ext' => 'You cannot edit talks once the call for papers has ended', ]
+            );
+
+            return $this->app->redirect($this->url('talk_view', ['id' => $req->get('id')]));
+        }
+
         $user = $this->service(Authentication::class)->user();
 
         $request_data = [
