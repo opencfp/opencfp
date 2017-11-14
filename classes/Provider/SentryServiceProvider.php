@@ -29,7 +29,6 @@ class SentryServiceProvider implements ServiceProviderInterface
                 $cookie
             );
 
-            Sentry::setupDatabaseResolver($app['db']);
             $throttleProvider->disable();
 
             return $sentry;
