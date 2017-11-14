@@ -124,9 +124,10 @@ class UserTest extends BaseTestCase
             'user_id'     => $userId,
             'title'       => 'talks title',
             'description' => 'Long description',
-            'type'        => '',
+            'type'        => 'regular',
             'level'       => 'entry',
             'category'    => 'api',
+
         ]);
 
         Talk::create([
@@ -145,6 +146,7 @@ class UserTest extends BaseTestCase
             'type'        => 'regular',
             'level'       => 'entry',
             'category'    => 'api',
+
         ]);
     }
 }

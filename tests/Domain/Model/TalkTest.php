@@ -115,68 +115,67 @@ class TalkTest extends BaseTestCase
         $this->assertCount(2, $topRated);
     }
 
-
     protected static function setUpTalksForTests()
     {
         $talk = Talk::create([
-            'user_id' => 7,
-            'title' => 'talks title',
+            'user_id'     => 7,
+            'title'       => 'talks title',
             'description' => 'Long description',
-            'type' => '',
-            'level' => 'entry',
-            'category' => 'api',
-            'selected' => 0,
+            'type'        => '',
+            'level'       => 'entry',
+            'category'    => 'api',
+            'selected'    => 0,
         ]);
 
         $talkTwo =Talk::create([
-            'user_id' => 7,
-            'title' => 'talks title NO 2',
+            'user_id'     => 7,
+            'title'       => 'talks title NO 2',
             'description' => 'Long description',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'api',
-            'selected' => 1,
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'api',
+            'selected'    => 1,
 
         ]);
 
         Talk::create([
-            'user_id' => 7,
-            'title' => 'talks title NO 3',
+            'user_id'     => 7,
+            'title'       => 'talks title NO 3',
             'description' => 'Long description',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'api',
-            'selected' => 0,
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'api',
+            'selected'    => 0,
         ]);
 
         TalkMeta::create([
             'admin_user_id' => 1,
-            'talk_id' => $talk->id,
-            'rating' => 0,
-            'viewed' => 1,
+            'talk_id'       => $talk->id,
+            'rating'        => 0,
+            'viewed'        => 1,
         ]);
 
         TalkMeta::create([
             'admin_user_id' => 1,
-            'talk_id' => $talkTwo->id,
-            'rating' => 1,
-            'viewed' => 1,
+            'talk_id'       => $talkTwo->id,
+            'rating'        => 1,
+            'viewed'        => 1,
         ]);
         TalkMeta::create([
             'admin_user_id' => 2,
-            'talk_id' => $talkTwo->id,
-            'rating' => 1,
-            'viewed' => 0,
+            'talk_id'       => $talkTwo->id,
+            'rating'        => 1,
+            'viewed'        => 0,
         ]);
         TalkMeta::create([
             'admin_user_id' => 8,
-            'talk_id' => $talk->id,
-            'rating' => 1,
-            'viewed' => 0,
+            'talk_id'       => $talk->id,
+            'rating'        => 1,
+            'viewed'        => 0,
         ]);
         Favorite::create([
             'admin_user_id' => 1,
-            'talk_id' => $talk->id,
+            'talk_id'       => $talk->id,
         ]);
     }
 }

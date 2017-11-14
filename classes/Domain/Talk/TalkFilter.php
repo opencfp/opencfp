@@ -33,7 +33,7 @@ class TalkFilter
         $this->talk      = $talk;
     }
 
-    public function getTalks($admin_user_id, $filter= null, $options = []): array
+    public function getTalks(int $admin_user_id, $filter= null, $options = []): array
     {
         // Merge options with default options
         $options = $this->getSortOptions(
@@ -50,7 +50,7 @@ class TalkFilter
         return $this->formatter->formatList($talks, $admin_user_id)->toArray();
     }
 
-    public function getFilteredTalks($admin_user_id, $filter = null)
+    public function getFilteredTalks(int $admin_user_id, $filter = null)
     {
         if ($filter === null) {
             return $this->talk;
