@@ -37,18 +37,18 @@ class TalkController extends BaseController
         $speakers = $this->service('application.speakers');
 
         try {
-            $id = (int) $req->get('id');
-            $talk = $speakers->getTalk($id);
+            $talkId = (int) $req->get('id');
+            $talk = $speakers->getTalk($talkId);
         } catch (NotAuthorizedException $e) {
             return $this->redirectTo('dashboard');
         }
 
-        return $this->render('talk/view.twig', compact('id', 'talk'));
+        return $this->render('talk/view.twig', compact('talkId', 'talk'));
     }
 
     public function editAction(Request $req)
     {
-        $talk_id = (int) $req->get('id');
+        $talkId = (int) $req->get('id');
 
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
@@ -61,18 +61,18 @@ class TalkController extends BaseController
                 'ext' => 'You cannot edit talks once the call for papers has ended', ]
             );
 
-            return $this->app->redirect($this->url('talk_view', ['id' => $talk_id]));
+            return $this->app->redirect($this->url('talk_view', ['id' => $talkId]));
         }
 
-        if (empty($talk_id)) {
+        if (empty($talkId)) {
             return $this->redirectTo('dashboard');
         }
 
         $userId = $this->service(Authentication::class)->userId();
 
-        $talk_info = Talk::find($talk_id);
+        $talk = Talk::find($talkId);
 
-        if (!$talk_info instanceof Talk || (int) $talk_info['user_id'] !== $userId) {
+        if (!$talk instanceof Talk || (int) $talk['user_id'] !== $userId) {
             return $this->redirectTo('dashboard');
         }
         $helper = $this->service(TalkHelper::class);
@@ -81,16 +81,16 @@ class TalkController extends BaseController
             'talkCategories' => $helper->getTalkCategories(),
             'talkTypes' => $helper->getTalkTypes(),
             'talkLevels' => $helper->getTalkLevels(),
-            'id' => $talk_id,
-            'title' => html_entity_decode($talk_info['title']),
-            'description' => html_entity_decode($talk_info['description']),
-            'type' => $talk_info['type'],
-            'level' => $talk_info['level'],
-            'category' => $talk_info['category'],
-            'desired' => $talk_info['desired'],
-            'slides' => $talk_info['slides'],
-            'other' => $talk_info['other'],
-            'sponsor' => $talk_info['sponsor'],
+            'id' => $talkId,
+            'title' => html_entity_decode($talk['title']),
+            'description' => html_entity_decode($talk['description']),
+            'type' => $talk['type'],
+            'level' => $talk['level'],
+            'category' => $talk['category'],
+            'desired' => $talk['desired'],
+            'slides' => $talk['slides'],
+            'other' => $talk['other'],
+            'sponsor' => $talk['sponsor'],
             'buttonInfo' => 'Update my talk!',
         ];
 
@@ -151,7 +151,7 @@ class TalkController extends BaseController
 
         $user = $this->service(Authentication::class)->user();
 
-        $request_data = [
+        $requestData = [
             'title' => $req->get('title'),
             'description' => $req->get('description'),
             'type' => $req->get('type'),
@@ -164,13 +164,13 @@ class TalkController extends BaseController
             'user_id' => $req->get('user_id'),
         ];
 
-        $form = $this->getTalkForm($request_data);
+        $form = $this->getTalkForm($requestData);
         $form->sanitize();
 
         if ($form->validateAll()) {
-            $sanitized_data = $form->getCleanData();
-            $sanitized_data['user_id'] =  (int) $user->getId();
-            $talk = Talk::create($sanitized_data);
+            $sanitizedData = $form->getCleanData();
+            $sanitizedData['user_id'] =  (int) $user->getId();
+            $talk = Talk::create($sanitizedData);
 
             $this->service('session')->set('flash', [
                 'type' => 'success',
@@ -228,7 +228,7 @@ class TalkController extends BaseController
 
         $user = $this->service(Authentication::class)->user();
 
-        $request_data = [
+        $requestData = [
             'id' => $req->get('id'),
             'title' => $req->get('title'),
             'description' => $req->get('description'),
@@ -242,14 +242,14 @@ class TalkController extends BaseController
             'user_id' => $req->get('user_id'),
         ];
 
-        $form = $this->getTalkForm($request_data);
+        $form = $this->getTalkForm($requestData);
         $form->sanitize();
 
         if ($form->validateAll()) {
-            $sanitized_data = $form->getCleanData();
-            $sanitized_data['user_id'] =(int) $user->getId();
+            $sanitizedData = $form->getCleanData();
+            $sanitizedData['user_id'] =(int) $user->getId();
             
-            if (Talk::find((int) $sanitized_data['id'])->update($sanitized_data)) {
+            if (Talk::find((int) $sanitizedData['id'])->update($sanitizedData)) {
                 $this->service('session')->set('flash', [
                     'type' => 'success',
                     'short' => 'Success',
@@ -257,7 +257,7 @@ class TalkController extends BaseController
                 ]);
 
                 // send email to speaker showing submission
-                $this->sendSubmitEmail($user->getLogin(), (int) $sanitized_data['id']);
+                $this->sendSubmitEmail($user->getLogin(), (int) $sanitizedData['id']);
 
                 return $this->redirectTo('dashboard');
             }
@@ -316,13 +316,13 @@ class TalkController extends BaseController
      * Method that sends an email when a talk is created
      *
      * @param string $email
-     * @param int    $talk_id
+     * @param int    $talkId
      *
      * @return mixed
      */
-    protected function sendSubmitEmail(string $email, int $talk_id)
+    protected function sendSubmitEmail(string $email, int $talkId)
     {
-        $talk = Talk::find($talk_id, ['title']);
+        $talk = Talk::find($talkId, ['title']);
 
         /* @var Twig_Environment $twig */
         $twig = $this->service('twig');
