@@ -3,8 +3,10 @@
 namespace OpenCFP\Test\Http\Controller;
 
 use Mockery as m;
+use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
@@ -17,6 +19,24 @@ use OpenCFP\Test\WebTestCase;
 class TalkControllerTest extends WebTestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @var User
+     */
+    private static $user;
+
+    /**
+     * @var Talk
+     */
+    private static $talk;
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        $talk = factory(Talk::class, 1)->create()->first();
+        self::$user = $talk->speaker->first();
+        self::$talk = $talk;
+    }
 
     /**
      * Verify that talks with ampersands and other characters in them can
@@ -63,24 +83,9 @@ class TalkControllerTest extends WebTestCase
          * is true means code is working as intended. Previously this fails
          * because the CFP incorrectly ended at 12:00am the day of, not 11:59pm.
          */
-        $controller->createAction($this->req);
-
-        $flashMessage = $this->app['session']->get('flash');
-        $this->assertNull($flashMessage);
-
-        /*
-         * However, if I update application configuration to make
-         * the CFP end date to be "yesterday" then we get flash as expected.
-         */
-        $yesterday = new \DateTime('yesterday');
-
-        $this->app['callforproposal'] = new CallForProposal(new \DateTime($yesterday->format('M. jS, Y')));
-
-        $controller->createAction($this->req);
-
-        $flashMessage = $this->app['session']->get('flash');
-        $this->assertEquals('error', $flashMessage['type']);
-        $this->assertEquals('You cannot create talks once the call for papers has ended', $flashMessage['ext']);
+        $this->asLoggedInSpeaker()
+            ->get('/talk/create')
+            ->assertSee('Create Your Talk');
     }
 
     /**
@@ -88,41 +93,14 @@ class TalkControllerTest extends WebTestCase
      */
     public function willDisplayOwnTalk()
     {
-        $controller = new TalkController();
-        $controller->setApplication($this->app);
+        $speakers = m::mock(Speakers::class);
+        $speakers->shouldReceive('getTalk')->andReturn(self::$talk);
+        $this->swap('application.speakers', $speakers);
 
-        /* @var Authentication $auth */
-        $auth = $this->app[Authentication::class];
-
-        // Get our request object to return expected data
-        $talk_data = [
-            'title' => 'Test Submission',
-            'description' => 'Make sure we can see our own talk.',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'other',
-            'desired' => 0,
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => $auth->user()->getId(),
-        ];
-
-        $this->setPost($talk_data);
-
-        $speaker = m::mock(\OpenCFP\Application\Speakers::class);
-        $speaker->shouldReceive('getTalk')->with(1)->andReturn($talk_data);
-        $this->app['application.speakers'] = $speaker;
-        $this->req->shouldReceive('get')->with('id')->andReturn(1);
-
-        $response = $controller->viewAction($this->req);
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\Response::class,
-            $response
-        );
-        $this->assertContains('Test Submission', (string) $response);
-        $this->assertContains('Make sure we can see our own talk.', (string) $response);
+        $this->asLoggedInSpeaker((int) self::$user->id)
+            ->get('/talk/view' . self::$talk->id)
+            ->assertSee(self::$talk->title)
+            ->assertSuccessful();
     }
 
     /**
@@ -130,24 +108,13 @@ class TalkControllerTest extends WebTestCase
      */
     public function canNotEditTalkAfterCfpIsClosed()
     {
-        $controller = new TalkController();
-        $controller->setApplication($this->app);
-
-        $this->req->shouldReceive('get')->with('id')->andReturn(4);
-
-        $callForProposal = m::mock(CallForProposal::class);
-        $callForProposal->shouldReceive('isOpen')->andReturn(false);
-        $this->app['callforproposal'] = $callForProposal;
-        $response = $controller->editAction($this->req);
-
-        $flashMessage = $this->app['session']->get('flash');
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\RedirectResponse::class,
-            $response
-        );
-        $this->assertEquals('error', $flashMessage['type']);
-        $this->assertEquals('You cannot edit talks once the call for papers has ended', $flashMessage['ext']);
+        $this->asLoggedInSpeaker(self::$user->id)
+            ->callForPapersIsClosed()
+            ->get('/talk/edit/'. self::$talk->id)
+            ->assertFlashContains('error')
+            ->assertFlashContains('You cannot edit talks once the call for papers has ended')
+            ->assertNotSee('Edit Your Talk')
+            ->assertRedirect();
     }
 
     /**
@@ -155,25 +122,10 @@ class TalkControllerTest extends WebTestCase
      */
     public function getRedirectedToDashboardOnEditWhenNoTalkID()
     {
-        $controller = new TalkController();
-        $controller->setApplication($this->app);
-        $this->req->shouldReceive('get')->with('id')->andReturn('');
-
-        $response = $controller->editAction($this->req);
-
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\RedirectResponse::class,
-            $response
-        );
-        $this->assertNotContains(
-            '<input id="form-talk-title" type="text" name="title" class="form-control" placeholder="Talk Title"',
-            (string) $response
-        );
-        $this->assertNotContains(
-            '<div class="form-group">',
-            (string) $response
-        );
-        $this->assertContains('dashboard', $response->getTargetUrl());
+        $this->asLoggedInSpeaker()
+            ->get('/talk/edit/a')
+            ->assertNotSee('Edit Your Talk')
+            ->assertRedirect();
     }
 
     /**
@@ -181,22 +133,10 @@ class TalkControllerTest extends WebTestCase
      */
     public function getRedirectedToDashboardWhenTalkIsNotYours()
     {
-        $controller = new TalkController();
-        $controller->setApplication($this->app);
-        $this->req->shouldReceive('get')->with('id')->andReturn(1);
-        $this->app['spot'] = m::mock(\Spot\Locator::class);
-        $this->app['spot']->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\Talk::class)->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('where')->with(['id' => 1])->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('execute')->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('toArray')->andReturn(['user_id'=> (int) $this->app[Authentication::class]->user()->getId() + 2]);
-
-        $response = $controller->editAction($this->req);
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\RedirectResponse::class,
-            $response
-        );
-        $this->assertContains('dashboard', $response->getTargetUrl());
+        $this->asLoggedInSpeaker((self::$user->id + 1))
+            ->get('talk/edit/' . self::$talk->id)
+            ->assertNotSee('Edit Your Talk')
+            ->assertRedirect();
     }
 
     /**
@@ -204,38 +144,11 @@ class TalkControllerTest extends WebTestCase
      */
     public function seeEditPageWhenAllowed()
     {
-        $controller = new TalkController();
-        $controller->setApplication($this->app);
-        $this->req->shouldReceive('get')->with('id')->andReturn(1);
-        $this->app['spot'] = m::mock(\Spot\Locator::class);
-        $this->app['spot']->shouldReceive('mapper')->with(\OpenCFP\Domain\Entity\Talk::class)->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('where')->with(['id' => 1])->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('execute')->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('first')->andReturn($this->app['spot']);
-        $this->app['spot']->shouldReceive('toArray')->andReturn(
-            [
-                'user_id' => (int) $this->app[Authentication::class]->user()->getId(),
-                'title' => 'Title of talk to edit',
-                'description' => 'The Description',
-                'type' => 'regular',
-                'level' => 'entry',
-                'category' => 'other',
-                'desired' => 0,
-                'slides' => '',
-                'other' => '',
-                'sponsor' => '',
-            ]
-        );
-
-        $response = $controller->editAction($this->req);
-        $this->assertInstanceOf(
-            \Symfony\Component\HttpFoundation\Response::class,
-            $response
-        );
-        $this->assertContains(
-            'Talk Title',
-            (string) $response
-        );
+        $this->asLoggedInSpeaker(self::$user->id)
+            ->get('/talk/edit/' . self::$talk->id)
+            ->assertSee(self::$talk->title)
+            ->assertSee('Edit Your Talk')
+            ->assertSuccessful();
     }
 
     /**
