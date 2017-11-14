@@ -14,7 +14,6 @@ use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\ResetEmailerServiceProvider;
 use OpenCFP\Provider\SentryServiceProvider;
-use OpenCFP\Provider\SpotServiceProvider;
 use OpenCFP\Provider\TalkFilterProvider;
 use OpenCFP\Provider\TalkHelperProvider;
 use OpenCFP\Provider\TalkRatingProvider;
@@ -92,7 +91,6 @@ class Application extends SilexApplication
         $app = $this;
         $this->register(new TwigServiceProvider($app));
         $this->register(new HtmlPurifierServiceProvider);
-        $this->register(new SpotServiceProvider);
         $this->register(new ImageProcessorProvider);
         $this->register(new ResetEmailerServiceProvider());
         $this->register(new TalkHelperProvider());

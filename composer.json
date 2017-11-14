@@ -41,8 +41,7 @@
         "symfony/validator": "^3.3",
         "symfony/yaml": "^3.3",
         "twig/extensions": "^1.5",
-        "twig/twig": "1.*",
-        "vlucas/spot2": "dev-master"
+        "twig/twig": "1.*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.8.0",
