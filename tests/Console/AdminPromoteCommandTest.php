@@ -26,12 +26,12 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
     public function promoteDetectsNonExistentUser()
     {
         // Create our input and output dependencies
-        $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
+        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
         $output = $this->createOutputInterface();
 
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException);
-        $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app[AccountManagement::class] = $accounts;
 
         // Create our command object and inject our application
@@ -47,7 +47,7 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
     public function promoteExistingNonAdminAccount()
     {
         // Create our input and output dependencies
-        $input = $this->createInputInterfaceWithEmail('test@opencfp.dev');
+        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
         $output = $this->createOutputInterface();
 
         /**
@@ -71,9 +71,9 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
             ->with('test@opencfp.dev', 'Admin');
 
         // Create our command object and inject our application
-        $app = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app[AccountManagement::class] = $accounts;
-        $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
+        $command                       = new \OpenCFP\Console\Command\AdminPromoteCommand();
         $command->setApp($app);
         $response = $command->execute($input, $output);
 

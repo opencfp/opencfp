@@ -11,10 +11,10 @@ class Favorite extends Entity
     public static function fields()
     {
         return [
-            'id' => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
+            'id'            => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
             'admin_user_id' => ['type' => 'integer', 'required' => true],
-            'talk_id' => ['type' => 'integer', 'required' => true],
-            'created' => ['type' => 'datetime', 'value' => new \DateTime()],
+            'talk_id'       => ['type' => 'integer', 'required' => true],
+            'created'       => ['type' => 'datetime', 'value' => new \DateTime()],
         ];
     }
 

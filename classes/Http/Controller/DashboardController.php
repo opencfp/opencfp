@@ -28,7 +28,7 @@ class DashboardController extends BaseController
             $cfp = $this->service('callforproposal');
 
             return $this->render('dashboard.twig', [
-                'profile' => $profile,
+                'profile'  => $profile,
                 'cfp_open' => $cfp->isOpen(),
             ]);
         } catch (NotAuthenticatedException $e) {

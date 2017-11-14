@@ -23,7 +23,7 @@ class OAuthIdentityProvider implements IdentityProvider
 
     public function __construct(ResourceServer $server, SpeakerRepository $speakerRepository)
     {
-        $this->server = $server;
+        $this->server            = $server;
         $this->speakerRepository = $speakerRepository;
     }
 

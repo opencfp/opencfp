@@ -142,9 +142,9 @@ class WebTestCase extends BaseTestCase
 
     public function isOnlineConference(): self
     {
-        $config = $this->app['config'];
+        $config                                     = $this->app['config'];
         $config['application']['online_conference'] = true;
-        $this->app['config'] = $config;
+        $this->app['config']                        = $config;
         $this->app['twig']->addGlobal('site', $this->app->config('application'));
 
         return $this;

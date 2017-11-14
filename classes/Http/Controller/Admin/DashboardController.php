@@ -14,7 +14,7 @@ class DashboardController extends BaseController
 {
     public function indexAction()
     {
-        $userId = $this->service(Authentication::class)->userId();
+        $userId        = $this->service(Authentication::class)->userId();
         $talkFormatter = new TalkFormatter();
 
         /** @var Collection $recent_talks */
@@ -22,11 +22,11 @@ class DashboardController extends BaseController
         $recent_talks = $talkFormatter->formatList($recent_talks, $userId);
 
         $templateData = [
-            'speakerTotal' => User::count(),
-            'talkTotal' => Talk::count(),
+            'speakerTotal'  => User::count(),
+            'talkTotal'     => Talk::count(),
             'favoriteTotal' => Favorite::count(),
-            'selectTotal' => Talk::where('selected', 1)->count(),
-            'talks' => $recent_talks,
+            'selectTotal'   => Talk::where('selected', 1)->count(),
+            'talks'         => $recent_talks,
         ];
 
         return $this->render('admin/index.twig', $templateData);

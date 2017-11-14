@@ -19,7 +19,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
      */
     public function it_should_run_and_have_output()
     {
-        $this->sut = new Application(BASE_PATH, Environment::testing());
+        $this->sut                 = new Application(BASE_PATH, Environment::testing());
         $this->sut['session.test'] = true;
 
         // We start an output buffer because the Application sends its response to

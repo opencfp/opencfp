@@ -46,41 +46,41 @@ class TalkFormatter implements TalkFormat
         $meta = $this->getTalkMeta($talk, $admin_user_id);
 
         $output = [
-            'id' => $talk->id,
-            'title' => $talk->title,
-            'type' => $talk->type,
-            'category' => $talk->category,
-            'created_at' => $talk->created_at,
-            'selected' => $talk->selected,
-            'favorite' => $talk->favorite,
-            'meta' => $meta,
+            'id'          => $talk->id,
+            'title'       => $talk->title,
+            'type'        => $talk->type,
+            'category'    => $talk->category,
+            'created_at'  => $talk->created_at,
+            'selected'    => $talk->selected,
+            'favorite'    => $talk->favorite,
+            'meta'        => $meta,
             'description' => $talk->description,
-            'slides' => $talk->slides,
-            'other' => $talk->other,
-            'level' => $talk->level,
-            'desired' => $talk->desired,
-            'sponsor' => $talk->sponsor,
+            'slides'      => $talk->slides,
+            'other'       => $talk->other,
+            'level'       => $talk->level,
+            'desired'     => $talk->desired,
+            'sponsor'     => $talk->sponsor,
         ];
 
         if ($talk->speaker && $userData) {
             $output['user'] = [
-                'id' => $talk->speaker->id,
+                'id'         => $talk->speaker->id,
                 'first_name' => $talk->speaker->first_name,
-                'last_name' => $talk->speaker->last_name,
+                'last_name'  => $talk->speaker->last_name,
             ];
 
             $output += [
-                'speaker_id' => $talk->speaker->id,
-                'speaker_first_name' => $talk->speaker->first_name,
-                'speaker_last_name' => $talk->speaker->last_name,
-                'speaker_email' => $talk->speaker->email,
-                'speaker_company' => $talk->speaker->company,
-                'speaker_twitter' => $talk->speaker->twitter,
-                'speaker_airport' => $talk->speaker->airport,
-                'speaker_hotel' => $talk->speaker->hotel,
+                'speaker_id'             => $talk->speaker->id,
+                'speaker_first_name'     => $talk->speaker->first_name,
+                'speaker_last_name'      => $talk->speaker->last_name,
+                'speaker_email'          => $talk->speaker->email,
+                'speaker_company'        => $talk->speaker->company,
+                'speaker_twitter'        => $talk->speaker->twitter,
+                'speaker_airport'        => $talk->speaker->airport,
+                'speaker_hotel'          => $talk->speaker->hotel,
                 'speaker_transportation' => $talk->speaker->transportation,
-                'speaker_info' => $talk->speaker->info,
-                'speaker_bio' => $talk->speaker->bio,
+                'speaker_info'           => $talk->speaker->info,
+                'speaker_bio'            => $talk->speaker->bio,
             ];
         }
 

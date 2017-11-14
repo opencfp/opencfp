@@ -28,7 +28,7 @@ class SymfonySentrySessionTest extends \PHPUnit\Framework\TestCase
 
     public function testPutSetsValue()
     {
-        $key = 'foo';
+        $key   = 'foo';
         $value = 'bar';
 
         $session = $this->getSessionMock();
@@ -52,7 +52,7 @@ class SymfonySentrySessionTest extends \PHPUnit\Framework\TestCase
 
     public function testGetReturnsValue()
     {
-        $key = 'foo';
+        $key   = 'foo';
         $value = 'bar';
 
         $session = $this->getSessionMock();

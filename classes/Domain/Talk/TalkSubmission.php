@@ -26,16 +26,16 @@ class TalkSubmission
     public function toTalk(): Talk
     {
         $data = array_merge([
-            'title' => '',
+            'title'       => '',
             'description' => '',
-            'type' => '',
-            'level' => '',
-            'category' => '',
-            'desired' => '',
-            'slides' => '',
-            'other' => '',
-            'sponsor' => '',
-            'user_id' => '',
+            'type'        => '',
+            'level'       => '',
+            'category'    => '',
+            'desired'     => '',
+            'slides'      => '',
+            'other'       => '',
+            'sponsor'     => '',
+            'user_id'     => '',
         ], $this->data);
 
         return new Talk($data);

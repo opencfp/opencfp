@@ -19,7 +19,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         $this->app = new Application(BASE_PATH, Environment::testing());
-        $cfg = new \Spot\Config;
+        $cfg       = new \Spot\Config;
         $cfg->addConnection('sqlite', [
             'dbname' => 'sqlite::memory',
             'driver' => 'pdo_sqlite',
@@ -28,7 +28,7 @@ class UserTest extends \PHPUnit\Framework\TestCase
         $spot = new Locator($cfg);
 
         $this->app['spot'] = $spot;
-        $this->mapper = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
+        $this->mapper      = $spot->mapper(\OpenCFP\Domain\Entity\User::class);
 
         foreach ($this->entities as $entity) {
             $spot->mapper('OpenCFP\Domain\Entity\\' . $entity)->migrate();
@@ -77,41 +77,41 @@ class UserTest extends \PHPUnit\Framework\TestCase
         $this->mapper->create(
             [
                 'first_name' => 'Jesse',
-                'last_name' => 'Kramer',
-                'email' => 'jkramer@example.com',
-                'password' => 'totallySecure1',
+                'last_name'  => 'Kramer',
+                'email'      => 'jkramer@example.com',
+                'password'   => 'totallySecure1',
             ]
         );
         $this->mapper->create(
             [
                 'first_name' => 'Arthur',
-                'last_name' => 'Hunter',
-                'email' => 'ahunter@example.com',
-                'password' => 'totallySecure1',
+                'last_name'  => 'Hunter',
+                'email'      => 'ahunter@example.com',
+                'password'   => 'totallySecure1',
             ]
         );
         $this->mapper->create(
             [
                 'first_name' => 'Bauke',
-                'last_name' => 'the Farmer',
-                'email' => 'nvkmn@example.com',
-                'password' => 'totallySecure1',
+                'last_name'  => 'the Farmer',
+                'email'      => 'nvkmn@example.com',
+                'password'   => 'totallySecure1',
             ]
         );
         $this->mapper->create(
             [
                 'first_name' => 'Adrie',
-                'last_name' => 'de Slager',
-                'email' => 'cowhammer@example.com',
-                'password' => 'totallySecure1',
+                'last_name'  => 'de Slager',
+                'email'      => 'cowhammer@example.com',
+                'password'   => 'totallySecure1',
             ]
         );
         $this->mapper->create(
             [
                 'first_name' => 'Antonius',
-                'last_name' => 'von Bil',
-                'email' => 'antonius@example.com',
-                'password' => 'totallySecure1',
+                'last_name'  => 'von Bil',
+                'email'      => 'antonius@example.com',
+                'password'   => 'totallySecure1',
             ]
         );
     }

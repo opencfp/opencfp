@@ -26,7 +26,7 @@ class ClientRegistrationController extends ApiController
 
     public function __construct(Mapper $clients, Mapper $endpoints, RandomStringGenerator $generator)
     {
-        $this->clients = $clients;
+        $this->clients   = $clients;
         $this->endpoints = $endpoints;
         $this->generator = $generator;
     }
@@ -37,18 +37,18 @@ class ClientRegistrationController extends ApiController
     public function registerClient(Request $request)
     {
         $clientIdentifier = $this->generator->generate(40);
-        $clientSecret = $this->generator->generate(40);
+        $clientSecret     = $this->generator->generate(40);
 
         try {
             $client = $this->clients->create([
-                'id' => $clientIdentifier,
+                'id'     => $clientIdentifier,
                 'secret' => $clientSecret,
-                'name' => $request->get('name'),
+                'name'   => $request->get('name'),
             ]);
 
             foreach ($request->get('redirect_uris') as $uri) {
                 $this->endpoints->create([
-                    'client_id' => $clientIdentifier,
+                    'client_id'    => $clientIdentifier,
                     'redirect_uri' => $uri,
                 ]);
             }

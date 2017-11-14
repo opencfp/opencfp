@@ -11,8 +11,8 @@ class Endpoint extends Entity
     public static function fields()
     {
         return [
-            'id' => ['type' => 'string', 'autoincrement' => true, 'primary' => true],
-            'client_id' => ['type' => 'string', 'length' => 255, 'required' => true],
+            'id'           => ['type' => 'string', 'autoincrement' => true, 'primary' => true],
+            'client_id'    => ['type' => 'string', 'length' => 255, 'required' => true],
             'redirect_uri' => ['type' => 'string', 'length' => 255, 'required' => true],
         ];
     }

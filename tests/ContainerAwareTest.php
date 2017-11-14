@@ -9,7 +9,7 @@ class ContainerAwareTest extends \PHPUnit\Framework\TestCase
 {
     public function testAllowsToRetrieveService()
     {
-        $slug = 'foo';
+        $slug    = 'foo';
         $service = 'bar';
 
         $application = $this->getApplicationMock();

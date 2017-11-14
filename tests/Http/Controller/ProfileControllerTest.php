@@ -103,10 +103,10 @@ class ProfileControllerTest extends WebTestCase
     private function putUserInRequest($isEmailValid, $id = 1): array
     {
         return [
-            'id' => $id,
-            'email' => $isEmailValid ? 'valideamial@cfp.org' : 'invalidEmail',
+            'id'         => $id,
+            'email'      => $isEmailValid ? 'valideamial@cfp.org' : 'invalidEmail',
             'first_name' => 'First',
-            'last_name' => 'Last',
+            'last_name'  => 'Last',
         ];
     }
 }

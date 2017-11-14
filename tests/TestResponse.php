@@ -30,7 +30,7 @@ class TestResponse
     public function __construct(Application $app, Response $response)
     {
         $this->baseResponse = $response;
-        $this->app = $app;
+        $this->app          = $app;
     }
 
     public function assertSuccessful()
@@ -88,7 +88,7 @@ class TestResponse
     public function assertFlashContains($flash)
     {
         $fullFlash = $this->app['session']->get('flash');
-        $fullFlash= is_array($fullFlash) ? $fullFlash : [];
+        $fullFlash = is_array($fullFlash) ? $fullFlash : [];
         Assert::assertContains($flash, $fullFlash);
 
         return $this;

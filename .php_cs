@@ -12,6 +12,9 @@ $config = PhpCsFixer\Config::create()
         'array_syntax' => [
             'syntax' => 'short'
         ],
+        'binary_operator_spaces' => [
+            'default' => 'align',
+        ],
         'blank_line_after_opening_tag' => true,
         'blank_line_before_statement' => true,
         'cast_spaces' => true,

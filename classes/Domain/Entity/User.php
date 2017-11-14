@@ -6,44 +6,44 @@ use Spot\Entity;
 
 class User extends Entity
 {
-    protected static $table = 'users';
+    protected static $table  = 'users';
     protected static $mapper = \OpenCFP\Domain\Entity\Mapper\User::class;
 
     public static function fields()
     {
         return [
-            'id' => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
-            'email' => ['type' => 'string', 'length' => 255, 'required' => true],
-            'password' => ['type' => 'string', 'length' => 255, 'required' => true],
-            'permissions' => ['type' => 'text'],
-            'activated' => ['type' => 'smallint', 'value' => 0],
-            'activation_code' => ['type' => 'string', 'length' => 255],
-            'activated_at' => ['type' => 'datetime'],
-            'last_login' => ['type' => 'string', 'length' => 255],
-            'persist_code' => ['type' => 'string', 'length' => 255],
+            'id'                  => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
+            'email'               => ['type' => 'string', 'length' => 255, 'required' => true],
+            'password'            => ['type' => 'string', 'length' => 255, 'required' => true],
+            'permissions'         => ['type' => 'text'],
+            'activated'           => ['type' => 'smallint', 'value' => 0],
+            'activation_code'     => ['type' => 'string', 'length' => 255],
+            'activated_at'        => ['type' => 'datetime'],
+            'last_login'          => ['type' => 'string', 'length' => 255],
+            'persist_code'        => ['type' => 'string', 'length' => 255],
             'reset_password_code' => ['type' => 'string', 'length' => 255],
-            'first_name' => ['type' => 'string', 'length' => 255],
-            'last_name' => ['type' => 'string', 'length' => 255],
-            'created_at' => ['type' => 'datetime', 'value' => new \DateTime()],
-            'updated_at' => ['type' => 'datetime', 'value' => new \DateTime()],
-            'company' => ['type' => 'string', 'length' => 255],
-            'twitter' => ['type' => 'string', 'length' => 255],
-            'url' => ['type' => 'string', 'length' => 255],
-            'airport' => ['type' => 'string', 'length' => 5],
-            'hotel' => ['type' => 'smallint', 'value' => 0],
-            'transportation' => ['type' => 'smallint', 'value' => 0],
-            'info' => ['type' => 'text'],
-            'bio' => ['type' => 'text'],
-            'photo_path' => ['type' => 'string', 'length' => 255],
-            'has_made_profile' => ['type' => 'smallint', 'value' => 0],
+            'first_name'          => ['type' => 'string', 'length' => 255],
+            'last_name'           => ['type' => 'string', 'length' => 255],
+            'created_at'          => ['type' => 'datetime', 'value' => new \DateTime()],
+            'updated_at'          => ['type' => 'datetime', 'value' => new \DateTime()],
+            'company'             => ['type' => 'string', 'length' => 255],
+            'twitter'             => ['type' => 'string', 'length' => 255],
+            'url'                 => ['type' => 'string', 'length' => 255],
+            'airport'             => ['type' => 'string', 'length' => 5],
+            'hotel'               => ['type' => 'smallint', 'value' => 0],
+            'transportation'      => ['type' => 'smallint', 'value' => 0],
+            'info'                => ['type' => 'text'],
+            'bio'                 => ['type' => 'text'],
+            'photo_path'          => ['type' => 'string', 'length' => 255],
+            'has_made_profile'    => ['type' => 'smallint', 'value' => 0],
         ];
     }
 
     public static function relations(\Spot\MapperInterface $mapper, \Spot\EntityInterface $entity)
     {
         return [
-            'talks' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\Talk::class, 'user_id'),
-            'groups' => $mapper->hasManyThrough($entity, \OpenCFP\Domain\Entity\Group::class, \OpenCFP\Domain\Entity\UserGroup::class, 'group_id', 'user_id'),
+            'talks'    => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\Talk::class, 'user_id'),
+            'groups'   => $mapper->hasManyThrough($entity, \OpenCFP\Domain\Entity\Group::class, \OpenCFP\Domain\Entity\UserGroup::class, 'group_id', 'user_id'),
             'comments' => $mapper->hasMany($entity, \OpenCFP\Domain\Entity\TalkComment::class, 'user_id'),
         ];
     }

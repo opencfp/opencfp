@@ -33,7 +33,7 @@ class SentryAccountManagementTest extends BaseTestCase
     {
         $this->sut->create('test@example.com', 'secret', [
             'first_name' => 'Test',
-            'last_name' => 'Account',
+            'last_name'  => 'Account',
         ]);
 
         $user = $this->sut->findByLogin('test@example.com');
@@ -46,7 +46,7 @@ class SentryAccountManagementTest extends BaseTestCase
     {
         $user = $this->sut->create('test@example.com', 'secret', [
             'first_name' => 'Test',
-            'last_name' => 'Account',
+            'last_name'  => 'Account',
         ]);
 
         $group = $user->getGroups()[0];
@@ -70,7 +70,7 @@ class SentryAccountManagementTest extends BaseTestCase
     {
         $this->sut->create('test@example.com', 'secret', [
             'first_name' => 'Test',
-            'last_name' => 'Account',
+            'last_name'  => 'Account',
         ]);
 
         $this->assertCount(0, $this->sut->findByRole('Admin'));

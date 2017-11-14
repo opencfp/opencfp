@@ -26,7 +26,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         $this->speakers = m::mock(\OpenCFP\Application\Speakers::class);
-        $this->sut = new TalkController($this->speakers);
+        $this->sut      = new TalkController($this->speakers);
     }
 
     public function it_returns_created_response_when_talk_is_submitted()
@@ -37,7 +37,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
         // sane to test output of 201 Created response. Should be the talk
         // we submitted!
         $submission = TalkSubmission::fromNative($request->request->all());
-        $talk = $submission->toTalk();
+        $talk       = $submission->toTalk();
 
         $this->speakers->shouldReceive('submitTalk')
             ->once()
@@ -143,11 +143,11 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
     private function getValidRequest()
     {
         return $this->getRequest([
-            'title' => 'Happy Path Submission',
+            'title'       => 'Happy Path Submission',
             'description' => 'I play by the rules.',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'api',
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'api',
         ]);
     }
 }

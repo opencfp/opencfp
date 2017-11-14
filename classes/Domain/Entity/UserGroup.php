@@ -11,8 +11,8 @@ class UserGroup extends Entity
     public static function fields()
     {
         return [
-            'id' => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
-            'user_id' => ['type' => 'integer'],
+            'id'       => ['type' => 'integer', 'autoincrement' => true, 'primary' => true],
+            'user_id'  => ['type' => 'integer'],
             'group_id' => ['type' => 'integer'],
         ];
     }
