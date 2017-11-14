@@ -21,67 +21,14 @@ class TalkController extends BaseController
      */
     private function getTalkForm($requestData): TalkForm
     {
-        $helper = $this->service(TalkHelper::class);
+        $helper  = $this->service(TalkHelper::class);
         $options = [
-            'categories' => $this->getTalkCategories(),
-            'levels'     => $this->getTalkLevels(),
-            'types'      => $this->getTalkTypes(),
+            'categories' => $helper->getTalkCategories(),
+            'levels'     => $helper->getTalkLevels(),
+            'types'      => $helper->getTalkTypes(),
         ];
 
         return new TalkForm($requestData, $this->service('purifier'), $options);
-    }
-    
-    private function getTalkCategories()
-    {
-        $categories = $this->app->config('talk.categories');
-        
-        if ($categories === null) {
-            $categories = [
-                'api'               => 'APIs (REST, SOAP, etc.)',
-                'continuousdelivery'=> 'Continuous Delivery',
-                'database'          => 'Database',
-                'development'       => 'Development',
-                'devops'            => 'Devops',
-                'framework'         => 'Framework',
-                'ibmi'              => 'IBMi',
-                'javascript'        => 'JavaScript',
-                'security'          => 'Security',
-                'testing'           => 'Testing',
-                'uiux'              => 'UI/UX',
-                'other'             => 'Other',
-            ];
-        }
-        
-        return $categories;
-    }
-
-    private function getTalkTypes()
-    {
-        $types = $this->app->config('talk.types');
-
-        if ($types === null) {
-            $types = [
-                'regular'  => 'Regular',
-                'tutorial' => 'Tutorial',
-            ];
-        }
-
-        return $types;
-    }
-
-    private function getTalkLevels()
-    {
-        $levels = $this->app->config('talk.levels');
-
-        if ($levels === null) {
-            $levels = [
-                'entry'    => 'Entry level',
-                'mid'      => 'Mid-level',
-                'advanced' => 'Advanced',
-            ];
-        }
-
-        return $levels;
     }
 
     /**
@@ -97,8 +44,8 @@ class TalkController extends BaseController
         $speakers = $this->service('application.speakers');
 
         try {
-            $id   = filter_var($req->get('id'), FILTER_VALIDATE_INT);
-            $talk = $speakers->getTalk($id);
+            $talkId   = (int) $req->get('id');
+            $talk     = $speakers->getTalk($talkId);
         } catch (NotAuthorizedException $e) {
             return $this->redirectTo('dashboard');
         }
@@ -108,9 +55,7 @@ class TalkController extends BaseController
 
     public function editAction(Request $req)
     {
-        $id      = $req->get('id');
-        $talk_id = filter_var($id, FILTER_VALIDATE_INT);
-
+        $talkId      = (int) $req->get('id');
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
         if (! $this->service('callforproposal')->isOpen()) {
@@ -137,21 +82,21 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
         $helper = $this->service(TalkHelper::class);
-        $data = [
+        $data   = [
             'formAction'     => $this->url('talk_update'),
-            'talkCategories' => $this->getTalkCategories(),
-            'talkTypes'      => $this->getTalkTypes(),
-            'talkLevels'     => $this->getTalkLevels(),
-            'id'             => $talk_id,
-            'title'          => html_entity_decode($talk_info['title']),
-            'description'    => html_entity_decode($talk_info['description']),
-            'type'           => $talk_info['type'],
-            'level'          => $talk_info['level'],
-            'category'       => $talk_info['category'],
-            'desired'        => $talk_info['desired'],
-            'slides'         => $talk_info['slides'],
-            'other'          => $talk_info['other'],
-            'sponsor'        => $talk_info['sponsor'],
+            'talkCategories' => $helper->getTalkCategories(),
+            'talkTypes'      => $helper->getTalkTypes(),
+            'talkLevels'     => $helper->getTalkLevels(),
+            'id'             => $talkId,
+            'title'          => html_entity_decode($talk['title']),
+            'description'    => html_entity_decode($talk['description']),
+            'type'           => $talk['type'],
+            'level'          => $talk['level'],
+            'category'       => $talk['category'],
+            'desired'        => $talk['desired'],
+            'slides'         => $talk['slides'],
+            'other'          => $talk['other'],
+            'sponsor'        => $talk['sponsor'],
             'buttonInfo'     => 'Update my talk!',
         ];
 
@@ -177,9 +122,9 @@ class TalkController extends BaseController
 
         $data = [
             'formAction'     => $this->url('talk_create'),
-            'talkCategories' => $this->getTalkCategories(),
-            'talkTypes'      => $this->getTalkTypes(),
-            'talkLevels'     => $this->getTalkLevels(),
+            'talkCategories' => $helper->getTalkCategories(),
+            'talkTypes'      => $helper->getTalkTypes(),
+            'talkLevels'     => $helper->getTalkLevels(),
             'title'          => $req->get('title'),
             'description'    => $req->get('description'),
             'type'           => $req->get('type'),
@@ -229,9 +174,9 @@ class TalkController extends BaseController
         $form->sanitize();
 
         if ($form->validateAll()) {
-            $sanitizedData = $form->getCleanData();
+            $sanitizedData            = $form->getCleanData();
             $sanitizedData['user_id'] =  (int) $user->getId();
-            $talk = Talk::create($sanitizedData);
+            $talk                     = Talk::create($sanitizedData);
 
             $this->service('session')->set('flash', [
                 'type'  => 'success',
@@ -248,9 +193,9 @@ class TalkController extends BaseController
 
         $data = [
             'formAction'     => $this->url('talk_create'),
-            'talkCategories' => $this->getTalkCategories(),
-            'talkTypes'      => $this->getTalkTypes(),
-            'talkLevels'     => $this->getTalkLevels(),
+            'talkCategories' => $helper->getTalkCategories(),
+            'talkTypes'      => $helper->getTalkTypes(),
+            'talkLevels'     => $helper->getTalkLevels(),
             'title'          => $req->get('title'),
             'description'    => $req->get('description'),
             'type'           => $req->get('type'),
@@ -279,9 +224,9 @@ class TalkController extends BaseController
             $this->service('session')->set(
                 'flash',
                 [
-                    'type' => 'error',
+                    'type'  => 'error',
                     'short' => 'Read Only',
-                    'ext' => 'You cannot edit talks once the call for papers has ended', ]
+                    'ext'   => 'You cannot edit talks once the call for papers has ended', ]
             );
 
             return $this->app->redirect($this->url('talk_view', ['id' => $req->get('id')]));
@@ -307,14 +252,14 @@ class TalkController extends BaseController
         $form->sanitize();
 
         if ($form->validateAll()) {
-            $sanitizedData = $form->getCleanData();
+            $sanitizedData            = $form->getCleanData();
             $sanitizedData['user_id'] =(int) $user->getId();
             
             if (Talk::find((int) $sanitizedData['id'])->update($sanitizedData)) {
                 $this->service('session')->set('flash', [
-                    'type' => 'success',
+                    'type'  => 'success',
                     'short' => 'Success',
-                    'ext' => 'Successfully saved talk.',
+                    'ext'   => 'Successfully saved talk.',
                 ]);
 
                 // send email to speaker showing submission
@@ -328,9 +273,9 @@ class TalkController extends BaseController
 
         $data = [
             'formAction'     => $this->url('talk_update'),
-            'talkCategories' => $this->getTalkCategories(),
-            'talkTypes'      => $this->getTalkTypes(),
-            'talkLevels'     => $this->getTalkLevels(),
+            'talkCategories' => $helper->getTalkCategories(),
+            'talkTypes'      => $helper->getTalkTypes(),
+            'talkLevels'     => $helper->getTalkLevels(),
             'id'             => $req->get('id'),
             'title'          => $req->get('title'),
             'description'    => $req->get('description'),
@@ -399,7 +344,7 @@ class TalkController extends BaseController
         ];
 
         try {
-            $mailer = $this->service('mailer');
+            $mailer  = $this->service('mailer');
             $message = new Swift_Message();
 
             $message->setTo($email);

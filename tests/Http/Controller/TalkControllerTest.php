@@ -33,7 +33,7 @@ class TalkControllerTest extends WebTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $talk = factory(Talk::class, 1)->create()->first();
+        $talk       = factory(Talk::class, 1)->create()->first();
         self::$user = $talk->speaker->first();
         self::$talk = $talk;
     }
@@ -55,15 +55,12 @@ class TalkControllerTest extends WebTestCase
         $talk_data = [
             'title'       => 'Test Title With Ampersand',
             'description' => 'The title should contain this & that',
-<           'type'        => 'regular',
+            'type'        => 'regular',
             'level'       => 'entry',
             'category'    => 'other',
             'desired'     => 0,
-            'slides'      => '',
-            'other'       => '',
-            'sponsor'     => '',
-            'user_id'     => $auth->user()->getId(),
->       ];
+            'user_id'     => 1,
+        ];
 
         $this->asLoggedInSpeaker(1)
             ->callForPapersIsOpen()

@@ -44,18 +44,18 @@ class TalkHelper
 
         if ($categories === null) {
             $categories = [
-                'api' => 'APIs (REST, SOAP, etc.)',
+                'api'               => 'APIs (REST, SOAP, etc.)',
                 'continuousdelivery'=> 'Continuous Delivery',
-                'database'=> 'Database',
-                'development'=> 'Development',
-                'devops' => 'Devops',
-                'framework' => 'Framework',
-                'ibmi' => 'IBMi',
-                'javascript' => 'JavaScript',
-                'security' => 'Security',
-                'testing' => 'Testing',
-                'uiux' => 'UI/UX',
-                'other' => 'Other',
+                'database'          => 'Database',
+                'development'       => 'Development',
+                'devops'            => 'Devops',
+                'framework'         => 'Framework',
+                'ibmi'              => 'IBMi',
+                'javascript'        => 'JavaScript',
+                'security'          => 'Security',
+                'testing'           => 'Testing',
+                'uiux'              => 'UI/UX',
+                'other'             => 'Other',
             ];
         }
 
@@ -82,7 +82,7 @@ class TalkHelper
 
         if ($types === null) {
             $types = [
-                'regular' => 'Regular',
+                'regular'  => 'Regular',
                 'tutorial' => 'Tutorial',
             ];
         }
@@ -110,8 +110,8 @@ class TalkHelper
 
         if ($levels === null) {
             $levels = [
-                'entry' => 'Entry level',
-                'mid' => 'Mid-level',
+                'entry'    => 'Entry level',
+                'mid'      => 'Mid-level',
                 'advanced' => 'Advanced',
             ];
         }
