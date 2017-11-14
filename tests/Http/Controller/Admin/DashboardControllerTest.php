@@ -72,16 +72,16 @@ class DashboardControllerTest extends WebTestCase
         $formatted = m::mock('overload:' . \OpenCFP\Domain\Talk\TalkFormatter::class);
         $formatted->shouldReceive('formatList')->andReturn([
             [
-                'id' => 1,
-                'title' => 'First Talk',
-                'type' => 'regular',
-                'category' => 'api',
+                'id'          => 1,
+                'title'       => 'First Talk',
+                'type'        => 'regular',
+                'category'    => 'api',
                 'description' => 'Talk is amazing',
-                'created_at' => new \DateTime(),
-                'user' => [
-                    'id' => 1,
+                'created_at'  => new \DateTime(),
+                'user'        => [
+                    'id'         => 1,
                     'first_name' => 'Speaker',
-                    'last_name' => 'Name',
+                    'last_name'  => 'Name',
                 ],
                 'meta' => [
                     'rating' => 0,
@@ -90,16 +90,16 @@ class DashboardControllerTest extends WebTestCase
                 'selected' => 0,
             ],
             [
-                'id' => 2,
-                'title' => 'The bug slayer strikes again!',
-                'type' => 'regular',
-                'category' => 'api',
+                'id'          => 2,
+                'title'       => 'The bug slayer strikes again!',
+                'type'        => 'regular',
+                'category'    => 'api',
                 'description' => 'Talk is amazing',
-                'created_at' => new \DateTime(),
-                'user' => [
-                    'id' => 1,
+                'created_at'  => new \DateTime(),
+                'user'        => [
+                    'id'         => 1,
                     'first_name' => 'Daan',
-                    'last_name' => 'The Bug Slayer',
+                    'last_name'  => 'The Bug Slayer',
                 ],
                 'meta' => [
                     'rating' => 0,

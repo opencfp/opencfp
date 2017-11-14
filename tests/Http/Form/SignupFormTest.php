@@ -41,10 +41,10 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function formRejectsValidationOnMissingFields()
     {
         $data = [
-            'email' => 'test@domain.com',
+            'email'       => 'test@domain.com',
             'notrequired' => 'test',
         ];
-        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
+        $form     = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $response = $form->hasRequiredFields();
         $this->assertFalse($response);
     }
@@ -128,7 +128,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function properPasswordsPassValidationAndSanitization($passwd)
     {
         $data = [
-            'password' => $passwd,
+            'password'  => $passwd,
             'password2' => $passwd,
         ];
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
@@ -154,7 +154,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function badPasswordsAreBeingCorrectlyDetected($passwd, $passwd2, $expectedMessage, $expectedResponse)
     {
         $data = [
-            'password' => $passwd,
+            'password'  => $passwd,
             'password2' => $passwd2,
         ];
 
@@ -197,7 +197,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function firstNameIsValidatedCorrectly($firstName, $expectedResponse)
     {
         $data['first_name'] = $firstName;
-        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
+        $form               = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
@@ -241,7 +241,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function lastNameIsValidatedCorrectly($lastName, $expectedResponse)
     {
         $data['last_name'] = $lastName;
-        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
+        $form              = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
@@ -301,14 +301,14 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function validateAllProvider()
     {
         $baseData = [
-            'email' => 'test@domain.com',
-            'password' => 'xxxxxx',
-            'password2' => 'xxxxxx',
+            'email'      => 'test@domain.com',
+            'password'   => 'xxxxxx',
+            'password2'  => 'xxxxxx',
             'first_name' => 'Tésty',
-            'last_name' => 'McTestèrton',
-            'url' => 'https://joind.in/user/abc123',
+            'last_name'  => 'McTestèrton',
+            'url'        => 'https://joind.in/user/abc123',
         ];
-        $baseDataWithSpeakerInfo = $baseData;
+        $baseDataWithSpeakerInfo                 = $baseData;
         $baseDataWithSpeakerInfo['speaker_info'] = 'Testing speaker info data';
 
         return [
@@ -329,7 +329,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function speakerInfoValidatedCorrectly($speakerInfo, $expectedResponse)
     {
         $data['speaker_info'] = $speakerInfo;
-        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
+        $form                 = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
         $this->assertEquals(
@@ -351,7 +351,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function speakerBioValidatedCorrectly($speakerBio, $expectedResponse)
     {
         $data['speaker_bio'] = $speakerBio;
-        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
+        $form                = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
         $this->assertEquals(
             $expectedResponse,
@@ -402,55 +402,55 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function sanitizationProvider()
     {
         $badDataIn = [
-            'email' => 'test@domain.com',
-            'password' => 'xxxxxx',
-            'password2' => 'xxxxxx',
+            'email'      => 'test@domain.com',
+            'password'   => 'xxxxxx',
+            'password2'  => 'xxxxxx',
             'first_name' => 'Testy',
-            'last_name' => "<script>alert('XSS')</script>",
+            'last_name'  => "<script>alert('XSS')</script>",
         ];
 
         $badDataOut = [
-            'email' => 'test@domain.com',
-            'password' => 'xxxxxx',
-            'password2' => 'xxxxxx',
+            'email'      => 'test@domain.com',
+            'password'   => 'xxxxxx',
+            'password2'  => 'xxxxxx',
             'first_name' => 'Testy',
-            'last_name' => '',
+            'last_name'  => '',
         ];
 
         $goodDataIn = [
-            'email' => 'test@domain.com',
-            'password' => 'xxxxxx',
-            'password2' => 'xxxxxx',
+            'email'      => 'test@domain.com',
+            'password'   => 'xxxxxx',
+            'password2'  => 'xxxxxx',
             'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
+            'last_name'  => 'McTesterton',
         ];
 
         $goodDataOut = $goodDataIn;
 
         $badSpeakerInfoIn = [
-            'email' => 'test@domain.com',
-            'password' => 'xxxxxx',
-            'password2' => 'xxxxxx',
-            'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
+            'email'        => 'test@domain.com',
+            'password'     => 'xxxxxx',
+            'password2'    => 'xxxxxx',
+            'first_name'   => 'Testy',
+            'last_name'    => 'McTesterton',
             'speaker_info' => '<a href="http://lolcoin.com/redeem">Speaker bio</a>',
         ];
 
         $badSpeakerInfoOut = [
-            'email' => 'test@domain.com',
-            'password' => 'xxxxxx',
-            'password2' => 'xxxxxx',
-            'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
+            'email'        => 'test@domain.com',
+            'password'     => 'xxxxxx',
+            'password2'    => 'xxxxxx',
+            'first_name'   => 'Testy',
+            'last_name'    => 'McTesterton',
             'speaker_info' => '<a href="http://lolcoin.com/redeem">Speaker bio</a>',
         ];
 
         $goodSpeakerInfoIn = [
-            'email' => 'test@domain.com',
-            'password' => 'xxxxxx',
-            'password2' => 'xxxxxx',
-            'first_name' => 'Testy',
-            'last_name' => 'McTesterton',
+            'email'        => 'test@domain.com',
+            'password'     => 'xxxxxx',
+            'password2'    => 'xxxxxx',
+            'first_name'   => 'Testy',
+            'last_name'    => 'McTesterton',
             'speaker_info' => 'Find my bio at http://littlehart.net',
         ];
 

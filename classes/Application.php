@@ -45,8 +45,8 @@ class Application extends SilexApplication
     {
         parent::__construct();
 
-        $this['path'] = $basePath;
-        $this['env'] = $environment;
+        $this['path']  = $basePath;
+        $this['env']   = $environment;
         $this['debug'] = true;
 
         $this->bindPathsInApplicationContainer();
@@ -72,19 +72,19 @@ class Application extends SilexApplication
         $this->register(new TranslationServiceProvider);
         $this->register(new MonologServiceProvider, [
             'monolog.logfile' => $this->config('log.path') ?: "{$basePath}/log/app.log",
-            'monolog.name' => 'opencfp',
-            'monlog.level' => strtoupper(
+            'monolog.name'    => 'opencfp',
+            'monlog.level'    => strtoupper(
                 $this->config('log.level') ?: 'debug'
             ),
         ]);
         $this->register(new SwiftmailerServiceProvider, [
             'swiftmailer.options' => [
-                'host' => $this->config('mail.host'),
-                'port' => $this->config('mail.port'),
-                'username' => $this->config('mail.username'),
-                'password' => $this->config('mail.password'),
+                'host'       => $this->config('mail.host'),
+                'port'       => $this->config('mail.port'),
+                'username'   => $this->config('mail.username'),
+                'password'   => $this->config('mail.password'),
                 'encryption' => $this->config('mail.encryption'),
-                'auth_mode' => $this->config('mail.auth_mode'),
+                'auth_mode'  => $this->config('mail.auth_mode'),
             ],
         ]);
 

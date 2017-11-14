@@ -37,9 +37,9 @@ class TalkTest extends BaseTestCase
      */
     public function createFormattedOutputWorksWithNoMeta()
     {
-        $talk = self::$talks;
+        $talk      = self::$talks;
         $formatter = new TalkFormatter();
-        $format =$formatter->createdFormattedOutput($talk->first(), 1);
+        $format    =$formatter->createdFormattedOutput($talk->first(), 1);
 
         $this->assertEquals(self::$talks->first()->title, $format['title']);
         $this->assertEquals(0, $format['meta']->rating);
@@ -55,7 +55,7 @@ class TalkTest extends BaseTestCase
 
         // Now to see if the meta gets put in correctly
         $talkFormatter = new TalkFormatter();
-        $secondFormat =$talkFormatter->createdFormattedOutput($talk->first(), 2);
+        $secondFormat  =$talkFormatter->createdFormattedOutput($talk->first(), 2);
 
         $this->assertEquals(1, $secondFormat['meta']->rating);
         $this->assertEquals(1, $secondFormat['meta']->viewed);

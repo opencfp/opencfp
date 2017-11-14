@@ -35,8 +35,8 @@ class ClientStorage extends AbstractStorage implements ClientInterface
             $client = new ClientEntity($this->server);
 
             $clientData = [
-                'id'    =>  $result[0]['id'],
-                'name'  =>  $result[0]['name'],
+                'id'    => $result[0]['id'],
+                'name'  => $result[0]['name'],
             ];
 
             if ($redirectUri) {
@@ -65,8 +65,8 @@ class ClientStorage extends AbstractStorage implements ClientInterface
         if (count($result) === 1) {
             $client = new ClientEntity($this->server);
             $client->hydrate([
-                'id'    =>  $result[0]['id'],
-                'name'  =>  $result[0]['name'],
+                'id'    => $result[0]['id'],
+                'name'  => $result[0]['name'],
             ]);
 
             return $client;

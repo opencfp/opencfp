@@ -8,7 +8,7 @@ class ValidationException extends \Exception
 
     public static function withErrors(array $errors = [])
     {
-        $instance = new static('There was an error.');
+        $instance         = new static('There was an error.');
         $instance->errors = $errors;
 
         return $instance;

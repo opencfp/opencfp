@@ -40,9 +40,9 @@ class UserCreateCommand extends BaseCommand
 
         $user = $this->createUser([
             'first_name' => $input->getOption('first_name'),
-            'last_name' => $input->getOption('last_name'),
-            'password' => $input->getOption('password'),
-            'email' => $input->getOption('email'),
+            'last_name'  => $input->getOption('last_name'),
+            'password'   => $input->getOption('password'),
+            'email'      => $input->getOption('email'),
         ]);
 
         if ($user == false) {
@@ -70,9 +70,9 @@ class UserCreateCommand extends BaseCommand
         try {
             $user_data = [
                 'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'email' => $data['email'],
-                'password' => $data['password'],
+                'last_name'  => $data['last_name'],
+                'email'      => $data['email'],
+                'password'   => $data['password'],
             ];
 
             /** @var AccountManagement $accounts */

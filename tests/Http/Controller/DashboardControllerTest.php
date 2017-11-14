@@ -90,18 +90,18 @@ class DashboardControllerTest extends WebTestCase
         // We  have benefit of being able to stub an application
         // service for this.
         $profile = $this->stubProfileWith([
-            'getTalks' => [],
-            'getName' => $faker->name,
-            'getEmail' => $faker->companyEmail,
-            'getCompany' => $faker->company,
-            'getTwitter' => $faker->userName,
-            'getUrl' => $faker->url,
-            'getInfo' => $faker->text,
-            'getBio' => $faker->text,
+            'getTalks'          => [],
+            'getName'           => $faker->name,
+            'getEmail'          => $faker->companyEmail,
+            'getCompany'        => $faker->company,
+            'getTwitter'        => $faker->userName,
+            'getUrl'            => $faker->url,
+            'getInfo'           => $faker->text,
+            'getBio'            => $faker->text,
             'getTransportation' => true,
-            'getHotel' => true,
-            'getAirport' => 'RDU',
-            'getPhoto' => '',
+            'getHotel'          => true,
+            'getAirport'        => 'RDU',
+            'getPhoto'          => '',
         ]);
 
         $speakersDouble = m::mock(\OpenCFP\Application\Speakers::class)

@@ -47,7 +47,7 @@ class TalkTest extends BaseTestCase
     {
         /** @var TalkComment $meta */
         $comment = factory(TalkComment::class, 1)->create()->first();
-        $talk = $comment->talk()->first();
+        $talk    = $comment->talk()->first();
 
         $talk->delete();
         $this->assertCount(0, TalkComment::all());
@@ -60,7 +60,7 @@ class TalkTest extends BaseTestCase
     {
         /** @var TalkComment $comment */
         $comment = factory(TalkComment::class, 1)->create()->first();
-        $talk = $comment->talk()->first();
+        $talk    = $comment->talk()->first();
 
         $talk->deleteComments();
         $this->assertCount(0, TalkComment::all());
@@ -74,7 +74,7 @@ class TalkTest extends BaseTestCase
     {
         /** @var Favorite $favorite */
         $favorite = factory(Favorite::class, 1)->create()->first();
-        $talk = $favorite->talk()->first();
+        $talk     = $favorite->talk()->first();
 
         $talk->delete();
         $this->assertCount(0, Favorite::all());
@@ -87,7 +87,7 @@ class TalkTest extends BaseTestCase
     {
         /** @var Favorite $favorite */
         $favorite = factory(Favorite::class, 1)->create()->first();
-        $talk = $favorite->talk()->first();
+        $talk     = $favorite->talk()->first();
 
         $talk->deleteFavorites();
         $this->assertCount(0, Favorite::all());

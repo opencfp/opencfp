@@ -25,9 +25,9 @@ class SignupController extends BaseController
 
         if (! $cfp->isOpen()) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'Sorry, the call for papers has ended.',
+                'ext'   => 'Sorry, the call for papers has ended.',
             ]);
 
             return $this->redirectTo('homepage');
@@ -40,9 +40,9 @@ class SignupController extends BaseController
     {
         try {
             $this->validate([
-                'email' => 'required|email',
+                'email'    => 'required|email',
                 'password' => 'required',
-                'coc' => 'accepted',
+                'coc'      => 'accepted',
             ]);
 
             /** @var AccountManagement $accounts */
@@ -61,9 +61,9 @@ class SignupController extends BaseController
             }
 
             $app['session']->set('flash', [
-                'type' => 'success',
+                'type'  => 'success',
                 'short' => 'Success',
-                'ext' => "You've successfully created your account!",
+                'ext'   => "You've successfully created your account!",
             ]);
 
             // Automatically authenticate the newly created user.
@@ -72,17 +72,17 @@ class SignupController extends BaseController
             return $this->redirectTo('dashboard');
         } catch (ValidationException $e) {
             $app['session']->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => $e->getMessage(),
-                'ext' => $e->errors(),
+                'ext'   => $e->errors(),
             ]);
 
             return $this->redirectBack();
         } catch (UserExistsException $e) {
             $app['session']->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'A user already exists with that email address',
+                'ext'   => 'A user already exists with that email address',
             ]);
 
             return $this->redirectBack();

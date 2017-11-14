@@ -12,7 +12,7 @@ class SpeakersController extends BaseController
 {
     public function indexAction(Request $req)
     {
-        $search = $req->get('search');
+        $search   = $req->get('search');
         $speakers = User::search($search)->get()->toArray();
         // Set up our page stuff
         $pagerfanta = new Pagination($speakers);
@@ -21,9 +21,9 @@ class SpeakersController extends BaseController
 
         $templateData = [
             'pagination' => $pagination,
-            'speakers' => $pagerfanta->getFanta(),
-            'page' => $pagerfanta->getCurrentPage(),
-            'search' => $search ?: '',
+            'speakers'   => $pagerfanta->getFanta(),
+            'page'       => $pagerfanta->getCurrentPage(),
+            'search'     => $search ?: '',
         ];
 
         return $this->render('reviewer/speaker/index.twig', $templateData);
@@ -35,20 +35,20 @@ class SpeakersController extends BaseController
 
         if (!$speakerDetails instanceof User) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'Could not find requested speaker',
+                'ext'   => 'Could not find requested speaker',
             ]);
 
             return $this->app->redirect($this->url('reviewer_speakers'));
         }
 
-        $talks = $speakerDetails->talks()->get()->toArray();
+        $talks        = $speakerDetails->talks()->get()->toArray();
         $templateData = [
-            'speaker' => new SpeakerProfile($speakerDetails),
-            'talks' => $talks,
+            'speaker'    => new SpeakerProfile($speakerDetails),
+            'talks'      => $talks,
             'photo_path' => '/uploads/',
-            'page' => $req->get('page'),
+            'page'       => $req->get('page'),
         ];
 
         return $this->render('reviewer/speaker/view.twig', $templateData);

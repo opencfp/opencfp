@@ -20,7 +20,7 @@ class TalksController extends BaseController
 
         $options = [
             'order_by' => $req->get('order_by'),
-            'sort' => $req->get('sort'),
+            'sort'     => $req->get('sort'),
         ];
 
         $pager_formatted_talks = $this->service(TalkFilter::class)->getFilteredTalks(
@@ -29,21 +29,21 @@ class TalksController extends BaseController
             $options
         );
 
-        $per_page = (int) $req->get('per_page') ?: 20;
+        $per_page   = (int) $req->get('per_page') ?: 20;
         $pagerfanta = new Pagination($pager_formatted_talks, $per_page);
         $pagerfanta->setCurrentPage($req->get('page'));
         $pagination = $pagerfanta->createView('/reviewer/talks?', $req->query->all());
 
         $templateData = [
-            'pagination' => $pagination,
-            'talks' => $pagerfanta->getFanta(),
-            'page' => $pagerfanta->getCurrentPage(),
+            'pagination'   => $pagination,
+            'talks'        => $pagerfanta->getFanta(),
+            'page'         => $pagerfanta->getCurrentPage(),
             'current_page' => $req->getRequestUri(),
             'totalRecords' => count($pager_formatted_talks),
-            'filter' => $req->get('filter'),
-            'per_page' => $per_page,
-            'sort' => $req->get('sort'),
-            'order_by' => $req->get('order_by'),
+            'filter'       => $req->get('filter'),
+            'per_page'     => $per_page,
+            'sort'         => $req->get('sort'),
+            'order_by'     => $req->get('order_by'),
         ];
 
         return $this->render('reviewer/talks/index.twig', $templateData);
@@ -52,15 +52,15 @@ class TalksController extends BaseController
     public function viewAction(Request $req)
     {
         $talkId = $req->get('id');
-        $talk = Talk::where('id', $talkId)
+        $talk   = Talk::where('id', $talkId)
             ->with(['comments'])
             ->first();
 
         if (!$talk instanceof Talk) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'Could not find requested talk',
+                'ext'   => 'Could not find requested talk',
             ]);
 
             return $this->app->redirect($this->url('admin_talks'));
@@ -73,20 +73,20 @@ class TalksController extends BaseController
             ->meta()
             ->firstOrNew([
                 'admin_user_id' => $userId,
-                'talk_id' => $talkId,
+                'talk_id'       => $talkId,
             ]);
         $talkMeta->viewTalk();
 
-        $speaker = $talk->speaker;
+        $speaker    = $talk->speaker;
         $otherTalks = $speaker->getOtherTalks($talkId);
 
         // Build and render the template
         $templateData = [
-            'talk' => $talk->toArray(),
-            'talk_meta' => $talkMeta,
-            'speaker' => new SpeakerProfile($speaker),
+            'talk'       => $talk->toArray(),
+            'talk_meta'  => $talkMeta,
+            'speaker'    => new SpeakerProfile($speaker),
             'otherTalks' => $otherTalks,
-            'comments' => $talk->comments()->get(),
+            'comments'   => $talk->comments()->get(),
         ];
 
         return $this->render('reviewer/talks/view.twig', $templateData);
@@ -99,7 +99,7 @@ class TalksController extends BaseController
 
         try {
             $talk_rating = (int) $req->get('rating');
-            $talk_id = (int) $req->get('id');
+            $talk_id     = (int) $req->get('id');
 
             $talkRatingStrategy->rate($talk_id, $talk_rating);
         } catch (TalkRatingException $e) {

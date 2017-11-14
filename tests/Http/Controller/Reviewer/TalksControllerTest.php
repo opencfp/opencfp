@@ -86,8 +86,8 @@ class TalksControllerTest extends WebTestCase
     protected function makeTalks()
     {
         $formatter = new TalkFormatter();
-        $toReturn = $formatter->formatList(self::$talks, 1);
-        $filter = Mockery::mock(TalkFilter::class);
+        $toReturn  = $formatter->formatList(self::$talks, 1);
+        $filter    = Mockery::mock(TalkFilter::class);
         $filter->shouldReceive('getFilteredTalks')->andReturn($toReturn->toArray());
         $this->swap(TalkFilter::class, $filter);
     }

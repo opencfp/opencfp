@@ -32,10 +32,10 @@ class FavoriteTest extends \PHPUnit\Framework\TestCase
 
         // Create a talk
         $talk_mapper = $spot->mapper(\OpenCFP\Domain\Entity\Talk::class);
-        $data = [
-            'title' => 'Favorite Entity Test',
+        $data        = [
+            'title'       => 'Favorite Entity Test',
             'description' => 'This is a stubbed talk for a Favorite Entity Test',
-            'user_id' => 1,
+            'user_id'     => 1,
         ];
         $talk_mapper->migrate();
         $this->talk = $talk_mapper->create($data);
@@ -47,11 +47,11 @@ class FavoriteTest extends \PHPUnit\Framework\TestCase
     public function relationsCreatedCorrectly()
     {
         $created = new \DateTime();
-        $data = [
-            'id' => 1,
+        $data    = [
+            'id'            => 1,
             'admin_user_id' => 1,
-            'talk_id' => $this->talk->id,
-            'created' => $created,
+            'talk_id'       => $this->talk->id,
+            'created'       => $created,
         ];
         $favorite = $this->mapper->create($data);
 

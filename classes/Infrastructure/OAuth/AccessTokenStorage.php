@@ -46,8 +46,8 @@ class AccessTokenStorage extends AbstractStorage implements AccessTokenInterface
         if (count($result) > 0) {
             foreach ($result as $row) {
                 $scope = (new ScopeEntity($this->server))->hydrate([
-                    'id'            =>  $row['id'],
-                    'description'   =>  $row['description'],
+                    'id'            => $row['id'],
+                    'description'   => $row['description'],
                 ]);
                 $response[] = $scope;
             }
@@ -63,9 +63,9 @@ class AccessTokenStorage extends AbstractStorage implements AccessTokenInterface
     {
         Capsule::table('oauth_access_tokens')
                     ->insert([
-                        'access_token'     =>  $token,
-                        'session_id'    =>  $sessionId,
-                        'expire_time'   =>  $expireTime,
+                        'access_token'     => $token,
+                        'session_id'       => $sessionId,
+                        'expire_time'      => $expireTime,
                     ]);
     }
 
@@ -76,8 +76,8 @@ class AccessTokenStorage extends AbstractStorage implements AccessTokenInterface
     {
         Capsule::table('oauth_access_token_scopes')
                     ->insert([
-                        'access_token'  =>  $token->getId(),
-                        'scope' =>  $scope->getId(),
+                        'access_token'  => $token->getId(),
+                        'scope'         => $scope->getId(),
                     ]);
     }
 

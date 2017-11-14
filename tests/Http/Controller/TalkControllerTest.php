@@ -53,13 +53,17 @@ class TalkControllerTest extends WebTestCase
 
         // Get our request object to return expected data
         $talk_data = [
-            'title' => 'Test Title With Ampersand',
+            'title'       => 'Test Title With Ampersand',
             'description' => 'The title should contain this & that',
-            'type' => 'regular',
-            'level' => 'entry',
-            'category' => 'other',
-            'user_id' => 1,
-        ];
+<           'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'other',
+            'desired'     => 0,
+            'slides'      => '',
+            'other'       => '',
+            'sponsor'     => '',
+            'user_id'     => $auth->user()->getId(),
+>       ];
 
         $this->asLoggedInSpeaker(1)
             ->callForPapersIsOpen()

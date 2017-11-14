@@ -16,7 +16,7 @@ class ForgotController extends BaseController
     {
         $form = $this->service('form.factory')->createBuilder(ForgotForm::class)->getForm();
         $data = [
-            'form' => $form->createView(),
+            'form'         => $form->createView(),
             'current_page' => 'Forgot Password',
         ];
 
@@ -32,9 +32,9 @@ class ForgotController extends BaseController
 
         if (!$form->isValid()) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'Please enter a properly formatted email address',
+                'ext'   => 'Please enter a properly formatted email address',
             ]);
 
             return $this->redirectTo('forgot_password');
@@ -59,9 +59,9 @@ class ForgotController extends BaseController
 
         if ($response == false) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'We were unable to send your password reset request. Please try again',
+                'ext'   => 'We were unable to send your password reset request. Please try again',
             ]);
 
             return $this->redirectTo('forgot_password');
@@ -79,7 +79,7 @@ class ForgotController extends BaseController
         }
 
         $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
-        $error = 0;
+        $error        = 0;
 
         try {
             /** @var AccountManagement $accounts */
@@ -96,20 +96,20 @@ class ForgotController extends BaseController
 
         if ($error > 0) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => $errorMessage,
+                'ext'   => $errorMessage,
             ]);
         }
         
         // Build password form and display it to the user
         $form_options = [
-            'user_id' => $req->get('user_id'),
+            'user_id'    => $req->get('user_id'),
             'reset_code' => $req->get('reset_code'),
         ];
         $form = $this->service('form.factory')->create(new ResetForm());
 
-        $data['form'] = $form->createView($form_options);
+        $data['form']  = $form->createView($form_options);
         $data['flash'] = $this->getFlash($this->app);
 
         return $this->render('user/forgot_password.twig', $data);
@@ -117,7 +117,7 @@ class ForgotController extends BaseController
 
     public function processResetAction(Request $req)
     {
-        $user_id = $req->get('user_id');
+        $user_id    = $req->get('user_id');
         $reset_code = $req->get('reset_code');
 
         if (empty($reset_code)) {
@@ -135,7 +135,7 @@ class ForgotController extends BaseController
         }
              
         $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
-        $error = 0;
+        $error        = 0;
 
         try {
             /** @var AccountManagement $accounts */
@@ -152,9 +152,9 @@ class ForgotController extends BaseController
 
         if ($error > 0) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => $errorMessage,
+                'ext'   => $errorMessage,
             ]);
         }
 
@@ -170,10 +170,10 @@ class ForgotController extends BaseController
             return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
         }
 
-        $data = $form->getData();
-        $user_id = $data['user_id'];
+        $data       = $form->getData();
+        $user_id    = $data['user_id'];
         $reset_code = $data['reset_code'];
-        $password = $data['password'];
+        $password   = $data['password'];
 
         if (empty($reset_code)) {
             throw new \Exception();
@@ -195,9 +195,9 @@ class ForgotController extends BaseController
          */
         if ($user->checkPassword($password) === true) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'Please select a different password than your current one.',
+                'ext'   => 'Please select a different password than your current one.',
             ]);
 
             return $this->redirectTo('login');
@@ -206,9 +206,9 @@ class ForgotController extends BaseController
         // Everything looks good, let's actually reset their password
         if ($user->attemptResetPassword($reset_code, $password)) {
             $this->service('session')->set('flash', [
-                'type' => 'success',
+                'type'  => 'success',
                 'short' => 'Success',
-                'ext' => "You've successfully reset your password.",
+                'ext'   => "You've successfully reset your password.",
             ]);
 
             return $this->redirectTo('login');
@@ -216,9 +216,9 @@ class ForgotController extends BaseController
 
         // user may have tried using the recovery twice
         $this->service('session')->set('flash', [
-            'type' => 'error',
+            'type'  => 'error',
             'short' => 'Error',
-            'ext' => 'Password reset failed, please contact the administrator.',
+            'ext'   => 'Password reset failed, please contact the administrator.',
         ]);
 
         return $this->redirectTo('homepage');
@@ -227,9 +227,9 @@ class ForgotController extends BaseController
     protected function successfulSendFlashParameters($email)
     {
         return [
-            'type' => 'success',
+            'type'  => 'success',
             'short' => 'Success',
-            'ext' => "If your email was valid, we sent a link to reset your password to $email",
+            'ext'   => "If your email was valid, we sent a link to reset your password to $email",
         ];
     }
 }

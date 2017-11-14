@@ -15,7 +15,7 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
         $faker = $this->getFaker();
 
         $firstName = $faker->firstName;
-        $lastName = $faker->lastName;
+        $lastName  = $faker->lastName;
 
         $speaker = new Entity\User();
 
@@ -178,11 +178,11 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
         $faker = $this->getFaker();
 
         $firstName = $faker->firstName;
-        $lastName = $faker->lastName;
-        $email = $faker->email;
-        $twitter = $faker->userName;
-        $url = $faker->url;
-        $bio = $faker->text();
+        $lastName  = $faker->lastName;
+        $email     = $faker->email;
+        $twitter   = $faker->userName;
+        $url       = $faker->url;
+        $bio       = $faker->text();
 
         $speaker = new Entity\User();
 
@@ -196,11 +196,11 @@ class SpeakerProfileTest extends \PHPUnit\Framework\TestCase
         $profile = new SpeakerProfile($speaker);
 
         $expected = [
-            'name' => $firstName . ' ' . $lastName,
-            'email' => $email,
+            'name'    => $firstName . ' ' . $lastName,
+            'email'   => $email,
             'twitter' => $twitter,
-            'url' => $url,
-            'bio' => $bio,
+            'url'     => $url,
+            'bio'     => $bio,
         ];
 
         $this->assertSame($expected, $profile->toArrayForApi());

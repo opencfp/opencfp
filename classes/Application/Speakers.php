@@ -36,11 +36,11 @@ class Speakers
         TalkRepository $talks,
         EventDispatcher $dispatcher
     ) {
-        $this->speakers = $speakers;
+        $this->speakers         = $speakers;
         $this->identityProvider = $identityProvider;
-        $this->talks = $talks;
-        $this->callForProposal = $callForProposal;
-        $this->dispatcher = $dispatcher;
+        $this->talks            = $talks;
+        $this->callForProposal  = $callForProposal;
+        $this->dispatcher       = $dispatcher;
     }
 
     /**
@@ -67,7 +67,7 @@ class Speakers
     public function getTalk(int $talkId)
     {
         $speaker = $this->identityProvider->getCurrentUser();
-        $talk = $speaker->talks()->find($talkId);
+        $talk    = $speaker->talks()->find($talkId);
 
         // If it can't grab by relation, it's likely not their talk.
         if (!$talk instanceof Talk) {

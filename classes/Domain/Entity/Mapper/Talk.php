@@ -39,7 +39,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 'created_at',
-                'sort' => 'ASC',
+                'sort'     => 'ASC',
             ]
         );
 
@@ -77,7 +77,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 'created_at',
-                'sort' => 'DESC',
+                'sort'     => 'DESC',
             ]
         );
 
@@ -133,7 +133,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 'f.created',
-                'sort' => 'DESC',
+                'sort'     => 'DESC',
             ]
         );
 
@@ -169,7 +169,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 'total_rating',
-                'sort' => 'DESC',
+                'sort'     => 'DESC',
             ]
         );
 
@@ -204,7 +204,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 't.created_at',
-                'sort' => 'DESC',
+                'sort'     => 'DESC',
             ]
         );
 
@@ -239,7 +239,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 't.created_at',
-                'sort' => 'DESC',
+                'sort'     => 'DESC',
             ]
         );
 
@@ -274,7 +274,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 'm.created',
-                'sort' => 'DESC',
+                'sort'     => 'DESC',
             ]
         );
 
@@ -309,7 +309,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 'm.created',
-                'sort' => 'DESC',
+                'sort'     => 'DESC',
             ]
         );
 
@@ -344,7 +344,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 't.created_at',
-                'sort' => 'DESC',
+                'sort'     => 'DESC',
             ]
         );
 
@@ -383,7 +383,7 @@ class Talk extends Mapper
             $options,
             [
                 'order_by' => 'created_at',
-                'sort' => 'DESC',
+                'sort'     => 'DESC',
             ]
         );
 

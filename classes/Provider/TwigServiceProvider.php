@@ -28,7 +28,7 @@ class TwigServiceProvider implements ServiceProviderInterface
     public function register(Container $c)
     {
         $c->register(new SilexTwigServiceProvider, [
-            'twig.path' => $this->app->templatesPath(),
+            'twig.path'    => $this->app->templatesPath(),
             'twig.options' => [
                 'debug' => !$this->app->isProduction(),
                 'cache' => $this->app->config('cache.enabled') ? $this->app->cacheTwigPath() : false,

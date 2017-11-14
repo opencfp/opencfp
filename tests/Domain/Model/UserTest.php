@@ -42,39 +42,39 @@ class UserTest extends BaseTestCase
     private static function makeKnownUsers()
     {
         $userInfo = [
-            'password' => password_hash('secret', PASSWORD_BCRYPT),
-            'activated' => 1,
+            'password'         => password_hash('secret', PASSWORD_BCRYPT),
+            'activated'        => 1,
             'has_made_profile' => 1,
         ];
 
         User::create(array_merge([
-            'email' => 'henk@example.com',
+            'email'      => 'henk@example.com',
             'first_name' => 'Henk',
-            'last_name' => 'de Vries',
+            'last_name'  => 'de Vries',
         ], $userInfo));
 
         User::create(array_merge([
-            'email' => 'speaker@cfp.org',
+            'email'      => 'speaker@cfp.org',
             'first_name' => 'Speaker',
-            'last_name' => 'de Vries',
+            'last_name'  => 'de Vries',
         ], $userInfo));
 
         User::create(array_merge([
-            'email' => 'Vries@cfp.org',
+            'email'      => 'Vries@cfp.org',
             'first_name' => 'Vries',
-            'last_name' => 'van Henk',
+            'last_name'  => 'van Henk',
         ], $userInfo));
 
         User::create(array_merge([
-            'email' => 'd20@mail.com',
+            'email'      => 'd20@mail.com',
             'first_name' => 'Arthur',
-            'last_name' => 'Hunter',
+            'last_name'  => 'Hunter',
         ], $userInfo));
 
         User::create(array_merge([
-            'email' => 'hunter@hunter.xx',
+            'email'      => 'hunter@hunter.xx',
             'first_name' => 'Gon',
-            'last_name' => 'Freecss',
+            'last_name'  => 'Freecss',
         ], $userInfo));
     }
 }

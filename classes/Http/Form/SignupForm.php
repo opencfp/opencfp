@@ -35,22 +35,22 @@ class SignupForm extends Form
     {
         $this->sanitize();
         $valid_passwords = true;
-        $agree_coc = true;
+        $agree_coc       = true;
 
         if ($action == 'create') {
             $valid_passwords = $this->validatePasswords();
-            $agree_coc = $this->validateAgreeCoc();
+            $agree_coc       = $this->validateAgreeCoc();
         }
 
-        $valid_email = $this->validateEmail();
-        $valid_first_name = $this->validateFirstName();
-        $valid_last_name = $this->validateLastName();
-        $valid_company = $this->validateCompany();
-        $valid_twitter = $this->validateTwitter();
-        $valid_url = $this->validateUrl();
+        $valid_email         = $this->validateEmail();
+        $valid_first_name    = $this->validateFirstName();
+        $valid_last_name     = $this->validateLastName();
+        $valid_company       = $this->validateCompany();
+        $valid_twitter       = $this->validateTwitter();
+        $valid_url           = $this->validateUrl();
         $valid_speaker_photo = $this->validateSpeakerPhoto();
-        $valid_speaker_info = true;
-        $valid_speaker_bio = true;
+        $valid_speaker_info  = true;
+        $valid_speaker_bio   = true;
 
         if (!empty($this->_taintedData['speaker_info'])) {
             $valid_speaker_info = $this->validateSpeakerInfo();
@@ -145,7 +145,7 @@ class SignupForm extends Form
      */
     public function validatePasswords(): bool
     {
-        $passwd = $this->_cleanData['password'];
+        $passwd  = $this->_cleanData['password'];
         $passwd2 = $this->_cleanData['password2'];
 
         if ($passwd == '' || $passwd2 == '') {
@@ -182,7 +182,7 @@ class SignupForm extends Form
      */
     public function validateFirstName(): bool
     {
-        $first_name = $this->_cleanData['first_name'];
+        $first_name          = $this->_cleanData['first_name'];
         $validation_response = true;
 
         if (empty($first_name)) {
@@ -210,7 +210,7 @@ class SignupForm extends Form
      */
     public function validateLastName(): bool
     {
-        $last_name = $this->_cleanData['last_name'];
+        $last_name           = $this->_cleanData['last_name'];
         $validation_response = true;
 
         if (empty($last_name)) {
@@ -269,8 +269,8 @@ class SignupForm extends Form
             FILTER_SANITIZE_STRING
         );
         $validation_response = true;
-        $speakerInfo = strip_tags($speakerInfo);
-        $speakerInfo = $this->_purifier->purify($speakerInfo);
+        $speakerInfo         = strip_tags($speakerInfo);
+        $speakerInfo         = $this->_purifier->purify($speakerInfo);
 
         if (empty($speakerInfo)) {
             $this->_addErrorMessage('You submitted speaker info but it was empty after sanitizing');
@@ -292,8 +292,8 @@ class SignupForm extends Form
             FILTER_SANITIZE_STRING
         );
         $validation_response = true;
-        $speaker_bio = strip_tags($speaker_bio);
-        $speaker_bio = $this->_purifier->purify($speaker_bio);
+        $speaker_bio         = strip_tags($speaker_bio);
+        $speaker_bio         = $this->_purifier->purify($speaker_bio);
 
         if (empty($speaker_bio)) {
             $this->_addErrorMessage('You submitted speaker bio information but it was empty after sanitizing');

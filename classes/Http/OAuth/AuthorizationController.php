@@ -32,7 +32,7 @@ class AuthorizationController extends ApiController
      */
     public function __construct(AuthorizationServer $server, IdentityProvider $identityProvider)
     {
-        $this->server = $server;
+        $this->server           = $server;
         $this->identityProvider = $identityProvider;
     }
 
@@ -66,7 +66,7 @@ class AuthorizationController extends ApiController
             return $this->redirectTo('login');
         } catch (OAuthException $e) {
             return $this->setStatusCode($e->httpStatusCode)->respond([
-                'error' => $e->errorType,
+                'error'   => $e->errorType,
                 'message' => $e->getMessage(),
             ], $e->getHttpHeaders());
         }
@@ -90,7 +90,7 @@ class AuthorizationController extends ApiController
             $error = new AccessDeniedException;
 
             $redirectUri = RedirectUri::make($authParams['redirect_uri'], [
-                'error' => $error->errorType,
+                'error'   => $error->errorType,
                 'message' => $error->getMessage(),
             ]);
 
@@ -113,7 +113,7 @@ class AuthorizationController extends ApiController
             return $this->respond($response);
         } catch (\Exception $e) {
             return $this->setStatusCode($e->httpStatusCode)->respond([
-                'error' => $e->errorType,
+                'error'   => $e->errorType,
                 'message' => $e->getMessage(),
             ], $e->getHttpHeaders());
         }
