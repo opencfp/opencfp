@@ -27,7 +27,6 @@ use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\IlluminateTalkRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use RandomLib\Factory;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
@@ -84,8 +83,8 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             return new Airport;
         };
 
-        $app['security.random'] = function ($app) {
-            return new PseudoRandomStringGenerator(new Factory());
+        $app['security.random'] = function () {
+            return new PseudoRandomStringGenerator();
         };
 
         $app['oauth.resource'] = function ($app) {
