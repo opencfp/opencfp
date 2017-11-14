@@ -20,3 +20,6 @@ database: composer
 test: composer database
 	vendor/bin/phpunit
 
+infection: composer database
+	vendor/bin/infection
+
