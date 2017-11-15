@@ -3,21 +3,22 @@
 namespace OpenCFP\Domain\Model;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 class User extends Eloquent
 {
-    public function talks()
+    public function talks(): HasMany
     {
         return $this->hasMany(Talk::class);
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(TalkComment::class);
     }
 
-    public function meta()
+    public function meta(): HasMany
     {
         return $this->hasMany(TalkMeta::class, 'admin_user_id');
     }

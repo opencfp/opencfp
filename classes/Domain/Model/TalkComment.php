@@ -2,6 +2,8 @@
 
 namespace OpenCFP\Domain\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class TalkComment extends Eloquent
 {
     protected $table = 'talk_comments';
@@ -9,12 +11,12 @@ class TalkComment extends Eloquent
     const CREATED_AT = 'created';
     const UPDATED_AT = null;
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function talk()
+    public function talk(): BelongsTo
     {
         return $this->belongsTo(Talk::class);
     }
