@@ -22,14 +22,16 @@ class SpeakersController extends BaseController
         $search = $req->get('search');
 
         /** @var AccountManagement $accounts */
-        $accounts     = $this->service(AccountManagement::class);
-        $adminUsers   = $accounts->findByRole('Admin');
-        $adminUserIds = array_column($adminUsers, 'id');
+        $accounts        = $this->service(AccountManagement::class);
+        $adminUsers      = $accounts->findByRole('Admin');
+        $adminUserIds    = array_column($adminUsers, 'id');
+        $reviewerUsers   = $accounts->findByRole('Reviewer');
+        $reviewerUserIds = array_column($reviewerUsers, 'id');
 
         $rawSpeakers = User::search($search)->get();
 
         $airports    = $this->service(AirportInformationDatabase::class);
-        $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($airports, $adminUserIds) {
+        $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($airports, $adminUserIds, $reviewerUserIds) {
             try {
                 $airport = $airports->withCode($speaker['airport']);
 
@@ -47,6 +49,7 @@ class SpeakersController extends BaseController
             }
 
             $speaker['is_admin'] = in_array($speaker['id'], $adminUserIds);
+            $speaker['is_reviewer'] = in_array($speaker['id'], $reviewerUserIds);
 
             return $speaker;
         })->toArray();
@@ -152,12 +155,13 @@ class SpeakersController extends BaseController
     {
         /** @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
+        $role     = $req->get('role');
 
         if ($this->service(Authentication::class)->userId() == $req->get('id')) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'Sorry, you cannot remove yourself as Admin.',
+                'ext'   => 'Sorry, you cannot remove yourself as '. $role .'.',
             ]);
 
             return $this->redirectTo('admin_speakers');
@@ -165,7 +169,7 @@ class SpeakersController extends BaseController
 
         try {
             $user = $accounts->findById($req->get('id'));
-            $accounts->demoteFrom($user->getLogin());
+            $accounts->demoteFrom($user->getLogin(), $role);
 
             $this->service('session')->set('flash', [
                 'type'  => 'success',
@@ -176,7 +180,7 @@ class SpeakersController extends BaseController
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'We were unable to remove the Admin. Please try again.',
+                'ext'   => 'We were unable to remove the '. $role.'. Please try again.',
             ]);
         }
 
@@ -187,20 +191,21 @@ class SpeakersController extends BaseController
     {
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
+        $role     = $req->get('role');
 
         try {
             $user = $accounts->findById($req->get('id'));
-            if ($user->hasAccess('admin')) {
+            if ($user->hasAccess(strtolower($role))) {
                 $this->service('session')->set('flash', [
                     'type'  => 'error',
                     'short' => 'Error',
-                    'ext'   => 'User already is in the Admin group.',
+                    'ext'   => 'User already is in the '. $role .' group.',
                 ]);
 
                 return $this->redirectTo('admin_speakers');
             }
 
-            $accounts->promoteTo($user->getLogin());
+            $accounts->promoteTo($user->getLogin(), $role);
 
             $this->service('session')->set('flash', [
                 'type'  => 'success',
@@ -211,7 +216,7 @@ class SpeakersController extends BaseController
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'We were unable to promote the Admin. Please try again.',
+                'ext'   => 'We were unable to promote the ' . $role . '. Please try again.',
             ]);
         }
 
