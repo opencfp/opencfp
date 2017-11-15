@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h2 class="mb-2">
-                {{ talk.title|raw }} <span class="text-grey-dark">&mdash; {{ speaker.name }}</span>
+                {{ talk.title|raw }} {% if speaker.isAllowedToSee('name') %}<span class="text-grey-dark">&mdash; {{ speaker.name }}</span> {% endif %}
             </h2>
             {% if talk.slides is defined and talk.slides is not empty %}
                 <div><i class="fa fa-television mr-1"></i> <a class="hover:text-brand" href="{{ talk.slides }}">{{ talk.slides }}</a></div>
