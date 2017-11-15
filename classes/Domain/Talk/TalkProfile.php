@@ -21,7 +21,7 @@ class TalkProfile
         IdentityProvider $identityProvider
     ) {
         $this->talk   = $talk;
-        $this->userId = $identityProvider->getCurrentUser()->id;
+        $this->userId = (int) $identityProvider->getCurrentUser()->id;
     }
 
     public function getSpeaker(): SpeakerProfile
@@ -74,7 +74,7 @@ class TalkProfile
         return $this->talk->sponsor ==1;
     }
 
-    public function isFavorite(): bool
+    public function isSpeakerFavorite(): bool
     {
         return $this->talk->favorite ==1;
     }
@@ -92,11 +92,9 @@ class TalkProfile
     public function getRating(): int
     {
         try {
-            return (int) $this->talk
-                ->meta()
-                ->where('admin_user_id', $this->userId)
-                ->first()
-                ->rating;
+            return (int) ($this->talk
+                ->getMetaFor($this->userId)
+                ->rating);
         } catch (\Exception $e) {
             return 0;
         }
@@ -106,10 +104,19 @@ class TalkProfile
     {
         try {
             return $this->talk
-                    ->meta()
-                    ->where('admin_user_id', $this->userId)
-                    ->first()
+                    ->getMetaFor($this->userId)
                     ->viewed == 1;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    public function isMyFavorite(): bool
+    {
+        try {
+            return $this->talk->favorites()->get()->contains(function ($value) {
+                return $value->admin_user_id == $this->userId;
+            });
         } catch (\Exception $e) {
             return false;
         }
