@@ -23,3 +23,4 @@ deployment.xml
 phinx.yml
 /phpunit.xml
 infection-log.txt
+infection.json

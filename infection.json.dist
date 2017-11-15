@@ -1,8 +1,14 @@
 {
-    "timeout": 15,
+    "timeout": 20,
     "source": {
         "directories": [
             "classes"
+        ],
+        "exclude": [
+            "Provider",
+            "Http/API",
+            "Http/OAuth",
+            "Infrastructure/OAuth"
         ]
     },
     "logs": {
