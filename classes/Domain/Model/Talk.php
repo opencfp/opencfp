@@ -3,6 +3,8 @@
 namespace OpenCFP\Domain\Model;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Talk
@@ -20,22 +22,22 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Talk extends Eloquent
 {
-    public function speaker()
+    public function speaker(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function favorites()
+    public function favorites(): HasMany
     {
         return $this->hasMany(Favorite::class, 'talk_id');
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(TalkComment::class);
     }
 
-    public function meta()
+    public function meta(): HasMany
     {
         return $this->hasMany(TalkMeta::class, 'talk_id');
     }

@@ -2,6 +2,8 @@
 
 namespace OpenCFP\Domain\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class Favorite extends Eloquent
 {
     protected $table = 'favorites';
@@ -9,7 +11,7 @@ class Favorite extends Eloquent
     const CREATED_AT = 'created';
     const UPDATED_AT = null;
 
-    public function talk()
+    public function talk(): BelongsTo
     {
         return $this->belongsTo(Talk::class, 'talk_id');
     }

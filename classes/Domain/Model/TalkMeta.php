@@ -2,6 +2,8 @@
 
 namespace OpenCFP\Domain\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class TalkMeta extends Eloquent
 {
     protected $table = 'talk_meta';
@@ -17,12 +19,12 @@ class TalkMeta extends Eloquent
         'viewed' => self::DEFAULT_VIEWED,
     ];
 
-    public function talk()
+    public function talk(): BelongsTo
     {
         return $this->belongsTo(Talk::class, 'talk_id');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'admin_user_id');
     }
