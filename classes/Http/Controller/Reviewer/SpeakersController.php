@@ -45,7 +45,7 @@ class SpeakersController extends BaseController
 
         $talks        = $speakerDetails->talks()->get()->toArray();
         $templateData = [
-            'speaker'    => new SpeakerProfile($speakerDetails),
+            'speaker'    => new SpeakerProfile($speakerDetails, $this->app->config('reviewer.users')?: []),
             'talks'      => $talks,
             'photo_path' => '/uploads/',
             'page'       => $req->get('page'),

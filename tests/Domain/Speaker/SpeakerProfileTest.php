@@ -3,6 +3,7 @@
 namespace OpenCFP\Test\Domain\Speaker;
 
 use OpenCFP\Domain\Model\User;
+use OpenCFP\Domain\Speaker\NotAllowedException;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
@@ -22,8 +23,14 @@ class SpeakerProfileTest extends BaseTestCase
     {
         parent::setUpBeforeClass();
 
-        self::$user    = factory(User::class, 1)->create()->first();
+        self::$user    = factory(User::class, 1)->create(['has_made_profile' => 1])->first();
         self::$profile = new SpeakerProfile(self::$user);
+    }
+
+    public function testNeedsProfileReturnsCorrectly()
+    {
+        //if the user needs a profile they haven't made one, hence the !
+        $this->assertSame(! self::$user->has_made_profile, self::$profile->needsProfile());
     }
 
     public function testGetNameReturnsFirstAndLastNameCombined()
@@ -96,6 +103,28 @@ class SpeakerProfileTest extends BaseTestCase
         $photoPath = self::$user->photo_path;
 
         $this->assertSame($photoPath, self::$profile->getPhoto());
+    }
+
+    public function testIsAllowedtoSeeReturnsFalseIfEntryIsAHiddenProperty()
+    {
+        $profile = new SpeakerProfile(self::$user, ['email','twitter']);
+
+        $this->assertFalse($profile->isAllowedToSee('email'));
+        $this->assertFalse($profile->isAllowedToSee('twitter'));
+        $this->assertTrue($profile->isAllowedToSee('hotel'));
+    }
+
+    public function testErrorGetsThrownWhenGettingAFieldThatIsNotAllowed()
+    {
+        $profile = new SpeakerProfile(self::$user, ['email','twitter']);
+        //Check we are still allowed to see other items
+        $photoPath = self::$user->photo_path;
+
+        $this->assertSame($photoPath, self::$profile->getPhoto());
+
+        //Check we get an exception when viewing something not allowed.
+        $this->expectException(NotAllowedException::class);
+        $profile->getEmail();
     }
 
     public function testToArrayForApiReturnsImportantBits()

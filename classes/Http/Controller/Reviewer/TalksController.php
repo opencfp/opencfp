@@ -84,7 +84,7 @@ class TalksController extends BaseController
         $templateData = [
             'talk'       => $talk->toArray(),
             'talk_meta'  => $talkMeta,
-            'speaker'    => new SpeakerProfile($speaker),
+            'speaker'    => new SpeakerProfile($speaker, $this->app->config('reviewer.users') ?: []),
             'otherTalks' => $otherTalks,
             'comments'   => $talk->comments()->get(),
         ];
