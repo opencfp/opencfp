@@ -40,7 +40,7 @@ class SpeakerProfile
     private function assertAllowedToSee(string $property)
     {
         if (! $this->isAllowedToSee($property)) {
-            throw new NotAllowedException(ucfirst($property) .' is a hidden property.');
+            throw NotAllowedException::notAllowedToView($property);
         }
     }
 
