@@ -152,12 +152,13 @@ class SpeakersController extends BaseController
     {
         /** @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
+        $role     = $req->get('role');
 
         if ($this->service(Authentication::class)->userId() == $req->get('id')) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'Sorry, you cannot remove yourself as Admin.',
+                'ext'   => 'Sorry, you cannot remove yourself as '. $role .'.',
             ]);
 
             return $this->redirectTo('admin_speakers');
@@ -165,7 +166,7 @@ class SpeakersController extends BaseController
 
         try {
             $user = $accounts->findById($req->get('id'));
-            $accounts->demoteFrom($user->getLogin());
+            $accounts->demoteFrom($user->getLogin(), $role);
 
             $this->service('session')->set('flash', [
                 'type'  => 'success',
@@ -176,7 +177,7 @@ class SpeakersController extends BaseController
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'We were unable to remove the Admin. Please try again.',
+                'ext'   => 'We were unable to remove the '. $role.'. Please try again.',
             ]);
         }
 
@@ -187,20 +188,21 @@ class SpeakersController extends BaseController
     {
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
+        $role     = $req->get('role');
 
         try {
             $user = $accounts->findById($req->get('id'));
-            if ($user->hasAccess('admin')) {
+            if ($user->hasAccess(strtolower($role))) {
                 $this->service('session')->set('flash', [
                     'type'  => 'error',
                     'short' => 'Error',
-                    'ext'   => 'User already is in the Admin group.',
+                    'ext'   => 'User already is in the '. $role .' group.',
                 ]);
 
                 return $this->redirectTo('admin_speakers');
             }
 
-            $accounts->promoteTo($user->getLogin());
+            $accounts->promoteTo($user->getLogin(), $role);
 
             $this->service('session')->set('flash', [
                 'type'  => 'success',
@@ -211,7 +213,7 @@ class SpeakersController extends BaseController
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'We were unable to promote the Admin. Please try again.',
+                'ext'   => 'We were unable to promote the ' . $role . '. Please try again.',
             ]);
         }
 
