@@ -2,7 +2,10 @@
 
 namespace OpenCFP\Test\Domain\Model;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\TalkComment;
+use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
@@ -23,6 +26,36 @@ class UserTest extends BaseTestCase
     {
         parent::setUpBeforeClass();
         self::$user = self::makeKnownUsers();
+    }
+
+    /**
+     * @test
+     */
+    public function talksRelationWorks()
+    {
+        $talk = self::$user->talks();
+        $this->assertInstanceOf(HasMany::class, $talk);
+        $this->assertInstanceOf(Talk::class, $talk->first());
+    }
+
+    /**
+     * @test
+     */
+    public function commentRelationWorks()
+    {
+        $comment = self::$user->comments();
+        $this->assertInstanceOf(HasMany::class, $comment);
+        $this->assertInstanceOf(TalkComment::class, $comment->first());
+    }
+
+    /**
+     * @test
+     */
+    public function metaRelationWorks()
+    {
+        $meta = self::$user->meta();
+        $this->assertInstanceOf(HasMany::class, $meta);
+        $this->assertInstanceOf(TalkMeta::class, $meta->first());
     }
 
     /**
@@ -88,6 +121,7 @@ class UserTest extends BaseTestCase
             'last_name'  => 'de Vries',
         ], $userInfo));
         self::giveUserThreeTalks($user);
+        self::giveUserRelations($user);
 
         User::create(array_merge([
             'email'      => 'speaker@cfp.org',
@@ -147,6 +181,23 @@ class UserTest extends BaseTestCase
             'level'       => 'entry',
             'category'    => 'api',
 
+        ]);
+    }
+
+    public static function giveUserRelations(User $user)
+    {
+        $userId = $user->id;
+
+        TalkComment::create([
+            'user_id' => $userId,
+            'talk_id' => 893,
+            'message' => 'Oh hi Mark.',
+        ]);
+        TalkMeta::create([
+            'admin_user_id' => $userId,
+            'talk_id'       => 893,
+            'rating'        => 1,
+            'viewed'        => 0,
         ]);
     }
 }
