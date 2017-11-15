@@ -17,11 +17,16 @@ class TalkProfile
     private $userId;
 
     public function __construct(
-        Talk $talk,
         IdentityProvider $identityProvider
     ) {
-        $this->talk   = $talk;
         $this->userId = (int) $identityProvider->getCurrentUser()->id;
+    }
+
+    public function with(Talk $talk)
+    {
+        $this->talk = $talk;
+
+        return $this;
     }
 
     public function getSpeaker(): SpeakerProfile
