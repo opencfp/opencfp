@@ -12,11 +12,6 @@ class User extends Eloquent
         return $this->hasMany(Talk::class);
     }
 
-    public function groups()
-    {
-        return $this->belongsToMany(Group::class, 'users_groups', 'user_id', 'group_id');
-    }
-
     public function comments()
     {
         return $this->hasMany(TalkComment::class);
