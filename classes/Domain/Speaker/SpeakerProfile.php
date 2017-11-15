@@ -17,9 +17,31 @@ class SpeakerProfile
      */
     protected $speaker;
 
-    public function __construct($speaker)
+    /**
+     * @var array
+     */
+    private $hiddenProperties;
+
+    /**
+     * @param $speaker
+     * @param array $hiddenProperties This is a blacklist, telling the view what fields it isn't allowed to show.
+     */
+    public function __construct(User $speaker, array $hiddenProperties = [])
     {
-        $this->speaker = $speaker;
+        $this->speaker          = $speaker;
+        $this->hiddenProperties = $hiddenProperties;
+    }
+
+    public function isAllowedToSee(string $property): bool
+    {
+        return !in_array($property, $this->hiddenProperties);
+    }
+
+    private function assertAllowedToSee(string $property)
+    {
+        if (! $this->isAllowedToSee($property)) {
+            throw new NotAllowedException(ucfirst($property) .' is a hidden property.');
+        }
     }
 
     public function needsProfile(): bool
@@ -34,61 +56,85 @@ class SpeakerProfile
      */
     public function getTalks()
     {
+        $this->assertAllowedToSee('talks');
+
         return $this->speaker->talks;
     }
 
     public function getName(): string
     {
+        $this->assertAllowedToSee('name');
+
         return $this->speaker->first_name . ' ' . $this->speaker->last_name;
     }
 
     public function getEmail()
     {
+        $this->assertAllowedToSee('email');
+
         return $this->speaker->email;
     }
 
     public function getCompany()
     {
+        $this->assertAllowedToSee('company');
+
         return $this->speaker->company ?: null;
     }
 
     public function getTwitter()
     {
+        $this->assertAllowedToSee('twitter');
+
         return $this->speaker->twitter;
     }
 
     public function getUrl()
     {
+        $this->assertAllowedToSee('url');
+
         return $this->speaker->url;
     }
 
     public function getInfo()
     {
+        $this->assertAllowedToSee('info');
+
         return $this->speaker->info;
     }
 
     public function getBio()
     {
+        $this->assertAllowedToSee('bio');
+
         return $this->speaker->bio;
     }
 
     public function getTransportation()
     {
+        $this->assertAllowedToSee('transportation');
+
         return $this->speaker->transportation == '1';
     }
 
     public function getHotel()
     {
+        $this->assertAllowedToSee('hotel');
+
         return $this->speaker->hotel;
     }
 
     public function getAirport()
     {
+        $this->assertAllowedToSee('airport');
+
         return $this->speaker->airport;
     }
 
     public function getPhoto()
     {
+        $this->assertAllowedToSee('photo');
+
         return $this->speaker->photo_path;
     }
 
