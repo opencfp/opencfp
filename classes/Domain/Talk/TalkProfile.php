@@ -2,7 +2,9 @@
 
 namespace OpenCFP\Domain\Talk;
 
+use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 
 class TalkProfile
@@ -14,15 +16,12 @@ class TalkProfile
 
     private $userId;
 
-    public function __construct($talk, int $userId)
-    {
-        if ($talk instanceof Talk) {
-            $this->talk = $talk;
-        }
-        if (is_int($talk)) {
-            $this->talk   = Talk::findOrFail($talk);
-        }
-        $this->userId = $userId;
+    public function __construct(
+        Talk $talk,
+        IdentityProvider $identityProvider
+    ) {
+        $this->talk   = $talk;
+        $this->userId = $identityProvider->getCurrentUser()->id;
     }
 
     public function getSpeaker(): SpeakerProfile
@@ -85,26 +84,34 @@ class TalkProfile
         return $this->talk->selected ==1;
     }
 
-    public function getComments()
+    public function getComments(): Collection
     {
         return $this->talk->comments()->get();
     }
 
-    public function getRating()
+    public function getRating(): int
     {
-        return $this->talk
-            ->meta()
-            ->where('admin_user_id', $this->userId)
-            ->first()
-            ->rating;
+        try {
+            return (int) $this->talk
+                ->meta()
+                ->where('admin_user_id', $this->userId)
+                ->first()
+                ->rating;
+        } catch (\Exception $e) {
+            return 0;
+        }
     }
 
     public function isViewed(): bool
     {
-        return $this->talk
-            ->meta()
-            ->where('admin_user_id', $this->userId)
-            ->first()
-            ->viewed == 1;
+        try {
+            return $this->talk
+                    ->meta()
+                    ->where('admin_user_id', $this->userId)
+                    ->first()
+                    ->viewed == 1;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
