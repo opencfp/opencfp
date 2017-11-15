@@ -175,11 +175,24 @@ class Talk extends Eloquent
             });
     }
 
-    public function getMetaFor(int $userId): TalkMeta
+    public function getMetaFor(int $userId, bool $create = false)
+    {
+        return $create ? $this->getOrCreateMeta($userId): $this->getOrFailMeta($userId);
+    }
+
+    private function getOrCreateMeta(int $userId)
     {
         return $this->meta()->firstOrCreate([
-           'admin_user_id' => $userId,
-           'talk_id'       => $this->id,
+            'admin_user_id' => $userId,
+            'talk_id'       => $this->id,
+        ]);
+    }
+
+    private function getOrFailMeta(int $userId)
+    {
+        return $this->meta()->firstOrFail([
+            'admin_user_id' => $userId,
+            'talk_id'       => $this->id,
         ]);
     }
 }
