@@ -41,6 +41,11 @@
                 {% else %}
                     <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_demote', { id: speaker.id ,role: 'Admin' }) }}" onClick="return confirm('Are you sure you want demote this admin?');">Demote Admin</a>
                 {% endif %}
+                {% if speaker.is_reviewer == false %}
+                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_promote', { id: speaker.id ,role: 'Reviewer'}) }}" onClick="return confirm('Are you sure you want promote this user as a reviewer?');">Promote To Reviewer</a>
+                {% else %}
+                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_demote', { id: speaker.id ,role: 'Reviewer' }) }}" onClick="return confirm('Are you sure you want demote this reviewer?');">Demote Reviewer</a>
+                {% endif %}
                 <a class="text-sm text-brand underline" href="{{ url('admin_speaker_delete', { id: speaker.id }) }}" onClick="return confirm('Are you sure you want to delete this user');">Delete</a>
             </div>
         </div>

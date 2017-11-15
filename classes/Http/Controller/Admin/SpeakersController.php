@@ -22,14 +22,16 @@ class SpeakersController extends BaseController
         $search = $req->get('search');
 
         /** @var AccountManagement $accounts */
-        $accounts     = $this->service(AccountManagement::class);
-        $adminUsers   = $accounts->findByRole('Admin');
-        $adminUserIds = array_column($adminUsers, 'id');
+        $accounts        = $this->service(AccountManagement::class);
+        $adminUsers      = $accounts->findByRole('Admin');
+        $adminUserIds    = array_column($adminUsers, 'id');
+        $reviewerUsers   = $accounts->findByRole('Reviewer');
+        $reviewerUserIds = array_column($reviewerUsers, 'id');
 
         $rawSpeakers = User::search($search)->get();
 
         $airports    = $this->service(AirportInformationDatabase::class);
-        $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($airports, $adminUserIds) {
+        $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($airports, $adminUserIds, $reviewerUserIds) {
             try {
                 $airport = $airports->withCode($speaker['airport']);
 
@@ -47,6 +49,7 @@ class SpeakersController extends BaseController
             }
 
             $speaker['is_admin'] = in_array($speaker['id'], $adminUserIds);
+            $speaker['is_reviewer'] = in_array($speaker['id'], $reviewerUserIds);
 
             return $speaker;
         })->toArray();
