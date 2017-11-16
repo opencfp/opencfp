@@ -175,9 +175,20 @@ class Talk extends Eloquent
             });
     }
 
-    public function getMetaFor(int $userId, bool $create = false)
+    /**
+     * Gets the meta object of the current talk, with a specific Admin.
+     *
+     * @param int  $userId
+     * @param bool $willCreate on true it will create a new model if it doesn't exists, on false
+     *                         it will throw an error.
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \Illuminate\Database\Eloquent\Model|static
+     */
+    public function getMetaFor(int $userId, bool $willCreate = false)
     {
-        return $create ? $this->getOrCreateMeta($userId): $this->getOrFailMeta($userId);
+        return $willCreate ? $this->getOrCreateMeta($userId): $this->getOrFailMeta($userId);
     }
 
     private function getOrCreateMeta(int $userId)
