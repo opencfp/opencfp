@@ -11,16 +11,16 @@ class TalkFormatter implements TalkFormat
      * Iterates over a collection of DBAL objects and returns a formatted result set
      *
      * @param Collection $talkCollection Collection of Talks
-     * @param int        $admin_user_id
+     * @param int        $adminUserId
      * @param bool       $userData
      *
      * @return Collection
      */
-    public function formatList(Collection $talkCollection, int $admin_user_id, bool $userData = true): Collection
+    public function formatList(Collection $talkCollection, int $adminUserId, bool $userData = true): Collection
     {
         return $talkCollection
-            ->map(function ($talk) use ($admin_user_id, $userData) {
-                return new TalkProfile($talk, $admin_user_id);
+            ->map(function ($talk) use ($adminUserId, $userData) {
+                return new TalkProfile($talk, $adminUserId);
             });
     }
 
@@ -28,13 +28,13 @@ class TalkFormatter implements TalkFormat
      * Iterates over DBAL objects and returns a formatted result set
      *
      * @param mixed $talk
-     * @param int   $admin_user_id
-     * @param bool  $userData      grab the speaker data or not
+     * @param int   $adminUserId
+     * @param bool  $userData    grab the speaker data or not
      *
      * @return TalkProfile
      */
-    public function createdFormattedOutput($talk, int $admin_user_id, bool $userData = true)
+    public function createdFormattedOutput($talk, int $adminUserId, bool $userData = true)
     {
-        return new TalkProfile($talk, $admin_user_id);
+        return new TalkProfile($talk, $adminUserId);
     }
 }
