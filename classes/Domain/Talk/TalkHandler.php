@@ -5,7 +5,7 @@ namespace OpenCFP\Domain\Talk;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkComment;
-use OpenCFP\Domain\Services\IdentityProvider;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 
@@ -27,10 +27,10 @@ class TalkHandler
     private $ratingStrategy;
 
     public function __construct(
-        IdentityProvider $identityProvider,
+        Authentication $authentication,
         TalkRatingStrategy $ratingStrategy
     ) {
-        $this->userId         = (int) $identityProvider->getCurrentUser()->id;
+        $this->userId         = (int) $authentication->userId();
         $this->ratingStrategy = $ratingStrategy;
     }
 
@@ -41,53 +41,92 @@ class TalkHandler
      *
      * @return $this
      */
-    public function with(Talk $talk)
+    public function with(Talk $talk): self
     {
         $this->talk = $talk;
 
         return $this;
     }
 
+    /**
+     * Sets the Talk according to the ID
+     *
+     * @param int $talkId
+     *
+     * @return $this
+     */
+    public function grabTalk(int $talkId): self
+    {
+        $this->talk = Talk::find($talkId);
+
+        return $this;
+    }
+
+    public function hasTalk(): bool
+    {
+        return ($this->talk instanceof Talk);
+    }
+
     public function commentOn(string $message): bool
     {
-        TalkComment::create([
-           'user_id'  => $this->userId,
-            'talk_id' => $this->talk->id,
-            'message' => $message,
-        ]);
+        if ($this->hasTalk()) {
+            TalkComment::create([
+                'user_id' => $this->userId,
+                'talk_id' => $this->talk->id,
+                'message' => $message,
+            ]);
 
-        return true;
+            return true;
+        }
+
+        return false;
     }
 
     public function select(bool $selected = true): bool
     {
-        $this->talk->selected = $selected;
+        if ($this->hasTalk()) {
+            $this->talk->selected = $selected ? 1 : 0;
 
-        return $this->talk->save();
+            return $this->talk->save();
+        }
+
+        return false;
     }
 
-    public function favorite(bool $create = true): bool
+    /**
+     * Creates or deletes a favorite of the current user
+     *
+     * @param bool $create will create a favorite on true, and delete it on false
+     *
+     * @return bool
+     */
+    public function setFavorite(bool $create = true): bool
     {
-        return $create ? $this->createFavorite() : $this->deleteFavorite();
+        if ($this->hasTalk()) {
+            return $create ? $this->createFavoriteForCurrentUser() : $this->clearFavoriteOfCurrentUser();
+        }
+
+        return false;
     }
 
-    private function createFavorite(): bool
+    private function createFavoriteForCurrentUser(): bool
     {
         Favorite::firstOrCreate([
-            'user_id' => $this->userId,
-            'talk_id' => $this->talk->id,
+            'admin_user_id' => $this->userId,
+            'talk_id'       => $this->talk->id,
         ]);
 
         return true;
     }
 
-    private function deleteFavorite(): bool
+    private function clearFavoriteOfCurrentUser(): bool
     {
         try {
-            Favorite::findOrFail([
-                'user_id' => $this->userId,
-                'talk_id' => $this->talk->id,
-            ])->delete();
+            $favorite = Favorite::where('admin_user_id', $this->userId)
+                ->where('talk_id', $this->talk->id)->first();
+            if ($favorite instanceof Favorite) {
+                $favorite->delete();
+            }
 
             return true;
         } catch (\Exception $e) {
@@ -97,25 +136,33 @@ class TalkHandler
 
     public function rate($rating): bool
     {
-        try {
-            $this->ratingStrategy->rate($this->talk->id, $rating);
+        if ($this->hasTalk()) {
+            try {
+                $this->ratingStrategy->rate($this->talk->id, $rating);
 
-            return true;
-        } catch (TalkRatingException $e) {
-            return false;
+                return true;
+            } catch (TalkRatingException $e) {
+                return false;
+            }
         }
+
+        return false;
     }
 
     public function view(): bool
     {
-        try {
-            $meta = $this->talk
-                ->getMetaFor($this->userId, true);
-            $meta->viewed = 1;
+        if ($this->hasTalk()) {
+            try {
+                $meta = $this->talk
+                    ->getMetaFor($this->userId, true);
+                $meta->viewed = 1;
 
-            return $meta->save();
-        } catch (\Exception $e) {
-            return false;
+                return $meta->save();
+            } catch (\Exception $e) {
+                return false;
+            }
         }
+
+        return false;
     }
 }
