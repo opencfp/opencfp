@@ -26,7 +26,7 @@ class RoleAccess implements UserAccess
         }
 
         $user = $auth->user();
-        if (!$user->hasPermission($role)) {
+        if (!$user->hasAccess($role)) {
             return $app->redirect('/dashboard');
         }
     }
