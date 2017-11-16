@@ -201,9 +201,9 @@ class Talk extends Eloquent
 
     private function getOrFailMeta(int $userId)
     {
-        return $this->meta()->firstOrFail([
-            'admin_user_id' => $userId,
-            'talk_id'       => $this->id,
-        ]);
+        return $this->meta()
+            ->where('admin_user_id', $userId)
+            ->where('talk_id', $this->id)
+            ->firstOrFail();
     }
 }

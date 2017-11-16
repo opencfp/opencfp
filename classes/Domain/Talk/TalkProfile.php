@@ -4,9 +4,13 @@ namespace OpenCFP\Domain\Talk;
 
 use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 
+/**
+ * This class is a read only version of a Talk, to be used in the views
+ *
+ * When initiated without an ID the rating, viewed and favorite functions will return default values
+ */
 class TalkProfile
 {
     /**
@@ -16,22 +20,20 @@ class TalkProfile
 
     private $userId;
 
-    public function __construct(
-        IdentityProvider $identityProvider
-    ) {
-        $this->userId = (int) $identityProvider->getCurrentUser()->id;
-    }
-
-    public function with(Talk $talk)
+    public function __construct(Talk $talk, int $userId = 0)
     {
-        $this->talk = $talk;
-
-        return $this;
+        $this->talk   = $talk;
+        $this->userId = $userId;
     }
 
     public function getSpeaker(): SpeakerProfile
     {
-        return new SpeakerProfile($this->talk->speaker->first());
+        return new SpeakerProfile($this->talk->speaker);
+    }
+
+    public function getId()
+    {
+        return $this->talk->id;
     }
 
     public function getTitle()
@@ -105,7 +107,7 @@ class TalkProfile
         }
     }
 
-    public function isViewed(): bool
+    public function isViewedByMe(): bool
     {
         try {
             return $this->talk
@@ -125,5 +127,10 @@ class TalkProfile
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public function getOtherTalks()
+    {
+        return $this->talk->speaker->getOtherTalks($this->talk->id);
     }
 }

@@ -2,11 +2,8 @@
 
 namespace OpenCFP\Test\Domain\Talk;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Illuminate\Support\Collection;
-use Mockery;
 use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Talk\TalkProfile;
 use OpenCFP\Test\BaseTestCase;
@@ -21,8 +18,6 @@ class TalkProfileTest extends BaseTestCase
      */
     private static $talk;
 
-    private $identity;
-
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -34,25 +29,23 @@ class TalkProfileTest extends BaseTestCase
         ])->first();
     }
 
-    public function setUp()
-    {
-        parent::setUp();
-        $user     = Mockery::mock(UserInterface::class);
-        $user->id = 1;
-        $provider = Mockery::mock(IdentityProvider::class);
-        $provider->shouldReceive('getCurrentUser')->andReturn($user);
-        $this->identity = $provider;
-    }
-
     /**
      * @test
      */
     public function getSpeakerReturnsSpeakerProfile()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $talkProfile->with(self::$talk);
-        $speaker = $talkProfile->getSpeaker();
+        $talkProfile = new TalkProfile(self::$talk);
+        $speaker     = $talkProfile->getSpeaker();
         $this->assertInstanceOf(SpeakerProfile::class, $speaker);
+    }
+
+    /**
+     * @test
+     */
+    public function getIdReturnsId()
+    {
+        $talkProfile = new TalkProfile(self::$talk);
+        $this->assertEquals(self::$talk->id, $talkProfile->getId());
     }
 
     /**
@@ -60,8 +53,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function getTitleReturnsTitle()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $this->assertSame(self::$talk->title, $talkProfile->with(self::$talk)->getTitle());
+        $talkProfile = new TalkProfile(self::$talk);
+        $this->assertSame(self::$talk->title, $talkProfile->getTitle());
     }
 
     /**
@@ -69,8 +62,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function getDescriptionReturnsDescription()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $this->assertSame(self::$talk->description, $talkProfile->with(self::$talk)->getDescription());
+        $talkProfile = new TalkProfile(self::$talk);
+        $this->assertSame(self::$talk->description, $talkProfile->getDescription());
     }
 
     /**
@@ -78,8 +71,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function getOtherReturnsOther()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $this->assertSame(self::$talk->other, $talkProfile->with(self::$talk)->getOther());
+        $talkProfile = new TalkProfile(self::$talk);
+        $this->assertSame(self::$talk->other, $talkProfile->getOther());
     }
 
     /**
@@ -87,8 +80,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function getTypeReturnsType()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $this->assertSame(self::$talk->type, $talkProfile->with(self::$talk)->getType());
+        $talkProfile = new TalkProfile(self::$talk);
+        $this->assertSame(self::$talk->type, $talkProfile->getType());
     }
 
     /**
@@ -96,8 +89,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function getLevelReturnsLevel()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $this->assertSame(self::$talk->level, $talkProfile->with(self::$talk)->getLevel());
+        $talkProfile = new TalkProfile(self::$talk);
+        $this->assertSame(self::$talk->level, $talkProfile->getLevel());
     }
 
     /**
@@ -105,8 +98,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function getCategoryReturnsCategory()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $this->assertSame(self::$talk->category, $talkProfile->with(self::$talk)->getCategory());
+        $talkProfile = new TalkProfile(self::$talk);
+        $this->assertSame(self::$talk->category, $talkProfile->getCategory());
     }
 
     /**
@@ -114,8 +107,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function getSlidesReturnsSlides()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $this->assertSame(self::$talk->slides, $talkProfile->with(self::$talk)->getSlides());
+        $talkProfile = new TalkProfile(self::$talk);
+        $this->assertSame(self::$talk->slides, $talkProfile->getSlides());
     }
 
     /**
@@ -123,9 +116,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function isDesiredReturnsBool()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $talkProfile->with(self::$talk);
-        $isDesired = $talkProfile->isDesired();
+        $talkProfile = new TalkProfile(self::$talk);
+        $isDesired   = $talkProfile->isDesired();
         $this->assertFalse($isDesired);
     }
 
@@ -134,9 +126,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function isSponsorReturnsBool()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $talkProfile->with(self::$talk);
-        $isSponsor = $talkProfile->isSponsor();
+        $talkProfile = new TalkProfile(self::$talk);
+        $isSponsor   = $talkProfile->isSponsor();
         $this->assertTrue($isSponsor);
     }
 
@@ -145,8 +136,7 @@ class TalkProfileTest extends BaseTestCase
      */
     public function isSpeakerFavoriteReturnsBool()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $talkProfile->with(self::$talk);
+        $talkProfile       = new TalkProfile(self::$talk);
         $isSpeakerFavorite = $talkProfile->isSpeakerFavorite();
         $this->assertTrue($isSpeakerFavorite);
     }
@@ -156,9 +146,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function isSelectedReturnsBool()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $talkProfile->with(self::$talk);
-        $isSelected = $talkProfile->isSelected();
+        $talkProfile = new TalkProfile(self::$talk);
+        $isSelected  = $talkProfile->isSelected();
         $this->assertFalse($isSelected);
     }
 
@@ -167,9 +156,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function getCommentsReturnsComments()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $talkProfile->with(self::$talk);
-        $comments = $talkProfile->getComments();
+        $talkProfile = new TalkProfile(self::$talk);
+        $comments    = $talkProfile->getComments();
         $this->assertInstanceOf(Collection::class, $comments);
         //The talk has no comments so it returns 0.
         $this->assertCount(0, $comments);
@@ -180,8 +168,7 @@ class TalkProfileTest extends BaseTestCase
      */
     public function getRatingReturnsZeroWhenNoRatingIsSetByUser()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $talkProfile->with(self::$talk);
+        $talkProfile = new TalkProfile(self::$talk);
         $this->assertSame(0, $talkProfile->getRating());
     }
 
@@ -190,9 +177,8 @@ class TalkProfileTest extends BaseTestCase
      */
     public function isViewedReturnsFalseWhenNoMetaIsSetForUser()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $talkProfile->with(self::$talk);
-        $this->assertFalse($talkProfile->isViewed());
+        $talkProfile = new TalkProfile(self::$talk);
+        $this->assertFalse($talkProfile->isViewedByMe());
     }
 
     /**
@@ -200,8 +186,7 @@ class TalkProfileTest extends BaseTestCase
      */
     public function isMyFavoriteReturnsFalseWhenNoFavoriteSet()
     {
-        $talkProfile = new TalkProfile($this->identity);
-        $talkProfile->with(self::$talk);
+        $talkProfile = new TalkProfile(self::$talk);
         $this->assertFalse($talkProfile->isMyFavorite());
     }
 }
