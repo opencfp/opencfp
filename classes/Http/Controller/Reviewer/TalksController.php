@@ -5,10 +5,8 @@ namespace OpenCFP\Http\Controller\Reviewer;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
-use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
-use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
-use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Talk\TalkFilter;
+use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -51,12 +49,11 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        $talkId = $req->get('id');
-        $talk   = Talk::where('id', $talkId)
-            ->with(['comments'])
-            ->first();
+        /** @var TalkHandler $handler */
+        $handler = $this->service(TalkHandler::class)
+            ->grabTalk((int) $req->get('id'));
 
-        if (!$talk instanceof Talk) {
+        if (!$handler->view()) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -66,46 +63,13 @@ class TalksController extends BaseController
             return $this->app->redirect($this->url('admin_talks'));
         }
 
-        $userId = $this->service(Authentication::class)->userId();
-
-        // Mark talk as viewed by admin
-        $talkMeta = $talk
-            ->meta()
-            ->firstOrNew([
-                'admin_user_id' => $userId,
-                'talk_id'       => $talkId,
-            ]);
-        $talkMeta->viewTalk();
-
-        $speaker    = $talk->speaker;
-        $otherTalks = $speaker->getOtherTalks($talkId);
-
-        // Build and render the template
-        $templateData = [
-            'talk'       => $talk->toArray(),
-            'talk_meta'  => $talkMeta,
-            'speaker'    => new SpeakerProfile($speaker, $this->app->config('reviewer.users') ?: []),
-            'otherTalks' => $otherTalks,
-            'comments'   => $talk->comments()->get(),
-        ];
-
-        return $this->render('reviewer/talks/view.twig', $templateData);
+        return $this->render('reviewer/talks/view.twig', ['talk' => $handler->getProfile()]);
     }
 
     public function rateAction(Request $req)
     {
-        /** @var TalkRatingStrategy $talkRatingStrategy */
-        $talkRatingStrategy = $this->service(TalkRatingStrategy::class);
-
-        try {
-            $talk_rating = (int) $req->get('rating');
-            $talk_id     = (int) $req->get('id');
-
-            $talkRatingStrategy->rate($talk_id, $talk_rating);
-        } catch (TalkRatingException $e) {
-            return false;
-        }
-
-        return true;
+        return $this->service(TalkHandler::class)
+            ->grabTalk((int) $req->get('id'))
+            ->rate((int) $req->get('rating'));
     }
 }
