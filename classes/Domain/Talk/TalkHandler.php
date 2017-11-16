@@ -165,4 +165,9 @@ class TalkHandler
 
         return false;
     }
+
+    public function getProfile()
+    {
+        return new TalkProfile($this->talk, $this->userId);
+    }
 }

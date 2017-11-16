@@ -2,10 +2,8 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
-use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Http\Controller\BaseController;
@@ -57,12 +55,11 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        $talkId = $req->get('id');
-        $talk   = Talk::where('id', $talkId)
-            ->with(['comments'])
-            ->first();
+        /** @var TalkHandler $handler */
+        $handler = $this->service(TalkHandler::class)
+            ->grabTalk($req->get('id'));
 
-        if (!$talk instanceof Talk) {
+        if (!$handler->view()) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -72,30 +69,7 @@ class TalksController extends BaseController
             return $this->app->redirect($this->url('admin_talks'));
         }
 
-        $userId = $this->service(Authentication::class)->userId();
-
-        // Mark talk as viewed by admin
-        $talkMeta = $talk
-            ->meta()
-            ->firstOrNew([
-                'admin_user_id' => $userId,
-                'talk_id'       => $talkId,
-            ]);
-        $talkMeta->viewTalk();
-
-        $speaker    = $talk->speaker;
-        $otherTalks = $speaker->getOtherTalks($talkId);
-
-        // Build and render the template
-        $templateData = [
-            'talk'       => $talk->toArray(),
-            'talk_meta'  => $talkMeta,
-            'speaker'    => new SpeakerProfile($speaker),
-            'otherTalks' => $otherTalks,
-            'comments'   => $talk->comments()->get(),
-        ];
-
-        return $this->render('admin/talks/view.twig', $templateData);
+        return $this->render('admin/talks/view.twig', ['talk' => $handler->getProfile()]);
     }
 
     public function rateAction(Request $req)
@@ -137,7 +111,6 @@ class TalksController extends BaseController
     {
         $talkId = (int) $req->get('id');
 
-        /** @var TalkHandler $handler */
         $this->service(TalkHandler::class)
             ->grabTalk($talkId)
             ->commentOn($req->get('comment'));
