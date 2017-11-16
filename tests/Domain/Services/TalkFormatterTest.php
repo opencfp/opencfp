@@ -32,10 +32,10 @@ class TalkFormatterTest extends BaseTestCase
 
         $format =$formatter->createdFormattedOutput($talk->first(), 1);
 
-        $this->assertEquals('One talk to rule them all', $format['title']);
-        $this->assertEquals('api', $format['category']);
-        $this->assertEquals(0, $format['meta']->rating);
-        $this->assertEquals(0, $format['meta']->viewed);
+        $this->assertEquals('One talk to rule them all', $format->getTitle());
+        $this->assertEquals('api', $format->getCategory());
+        $this->assertEquals(0, $format->getRating());
+        $this->assertEquals(0, $format->isViewedByMe());
     }
 
     /**
@@ -49,8 +49,8 @@ class TalkFormatterTest extends BaseTestCase
         // Now to see if the meta gets put in correctly
         $secondFormat =$formatter->createdFormattedOutput($talk->first(), 2);
 
-        $this->assertEquals(1, $secondFormat['meta']->rating);
-        $this->assertEquals(1, $secondFormat['meta']->viewed);
+        $this->assertEquals(1, $secondFormat->getRating());
+        $this->assertEquals(1, $secondFormat->isViewedByMe());
     }
 
     /**

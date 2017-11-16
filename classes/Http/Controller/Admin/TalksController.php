@@ -2,15 +2,10 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\Domain\Model\Favorite;
-use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
-use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
-use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
-use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Talk\TalkFilter;
+use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,12 +55,11 @@ class TalksController extends BaseController
 
     public function viewAction(Request $req)
     {
-        $talkId = $req->get('id');
-        $talk   = Talk::where('id', $talkId)
-            ->with(['comments'])
-            ->first();
+        /** @var TalkHandler $handler */
+        $handler = $this->service(TalkHandler::class)
+            ->grabTalk($req->get('id'));
 
-        if (!$talk instanceof Talk) {
+        if (!$handler->view()) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -75,47 +69,14 @@ class TalksController extends BaseController
             return $this->app->redirect($this->url('admin_talks'));
         }
 
-        $userId = $this->service(Authentication::class)->userId();
-
-        // Mark talk as viewed by admin
-        $talkMeta = $talk
-            ->meta()
-            ->firstOrNew([
-                'admin_user_id' => $userId,
-                'talk_id'       => $talkId,
-            ]);
-        $talkMeta->viewTalk();
-
-        $speaker    = $talk->speaker;
-        $otherTalks = $speaker->getOtherTalks($talkId);
-
-        // Build and render the template
-        $templateData = [
-            'talk'       => $talk->toArray(),
-            'talk_meta'  => $talkMeta,
-            'speaker'    => new SpeakerProfile($speaker),
-            'otherTalks' => $otherTalks,
-            'comments'   => $talk->comments()->get(),
-        ];
-
-        return $this->render('admin/talks/view.twig', $templateData);
+        return $this->render('admin/talks/view.twig', ['talk' => $handler->getProfile()]);
     }
 
     public function rateAction(Request $req)
     {
-        /** @var TalkRatingStrategy $talkRatingStrategy */
-        $talkRatingStrategy = $this->service(TalkRatingStrategy::class);
-
-        try {
-            $talk_rating = (int) $req->get('rating');
-            $talk_id     = (int) $req->get('id');
-
-            $talkRatingStrategy->rate($talk_id, $talk_rating);
-        } catch (TalkRatingException $e) {
-            return false;
-        }
-
-        return true;
+        return $this->service(TalkHandler::class)
+            ->grabTalk((int) $req->get('id'))
+            ->rate((int) $req->get('rating'));
     }
 
     /**
@@ -127,29 +88,9 @@ class TalksController extends BaseController
      */
     public function favoriteAction(Request $req)
     {
-        $admin_user_id = $this->service(Authentication::class)->userId();
-        $talkId        = (int) $req->get('id');
-
-        if ($req->get('delete') !== null) {
-            // Delete the record that matches
-            $favorite = Favorite::where('admin_user_id', $admin_user_id)
-                ->where('talk_id', $talkId)
-                ->first();
-            if ($favorite instanceof  Favorite) {
-                $favorite->delete();
-
-                return true;
-            }
-
-            return false;
-        }
-
-        Favorite::firstOrCreate([
-            'admin_user_id' => $admin_user_id,
-            'talk_id'       => $talkId,
-        ]);
-
-        return true;
+        return $this->service(TalkHandler::class)
+            ->grabTalk((int) $req->get('id'))
+            ->setFavorite($req->get('delete') == null);
     }
 
     /**
@@ -161,26 +102,18 @@ class TalksController extends BaseController
      */
     public function selectAction(Request $req)
     {
-        $talk = Talk::find($req->get('id'));
-        if ($talk instanceof Talk) {
-            $talk->selected = $req->get('delete') == true ? 0 :1;
-            $talk->save();
-
-            return true;
-        }
-
-        return false;
+        return $this->service(TalkHandler::class)
+            ->grabTalk((int) $req->get('id'))
+            ->select($req->get('delete') != true);
     }
 
     public function commentCreateAction(Request $req)
     {
-        $talk_id = (int) $req->get('id');
-        
-        TalkComment::create([
-            'talk_id' => $talk_id,
-            'user_id' => $this->service(Authentication::class)->userId(),
-            'message' => $req->get('comment'),
-        ]);
+        $talkId = (int) $req->get('id');
+
+        $this->service(TalkHandler::class)
+            ->grabTalk($talkId)
+            ->commentOn($req->get('comment'));
 
         $this->service('session')->set('flash', [
                 'type'  => 'success',
@@ -188,6 +121,6 @@ class TalksController extends BaseController
                 'ext'   => 'Comment Added!',
             ]);
 
-        return $this->app->redirect($this->url('admin_talk_view', ['id' => $talk_id]));
+        return $this->app->redirect($this->url('admin_talk_view', ['id' => $talkId]));
     }
 }

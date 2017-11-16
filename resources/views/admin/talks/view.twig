@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h2 class="mb-2">
-                {{ talk.title|raw }} <span class="text-grey-dark">&mdash; {{ speaker.name }}</span>
+                {{ talk.title|raw }} <span class="text-grey-dark">&mdash; {{ talk.speaker.name }}</span>
             </h2>
             {% if talk.slides is defined and talk.slides is not empty %}
                 <div><i class="fa fa-television mr-1"></i> <a class="hover:text-brand" href="{{ talk.slides }}">{{ talk.slides }}</a></div>
@@ -21,9 +21,9 @@
 
             {% if talk.desired or talk.sponsor %}<span class="mr-3 border-r border-grey"></span>{% endif %}
 
-            <a href="#" id="talk-upvote-{{ talk.id }}" class="js-talk-rating mr-3" data-id="{{ talk.id }}" data-rating="1" title="I want to see this talk"><i class="fa fa-thumbs-up admin-icon{% if talk_meta.rating == 1 %} text-green-dark{% endif %}"></i></a>
-            <a href="#" id="talk-downvote-{{ talk.id }}" class="js-talk-rating mr-3" data-id="{{ talk.id }}" data-rating="-1" title="I don't want to see this talk"><i class="fa fa-thumbs-down admin-icon{% if talk_meta.rating == -1 %} text-red-dark{% endif %}"></i></a>
-            <a href="#" id="talk-select-{{ talk.id }}" class="js-talk-select" data-id="{{ talk.id }}" title="Select this talk"><i class="fa fa-check-square admin-icon{% if talk.selected == 1 %} text-indigo-dark{% endif %}"></i></a>
+            <a href="#" id="talk-upvote-{{ talk.id }}" class="js-talk-rating mr-3" data-id="{{ talk.id }}" data-rating="1" title="I want to see this talk"><i class="fa fa-thumbs-up admin-icon{% if talk.rating == 1 %} text-green-dark{% endif %}"></i></a>
+            <a href="#" id="talk-downvote-{{ talk.id }}" class="js-talk-rating mr-3" data-id="{{ talk.id }}" data-rating="-1" title="I don't want to see this talk"><i class="fa fa-thumbs-down admin-icon{% if talk.rating == -1 %} text-red-dark{% endif %}"></i></a>
+            <a href="#" id="talk-select-{{ talk.id }}" class="js-talk-select" data-id="{{ talk.id }}" title="Select this talk"><i class="fa fa-check-square admin-icon{% if talk.selected == true %} text-indigo-dark{% endif %}"></i></a>
         </div>
     </div>
 
@@ -36,19 +36,19 @@
             {% endif %}
         </div>
         <div>
-            {% if otherTalks | length > 0 %}
+            {% if talk.otherTalks | length > 0 %}
                 <h3><i class="fa fa-bullhorn"></i> Other Talks...</h3>
-                {% for talk in otherTalks %}
+                {% for talk in talk.otherTalks %}
                     <p><a class="text-brand underline" href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title }}</a></p>
                 {% endfor %}
             {% endif %}
         </div>
     </div>
 
-    {% if comments is defined and comments|length > 0 %}
+    {% if talk.comments and talk.comments|length > 0 %}
         <h3 class="my-4"><i class="fa fa-comments"></i> Comments</h3>
 
-        {% for comment in comments %}
+        {% for comment in talk.comments %}
             {% set user = comment.user.toArray %}
             <div class="flex text-sm mt-4">
                 <div>

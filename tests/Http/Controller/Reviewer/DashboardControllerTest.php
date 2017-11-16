@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Test\Http\Controller\Admin;
+namespace OpenCFP\Test\Http\Controller\Reviewer;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Test\RefreshDatabase;
