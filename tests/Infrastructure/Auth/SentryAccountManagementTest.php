@@ -38,7 +38,7 @@ class SentryAccountManagementTest extends BaseTestCase
 
         $user = $this->sut->findByLogin('test@example.com');
 
-        $this->assertEquals('Test Account', "{$user->first_name} {$user->last_name}");
+        $this->assertEquals('Test Account', "{$user->getUser()->first_name} {$user->getUser()->last_name}");
     }
 
     /** @test */
@@ -49,20 +49,18 @@ class SentryAccountManagementTest extends BaseTestCase
             'last_name'  => 'Account',
         ]);
 
-        $group = $user->getGroups()[0];
-        
-        $this->assertEquals('Speakers', $group->getName());
+        $this->assertTrue($user->hasAccess('users'));
     }
 
     /** @test */
     public function can_activate_user()
     {
         $user = $this->sut->create('test@example.com', 'secret');
-        $this->assertFalse($user->isActivated());
+        $this->assertFalse($user->getUser()->isActivated());
 
         $this->sut->activate('test@example.com');
 
-        $this->assertTrue($this->sut->findByLogin('test@example.com')->isActivated());
+        $this->assertTrue($this->sut->findByLogin('test@example.com')->getUser()->isActivated());
     }
 
     /** @test */

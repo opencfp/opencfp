@@ -2,11 +2,11 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
 use OpenCFP\Application;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
  * Class ForgotControllerTest

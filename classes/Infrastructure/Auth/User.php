@@ -92,4 +92,14 @@ class User implements UserInterface
     {
         return $this->user->attemptResetPassword($resetCode, $newPassword);
     }
+
+    /**
+     * This is the dirty hack to allow Promote to and Demote from to work their normal way.
+     *
+     * @return \Cartalyst\Sentry\Users\UserInterface
+     */
+    public function getUser(): \Cartalyst\Sentry\Users\UserInterface
+    {
+        return $this->user;
+    }
 }
