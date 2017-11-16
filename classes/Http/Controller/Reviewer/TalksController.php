@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller\Reviewer;
 
-use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Talk\TalkFilter;
