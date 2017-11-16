@@ -9,6 +9,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkHandler;
+use OpenCFP\Domain\Talk\TalkProfile;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
 
@@ -110,6 +111,18 @@ class TalkHandlerTest extends BaseTestCase
     /**
      * @test
      */
+    public function favoriteReturnsFalseWhenDeleteErrors()
+    {
+        $talk = Mockery::mock(Talk::class);
+        $talk->shouldReceive('favorites')->andThrow(\Exception::class);
+        $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
+        $talkHandler->with($talk);
+        $this->assertFalse($talkHandler->setFavorite(false));
+    }
+
+    /**
+     * @test
+     */
     public function rateReturnsTrueOnSuccess()
     {
         $talk        = self::$talk;
@@ -203,5 +216,19 @@ class TalkHandlerTest extends BaseTestCase
         $talkHandler->grabTalk(45678);
 
         $this->assertFalse($talkHandler->view());
+    }
+
+    /**
+     * @test
+     */
+    public function getProfileReturnsTalkProfile()
+    {
+        $talk        = self::$talk;
+        $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
+        $talkHandler->with($talk);
+        $profile = $talkHandler->getProfile();
+        $this->assertInstanceOf(TalkProfile::class, $profile);
+        //Check the talk got set correctly in the profile.
+        $this->assertEquals($talk->title, $profile->getTitle());
     }
 }

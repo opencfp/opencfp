@@ -111,10 +111,12 @@ class TalkHandler
 
     private function createFavoriteForCurrentUser(): bool
     {
-        Favorite::firstOrCreate([
-            'admin_user_id' => $this->userId,
-            'talk_id'       => $this->talk->id,
-        ]);
+        $this->talk
+            ->favorites()
+            ->firstOrCreate([
+                'admin_user_id' => $this->userId,
+                'talk_id'       => $this->talk->id,
+            ]);
 
         return true;
     }
@@ -122,8 +124,10 @@ class TalkHandler
     private function clearFavoriteOfCurrentUser(): bool
     {
         try {
-            $favorite = Favorite::where('admin_user_id', $this->userId)
-                ->where('talk_id', $this->talk->id)->first();
+            $favorite = $this->talk->favorites()
+                ->where('talk_id', $this->talk->id)
+                ->where('admin_user_id', $this->userId)
+                ->first();
             if ($favorite instanceof Favorite) {
                 $favorite->delete();
             }
