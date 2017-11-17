@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Infrastructure\Auth;
 
-class User implements UserInterface
+class SentryUser implements UserInterface
 {
     /**
      * @var \Cartalyst\Sentry\Users\UserInterface

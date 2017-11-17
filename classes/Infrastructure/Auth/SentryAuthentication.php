@@ -52,7 +52,7 @@ class SentryAuthentication implements Authentication
             throw new NotAuthenticatedException();
         }
 
-        return new User($user);
+        return new SentryUser($user);
     }
 
     public function userId(): int

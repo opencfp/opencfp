@@ -20,12 +20,12 @@ class SentryAccountManagement implements AccountManagement
 
     public function findById($userId): UserInterface
     {
-        return new User($this->sentry->findUserById($userId));
+        return new SentryUser($this->sentry->findUserById($userId));
     }
 
     public function findByLogin($email): UserInterface
     {
-        return new User($this->sentry->findUserByLogin($email));
+        return new SentryUser($this->sentry->findUserByLogin($email));
     }
 
     public function findByRole($role): array
@@ -46,7 +46,7 @@ class SentryAccountManagement implements AccountManagement
             $this->sentry->findGroupByName('Speakers')
         );
 
-        return new User($user);
+        return new SentryUser($user);
     }
 
     public function activate($email)
