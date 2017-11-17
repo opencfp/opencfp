@@ -5,6 +5,9 @@ namespace OpenCFP\Test\Http\Controller;
 use OpenCFP\Application;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * @covers \OpenCFP\Http\Controller\FlashableTrait
+ */
 class FlashableTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetFlashReturnsFlashAndClearsIt()

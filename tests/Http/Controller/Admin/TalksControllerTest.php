@@ -7,6 +7,10 @@ use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
+/**
+ * @covers \OpenCFP\Http\Controller\Admin\TalksController
+ * @covers \OpenCFP\Http\Controller\BaseController
+ */
 class TalksControllerTest extends WebTestCase
 {
     use RefreshDatabase;

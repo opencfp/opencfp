@@ -4,6 +4,9 @@ namespace OpenCFP\Test\Http\Form;
 
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
+/**
+ * @covers \OpenCFP\Http\Form\TalkForm
+ */
 class TalkFormTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;

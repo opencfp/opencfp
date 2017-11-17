@@ -6,6 +6,10 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
+/**
+ * @covers \OpenCFP\Http\Controller\Reviewer\SpeakersController
+ * @covers \OpenCFP\Http\Controller\BaseController
+ */
 class SpeakerControllerTest extends WebTestCase
 {
     use RefreshDatabase;

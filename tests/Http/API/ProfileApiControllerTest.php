@@ -11,6 +11,9 @@ use OpenCFP\Http\API\ProfileController;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @covers \OpenCFP\Http\API\ProfileController
+ */
 class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
