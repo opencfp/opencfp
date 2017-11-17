@@ -4,6 +4,9 @@ namespace OpenCFP\Test\Http\Controller;
 
 use OpenCFP\Test\WebTestCase;
 
+/**
+ * @covers \OpenCFP\Http\Controller\PagesController
+ */
 class PagesControllerTest extends WebTestCase
 {
     /**

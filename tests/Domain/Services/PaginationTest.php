@@ -6,6 +6,9 @@ use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Test\BaseTestCase;
 use Pagerfanta\Pagerfanta;
 
+/**
+ * @covers \OpenCFP\Domain\Services\Pagination
+ */
 class PaginationTest extends BaseTestCase
 {
     /**
