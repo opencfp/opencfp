@@ -85,6 +85,12 @@ class TalkTest extends BaseTestCase
     {
         $notRated = Talk::notRatedBy(1)->get();
         $this->assertCount(2, $notRated);
+        $this->assertTrue($notRated->contains(function ($value) {
+            return $value->title == 'talks title';
+        }));
+        $this->assertTrue($notRated->contains(function ($value) {
+            return $value->title == 'talks title NO 3';
+        }));
 
         $notRatedByUserTwo = Talk::notRatedBy(25)->get();
         $this->assertCount(3, $notRatedByUserTwo);
