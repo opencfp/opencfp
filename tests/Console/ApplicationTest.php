@@ -11,10 +11,14 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\Console;
 
 /**
- * Class ApplicationTest
- *
- * @package OpenCFP\Test\Console
- * @group db
+ * @covers \OpenCFP\Console\Command\AdminPromoteCommand
+ * @covers \OpenCFP\Console\Command\AdminDemoteCommand
+ * @covers \OpenCFP\Console\Command\ReviewerDemoteCommand
+ * @covers \OpenCFP\Console\Command\ReviewerPromoteCommand
+ * @covers \OpenCFP\Console\Command\ClearCacheCommand
+ * @covers \OpenCFP\Console\Command\UserCreateCommand
+ * @covers \OpenCFP\Console\Application
+ * @covers \OpenCFP\Console\BaseCommand
  */
 class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
