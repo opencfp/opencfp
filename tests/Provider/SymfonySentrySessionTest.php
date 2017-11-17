@@ -5,6 +5,9 @@ namespace OpenCFP\Test\Provider;
 use OpenCFP\Provider\SymfonySentrySession;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * @covers \OpenCFP\Provider\SymfonySentrySession
+ */
 class SymfonySentrySessionTest extends \PHPUnit\Framework\TestCase
 {
     public function testDefaults()
