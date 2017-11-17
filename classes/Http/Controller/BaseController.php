@@ -20,7 +20,6 @@ abstract class BaseController
 {
     use ContainerAware;
 
-
     /**
      * Generates a file for the user
      *
@@ -29,14 +28,15 @@ abstract class BaseController
      *
      * @return Response
      */
-    public function download(string $content, string $fileName)
+    protected function download(string $content, string $fileName)
     {
-        $response = new Response($content);
+        $response    = new Response($content);
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             $fileName
         );
         $response->headers->set('Content-Disposition', $disposition);
+
         return $response;
     }
 
