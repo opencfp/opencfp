@@ -8,6 +8,9 @@ use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Test\BaseTestCase;
 
+/**
+ * @covers \OpenCFP\Domain\Talk\TalkFilter
+ */
 class TalkFilterTest extends BaseTestCase
 {
     protected $talk;

@@ -13,6 +13,9 @@ use OpenCFP\Domain\Talk\TalkProfile;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
 
+/**
+ * @covers \OpenCFP\Domain\Talk\TalkHandler
+ */
 class TalkHandlerTest extends BaseTestCase
 {
     use RefreshDatabase;
