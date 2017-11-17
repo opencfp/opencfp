@@ -28,7 +28,7 @@ abstract class BaseController
      *
      * @return Response
      */
-    protected function download(string $content, string $fileName)
+    protected function export(string $content, string $fileName)
     {
         $response    = new Response($content);
         $disposition = $response->headers->makeDisposition(

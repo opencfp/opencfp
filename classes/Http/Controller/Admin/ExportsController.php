@@ -107,6 +107,6 @@ class ExportsController extends BaseController
             $output  = $output . implode(',', $content) . "\n";
         }
 
-        return $this->download($output, $filename. '.csv');
+        return $this->export($output, $filename. '.csv');
     }
 }
