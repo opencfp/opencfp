@@ -64,6 +64,8 @@ class UserTest extends BaseTestCase
     public function scopeSearchWillReturnAllWhenNoSearch()
     {
         $this->assertCount(5, User::search()->get());
+        $this->assertCount(5, User::search('')->get());
+        $this->assertCount(5, User::search(null)->get());
     }
 
     /**
