@@ -8,6 +8,9 @@ use OpenCFP\Infrastructure\Persistence\IlluminateTalkRepository;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
 
+/**
+ * @covers \OpenCFP\Infrastructure\Persistence\IlluminateTalkRepository
+ */
 class IlluminateTalkRepositoryTest extends BaseTestCase
 {
     use RefreshDatabase;
