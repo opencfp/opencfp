@@ -12,10 +12,11 @@ class PaginationTest extends BaseTestCase
      * @var Pagination
      */
     private $pagination;
+
     public function setUp()
     {
         parent::setUp();
-        $this->pagination = new Pagination([1,2,3,4,5,6,7,8,9,10],2);
+        $this->pagination = new Pagination([1,2,3,4,5,6,7,8,9,10], 2);
     }
 
     /**
@@ -48,12 +49,9 @@ class PaginationTest extends BaseTestCase
         $this->assertContains('/help/example?', $view);
         $this->assertContains('page=2', $view);
 
-        $otherView = $this->pagination->createView('/help/example?',['filter' => 'bam']);
+        $otherView = $this->pagination->createView('/help/example?', ['filter' => 'bam']);
         $this->assertContains('/help/example?', $otherView);
         $this->assertContains('page=2', $otherView);
         $this->assertContains('filter=bam', $otherView);
-
     }
-
-
 }
