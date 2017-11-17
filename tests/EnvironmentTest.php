@@ -5,7 +5,7 @@ namespace OpenCFP\Test;
 use OpenCFP\Environment;
 
 /**
- * @covers OpenCFP\Environment
+ * @covers \OpenCFP\Environment
  */
 class EnvironmentTest extends \PHPUnit\Framework\TestCase
 {

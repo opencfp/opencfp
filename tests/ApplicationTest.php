@@ -6,7 +6,7 @@ use OpenCFP\Application;
 use OpenCFP\Environment;
 
 /**
- * @covers OpenCFP\Application
+ * @covers \OpenCFP\Application
  * @group db
  */
 class ApplicationTest extends \PHPUnit\Framework\TestCase
@@ -38,5 +38,17 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue($this->sut->isTesting());
         $this->assertContains('testing.yml', $this->sut->configPath());
+    }
+
+    /**
+     * @test
+     */
+    public function itIsNotDevOrProdWhenTesting()
+    {
+        $app = new Application(BASE_PATH, Environment::testing());
+
+        $this->assertTrue($app->isTesting());
+        $this->assertFalse($app->isDevelopment());
+        $this->assertFalse($app->isProduction());
     }
 }
