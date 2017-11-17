@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Infrastructure\Auth;
 use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentryAuthentication;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\DataBaseInteraction;
 
 /**
  * Class SentryAuthenticationTest
@@ -15,7 +15,7 @@ use OpenCFP\Test\RefreshDatabase;
  */
 class SentryAuthenticationTest extends BaseTestCase
 {
-    use RefreshDatabase;
+    use DataBaseInteraction;
     use SentryTestHelpers;
 
     /**
@@ -35,7 +35,9 @@ class SentryAuthenticationTest extends BaseTestCase
         $this->sut = new SentryAuthentication($this->getSentry());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function existing_user_can_authenticate()
     {
         $this->sut->authenticate('test@example.com', 'secret');
@@ -44,5 +46,34 @@ class SentryAuthenticationTest extends BaseTestCase
         $user = $this->sut->user();
 
         $this->assertEquals('test@example.com', $user->getLogin());
+    }
+
+    /**
+     * @test
+     */
+    public function userIdWorks()
+    {
+        $this->sut->authenticate('test@example.com', 'secret');
+        $this->assertSame(1, $this->sut->userId());
+    }
+
+    /**
+     * @test
+     */
+    public function checkWorks()
+    {
+        $this->assertFalse($this->sut->check());
+        $this->sut->authenticate('test@example.com', 'secret');
+        $this->assertTrue($this->sut->check());
+    }
+
+    /**
+     * @test
+     */
+    public function guestWorks()
+    {
+        $this->assertTrue($this->sut->guest());
+        $this->sut->authenticate('test@example.com', 'secret');
+        $this->assertFalse($this->sut->guest());
     }
 }
