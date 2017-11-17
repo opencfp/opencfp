@@ -10,6 +10,7 @@ use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
 
 /**
+ * @covers \OpenCFP\Domain\Talk\TalkFormatter
  * @group db
  */
 class TalkFormatterTest extends BaseTestCase
