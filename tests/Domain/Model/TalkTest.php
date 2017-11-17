@@ -9,6 +9,7 @@ use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
 
 /**
+ * @covers \OpenCFP\Domain\Model\Talk
  * @group db
  */
 class TalkTest extends BaseTestCase

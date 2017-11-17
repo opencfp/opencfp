@@ -7,6 +7,7 @@ use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
 
 /**
+ * @covers \OpenCFP\Domain\Model\Airport
  * @group db
  */
 class AirportTest extends BaseTestCase

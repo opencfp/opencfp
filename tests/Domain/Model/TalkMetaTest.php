@@ -9,6 +9,9 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\RefreshDatabase;
 
+/**
+ * @covers \OpenCFP\Domain\Model\TalkMeta
+ */
 class TalkMetaTest extends BaseTestCase
 {
     use RefreshDatabase;
