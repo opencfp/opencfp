@@ -12,12 +12,33 @@ use OpenCFP\Domain\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
 abstract class BaseController
 {
     use ContainerAware;
+
+    /**
+     * Generates a file for the user
+     *
+     * @param string $content
+     * @param string $fileName
+     *
+     * @return Response
+     */
+    protected function export(string $content, string $fileName)
+    {
+        $response    = new Response($content);
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $fileName
+        );
+        $response->headers->set('Content-Disposition', $disposition);
+
+        return $response;
+    }
 
     /**
      * Generate an absolute url from a route name.

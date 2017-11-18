@@ -3,8 +3,6 @@
 namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Http\Controller\BaseController;
 
 class ExportsController extends BaseController
@@ -44,16 +42,12 @@ class ExportsController extends BaseController
 
     private function talksExportAction(bool $attributed, $where = null)
     {
-        $talkFormatter = new TalkFormatter();
-
-        $admin_user_id = $this->service(Authentication::class)->userId();
         $talks         = Talk::orderBy('created_at', 'DESC');
         $talks         = $where == null ? $talks : $talks->where($where);
-        $talks         = $talkFormatter->formatList($talks->get(), $admin_user_id, $attributed)->toArray();
+        $talks         = $talks->get()->toArray();
 
         foreach ($talks as $talk => $info) {
-            $talks[$talk]['created_at'] = $info['created_at']->format('Y-m-d H:i:s');
-            unset($talks[$talk]['user'], $talks[$talk]['favourite']);
+            $talks[$talk]['created_at'] = $info['created_at'];
 
             if (!$attributed) {
                 unset($talks[$talk]['slides'], $talks[$talk]['other'], $talks[$talk]['sponsor'], $talks[$talk]['desired']);
@@ -86,14 +80,14 @@ class ExportsController extends BaseController
         return $info;
     }
 
-    private function startsWith($haystack, $needle)
+    private function startsWith($haystack, string $needle): bool
     {
         $length = strlen($needle);
 
         return (substr($haystack, 0, $length) === $needle);
     }
 
-    private function csvReturn($contents, $filename = 'data')
+    private function csvReturn(array $contents, string $filename = 'data')
     {
         if (count($contents) === 0) {
             $this->service('session')->set('flash', [
@@ -105,24 +99,14 @@ class ExportsController extends BaseController
             return $this->redirectTo('admin');
         }
 
-        header('Content-Disposition: attachment; filename='.$filename.'.csv');
-
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Transfer-Encoding: binary');
-        header('Pragma: no-cache');
-        header('Expires: 0');
-
-        $output = fopen('php://output', 'w');
-
-        fputcsv($output, array_keys($contents[0]));
+        $keys   = implode(',', array_keys($contents[0]));
+        $output = $keys . "\n";
 
         foreach ($contents as $content) {
             $content = array_map([$this,'csvFormat'], $content);
-
-            fputcsv($output, array_values($content));
+            $output  = $output . implode(',', $content) . "\n";
         }
 
-        fclose($output);
-        exit();
+        return $this->export($output, $filename. '.csv');
     }
 }
