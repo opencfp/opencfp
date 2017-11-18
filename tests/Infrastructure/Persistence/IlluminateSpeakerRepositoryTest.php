@@ -7,11 +7,14 @@ use Mockery;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
+use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\RefreshDatabase;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 
-class IlluminateSpeakerRepositoryTest extends \PHPUnit\Framework\TestCase
+class IlluminateSpeakerRepositoryTest extends BaseTestCase
 {
     use GeneratorTrait;
+    use RefreshDatabase;
 
     /**
      * @test
@@ -64,5 +67,25 @@ class IlluminateSpeakerRepositoryTest extends \PHPUnit\Framework\TestCase
         $repository = new IlluminateSpeakerRepository($speaker);
 
         $this->assertSame($speaker, $repository->findById($id));
+    }
+
+    /**
+     * @test
+     */
+    public function persistSavesToDatabase()
+    {
+        $repo = new IlluminateSpeakerRepository(new User());
+        //Check There are no users in the database
+        $this->assertSame(0, User::count());
+
+        $user = new User([
+            'email'    => 'texst@example.com',
+            'password' => 'NotHashedNow',
+        ]);
+
+        //User hasn't been saved yet.
+        $this->assertSame(0, User::count());
+        $this->assertTrue($repo->persist($user));
+        $this->assertSame(1, User::count());
     }
 }
