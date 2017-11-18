@@ -2,12 +2,12 @@
 
 namespace OpenCFP\Test\Console;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
 use OpenCFP\Console\Application;
 use OpenCFP\Console\Command;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\Console;
 
 /**

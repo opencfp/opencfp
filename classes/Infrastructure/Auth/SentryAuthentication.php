@@ -3,7 +3,6 @@
 namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentry\Sentry;
-use Cartalyst\Sentry\Users\UserInterface;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\AuthenticationException;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
@@ -53,7 +52,7 @@ class SentryAuthentication implements Authentication
             throw new NotAuthenticatedException();
         }
 
-        return $user;
+        return new SentryUser($user);
     }
 
     public function userId(): int

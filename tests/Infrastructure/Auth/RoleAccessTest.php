@@ -1,11 +1,11 @@
 <?php
 
-namespace OpenCFP\Test\Http\Controller\Admin;
+namespace OpenCFP\Test\Infrastructure\Auth;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -23,7 +23,7 @@ class RoleAccessTest extends WebTestCase
     public function testReturnsFalseIfCheckSucceededButUserHasNoAdminPermission()
     {
         $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
+        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
 
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
@@ -36,7 +36,7 @@ class RoleAccessTest extends WebTestCase
     public function testReturnsNothingIfCheckSucceededAndUserHasAdminPermission()
     {
         $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
+        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
 
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);

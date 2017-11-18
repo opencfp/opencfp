@@ -2,10 +2,10 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Mockery as m;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\Util\Faker\GeneratorTrait;
 use OpenCFP\Test\WebTestCase;
 

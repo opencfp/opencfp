@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Domain\Services;
 
-use Cartalyst\Sentry\Users\UserInterface;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 
 interface AccountManagement
 {

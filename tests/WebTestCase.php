@@ -2,10 +2,10 @@
 
 namespace OpenCFP\Test;
 
-use Cartalyst\Sentry\Users\UserInterface;
 use Mockery;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class WebTestCase extends BaseTestCase

@@ -4,7 +4,6 @@ namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserAlreadyActivatedException;
-use Cartalyst\Sentry\Users\UserInterface;
 use OpenCFP\Domain\Services\AccountManagement;
 
 class SentryAccountManagement implements AccountManagement
@@ -21,12 +20,12 @@ class SentryAccountManagement implements AccountManagement
 
     public function findById($userId): UserInterface
     {
-        return $this->sentry->findUserById($userId);
+        return new SentryUser($this->sentry->findUserById($userId));
     }
 
     public function findByLogin($email): UserInterface
     {
-        return $this->sentry->findUserByLogin($email);
+        return new SentryUser($this->sentry->findUserByLogin($email));
     }
 
     public function findByRole($role): array
@@ -47,12 +46,12 @@ class SentryAccountManagement implements AccountManagement
             $this->sentry->findGroupByName('Speakers')
         );
 
-        return $user;
+        return new SentryUser($user);
     }
 
     public function activate($email)
     {
-        $user = $this->findByLogin($email);
+        $user = $this->findByLogin($email)->getUser();
         $code = $user->getActivationCode();
 
         try {
@@ -64,14 +63,14 @@ class SentryAccountManagement implements AccountManagement
 
     public function promoteTo($email, $role = 'Admin')
     {
-        $this->findByLogin($email)->addGroup(
+        $this->findByLogin($email)->getUser()->addGroup(
             $this->sentry->findGroupByName($role)
         );
     }
 
     public function demoteFrom($email, $role = 'Admin')
     {
-        $this->findByLogin($email)->removeGroup(
+        $this->findByLogin($email)->getUser()->removeGroup(
             $this->sentry->findGroupByName($role)
         );
     }
