@@ -12,7 +12,7 @@ interface Authentication
      * @param string $username
      * @param string $password
      *
-     * @throws InvalidCredentialsException
+     * @throws AuthenticationException
      */
     public function authenticate($username, $password);
 
