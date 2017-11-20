@@ -10,6 +10,7 @@
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
+         defaultTestSuite="all"
          processIsolation="false"
          stopOnFailure="false">
     <php>
@@ -20,6 +21,8 @@
             <directory>classes</directory>
             <exclude>
                 <directory>classes/Provider</directory>
+                <directory>classes/Http/API</directory>
+                <directory>classes/Infrastructure/Oauth</directory>
             </exclude>
         </whitelist>
     </filter>
@@ -27,6 +30,7 @@
     <testsuites>
         <testsuite name="all">
             <directory>tests</directory>
+            <exclude>tests/Http/API</exclude>
         </testsuite>
     </testsuites>
 </phpunit>
