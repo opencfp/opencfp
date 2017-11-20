@@ -10,7 +10,7 @@ interface AccountManagement
 
     public function findByLogin($email): UserInterface;
 
-    public function findByRole($role): array;
+    public function findByRole($role);
 
     public function create($email, $password, array $data = []): UserInterface;
 
