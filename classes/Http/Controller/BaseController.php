@@ -48,7 +48,7 @@ abstract class BaseController
      *
      * @return string the generated URL
      */
-    public function url($route, $parameters = [])
+    protected function url($route, $parameters = [])
     {
         return $this->service('url_generator')->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
@@ -62,7 +62,7 @@ abstract class BaseController
      *
      * @return mixed
      */
-    public function render($name, array $context = [], $status = Response::HTTP_OK)
+    protected function render($name, array $context = [], $status = Response::HTTP_OK)
     {
         /* @var Twig_Environment $twig */
         $twig = $this->service('twig');
@@ -76,7 +76,7 @@ abstract class BaseController
      *
      * @return RedirectResponse
      */
-    public function redirectTo($route, $status = Response::HTTP_FOUND)
+    protected function redirectTo($route, $status = Response::HTTP_FOUND)
     {
         return $this->app->redirect($this->url($route), $status);
     }
@@ -84,7 +84,7 @@ abstract class BaseController
     /**
      * @return RedirectResponse
      */
-    public function redirectBack()
+    protected function redirectBack()
     {
         /** @var Request $request */
         $request = $this->service('request_stack')->getCurrentRequest();
@@ -92,7 +92,7 @@ abstract class BaseController
         return $this->app->redirect($request->headers->get('referer'));
     }
 
-    public function validate($rules = [], $messages = [], $customAttributes = [])
+    protected function validate($rules = [], $messages = [], $customAttributes = [])
     {
         /** @var Request $request */
         $request = $this->service('request_stack')->getCurrentRequest();
