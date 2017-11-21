@@ -6,7 +6,7 @@ use Faker\Generator;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Test\Helper\Faker\GeneratorTrait
  */
 class GeneratorTest extends \PHPUnit\Framework\TestCase
 {

@@ -12,7 +12,7 @@ use Symfony\Component\Console;
 
 /**
  * @group db
- * @coversNothing
+ * @covers \OpenCFP\Console\Application
  */
 class ApplicationTest extends \PHPUnit\Framework\TestCase
 {

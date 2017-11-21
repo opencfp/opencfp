@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Unit\Infrastructure\Crypto;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator
  */
 class PseudoRandomStringGeneratorTest extends \PHPUnit\Framework\TestCase
 {

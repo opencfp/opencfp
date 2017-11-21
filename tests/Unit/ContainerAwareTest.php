@@ -6,7 +6,7 @@ use Mockery as m;
 use OpenCFP\Application;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\ContainerAware
  */
 class ContainerAwareTest extends \PHPUnit\Framework\TestCase
 {

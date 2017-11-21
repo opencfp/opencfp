@@ -48,7 +48,6 @@ class ProfileImageProcessor
      * @throws \Exception
      *
      * @return string
-     *
      */
     public function process(UploadedFile $file, $publishFilename = null): string
     {

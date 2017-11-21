@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Unit\Domain;
 use OpenCFP\Domain\CallForProposal;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Domain\CallForProposal
  */
 class CallForProposalTest extends \PHPUnit\Framework\TestCase
 {

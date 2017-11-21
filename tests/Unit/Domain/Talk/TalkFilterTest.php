@@ -9,7 +9,7 @@ use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Test\BaseTestCase;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Domain\Talk\TalkFilter
  */
 class TalkFilterTest extends BaseTestCase
 {

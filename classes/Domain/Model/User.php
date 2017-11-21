@@ -77,7 +77,6 @@ class User extends Eloquent
      * @throws \Exception
      *
      * @return bool
-     *
      */
     public function delete(): bool
     {
