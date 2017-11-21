@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Test\Unit\Console;
+namespace OpenCFP\Test\Unit\Console\Command;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
