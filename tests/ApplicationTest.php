@@ -36,8 +36,8 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
     {
         $this->sut = new Application(BASE_PATH, Environment::testing());
 
-        $this->assertTrue($this->sut->isTesting());
-        $this->assertContains('testing.yml', $this->sut->configPath());
+        $this->assertTrue($this->sut['env']->isTesting());
+        $this->assertContains('testing.yml', $this->sut['path']->configPath());
     }
 
     /**
@@ -47,8 +47,8 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
     {
         $app = new Application(BASE_PATH, Environment::testing());
 
-        $this->assertTrue($app->isTesting());
-        $this->assertFalse($app->isDevelopment());
-        $this->assertFalse($app->isProduction());
+        $this->assertTrue($app['env']->isTesting());
+        $this->assertFalse($app['env']->isDevelopment());
+        $this->assertFalse($app['env']->isProduction());
     }
 }
