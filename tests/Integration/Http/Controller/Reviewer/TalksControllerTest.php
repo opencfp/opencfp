@@ -6,6 +6,9 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
+/**
+ * @coversNothing
+ */
 class TalksControllerTest extends WebTestCase
 {
     use RefreshDatabase;

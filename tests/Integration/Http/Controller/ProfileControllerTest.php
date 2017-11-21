@@ -8,6 +8,7 @@ use OpenCFP\Test\WebTestCase;
 
 /**
  * @group db
+ * @coversNothing
  */
 class ProfileControllerTest extends WebTestCase
 {

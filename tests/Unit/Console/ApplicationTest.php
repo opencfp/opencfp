@@ -12,6 +12,7 @@ use Symfony\Component\Console;
 
 /**
  * @group db
+ * @coversNothing
  */
 class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
