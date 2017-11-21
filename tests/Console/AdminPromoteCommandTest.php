@@ -10,7 +10,6 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 /**
  * Class AdminPromoteTest
  *
- * @package OpenCFP\Test\Console
  * @group db
  */
 class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase

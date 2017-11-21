@@ -11,7 +11,6 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 /**
  * Class ForgotControllerTest
  *
- * @package OpenCFP\Test\Http\Controller
  * @group db
  */
 class ForgotControllerTest extends \PHPUnit\Framework\TestCase

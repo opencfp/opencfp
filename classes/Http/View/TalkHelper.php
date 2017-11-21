@@ -5,7 +5,6 @@ namespace OpenCFP\Http\View;
 /**
  * Class TalkHelper
  *
- * @package OpenCFP\Http\View
  */
 class TalkHelper
 {
