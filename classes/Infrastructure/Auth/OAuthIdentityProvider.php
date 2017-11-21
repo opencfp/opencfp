@@ -34,7 +34,6 @@ class OAuthIdentityProvider implements IdentityProvider
      * @throws AccessDeniedException
      *
      * @return User
-     *
      */
     public function getCurrentUser()
     {

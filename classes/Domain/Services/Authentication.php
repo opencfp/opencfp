@@ -22,7 +22,6 @@ interface Authentication
      * @throws NotAuthenticatedException
      *
      * @return UserInterface
-     *
      */
     public function user(): UserInterface;
 
@@ -32,7 +31,6 @@ interface Authentication
      * @throws NotAuthenticatedException
      *
      * @return int
-     *
      */
     public function userId(): int;
 
