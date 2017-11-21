@@ -6,7 +6,7 @@ use Mockery;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 
-class BaseTestCase extends \PHPUnit\Framework\TestCase
+abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Application
