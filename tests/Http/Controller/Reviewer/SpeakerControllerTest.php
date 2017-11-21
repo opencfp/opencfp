@@ -3,7 +3,7 @@
 namespace OpenCFP\Test\Http\Controller\Reviewer;
 
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 class SpeakerControllerTest extends WebTestCase

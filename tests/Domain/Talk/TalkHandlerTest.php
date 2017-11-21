@@ -11,7 +11,7 @@ use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\Talk\TalkProfile;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 
 class TalkHandlerTest extends BaseTestCase
 {

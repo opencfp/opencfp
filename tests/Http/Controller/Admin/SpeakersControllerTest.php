@@ -6,7 +6,7 @@ use Mockery;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Infrastructure\Auth\UserInterface;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 /**

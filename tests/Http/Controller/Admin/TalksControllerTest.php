@@ -4,7 +4,7 @@ namespace OpenCFP\Test\Http\Controller\Admin;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 class TalksControllerTest extends WebTestCase

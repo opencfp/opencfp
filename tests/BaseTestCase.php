@@ -5,6 +5,8 @@ namespace OpenCFP\Test;
 use Mockery;
 use OpenCFP\Application;
 use OpenCFP\Environment;
+use OpenCFP\Test\Helper\DataBaseInteraction;
+use OpenCFP\Test\Helper\RefreshDatabase;
 
 class BaseTestCase extends \PHPUnit\Framework\TestCase
 {

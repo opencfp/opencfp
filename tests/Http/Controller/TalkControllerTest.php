@@ -7,7 +7,7 @@ use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 /**

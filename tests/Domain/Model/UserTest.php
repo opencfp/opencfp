@@ -8,7 +8,7 @@ use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 
 /**
  * @group db

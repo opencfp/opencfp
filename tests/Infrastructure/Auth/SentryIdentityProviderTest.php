@@ -9,7 +9,7 @@ use OpenCFP\Domain\Entity;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
-use OpenCFP\Test\Util\Faker\GeneratorTrait;
+use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
 {
