@@ -43,7 +43,7 @@
         {% for talk in talks %}
             <div id="talk-{{ talk.id }}" class="flex items-center justify-between mb-8">
                 <div class="w-5/6">
-                    <h3 class="m-0"><a class="hover:text-brand" href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a><span class="text-sm text-grey-dark"> &mdash; {{ talk.speaker.name }}</span></h3>
+                    <h3 class="m-0"><a class="hover:text-brand" href="{{ url('admin_talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a><a class="text-sm text-grey-dark" href="{{ url("admin_speaker_view", {id:talk.speaker.id}) }}"><span> &mdash;  {{ talk.speaker.name }}</span></a></h3>
                     <p class="text-sm text-dark-soft mb-3">{{ talk.description | truncate(200) }}</p>
                     <div>
                         <span class="bg-brand text-white text-xs rounded-full py-2 px-3 mr-2"><i class="fa fa-clock-o"></i> {{ talkHelper.getTypeDisplayName(talk.type) }}</span>

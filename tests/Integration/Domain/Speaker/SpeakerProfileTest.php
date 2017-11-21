@@ -27,6 +27,12 @@ class SpeakerProfileTest extends BaseTestCase
         self::$profile = new SpeakerProfile(self::$user);
     }
 
+    public function testGetIdReturnsId()
+    {
+        $id = self::$user->id;
+        $this->assertSame($id, self::$profile->getId());
+    }
+
     public function testNeedsProfileReturnsCorrectly()
     {
         //if the user needs a profile they haven't made one, hence the !
