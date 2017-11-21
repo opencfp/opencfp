@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Test;
+namespace OpenCFP\Test\Unit;
 
 use OpenCFP\Environment;
 use OpenCFP\Path;
