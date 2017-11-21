@@ -82,6 +82,10 @@ jobs:
       env:
         - WITH_COVERAGE=true
 
+    - <<: *TEST
+
+      php: 7.2
+
     - stage: Asset
 
       php: 7.0
