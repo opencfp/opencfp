@@ -22,9 +22,10 @@ class SentryIdentityProvider implements IdentityProvider
     /**
      * Retrieves the currently authenticate user's username.
      *
+     * @throws NotAuthenticatedException
+     *
      * @return User
      *
-     * @throws NotAuthenticatedException
      */
     public function getCurrentUser()
     {

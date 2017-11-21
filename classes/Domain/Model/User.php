@@ -74,9 +74,10 @@ class User extends Eloquent
     /**
      * Deletes user, all of their talks, and meta/favorites/comments
      *
+     * @throws \Exception
+     *
      * @return bool
      *
-     * @throws \Exception
      */
     public function delete(): bool
     {
