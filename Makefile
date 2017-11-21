@@ -17,9 +17,8 @@ database: composer
 	cp phinx.yml.dist phinx.yml
 	vendor/bin/phinx migrate -e testing
 
-test: composer database
-	vendor/bin/phpunit
-
 infection: composer database
 	vendor/bin/infection
 
+test: composer database
+	vendor/bin/phpunit
