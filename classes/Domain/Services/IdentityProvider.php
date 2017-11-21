@@ -12,7 +12,6 @@ interface IdentityProvider
      * @throws NotAuthenticatedException
      *
      * @return User
-     *
      */
     public function getCurrentUser();
 }
