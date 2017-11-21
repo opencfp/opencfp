@@ -8,7 +8,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class WebTestCase extends BaseTestCase
+abstract class WebTestCase extends BaseTestCase
 {
     /**
      * Additional headers for a request.
