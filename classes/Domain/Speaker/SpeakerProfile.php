@@ -49,6 +49,11 @@ class SpeakerProfile
         return $this->speaker->has_made_profile == 0;
     }
 
+    public function getId()
+    {
+        return $this->speaker->id;
+    }
+
     /**
      * Retrieves all of the speakers talks
      *
