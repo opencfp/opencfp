@@ -15,7 +15,7 @@ class SpeakerProfile
     /**
      * @var User
      */
-    protected $speaker;
+    private $speaker;
 
     /**
      * @var array

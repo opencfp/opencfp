@@ -15,16 +15,16 @@ use OpenCFP\Domain\Talk\TalkWasSubmitted;
 class Speakers
 {
     /** @var CallForProposal */
-    protected $callForProposal;
+    private $callForProposal;
 
     /** @var IdentityProvider */
-    protected $identityProvider;
+    private $identityProvider;
 
     /** @var SpeakerRepository */
-    protected $speakers;
+    private $speakers;
 
     /** @var TalkRepository */
-    protected $talks;
+    private $talks;
 
     /** @var EventDispatcher */
     private $dispatcher;

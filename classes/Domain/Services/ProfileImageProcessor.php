@@ -17,7 +17,7 @@ class ProfileImageProcessor
     /**
      * @var string
      */
-    protected $publishDir;
+    private $publishDir;
 
     /**
      * @var RandomStringGenerator
@@ -27,7 +27,7 @@ class ProfileImageProcessor
     /**
      * @var int
      */
-    protected $size;
+    private $size;
 
     /**
      * Constructor

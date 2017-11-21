@@ -11,7 +11,7 @@ class TalkFilter
      *
      * @var array
      */
-    protected $orderByWhiteList = [
+    private $orderByWhiteList = [
         'created_at',
         'title',
         'type',
@@ -90,7 +90,7 @@ class TalkFilter
      *
      * @return array
      */
-    protected function getSortOptions(array $options, array $defaultOptions)
+    private function getSortOptions(array $options, array $defaultOptions)
     {
         if (!isset($options['order_by']) || !in_array($options['order_by'], $this->orderByWhiteList)) {
             $options['order_by'] = $defaultOptions['order_by'];
