@@ -3,6 +3,7 @@
 namespace OpenCFP\Test\Unit\Console;
 
 use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Console\Application;
 use OpenCFP\Console\Command;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -16,10 +17,7 @@ use Symfony\Component\Console;
  */
 class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
-    protected function tearDown()
-    {
-        Mockery::close();
-    }
+    use MockeryPHPUnitIntegration;
 
     public function testIsConsoleApplication()
     {

@@ -3,6 +3,7 @@
 namespace OpenCFP\Test\Unit\Console;
 
 use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Auth\UserInterface;
@@ -13,10 +14,7 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
  */
 class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
 {
-    protected function tearDown()
-    {
-        Mockery::close();
-    }
+    use MockeryPHPUnitIntegration;
 
     /**
      * @test
