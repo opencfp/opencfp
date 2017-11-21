@@ -11,6 +11,9 @@ use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
+/**
+ * @coversNothing
+ */
 class IlluminateSpeakerRepositoryTest extends BaseTestCase
 {
     use GeneratorTrait;

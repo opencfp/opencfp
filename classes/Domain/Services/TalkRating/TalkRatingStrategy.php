@@ -11,7 +11,6 @@ interface TalkRatingStrategy
      * @param $rating
      *
      * @throws TalkRatingException
-     *
      */
     public function rate(int $talkId, $rating);
 }

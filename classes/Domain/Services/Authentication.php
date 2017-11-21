@@ -19,18 +19,20 @@ interface Authentication
     /**
      * Returns current authenticated User account.
      *
+     * @throws NotAuthenticatedException
+     *
      * @return UserInterface
      *
-     * @throws NotAuthenticatedException
      */
     public function user(): UserInterface;
 
     /**
      * Returns current authenticated User Id.
      *
+     * @throws NotAuthenticatedException
+     *
      * @return int
      *
-     * @throws NotAuthenticatedException
      */
     public function userId(): int;
 

@@ -5,6 +5,9 @@ namespace OpenCFP\Test\Unit\Http\Form;
 use Mockery as m;
 use OpenCFP\Http\Form\SignupForm;
 
+/**
+ * @coversNothing
+ */
 class SignupFormTest extends \PHPUnit\Framework\TestCase
 {
     private $purifier;

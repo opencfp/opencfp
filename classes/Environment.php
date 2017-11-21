@@ -11,70 +11,78 @@ class Environment
      */
     protected $slug;
 
-    private function __construct($slug)
+    private function __construct(string $slug)
     {
         if (! in_array($slug, ['production', 'development', 'testing'])) {
             throw new \InvalidArgumentException('Invalid environment specified.');
         }
 
-        $this->slug = (string) $slug;
+        $this->slug = $slug;
     }
 
-    /**
-     * @return Environment
-     */
-    public static function production()
+    public static function production(): self
     {
         return new self('production');
     }
 
-    /**
-     * @return Environment
-     */
-    public static function development()
+    public static function development(): self
     {
         return new self('development');
     }
 
-    /**
-     * @return Environment
-     */
-    public static function testing()
+    public static function testing(): self
     {
         return new self('testing');
     }
 
-    /**
-     * @return Environment
-     */
-    public static function fromEnvironmentVariable()
+    public static function fromEnvironmentVariable(): self
     {
         $environment = $_SERVER['CFP_ENV'] ?? 'development';
 
         return new self($environment);
     }
 
-    /**
-     * @param $environmentString
-     *
-     * @return Environment
-     */
-    public static function fromString($environmentString)
+    public static function fromString(string $environmentString): self
     {
         return new self($environmentString);
     }
 
-    /**
-     * @param Environment $environment
-     *
-     * @return bool
-     */
-    public function equals(Environment $environment)
+    public function equals(Environment $environment): bool
     {
         return $this->slug === $environment->slug;
     }
 
-    public function __toString()
+    /**
+     * Tells if application is in production environment.
+     *
+     * @return bool
+     */
+    public function isProduction(): bool
+    {
+        return $this->equals(Environment::production());
+    }
+
+    /**
+     * Tells if application is in development environment.
+     *
+     * @return bool
+     */
+    public function isDevelopment(): bool
+    {
+        return $this->equals(Environment::development());
+    }
+
+    /**
+     * Tells if application is in testing environment.
+     *
+     * @return bool
+     */
+    public function isTesting(): bool
+    {
+        return $this->equals(Environment::testing());
+    }
+
+    public function __toString(): string
     {
         return $this->slug;
     }

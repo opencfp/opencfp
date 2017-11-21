@@ -108,7 +108,7 @@ abstract class BaseCommand extends Command
         $io->title('OpenCFP');
 
         $io->section(sprintf(
-            'Promoting account with email %s to '. $role,
+            'Promoting account with email %s to ' . $role,
             $email
         ));
 
@@ -126,7 +126,7 @@ abstract class BaseCommand extends Command
         $accounts->promoteTo($user->getLogin(), $role);
 
         $io->success(sprintf(
-            'Added account with email %s to the '. $role .' group',
+            'Added account with email %s to the ' . $role . ' group',
             $email
         ));
 

@@ -66,17 +66,18 @@ class User extends Eloquent
         }
 
         return $builder
-            ->where('first_name', 'like', '%' . $search. '%')
-            ->orWhere('last_name', 'like', '%' . $search. '%')
+            ->where('first_name', 'like', '%' . $search . '%')
+            ->orWhere('last_name', 'like', '%' . $search . '%')
             ->orderBy($orderByColumn, $orderByDirection);
     }
 
     /**
      * Deletes user, all of their talks, and meta/favorites/comments
      *
+     * @throws \Exception
+     *
      * @return bool
      *
-     * @throws \Exception
      */
     public function delete(): bool
     {

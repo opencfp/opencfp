@@ -6,6 +6,9 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
+/**
+ * @coversNothing
+ */
 class TalksControllerTest extends WebTestCase
 {
     use RefreshDatabase;
@@ -49,7 +52,7 @@ class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
         $this->asReviewer()
-            ->get('/reviewer/talks/'.$talk->id)
+            ->get('/reviewer/talks/' . $talk->id)
             ->assertSee($talk->title)
             ->assertSee($talk->description)
             ->assertSuccessful();

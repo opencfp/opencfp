@@ -9,6 +9,9 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 
+/**
+ * @coversNothing
+ */
 class YesNoRatingTest extends MockeryTestCase
 {
     public function testRateThrowsExceptionOnInvalidRating()

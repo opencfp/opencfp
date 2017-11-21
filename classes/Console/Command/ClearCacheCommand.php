@@ -28,8 +28,8 @@ class ClearCacheCommand extends BaseCommand
         $io->section('Clearing caches');
 
         $paths = [
-            $this->app->cachePurifierPath(),
-            $this->app->cacheTwigPath(),
+            $this->app['path']->cachePurifierPath(),
+            $this->app['path']->cacheTwigPath(),
         ];
 
         array_walk($paths, function ($path) use ($io) {

@@ -11,6 +11,7 @@ use OpenCFP\Test\WebTestCase;
 
 /**
  * @group db
+ * @coversNothing
  */
 class SpeakersControllerTest extends WebTestCase
 {
@@ -126,7 +127,7 @@ class SpeakersControllerTest extends WebTestCase
         $user = self::$users->last();
 
         $this->asAdmin($user->id)
-            ->get('/admin/speakers/'. $user->id . '/demote', ['role' => 'Admin'])
+            ->get('/admin/speakers/' . $user->id . '/demote', ['role' => 'Admin'])
             ->assertFlashContains('Sorry, you cannot remove yourself as Admin.')
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
@@ -148,7 +149,7 @@ class SpeakersControllerTest extends WebTestCase
         $this->swap(AccountManagement::class, $accounts);
 
         $this->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/'. self::$users->last()->id . '/demote', ['role' => 'Admin'])
+            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin'])
             ->assertFlashContains('success')
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');

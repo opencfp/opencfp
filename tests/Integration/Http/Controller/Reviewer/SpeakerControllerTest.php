@@ -6,6 +6,9 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
+/**
+ * @coversNothing
+ */
 class SpeakerControllerTest extends WebTestCase
 {
     use RefreshDatabase;
@@ -59,7 +62,7 @@ class SpeakerControllerTest extends WebTestCase
         $speaker = self::$users->first();
 
         $this->asReviewer()
-            ->get('/reviewer/speakers/'.$speaker->id)
+            ->get('/reviewer/speakers/' . $speaker->id)
             ->assertSee($speaker->first_name)
             ->assertSee($speaker->bio)
             ->assertSuccessful();

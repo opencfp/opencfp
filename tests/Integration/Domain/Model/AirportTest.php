@@ -8,6 +8,7 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 
 /**
  * @group db
+ * @coversNothing
  */
 class AirportTest extends BaseTestCase
 {

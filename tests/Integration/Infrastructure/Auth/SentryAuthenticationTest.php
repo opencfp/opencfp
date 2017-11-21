@@ -10,6 +10,7 @@ use OpenCFP\Test\Helper\SentryTestHelpers;
 
 /**
  * @group db
+ * @coversNothing
  */
 class SentryAuthenticationTest extends BaseTestCase
 {

@@ -4,6 +4,9 @@ namespace OpenCFP\Test\Unit\Domain\Talk;
 
 use OpenCFP\Domain\Talk\TalkSubmission;
 
+/**
+ * @coversNothing
+ */
 class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
 {
     /** @test */

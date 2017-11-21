@@ -12,6 +12,7 @@ use OpenCFP\Test\WebTestCase;
 
 /**
  * @group db
+ * @coversNothing
  */
 class TalkControllerTest extends WebTestCase
 {
@@ -108,7 +109,7 @@ class TalkControllerTest extends WebTestCase
     {
         $this->asLoggedInSpeaker(self::$user->id)
             ->callForPapersIsClosed()
-            ->get('/talk/edit/'. self::$talk->id)
+            ->get('/talk/edit/' . self::$talk->id)
             ->assertFlashContains('error')
             ->assertFlashContains('You cannot edit talks once the call for papers has ended')
             ->assertNotSee('Edit Your Talk')

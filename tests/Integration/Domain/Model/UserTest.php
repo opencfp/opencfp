@@ -12,6 +12,7 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 
 /**
  * @group db
+ * @coversNothing
  */
 class UserTest extends BaseTestCase
 {
