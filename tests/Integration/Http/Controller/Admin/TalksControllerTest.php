@@ -52,7 +52,7 @@ class TalksControllerTest extends WebTestCase
 
         $this->asAdmin()
             ->post(
-                '/admin/talks/'. $talk->id.'/comment',
+                '/admin/talks/' . $talk->id . '/comment',
                 ['comment' => 'Great Talk i rate 10/10']
             )
             ->assertNotSee('Server Error')
@@ -79,7 +79,7 @@ class TalksControllerTest extends WebTestCase
         $talk = self::$talks->first();
 
         $this->asAdmin()
-            ->get('/admin/talks/'. $talk->id)
+            ->get('/admin/talks/' . $talk->id)
             ->assertSuccessful();
     }
 
@@ -91,7 +91,7 @@ class TalksControllerTest extends WebTestCase
         $meta = factory(TalkMeta::class, 1)->create();
         $this->asAdmin($meta->first()->admin_user_id);
 
-        $this->get('/admin/talks/'. $meta->first()->talk_id)
+        $this->get('/admin/talks/' . $meta->first()->talk_id)
             ->assertSuccessful();
     }
 
@@ -103,7 +103,7 @@ class TalksControllerTest extends WebTestCase
         $talk = self::$talks->first();
 
         $this->asAdmin()
-            ->post('/admin/talks/'. $talk->id. '/select')
+            ->post('/admin/talks/' . $talk->id . '/select')
             ->assertSee('1')
             ->assertSuccessful();
     }
@@ -116,7 +116,7 @@ class TalksControllerTest extends WebTestCase
         $talk = self::$talks->first();
 
         $this->asAdmin()
-            ->post('/admin/talks/'. $talk->id. '/select', ['delete' => 1])
+            ->post('/admin/talks/' . $talk->id . '/select', ['delete' => 1])
             ->assertSee('1')
             ->assertSuccessful();
     }
@@ -140,7 +140,7 @@ class TalksControllerTest extends WebTestCase
         $talk = self::$talks->first();
 
         $this->asAdmin()
-            ->post('/admin/talks/'. $talk->id . '/favorite')
+            ->post('/admin/talks/' . $talk->id . '/favorite')
             ->assertSee('1')
             ->assertSuccessful();
     }
@@ -153,7 +153,7 @@ class TalksControllerTest extends WebTestCase
         $talk = self::$talks->first();
 
         $this->asAdmin()
-            ->post('/admin/talks/'. $talk->id . '/favorite', ['delete' =>1])
+            ->post('/admin/talks/' . $talk->id . '/favorite', ['delete' =>1])
             ->assertSee('1')
             ->assertSuccessful();
     }
@@ -177,7 +177,7 @@ class TalksControllerTest extends WebTestCase
         $talk = self::$talks->first();
 
         $this->asAdmin()
-            ->post('/admin/talks/'.$talk->id. '/rate', ['rating' => 1])
+            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => 1])
             ->assertSee('1')
             ->assertSuccessful();
     }
@@ -190,7 +190,7 @@ class TalksControllerTest extends WebTestCase
         $talk = self::$talks->first();
 
         $this->asAdmin()
-            ->post('/admin/talks/'.$talk->id. '/rate', ['rating' => 12])
+            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => 12])
             ->assertNotSee('1')
             ->assertSuccessful();
     }

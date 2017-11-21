@@ -18,6 +18,9 @@ $config = PhpCsFixer\Config::create()
         'blank_line_after_opening_tag' => true,
         'blank_line_before_statement' => true,
         'cast_spaces' => true,
+        'concat_space' => [
+            'spacing' => 'one',
+        ],
         'method_separation' => true,
         'no_alias_functions' => true,
         'no_empty_phpdoc' => true,

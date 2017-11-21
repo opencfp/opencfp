@@ -59,7 +59,7 @@ class SpeakerControllerTest extends WebTestCase
         $speaker = self::$users->first();
 
         $this->asReviewer()
-            ->get('/reviewer/speakers/'.$speaker->id)
+            ->get('/reviewer/speakers/' . $speaker->id)
             ->assertSee($speaker->first_name)
             ->assertSee($speaker->bio)
             ->assertSuccessful();

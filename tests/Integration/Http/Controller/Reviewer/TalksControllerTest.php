@@ -49,7 +49,7 @@ class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
         $this->asReviewer()
-            ->get('/reviewer/talks/'.$talk->id)
+            ->get('/reviewer/talks/' . $talk->id)
             ->assertSee($talk->title)
             ->assertSee($talk->description)
             ->assertSuccessful();
