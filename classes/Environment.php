@@ -71,7 +71,7 @@ class Environment
      */
     public function equals(Environment $environment)
     {
-        return $this->slug === (string) $environment;
+        return $this->slug === $environment->slug;
     }
 
     public function __toString()
