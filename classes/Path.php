@@ -5,9 +5,12 @@ namespace OpenCFP;
 class Path
 {
     private $path;
+    /**
+     * @var Environment
+     */
     private $env;
 
-    public function __construct($path, $env)
+    public function __construct($path, Environment $env)
     {
         $this->path = $path;
         $this->env  = $env;
@@ -31,10 +34,17 @@ class Path
     /**
      * Get the uploads path.
      *
+     * The production path is separated to make it easier for prod environments where it is
+     * not possible to store files on the disk.
+     *
      * @return string
      */
     public function uploadPath(): string
     {
+        if ($this->env->isProduction()) {
+            return $this->basePath() . '/web/uploads';
+        }
+
         return $this->basePath() . '/web/uploads';
     }
 

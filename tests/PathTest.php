@@ -32,11 +32,28 @@ class PathTest extends BaseTestCase
     /**
      * @test
      */
-    public function configPathReturnsConfgiPath()
+    public function configPathReturnsConfigPath()
     {
         $this->assertSame(
             '/home/folder/base/config/testing.yml',
             $this->path->configPath()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function configPathWorksForProdAndDev()
+    {
+        $prod = new Path('/home/folder/base', Environment::production());
+        $dev  = new Path('/home/folder/base', Environment::development());
+        $this->assertSame(
+            '/home/folder/base/config/production.yml',
+            $prod->configPath()
+        );
+        $this->assertSame(
+            '/home/folder/base/config/development.yml',
+            $dev->configPath()
         );
     }
 
@@ -48,6 +65,18 @@ class PathTest extends BaseTestCase
         $this->assertSame(
             '/home/folder/base/web/uploads',
             $this->path->uploadPath()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function uploadPathReturnsUploadPathWhenProduction()
+    {
+        $path = new Path('/home/folder/base', Environment::production());
+        $this->assertSame(
+            '/home/folder/base/web/uploads',
+            $path->uploadPath()
         );
     }
 
