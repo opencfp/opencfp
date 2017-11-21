@@ -165,7 +165,6 @@ abstract class Form
 
     /**
      * Method that sanitizes all data
-     *
      */
     public function sanitize()
     {

@@ -60,9 +60,10 @@ class Speakers
      *
      * @param int $talkId
      *
+     * @throws NotAuthorizedException
+     *
      * @return Talk
      *
-     * @throws NotAuthorizedException
      */
     public function getTalk(int $talkId)
     {
@@ -94,9 +95,10 @@ class Speakers
      *
      * @param TalkSubmission $submission
      *
+     * @throws \Exception
+     *
      * @return Talk
      *
-     * @throws \Exception
      */
     public function submitTalk(TalkSubmission $submission)
     {

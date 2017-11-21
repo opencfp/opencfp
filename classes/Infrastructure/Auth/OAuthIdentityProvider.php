@@ -30,10 +30,11 @@ class OAuthIdentityProvider implements IdentityProvider
     /**
      * Retrieves the currently authenticate user's username.
      *
-     * @return User
-     *
      * @throws InvalidRequestException
      * @throws AccessDeniedException
+     *
+     * @return User
+     *
      */
     public function getCurrentUser()
     {

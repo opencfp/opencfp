@@ -88,10 +88,10 @@ class ForgotController extends BaseController
             $user = $accounts->findById($req->get('user_id'));
 
             if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
-                $error++;
+                ++$error;
             }
         } catch (UserNotFoundException $e) {
-            $error++;
+            ++$error;
         }
 
         if ($error > 0) {
@@ -143,11 +143,11 @@ class ForgotController extends BaseController
 
             $user = $accounts->findById($req->get('user_id'));
         } catch (UserNotFoundException $e) {
-            $error++;
+            ++$error;
         }
 
         if (! $user->checkResetPasswordCode($req->get('reset_code'))) {
-            $error++;
+            ++$error;
         }
 
         if ($error > 0) {
