@@ -2,10 +2,6 @@
 
 namespace OpenCFP\Http\View;
 
-/**
- * Class TalkHelper
- *
- */
 class TalkHelper
 {
     /**
@@ -24,8 +20,6 @@ class TalkHelper
     private $types;
 
     /**
-     * TalkHelper constructor.
-     *
      * @param $categories
      * @param $levels
      * @param $types

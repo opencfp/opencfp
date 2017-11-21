@@ -10,8 +10,6 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 /**
- * Class SpeakersControllerTest
- *
  * @group db
  */
 class SpeakersControllerTest extends WebTestCase

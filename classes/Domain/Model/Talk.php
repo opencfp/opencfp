@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Talk
- *
  *
  * @method Builder recent(int $limit=10)
  * @method Builder selected()
