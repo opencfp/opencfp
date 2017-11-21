@@ -216,7 +216,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     {
         $longName = '';
 
-        for ($x = 1; $x <= 256; $x++) {
+        for ($x = 1; $x <= 256; ++$x) {
             $longName .= 'X';
         }
 
@@ -260,7 +260,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     {
         $longName = '';
 
-        for ($x = 1; $x <= 256; $x++) {
+        for ($x = 1; $x <= 256; ++$x) {
             $longName .= 'X';
         }
 
