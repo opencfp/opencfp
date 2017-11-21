@@ -28,15 +28,15 @@ class TwigServiceProvider implements ServiceProviderInterface
     public function register(Container $c)
     {
         $c->register(new SilexTwigServiceProvider, [
-            'twig.path'    => $this->app->templatesPath(),
+            'twig.path'    => $this->app['path']->templatesPath(),
             'twig.options' => [
-                'debug' => !$this->app->isProduction(),
-                'cache' => $this->app->config('cache.enabled') ? $this->app->cacheTwigPath() : false,
+                'debug' => !$this->app['env']->isProduction(),
+                'cache' => $this->app->config('cache.enabled') ? $this->app['path']->cacheTwigPath() : false,
             ],
         ]);
 
         $c->extend('twig', function (Twig_Environment $twig, Application $app) {
-            if (!$app->isProduction()) {
+            if (!$app['env']->isProduction()) {
                 $twig->addExtension(new Twig_Extension_Debug);
             }
 

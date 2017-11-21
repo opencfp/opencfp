@@ -74,6 +74,36 @@ class Environment
         return $this->slug === $environment->slug;
     }
 
+    /**
+     * Tells if application is in production environment.
+     *
+     * @return bool
+     */
+    public function isProduction(): bool
+    {
+        return $this->equals(Environment::production());
+    }
+
+    /**
+     * Tells if application is in development environment.
+     *
+     * @return bool
+     */
+    public function isDevelopment(): bool
+    {
+        return $this->equals(Environment::development());
+    }
+
+    /**
+     * Tells if application is in testing environment.
+     *
+     * @return bool
+     */
+    public function isTesting(): bool
+    {
+        return $this->equals(Environment::testing());
+    }
+
     public function __toString()
     {
         return $this->slug;
