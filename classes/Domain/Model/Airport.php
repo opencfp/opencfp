@@ -12,9 +12,10 @@ class Airport extends Eloquent implements AirportInformationDatabase
     /**
      * @param string $code the IATA Airport Code to get information for
      *
+     * @throws \Exception
+     *
      * @return self
      *
-     * @throws \Exception
      */
     public function withCode($code): self
     {

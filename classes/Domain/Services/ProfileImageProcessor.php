@@ -45,9 +45,10 @@ class ProfileImageProcessor
      * @param UploadedFile $file
      * @param string       $publishFilename
      *
+     * @throws \Exception
+     *
      * @return string
      *
-     * @throws \Exception
      */
     public function process(UploadedFile $file, $publishFilename = null): string
     {
