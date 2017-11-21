@@ -14,8 +14,6 @@ class RequestCleaner
     private $purifier;
 
     /**
-     * RequestCleaner constructor.
-     *
      * @param HTMLPurifier $purifier
      */
     public function __construct(HTMLPurifier $purifier)

@@ -12,8 +12,6 @@ abstract class Form
     protected $_fieldList = [];
 
     /**
-     * Class constructor
-     *
      * @param $data array of form data
      * @param \HTMLPurifier $purifier
      * @param $options

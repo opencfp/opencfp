@@ -11,8 +11,6 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\Console;
 
 /**
- * Class ApplicationTest
- *
  * @group db
  */
 class ApplicationTest extends \PHPUnit\Framework\TestCase

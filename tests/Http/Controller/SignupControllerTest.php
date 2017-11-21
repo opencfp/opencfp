@@ -6,8 +6,6 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 /**
- * Class SignupControllerTest
- *
  * @group db
  */
 class SignupControllerTest extends WebTestCase

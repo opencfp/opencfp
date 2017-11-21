@@ -7,8 +7,6 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 /**
- * Class ProfileControllerTest
- *
  * @group db
  */
 class ProfileControllerTest extends WebTestCase

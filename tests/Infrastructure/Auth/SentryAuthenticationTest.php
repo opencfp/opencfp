@@ -9,8 +9,6 @@ use OpenCFP\Test\Helper\DataBaseInteraction;
 use OpenCFP\Test\Helper\SentryTestHelpers;
 
 /**
- * Class SentryAuthenticationTest
- *
  * @group db
  */
 class SentryAuthenticationTest extends BaseTestCase
