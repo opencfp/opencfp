@@ -29,6 +29,7 @@ $config = PhpCsFixer\Config::create()
         'phpdoc_indent' => true,
         'phpdoc_no_empty_return' => true,
         'phpdoc_no_package' => true,
+        'phpdoc_order' => true,
         'phpdoc_scalar' => true,
         'phpdoc_separation' => true,
         'php_unit_expectation' => true,
