@@ -27,6 +27,22 @@ We accept contributions via Pull Requests on [Github](https://github.com/opencfp
 Run
 
 ```
+$ make unit
+```
+
+to run unit tests.
+
+Run
+
+```
+$ make integration
+```
+
+to run integration tests.
+
+Run
+
+```
 $ make test
 ```
 
@@ -36,6 +52,7 @@ Run
 ```
 $ make infection
 ```
+
 to run [infection tests](https://infection.github.io/guide/)
 
 ## Fixing Code Style issues

@@ -68,8 +68,9 @@ jobs:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-before-script; fi
 
       script:
+        - vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist
         - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-enable; fi
-        - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit; fi
+        - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --configuration tests/Unit/phpunit.xml.dist --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit --configuration tests/Unit/phpunit.xml.dist; fi
         - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-disable; fi
 
       after_script:
