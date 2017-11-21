@@ -9,9 +9,8 @@ use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
- * Class ForgotControllerTest
- *
- * @package OpenCFP\Test\Http\Controller
+ * @covers \OpenCFP\Http\Controller\ForgotController
+ * @covers \OpenCFP\Http\Controller\BaseController
  * @group db
  */
 class ForgotControllerTest extends \PHPUnit\Framework\TestCase

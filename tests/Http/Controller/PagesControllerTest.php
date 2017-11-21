@@ -6,6 +6,7 @@ use OpenCFP\Test\WebTestCase;
 
 /**
  * @covers \OpenCFP\Http\Controller\PagesController
+ * @covers \OpenCFP\Http\Controller\BaseController
  */
 class PagesControllerTest extends WebTestCase
 {

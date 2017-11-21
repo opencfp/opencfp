@@ -8,6 +8,9 @@ use OpenCFP\Infrastructure\Auth\SpeakerAccess;
 use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * @covers \OpenCFP\Infrastructure\Auth\SpeakerAccess
+ */
 class SpeakerAccessTest extends WebTestCase
 {
     public function testReturnsRedirectIfCheckFailed()

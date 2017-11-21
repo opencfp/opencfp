@@ -9,6 +9,9 @@ use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
 
+/**
+ * @covers \OpenCFP\Domain\Model\Talk
+ */
 class TalkTest extends BaseTestCase
 {
     use DataBaseInteraction;

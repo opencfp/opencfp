@@ -8,6 +8,9 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
+/**
+ * @covers \OpenCFP\Domain\Speaker\SpeakerProfile
+ */
 class SpeakerProfileTest extends BaseTestCase
 {
     use RefreshDatabase;

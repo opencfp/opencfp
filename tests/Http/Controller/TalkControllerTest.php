@@ -11,9 +11,8 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 /**
- * Class TalkControllerTest
- *
- * @package OpenCFP\Test\Http\Controller
+ * @covers \OpenCFP\Http\Controller\TalkController
+ * @covers \OpenCFP\Http\Controller\BaseController
  * @group db
  */
 class TalkControllerTest extends WebTestCase

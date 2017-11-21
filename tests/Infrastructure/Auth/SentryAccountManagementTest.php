@@ -8,9 +8,7 @@ use OpenCFP\Test\Helper\DataBaseInteraction;
 use OpenCFP\Test\Helper\SentryTestHelpers;
 
 /**
- * Class SentryAccountManagementTest
- *
- * @package OpenCFP\Test\Infrastructure\Auth
+ * @covers \OpenCFP\Infrastructure\Auth\SentryAccountManagement
  * @group db
  */
 class SentryAccountManagementTest extends BaseTestCase

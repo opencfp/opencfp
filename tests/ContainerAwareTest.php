@@ -5,6 +5,9 @@ namespace OpenCFP\Test;
 use Mockery as m;
 use OpenCFP\Application;
 
+/**
+ * @covers \OpenCFP\ContainerAware
+ */
 class ContainerAwareTest extends \PHPUnit\Framework\TestCase
 {
     public function testAllowsToRetrieveService()

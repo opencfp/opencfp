@@ -10,9 +10,8 @@ use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use OpenCFP\Test\WebTestCase;
 
 /**
- * Class DashboardControllerTest
- *
- * @package OpenCFP\Test\Http\Controller
+ * @covers \OpenCFP\Http\Controller\DashboardController
+ * @covers \OpenCFP\Http\Controller\BaseController
  * @group db
  */
 class DashboardControllerTest extends WebTestCase

@@ -8,10 +8,8 @@ use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
- * Class AdminPromoteTest
- *
- * @package OpenCFP\Test\Console
- * @group db
+ * @covers \OpenCFP\Console\Command\AdminPromoteCommand
+ * @covers \OpenCFP\Console\BaseCommand
  */
 class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
 {
