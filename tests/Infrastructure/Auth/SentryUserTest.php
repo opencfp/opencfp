@@ -7,7 +7,8 @@ use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentryUser;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\DataBaseInteraction;
+use OpenCFP\Test\Helper\DataBaseInteraction;
+use OpenCFP\Test\Helper\SentryTestHelpers;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentryUser

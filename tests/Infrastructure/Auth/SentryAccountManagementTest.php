@@ -4,7 +4,8 @@ namespace OpenCFP\Test\Infrastructure\Auth;
 
 use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\DataBaseInteraction;
+use OpenCFP\Test\Helper\DataBaseInteraction;
+use OpenCFP\Test\Helper\SentryTestHelpers;
 
 /**
  * Class SentryAccountManagementTest

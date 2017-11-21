@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Domain\Model\Interaction;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\DataBaseInteraction;
+use OpenCFP\Test\Helper\DataBaseInteraction;
 
 class UserTest extends BaseTestCase
 {

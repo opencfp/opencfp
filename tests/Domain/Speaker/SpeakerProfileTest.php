@@ -6,7 +6,7 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Speaker\NotAllowedException;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 
 class SpeakerProfileTest extends BaseTestCase
 {

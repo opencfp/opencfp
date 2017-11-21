@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Test\Infrastructure\Auth;
+namespace OpenCFP\Test\Helper;
 
 use OpenCFP\Provider\SymfonySentrySession;
 use Symfony\Component\HttpFoundation\Session\Session;

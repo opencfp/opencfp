@@ -6,7 +6,7 @@ use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 
 /**
  * @group db

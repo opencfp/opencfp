@@ -7,7 +7,7 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\DataBaseInteraction;
+use OpenCFP\Test\Helper\DataBaseInteraction;
 
 class TalkTest extends BaseTestCase
 {

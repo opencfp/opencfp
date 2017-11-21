@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Test\Http\Controller;
 
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 
 /**

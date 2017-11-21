@@ -8,8 +8,8 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\RefreshDatabase;
-use OpenCFP\Test\Util\Faker\GeneratorTrait;
+use OpenCFP\Test\Helper\Faker\GeneratorTrait;
+use OpenCFP\Test\Helper\RefreshDatabase;
 
 class IlluminateSpeakerRepositoryTest extends BaseTestCase
 {

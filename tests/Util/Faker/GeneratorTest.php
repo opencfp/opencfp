@@ -3,6 +3,7 @@
 namespace OpenCFP\Test\Util\Faker;
 
 use Faker\Generator;
+use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 class GeneratorTest extends \PHPUnit\Framework\TestCase
 {

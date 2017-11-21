@@ -6,7 +6,7 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Infrastructure\Persistence\IlluminateTalkRepository;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 
 class IlluminateTalkRepositoryTest extends BaseTestCase
 {

@@ -4,7 +4,7 @@ namespace OpenCFP\Test\Domain\Model;
 
 use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 
 /**
  * @group db
