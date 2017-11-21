@@ -16,7 +16,7 @@ class PaginationTest extends BaseTestCase
      */
     private $pagination;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->pagination = new Pagination([1,2,3,4,5,6,7,8,9,10], 2);

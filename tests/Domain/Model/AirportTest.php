@@ -15,7 +15,7 @@ class AirportTest extends BaseTestCase
 
     private $airports;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->airports = $this->getAirport();

@@ -23,7 +23,7 @@ class SentryAuthenticationTest extends BaseTestCase
      */
     private $sut;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

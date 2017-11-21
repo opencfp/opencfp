@@ -15,7 +15,7 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
  */
 class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
 {
-    public function tearDown()
+    protected function tearDown()
     {
         Mockery::close();
     }
