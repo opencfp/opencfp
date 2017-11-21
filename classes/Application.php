@@ -45,7 +45,7 @@ class Application extends SilexApplication
     {
         parent::__construct();
 
-        $this['path']  = $basePath;
+        $this['path']  = new Path($basePath, $environment);
         $this['env']   = $environment;
         $this['debug'] = true;
 
@@ -112,7 +112,7 @@ class Application extends SilexApplication
     protected function bindPathsInApplicationContainer()
     {
         foreach ($this->getConfigSlugs() as $slug) {
-            $this["paths.{$slug}"] = $this->{$this->camelCaseFrom($slug) . 'Path'}();
+            $this["paths.{$slug}"] = $this['path']->{$this->camelCaseFrom($slug). 'Path'}();
         }
     }
 
@@ -147,19 +147,20 @@ class Application extends SilexApplication
      */
     protected function bindConfiguration()
     {
+        $config = $this['path']->configPath();
         $driver = new YamlConfigDriver();
 
-        if (!file_exists($this->configPath())) {
+        if (!file_exists($config)) {
             throw new \InvalidArgumentException(
-                sprintf("The config file '%s' does not exist.", $this->configPath())
+                sprintf("The config file '%s' does not exist.", $config)
             );
         }
 
-        if ($driver->supports($this->configPath())) {
-            $this['config'] = $driver->load($this->configPath());
+        if ($driver->supports($config)) {
+            $this['config'] = $driver->load($config);
         }
 
-        if (! $this->isProduction()) {
+        if (! $this['env']->isProduction()) {
             $this['debug'] = true;
         }
     }
@@ -184,116 +185,6 @@ class Application extends SilexApplication
         }
 
         return $cursor;
-    }
-
-    /**
-     * Get the base path for the application.
-     *
-     * @return string
-     */
-    public function basePath()
-    {
-        return $this['path'];
-    }
-
-    /**
-     * Get the configuration path.
-     *
-     * @return string
-     */
-    public function configPath()
-    {
-        return $this->basePath() . "/config/{$this['env']}.yml";
-    }
-
-    /**
-     * Get the uploads path.
-     *
-     * @return string
-     */
-    public function uploadPath()
-    {
-        return $this->basePath() . '/web/uploads';
-    }
-
-    /**
-     * Get the templates path.
-     *
-     * @return string
-     */
-    public function templatesPath()
-    {
-        return $this->basePath() . '/resources/views';
-    }
-
-    /**
-     * Get the public path.
-     *
-     * @return string
-     */
-    public function publicPath()
-    {
-        return $this->basePath() . '/web';
-    }
-
-    /**
-     * Get the assets path.
-     *
-     * @return string
-     */
-    public function assetsPath()
-    {
-        return $this->basePath() . '/web/assets';
-    }
-
-    /**
-     * Get the Twig cache path.
-     *
-     * @return string
-     */
-    public function cacheTwigPath()
-    {
-        return $this->basePath() . '/cache/twig';
-    }
-
-    /**
-     * Get the HTML Purifier cache path.
-     *
-     * @return string
-     */
-    public function cachePurifierPath()
-    {
-        return $this->basePath() . '/cache/htmlpurifier';
-    }
-
-    /**
-     * Tells if application is in production environment.
-     *
-     * @return bool
-     */
-    public function isProduction()
-    {
-        return $this['env']->equals(Environment::production());
-    }
-
-    /**
-     * Tells if application is in development environment.
-     *
-     * @return bool
-     */
-    public function isDevelopment()
-    {
-        return $this['env']->equals(Environment::development());
-    }
-
-    /**
-     * Tells if application is in testing environment.
-     *
-     * @return bool
-     */
-    public function isTesting()
-    {
-        return $this['env']->equals(Environment::testing());
     }
 
     private function setUpDataBaseConnection()

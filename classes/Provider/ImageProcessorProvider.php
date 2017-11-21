@@ -14,7 +14,7 @@ class ImageProcessorProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['profile_image_processor'] = function ($app) {
-            return new ProfileImageProcessor($app->uploadPath(), $app['security.random']);
+            return new ProfileImageProcessor($app['path']->uploadPath(), $app['security.random']);
         };
     }
 }

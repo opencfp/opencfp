@@ -41,4 +41,43 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
 
         Environment::fromString('foo');
     }
+
+    /**
+     * @test
+     */
+    public function isProductionReturnsCorrectBool()
+    {
+        $prod = Environment::production();
+        $this->assertTrue($prod->isProduction());
+        $dev = Environment::development();
+        $this->assertFalse($dev->isProduction());
+        $test = Environment::testing();
+        $this->assertFalse($test->isProduction());
+    }
+
+    /**
+     * @test
+     */
+    public function isDevelopmentReturnsCorrectBool()
+    {
+        $prod = Environment::production();
+        $this->assertFalse($prod->isDevelopment());
+        $dev = Environment::development();
+        $this->assertTrue($dev->isDevelopment());
+        $test = Environment::testing();
+        $this->assertFalse($test->isDevelopment());
+    }
+
+    /**
+     * @test
+     */
+    public function isTestingReturnsCorrectBool()
+    {
+        $prod = Environment::production();
+        $this->assertFalse($prod->isTesting());
+        $dev = Environment::development();
+        $this->assertFalse($dev->isTesting());
+        $test = Environment::testing();
+        $this->assertTrue($test->isTesting());
+    }
 }
