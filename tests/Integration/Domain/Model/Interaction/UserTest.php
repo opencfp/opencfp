@@ -7,6 +7,9 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
 
+/**
+ * @coversNothing
+ */
 class UserTest extends BaseTestCase
 {
     use DataBaseInteraction;

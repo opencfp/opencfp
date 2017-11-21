@@ -10,6 +10,7 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 
 /**
  * @group db
+ * @coversNothing
  */
 class TalkTest extends BaseTestCase
 {

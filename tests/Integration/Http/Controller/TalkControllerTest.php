@@ -12,6 +12,7 @@ use OpenCFP\Test\WebTestCase;
 
 /**
  * @group db
+ * @coversNothing
  */
 class TalkControllerTest extends WebTestCase
 {

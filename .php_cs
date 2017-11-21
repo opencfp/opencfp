@@ -36,6 +36,7 @@ $config = PhpCsFixer\Config::create()
         'phpdoc_separation' => true,
         'php_unit_expectation' => true,
         'php_unit_no_expectation_annotation' => true,
+        'php_unit_test_class_requires_covers' => true,
         'psr0' => false,
         'return_type_declaration' => true,
         'single_blank_line_before_namespace' => true,

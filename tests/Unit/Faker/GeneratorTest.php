@@ -5,6 +5,9 @@ namespace OpenCFP\Test\Unit\Faker;
 use Faker\Generator;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
+/**
+ * @coversNothing
+ */
 class GeneratorTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;

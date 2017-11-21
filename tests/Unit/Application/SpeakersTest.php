@@ -14,6 +14,9 @@ use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
 
+/**
+ * @coversNothing
+ */
 class SpeakersTest extends \PHPUnit\Framework\TestCase
 {
     const SPEAKER_ID = '1';

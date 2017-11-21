@@ -9,6 +9,7 @@ use OpenCFP\Test\Helper\SentryTestHelpers;
 
 /**
  * @group db
+ * @coversNothing
  */
 class SentryAccountManagementTest extends BaseTestCase
 {
