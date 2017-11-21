@@ -112,7 +112,7 @@ class Application extends SilexApplication
     protected function bindPathsInApplicationContainer()
     {
         foreach ($this->getConfigSlugs() as $slug) {
-            $this["paths.{$slug}"] = $this['path']->{$this->camelCaseFrom($slug). 'Path'}();
+            $this["paths.{$slug}"] = $this['path']->{$this->camelCaseFrom($slug) . 'Path'}();
         }
     }
 
