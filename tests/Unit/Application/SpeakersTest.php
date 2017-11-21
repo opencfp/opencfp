@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Test\Unit\Application;
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
@@ -19,6 +20,8 @@ use OpenCFP\Domain\Talk\TalkSubmission;
  */
 class SpeakersTest extends \PHPUnit\Framework\TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     const SPEAKER_ID = '1';
 
     /** @var Speakers */
@@ -48,11 +51,6 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher        = m::mock(\OpenCFP\Domain\Services\EventDispatcher::class);
 
         $this->sut = new Speakers($this->callForProposal, $this->identityProvider, $this->speakerRepository, $this->talkRepository, $this->dispatcher);
-    }
-
-    protected function tearDown()
-    {
-        m::close();
     }
 
     //

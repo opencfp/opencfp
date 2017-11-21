@@ -3,6 +3,7 @@
 namespace OpenCFP\Test\Unit\Domain\Services;
 
 use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\ResetEmailer;
 use Swift_Mailer;
 use Swift_Message;
@@ -13,10 +14,7 @@ use Twig_Template;
  */
 class ResetEmailerTest extends \PHPUnit\Framework\TestCase
 {
-    protected function tearDown()
-    {
-        Mockery::close();
-    }
+    use MockeryPHPUnitIntegration;
 
     /** @test */
     public function it_sends_the_expected_email()

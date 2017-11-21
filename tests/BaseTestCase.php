@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Test;
 
-use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 use OpenCFP\Test\Helper\DataBaseInteraction;
@@ -10,6 +10,8 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 
 abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var Application
      */
@@ -33,10 +35,6 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         if ($this->app) {
             $this->app->flush();
             $this->app = null;
-        }
-
-        if (class_exists('Mockery')) {
-            Mockery::close();
         }
     }
 
