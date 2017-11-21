@@ -8,7 +8,6 @@ use OpenCFP\Test\WebTestCase;
 /**
  * Class SignupControllerTest
  *
- * @package OpenCFP\Test\Http\Controller
  * @group db
  */
 class SignupControllerTest extends WebTestCase

@@ -10,7 +10,6 @@ use OpenCFP\Test\Helper\SentryTestHelpers;
 /**
  * Class SentryAccountManagementTest
  *
- * @package OpenCFP\Test\Infrastructure\Auth
  * @group db
  */
 class SentryAccountManagementTest extends BaseTestCase

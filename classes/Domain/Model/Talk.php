@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * Class Talk
  *
- * @package OpenCFP\Domain\Model
  *
  * @method Builder recent(int $limit=10)
  * @method Builder selected()

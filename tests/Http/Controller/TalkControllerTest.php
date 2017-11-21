@@ -13,7 +13,6 @@ use OpenCFP\Test\WebTestCase;
 /**
  * Class TalkControllerTest
  *
- * @package OpenCFP\Test\Http\Controller
  * @group db
  */
 class TalkControllerTest extends WebTestCase

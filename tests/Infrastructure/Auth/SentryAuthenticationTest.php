@@ -11,7 +11,6 @@ use OpenCFP\Test\Helper\SentryTestHelpers;
 /**
  * Class SentryAuthenticationTest
  *
- * @package OpenCFP\Test\Infrastructure\Auth
  * @group db
  */
 class SentryAuthenticationTest extends BaseTestCase
