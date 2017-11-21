@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h2 class="mb-2">
-                {{ talk.title|raw }} {% if talk.speaker.isAllowedToSee('name') %}<a class="text-sm text-grey-dark" href="{{ url("reviewer_speaker_view", {id:talk.speaker.id}) }}"><span> &mdash; {{ talk.speaker.name }}</span></a> {% endif %}
+                {{ talk.title|raw }} {% if talk.speaker.isAllowedToSee('name') %}<span class="text-grey-dark">&mdash; {{ talk.speaker.name }}</span> {% endif %}
             </h2>
             {% if talk.slides is defined and talk.slides is not empty %}
                 <div><i class="fa fa-television mr-1"></i> <a class="hover:text-brand" href="{{ talk.slides }}">{{ talk.slides }}</a></div>
