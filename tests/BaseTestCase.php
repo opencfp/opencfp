@@ -18,7 +18,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         self::runBeforeClassTraits();
     }
 
-    public function setUp()
+    protected function setUp()
     {
         if (!$this->app) {
             $this->refreshApplication();
@@ -26,7 +26,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         $this->runBeforeTestTraits();
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         if ($this->app) {
             $this->app->flush();

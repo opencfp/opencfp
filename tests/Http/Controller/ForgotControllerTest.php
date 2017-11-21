@@ -18,7 +18,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
 {
     protected $app;
 
-    public function setup()
+    protected function setUp()
     {
         $this->app                 = new Application(BASE_PATH, Environment::testing());
         $this->app['session.test'] = true;

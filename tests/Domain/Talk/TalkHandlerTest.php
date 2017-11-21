@@ -28,7 +28,7 @@ class TalkHandlerTest extends BaseTestCase
         self::$talk = factory(Talk::class, 1)->create(['selected' => 0])->first();
     }
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $auth     = Mockery::mock(Authentication::class);

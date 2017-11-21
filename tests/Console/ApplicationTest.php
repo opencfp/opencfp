@@ -18,7 +18,7 @@ use Symfony\Component\Console;
  */
 class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
-    public function tearDown()
+    protected function tearDown()
     {
         Mockery::close();
     }
