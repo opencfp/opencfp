@@ -6,7 +6,7 @@ use OpenCFP\Provider\SymfonySentrySession;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Provider\SymfonySentrySession
  */
 class SymfonySentrySessionTest extends \PHPUnit\Framework\TestCase
 {

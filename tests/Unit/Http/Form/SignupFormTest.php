@@ -6,7 +6,7 @@ use Mockery as m;
 use OpenCFP\Http\Form\SignupForm;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Http\Form\SignupForm
  */
 class SignupFormTest extends \PHPUnit\Framework\TestCase
 {

@@ -10,7 +10,7 @@ use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Infrastructure\Auth\RoleAccess
  */
 class RoleAccessTest extends WebTestCase
 {

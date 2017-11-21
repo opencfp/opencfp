@@ -10,7 +10,7 @@ use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Domain\Services\TalkRating\YesNoRating
  */
 class YesNoRatingTest extends MockeryTestCase
 {

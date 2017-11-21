@@ -12,7 +12,7 @@ use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Infrastructure\Auth\SentryIdentityProvider
  */
 class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
 {

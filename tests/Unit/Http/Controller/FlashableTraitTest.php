@@ -6,7 +6,7 @@ use OpenCFP\Application;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Http\Controller\FlashableTrait
  */
 class FlashableTraitTest extends \PHPUnit\Framework\TestCase
 {

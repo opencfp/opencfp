@@ -9,7 +9,7 @@ use Swift_Message;
 use Twig_Template;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Domain\Services\ResetEmailer
  */
 class ResetEmailerTest extends \PHPUnit\Framework\TestCase
 {

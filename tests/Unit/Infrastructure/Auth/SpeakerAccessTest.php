@@ -9,7 +9,7 @@ use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Infrastructure\Auth\SpeakerAccess
  */
 class SpeakerAccessTest extends WebTestCase
 {

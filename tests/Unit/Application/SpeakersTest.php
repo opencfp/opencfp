@@ -15,7 +15,7 @@ use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Application\Speakers
  */
 class SpeakersTest extends \PHPUnit\Framework\TestCase
 {

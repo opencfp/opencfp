@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Unit\Http\API;
 use Symfony\Component\HttpFoundation;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Http\API\ApiController
  */
 class ApiControllerTest extends \PHPUnit\Framework\TestCase
 {
