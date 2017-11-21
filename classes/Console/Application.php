@@ -22,8 +22,6 @@ class Application extends ConsoleApplication
     protected $app;
 
     /**
-     * Application constructor.
-     *
      * @param ApplicationContainer $app
      */
     public function __construct(ApplicationContainer $app)

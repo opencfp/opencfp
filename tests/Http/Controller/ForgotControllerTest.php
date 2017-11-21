@@ -9,8 +9,6 @@ use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
- * Class ForgotControllerTest
- *
  * @package OpenCFP\Test\Http\Controller
  * @group db
  */

@@ -8,8 +8,6 @@ use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
- * Class AdminPromoteTest
- *
  * @package OpenCFP\Test\Console
  * @group db
  */
