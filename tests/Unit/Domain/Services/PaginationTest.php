@@ -3,13 +3,13 @@
 namespace OpenCFP\Test\Unit\Domain\Services;
 
 use OpenCFP\Domain\Services\Pagination;
-use OpenCFP\Test\BaseTestCase;
 use Pagerfanta\Pagerfanta;
+use PHPUnit\Framework;
 
 /**
  * @covers \OpenCFP\Domain\Services\Pagination
  */
-class PaginationTest extends BaseTestCase
+class PaginationTest extends Framework\TestCase
 {
     /**
      * @var Pagination

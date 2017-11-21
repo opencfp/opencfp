@@ -3,16 +3,19 @@
 namespace OpenCFP\Test\Unit\Domain\Talk;
 
 use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\BaseTestCase;
+use PHPUnit\Framework;
 
 /**
  * @covers \OpenCFP\Domain\Talk\TalkFilter
  */
-class TalkFilterTest extends BaseTestCase
+class TalkFilterTest extends Framework\TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     protected $talk;
 
     protected $formatter;
