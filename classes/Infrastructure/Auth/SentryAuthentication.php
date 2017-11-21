@@ -43,7 +43,6 @@ class SentryAuthentication implements Authentication
      * @throws NotAuthenticatedException
      *
      * @return UserInterface
-     *
      */
     public function user(): UserInterface
     {

@@ -15,7 +15,6 @@ class Airport extends Eloquent implements AirportInformationDatabase
      * @throws \Exception
      *
      * @return self
-     *
      */
     public function withCode($code): self
     {
