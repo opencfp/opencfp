@@ -66,8 +66,8 @@ class User extends Eloquent
         }
 
         return $builder
-            ->where('first_name', 'like', '%' . $search. '%')
-            ->orWhere('last_name', 'like', '%' . $search. '%')
+            ->where('first_name', 'like', '%' . $search . '%')
+            ->orWhere('last_name', 'like', '%' . $search . '%')
             ->orderBy($orderByColumn, $orderByDirection);
     }
 

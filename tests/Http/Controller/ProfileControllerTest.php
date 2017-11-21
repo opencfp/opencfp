@@ -42,7 +42,7 @@ class ProfileControllerTest extends WebTestCase
         $id = self::$user->id;
 
         $this->asLoggedInSpeaker($id)
-            ->get('/profile/edit/'. $id)
+            ->get('/profile/edit/' . $id)
             ->assertSuccessful();
     }
 

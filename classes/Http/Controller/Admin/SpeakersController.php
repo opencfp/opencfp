@@ -161,7 +161,7 @@ class SpeakersController extends BaseController
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'Sorry, you cannot remove yourself as '. $role .'.',
+                'ext'   => 'Sorry, you cannot remove yourself as ' . $role . '.',
             ]);
 
             return $this->redirectTo('admin_speakers');
@@ -180,7 +180,7 @@ class SpeakersController extends BaseController
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'We were unable to remove the '. $role.'. Please try again.',
+                'ext'   => 'We were unable to remove the ' . $role . '. Please try again.',
             ]);
         }
 
@@ -199,7 +199,7 @@ class SpeakersController extends BaseController
                 $this->service('session')->set('flash', [
                     'type'  => 'error',
                     'short' => 'Error',
-                    'ext'   => 'User already is in the '. $role .' group.',
+                    'ext'   => 'User already is in the ' . $role . ' group.',
                 ]);
 
                 return $this->redirectTo('admin_speakers');

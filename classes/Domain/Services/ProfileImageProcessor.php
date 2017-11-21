@@ -56,7 +56,7 @@ class ProfileImageProcessor
     public function process(UploadedFile $file, $publishFilename = null): string
     {
         if ($publishFilename === null) {
-            $publishFilename = $this->generator->generate(50). '.'. $file->guessExtension();
+            $publishFilename = $this->generator->generate(50) . '.' . $file->guessExtension();
         }
         // Temporary filename to work with.
         $tempFilename = $this->generator->generate(40);
