@@ -41,4 +41,20 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
 
         Environment::fromString('foo');
     }
+
+    public function testEqualsReturnsFalseIfSlugIsDifferent()
+    {
+        $one = Environment::fromString('testing');
+        $two = Environment::fromString('development');
+
+        $this->assertFalse($one->equals($two));
+    }
+
+    public function testEqualsReturnsTrueIfSlugIsSame()
+    {
+        $one = Environment::fromString('testing');
+        $two = Environment::fromString('testing');
+
+        $this->assertTrue($one->equals($two));
+    }
 }
