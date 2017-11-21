@@ -8,25 +8,15 @@ use OpenCFP\Path;
 /**
  * @covers \OpenCFP\Path
  */
-class PathTest extends BaseTestCase
+final class PathTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Path
-     */
-    private $path;
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->path = new Path('/home/folder/base', Environment::testing());
-    }
-
     /**
      * @test
      */
     public function basePathReturnsBasePath()
     {
-        $this->assertSame('/home/folder/base', $this->path->basePath());
+        $path = new Path('/home/folder/base', Environment::testing());
+        $this->assertSame('/home/folder/base', $path->basePath());
     }
 
     /**
@@ -34,9 +24,34 @@ class PathTest extends BaseTestCase
      */
     public function configPathReturnsConfgiPath()
     {
+        $path = new Path('/home/folder/base', Environment::testing());
         $this->assertSame(
             '/home/folder/base/config/testing.yml',
-            $this->path->configPath()
+            $path->configPath()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function configPathReturnsProductionConfigPath()
+    {
+        $prod = new Path('/home/folder/base', Environment::production());
+        $this->assertSame(
+            '/home/folder/base/config/production.yml',
+            $prod->configPath()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function configPathReturnsDevelopmentConfigPath()
+    {
+        $dev = new Path('/home/folder/base', Environment::development());
+        $this->assertSame(
+            '/home/folder/base/config/development.yml',
+            $dev->configPath()
         );
     }
 
@@ -45,9 +60,10 @@ class PathTest extends BaseTestCase
      */
     public function uploadPathReturnsUploadPath()
     {
+        $path = new Path('/home/folder/base', Environment::testing());
         $this->assertSame(
             '/home/folder/base/web/uploads',
-            $this->path->uploadPath()
+            $path->uploadPath()
         );
     }
 
@@ -56,9 +72,10 @@ class PathTest extends BaseTestCase
      */
     public function templatesPathReturnsTemplatesPath()
     {
+        $path = new Path('/home/folder/base', Environment::testing());
         $this->assertSame(
             '/home/folder/base/resources/views',
-            $this->path->templatesPath()
+            $path->templatesPath()
         );
     }
 
@@ -67,9 +84,10 @@ class PathTest extends BaseTestCase
      */
     public function publicPathReturnsPublicPath()
     {
+        $path = new Path('/home/folder/base', Environment::testing());
         $this->assertSame(
             '/home/folder/base/web',
-            $this->path->publicPath()
+            $path->publicPath()
         );
     }
 
@@ -78,9 +96,10 @@ class PathTest extends BaseTestCase
      */
     public function assetsPathReturnsAssetsPath()
     {
+        $path = new Path('/home/folder/base', Environment::testing());
         $this->assertSame(
             '/home/folder/base/web/assets',
-            $this->path->assetsPath()
+            $path->assetsPath()
         );
     }
 
@@ -89,9 +108,10 @@ class PathTest extends BaseTestCase
      */
     public function cacheTwigPathReturnsCacheTwigPath()
     {
+        $path = new Path('/home/folder/base', Environment::testing());
         $this->assertSame(
             '/home/folder/base/cache/twig',
-            $this->path->cacheTwigPath()
+            $path->cacheTwigPath()
         );
     }
 
@@ -100,9 +120,10 @@ class PathTest extends BaseTestCase
      */
     public function cachePurifierPathReturnsPurifierPath()
     {
+        $path = new Path('/home/folder/base', Environment::testing());
         $this->assertSame(
             '/home/folder/base/cache/htmlpurifier',
-            $this->path->cachePurifierPath()
+            $path->cachePurifierPath()
         );
     }
 }
