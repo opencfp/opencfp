@@ -35,6 +35,7 @@ $config = PhpCsFixer\Config::create()
         'phpdoc_order' => true,
         'phpdoc_scalar' => true,
         'phpdoc_separation' => true,
+        'phpdoc_trim' => true,
         'php_unit_expectation' => true,
         'php_unit_no_expectation_annotation' => true,
         'php_unit_test_class_requires_covers' => true,
