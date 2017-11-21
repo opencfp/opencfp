@@ -8,6 +8,9 @@ use Swift_Mailer;
 use Swift_Message;
 use Twig_Template;
 
+/**
+ * @coversNothing
+ */
 class ResetEmailerTest extends \PHPUnit\Framework\TestCase
 {
     protected function tearDown()

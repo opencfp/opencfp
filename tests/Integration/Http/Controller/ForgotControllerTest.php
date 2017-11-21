@@ -10,6 +10,7 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
  * @group db
+ * @coversNothing
  */
 class ForgotControllerTest extends \PHPUnit\Framework\TestCase
 {

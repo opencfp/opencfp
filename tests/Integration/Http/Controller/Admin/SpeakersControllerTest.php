@@ -11,6 +11,7 @@ use OpenCFP\Test\WebTestCase;
 
 /**
  * @group db
+ * @coversNothing
  */
 class SpeakersControllerTest extends WebTestCase
 {

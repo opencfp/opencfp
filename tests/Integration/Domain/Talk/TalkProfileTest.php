@@ -9,6 +9,9 @@ use OpenCFP\Domain\Talk\TalkProfile;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
+/**
+ * @coversNothing
+ */
 class TalkProfileTest extends BaseTestCase
 {
     use RefreshDatabase;

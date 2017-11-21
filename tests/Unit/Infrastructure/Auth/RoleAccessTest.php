@@ -9,6 +9,9 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * @coversNothing
+ */
 class RoleAccessTest extends WebTestCase
 {
     public function testReturnsRedirectIfCheckFailed()

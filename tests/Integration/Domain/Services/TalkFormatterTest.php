@@ -11,6 +11,7 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 
 /**
  * @group db
+ * @coversNothing
  */
 class TalkFormatterTest extends BaseTestCase
 {

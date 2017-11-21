@@ -11,6 +11,9 @@ use OpenCFP\Http\API\TalkController;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @coversNothing
+ */
 class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**

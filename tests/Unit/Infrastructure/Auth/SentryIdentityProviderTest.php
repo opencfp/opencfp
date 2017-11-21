@@ -11,6 +11,9 @@ use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
+/**
+ * @coversNothing
+ */
 class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
