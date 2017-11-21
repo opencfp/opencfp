@@ -74,7 +74,7 @@ class ExportsController extends BaseController
                 || $this->startsWith($info, '-')
                 || $this->startsWith($info, '@')
             ) {
-            $info = "'". $info;
+            $info = "'" . $info;
         }
 
         return $info;
@@ -107,6 +107,6 @@ class ExportsController extends BaseController
             $output  = $output . implode(',', $content) . "\n";
         }
 
-        return $this->export($output, $filename. '.csv');
+        return $this->export($output, $filename . '.csv');
     }
 }
