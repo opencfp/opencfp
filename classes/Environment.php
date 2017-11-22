@@ -15,6 +15,11 @@ class Environment
      */
     protected $type;
 
+    /**
+     * @param string $type
+     *
+     * @throws \InvalidArgumentException
+     */
     private function __construct(string $type)
     {
         $types = [
@@ -49,6 +54,11 @@ class Environment
         return new self(self::TYPE_TESTING);
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     *
+     * @return self
+     */
     public static function fromEnvironmentVariable(): self
     {
         $type = $_SERVER['CFP_ENV'] ?? self::TYPE_DEVELOPMENT;
@@ -56,6 +66,13 @@ class Environment
         return new self($type);
     }
 
+    /**
+     * @param string $type
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return self
+     */
     public static function fromString(string $type): self
     {
         return new self($type);
