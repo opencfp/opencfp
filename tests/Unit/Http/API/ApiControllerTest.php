@@ -75,7 +75,7 @@ class ApiControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertContains($expectedDefaultMessage, $response->getContent());
     }
 
-    public function specializedResponseExamples()
+    public function specializedResponseExamples(): array
     {
         return [
             ['BadRequest', HttpFoundation\Response::HTTP_BAD_REQUEST, 'Bad request'],

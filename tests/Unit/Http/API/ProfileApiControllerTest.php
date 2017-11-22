@@ -71,7 +71,7 @@ class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
     // Factory Methods
     //
 
-    private function getRequest(array $data = [])
+    private function getRequest(array $data = []): Request
     {
         $request = Request::create('');
         $request->request->replace($data);
@@ -79,7 +79,7 @@ class ProfileApiControllerTest extends \PHPUnit\Framework\TestCase
         return $request;
     }
 
-    private function someSpeakerProfile()
+    private function someSpeakerProfile(): SpeakerProfile
     {
         return new SpeakerProfile(new User(['first_name' => 'Hamburglar']));
     }

@@ -133,7 +133,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
     // Factory Methods
     //
 
-    private function getRequest(array $data = [])
+    private function getRequest(array $data = []): Request
     {
         $request = Request::create('');
         $request->request->replace($data);
@@ -141,7 +141,7 @@ class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
         return $request;
     }
 
-    private function getValidRequest()
+    private function getValidRequest(): Request
     {
         return $this->getRequest([
             'title'       => 'Happy Path Submission',

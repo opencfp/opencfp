@@ -97,7 +97,7 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * @return m\MockInterface|Sentry
      */
-    private function getSentryMock()
+    private function getSentryMock(): Sentry
     {
         return m::mock(Sentry::class);
     }
@@ -105,7 +105,7 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * @return m\MockInterface|Users\UserInterface
      */
-    private function getSentryUserMock()
+    private function getSentryUserMock(): Users\UserInterface
     {
         return m::mock(Users\UserInterface::class);
     }
@@ -113,7 +113,7 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * @return m\MockInterface|SpeakerRepository
      */
-    private function getSpeakerRepositoryMock()
+    private function getSpeakerRepositoryMock(): SpeakerRepository
     {
         return m::mock(SpeakerRepository::class);
     }
