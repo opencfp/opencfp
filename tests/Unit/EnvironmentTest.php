@@ -78,9 +78,16 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
     {
         $type = 'foo';
 
+        $types = [
+            Environment::TYPE_PRODUCTION,
+            Environment::TYPE_DEVELOPMENT,
+            Environment::TYPE_TESTING,
+        ];
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
-            'Invalid environment specified',
+            'Environment needs to be one of "%s"; got "%s" instead.',
+            implode('", "', $types),
             $type
         ));
 
