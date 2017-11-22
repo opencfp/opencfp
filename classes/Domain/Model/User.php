@@ -49,7 +49,7 @@ class User extends Eloquent
      * Will preform a like search with given search string or first or last name.
      *
      * @param Builder     $builder
-     * @param string|null $search           Name to search for
+     * @param null|string $search           Name to search for
      * @param string      $orderByColumn
      * @param string      $orderByDirection
      *

@@ -119,7 +119,7 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return m\MockInterface|Entity\User
+     * @return Entity\User|m\MockInterface
      */
     private function getUserMock()
     {
