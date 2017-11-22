@@ -21,6 +21,7 @@ $config = PhpCsFixer\Config::create()
         'concat_space' => [
             'spacing' => 'one',
         ],
+        'function_to_constant' => true,
         'increment_style' => true,
         'method_separation' => true,
         'no_alias_functions' => true,
