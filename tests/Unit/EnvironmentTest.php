@@ -26,17 +26,49 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(Environment::TYPE_TESTING, Environment::testing());
     }
 
-    /** @test */
-    public function it_should_be_resolvable_from_environment_variable()
+    /**
+     * @test
+     * @dataProvider providerEnvironment
+     *
+     * @param string $type
+     */
+    public function it_should_be_resolvable_from_environment_variable(string $type)
     {
-        $_SERVER['CFP_ENV'] = Environment::TYPE_TESTING;
-        $this->assertEquals(Environment::TYPE_TESTING, Environment::fromEnvironmentVariable());
+        $_SERVER['CFP_ENV'] = $type;
+
+        $environment = Environment::fromEnvironmentVariable();
+
+        $this->assertInstanceOf(Environment::class, $environment);
+        $this->assertEquals($type, $environment);
     }
 
-    /** @test */
-    public function it_should_be_resolvable_from_string()
+    /**
+     * @test
+     * @dataProvider providerEnvironment
+     *
+     * @param string $type
+     */
+    public function it_should_be_resolvable_from_string(string $type)
     {
-        $this->assertEquals(Environment::TYPE_TESTING, Environment::fromString(Environment::TYPE_TESTING));
+        $environment = Environment::fromString($type);
+
+        $this->assertInstanceOf(Environment::class, $environment);
+        $this->assertEquals($type, $environment);
+    }
+
+    public function providerEnvironment(): \Generator
+    {
+        $types = [
+            Environment::TYPE_DEVELOPMENT,
+            Environment::TYPE_PRODUCTION,
+            Environment::TYPE_TESTING,
+        ];
+
+        foreach ($types as $type) {
+            yield $type => [
+                $type,
+            ];
+        }
     }
 
     /**
@@ -44,9 +76,15 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
      */
     public function it_fails_when_given_an_invalid_environment_string()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $type = 'foo';
 
-        Environment::fromString('foo');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Invalid environment specified',
+            $type
+        ));
+
+        Environment::fromString($type);
     }
 
     public function testEqualsReturnsFalseIfTypeIsDifferent()
