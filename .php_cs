@@ -22,6 +22,9 @@ $config = PhpCsFixer\Config::create()
             'spacing' => 'one',
         ],
         'increment_style' => true,
+        'is_null' => [
+            'use_yoda_style' => false,
+        ],
         'method_separation' => true,
         'no_alias_functions' => true,
         'no_empty_phpdoc' => true,

@@ -64,7 +64,7 @@ class TestResponse
             "Response status code [{$this->getStatusCode()}] is not a redirect status code."
         );
 
-        if (!is_null($route)) {
+        if ($route !== null) {
             $expected = $this->app['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
             Assert::assertEquals($expected, $this->headers->get('Location'));
         }
