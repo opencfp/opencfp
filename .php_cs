@@ -46,6 +46,7 @@ $config = PhpCsFixer\Config::create()
         'return_type_declaration' => true,
         'single_blank_line_before_namespace' => true,
         'single_quote' => true,
+        'ternary_operator_spaces' => true,
         'trailing_comma_in_multiline_array' => true,
         'trim_array_spaces' => true,
         'yoda_style' => [
