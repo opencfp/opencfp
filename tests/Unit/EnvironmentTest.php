@@ -44,9 +44,15 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
      */
     public function it_fails_when_given_an_invalid_environment_string()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $type = 'foo';
 
-        Environment::fromString('foo');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Environment needs to be one of "production", "development", "testing", got "%s" instead.',
+            $type
+        ));
+
+        Environment::fromString($type);
     }
 
     public function testEqualsReturnsFalseIfSlugIsDifferent()
