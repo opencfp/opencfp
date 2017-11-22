@@ -10,7 +10,14 @@ use OpenCFP\Domain\Speaker\SpeakerRepository;
 
 final class SentinelIdentityProvider implements IdentityProvider
 {
+    /**
+     * @var Sentinel
+     */
     private $sentinel;
+
+    /**
+     * @var SpeakerRepository
+     */
     private $repo;
 
     public function __construct(Sentinel $sentinel, SpeakerRepository $repo)

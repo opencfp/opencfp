@@ -48,7 +48,7 @@ final class SentinelUser implements UserInterface
      *
      * @return mixed
      */
-    public function hasAccess($permissions)
+    public function hasAccess($permissions): bool
     {
         try {
             /** @var Collection | \Cartalyst\Sentinel\Users\EloquentUser[] $users */
