@@ -82,7 +82,7 @@ abstract class WebTestCase extends BaseTestCase
         return $this;
     }
 
-    public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
+    public function call(string $method, string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
     {
         $request = Request::create(
             $uri,
@@ -100,22 +100,22 @@ abstract class WebTestCase extends BaseTestCase
         return new TestResponse($this->app, $response);
     }
 
-    public function get($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
+    public function get(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
     {
         return $this->call('GET', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function post($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
+    public function post(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
     {
         return $this->call('POST', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function patch($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
+    public function patch(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
     {
         return $this->call('PATCH', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function delete($uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null): TestResponse
+    public function delete(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
     {
         return $this->call('DELETE', $uri, $parameters, $cookies, $files, $server, $content);
     }
