@@ -9,27 +9,34 @@ use OpenCFP\Environment;
  */
 class EnvironmentTest extends \PHPUnit\Framework\TestCase
 {
+    public function testConstants()
+    {
+        $this->assertSame('production', Environment::TYPE_PRODUCTION);
+        $this->assertSame('development', Environment::TYPE_DEVELOPMENT);
+        $this->assertSame('testing', Environment::TYPE_TESTING);
+    }
+
     /** @test */
     public function it_should_encapsulate_valid_environments()
     {
         $this->assertInstanceOf(Environment::class, Environment::production());
 
-        $this->assertEquals('production', Environment::production());
-        $this->assertEquals('development', Environment::development());
-        $this->assertEquals('testing', Environment::testing());
+        $this->assertEquals(Environment::TYPE_PRODUCTION, Environment::production());
+        $this->assertEquals(Environment::TYPE_DEVELOPMENT, Environment::development());
+        $this->assertEquals(Environment::TYPE_TESTING, Environment::testing());
     }
 
     /** @test */
     public function it_should_be_resolvable_from_environment_variable()
     {
-        $_SERVER['CFP_ENV'] = 'testing';
-        $this->assertEquals('testing', Environment::fromEnvironmentVariable());
+        $_SERVER['CFP_ENV'] = Environment::TYPE_TESTING;
+        $this->assertEquals(Environment::TYPE_TESTING, Environment::fromEnvironmentVariable());
     }
 
     /** @test */
     public function it_should_be_resolvable_from_string()
     {
-        $this->assertEquals('testing', Environment::fromString('testing'));
+        $this->assertEquals(Environment::TYPE_TESTING, Environment::fromString(Environment::TYPE_TESTING));
     }
 
     /**
@@ -44,16 +51,16 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
 
     public function testEqualsReturnsFalseIfSlugIsDifferent()
     {
-        $one = Environment::fromString('testing');
-        $two = Environment::fromString('development');
+        $one = Environment::fromString(Environment::TYPE_TESTING);
+        $two = Environment::fromString(Environment::TYPE_DEVELOPMENT);
 
         $this->assertFalse($one->equals($two));
     }
 
     public function testEqualsReturnsTrueIfSlugIsSame()
     {
-        $one = Environment::fromString('testing');
-        $two = Environment::fromString('testing');
+        $one = Environment::fromString(Environment::TYPE_TESTING);
+        $two = Environment::fromString(Environment::TYPE_TESTING);
 
         $this->assertTrue($one->equals($two));
     }

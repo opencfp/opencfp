@@ -4,6 +4,10 @@ namespace OpenCFP;
 
 class Environment
 {
+    const TYPE_PRODUCTION  = 'production';
+    const TYPE_DEVELOPMENT = 'development';
+    const TYPE_TESTING     = 'testing';
+
     /**
      * The specified environment.
      *
@@ -13,7 +17,7 @@ class Environment
 
     private function __construct(string $slug)
     {
-        if (! in_array($slug, ['production', 'development', 'testing'])) {
+        if (! in_array($slug, [self::TYPE_PRODUCTION, self::TYPE_DEVELOPMENT, self::TYPE_TESTING])) {
             throw new \InvalidArgumentException('Invalid environment specified.');
         }
 
@@ -22,22 +26,22 @@ class Environment
 
     public static function production(): self
     {
-        return new self('production');
+        return new self(self::TYPE_PRODUCTION);
     }
 
     public static function development(): self
     {
-        return new self('development');
+        return new self(self::TYPE_DEVELOPMENT);
     }
 
     public static function testing(): self
     {
-        return new self('testing');
+        return new self(self::TYPE_TESTING);
     }
 
     public static function fromEnvironmentVariable(): self
     {
-        $environment = $_SERVER['CFP_ENV'] ?? 'development';
+        $environment = $_SERVER['CFP_ENV'] ?? self::TYPE_DEVELOPMENT;
 
         return new self($environment);
     }
@@ -59,7 +63,7 @@ class Environment
      */
     public function isProduction(): bool
     {
-        return $this->slug === 'production';
+        return $this->slug === self::TYPE_PRODUCTION;
     }
 
     /**
@@ -69,7 +73,7 @@ class Environment
      */
     public function isDevelopment(): bool
     {
-        return $this->slug === 'development';
+        return $this->slug === self::TYPE_DEVELOPMENT;
     }
 
     /**
@@ -79,7 +83,7 @@ class Environment
      */
     public function isTesting(): bool
     {
-        return $this->slug === 'testing';
+        return $this->slug === self::TYPE_TESTING;
     }
 
     public function __toString(): string
