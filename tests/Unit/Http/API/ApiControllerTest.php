@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Test\Unit\Http\API;
 
+use OpenCFP\Http\API\ApiController;
 use Symfony\Component\HttpFoundation;
 
 /**
@@ -10,13 +11,13 @@ use Symfony\Component\HttpFoundation;
 class ApiControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var StubApiController
+     * @var ApiController
      */
     private $sut;
 
     protected function setUp()
     {
-        $this->sut = new StubApiController();
+        $this->sut = new ApiController();
     }
 
     /** @test */
