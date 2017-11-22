@@ -92,7 +92,7 @@ class MigrationsTest extends BaseTestCase
         $this->dropAndCreateDatabase();
 
         $inputArg = $target !== '' ?
-            ['phinx', 'migrate', '--environment=testing', '--target='. $target] :
+            ['phinx', 'migrate', '--environment=testing', '--target=' . $target] :
             ['phinx', 'migrate', '--environment=testing'];
 
         $input  = new ArgvInput($inputArg);

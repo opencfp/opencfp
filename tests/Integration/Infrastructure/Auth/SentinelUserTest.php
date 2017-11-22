@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Test\Infrastructure\Auth;
+namespace OpenCFP\Test\Integration\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -8,7 +8,7 @@ use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\RefreshDatabase;
+use OpenCFP\Test\Helper\RefreshDatabase;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelUser

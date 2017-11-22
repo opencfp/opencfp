@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Test\Infrastructure\Auth;
+namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
 use Mockery as m;
@@ -8,8 +8,11 @@ use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\Util\Faker\GeneratorTrait;
+use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
+/**
+ * @coversNothing
+ */
 class SentinelIdentityProviderTest extends BaseTestCase
 {
     use GeneratorTrait;
@@ -55,7 +58,7 @@ class SentinelIdentityProviderTest extends BaseTestCase
     {
         $id = $this->getFaker()->randomNumber();
 
-        $sentinelUser =  $this->getsentinelUserMock();
+        $sentinelUser =  $this->getSentinelUserMock();
 
         $sentinelUser
             ->shouldReceive('getUserId')
@@ -105,7 +108,7 @@ class SentinelIdentityProviderTest extends BaseTestCase
     /**
      * @return m\MockInterface|Users\UserInterface
      */
-    private function getsentinelUserMock()
+    private function getSentinelUserMock()
     {
         return m::mock(Users\UserInterface::class);
     }
@@ -119,10 +122,10 @@ class SentinelIdentityProviderTest extends BaseTestCase
     }
 
     /**
-     * @return m\MockInterface|Entity\User
+     * @return m\MockInterface|Model\User
      */
     private function getUserMock()
     {
-        return m::mock(Entity\User::class);
+        return m::mock(Model\User::class);
     }
 }
