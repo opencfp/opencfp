@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Cartalyst\Sentry\Users\UserNotFoundException;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Http\Form\ForgotForm;
 use OpenCFP\Http\Form\ResetForm;
@@ -48,7 +47,7 @@ class ForgotController extends BaseController
             $accounts = $this->service(AccountManagement::class);
 
             $user = $accounts->findByLogin($data['email']);
-        } catch (UserNotFoundException $e) {
+        } catch (\RuntimeException $e) {
             $this->service('session')->set('flash', $this->successfulSendFlashParameters($data['email']));
 
             return $this->redirectTo('forgot_password');
@@ -90,7 +89,7 @@ class ForgotController extends BaseController
             if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
                 ++$error;
             }
-        } catch (UserNotFoundException $e) {
+        } catch (\RuntimeException $e) {
             ++$error;
         }
 
@@ -142,7 +141,7 @@ class ForgotController extends BaseController
             $accounts = $this->service(AccountManagement::class);
 
             $user = $accounts->findById($req->get('user_id'));
-        } catch (UserNotFoundException $e) {
+        } catch (\RuntimeException $e) {
             ++$error;
         }
 
@@ -184,7 +183,7 @@ class ForgotController extends BaseController
             $accounts = $this->service(AccountManagement::class);
 
             $user = $accounts->findById($user_id);
-        } catch (UserNotFoundException $e) {
+        } catch (\RuntimeException $e) {
             echo $e;
             die();
         }
