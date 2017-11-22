@@ -7,7 +7,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\AuthenticationException;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 
-class SentinelAuthentication implements Authentication
+final class SentinelAuthentication implements Authentication
 {
     /**
      * @var Sentinel

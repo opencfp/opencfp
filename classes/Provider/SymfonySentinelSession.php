@@ -5,7 +5,7 @@ namespace OpenCFP\Provider;
 use Cartalyst\Sentinel\Sessions\SessionInterface as SentinelSessionInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface as SymfonySessionInterface;
 
-class SymfonySentinelSession implements SentinelSessionInterface
+final class SymfonySentinelSession implements SentinelSessionInterface
 {
     /**
      * @var SymfonySessionInterface

@@ -5,7 +5,7 @@ namespace OpenCFP\Infrastructure\Auth;
 use Cartalyst\Sentinel\Sentinel;
 use OpenCFP\Domain\Services\AccountManagement;
 
-class SentinelAccountManagement implements AccountManagement
+final class SentinelAccountManagement implements AccountManagement
 {
     private $sentinel;
 
