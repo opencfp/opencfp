@@ -53,32 +53,29 @@ final class SentinelAuthentication implements Authentication
      * Returns current authenticated User account.
      *
      * @throws NotAuthenticatedException
-     *
-     * @return UserInterface
      */
     public function user(): UserInterface
     {
         $user = $this->sentinel->getUser();
+        if ($user instanceof \Cartalyst\Sentinel\Users\UserInterface) {
+            return new SentinelUser($user, $this->sentinel);
+        }
 
-        return new SentinelUser($user, $this->sentinel);
+        throw new NotAuthenticatedException();
     }
 
     /**
      * Returns current authenticated User Id.
      *
      * @throws NotAuthenticatedException
-     *
-     * @return int
      */
     public function userId(): int
     {
-        return $this->sentinel->getUser()->getUserId();
+        return $this->user()->getId();
     }
 
     /**
      * Determines whether or not the user is logged in.
-     *
-     * @return bool
      */
     public function check(): bool
     {
@@ -87,8 +84,6 @@ final class SentinelAuthentication implements Authentication
 
     /**
      * Determine whether the user is a non-authenticated guest.
-     *
-     * @return bool
      */
     public function guest(): bool
     {
@@ -98,7 +93,7 @@ final class SentinelAuthentication implements Authentication
     /**
      * Destroys the user's active authenticated session.
      */
-    public function logout()
+    public function logout(): bool
     {
         return $this->sentinel->logout();
     }
