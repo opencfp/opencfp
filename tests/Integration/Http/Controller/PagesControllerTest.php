@@ -3,6 +3,7 @@
 namespace OpenCFP\Test\Integration\Http\Controller;
 
 use OpenCFP\Test\WebTestCase;
+use Symfony\Component\HttpFoundation;
 
 /**
  * @covers \OpenCFP\Http\Controller\PagesController
@@ -84,7 +85,7 @@ class PagesControllerTest extends WebTestCase
     public function aBadUrlGivesAnErrorPage()
     {
         $this->get('/asdf/')
-            ->assertStatus(404)
+            ->assertStatus(HttpFoundation\Response::HTTP_NOT_FOUND)
             ->assertSee('Page Not Found!')
             ->assertNoFlashSet();
     }
