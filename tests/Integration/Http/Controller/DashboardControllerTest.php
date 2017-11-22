@@ -117,7 +117,7 @@ class DashboardControllerTest extends WebTestCase
             ->assertNotSee('Need Hotel');
     }
 
-    private function stubProfileWith($stubMethods = [])
+    private function stubProfileWith(array $stubMethods = [])
     {
         $speakerProfileDouble = m::mock(SpeakerProfile::class);
         $speakerProfileDouble->shouldReceive($stubMethods);
