@@ -24,6 +24,7 @@ $config = PhpCsFixer\Config::create()
         'increment_style' => true,
         'method_separation' => true,
         'no_alias_functions' => true,
+        'no_blank_lines_after_phpdoc' => true,
         'no_empty_phpdoc' => true,
         'no_extra_consecutive_blank_lines' => true,
         'no_multiline_whitespace_before_semicolons' => true,
