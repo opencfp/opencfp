@@ -59,7 +59,7 @@ class Environment
      */
     public function isProduction(): bool
     {
-        return $this->equals(Environment::production());
+        return $this->slug === 'production';
     }
 
     /**
@@ -69,7 +69,7 @@ class Environment
      */
     public function isDevelopment(): bool
     {
-        return $this->equals(Environment::development());
+        return $this->slug === 'development';
     }
 
     /**
@@ -79,7 +79,7 @@ class Environment
      */
     public function isTesting(): bool
     {
-        return $this->equals(Environment::testing());
+        return $this->slug === 'testing';
     }
 
     public function __toString(): string
