@@ -1,7 +1,6 @@
 <?php
 
 /** @var $factory \Illuminate\Database\Eloquent\Factory */
-
 $factory->define(\OpenCFP\Domain\Model\User::class, function (\Faker\Generator $faker) {
     return [
         'email'          => $faker->unique()->safeEmail,
