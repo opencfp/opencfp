@@ -141,7 +141,7 @@ class SignupForm extends Form
     /**
      * Method that applies validation rules to user-submitted passwords
      *
-     * @return string|true
+     * @return bool|string
      */
     public function validatePasswords(): bool
     {
