@@ -51,6 +51,7 @@ class SignupController extends BaseController
             $user = $accounts->create($req->get('email'), $req->get('password'), [
                 'activated' => 1,
             ]);
+            $accounts->activate($req->get('email'));
 
             // This is for redirecting to OAuth endpoint if we arrived
             // as part of the Authorization Code Grant flow.
