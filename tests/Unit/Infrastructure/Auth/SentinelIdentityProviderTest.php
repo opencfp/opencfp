@@ -37,8 +37,7 @@ class SentinelIdentityProviderTest extends BaseTestCase
         $sentinel
             ->shouldReceive('getUser')
             ->once()
-            ->andReturnNull()
-        ;
+            ->andReturnNull();
 
         $speakerRepository = $this->getSpeakerRepositoryMock();
 
@@ -63,16 +62,14 @@ class SentinelIdentityProviderTest extends BaseTestCase
         $sentinelUser
             ->shouldReceive('getUserId')
             ->once()
-            ->andReturn($id)
-        ;
+            ->andReturn($id);
 
         $sentinel = $this->getSentinel();
 
         $sentinel
             ->shouldReceive('getUser')
             ->once()
-            ->andReturn($sentinelUser)
-        ;
+            ->andReturn($sentinelUser);
 
         $user = $this->getUserMock();
 
@@ -82,8 +79,7 @@ class SentinelIdentityProviderTest extends BaseTestCase
             ->shouldReceive('findById')
             ->once()
             ->with($id)
-            ->andReturn($user)
-        ;
+            ->andReturn($user);
 
         $provider = new SentinelIdentityProvider(
             $sentinel,

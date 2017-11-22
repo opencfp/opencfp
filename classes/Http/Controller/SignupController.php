@@ -2,7 +2,6 @@
 
 namespace OpenCFP\Http\Controller;
 
-use Cartalyst\Sentry\Users\UserExistsException;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;
@@ -79,7 +78,7 @@ class SignupController extends BaseController
             ]);
 
             return $this->redirectBack();
-        } catch (UserExistsException $e) {
+        } catch (\RuntimeException $e) {
             $app['session']->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
