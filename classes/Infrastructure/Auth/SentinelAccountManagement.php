@@ -18,14 +18,21 @@ class SentinelAccountManagement implements AccountManagement
     {
         $user = $this->sentinel->getUserRepository()->findById($userId);
 
-        return new SentinelUser($user);
+        if ($user instanceof \Cartalyst\Sentinel\Users\UserInterface) {
+            return new SentinelUser($user);
+        }
+
+        throw new UserNotFoundException($userId);
     }
 
     public function findByLogin($email): UserInterface
     {
         $user = $this->sentinel->getUserRepository()->findByCredentials(['email' => $email]);
+        if ($user instanceof \Cartalyst\Sentinel\Users\UserInterface) {
+            return new SentinelUser($user);
+        }
 
-        return new SentinelUser($user);
+        throw new UserNotFoundException($email);
     }
 
     public function findByRole($role)
