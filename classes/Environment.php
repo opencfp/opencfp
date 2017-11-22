@@ -13,15 +13,15 @@ class Environment
      *
      * @var string
      */
-    protected $slug;
+    protected $type;
 
-    private function __construct(string $slug)
+    private function __construct(string $type)
     {
-        if (! in_array($slug, [self::TYPE_PRODUCTION, self::TYPE_DEVELOPMENT, self::TYPE_TESTING])) {
+        if (! in_array($type, [self::TYPE_PRODUCTION, self::TYPE_DEVELOPMENT, self::TYPE_TESTING])) {
             throw new \InvalidArgumentException('Invalid environment specified.');
         }
 
-        $this->slug = $slug;
+        $this->type = $type;
     }
 
     public static function production(): self
@@ -41,19 +41,19 @@ class Environment
 
     public static function fromEnvironmentVariable(): self
     {
-        $environment = $_SERVER['CFP_ENV'] ?? self::TYPE_DEVELOPMENT;
+        $type = $_SERVER['CFP_ENV'] ?? self::TYPE_DEVELOPMENT;
 
-        return new self($environment);
+        return new self($type);
     }
 
-    public static function fromString(string $environmentString): self
+    public static function fromString(string $type): self
     {
-        return new self($environmentString);
+        return new self($type);
     }
 
     public function equals(Environment $environment): bool
     {
-        return $this->slug === $environment->slug;
+        return $this->type === $environment->type;
     }
 
     /**
@@ -63,7 +63,7 @@ class Environment
      */
     public function isProduction(): bool
     {
-        return $this->slug === self::TYPE_PRODUCTION;
+        return $this->type === self::TYPE_PRODUCTION;
     }
 
     /**
@@ -73,7 +73,7 @@ class Environment
      */
     public function isDevelopment(): bool
     {
-        return $this->slug === self::TYPE_DEVELOPMENT;
+        return $this->type === self::TYPE_DEVELOPMENT;
     }
 
     /**
@@ -83,11 +83,11 @@ class Environment
      */
     public function isTesting(): bool
     {
-        return $this->slug === self::TYPE_TESTING;
+        return $this->type === self::TYPE_TESTING;
     }
 
     public function __toString(): string
     {
-        return $this->slug;
+        return $this->type;
     }
 }

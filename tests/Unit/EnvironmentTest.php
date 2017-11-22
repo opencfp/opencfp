@@ -49,7 +49,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         Environment::fromString('foo');
     }
 
-    public function testEqualsReturnsFalseIfSlugIsDifferent()
+    public function testEqualsReturnsFalseIfTypeIsDifferent()
     {
         $one = Environment::fromString(Environment::TYPE_TESTING);
         $two = Environment::fromString(Environment::TYPE_DEVELOPMENT);
@@ -57,7 +57,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($one->equals($two));
     }
 
-    public function testEqualsReturnsTrueIfSlugIsSame()
+    public function testEqualsReturnsTrueIfTypeIsSame()
     {
         $one = Environment::fromString(Environment::TYPE_TESTING);
         $two = Environment::fromString(Environment::TYPE_TESTING);
