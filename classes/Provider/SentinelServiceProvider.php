@@ -3,13 +3,13 @@
 namespace OpenCFP\Provider;
 
 use Cartalyst\Sentinel\Activations\IlluminateActivationRepository;
-use Cartalyst\Sentinel\Cookies\NativeCookie;
 use Cartalyst\Sentinel\Hashing\NativeHasher;
 use Cartalyst\Sentinel\Persistences\IlluminatePersistenceRepository;
 use Cartalyst\Sentinel\Roles\IlluminateRoleRepository;
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users\IlluminateUserRepository;
 use Illuminate\Contracts\Events\Dispatcher;
+use OpenCFP\Infrastructure\Persistence\NullCookie;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -21,7 +21,7 @@ final class SentinelServiceProvider implements ServiceProviderInterface
             return new Sentinel(
                 new IlluminatePersistenceRepository(
                     new SymfonySentinelSession($app['session']),
-                    new NativeCookie()
+                    new NullCookie()
                 ),
                 new IlluminateUserRepository(
                     new NativeHasher(),
