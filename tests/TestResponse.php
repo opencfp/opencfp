@@ -44,7 +44,7 @@ class TestResponse
         return $this;
     }
 
-    public function assertStatus($status): self
+    public function assertStatus(int $status): self
     {
         $actual = $this->getStatusCode();
 
@@ -57,7 +57,7 @@ class TestResponse
         return $this;
     }
 
-    public function assertRedirect($route = null, $parameters = []): self
+    public function assertRedirect(string $route = null, array $parameters = [])
     {
         Assert::assertTrue(
             $this->isRedirect(),
@@ -72,21 +72,21 @@ class TestResponse
         return $this;
     }
 
-    public function assertSee($content): self
+    public function assertSee(string $content): self
     {
         Assert::assertContains($content, $this->getContent());
 
         return $this;
     }
 
-    public function assertNotSee($content): self
+    public function assertNotSee(string $content): self
     {
         Assert::assertNotContains($content, $this->getContent());
 
         return $this;
     }
 
-    public function assertFlashContains($flash): self
+    public function assertFlashContains(string $flash): self
     {
         $fullFlash = $this->app['session']->get('flash');
         $fullFlash = is_array($fullFlash) ? $fullFlash : [];
