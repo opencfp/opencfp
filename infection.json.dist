@@ -3,15 +3,12 @@
     "source": {
         "directories": [
             "classes"
-        ],
-        "exclude": [
-            "Provider",
-            "Http/API",
-            "Http/OAuth",
-            "Infrastructure/OAuth"
         ]
     },
     "logs": {
         "text": "infection-log.txt"
+    },
+    "phpUnit": {
+        "configDir": "tests/Unit"
     }
 }
