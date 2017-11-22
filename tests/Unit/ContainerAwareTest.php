@@ -37,7 +37,7 @@ class ContainerAwareTest extends \PHPUnit\Framework\TestCase
     /**
      * @return Application|m\MockInterface
      */
-    private function getApplicationMock()
+    private function getApplicationMock(): Application
     {
         return m::mock(Application::class);
     }

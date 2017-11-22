@@ -213,7 +213,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
             ->andThrow(\OpenCFP\Domain\EntityNotFoundException::class);
     }
 
-    private function getSpeaker()
+    private function getSpeaker(): User
     {
         return new User([
             'id'         => self::SPEAKER_ID,
@@ -223,7 +223,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         ]);
     }
 
-    private function getSpeakerWithNoTalks()
+    private function getSpeakerWithNoTalks(): \stdClass
     {
         // Set up stub speaker.
         $stub = m::mock(\stdClass::class);
@@ -233,7 +233,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         return $stub;
     }
 
-    private function getSpeakerFromMisbehavingRelation()
+    private function getSpeakerFromMisbehavingRelation(): \stdClass
     {
         // Set up stub speaker.
         $stub     = m::mock(\stdClass::class);
@@ -253,7 +253,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         return $stub;
     }
 
-    private function getSpeakerWithOneTalk()
+    private function getSpeakerWithOneTalk(): \stdClass
     {
         // Set up stub speaker.
         $stub     = m::mock(\stdClass::class);
@@ -273,7 +273,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         return $stub;
     }
 
-    private function getSpeakerWithManyTalks()
+    private function getSpeakerWithManyTalks(): \stdClass
     {
         // Set up stub speaker.
         $stub     = m::mock(\stdClass::class);

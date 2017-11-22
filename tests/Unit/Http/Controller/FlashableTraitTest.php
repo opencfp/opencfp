@@ -69,7 +69,7 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
      *
      * @return Application|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getApplicationMock(array $items = [])
+    private function getApplicationMock(array $items = []): Application
     {
         $application = $this->getMockBuilder(\OpenCFP\Application::class)
             ->disableOriginalConstructor()
@@ -90,7 +90,7 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|SessionInterface
      */
-    private function getSessionMock()
+    private function getSessionMock(): SessionInterface
     {
         return $this->getMockBuilder(\Symfony\Component\HttpFoundation\Session\SessionInterface::class)->getMock();
     }

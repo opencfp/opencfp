@@ -19,7 +19,7 @@ class CallForProposalTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($cfp->isOpen());
     }
 
-    public function stillOpenCfPsProvider()
+    public function stillOpenCfPsProvider(): array
     {
         return [
             ['+1 day'],

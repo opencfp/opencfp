@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Test\Helper;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager;
 
 trait DataBaseInteraction
 {
@@ -11,8 +11,8 @@ trait DataBaseInteraction
         $this->getCapsule()->getConnection()->unprepared(file_get_contents(__DIR__ . '/../dump.sql'));
     }
 
-    protected function getCapsule()
+    protected function getCapsule(): Manager
     {
-        return $this->app[Capsule::class];
+        return $this->app[Manager::class];
     }
 }

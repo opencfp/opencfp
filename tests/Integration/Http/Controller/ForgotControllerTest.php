@@ -158,7 +158,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    private function createUser()
+    private function createUser(): UserInterface
     {
         $user = m::mock(UserInterface::class);
         $user->shouldReceive('getResetPasswordCode');
@@ -167,7 +167,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         return $user;
     }
 
-    private function createForm($valid_status)
+    private function createForm($valid_status): \OpenCFP\Http\Form\ForgotForm
     {
         $is_valid = ($valid_status == 'valid');
         $form     = m::mock(\OpenCFP\Http\Form\ForgotForm::class);

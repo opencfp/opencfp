@@ -48,7 +48,7 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
         TalkSubmission::fromNative(['title' => $title]);
     }
 
-    public function invalidTalkTitles()
+    public function invalidTalkTitles(): array
     {
         return [
             [''],

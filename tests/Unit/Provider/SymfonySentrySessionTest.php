@@ -99,7 +99,7 @@ class SymfonySentrySessionTest extends \PHPUnit\Framework\TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|SessionInterface
      */
-    private function getSessionMock()
+    private function getSessionMock(): SessionInterface
     {
         return $this->getMockBuilder(\Symfony\Component\HttpFoundation\Session\SessionInterface::class)->getMock();
     }

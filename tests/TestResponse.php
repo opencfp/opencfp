@@ -34,7 +34,7 @@ class TestResponse
         $this->app          = $app;
     }
 
-    public function assertSuccessful()
+    public function assertSuccessful(): self
     {
         Assert::assertTrue(
             $this->isSuccessful(),
@@ -44,7 +44,7 @@ class TestResponse
         return $this;
     }
 
-    public function assertStatus($status)
+    public function assertStatus($status): self
     {
         $actual = $this->getStatusCode();
 
@@ -57,7 +57,7 @@ class TestResponse
         return $this;
     }
 
-    public function assertRedirect($route = null, $parameters = [])
+    public function assertRedirect($route = null, $parameters = []): self
     {
         Assert::assertTrue(
             $this->isRedirect(),
@@ -72,21 +72,21 @@ class TestResponse
         return $this;
     }
 
-    public function assertSee($content)
+    public function assertSee($content): self
     {
         Assert::assertContains($content, $this->getContent());
 
         return $this;
     }
 
-    public function assertNotSee($content)
+    public function assertNotSee($content): self
     {
         Assert::assertNotContains($content, $this->getContent());
 
         return $this;
     }
 
-    public function assertFlashContains($flash)
+    public function assertFlashContains($flash): self
     {
         $fullFlash = $this->app['session']->get('flash');
         $fullFlash = is_array($fullFlash) ? $fullFlash : [];
@@ -95,14 +95,14 @@ class TestResponse
         return $this;
     }
 
-    public function assertNoFlashSet()
+    public function assertNoFlashSet(): self
     {
         Assert::assertNull($this->app['session']->get('flash'));
 
         return $this;
     }
 
-    public function assertTargetURLContains(string$targetUrl)
+    public function assertTargetURLContains(string$targetUrl): self
     {
         Assert::assertInstanceOf(RedirectResponse::class, $this->baseResponse);
         Assert::assertContains($targetUrl, $this->baseResponse->getTargetUrl());

@@ -80,7 +80,7 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($response, 0);
     }
 
-    protected function createInputInterfaceWithEmail($email)
+    protected function createInputInterfaceWithEmail($email): \Symfony\Component\Console\Input\InputInterface
     {
         $input = Mockery::mock(\Symfony\Component\Console\Input\InputInterface::class);
         $input->shouldReceive('getArgument')->with('email')->andReturn($email);
@@ -88,7 +88,7 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
         return $input;
     }
 
-    protected function createOutputInterface()
+    protected function createOutputInterface(): \Symfony\Component\Console\Output\OutputInterface
     {
         /**
          * Create a partial mock that stubs out method calls where we don't
