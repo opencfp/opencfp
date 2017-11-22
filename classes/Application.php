@@ -103,7 +103,7 @@ class Application extends SilexApplication
         $this->register(new ApplicationServiceProvider);
 
         $this->setUpDataBaseConnection();
-        $this->registerGlobalErrorHandler($this);
+        $this->registerGlobalErrorHandler();
     }
 
     /**
@@ -193,9 +193,9 @@ class Application extends SilexApplication
         $this[Capsule::class]->bootEloquent();
     }
 
-    private function registerGlobalErrorHandler(Application $app)
+    private function registerGlobalErrorHandler()
     {
-        $app->error(function (\Exception $e, Request $request, $code) use ($app) {
+        $this->error(function (\Exception $e, Request $request, $code) {
             if (in_array('application/json', $request->getAcceptableContentTypes())) {
                 $headers = [];
 
@@ -215,7 +215,7 @@ class Application extends SilexApplication
             }
 
             /* @var Twig_Environment $twig */
-            $twig = $app['twig'];
+            $twig = $this['twig'];
 
             switch ($code) {
                 case Response::HTTP_UNAUTHORIZED:
