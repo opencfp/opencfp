@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Infrastructure\Auth;
 
-class UserNotFoundException extends \RuntimeException
+final class UserNotFoundException extends \RuntimeException
 {
     public static function userNotFound(string $userInfo): self
     {

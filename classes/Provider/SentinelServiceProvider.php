@@ -13,7 +13,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class SentinelServiceProvider implements ServiceProviderInterface
+final class SentinelServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {

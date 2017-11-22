@@ -5,7 +5,7 @@ namespace OpenCFP\Infrastructure\Auth;
 use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Support\Collection;
 
-class SentinelUser implements UserInterface
+final class SentinelUser implements UserInterface
 {
     /**
      * @var \Cartalyst\Sentinel\Users\EloquentUser

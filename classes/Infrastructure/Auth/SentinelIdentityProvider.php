@@ -8,7 +8,7 @@ use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 
-class SentinelIdentityProvider implements IdentityProvider
+final class SentinelIdentityProvider implements IdentityProvider
 {
     private $sentinel;
     private $repo;
