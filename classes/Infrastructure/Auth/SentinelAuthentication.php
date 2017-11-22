@@ -60,7 +60,7 @@ class SentinelAuthentication implements Authentication
     {
         $user = $this->sentinel->getUser();
 
-        return new SentinelUser($user);
+        return new SentinelUser($user, $this->sentinel);
     }
 
     /**

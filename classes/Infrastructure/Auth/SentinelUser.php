@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Infrastructure\Auth;
 
-use Cartalyst\Sentinel\Native\Facades\Sentinel;
+use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Support\Collection;
 
 class SentinelUser implements UserInterface
@@ -17,11 +17,10 @@ class SentinelUser implements UserInterface
      */
     private $sentinel;
 
-    public function __construct(\Cartalyst\Sentinel\Users\UserInterface $user)
+    public function __construct(\Cartalyst\Sentinel\Users\UserInterface $user, Sentinel $sentinel)
     {
         $this->user     = $user;
-        $sentinel       = new Sentinel();
-        $this->sentinel = $sentinel->getSentinel();
+        $this->sentinel = $sentinel;
     }
 
     /**
