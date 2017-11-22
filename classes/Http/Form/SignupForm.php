@@ -250,11 +250,10 @@ class SignupForm extends Form
             || $this->_cleanData['url'] == ''
         ) {
             return true;
-        } else {
-            $this->_addErrorMessage('You did not enter a valid joind.in URL');
-
-            return false;
         }
+        $this->_addErrorMessage('You did not enter a valid joind.in URL');
+
+        return false;
     }
 
     /**
