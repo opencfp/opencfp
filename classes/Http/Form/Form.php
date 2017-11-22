@@ -95,7 +95,7 @@ abstract class Form
      * @param string $name    The tainted value name
      * @param mixed  $default The default value to return if not set
      *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getTaintedField($name, $default = null)
     {
@@ -116,7 +116,7 @@ abstract class Form
      * Returns the value of a form's option if set.
      *
      * @param string     $name    The option name
-     * @param mixed|null $default The default value
+     * @param null|mixed $default The default value
      *
      * @return mixed The option value
      */

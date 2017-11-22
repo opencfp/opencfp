@@ -170,7 +170,7 @@ class Application extends SilexApplication
      *
      * @param string $path the configuration key in dot-notation
      *
-     * @return string|null the configuration value
+     * @return null|string the configuration value
      */
     public function config($path)
     {
