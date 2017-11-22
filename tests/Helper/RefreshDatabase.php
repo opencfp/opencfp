@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Test\Helper;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager;
 
 trait RefreshDatabase
 {
@@ -11,9 +11,9 @@ trait RefreshDatabase
         self::createCapsule()->getConnection()->unprepared(file_get_contents(__DIR__ . '/../dump.sql'));
     }
 
-    protected static function createCapsule()
+    protected static function createCapsule(): Manager
     {
-        $capsule = new Capsule;
+        $capsule = new Manager();
 
         $capsule->addConnection([
             'driver'    => 'mysql',

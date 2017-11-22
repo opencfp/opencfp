@@ -43,10 +43,7 @@ class AirportTest extends BaseTestCase
         $this->airports->withCode('foobarbaz');
     }
 
-    /**
-     * @return Airport
-     */
-    private function getAirport()
+    private function getAirport(): Airport
     {
         return new Airport;
     }

@@ -48,7 +48,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function hasRequiredProvider()
+    public function hasRequiredProvider(): array
     {
         $badData = [
             'title'       => 'Bad Data',
@@ -105,7 +105,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function hasNoDesiredOrSponsorProvider()
+    public function hasNoDesiredOrSponsorProvider(): array
     {
         $goodData = [
             'title'       => 'Talk Title',
@@ -153,7 +153,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function titleValidatesProvider()
+    public function titleValidatesProvider(): array
     {
         $faker = $this->getFaker();
 
@@ -195,7 +195,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function descriptionValidatesProvider()
+    public function descriptionValidatesProvider(): array
     {
         $faker = $this->getFaker();
 
@@ -238,9 +238,9 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
     /**
      * Data provider for typeValidatesCorrectly
      *
-     * @return bool
+     * @return array
      */
-    public function typeProvider()
+    public function typeProvider(): array
     {
         return [
             ['regular', true],
@@ -281,9 +281,9 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
     /**
      * Data provider for typeValidatesCorrectly
      *
-     * @return bool
+     * @return array
      */
-    public function categoryProvider()
+    public function categoryProvider(): array
     {
         return [
             ['test1', true],
@@ -301,7 +301,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function speakerIdProvider()
+    public function speakerIdProvider(): array
     {
         $validSpeakerInfo = [
             'user_id' => 1,
@@ -351,7 +351,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function levelProvider()
+    public function levelProvider(): array
     {
         return [
             ['advanced', true],
