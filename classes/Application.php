@@ -13,6 +13,7 @@ use OpenCFP\Provider\Gateways\WebGatewayProvider;
 use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\ResetEmailerServiceProvider;
+use OpenCFP\Provider\SentinelServiceProvider;
 use OpenCFP\Provider\SentryServiceProvider;
 use OpenCFP\Provider\TalkFilterProvider;
 use OpenCFP\Provider\TalkHandlerProvider;
@@ -89,6 +90,7 @@ class Application extends SilexApplication
 
         $this->register(new CallForProposalProvider());
         $this->register(new SentryServiceProvider());
+        $this->register(new SentinelServiceProvider());
         $app = $this;
         $this->register(new TwigServiceProvider($app));
         $this->register(new HtmlPurifierServiceProvider());
