@@ -37,16 +37,21 @@ class SentryAccountManagement implements AccountManagement
 
     public function create($email, $password, array $data = []): UserInterface
     {
-        $user = $this->sentry->createUser(array_merge([
-            'email'    => $email,
-            'password' => $password,
-        ], $data));
+        try {
+            $user = $this->sentry->createUser(array_merge([
+                'email'    => $email,
+                'password' => $password,
+            ], $data));
 
-        $user->addGroup(
-            $this->sentry->findGroupByName('Speakers')
-        );
+            $user->addGroup(
+                $this->sentry->findGroupByName('Speakers')
+            );
 
-        return new SentryUser($user);
+            return new SentryUser($user);
+        } catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
+            // Convert the error to one we own.
+            throw new UserExistsException();
+        }
     }
 
     public function activate($email)
