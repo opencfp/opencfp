@@ -11,7 +11,7 @@ use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Infrastructure\Auth\SentinelIdentityProvider
  */
 class SentinelIdentityProviderTest extends BaseTestCase
 {
