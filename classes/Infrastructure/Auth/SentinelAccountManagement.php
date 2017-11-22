@@ -35,9 +35,9 @@ class SentinelAccountManagement implements AccountManagement
         throw new UserNotFoundException($email);
     }
 
-    public function findByRole($role)
+    public function findByRole($role): array
     {
-        return $this->sentinel->getRoleRepository()->findByName($role)->getUsers();
+        return $this->sentinel->getRoleRepository()->findByName($role)->getUsers()->toArray();
     }
 
     public function create($email, $password, array $data = []): UserInterface
