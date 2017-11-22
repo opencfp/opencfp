@@ -87,7 +87,7 @@ class SentinelAccountManagementTest extends BaseTestCase
         $this->sut->promoteTo('test@example.com', 'Admin');
         $users = $this->sut->findByRole('Admin');
         $this->assertCount(1, $users);
-        $this->assertSame('test@example.com', $users->first()->email);
+        $this->assertSame('test@example.com', $users[0]['email']);
     }
 
     /**
