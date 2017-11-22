@@ -27,6 +27,3 @@ test: integration unit
 
 unit: composer
 	vendor/bin/phpunit --configuration tests/Unit/phpunit.xml.dist
-
-test: composer database
-	vendor/bin/phpunit
