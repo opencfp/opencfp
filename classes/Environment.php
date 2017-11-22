@@ -17,8 +17,18 @@ class Environment
 
     private function __construct(string $type)
     {
-        if (! in_array($type, [self::TYPE_PRODUCTION, self::TYPE_DEVELOPMENT, self::TYPE_TESTING])) {
-            throw new \InvalidArgumentException('Invalid environment specified.');
+        $types = [
+            self::TYPE_PRODUCTION,
+            self::TYPE_DEVELOPMENT,
+            self::TYPE_TESTING,
+        ];
+
+        if (! in_array($type, $types)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Environment needs to be one of "%s"; got "%s" instead.',
+                implode('", "', $types),
+                $type
+            ));
         }
 
         $this->type = $type;
