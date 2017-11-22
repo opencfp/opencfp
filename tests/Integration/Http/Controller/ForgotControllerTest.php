@@ -59,6 +59,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
     {
         $accounts = m::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')->andReturn($this->createUser());
+        unset($this->app[AccountManagement::class]);
         $this->app[AccountManagement::class] = $accounts;
 
         // Override our reset_emailer service
@@ -133,6 +134,7 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
     {
         $accounts = m::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')->andReturn($this->createUser());
+        unset($this->app[AccountManagement::class]);
         $this->app[AccountManagement::class] = $accounts;
 
         // Override our reset_emailer service
