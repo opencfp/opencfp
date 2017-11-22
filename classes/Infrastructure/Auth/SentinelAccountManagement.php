@@ -7,6 +7,9 @@ use OpenCFP\Domain\Services\AccountManagement;
 
 final class SentinelAccountManagement implements AccountManagement
 {
+    /**
+     * @var Sentinel
+     */
     private $sentinel;
 
     public function __construct(Sentinel $sentinel)
@@ -52,7 +55,7 @@ final class SentinelAccountManagement implements AccountManagement
         throw new UserExistsException();
     }
 
-    public function activate($email)
+    public function activate($email): bool
     {
         $user           = $this->findByLogin($email)->getUser();
         $activationCode = $this->sentinel->getActivationRepository()->create($user)->getCode();
