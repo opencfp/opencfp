@@ -39,9 +39,26 @@ class Environment
         return new self(self::TYPE_TESTING);
     }
 
+    /**
+     * @deprecated
+     *
+     * @return self
+     */
     public static function fromEnvironmentVariable(): self
     {
-        $type = $_SERVER['CFP_ENV'] ?? self::TYPE_DEVELOPMENT;
+        return self::fromServer($_SERVER);
+    }
+
+    /**
+     * @param array $server
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return self
+     */
+    public static function fromServer(array $server): self
+    {
+        $type = $server['CFP_ENV'] ?? self::TYPE_DEVELOPMENT;
 
         return new self($type);
     }
