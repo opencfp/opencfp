@@ -19,7 +19,7 @@ class SentinelAccountManagement implements AccountManagement
         $user = $this->sentinel->getUserRepository()->findById($userId);
 
         if ($user instanceof \Cartalyst\Sentinel\Users\UserInterface) {
-            return new SentinelUser($user);
+            return new SentinelUser($user, $this->sentinel);
         }
 
         throw new UserNotFoundException($userId);
@@ -29,7 +29,7 @@ class SentinelAccountManagement implements AccountManagement
     {
         $user = $this->sentinel->getUserRepository()->findByCredentials(['email' => $email]);
         if ($user instanceof \Cartalyst\Sentinel\Users\UserInterface) {
-            return new SentinelUser($user);
+            return new SentinelUser($user, $this->sentinel);
         }
 
         throw new UserNotFoundException($email);
@@ -46,7 +46,7 @@ class SentinelAccountManagement implements AccountManagement
             ->getUserRepository()
             ->create(array_merge(['email' => $email, 'password' => $password], $data));
         if ($user instanceof \Cartalyst\Sentinel\Users\UserInterface) {
-            return new SentinelUser($user);
+            return new SentinelUser($user, $this->sentinel);
         }
 
         throw new UserExistsException();

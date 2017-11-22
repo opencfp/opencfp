@@ -2,6 +2,7 @@
 
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
+use Cartalyst\Sentinel\Sentinel;
 use Mockery as m;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 
@@ -15,7 +16,7 @@ class SentinelUserTest extends \PHPUnit\Framework\TestCase
      */
     public function weHaveTheRightUser()
     {
-        $user = new SentinelUser(m::mock(\Cartalyst\Sentinel\Users\UserInterface::class));
+        $user = new SentinelUser(m::mock(\Cartalyst\Sentinel\Users\UserInterface::class), $this->getSentinel());
         $this->assertInstanceOf(\OpenCFP\Infrastructure\Auth\UserInterface::class, $user);
     }
 
@@ -26,7 +27,7 @@ class SentinelUserTest extends \PHPUnit\Framework\TestCase
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
         $innerUser->shouldReceive('getUserId')->andReturn(2);
-        $sentinelUser = new SentinelUser($innerUser);
+        $sentinelUser = new SentinelUser($innerUser, $this->getSentinel());
         $this->assertSame(2, $sentinelUser->getId());
     }
 
@@ -37,7 +38,7 @@ class SentinelUserTest extends \PHPUnit\Framework\TestCase
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
         $innerUser->shouldReceive('getUserLogin')->andReturn('test@example.com');
-        $sentinelUser = new SentinelUser($innerUser);
+        $sentinelUser = new SentinelUser($innerUser, $this->getSentinel());
         $this->assertSame('test@example.com', $sentinelUser->getLogin());
     }
 
@@ -46,8 +47,13 @@ class SentinelUserTest extends \PHPUnit\Framework\TestCase
      */
     public function getUserWorks()
     {
-        $user      = new SentinelUser(m::mock(\Cartalyst\Sentinel\Users\UserInterface::class));
+        $user      = new SentinelUser(m::mock(\Cartalyst\Sentinel\Users\UserInterface::class), $this->getSentinel());
         $innerUser = $user->getUser();
         $this->assertInstanceOf(\Cartalyst\Sentinel\Users\UserInterface::class, $innerUser);
+    }
+
+    public function getSentinel(): Sentinel
+    {
+        return (new \Cartalyst\Sentinel\Native\Facades\Sentinel())->getSentinel();
     }
 }
