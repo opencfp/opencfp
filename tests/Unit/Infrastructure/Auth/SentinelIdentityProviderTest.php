@@ -106,7 +106,7 @@ class SentinelIdentityProviderTest extends BaseTestCase
      */
     private function getSentinelUserMock()
     {
-        return m::mock(Users\UserInterface::class);
+        return m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
     }
 
     /**
