@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Provider;
 
-use Cartalyst\Sentry\Sentry;
+use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use League\OAuth2\Server\ResourceServer;
 use OpenCFP\Application\Speakers;
@@ -14,10 +14,11 @@ use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
+use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\OAuthIdentityProvider;
-use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
-use OpenCFP\Infrastructure\Auth\SentryAuthentication;
-use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
+use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
+use OpenCFP\Infrastructure\Auth\SentinelAuthentication;
+use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use OpenCFP\Infrastructure\OAuth\AccessTokenStorage;
 use OpenCFP\Infrastructure\OAuth\ClientStorage;
@@ -30,21 +31,25 @@ use Pimple\ServiceProviderInterface;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
-    /**
+    /**s
      * {@inheritdoc}
      */
     public function register(Container $app)
     {
         $app[AccountManagement::class] = function ($app) {
-            return new SentryAccountManagement($app['sentry']);
+            return new SentinelAccountManagement($app[Sentinel::class]);
         };
 
         $app[IdentityProvider::class] = function ($app) {
-            return new SentryIdentityProvider($app['sentry'], new IlluminateSpeakerRepository(new User()));
+            return new SentinelIdentityProvider($app[Sentinel::class], $app[SpeakerRepository::class]);
         };
 
         $app[Authentication::class] = function ($app) {
-            return new SentryAuthentication($app['sentry']);
+            return new SentinelAuthentication($app[Sentinel::class], $app[AccountManagement::class]);
+        };
+
+        $app[SpeakerRepository::class] = function () {
+            return new IlluminateSpeakerRepository(new User());
         };
 
         $app[Capsule::class] = function ($app) {
@@ -65,21 +70,16 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app['application.speakers'] = function ($app) {
-            $speakerRepository = new IlluminateSpeakerRepository(new User());
-
-            /* @var Sentry $sentry */
-            $sentry = $app['sentry'];
-            
             return new Speakers(
                 new CallForProposal(new \DateTimeImmutable($app->config('application.enddate'))),
-                new SentryIdentityProvider($sentry, $speakerRepository),
-                $speakerRepository,
+                $app[IdentityProvider::class],
+                $app[SpeakerRepository::class],
                 new IlluminateTalkRepository(),
                 new EventDispatcher()
             );
         };
 
-        $app[AirportInformationDatabase::class] = function ($app) {
+        $app[AirportInformationDatabase::class] = function () {
             return new Airport();
         };
 
@@ -87,7 +87,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             return new PseudoRandomStringGenerator();
         };
 
-        $app['oauth.resource'] = function ($app) {
+        $app['oauth.resource'] = function () {
             $sessionStorage     = new SessionStorage();
             $accessTokenStorage = new AccessTokenStorage();
             $clientStorage      = new ClientStorage();
@@ -104,12 +104,10 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app['application.speakers.api'] = function ($app) {
-            $speakerRepository = new IlluminateSpeakerRepository(new User());
-
             return new Speakers(
                 new CallForProposal(new \DateTimeImmutable($app->config('application.enddate'))),
-                new OAuthIdentityProvider($app['oauth.resource'], $speakerRepository),
-                $speakerRepository,
+                new OAuthIdentityProvider($app['oauth.resource'], $app[SpeakerRepository::class]),
+                $app[SpeakerRepository::class],
                 new IlluminateTalkRepository(),
                 new EventDispatcher()
             );

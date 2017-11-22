@@ -41,7 +41,7 @@ class MigrationsTest extends BaseTestCase
      */
     public function oldUsersGetActivated()
     {
-        if (! $this->app[AccountManagement::class] instanceof SentryAccountManagement) {
+        if (!$this->app[AccountManagement::class] instanceof SentryAccountManagement) {
             $this->markTestSkipped();
         }
         $capsule = $this->getCapsule();
@@ -67,7 +67,7 @@ class MigrationsTest extends BaseTestCase
      */
     public function adminsGetPromoted()
     {
-        if (! $this->app[AccountManagement::class] instanceof SentryAccountManagement) {
+        if (!$this->app[AccountManagement::class] instanceof SentryAccountManagement) {
             $this->markTestSkipped();
         }
         $capsule = $this->getCapsule();
