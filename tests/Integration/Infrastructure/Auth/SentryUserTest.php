@@ -70,10 +70,10 @@ class SentryUserTest extends BaseTestCase
      */
     public function hasAccessWorks()
     {
-        $this->assertSame(false, $this->user->hasAccess('admin'));
-        $this->assertSame(false, $this->user->hasAccess('reviewer'));
+        $this->assertFalse($this->user->hasAccess('admin'));
+        $this->assertFalse($this->user->hasAccess('reviewer'));
         $this->assertSame(true, $this->user->hasAccess('users'));
-        $this->assertSame(false, $this->user->hasAccess('blablabla'));
+        $this->assertFalse($this->user->hasAccess('blablabla'));
     }
 
     /**

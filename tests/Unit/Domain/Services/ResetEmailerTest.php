@@ -48,6 +48,6 @@ class ResetEmailerTest extends \PHPUnit\Framework\TestCase
             '987abc'
         );
 
-        $this->assertNotSame($response, false);
+        $this->assertNotFalse($response);
     }
 }
