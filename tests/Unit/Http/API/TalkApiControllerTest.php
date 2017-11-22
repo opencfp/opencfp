@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Unit\Http\API;
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
-use OpenCFP\Domain\Entity\Talk;
+use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Http\API\TalkController;
 use Symfony\Component\HttpFoundation;

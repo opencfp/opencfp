@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Unit\Http\API;
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
-use OpenCFP\Domain\Entity\User;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\API\ProfileController;
 use Symfony\Component\HttpFoundation;

@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users;
 use Mockery as m;
-use OpenCFP\Domain\Entity;
+use OpenCFP\Domain\Model;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
@@ -119,10 +119,10 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return Entity\User|m\MockInterface
+     * @return m\MockInterface|Model\User
      */
     private function getUserMock()
     {
-        return m::mock(Entity\User::class);
+        return m::mock(Model\User::class);
     }
 }
