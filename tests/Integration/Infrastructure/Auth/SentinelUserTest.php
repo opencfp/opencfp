@@ -6,7 +6,6 @@ use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
-use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
@@ -32,14 +31,6 @@ class SentinelUserTest extends BaseTestCase
         ]);
         self::$user = $account->findByLogin('test@example.com');
         $account->promoteTo('test@example.com', 'Speaker');
-    }
-
-    /**
-     * @test
-     */
-    public function weHaveTheRightUser()
-    {
-        $this->assertInstanceOf(UserInterface::class, self::$user);
     }
 
     /**
@@ -130,15 +121,5 @@ class SentinelUserTest extends BaseTestCase
         $secondTry = self::$user->attemptResetPassword('secret.reset.code', 'newPass2');
         $this->assertTrue($secondTry);
         $this->assertTrue(self::$user->checkPassword('newPass2'));
-    }
-
-    /**
-     * @test
-     */
-    public function getUserWorks()
-    {
-        $user = self::$user->getUser();
-
-        $this->assertInstanceOf(\Cartalyst\Sentinel\Users\UserInterface::class, $user);
     }
 }
