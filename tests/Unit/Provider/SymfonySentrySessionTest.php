@@ -42,8 +42,7 @@ class SymfonySentrySessionTest extends \PHPUnit\Framework\TestCase
             ->with(
                 $this->identicalTo($key),
                 $this->identicalTo($value)
-            )
-        ;
+            );
 
         $sentrySession = new SymfonySentrySession(
             $session,
@@ -64,8 +63,7 @@ class SymfonySentrySessionTest extends \PHPUnit\Framework\TestCase
             ->expects($this->once())
             ->method('get')
             ->with($this->identicalTo($key))
-            ->willReturn($value)
-        ;
+            ->willReturn($value);
 
         $sentrySession = new SymfonySentrySession(
             $session,
@@ -84,8 +82,7 @@ class SymfonySentrySessionTest extends \PHPUnit\Framework\TestCase
         $session
             ->expects($this->once())
             ->method('remove')
-            ->with($this->identicalTo($key))
-        ;
+            ->with($this->identicalTo($key));
 
         $sentrySession = new SymfonySentrySession(
             $session,

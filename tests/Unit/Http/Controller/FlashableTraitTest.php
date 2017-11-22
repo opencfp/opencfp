@@ -20,8 +20,7 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
             ->expects($this->at(0))
             ->method('get')
             ->with($this->identicalTo('flash'))
-            ->willReturn($flash)
-        ;
+            ->willReturn($flash);
 
         $session
             ->expects($this->at(1))
@@ -29,8 +28,7 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
             ->with(
                 $this->identicalTo('flash'),
                 $this->identicalTo(null)
-            )
-        ;
+            );
 
         $application = $this->getApplicationMock([
             'session' => $session,
@@ -51,8 +49,7 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
             ->with(
                 $this->identicalTo('flash'),
                 $this->identicalTo(null)
-            )
-        ;
+            );
 
         $application = $this->getApplicationMock([
             'session' => $session,
@@ -76,8 +73,7 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
     {
         $application = $this->getMockBuilder(\OpenCFP\Application::class)
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
 
         $application
             ->expects($this->any())
@@ -86,8 +82,7 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
                 if (array_key_exists($alias, $items)) {
                     return $items[$alias];
                 }
-            })
-        ;
+            });
 
         return $application;
     }

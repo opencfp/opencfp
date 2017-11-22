@@ -64,8 +64,7 @@ class IlluminateSpeakerRepositoryTest extends BaseTestCase
             ->shouldReceive('findOrFail')
             ->once()
             ->with($id)
-            ->andReturn($speaker)
-        ;
+            ->andReturn($speaker);
 
         $repository = new IlluminateSpeakerRepository($speaker);
 

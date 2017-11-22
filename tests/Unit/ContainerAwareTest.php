@@ -21,8 +21,7 @@ class ContainerAwareTest extends \PHPUnit\Framework\TestCase
             ->shouldReceive('offsetGet')
             ->once()
             ->with($slug)
-            ->andReturn($service)
-        ;
+            ->andReturn($service);
 
         $containerAware = new ContainerAwareFake();
 
