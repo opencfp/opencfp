@@ -132,7 +132,7 @@ class TalkControllerTest extends WebTestCase
      */
     public function getRedirectedToDashboardWhenTalkIsNotYours()
     {
-        $this->asLoggedInSpeaker((self::$user->id + 1))
+        $this->asLoggedInSpeaker(self::$user->id + 1)
             ->get('talk/edit/' . self::$talk->id)
             ->assertNotSee('Edit Your Talk')
             ->assertRedirect();
@@ -168,7 +168,7 @@ class TalkControllerTest extends WebTestCase
      */
     public function notAllowedToDeleteSomeoneElseTalk()
     {
-        $this->asLoggedInSpeaker((self::$user->id +1))
+        $this->asLoggedInSpeaker(self::$user->id +1)
             ->post('/talk/delete', ['tid' => self::$talk->id])
             ->assertNotSee('ok')
             ->assertSee('no')
