@@ -1,12 +1,12 @@
 <?php
 
-namespace OpenCFP\Test\Infrastructure\Auth;
+namespace OpenCFP\Test\Integration\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Cartalyst\Sentry\Users\Eloquent\User;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\DataBaseInteraction;
+use OpenCFP\Test\Helper\DataBaseInteraction;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelAccountManagement

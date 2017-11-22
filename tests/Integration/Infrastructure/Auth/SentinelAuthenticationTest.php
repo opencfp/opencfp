@@ -1,13 +1,13 @@
 <?php
 
-namespace OpenCFP\Test\Infrastructure\Auth;
+namespace OpenCFP\Test\Integration\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use OpenCFP\Domain\Services\AuthenticationException;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelAuthentication;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\DataBaseInteraction;
+use OpenCFP\Test\Helper\DataBaseInteraction;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelAuthentication

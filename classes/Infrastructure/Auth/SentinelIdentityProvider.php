@@ -22,9 +22,9 @@ class SentinelIdentityProvider implements IdentityProvider
     /**
      * Retrieves the currently authenticate user's username.
      *
-     * @return User
-     *
      * @throws NotAuthenticatedException
+     *
+     * @return User
      */
     public function getCurrentUser()
     {

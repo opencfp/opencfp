@@ -52,9 +52,9 @@ class SentinelAuthentication implements Authentication
     /**
      * Returns current authenticated User account.
      *
-     * @return UserInterface
-     *
      * @throws NotAuthenticatedException
+     *
+     * @return UserInterface
      */
     public function user(): UserInterface
     {
@@ -66,9 +66,9 @@ class SentinelAuthentication implements Authentication
     /**
      * Returns current authenticated User Id.
      *
-     * @return int
-     *
      * @throws NotAuthenticatedException
+     *
+     * @return int
      */
     public function userId(): int
     {
