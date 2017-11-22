@@ -38,8 +38,7 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
         $sentry
             ->shouldReceive('getUser')
             ->once()
-            ->andReturnNull()
-        ;
+            ->andReturnNull();
 
         $speakerRepository = $this->getSpeakerRepositoryMock();
 
@@ -64,16 +63,14 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
         $sentryUser
             ->shouldReceive('getId')
             ->once()
-            ->andReturn($id)
-        ;
+            ->andReturn($id);
 
         $sentry = $this->getSentryMock();
 
         $sentry
             ->shouldReceive('getUser')
             ->once()
-            ->andReturn($sentryUser)
-        ;
+            ->andReturn($sentryUser);
 
         $user = $this->getUserMock();
 
@@ -83,8 +80,7 @@ class SentryIdentityProviderTest extends \PHPUnit\Framework\TestCase
             ->shouldReceive('findById')
             ->once()
             ->with($id)
-            ->andReturn($user)
-        ;
+            ->andReturn($user);
 
         $provider = new SentryIdentityProvider(
             $sentry,

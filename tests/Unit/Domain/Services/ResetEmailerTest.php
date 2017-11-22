@@ -30,8 +30,7 @@ class ResetEmailerTest extends \PHPUnit\Framework\TestCase
                     $userEmail => null,
                 ];
             }))
-            ->getMock()
-        ;
+            ->getMock();
 
         /* @var Twig_Template $template */
         $template = Mockery::mock(Twig_Template::class)->shouldIgnoreMissing();

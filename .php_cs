@@ -26,6 +26,7 @@ $config = PhpCsFixer\Config::create()
         'no_alias_functions' => true,
         'no_empty_phpdoc' => true,
         'no_extra_consecutive_blank_lines' => true,
+        'no_multiline_whitespace_before_semicolons' => true,
         'no_trailing_comma_in_singleline_array' => true,
         'no_unused_imports' => true,
         'ordered_imports' => true,
