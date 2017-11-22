@@ -15,15 +15,38 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('development', Environment::TYPE_DEVELOPMENT);
         $this->assertSame('testing', Environment::TYPE_TESTING);
     }
-
-    /** @test */
-    public function it_should_encapsulate_valid_environments()
+    
+    public function testProductionReturnsEnvironment()
     {
-        $this->assertInstanceOf(Environment::class, Environment::production());
+        $environment = Environment::production();
+        
+        $this->assertInstanceOf(Environment::class, $environment);
+        $this->assertTrue($environment->isProduction());
+        $this->assertFalse($environment->isDevelopment());
+        $this->assertFalse($environment->isTesting());
+        $this->assertEquals(Environment::TYPE_PRODUCTION, $environment);
+    }
 
-        $this->assertEquals(Environment::TYPE_PRODUCTION, Environment::production());
-        $this->assertEquals(Environment::TYPE_DEVELOPMENT, Environment::development());
-        $this->assertEquals(Environment::TYPE_TESTING, Environment::testing());
+    public function testDevelopmentReturnsEnvironment()
+    {
+        $environment = Environment::development();
+
+        $this->assertInstanceOf(Environment::class, $environment);
+        $this->assertFalse($environment->isProduction());
+        $this->assertTrue($environment->isDevelopment());
+        $this->assertFalse($environment->isTesting());
+        $this->assertEquals(Environment::TYPE_DEVELOPMENT, $environment);
+    }
+
+    public function testTestingReturnsEnvironment()
+    {
+        $environment = Environment::testing();
+
+        $this->assertInstanceOf(Environment::class, $environment);
+        $this->assertFalse($environment->isProduction());
+        $this->assertFalse($environment->isDevelopment());
+        $this->assertTrue($environment->isTesting());
+        $this->assertEquals(Environment::TYPE_TESTING, $environment);
     }
 
     /**
@@ -108,44 +131,5 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $two = Environment::fromString(Environment::TYPE_TESTING);
 
         $this->assertTrue($one->equals($two));
-    }
-
-    /**
-     * @test
-     */
-    public function isProductionReturnsCorrectBool()
-    {
-        $prod = Environment::production();
-        $this->assertTrue($prod->isProduction());
-        $dev = Environment::development();
-        $this->assertFalse($dev->isProduction());
-        $test = Environment::testing();
-        $this->assertFalse($test->isProduction());
-    }
-
-    /**
-     * @test
-     */
-    public function isDevelopmentReturnsCorrectBool()
-    {
-        $prod = Environment::production();
-        $this->assertFalse($prod->isDevelopment());
-        $dev = Environment::development();
-        $this->assertTrue($dev->isDevelopment());
-        $test = Environment::testing();
-        $this->assertFalse($test->isDevelopment());
-    }
-
-    /**
-     * @test
-     */
-    public function isTestingReturnsCorrectBool()
-    {
-        $prod = Environment::production();
-        $this->assertFalse($prod->isTesting());
-        $dev = Environment::development();
-        $this->assertFalse($dev->isTesting());
-        $test = Environment::testing();
-        $this->assertTrue($test->isTesting());
     }
 }
