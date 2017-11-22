@@ -93,7 +93,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function emailProvider()
+    public function emailProvider(): array
     {
         return [
             ['test', false],
@@ -109,7 +109,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function properPasswordValidator()
+    public function properPasswordValidator(): array
     {
         return [
             ['acceptable'],
@@ -178,7 +178,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function badPasswordProvider()
+    public function badPasswordProvider(): array
     {
         return [
             ['foo', 'foo', 'The submitted password must be at least 5 characters long', false],
@@ -215,7 +215,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function firstNameProvider()
+    public function firstNameProvider(): array
     {
         $longName = '';
 
@@ -259,7 +259,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function lastNameProvider()
+    public function lastNameProvider(): array
     {
         $longName = '';
 
@@ -301,7 +301,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function validateAllProvider()
+    public function validateAllProvider(): array
     {
         $baseData = [
             'email'      => 'test@domain.com',
@@ -368,7 +368,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function speakerTextProvider()
+    public function speakerTextProvider(): array
     {
         return [
             ['Speaker text that can go in multiple places', true],
@@ -402,7 +402,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public function sanitizationProvider()
+    public function sanitizationProvider(): array
     {
         $badDataIn = [
             'email'      => 'test@domain.com',

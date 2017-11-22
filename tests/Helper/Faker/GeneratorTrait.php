@@ -7,10 +7,7 @@ use Faker\Generator;
 
 trait GeneratorTrait
 {
-    /**
-     * @return Generator
-     */
-    protected function getFaker()
+    protected function getFaker(): Generator
     {
         static $faker;
 
