@@ -43,6 +43,21 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @dataProvider providerEnvironment
+     *
+     * @param string $type
+     */
+    public function testFromServerReturnsEnvironment(string $type)
+    {
+        $environment = Environment::fromServer([
+            'CFP_ENV' => $type,
+        ]);
+
+        $this->assertInstanceOf(Environment::class, $environment);
+        $this->assertEquals($type, $environment);
+    }
+
+    /**
      * @test
      * @dataProvider providerEnvironment
      *
