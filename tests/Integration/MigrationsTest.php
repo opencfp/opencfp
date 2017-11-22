@@ -1,9 +1,10 @@
 <?php
 
-namespace OpenCFP\Test\Util;
+namespace OpenCFP\Test\Integration;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Test\BaseTestCase;
 use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -36,11 +37,13 @@ class MigrationsTest extends BaseTestCase
     }
 
     /**
-     * @group sentry
      * @test
      */
     public function oldUsersGetActivated()
     {
+        if(! $this->app[AccountManagement::class] instanceof SentryAccountManagement) {
+            $this->markTestSkipped();
+        }
         $capsule = $this->getCapsule();
         $this->migrateTo('20171120102354');
         //We are now at the migration before the users get activated
@@ -60,11 +63,13 @@ class MigrationsTest extends BaseTestCase
     }
 
     /**
-     * @group sentry
      * @test
      */
     public function adminsGetPromoted()
     {
+        if(! $this->app[AccountManagement::class] instanceof SentryAccountManagement) {
+            $this->markTestSkipped();
+        }
         $capsule = $this->getCapsule();
         $this->migrateTo('20171120122725');
         //We are now at the migration before the roles get done.
