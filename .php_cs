@@ -34,6 +34,7 @@ $config = PhpCsFixer\Config::create()
         'no_multiline_whitespace_before_semicolons' => true,
         'no_trailing_comma_in_singleline_array' => true,
         'no_unused_imports' => true,
+        'no_useless_else' => true,
         'ordered_imports' => true,
         'phpdoc_align' => true,
         'phpdoc_indent' => true,

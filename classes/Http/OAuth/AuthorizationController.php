@@ -86,16 +86,16 @@ class AuthorizationController extends ApiController
                 ->newAuthorizeRequest('user', $user->id, $authParams);
 
             return $this->setStatusCode(Response::HTTP_FOUND)->respond('', ['Location' => $redirectUri]);
-        } else {
-            $error = new AccessDeniedException;
-
-            $redirectUri = RedirectUri::make($authParams['redirect_uri'], [
-                'error'   => $error->errorType,
-                'message' => $error->getMessage(),
-            ]);
-
-            return $this->setStatusCode(Response::HTTP_FOUND)->respond('', ['Location' => $redirectUri]);
         }
+
+        $error = new AccessDeniedException;
+
+        $redirectUri = RedirectUri::make($authParams['redirect_uri'], [
+            'error'   => $error->errorType,
+            'message' => $error->getMessage(),
+        ]);
+
+        return $this->setStatusCode(Response::HTTP_FOUND)->respond('', ['Location' => $redirectUri]);
     }
 
     /**
