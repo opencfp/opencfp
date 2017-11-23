@@ -22,6 +22,7 @@ $config = PhpCsFixer\Config::create()
             'spacing' => 'one',
         ],
         'function_to_constant' => true,
+        'function_typehint_space' => true,
         'increment_style' => true,
         'is_null' => [
             'use_yoda_style' => false,

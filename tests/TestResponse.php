@@ -102,7 +102,7 @@ class TestResponse
         return $this;
     }
 
-    public function assertTargetURLContains(string$targetUrl): self
+    public function assertTargetURLContains(string $targetUrl): self
     {
         Assert::assertInstanceOf(RedirectResponse::class, $this->baseResponse);
         Assert::assertContains($targetUrl, $this->baseResponse->getTargetUrl());
