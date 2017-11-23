@@ -28,8 +28,6 @@ class AuthCodeStorage extends AbstractStorage implements AuthCodeInterface
 
             return $token;
         }
-
-        return;
     }
 
     public function create($token, $expireTime, $sessionId, $redirectUri)

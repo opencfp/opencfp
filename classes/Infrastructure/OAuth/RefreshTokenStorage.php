@@ -26,8 +26,6 @@ class RefreshTokenStorage extends AbstractStorage implements RefreshTokenInterfa
 
             return $token;
         }
-
-        return;
     }
 
     /**

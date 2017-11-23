@@ -30,8 +30,6 @@ class SessionStorage extends AbstractStorage implements SessionInterface
 
             return $session;
         }
-
-        return;
     }
 
     /**
@@ -52,8 +50,6 @@ class SessionStorage extends AbstractStorage implements SessionInterface
 
             return $session;
         }
-
-        return;
     }
 
     /**
