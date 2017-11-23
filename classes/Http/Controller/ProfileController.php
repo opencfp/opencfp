@@ -44,7 +44,7 @@ class ProfileController extends BaseController
             'buttonInfo'     => 'Update Profile',
         ];
 
-        return $this->render('user/edit.twig', $form_data) ;
+        return $this->render('user/edit.twig', $form_data);
     }
 
     public function processAction(Request $req)
