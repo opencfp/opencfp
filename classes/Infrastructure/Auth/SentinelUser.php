@@ -23,30 +23,20 @@ final class SentinelUser implements UserInterface
         $this->sentinel = $sentinel;
     }
 
-    /**
-     * Retrieves the user's Id
-     *
-     * @return int
-     */
     public function getId(): int
     {
         return $this->user->getUserId();
     }
 
-    /**
-     * Retrieves the users login (email)
-     *
-     * @return string
-     */
     public function getLogin(): string
     {
         return $this->user->getUserLogin();
     }
 
     /**
-     * @param $permissions
+     * @param string $permissions
      *
-     * @return mixed
+     * @return bool
      */
     public function hasAccess($permissions): bool
     {
@@ -62,13 +52,6 @@ final class SentinelUser implements UserInterface
         }
     }
 
-    /**
-     * Checks if the given matches the current password.
-     *
-     * @param string $password
-     *
-     * @return bool
-     */
     public function checkPassword(string $password): bool
     {
         return $this->sentinel
@@ -90,9 +73,8 @@ final class SentinelUser implements UserInterface
     }
 
     /**
-     * Get a reset password code for the given user.
-     *
-     * @return string
+     * Create a password reset code for the user, or reset it if it already exists
+     * This will NOT retrieve the code if it is already set, it will instead generate a new one and set that.
      */
     public function getResetPasswordCode(): string
     {

@@ -4,6 +4,7 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
 use Mockery as m;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
@@ -102,7 +103,7 @@ class SentinelIdentityProviderTest extends BaseTestCase
     }
 
     /**
-     * @return m\MockInterface|Users\UserInterface
+     * @return \Cartalyst\Sentinel\Users\UserInterface|m\MockInterface
      */
     private function getSentinelUserMock()
     {
@@ -118,10 +119,10 @@ class SentinelIdentityProviderTest extends BaseTestCase
     }
 
     /**
-     * @return m\MockInterface|Model\User
+     * @return m\MockInterface|User
      */
     private function getUserMock()
     {
-        return m::mock(Model\User::class);
+        return m::mock(User::class);
     }
 }

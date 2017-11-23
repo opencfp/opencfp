@@ -27,13 +27,11 @@ final class SentinelIdentityProvider implements IdentityProvider
     }
 
     /**
-     * Retrieves the currently authenticate user's username.
+     * Retrieves the currently authenticate user
      *
      * @throws NotAuthenticatedException
-     *
-     * @return User
      */
-    public function getCurrentUser()
+    public function getCurrentUser(): User
     {
         $user = $this->sentinel->getUser();
         if (!$user instanceof \Cartalyst\Sentinel\Users\UserInterface) {
