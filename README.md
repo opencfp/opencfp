@@ -13,6 +13,7 @@ Current release: v1.4.0
 ## README Contents
 
  * [Features](#features)
+ * [Screenshots](#screenshots)
  * [Contributing](#contributing)
  * [Requirements](#requirements)
  * [Installation](#installation)
@@ -41,6 +42,10 @@ Current release: v1.4.0
  * Dashboard that allows speakers to submit talk proposals and manage their profile.
  * Administrative dashboard for reviewing submitted talks and making selections.
  * Command-line utilities for administering the system.
+
+## [Screenshots](#screenshots)
+
+You can find screenshots of the application in our [wiki](https://github.com/opencfp/opencfp/wiki/Screenshots)
 
 
 ## [Contributing](#contributing)
