@@ -6,7 +6,7 @@ class ValidationException extends \Exception
 {
     private $errors;
 
-    public static function withErrors(array $errors = [])
+    public static function withErrors(array $errors = []): self
     {
         $instance         = new static('There was an error.');
         $instance->errors = $errors;
@@ -14,7 +14,7 @@ class ValidationException extends \Exception
         return $instance;
     }
 
-    public function errors()
+    public function errors(): array
     {
         return $this->errors;
     }
