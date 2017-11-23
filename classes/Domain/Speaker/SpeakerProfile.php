@@ -39,7 +39,7 @@ class SpeakerProfile
 
     private function assertAllowedToSee(string $property)
     {
-        if (! $this->isAllowedToSee($property)) {
+        if (!$this->isAllowedToSee($property)) {
             throw NotAllowedException::notAllowedToView($property);
         }
     }

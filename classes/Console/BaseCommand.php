@@ -65,7 +65,7 @@ abstract class BaseCommand extends Command
             return 1;
         }
 
-        if (! $user->hasAccess(\strtolower($role))) {
+        if (!$user->hasAccess(\strtolower($role))) {
             $io->error(sprintf(
                 'Account with email %s is not in the Reviewer group.',
                 $email

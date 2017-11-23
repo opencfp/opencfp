@@ -30,7 +30,7 @@ class CallForProposal
      */
     public function isOpen(\DateTimeInterface $currentTime = null): bool
     {
-        if (! $currentTime) {
+        if (!$currentTime) {
             $currentTime = new \DateTimeImmutable('now');
         }
 

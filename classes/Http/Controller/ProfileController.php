@@ -132,7 +132,7 @@ class ProfileController extends BaseController
         $sanitized_data = $form->getCleanData();
         $reset_code     = $user->getResetPasswordCode();
 
-        if (! $user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
+        if (!$user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',

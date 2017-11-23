@@ -83,11 +83,11 @@ class User extends Eloquent
         $this->talks()
             ->get()
             ->each(function ($talk) {
-                if (! $talk->delete()) {
+                if (!$talk->delete()) {
                     throw new \Exception('Unable to delete talks of user');
                 }
             });
-        if (! parent::delete()) {
+        if (!parent::delete()) {
             throw new \Exception('Unable to delete User');
         }
 

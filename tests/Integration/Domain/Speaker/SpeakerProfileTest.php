@@ -33,7 +33,7 @@ class SpeakerProfileTest extends BaseTestCase
     public function testNeedsProfileReturnsCorrectly()
     {
         //if the user needs a profile they haven't made one, hence the !
-        $this->assertSame(! self::$user->has_made_profile, self::$profile->needsProfile());
+        $this->assertSame(!self::$user->has_made_profile, self::$profile->needsProfile());
     }
 
     public function testGetNameReturnsFirstAndLastNameCombined()

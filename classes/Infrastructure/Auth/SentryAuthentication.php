@@ -78,7 +78,7 @@ class SentryAuthentication implements Authentication
      */
     public function guest(): bool
     {
-        return ! $this->check();
+        return !$this->check();
     }
 
     /**

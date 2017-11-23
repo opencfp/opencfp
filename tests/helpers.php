@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Factory;
 
-if (! function_exists('factory')) {
+if (!function_exists('factory')) {
     /**
      * Create a model factory builder for a given class, name, and amount.
      *

@@ -28,7 +28,7 @@ class Environment
             self::TYPE_TESTING,
         ];
 
-        if (! in_array($type, $types)) {
+        if (!in_array($type, $types)) {
             throw new \InvalidArgumentException(sprintf(
                 'Environment needs to be one of "%s"; got "%s" instead.',
                 implode('", "', $types),

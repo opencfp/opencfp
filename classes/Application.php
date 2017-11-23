@@ -160,7 +160,7 @@ class Application extends SilexApplication
             $this['config'] = $driver->load($config);
         }
 
-        if (! $this['env']->isProduction()) {
+        if (!$this['env']->isProduction()) {
             $this['debug'] = true;
         }
     }
@@ -177,7 +177,7 @@ class Application extends SilexApplication
         $cursor = $this['config'];
 
         foreach (explode('.', $path) as $part) {
-            if (! isset($cursor[$part])) {
+            if (!isset($cursor[$part])) {
                 return null;
             }
 
