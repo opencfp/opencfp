@@ -33,6 +33,7 @@ $config = PhpCsFixer\Config::create()
         'no_empty_phpdoc' => true,
         'no_extra_consecutive_blank_lines' => true,
         'no_multiline_whitespace_before_semicolons' => true,
+        'no_singleline_whitespace_before_semicolons' => true,
         'no_trailing_comma_in_singleline_array' => true,
         'no_unused_imports' => true,
         'no_useless_else' => true,
