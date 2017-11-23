@@ -6,6 +6,7 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
+use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
@@ -26,7 +27,7 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
         $output = $this->createOutputInterface();
 
         $accounts = Mockery::mock(AccountManagement::class);
-        $accounts->shouldReceive('findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException());
+        $accounts->shouldReceive('findByLogin')->andThrow(new UserExistsException());
         $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app[AccountManagement::class] = $accounts;
 
