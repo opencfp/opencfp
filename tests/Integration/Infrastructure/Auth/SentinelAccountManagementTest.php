@@ -3,7 +3,7 @@
 namespace OpenCFP\Test\Integration\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
-use Cartalyst\Sentry\Users\Eloquent\User;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
