@@ -13,7 +13,6 @@ Current release: v1.4.0
 ## README Contents
 
  * [Features](#features)
- * [Screenshots](#screenshots)
  * [Contributing](#contributing)
  * [Requirements](#requirements)
  * [Installation](#installation)
@@ -42,17 +41,6 @@ Current release: v1.4.0
  * Dashboard that allows speakers to submit talk proposals and manage their profile.
  * Administrative dashboard for reviewing submitted talks and making selections.
  * Command-line utilities for administering the system.
-
-
-## [Screenshots](#screenshots)
-![Front page](http://i.imgur.com/GDhX1lD.png)
-![Login screen](http://i.imgur.com/VfNNch9.png)
-![Speaker page](http://i.imgur.com/uw1qmbS.png)
-![Talk page](http://i.imgur.com/pSreRoM.png)
-![Admin area](http://i.imgur.com/1Vmnwbv.png)
-![Admin talk review](http://i.imgur.com/3IRXDMg.png)
-![Admin speaker details](http://i.imgur.com/3oSXzGQ.png)
-![Admin talks dashboard](http://i.imgur.com/6Uu0OZu.png)
 
 
 ## [Contributing](#contributing)
