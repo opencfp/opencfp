@@ -1,0 +1,60 @@
+<?php
+
+namespace OpenCFP\Test\Unit\Domain\Services\TalkRating;
+
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use OpenCFP\Domain\Model\TalkMeta;
+use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\TalkRating\OneToTenRating;
+
+/**
+ * @covers \OpenCFP\Domain\Services\TalkRating\OneToTenRating
+ */
+class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
+{
+    use MockeryPHPUnitIntegration;
+
+    /**
+     * @dataProvider ratingProvider
+     */
+    public function testValidRatings($rating, $valid)
+    {
+        $mockAuth = Mockery::mock(Authentication::class);
+        $mockAuth->shouldReceive('userId');
+        $metaMock    = Mockery::mock(TalkMeta::class);
+        $oneToTen    = new OneToTenRating($metaMock, $mockAuth);
+        $this->assertSame($valid, $oneToTen->isValidRating($rating));
+    }
+
+    public function testGetRatingNameReturnsOneToTen()
+    {
+        $mockAuth = Mockery::mock(Authentication::class);
+        $mockAuth->shouldReceive('userId');
+        $metaMock    = Mockery::mock(TalkMeta::class);
+        $oneToTen    = new OneToTenRating($metaMock, $mockAuth);
+        $this->assertSame('onetoten', $oneToTen->getRatingName());
+    }
+
+    public function ratingProvider()
+    {
+        return [
+            [-1, false],
+            [0, true],
+            [1, true],
+            [5, true],
+            [10, true],
+            [11, false],
+            [9, true],
+            [true, true], //True becomes 1 when converted to an int, so this is allowed
+            [false, true], //False becomes 0 when converted to an int, so this is allowed
+            [PHP_INT_MAX, false],
+            ['7', true],
+            [-0, true],
+            ['-0', true],
+            ['-1', false],
+            ['10', true],
+            ['-10', false],
+        ];
+    }
+}
