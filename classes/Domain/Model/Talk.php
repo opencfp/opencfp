@@ -184,7 +184,7 @@ class Talk extends Eloquent
      */
     public function getMetaFor(int $userId, bool $willCreate = false)
     {
-        return $willCreate ? $this->getOrCreateMeta($userId): $this->getOrFailMeta($userId);
+        return $willCreate ? $this->getOrCreateMeta($userId) : $this->getOrFailMeta($userId);
     }
 
     private function getOrCreateMeta(int $userId)
