@@ -4,13 +4,10 @@ namespace OpenCFP\Domain\Services\TalkRating;
 
 interface TalkRatingStrategy
 {
-    public function isValidRating($rating): bool;
+    public function isValidRating(int $rating): bool;
 
     /**
-     * @param int $talkId
-     * @param $rating
-     *
      * @throws TalkRatingException
      */
-    public function rate(int $talkId, $rating);
+    public function rate(int $talkId, int $rating);
 }

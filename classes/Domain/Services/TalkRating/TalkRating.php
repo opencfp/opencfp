@@ -8,7 +8,14 @@ use OpenCFP\Domain\Services\Authentication;
 
 abstract class TalkRating implements TalkRatingStrategy
 {
+    /**
+     * @var int
+     */
     protected $adminId;
+
+    /**
+     * @var TalkMeta
+     */
     protected $meta;
 
     public function __construct(TalkMeta $meta, Authentication $auth)
@@ -17,11 +24,15 @@ abstract class TalkRating implements TalkRatingStrategy
         $this->meta    = $meta;
     }
 
-    /**
-     * @param int $talkId
-     * @param $rating
-     */
-    protected function saveRating(int $talkId, $rating)
+    final public function rate(int $talkId, int $rating)
+    {
+        if (!$this->isValidRating($rating)) {
+            throw TalkRatingException::invalidRating($rating);
+        }
+        $this->saveRating($talkId, $rating);
+    }
+
+    private function saveRating(int $talkId, int $rating)
     {
         $meta         = $this->fetchMetaInfo($talkId);
         $meta->rating = $rating;
