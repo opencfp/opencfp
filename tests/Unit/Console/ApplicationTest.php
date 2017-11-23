@@ -8,6 +8,7 @@ use OpenCFP\Console\Application;
 use OpenCFP\Console\Command;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
+use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\Console;
 
@@ -88,13 +89,13 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $output = $this->createOutputInterface();
 
         /**
-         * Create a Sentry mock that throws our expected exception and then
+         * Create an AccountManagement mock that throws our expected exception and then
          * add it to our Application mock
          */
-        $sentry = Mockery::mock(\Cartalyst\Sentry\Sentry::class);
-        $sentry->shouldReceive('getUserProvider->findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException());
-        $app           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $app['sentry'] = $sentry;
+        $accounts = Mockery::mock(AccountManagement::class);
+        $accounts->shouldReceive('findByLogin')->andThrow(UserExistsException::class);
+        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app[AccountManagement::class] = $accounts;
 
         // Create our command object and inject our application
         $command = new \OpenCFP\Console\Command\AdminDemoteCommand();
@@ -113,13 +114,12 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
          * Create a mock Sentry object that returns a user that is in the
          * system but does not have admin access
          */
-        $user = Mockery::mock(\stdClass::class);
+        $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $sentry = Mockery::mock(\Cartalyst\Sentry\Sentry::class);
-        $sentry->shouldReceive('getUserProvider->findByLogin')
-            ->andReturn($user);
-        $app           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
-        $app['sentry'] = $sentry;
+        $accounts = Mockery::mock(AccountManagement::class);
+        $accounts->shouldReceive('findByLogin')->andReturn($user);
+        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app[AccountManagement::class] = $accounts;
 
         // Create our command object and inject our application
         $command = new \OpenCFP\Console\Command\AdminDemoteCommand();
