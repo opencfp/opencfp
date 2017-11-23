@@ -23,7 +23,7 @@ class SignupController extends BaseController
 
         $cfp = $this->service('callforproposal');
 
-        if (! $cfp->isOpen()) {
+        if (!$cfp->isOpen()) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
