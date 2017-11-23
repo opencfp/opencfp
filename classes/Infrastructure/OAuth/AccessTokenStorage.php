@@ -26,8 +26,6 @@ class AccessTokenStorage extends AbstractStorage implements AccessTokenInterface
 
             return $token;
         }
-
-        return;
     }
 
     /**
