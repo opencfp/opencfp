@@ -21,6 +21,7 @@ $config = PhpCsFixer\Config::create()
         'concat_space' => [
             'spacing' => 'one',
         ],
+        'function_to_constant' => true,
         'increment_style' => true,
         'is_null' => [
             'use_yoda_style' => false,
