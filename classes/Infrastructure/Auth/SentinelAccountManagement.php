@@ -17,6 +17,13 @@ final class SentinelAccountManagement implements AccountManagement
         $this->sentinel = $sentinel;
     }
 
+    /**
+     * @param int $userId
+     *
+     * @throws UserNotFoundException
+     *
+     * @return UserInterface
+     */
     public function findById($userId): UserInterface
     {
         $user = $this->sentinel->getUserRepository()->findById($userId);
@@ -28,6 +35,13 @@ final class SentinelAccountManagement implements AccountManagement
         throw new UserNotFoundException($userId);
     }
 
+    /**
+     * @param string $email
+     *
+     * @throws UserNotFoundException
+     *
+     * @return UserInterface
+     */
     public function findByLogin($email): UserInterface
     {
         $user = $this->sentinel->getUserRepository()->findByCredentials(['email' => $email]);
@@ -55,6 +69,13 @@ final class SentinelAccountManagement implements AccountManagement
         throw new UserExistsException();
     }
 
+    /**
+     * @param string $email
+     *
+     * @throws UserNotFoundException
+     *
+     * @return bool
+     */
     public function activate($email): bool
     {
         $user           = $this->findByLogin($email)->getUser();
