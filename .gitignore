@@ -10,6 +10,7 @@
 .DS_Store
 opencfp.iml
 .buildpath
+.php_cs
 .php_cs.cache
 .project
 .settings
