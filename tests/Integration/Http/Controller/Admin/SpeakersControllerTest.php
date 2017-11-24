@@ -87,9 +87,11 @@ class SpeakersControllerTest extends WebTestCase
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findById')->andReturn($user);
         $this->swap(AccountManagement::class, $accounts);
-
+        $csrfToken = $this->app['csrf.token_manager']
+            ->getToken('admin_speaker_promote')
+            ->getValue();
         $this->asAdmin()
-            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin'])
+            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => $csrfToken])
             ->assertFlashContains('User already is in the Admin group.')
             ->assertRedirect()
             ->assertTargetURLContains('admin/speakers');
@@ -100,9 +102,23 @@ class SpeakersControllerTest extends WebTestCase
      */
     public function promoteActionWorksCorrectly()
     {
+        $csrfToken = $this->app['csrf.token_manager']
+            ->getToken('admin_speaker_promote')
+            ->getValue();
         $this->asAdmin()
-            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin'])
+            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => $csrfToken])
             ->assertFlashContains('success')
+            ->assertRedirect()
+            ->assertTargetURLContains('admin/speakers');
+    }
+
+    /**
+     * @test
+     */
+    public function promoteActionFailsOnBadToken()
+    {
+        $this->asAdmin()
+            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => uniqid()])
             ->assertRedirect()
             ->assertTargetURLContains('admin/speakers');
     }
@@ -112,8 +128,11 @@ class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionFailsIfUserNotFound()
     {
+        $csrfToken = $this->app['csrf.token_manager']
+            ->getToken('admin_speaker_demote')
+            ->getValue();
         $this->asAdmin()
-            ->get('/admin/speakers/7679/demote', ['role' => 'Admin'])
+            ->get('/admin/speakers/7679/demote', ['role' => 'Admin', 'token' => $csrfToken])
             ->assertFlashContains('We were unable to remove the Admin. Please try again.')
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
@@ -124,10 +143,12 @@ class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionFailsIfDemotingSelf()
     {
-        $user = self::$users->last();
-
+        $user      = self::$users->last();
+        $csrfToken = $this->app['csrf.token_manager']
+            ->getToken('admin_speaker_demote')
+            ->getValue();
         $this->asAdmin($user->id)
-            ->get('/admin/speakers/' . $user->id . '/demote', ['role' => 'Admin'])
+            ->get('/admin/speakers/' . $user->id . '/demote', ['role' => 'Admin', 'token' => $csrfToken])
             ->assertFlashContains('Sorry, you cannot remove yourself as Admin.')
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
@@ -147,10 +168,23 @@ class SpeakersControllerTest extends WebTestCase
         $accounts->shouldReceive('findById')->andReturn($user);
         $accounts->shouldReceive('demoteFrom');
         $this->swap(AccountManagement::class, $accounts);
-
+        $csrfToken = $this->app['csrf.token_manager']
+            ->getToken('admin_speaker_demote')
+            ->getValue();
         $this->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin'])
+            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin', 'token' => $csrfToken])
             ->assertFlashContains('success')
+            ->assertRedirect()
+            ->assertTargetURLContains('/admin/speakers');
+    }
+
+    /**
+     * @test
+     */
+    public function demoteActionFailsWithBadToken()
+    {
+        $this->asAdmin(self::$users->first()->id)
+            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin', 'token' => uniqid()])
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
     }

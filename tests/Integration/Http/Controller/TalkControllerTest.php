@@ -143,8 +143,11 @@ class TalkControllerTest extends WebTestCase
      */
     public function seeEditPageWhenAllowed()
     {
+        $csrfToken = $this->app['csrf.token_manager']
+            ->getToken('edit_talk')
+            ->getValue();
         $this->asLoggedInSpeaker(self::$user->id)
-            ->get('/talk/edit/' . self::$talk->id)
+            ->get('/talk/edit/' . self::$talk->id . '?token=' . $csrfToken)
             ->assertSee(self::$talk->title)
             ->assertSee('Edit Your Talk')
             ->assertSuccessful();
@@ -206,12 +209,35 @@ class TalkControllerTest extends WebTestCase
      */
     public function cantProcessCreateTalkWithMissingData()
     {
+        $csrfToken = $this->app['csrf.token_manager']
+            ->getToken('speaker_talk')
+            ->getValue();
+        $postData = [
+            'description' => 'Talk Description',
+            '_token'      => $csrfToken,
+        ];
         $this->asLoggedInSpeaker()
             ->callForPapersIsOpen()
-            ->post('/talk/create', ['description' => 'Talk Description'])
+            ->post('/talk/create', $postData)
             ->assertSuccessful()
             ->assertSee('Create Your Talk')
             ->assertFlashContains('Error');
+    }
+
+    /**
+     * @test
+     */
+    public function processCreateTalkFailsWithBadToken()
+    {
+        $postData = [
+            'description' => 'Talk Description',
+            '_token'      => uniqid(),
+        ];
+        $this->asLoggedInSpeaker()
+            ->callForPapersIsOpen()
+            ->post('/talk/create', $postData)
+            ->assertRedirect()
+            ->assertTargetURLContains('/dashboard');
     }
 
     /**
@@ -231,10 +257,33 @@ class TalkControllerTest extends WebTestCase
      */
     public function cantUpdateActionWithInvalidData()
     {
+        $csrfToken = $this->app['csrf.token_manager']
+            ->getToken('speaker_talk')
+            ->getValue();
+        $postData = [
+            'id'     => 2,
+            '_token' => $csrfToken,
+        ];
         $this->asLoggedInSpeaker()
             ->callForPapersIsOpen()
-            ->post('/talk/update', ['id' => 2])
+            ->post('/talk/update', $postData)
             ->assertFlashContains('Error')
             ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function cantUpdateActionWithBadToken()
+    {
+        $postData = [
+            'id'     => 2,
+            '_token' => uniqid(),
+        ];
+        $this->asLoggedInSpeaker()
+            ->callForPapersIsOpen()
+            ->post('/talk/update', $postData)
+            ->assertRedirect()
+            ->assertTargetURLContains('/dashboard');
     }
 }
