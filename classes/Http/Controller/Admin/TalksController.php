@@ -15,6 +15,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
+use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\ValidationException;
@@ -50,6 +51,7 @@ class TalksController extends BaseController
         $templateData = [
             'pagination'   => $pagination,
             'talks'        => $pagerfanta->getFanta(),
+            'ratingsystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
             'page'         => $pagerfanta->getCurrentPage(),
             'current_page' => $req->getRequestUri(),
             'totalRecords' => \count($formattedTalks),
@@ -77,8 +79,12 @@ class TalksController extends BaseController
 
             return $this->app->redirect($this->url('admin_talks'));
         }
+        $data = [
+            'talk' => $handler->getProfile(),
+            'ratingsystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
+            ];
 
-        return $this->render('admin/talks/view.twig', ['talk' => $handler->getProfile()]);
+        return $this->render('admin/talks/view.twig', $data);
     }
 
     public function rateAction(Request $req)
