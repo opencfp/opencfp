@@ -188,4 +188,15 @@ class SpeakersControllerTest extends WebTestCase
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
     }
+
+    /**
+     * @test
+     */
+    public function deleteActionFailsWithBadToken()
+    {
+        $this->asAdmin(self::$users->first()->id)
+            ->get('/admin/speakers/delete/' . self::$users->last()->id . '?token=' . uniqid())
+            ->assertRedirect()
+            ->assertTargetURLContains('/admin/speakers');
+    }
 }
