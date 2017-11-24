@@ -2,45 +2,47 @@
 
 namespace OpenCFP\Test\Unit\Domain\Services\TalkRating;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery as m;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 
 /**
  * @covers \OpenCFP\Domain\Services\TalkRating\YesNoRating
  */
-class YesNoRatingTest extends MockeryTestCase
+class YesNoRatingTest extends \PHPUnit\Framework\TestCase
 {
-    public function testRateThrowsExceptionOnInvalidRating()
+    use MockeryPHPUnitIntegration;
+
+    /**
+     * @dataProvider ratingProvider
+     */
+    public function testValidRatings($rating, $valid)
     {
-        $mockAuth = m::mock(Authentication::class);
-        $metaMock = m::mock(TalkMeta::class);
-        $mockAuth->shouldReceive('userId')->andReturn(1);
-
-        $sut = new YesNoRating($metaMock, $mockAuth);
-
-        $this->expectException(TalkRatingException::class);
-        $this->expectExceptionMessage('Invalid talk rating: 9001');
-
-        $sut->rate(7, 9001);
+        $mockAuth = Mockery::mock(Authentication::class);
+        $mockAuth->shouldReceive('userId');
+        $metaMock = Mockery::mock(TalkMeta::class);
+        $yesno    = new YesNoRating($metaMock, $mockAuth);
+        $this->assertSame($valid, $yesno->isValidRating($rating));
     }
 
-    public function testRate()
+    public function ratingProvider(): array
     {
-        $mockAuth = m::mock(Authentication::class);
-        $mockAuth->shouldReceive('userId')->andReturn(1);
-
-        $metaMock = m::mock(TalkMeta::class)->makePartial();
-        $metaMock->shouldReceive('firstOrCreate')->andReturnSelf();
-        $metaMock->shouldReceive('save')->andReturnSelf();
-
-        $sut = new YesNoRating($metaMock, $mockAuth);
-
-        $sut->rate(7, 1);
-
-        $this->assertEquals(1, $metaMock->rating);
+        return [
+            [-1, true],
+            [0, true],
+            [1, true],
+            [2, false],
+            [-2, false],
+            [10, false],
+            [PHP_INT_MAX, false],
+            ['3', false],
+            ['-1', true],
+            ['0',true],
+            ['1', true],
+            [-0, true],
+            ['-0', true],
+        ];
     }
 }
