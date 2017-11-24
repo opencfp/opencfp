@@ -43,16 +43,9 @@ Current release: v1.4.0
  * Administrative dashboard for reviewing submitted talks and making selections.
  * Command-line utilities for administering the system.
 
-
 ## [Screenshots](#screenshots)
-![Front page](http://i.imgur.com/GDhX1lD.png)
-![Login screen](http://i.imgur.com/VfNNch9.png)
-![Speaker page](http://i.imgur.com/uw1qmbS.png)
-![Talk page](http://i.imgur.com/pSreRoM.png)
-![Admin area](http://i.imgur.com/1Vmnwbv.png)
-![Admin talk review](http://i.imgur.com/3IRXDMg.png)
-![Admin speaker details](http://i.imgur.com/3oSXzGQ.png)
-![Admin talks dashboard](http://i.imgur.com/6Uu0OZu.png)
+
+You can find screenshots of the application in our [wiki](https://github.com/opencfp/opencfp/wiki/Screenshots)
 
 
 ## [Contributing](#contributing)
