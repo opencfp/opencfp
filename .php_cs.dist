@@ -4,7 +4,7 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('migrations')
     ->in(__DIR__);
 
-$config = PhpCsFixer\Config::create()
+return PhpCsFixer\Config::create()
     ->setUsingCache(true)
     ->setRiskyAllowed(true)
     ->setRules([
@@ -66,9 +66,3 @@ $config = PhpCsFixer\Config::create()
         ],
     ])
     ->setFinder($finder);
-
-if (getenv('TRAVIS')) {
-    $config->setCacheFile(getenv('HOME') . '/.php-cs-fixer/.php_cs.cache');
-}
-
-return $config;
