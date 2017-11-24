@@ -22,12 +22,12 @@ abstract class TalkRating implements TalkRatingStrategy
     /**
      * @var int
      */
-    protected $adminId;
+    private $adminId;
 
     /**
      * @var TalkMeta
      */
-    protected $meta;
+    private $meta;
 
     public function __construct(TalkMeta $meta, Authentication $auth)
     {

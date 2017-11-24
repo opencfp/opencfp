@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Services\TalkRating;
 
-class TalkRatingException extends \RuntimeException
+final class TalkRatingException extends \RuntimeException
 {
     public static function invalidRating($rating): self
     {
