@@ -156,6 +156,17 @@ class TalkControllerTest extends WebTestCase
     /**
      * @test
      */
+    public function cannotEditTalkWithBadToken()
+    {
+        $this->asLoggedInSpeaker(self::$user->id)
+            ->get('/talk/edit/' . self::$talk->id . '?token=' . uniqid())
+            ->assertRedirect()
+            ->assertTargetURLContains('/dashboard');
+    }
+
+    /**
+     * @test
+     */
     public function notAllowedToDeleteAfterCFPIsOver()
     {
         $this->asLoggedInSpeaker(self::$user->id)
