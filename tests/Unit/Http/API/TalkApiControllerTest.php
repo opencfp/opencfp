@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversNothing \OpenCFP\Http\API\TalkController
+ * @covers \OpenCFP\Http\API\TalkController
  */
 class TalkApiControllerTest extends \PHPUnit\Framework\TestCase
 {
