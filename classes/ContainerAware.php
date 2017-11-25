@@ -14,7 +14,7 @@ trait ContainerAware
         $this->app = $application;
     }
 
-    protected function service($slug)
+    protected function service(string $slug)
     {
         return $this->app[$slug];
     }
