@@ -47,6 +47,8 @@
                     crossorigin="anonymous"></script>
         {% endblock %}
 
+        {% if app.config.application.show_contrib_banner %}
         {% include "_forkme.twig" %}
+        {% endif %}
     </body>
 </html>

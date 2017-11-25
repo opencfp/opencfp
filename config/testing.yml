@@ -13,7 +13,7 @@ application:
   online_conference: false
   date_format: m-d-Y
   coc_link: http://confcodeofconduct.com
-
+  show_contrib_banner: true
 
 api:
   enabled: true
