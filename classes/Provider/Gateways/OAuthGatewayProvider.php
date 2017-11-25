@@ -25,8 +25,8 @@ class OAuthGatewayProvider implements ServiceProviderInterface, BootableProvider
             $server->setScopeStorage(new ScopeStorage());
             $server->setAuthCodeStorage(new AuthCodeStorage());
 
-            $server->addGrantType(new AuthCodeGrant);
-            $server->addGrantType(new RefreshTokenGrant);
+            $server->addGrantType(new AuthCodeGrant());
+            $server->addGrantType(new RefreshTokenGrant());
 
             /* @var Locator $spot */
             $spot = $app['spot'];

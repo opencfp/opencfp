@@ -27,7 +27,7 @@ class TwigServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $c)
     {
-        $c->register(new SilexTwigServiceProvider, [
+        $c->register(new SilexTwigServiceProvider(), [
             'twig.path'    => $this->app['path']->templatesPath(),
             'twig.options' => [
                 'debug' => !$this->app['env']->isProduction(),
@@ -37,7 +37,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 
         $c->extend('twig', function (Twig_Environment $twig, Application $app) {
             if (!$app['env']->isProduction()) {
-                $twig->addExtension(new Twig_Extension_Debug);
+                $twig->addExtension(new Twig_Extension_Debug());
             }
 
             $twig->addFunction(new Twig_SimpleFunction('uploads', function ($path) {

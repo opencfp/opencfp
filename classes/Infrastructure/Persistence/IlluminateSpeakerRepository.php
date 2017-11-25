@@ -33,7 +33,7 @@ class IlluminateSpeakerRepository implements SpeakerRepository
         try {
             $speaker = $this->userModel->findOrFail($speakerId);
         } catch (ModelNotFoundException $e) {
-            throw new EntityNotFoundException;
+            throw new EntityNotFoundException();
         }
 
         return $speaker;

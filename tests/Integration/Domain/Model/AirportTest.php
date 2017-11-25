@@ -45,6 +45,6 @@ class AirportTest extends BaseTestCase
 
     private function getAirport(): Airport
     {
-        return new Airport;
+        return new Airport();
     }
 }

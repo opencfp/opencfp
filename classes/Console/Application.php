@@ -39,14 +39,14 @@ class Application extends ConsoleApplication
     public function getDefaultCommands()
     {
         return [
-            new HelpCommand,
-            new ListCommand,
-            new AdminPromoteCommand,
-            new AdminDemoteCommand,
-            new ReviewerPromoteCommand,
-            new ReviewerDemoteCommand,
-            new UserCreateCommand,
-            new ClearCacheCommand,
+            new HelpCommand(),
+            new ListCommand(),
+            new AdminPromoteCommand(),
+            new AdminDemoteCommand(),
+            new ReviewerPromoteCommand(),
+            new ReviewerDemoteCommand(),
+            new UserCreateCommand(),
+            new ClearCacheCommand(),
         ];
     }
 

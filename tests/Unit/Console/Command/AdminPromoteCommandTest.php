@@ -26,7 +26,7 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
         $output = $this->createOutputInterface();
 
         $accounts = Mockery::mock(AccountManagement::class);
-        $accounts->shouldReceive('findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException);
+        $accounts->shouldReceive('findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException());
         $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app[AccountManagement::class] = $accounts;
 
