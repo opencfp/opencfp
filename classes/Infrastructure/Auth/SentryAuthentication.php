@@ -9,7 +9,6 @@ use OpenCFP\Domain\Services\NotAuthenticatedException;
 
 class SentryAuthentication implements Authentication
 {
-
     /**
      * @var Sentry
      */
