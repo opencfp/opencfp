@@ -9,6 +9,8 @@ use OpenCFP\Environment;
 use OpenCFP\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use OpenCFP\Application as ApplicationContainer;
+use OpenCFP\Console\Command;
+use OpenCFP\Domain\Services;
 
 $basePath = realpath(dirname(__DIR__));
 $input = new ArgvInput();
@@ -16,6 +18,10 @@ $environment = $input->getParameterOption(array('--env'), getenv('CFP_ENV') ?: '
 
 $container = new ApplicationContainer($basePath, Environment::fromString($environment));
 $app = new Application($container);
+
+$app->addCommands([
+    new Command\UserCreateCommand($container[Services\AccountManagement::class]),
+]);
 $status = $app->run($input);
 
 exit($status);
