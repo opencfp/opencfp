@@ -48,7 +48,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app[Capsule::class] = function ($app) {
-            $capsule = new Capsule;
+            $capsule = new Capsule();
 
             $capsule->addConnection([
                 'driver'    => 'mysql',
@@ -80,7 +80,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         };
 
         $app[AirportInformationDatabase::class] = function ($app) {
-            return new Airport;
+            return new Airport();
         };
 
         $app['security.random'] = function () {

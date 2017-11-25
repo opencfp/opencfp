@@ -71,12 +71,12 @@ class Speakers
 
         // If it can't grab by relation, it's likely not their talk.
         if (!$talk instanceof Talk) {
-            throw new NotAuthorizedException;
+            throw new NotAuthorizedException();
         }
 
         // Do an explicit check of ownership because why not.
         if ((int) $talk->user_id !== (int) $speaker->id) {
-            throw new NotAuthorizedException;
+            throw new NotAuthorizedException();
         }
 
         return $talk;

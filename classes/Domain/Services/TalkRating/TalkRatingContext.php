@@ -12,9 +12,9 @@ class TalkRatingContext
         $strategy = strtolower($strategy);
         switch ($strategy) {
             case 'yesno':
-                return new YesNoRating(new TalkMeta, $auth);
+                return new YesNoRating(new TalkMeta(), $auth);
             default:
-                return new YesNoRating(new TalkMeta, $auth);
+                return new YesNoRating(new TalkMeta(), $auth);
         }
     }
 }

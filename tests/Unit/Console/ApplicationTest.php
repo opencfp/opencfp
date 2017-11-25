@@ -93,7 +93,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
          * add it to our Application mock
          */
         $sentry = Mockery::mock(\Cartalyst\Sentry\Sentry::class);
-        $sentry->shouldReceive('getUserProvider->findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException);
+        $sentry->shouldReceive('getUserProvider->findByLogin')->andThrow(new \Cartalyst\Sentry\Users\UserNotFoundException());
         $app           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
         $app['sentry'] = $sentry;
 

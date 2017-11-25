@@ -28,7 +28,7 @@ class TalkFormatterTest extends BaseTestCase
      */
     public function createFormattedOutputWorksWithNoMeta()
     {
-        $talk      = new Talk;
+        $talk      = new Talk();
         $formatter = new TalkFormatter();
 
         $format =$formatter->createdFormattedOutput($talk->first(), 1);
@@ -45,7 +45,7 @@ class TalkFormatterTest extends BaseTestCase
     public function createFormattedOutputWorksWithMeta()
     {
         $formatter = new TalkFormatter();
-        $talk      = new Talk;
+        $talk      = new Talk();
 
         // Now to see if the meta gets put in correctly
         $secondFormat =$formatter->createdFormattedOutput($talk->first(), 2);

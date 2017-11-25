@@ -57,26 +57,26 @@ class Application extends SilexApplication
         }
 
         // Register Gateways...
-        $this->register(new WebGatewayProvider);
-        $this->register(new ApiGatewayProvider);
-        $this->register(new OAuthGatewayProvider);
+        $this->register(new WebGatewayProvider());
+        $this->register(new ApiGatewayProvider());
+        $this->register(new OAuthGatewayProvider());
 
         // Services...
-        $this->register(new SessionServiceProvider);
-        $this->register(new FormServiceProvider);
-        $this->register(new CsrfServiceProvider);
-        $this->register(new ControllerResolverServiceProvider);
-        $this->register(new ValidatorServiceProvider);
-        $this->register(new LocaleServiceProvider);
-        $this->register(new TranslationServiceProvider);
-        $this->register(new MonologServiceProvider, [
+        $this->register(new SessionServiceProvider());
+        $this->register(new FormServiceProvider());
+        $this->register(new CsrfServiceProvider());
+        $this->register(new ControllerResolverServiceProvider());
+        $this->register(new ValidatorServiceProvider());
+        $this->register(new LocaleServiceProvider());
+        $this->register(new TranslationServiceProvider());
+        $this->register(new MonologServiceProvider(), [
             'monolog.logfile' => $this->config('log.path') ?: "{$basePath}/log/app.log",
             'monolog.name'    => 'opencfp',
             'monlog.level'    => strtoupper(
                 $this->config('log.level') ?: 'debug'
             ),
         ]);
-        $this->register(new SwiftmailerServiceProvider, [
+        $this->register(new SwiftmailerServiceProvider(), [
             'swiftmailer.options' => [
                 'host'       => $this->config('mail.host'),
                 'port'       => $this->config('mail.port'),
@@ -88,11 +88,11 @@ class Application extends SilexApplication
         ]);
 
         $this->register(new CallForProposalProvider());
-        $this->register(new SentryServiceProvider);
+        $this->register(new SentryServiceProvider());
         $app = $this;
         $this->register(new TwigServiceProvider($app));
-        $this->register(new HtmlPurifierServiceProvider);
-        $this->register(new ImageProcessorProvider);
+        $this->register(new HtmlPurifierServiceProvider());
+        $this->register(new ImageProcessorProvider());
         $this->register(new ResetEmailerServiceProvider());
         $this->register(new TalkHandlerProvider());
         $this->register(new TalkHelperProvider());
@@ -100,7 +100,7 @@ class Application extends SilexApplication
         $this->register(new TalkFilterProvider());
 
         // Application Services...
-        $this->register(new ApplicationServiceProvider);
+        $this->register(new ApplicationServiceProvider());
 
         $this->setUpDataBaseConnection();
         $this->registerGlobalErrorHandler();
