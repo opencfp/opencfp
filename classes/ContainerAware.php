@@ -30,7 +30,7 @@ trait ContainerAware
      *
      * @return mixed
      */
-    protected function service($slug)
+    protected function service(string $slug)
     {
         return $this->app[$slug];
     }
