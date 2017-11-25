@@ -14,6 +14,7 @@ application:
   date_format: d/m/Y
   date_timezone: "UTC"
   coc_link: http://confcodeofconduct.com/
+  venue_image_path: /assets/img/venue.jpg
 
 api:
   enabled: true

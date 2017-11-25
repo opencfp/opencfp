@@ -13,6 +13,7 @@ application:
   online_conference: false
   date_format: m-d-Y
   coc_link: http://confcodeofconduct.com
+  venue_image_path: /assets/img/venue.jpg
 
 
 api:
