@@ -1,6 +1,10 @@
-.PHONY: composer coverage cs database infection integration it test unit
+.PHONY: asset composer coverage cs database infection integration it test unit
 
 it: cs test
+
+asset:
+	yarn install
+	yarn run production
 
 composer:
 	composer install
