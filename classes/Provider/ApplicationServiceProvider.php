@@ -71,7 +71,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             $sentry = $app['sentry'];
             
             return new Speakers(
-                new CallForProposal(new \DateTime($app->config('application.enddate'))),
+                new CallForProposal(new \DateTimeImmutable($app->config('application.enddate'))),
                 new SentryIdentityProvider($sentry, $speakerRepository),
                 $speakerRepository,
                 new IlluminateTalkRepository(),
@@ -107,7 +107,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             $speakerRepository = new IlluminateSpeakerRepository(new User());
 
             return new Speakers(
-                new CallForProposal(new \DateTime($app->config('application.enddate'))),
+                new CallForProposal(new \DateTimeImmutable($app->config('application.enddate'))),
                 new OAuthIdentityProvider($app['oauth.resource'], $speakerRepository),
                 $speakerRepository,
                 new IlluminateTalkRepository(),

@@ -15,7 +15,7 @@ class CallForProposal
      */
     private $endDate;
 
-    public function __construct(\DateTimeInterface $end)
+    public function __construct(\DateTimeImmutable $end)
     {
         if ($end->format('H:i:s') === '00:00:00') {
             $end = $end->add(new \DateInterval('P1D'));
