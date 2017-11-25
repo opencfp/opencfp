@@ -32,6 +32,15 @@
  * @import "my-utilities/skew-transforms";
  */
 
+//
+// Variables
+//
+// If you need to override any variables, create "overrides/_variables.scss" and uncomment the line below:
+
+// @import "overrides/variables";
+
+@import "variables";
+
 // Vendor
 $fa-font-path: "/assets/fonts";
 @import "~font-awesome/scss/font-awesome.scss";
@@ -133,4 +142,30 @@ div:empty {
   .current {
     @apply .font-bold;
   }
+}
+
+//
+// Hero
+//
+
+.opencfp-hero {
+  @apply .bg-cover;
+  @apply .p-24;
+
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url($opencfp-hero-background-image) no-repeat center -300px fixed;
+}
+
+//
+// Splash
+//
+.opencfp-splash {
+  @apply .h-full;
+  @apply .border-t-4;
+  @apply .border-brand;
+  @apply .bg-cover;
+  @apply .flex;
+  @apply .items-center;
+  @apply .justify-center;
+
+  background:linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url($opencfp-hero-background-image) no-repeat center center fixed;
 }
