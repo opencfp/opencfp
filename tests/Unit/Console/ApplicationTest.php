@@ -68,7 +68,6 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
             Command\AdminPromoteCommand::class,
             Command\ReviewerPromoteCommand::class,
             Command\ReviewerDemoteCommand::class,
-            Command\UserCreateCommand::class,
             Command\ClearCacheCommand::class,
         ];
 
