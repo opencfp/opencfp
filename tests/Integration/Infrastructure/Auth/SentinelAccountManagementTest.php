@@ -5,6 +5,7 @@ namespace OpenCFP\Test\Integration\Infrastructure\Auth;
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
+use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
 
@@ -44,6 +45,19 @@ class SentinelAccountManagementTest extends BaseTestCase
 
         $user = $this->sut->findByLogin('test@example.com');
         $this->assertEquals('Test Account', "{$user->getUser()->first_name} {$user->getUser()->last_name}");
+    }
+
+    public function testCreatingDuplicateUserThrowsError()
+    {
+        $this->sut->create('test@example.com', 'secret', [
+            'first_name' => 'Test',
+            'last_name'  => 'Account',
+        ]);
+        $this->expectException(UserExistsException::class);
+        $this->sut->create('test@example.com', 'asdfasf', [
+            'first_name' => 'Second',
+            'last_name'  => 'Account',
+        ]);
     }
 
     /**

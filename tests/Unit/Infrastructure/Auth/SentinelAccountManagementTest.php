@@ -8,6 +8,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
+use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 
 /**
@@ -58,5 +59,35 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn($user);
         $account = new SentinelAccountManagement($sentinel);
         $this->assertInstanceOf(SentinelUser::class, $account->findByLogin('mail@mail.mail'));
+    }
+
+    public function testCreateThrowsCorrectErrorWhenUserAlreadyExists()
+    {
+        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $sentinel = Mockery::mock(Sentinel::class);
+        $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn($user);
+        $account = new SentinelAccountManagement($sentinel);
+        $this->expectException(UserExistsException::class);
+        $account->create('mail@mail.mail', 'pass');
+    }
+
+    public function testCreateReturnsCorrectUserWhenCreatingOne()
+    {
+        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $sentinel = Mockery::mock(Sentinel::class);
+        $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn(null);
+        $sentinel->shouldReceive('getUserRepository->create')->andReturn($user);
+        $account = new SentinelAccountManagement($sentinel);
+        $this->assertInstanceOf(SentinelUser::class, $account->create('mail@mail.mail', 'pass'));
+    }
+
+    public function testCreateDefaultsToThrowingError()
+    {
+        $sentinel = Mockery::mock(Sentinel::class);
+        $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn(null);
+        $sentinel->shouldReceive('getUserRepository->create')->andReturn(false);
+        $account = new SentinelAccountManagement($sentinel);
+        $this->expectException(UserExistsException::class);
+        $account->create('mail@mail.mail', 'pass');
     }
 }

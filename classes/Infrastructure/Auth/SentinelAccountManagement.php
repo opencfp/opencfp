@@ -59,6 +59,13 @@ final class SentinelAccountManagement implements AccountManagement
 
     public function create($email, $password, array $data = []): UserInterface
     {
+        if ($this->sentinel
+                ->getUserRepository()
+                ->findByCredentials(['email' => $email])
+            instanceof \Cartalyst\Sentinel\Users\UserInterface
+        ) {
+            throw new UserExistsException();
+        }
         $user = $this->sentinel
             ->getUserRepository()
             ->create(array_merge(['email' => $email, 'password' => $password], $data));
