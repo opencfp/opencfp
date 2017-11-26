@@ -3,6 +3,7 @@
 namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\AuthenticationException;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
@@ -15,11 +16,11 @@ final class SentinelAuthentication implements Authentication
     private $sentinel;
 
     /**
-     * @var SentinelAccountManagement
+     * @var AccountManagement
      */
     private $accountManagement;
 
-    public function __construct(Sentinel $sentinel, SentinelAccountManagement $accountManagement)
+    public function __construct(Sentinel $sentinel, AccountManagement $accountManagement)
     {
         $this->sentinel          = $sentinel;
         $this->accountManagement = $accountManagement;
