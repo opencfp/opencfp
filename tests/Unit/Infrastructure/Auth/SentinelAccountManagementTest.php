@@ -90,4 +90,15 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $this->expectException(UserExistsException::class);
         $account->create('mail@mail.mail', 'pass');
     }
+
+    public function testActivateReturnsBool()
+    {
+        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $sentinel = Mockery::mock(Sentinel::class);
+        $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn($user);
+        $sentinel->shouldReceive('getActivationRepository->create->getCode');
+        $sentinel->shouldReceive('getActivationRepository->complete')->andReturn(true);
+        $account = new SentinelAccountManagement($sentinel);
+        $this->assertTrue($account->activate('mail@mail'));
+    }
 }
