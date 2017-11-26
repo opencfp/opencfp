@@ -21,6 +21,12 @@ class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    public function testIsFinal()
+    {
+        $reflection = new \ReflectionClass(SentinelAuthentication::class);
+        $this->assertTrue($reflection->isFinal());
+    }
+
     public function testIsInstanceOfAuthentication()
     {
         $sentinel = Mockery::mock(Sentinel::class);
@@ -56,6 +62,18 @@ class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('checkPassword')->andReturn(false);
+        $sentinel = Mockery::mock(Sentinel::class);
+        $account  = Mockery::mock(AccountManagement::class);
+        $account->shouldReceive('findbyLogin')->andReturn($user);
+        $auth = new SentinelAuthentication($sentinel, $account);
+        $this->expectException(AuthenticationException::class);
+        $auth->authenticate('mail', 'pass');
+    }
+
+    public function testAuthenticateIsVoidWhenSuccessFull()
+    {
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('checkPassword')->andReturn(true);
         $sentinel = Mockery::mock(Sentinel::class);
         $account  = Mockery::mock(AccountManagement::class);
         $account->shouldReceive('findbyLogin')->andReturn($user);
