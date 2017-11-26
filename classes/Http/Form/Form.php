@@ -61,7 +61,7 @@ abstract class Form
         $dataKeys    = array_keys($this->_taintedData);
         $foundFields = array_intersect($this->_fieldList, $dataKeys);
 
-        return ($foundFields == $this->_fieldList);
+        return $foundFields == $this->_fieldList;
     }
 
     /**
