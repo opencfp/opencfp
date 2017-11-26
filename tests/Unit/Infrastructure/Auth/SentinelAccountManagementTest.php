@@ -18,6 +18,12 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    public function testIsFinal()
+    {
+        $reflection = new \ReflectionClass(SentinelAccountManagement::class);
+        $this->assertTrue($reflection->isFinal());
+    }
+
     public function testInstanceOfAccountManagement()
     {
         $sentinel = (new \Cartalyst\Sentinel\Native\Facades\Sentinel())->getSentinel();
@@ -61,6 +67,14 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SentinelUser::class, $account->findByLogin('mail@mail.mail'));
     }
 
+    public function testFindByRoleReturnsArray()
+    {
+        $sentinel = Mockery::mock(Sentinel::class);
+        $sentinel->shouldReceive('getRoleRepository->findByName->getUsers->toArray')->andReturn([]);
+        $accounts = new SentinelAccountManagement($sentinel);
+        $this->assertEquals([], $accounts->findByRole('blabla'));
+    }
+
     public function testCreateThrowsCorrectErrorWhenUserAlreadyExists()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
@@ -100,5 +114,27 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $sentinel->shouldReceive('getActivationRepository->complete')->andReturn(true);
         $account = new SentinelAccountManagement($sentinel);
         $this->assertTrue($account->activate('mail@mail'));
+    }
+
+    public function testPromoteToIsVoid()
+    {
+        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $user->shouldReceive('getUserId')->andReturn(2);
+        $sentinel = Mockery::mock(Sentinel::class);
+        $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn($user);
+        $sentinel->shouldReceive('getRoleRepository->findByName->users->attach')->andReturn(true);
+        $account = new SentinelAccountManagement($sentinel);
+        $this->assertNull($account->promoteTo('mail@mail.mail'));
+    }
+
+    public function testDemoteFromIsVoid()
+    {
+        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $user->shouldReceive('getUserId')->andReturn(2);
+        $sentinel = Mockery::mock(Sentinel::class);
+        $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn($user);
+        $sentinel->shouldReceive('getRoleRepository->findByName->users->detach')->andReturn(true);
+        $account = new SentinelAccountManagement($sentinel);
+        $this->assertNull($account->demoteFrom('mail@mail.mail'));
     }
 }

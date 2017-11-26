@@ -9,6 +9,12 @@ use OpenCFP\Infrastructure\Auth\UserNotFoundException;
  */
 class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
+    public function testIsFinal()
+    {
+        $reflection = new \ReflectionClass(UserNotFoundException::class);
+        $this->assertTrue($reflection->isFinal());
+    }
+
     /**
      * @test
      */

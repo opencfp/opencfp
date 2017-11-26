@@ -18,6 +18,12 @@ class SentinelIdentityProviderTest extends BaseTestCase
 {
     use GeneratorTrait;
 
+    public function testIsFinal()
+    {
+        $reflection = new \ReflectionClass(SentinelIdentityProvider::class);
+        $this->assertTrue($reflection->isFinal());
+    }
+
     public function testImplementsIdentityProvider()
     {
         $sentinel            = $this->getSentinel();

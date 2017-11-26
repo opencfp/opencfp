@@ -6,7 +6,8 @@ use Cartalyst\Sentinel\Cookies\CookieInterface;
 
 /**
  * This class is used to trick Sentinel.
- * It requires us to have a cookie handler, but since we don't need one
+ * It requires us to have a cookie handler, but since we don't need one we use this instead
+ * This should be removed once the NullCookie gets added to Sentinel
  */
 class NullCookie implements CookieInterface
 {

@@ -11,6 +11,12 @@ use OpenCFP\Infrastructure\Auth\SentinelUser;
  */
 class SentinelUserTest extends \PHPUnit\Framework\TestCase
 {
+    public function testIsFinal()
+    {
+        $reflection = new \ReflectionClass(SentinelUser::class);
+        $this->assertTrue($reflection->isFinal());
+    }
+
     public function testWeHaveTheRightUser()
     {
         $user = new SentinelUser(m::mock(\Cartalyst\Sentinel\Users\UserInterface::class), $this->getSentinel());
@@ -47,6 +53,19 @@ class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $innerUser->shouldReceive('contains')->andReturn('true');
         $user = new SentinelUser($innerUser, $this->getSentinel());
         $this->assertFalse($user->hasAccess('role'));
+    }
+
+    public function testHasAccessReturnsTrueIfWeHaveAccess()
+    {
+        $toReturn      = [(object) ['id' => 2], (object) ['id' => 3], (object) ['id' => 4]];
+        $innerUser     = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
+        $innerUser->id = 3;
+        $sentinel      = m::mock(Sentinel::class);
+        $sentinel
+            ->shouldReceive('getRoleRepository->findByName->getUsers')
+            ->andReturn(collect($toReturn));
+        $user = new SentinelUser($innerUser, $sentinel);
+        $this->assertTrue($user->hasAccess('role'));
     }
 
     public function testHasAccessReturnsFalseWhenAnErrorOcuurs()
@@ -87,6 +106,24 @@ class SentinelUserTest extends \PHPUnit\Framework\TestCase
             ->andReturn(false);
         $user = new SentinelUser($innerUser, $sentinel);
         $this->assertFalse($user->checkResetPasswordCode('asdfasdf'));
+    }
+
+    public function testGetResetPasswordCodeReturnsCorrect()
+    {
+        $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $sentinel  = m::mock(Sentinel::class);
+        $sentinel->shouldReceive('getReminderRepository->create')->andReturn('blabla');
+        $user = new SentinelUser($innerUser, $sentinel);
+        $this->assertSame('blabla', $user->getResetPasswordCode());
+    }
+
+    public function testAttemptResetPasswordReturnsCorrectBool()
+    {
+        $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $sentinel  = m::mock(Sentinel::class);
+        $sentinel->shouldReceive('getReminderRepository->complete')->andReturn(true);
+        $user = new SentinelUser($innerUser, $sentinel);
+        $this->assertTrue($user->attemptResetPassword('asdf', 'passwoord'));
     }
 
     public function getSentinel(): Sentinel
