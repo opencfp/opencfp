@@ -95,6 +95,6 @@ final class SentinelAuthentication implements Authentication
      */
     public function logout(): bool
     {
-        return $this->sentinel->logout();
+        return $this->sentinel->logout() !== false;
     }
 }
