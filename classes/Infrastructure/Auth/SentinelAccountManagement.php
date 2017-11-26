@@ -32,7 +32,7 @@ final class SentinelAccountManagement implements AccountManagement
             return new SentinelUser($user, $this->sentinel);
         }
 
-        throw new UserNotFoundException($userId);
+        throw UserNotFoundException::userNotFound($userId);
     }
 
     /**
@@ -49,7 +49,7 @@ final class SentinelAccountManagement implements AccountManagement
             return new SentinelUser($user, $this->sentinel);
         }
 
-        throw new UserNotFoundException($email);
+        throw UserNotFoundException::userNotFound($email);
     }
 
     public function findByRole($role): array
