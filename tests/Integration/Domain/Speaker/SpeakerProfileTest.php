@@ -110,7 +110,7 @@ class SpeakerProfileTest extends BaseTestCase
 
     public function testIsAllowedtoSeeReturnsFalseIfEntryIsAHiddenProperty()
     {
-        $profile = new SpeakerProfile(self::$user, ['email','twitter']);
+        $profile = new SpeakerProfile(self::$user, ['email', 'twitter']);
 
         $this->assertFalse($profile->isAllowedToSee('email'));
         $this->assertFalse($profile->isAllowedToSee('twitter'));
@@ -119,7 +119,7 @@ class SpeakerProfileTest extends BaseTestCase
 
     public function testErrorGetsThrownWhenGettingAFieldThatIsNotAllowed()
     {
-        $profile = new SpeakerProfile(self::$user, ['email','twitter']);
+        $profile = new SpeakerProfile(self::$user, ['email', 'twitter']);
         //Check we are still allowed to see other items
         $photoPath = self::$user->photo_path;
 
