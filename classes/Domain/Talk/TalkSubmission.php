@@ -43,7 +43,7 @@ class TalkSubmission
 
     private function guardTitleIsAppropriateLength($data)
     {
-        if (!isset($data['title']) or empty($data['title'])) {
+        if (!isset($data['title']) || empty($data['title'])) {
             throw new InvalidTalkSubmissionException('The title of the talk must be provided.');
         }
 
@@ -54,14 +54,14 @@ class TalkSubmission
 
     private function guardDescriptionIsProvided($data)
     {
-        if (!isset($data['description']) or empty($data['description'])) {
+        if (!isset($data['description']) || empty($data['description'])) {
             throw new InvalidTalkSubmissionException('The description of the talk must be included.');
         }
     }
 
     private function guardTalkTypeIsValid($data)
     {
-        if (!isset($data['type']) or empty($data['type'])) {
+        if (!isset($data['type']) || empty($data['type'])) {
             throw new InvalidTalkSubmissionException('You must choose what type of talk you are submitting.');
         }
 
@@ -88,7 +88,7 @@ class TalkSubmission
 
     private function guardLevelIsValid($data)
     {
-        if (!isset($data['level']) or empty($data['level'])) {
+        if (!isset($data['level']) || empty($data['level'])) {
             throw new InvalidTalkSubmissionException('You must choose when level of talk you are submitting.');
         }
 
@@ -104,7 +104,7 @@ class TalkSubmission
 
     private function guardCategoryIsValid($data)
     {
-        if (!isset($data['category']) or empty($data['category'])) {
+        if (!isset($data['category']) || empty($data['category'])) {
             throw new InvalidTalkSubmissionException('You must choose what category of talk you are submitting.');
         }
 
