@@ -25,5 +25,5 @@ interface SpeakerRepository
      *
      * @return mixed
      */
-    public function persist($speaker);
+    public function persist(User $speaker);
 }
