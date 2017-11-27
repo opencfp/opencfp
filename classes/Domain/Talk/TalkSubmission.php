@@ -44,29 +44,31 @@ class TalkSubmission
     private function guardTitleIsAppropriateLength($data)
     {
         if (!isset($data['title']) or empty($data['title'])) {
-            throw new InvalidTalkSubmissionException('The title of the talk must be provided.');
+            throw InvalidTalkSubmissionException::noTitle();
         }
 
-        if (\strlen($data['title']) > 100) {
-            throw new InvalidTalkSubmissionException('The title of the talk must be 100 characters or less.');
+        $maxLength = 100;
+
+        if (\strlen($data['title']) > $maxLength) {
+            throw InvalidTalkSubmissionException::noValidTitle($maxLength);
         }
     }
 
     private function guardDescriptionIsProvided($data)
     {
         if (!isset($data['description']) or empty($data['description'])) {
-            throw new InvalidTalkSubmissionException('The description of the talk must be included.');
+            throw InvalidTalkSubmissionException::noDescription();
         }
     }
 
     private function guardTalkTypeIsValid($data)
     {
         if (!isset($data['type']) or empty($data['type'])) {
-            throw new InvalidTalkSubmissionException('You must choose what type of talk you are submitting.');
+            throw InvalidTalkSubmissionException::noTalkType();
         }
 
         if (!$this->isValidTalkType($data['type'])) {
-            throw new InvalidTalkSubmissionException('You did not choose a valid talk type.');
+            throw InvalidTalkSubmissionException::noValidTalkType();
         }
     }
 
@@ -89,11 +91,11 @@ class TalkSubmission
     private function guardLevelIsValid($data)
     {
         if (!isset($data['level']) or empty($data['level'])) {
-            throw new InvalidTalkSubmissionException('You must choose when level of talk you are submitting.');
+            throw InvalidTalkSubmissionException::noLevel();
         }
 
         if (!$this->isValidLevel($data['level'])) {
-            throw new InvalidTalkSubmissionException('You did not choose a valid talk level.');
+            throw InvalidTalkSubmissionException::noValidLevel();
         }
     }
 
@@ -105,11 +107,11 @@ class TalkSubmission
     private function guardCategoryIsValid($data)
     {
         if (!isset($data['category']) or empty($data['category'])) {
-            throw new InvalidTalkSubmissionException('You must choose what category of talk you are submitting.');
+            throw InvalidTalkSubmissionException::noCategory();
         }
 
         if (!$this->isValidCategory($data['category'])) {
-            throw new InvalidTalkSubmissionException('You did not choose a valid talk category.');
+            throw InvalidTalkSubmissionException::noValidCategory();
         }
     }
 
