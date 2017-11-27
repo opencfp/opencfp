@@ -64,7 +64,7 @@ class TalkHandler
 
     public function hasTalk(): bool
     {
-        return ($this->talk instanceof Talk);
+        return $this->talk instanceof Talk;
     }
 
     public function commentOn(string $message): bool
