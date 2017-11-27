@@ -5,7 +5,6 @@ namespace OpenCFP\Test\Unit\Console\Command;
 use OpenCFP\Console\Command\UserCreateCommand;
 use OpenCFP\Domain\Services;
 use OpenCFP\Infrastructure\Auth;
-use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
@@ -165,7 +164,7 @@ final class UserCreateCommandTest extends Framework\TestCase
                     'password'   => $password,
                 ])
             )
-            ->willThrowException(new UserExistsException());
+            ->willThrowException(new Auth\UserExistsException());
 
         $command = new UserCreateCommand($accountManagement);
 
