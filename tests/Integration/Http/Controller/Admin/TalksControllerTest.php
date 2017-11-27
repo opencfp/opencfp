@@ -197,4 +197,28 @@ class TalksControllerTest extends WebTestCase
             ->assertNotSee('1')
             ->assertSuccessful();
     }
+
+    /**
+     * @test
+     */
+    public function rateActionWillReturnTrueOnGoodNumericRate()
+    {
+        $talk = self::$talks->first();
+        $this->asAdmin()
+            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => '0'])
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function rateActionWillReturnFalseOnNonIntInput()
+    {
+        $talk = self::$talks->first();
+        $this->asAdmin()
+            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => 'blabla'])
+            ->assertNotSee('1')
+            ->assertSuccessful();
+    }
 }
