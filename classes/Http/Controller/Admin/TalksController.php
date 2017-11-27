@@ -6,6 +6,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkHandler;
+use OpenCFP\Domain\ValidationException;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,9 +75,17 @@ class TalksController extends BaseController
 
     public function rateAction(Request $req)
     {
-        return $this->service(TalkHandler::class)
-            ->grabTalk((int) $req->get('id'))
-            ->rate((int) $req->get('rating'));
+        try {
+            $this->validate([
+                'rating' => 'required|integer',
+            ]);
+
+            return $this->service(TalkHandler::class)
+                ->grabTalk((int) $req->get('id'))
+                ->rate((int) $req->get('rating'));
+        } catch (ValidationException $e) {
+            return false;
+        }
     }
 
     /**
