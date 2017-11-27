@@ -29,7 +29,7 @@ class Pagination
         $routeGenerator = function ($page) use ($queryParams, $baseUrl) {
             $queryParams['page'] = $page;
 
-            return $baseUrl . http_build_query($queryParams);
+            return $baseUrl . \http_build_query($queryParams);
         };
 
         $view = new DefaultView();

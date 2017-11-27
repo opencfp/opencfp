@@ -9,7 +9,7 @@ class TalkRatingContext
 {
     public static function getTalkStrategy(string $strategy, Authentication $auth): TalkRatingStrategy
     {
-        $strategy = strtolower($strategy);
+        $strategy = \strtolower($strategy);
         switch ($strategy) {
             case 'yesno':
                 return new YesNoRating(new TalkMeta(), $auth);

@@ -62,7 +62,7 @@ class TalkFormatterTest extends BaseTestCase
         $formatter = new TalkFormatter();
         $talks     = Talk::all();
         $formatted = $formatter->formatList($talks, 2);
-        $this->assertEquals(count($talks), count($formatted));
+        $this->assertEquals(\count($talks), \count($formatted));
         $this->assertInstanceOf(Collection::class, $formatted);
     }
 

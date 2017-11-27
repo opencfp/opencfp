@@ -118,7 +118,7 @@ class SpeakersControllerTest extends WebTestCase
     public function promoteActionFailsOnBadToken()
     {
         $this->asAdmin()
-            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => uniqid()])
+            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => \uniqid()])
             ->assertRedirect()
             ->assertTargetURLContains('admin/speakers');
     }
@@ -184,7 +184,7 @@ class SpeakersControllerTest extends WebTestCase
     public function demoteActionFailsWithBadToken()
     {
         $this->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin', 'token' => uniqid()])
+            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin', 'token' => \uniqid()])
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
     }
@@ -195,7 +195,7 @@ class SpeakersControllerTest extends WebTestCase
     public function deleteActionFailsWithBadToken()
     {
         $this->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/delete/' . self::$users->last()->id . '?token=' . uniqid())
+            ->get('/admin/speakers/delete/' . self::$users->last()->id . '?token=' . \uniqid())
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
     }

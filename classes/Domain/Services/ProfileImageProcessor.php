@@ -75,12 +75,12 @@ class ProfileImageProcessor
             $speakerPhoto->crop($this->size, $this->size);
 
             if ($speakerPhoto->save($this->publishDir . '/' . $publishFilename)) {
-                unlink($this->publishDir . '/' . $tempFilename);
+                \unlink($this->publishDir . '/' . $tempFilename);
             }
 
             return $publishFilename;
         } catch (\Exception $e) {
-            unlink($this->publishDir . '/' . $tempFilename);
+            \unlink($this->publishDir . '/' . $tempFilename);
 
             throw $e;
         }

@@ -18,7 +18,7 @@ class ScopeStorage extends AbstractStorage implements ScopeInterface
                                 ->where('id', $scope)
                                 ->get();
 
-        if (count($result) === 0) {
+        if (\count($result) === 0) {
             return;
         }
 

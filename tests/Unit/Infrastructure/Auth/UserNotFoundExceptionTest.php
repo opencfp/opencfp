@@ -39,7 +39,7 @@ class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
     public function unableToFindUserMatchingMessage()
     {
         $exception = UserNotFoundException::userNotFound('mail');
-        $message   = sprintf('Unable to find a user matching %s', 'mail');
+        $message   = \sprintf('Unable to find a user matching %s', 'mail');
 
         $this->assertSame($exception->getMessage(), $message);
         $this->assertSame(0, $exception->getCode());

@@ -17,10 +17,10 @@ class AuthCodeStorage extends AbstractStorage implements AuthCodeInterface
     {
         $result = Capsule::table('oauth_auth_codes')
                             ->where('auth_code', $code)
-                            ->where('expire_time', '>=', time())
+                            ->where('expire_time', '>=', \time())
                             ->get();
 
-        if (count($result) === 1) {
+        if (\count($result) === 1) {
             $token = new AuthCodeEntity($this->server);
             $token->setId($result[0]['auth_code']);
             $token->setRedirectUri($result[0]['client_redirect_uri']);
@@ -54,7 +54,7 @@ class AuthCodeStorage extends AbstractStorage implements AuthCodeInterface
 
         $response = [];
 
-        if (count($result) > 0) {
+        if (\count($result) > 0) {
             foreach ($result as $row) {
                 $scope = (new ScopeEntity($this->server))->hydrate([
                     'id'            => $row['id'],

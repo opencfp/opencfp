@@ -31,7 +31,7 @@ class ClientStorage extends AbstractStorage implements ClientInterface
 
         $result = $query->get();
 
-        if (count($result) === 1) {
+        if (\count($result) === 1) {
             $client = new ClientEntity($this->server);
 
             $clientData = [
@@ -60,7 +60,7 @@ class ClientStorage extends AbstractStorage implements ClientInterface
                             ->where('oauth_sessions.id', $session->getId())
                             ->get();
 
-        if (count($result) === 1) {
+        if (\count($result) === 1) {
             $client = new ClientEntity($this->server);
             $client->hydrate([
                 'id'    => $result[0]['id'],

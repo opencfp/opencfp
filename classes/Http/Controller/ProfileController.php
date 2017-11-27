@@ -84,7 +84,7 @@ class ProfileController extends BaseController
         $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => implode('<br>', $form->getErrorMessages()),
+                'ext'   => \implode('<br>', $form->getErrorMessages()),
             ]);
 
         $form_data['formAction'] = $this->url('user_update');
@@ -119,7 +119,7 @@ class ProfileController extends BaseController
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => implode('<br>', $form->getErrorMessages()),
+                'ext'   => \implode('<br>', $form->getErrorMessages()),
             ]);
 
             return $this->redirectTo('password_edit');
@@ -186,7 +186,7 @@ class ProfileController extends BaseController
     private function transformSanitizedData(array $sanitizedData): array
     {
         // Remove leading @ for twitter
-        $sanitizedData['twitter'] = preg_replace('/^@/', '', $sanitizedData['twitter']);
+        $sanitizedData['twitter'] = \preg_replace('/^@/', '', $sanitizedData['twitter']);
 
         $sanitizedData['bio'] = $sanitizedData['speaker_bio'];
         unset($sanitizedData['speaker_bio']);

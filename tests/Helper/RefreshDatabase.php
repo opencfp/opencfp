@@ -8,7 +8,7 @@ trait RefreshDatabase
 {
     protected static function setUpDatabase()
     {
-        self::createCapsule()->getConnection()->unprepared(file_get_contents(__DIR__ . '/../dump.sql'));
+        self::createCapsule()->getConnection()->unprepared(\file_get_contents(__DIR__ . '/../dump.sql'));
     }
 
     protected static function createCapsule(): Manager

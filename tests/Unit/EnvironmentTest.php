@@ -123,9 +123,9 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         ];
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             'Environment needs to be one of "%s"; got "%s" instead.',
-            implode('", "', $types),
+            \implode('", "', $types),
             $type
         ));
 

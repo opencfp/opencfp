@@ -180,7 +180,7 @@ final class UserCreateCommandTest extends Framework\TestCase
 
         $this->assertSame(1, $commandTester->getStatusCode());
 
-        $message = sprintf(
+        $message = \sprintf(
             'A user with the login "%s" already exists.',
             $email
         );
@@ -235,7 +235,7 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertSame(0, $commandTester->getStatusCode());
         $this->assertContains('Creating User', $commandTester->getDisplay());
 
-        $creationMessage = sprintf(
+        $creationMessage = \sprintf(
             ' * created user with login %s',
             $email
         );
@@ -285,7 +285,7 @@ final class UserCreateCommandTest extends Framework\TestCase
 
         $commandTester = new Console\Tester\CommandTester($command);
 
-        $options = array_merge([
+        $options = \array_merge([
             '--first_name' => $firstName,
             '--last_name'  => $lastName,
             '--email'      => $email,
@@ -297,15 +297,15 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertSame(0, $commandTester->getStatusCode());
         $this->assertContains('Creating User', $commandTester->getDisplay());
 
-        $creationMessage = sprintf(
+        $creationMessage = \sprintf(
             ' * created user with login %s',
             $email
         );
 
         $this->assertContains($creationMessage, $commandTester->getDisplay());
 
-        $promotionMessage = implode(PHP_EOL, array_map(function (string $role) {
-            return sprintf(
+        $promotionMessage = \implode(PHP_EOL, \array_map(function (string $role) {
+            return \sprintf(
                 ' * promoted user to %s',
                 $role
             );

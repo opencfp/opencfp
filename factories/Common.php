@@ -4,7 +4,7 @@
 $factory->define(\OpenCFP\Domain\Model\User::class, function (\Faker\Generator $faker) {
     return [
         'email'          => $faker->unique()->safeEmail,
-        'password'       => password_hash('secret', PASSWORD_BCRYPT),
+        'password'       => \password_hash('secret', PASSWORD_BCRYPT),
         'activated'      => 1,
         'first_name'     => $faker->firstName,
         'last_name'      => $faker->lastName,

@@ -38,7 +38,7 @@ class SentryAccountManagement implements AccountManagement
     public function create($email, $password, array $data = []): UserInterface
     {
         try {
-            $user = $this->sentry->createUser(array_merge([
+            $user = $this->sentry->createUser(\array_merge([
                 'email'    => $email,
                 'password' => $password,
             ], $data));
