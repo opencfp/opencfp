@@ -63,7 +63,7 @@ final class UserCreateCommand extends Command
                 $data
             );
         } catch (Sentry\Users\UserExistsException $exception) {
-            $io->error(sprintf(
+            $io->error(\sprintf(
                 'A user with the login "%s" already exists.',
                 $data['email']
             ));
@@ -71,7 +71,7 @@ final class UserCreateCommand extends Command
             return 1;
         }
 
-        $io->writeln(sprintf(
+        $io->writeln(\sprintf(
             ' * created user with login <info>%s</info>',
             $data['email']
         ));
@@ -88,7 +88,7 @@ final class UserCreateCommand extends Command
             $roles[] = 'reviewer';
         }
 
-        if (count($roles)) {
+        if (\count($roles)) {
             foreach ($roles as $role) {
                 if ($user->hasAccess($role)) {
                     continue;
@@ -99,7 +99,7 @@ final class UserCreateCommand extends Command
                     $role
                 );
 
-                $io->writeln(sprintf(
+                $io->writeln(\sprintf(
                     ' * promoted user to <info>%s</info>',
                     $role
                 ));

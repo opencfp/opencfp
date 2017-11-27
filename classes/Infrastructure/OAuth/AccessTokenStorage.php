@@ -19,7 +19,7 @@ class AccessTokenStorage extends AbstractStorage implements AccessTokenInterface
                             ->where('access_token', $token)
                             ->get();
 
-        if (count($result) === 1) {
+        if (\count($result) === 1) {
             $token = (new AccessTokenEntity($this->server))
                         ->setId($result[0]['access_token'])
                         ->setExpireTime($result[0]['expire_time']);
@@ -41,7 +41,7 @@ class AccessTokenStorage extends AbstractStorage implements AccessTokenInterface
 
         $response = [];
 
-        if (count($result) > 0) {
+        if (\count($result) > 0) {
             foreach ($result as $row) {
                 $scope = (new ScopeEntity($this->server))->hydrate([
                     'id'            => $row['id'],

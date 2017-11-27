@@ -24,9 +24,9 @@ class SpeakersController extends BaseController
         /** @var AccountManagement $accounts */
         $accounts        = $this->service(AccountManagement::class);
         $adminUsers      = $accounts->findByRole('Admin');
-        $adminUserIds    = array_column($adminUsers, 'id');
+        $adminUserIds    = \array_column($adminUsers, 'id');
         $reviewerUsers   = $accounts->findByRole('Reviewer');
-        $reviewerUserIds = array_column($reviewerUsers, 'id');
+        $reviewerUserIds = \array_column($reviewerUsers, 'id');
 
         $rawSpeakers = User::search($search)->get();
 
@@ -48,8 +48,8 @@ class SpeakersController extends BaseController
                 ];
             }
 
-            $speaker['is_admin'] = in_array($speaker['id'], $adminUserIds);
-            $speaker['is_reviewer'] = in_array($speaker['id'], $reviewerUserIds);
+            $speaker['is_admin'] = \in_array($speaker['id'], $adminUserIds);
+            $speaker['is_reviewer'] = \in_array($speaker['id'], $reviewerUserIds);
 
             return $speaker;
         })->toArray();
@@ -61,8 +61,8 @@ class SpeakersController extends BaseController
 
         $templateData = [
             'airport'    => $this->app->config('application.airport'),
-            'arrival'    => date('Y-m-d', $this->app->config('application.arrival')),
-            'departure'  => date('Y-m-d', $this->app->config('application.departure')),
+            'arrival'    => \date('Y-m-d', $this->app->config('application.arrival')),
+            'departure'  => \date('Y-m-d', $this->app->config('application.departure')),
             'pagination' => $pagination,
             'speakers'   => $pagerfanta->getFanta(),
             'page'       => $pagerfanta->getCurrentPage(),
@@ -109,8 +109,8 @@ class SpeakersController extends BaseController
         // Build and render the template
         $templateData = [
             'airport'    => $this->app->config('application.airport'),
-            'arrival'    => date('Y-m-d', $this->app->config('application.arrival')),
-            'departure'  => date('Y-m-d', $this->app->config('application.departure')),
+            'arrival'    => \date('Y-m-d', $this->app->config('application.arrival')),
+            'departure'  => \date('Y-m-d', $this->app->config('application.departure')),
             'speaker'    => new SpeakerProfile($speaker_details),
             'talks'      => $talks,
             'photo_path' => '/uploads/',
@@ -195,7 +195,7 @@ class SpeakersController extends BaseController
 
         try {
             $user = $accounts->findById($req->get('id'));
-            if ($user->hasAccess(strtolower($role))) {
+            if ($user->hasAccess(\strtolower($role))) {
                 $this->service('session')->set('flash', [
                     'type'  => 'error',
                     'short' => 'Error',

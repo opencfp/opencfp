@@ -36,7 +36,7 @@ class TalksController extends BaseController
             'talks'        => $pagerfanta->getFanta(),
             'page'         => $pagerfanta->getCurrentPage(),
             'current_page' => $req->getRequestUri(),
-            'totalRecords' => count($formattedTalks),
+            'totalRecords' => \count($formattedTalks),
             'filter'       => $req->get('filter'),
             'per_page'     => $per_page,
             'sort'         => $req->get('sort'),

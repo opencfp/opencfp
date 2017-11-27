@@ -23,11 +23,11 @@ class TalkForm extends Form
 
     public function __construct(array $data, \HTMLPurifier $purifier, array $options = [])
     {
-        if (!array_key_exists('desired', $data) || $data['desired'] === null) {
+        if (!\array_key_exists('desired', $data) || $data['desired'] === null) {
             $data['desired'] = 0;
         }
 
-        if (!array_key_exists('sponsor', $data) || $data['sponsor'] === null) {
+        if (!\array_key_exists('sponsor', $data) || $data['sponsor'] === null) {
             $data['sponsor'] = 0;
         }
 
@@ -44,7 +44,7 @@ class TalkForm extends Form
         parent::sanitize();
 
         foreach ($this->_cleanData as $key => $value) {
-            $this->_cleanData[$key] = strip_tags($value);
+            $this->_cleanData[$key] = \strip_tags($value);
         }
     }
 
@@ -81,7 +81,7 @@ class TalkForm extends Form
 
         $title = $this->_cleanData['title'];
 
-        if (strlen($title) > 100) {
+        if (\strlen($title) > 100) {
             $this->_addErrorMessage('Your talk title has to be 100 characters or less');
 
             return false;

@@ -18,7 +18,7 @@ class RefreshTokenStorage extends AbstractStorage implements RefreshTokenInterfa
                             ->where('refresh_token', $token)
                             ->get();
 
-        if (count($result) === 1) {
+        if (\count($result) === 1) {
             $token = (new RefreshTokenEntity($this->server))
                         ->setId($result[0]['refresh_token'])
                         ->setExpireTime($result[0]['expire_time'])

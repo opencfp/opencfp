@@ -32,10 +32,10 @@ class ClearCacheCommand extends BaseCommand
             $this->app['path']->cacheTwigPath(),
         ];
 
-        array_walk($paths, function ($path) use ($io) {
-            passthru(sprintf('rm -rf %s/*', $path));
+        \array_walk($paths, function ($path) use ($io) {
+            \passthru(\sprintf('rm -rf %s/*', $path));
 
-            $io->writeln(sprintf(
+            $io->writeln(\sprintf(
                 '  * %s',
                 $path
             ));

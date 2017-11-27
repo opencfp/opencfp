@@ -71,12 +71,12 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
             Command\ClearCacheCommand::class,
         ];
 
-        $actual = array_map(function (Console\Command\Command $command) {
-            return get_class($command);
+        $actual = \array_map(function (Console\Command\Command $command) {
+            return \get_class($command);
         }, $application->getDefaultCommands());
 
-        sort($expected);
-        sort($actual);
+        \sort($expected);
+        \sort($actual);
 
         $this->assertEquals($expected, $actual);
     }

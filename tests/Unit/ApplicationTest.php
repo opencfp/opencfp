@@ -24,9 +24,9 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
 
         // We start an output buffer because the Application sends its response to
         // the output buffer as a Symfony Response.
-        ob_start();
+        \ob_start();
         $this->sut->run();
-        $output = ob_get_clean();
+        $output = \ob_get_clean();
 
         $this->assertNotEmpty($output);
     }

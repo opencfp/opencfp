@@ -55,7 +55,7 @@ class TalkFilter
         if ($filter === null) {
             return $this->talk;
         }
-        switch (strtolower($filter)) {
+        switch (\strtolower($filter)) {
             case 'selected':
                 return $this->talk->selected();
 
@@ -92,14 +92,14 @@ class TalkFilter
      */
     private function getSortOptions(array $options, array $defaultOptions)
     {
-        if (!isset($options['order_by']) || !in_array($options['order_by'], $this->orderByWhiteList)) {
+        if (!isset($options['order_by']) || !\in_array($options['order_by'], $this->orderByWhiteList)) {
             $options['order_by'] = $defaultOptions['order_by'];
         }
 
-        if (!isset($options['sort']) || !in_array($options['sort'], ['ASC', 'DESC'])) {
+        if (!isset($options['sort']) || !\in_array($options['sort'], ['ASC', 'DESC'])) {
             $options['sort'] = $defaultOptions['sort'];
         }
 
-        return array_merge($defaultOptions, $options);
+        return \array_merge($defaultOptions, $options);
     }
 }

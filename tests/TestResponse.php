@@ -89,7 +89,7 @@ class TestResponse
     public function assertFlashContains(string $flash): self
     {
         $fullFlash = $this->app['session']->get('flash');
-        $fullFlash = is_array($fullFlash) ? $fullFlash : [];
+        $fullFlash = \is_array($fullFlash) ? $fullFlash : [];
         Assert::assertContains($flash, $fullFlash);
 
         return $this;

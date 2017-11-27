@@ -20,9 +20,9 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
     {
         $this->app                 = new Application(BASE_PATH, Environment::testing());
         $this->app['session.test'] = true;
-        ob_start();
+        \ob_start();
         $this->app->run();
-        ob_end_clean();
+        \ob_end_clean();
     }
 
     /**

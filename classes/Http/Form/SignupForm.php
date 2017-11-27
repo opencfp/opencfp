@@ -102,7 +102,7 @@ class SignupForm extends Form
         }
 
         // Check if photo is in the mime-type white list
-        if (!in_array($this->_taintedData['speaker_photo']->getMimeType(), $allowedMimeTypes)) {
+        if (!\in_array($this->_taintedData['speaker_photo']->getMimeType(), $allowedMimeTypes)) {
             $this->_addErrorMessage('Speaker photo must be a jpg or png');
 
             return false;
@@ -126,7 +126,7 @@ class SignupForm extends Form
             return false;
         }
 
-        $response = filter_var($this->_taintedData['email'], FILTER_VALIDATE_EMAIL);
+        $response = \filter_var($this->_taintedData['email'], FILTER_VALIDATE_EMAIL);
 
         if (!$response) {
             $this->_addErrorMessage('Invalid email address format');
@@ -159,13 +159,13 @@ class SignupForm extends Form
             return false;
         }
 
-        if (strlen($passwd) < 5 && strlen($passwd2) < 5) {
+        if (\strlen($passwd) < 5 && \strlen($passwd2) < 5) {
             $this->_addErrorMessage('The submitted password must be at least 5 characters long');
 
             return false;
         }
 
-        if ($passwd !== str_replace(' ', '', $passwd)) {
+        if ($passwd !== \str_replace(' ', '', $passwd)) {
             $this->_addErrorMessage('The submitted password contains invalid characters');
 
             return false;
@@ -189,7 +189,7 @@ class SignupForm extends Form
             $validation_response = false;
         }
 
-        if (strlen($first_name) > 255) {
+        if (\strlen($first_name) > 255) {
             $this->_addErrorMessage('First name cannot exceed 255 characters');
             $validation_response = false;
         }
@@ -217,7 +217,7 @@ class SignupForm extends Form
             $validation_response = false;
         }
 
-        if (strlen($last_name) > 255) {
+        if (\strlen($last_name) > 255) {
             $this->_addErrorMessage('Last name cannot exceed 255 characters');
             $validation_response = false;
         }
@@ -244,7 +244,7 @@ class SignupForm extends Form
 
     public function validateUrl(): bool
     {
-        if (preg_match('/https:\/\/joind\.in\/user\/[a-zA-Z0-9]{1,25}/', $this->_cleanData['url'])
+        if (\preg_match('/https:\/\/joind\.in\/user\/[a-zA-Z0-9]{1,25}/', $this->_cleanData['url'])
             || !isset($this->_cleanData['url'])
             || $this->_cleanData['url'] == ''
         ) {
@@ -262,12 +262,12 @@ class SignupForm extends Form
      */
     public function validateSpeakerInfo(): bool
     {
-        $speakerInfo = filter_var(
+        $speakerInfo = \filter_var(
             $this->_cleanData['speaker_info'],
             FILTER_SANITIZE_STRING
         );
         $validation_response = true;
-        $speakerInfo         = strip_tags($speakerInfo);
+        $speakerInfo         = \strip_tags($speakerInfo);
         $speakerInfo         = $this->_purifier->purify($speakerInfo);
 
         if (empty($speakerInfo)) {
@@ -285,12 +285,12 @@ class SignupForm extends Form
      */
     public function validateSpeakerBio(): bool
     {
-        $speaker_bio = filter_var(
+        $speaker_bio = \filter_var(
             $this->_cleanData['speaker_bio'],
             FILTER_SANITIZE_STRING
         );
         $validation_response = true;
-        $speaker_bio         = strip_tags($speaker_bio);
+        $speaker_bio         = \strip_tags($speaker_bio);
         $speaker_bio         = $this->_purifier->purify($speaker_bio);
 
         if (empty($speaker_bio)) {
@@ -319,7 +319,7 @@ class SignupForm extends Form
 
         // Remove leading @ for twitter
         if (isset($this->_taintedData['twitter'])) {
-            $this->_cleanData['twitter'] = preg_replace(
+            $this->_cleanData['twitter'] = \preg_replace(
                 '/^@/',
                 '',
                 $this->_taintedData['twitter']

@@ -48,7 +48,7 @@ abstract class WebTestCase extends BaseTestCase
      */
     public function withHeaders(array $headers): self
     {
-        $this->headers = array_merge($this->headers, $headers);
+        $this->headers = \array_merge($this->headers, $headers);
 
         return $this;
     }
@@ -90,7 +90,7 @@ abstract class WebTestCase extends BaseTestCase
             $parameters,
             $cookies,
             $files,
-            array_replace($this->server, $server),
+            \array_replace($this->server, $server),
             $content
         );
 

@@ -56,7 +56,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     public function runBeforeTestTraits()
     {
-        $uses = array_flip(class_uses_recursive(static::class));
+        $uses = \array_flip(class_uses_recursive(static::class));
 
         if (isset($uses[DataBaseInteraction::class])) {
             $this->resetDatabase();
@@ -68,7 +68,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      */
     protected static function runBeforeClassTraits()
     {
-        $uses = array_flip(class_uses_recursive(static::class));
+        $uses = \array_flip(class_uses_recursive(static::class));
 
         if (isset($uses[RefreshDatabase::class])) {
             static::setUpDatabase();

@@ -34,7 +34,7 @@ class SpeakerProfile
 
     public function isAllowedToSee(string $property): bool
     {
-        return !in_array($property, $this->hiddenProperties);
+        return !\in_array($property, $this->hiddenProperties);
     }
 
     private function assertAllowedToSee(string $property)

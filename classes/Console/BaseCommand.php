@@ -49,7 +49,7 @@ abstract class BaseCommand extends Command
 
         $io->title('OpenCFP');
 
-        $io->section(sprintf(
+        $io->section(\sprintf(
             'Demoting account with email %s from ' . $role,
             $email
         ));
@@ -57,7 +57,7 @@ abstract class BaseCommand extends Command
         try {
             $user = $accounts->findByLogin($email);
         } catch (\Exception $e) {
-            $io->error(sprintf(
+            $io->error(\sprintf(
                 'Could not find account with email %s.',
                 $email
             ));
@@ -66,7 +66,7 @@ abstract class BaseCommand extends Command
         }
 
         if (!$user->hasAccess(\strtolower($role))) {
-            $io->error(sprintf(
+            $io->error(\sprintf(
                 'Account with email %s is not in the Reviewer group.',
                 $email
             ));
@@ -76,7 +76,7 @@ abstract class BaseCommand extends Command
 
         $accounts->demoteFrom($user->getLogin(), $role);
 
-        $io->success(sprintf(
+        $io->success(\sprintf(
             'Removed account with email %s from the Reviewer group',
             $email
         ));
@@ -107,7 +107,7 @@ abstract class BaseCommand extends Command
 
         $io->title('OpenCFP');
 
-        $io->section(sprintf(
+        $io->section(\sprintf(
             'Promoting account with email %s to ' . $role,
             $email
         ));
@@ -115,7 +115,7 @@ abstract class BaseCommand extends Command
         try {
             $user = $accounts->findByLogin($email);
         } catch (\Exception $e) {
-            $io->error(sprintf(
+            $io->error(\sprintf(
                 'Could not find account with email %s.',
                 $email
             ));
@@ -125,7 +125,7 @@ abstract class BaseCommand extends Command
 
         $accounts->promoteTo($user->getLogin(), $role);
 
-        $io->success(sprintf(
+        $io->success(\sprintf(
             'Added account with email %s to the ' . $role . ' group',
             $email
         ));
