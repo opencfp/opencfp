@@ -3,6 +3,7 @@
 namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
+use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
@@ -27,14 +28,14 @@ final class SentinelIdentityProvider implements IdentityProvider
     }
 
     /**
-     * Retrieves the currently authenticate user
+     * Retrieves the currently authenticated user
      *
      * @throws NotAuthenticatedException
      */
     public function getCurrentUser(): User
     {
         $user = $this->sentinel->getUser();
-        if (!$user instanceof \Cartalyst\Sentinel\Users\UserInterface) {
+        if (!$user instanceof SentinelUserInterface) {
             throw new NotAuthenticatedException();
         }
 

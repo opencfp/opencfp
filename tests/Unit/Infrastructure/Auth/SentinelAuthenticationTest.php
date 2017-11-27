@@ -3,6 +3,7 @@
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
+use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -72,13 +73,15 @@ class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
 
     public function testAuthenticateIsVoidWhenSuccessFull()
     {
-        $user = Mockery::mock(UserInterface::class);
+        $sentinelUser = Mockery::mock(SentinelUserInterface::class);
+        $user         = Mockery::mock(UserInterface::class);
         $user->shouldReceive('checkPassword')->andReturn(true);
+        $user->shouldReceive('getUser')->andReturn($sentinelUser);
         $sentinel = Mockery::mock(Sentinel::class);
+        $sentinel->shouldReceive('login')->andReturn(true);
         $account  = Mockery::mock(AccountManagement::class);
         $account->shouldReceive('findbyLogin')->andReturn($user);
         $auth = new SentinelAuthentication($sentinel, $account);
-        $this->expectException(AuthenticationException::class);
         $auth->authenticate('mail', 'pass');
     }
 
