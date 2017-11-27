@@ -3,21 +3,23 @@
 namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
+use Cartalyst\Sentinel\Users\EloquentUser;
+use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
 use Illuminate\Support\Collection;
 
 final class SentinelUser implements UserInterface
 {
     /**
-     * @var \Cartalyst\Sentinel\Users\EloquentUser
+     * @var EloquentUser
      */
     private $user;
 
     /**
-     * @var \Cartalyst\Sentinel\Sentinel
+     * @var Sentinel
      */
     private $sentinel;
 
-    public function __construct(\Cartalyst\Sentinel\Users\UserInterface $user, Sentinel $sentinel)
+    public function __construct(SentinelUserInterface $user, Sentinel $sentinel)
     {
         $this->user     = $user;
         $this->sentinel = $sentinel;
@@ -41,7 +43,7 @@ final class SentinelUser implements UserInterface
     public function hasAccess($permissions): bool
     {
         try {
-            /** @var Collection | \Cartalyst\Sentinel\Users\EloquentUser[] $users */
+            /** @var Collection | SentinelUserInterface[] $users */
             $users = $this->sentinel->getRoleRepository()->findByName($permissions)->getUsers();
 
             return $users->contains(function ($user) {
@@ -78,7 +80,7 @@ final class SentinelUser implements UserInterface
      */
     public function getResetPasswordCode(): string
     {
-        return $this->sentinel->getReminderRepository()->create($this->user);
+        return $this->sentinel->getReminderRepository()->create($this->user)->code;
     }
 
     /**
@@ -96,7 +98,7 @@ final class SentinelUser implements UserInterface
     }
 
     /**
-     * @return \Cartalyst\Sentinel\Users\EloquentUser|\Cartalyst\Sentinel\Users\UserInterface
+     * @return EloquentUser|SentinelUserInterface
      */
     public function getUser()
     {

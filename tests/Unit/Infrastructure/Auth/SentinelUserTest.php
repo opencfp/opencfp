@@ -112,7 +112,7 @@ class SentinelUserTest extends \PHPUnit\Framework\TestCase
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel  = m::mock(Sentinel::class);
-        $sentinel->shouldReceive('getReminderRepository->create')->andReturn('blabla');
+        $sentinel->shouldReceive('getReminderRepository->create')->andReturn((object) ['code' => 'blabla']);
         $user = new SentinelUser($innerUser, $sentinel);
         $this->assertSame('blabla', $user->getResetPasswordCode());
     }
