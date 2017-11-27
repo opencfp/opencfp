@@ -67,16 +67,16 @@ class TalksController extends BaseController
             ->grabTalk((int) $req->get('id'));
         if (!$handler->view()) {
             $this->service('session')->set('flash', [
-                'type' => 'error',
+                'type'  => 'error',
                 'short' => 'Error',
-                'ext' => 'Could not find requested talk',
+                'ext'   => 'Could not find requested talk',
             ]);
 
             return $this->app->redirect($this->url('admin_talks'));
         }
-            $data = [
+        $data = [
                 'ratingsystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
-                'talk' => $handler->getProfile()
+                'talk'         => $handler->getProfile(),
             ];
 
         return $this->render('reviewer/talks/view.twig', $data);

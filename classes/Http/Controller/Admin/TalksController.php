@@ -80,7 +80,7 @@ class TalksController extends BaseController
             return $this->app->redirect($this->url('admin_talks'));
         }
         $data = [
-            'talk' => $handler->getProfile(),
+            'talk'         => $handler->getProfile(),
             'ratingsystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
             ];
 
