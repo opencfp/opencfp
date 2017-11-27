@@ -69,7 +69,7 @@ final class SentinelAccountManagement implements AccountManagement
         }
         $user = $this->sentinel
             ->getUserRepository()
-            ->create(array_merge(['email' => $email, 'password' => $password], $data));
+            ->create(\array_merge(['email' => $email, 'password' => $password], $data));
         if ($user instanceof SentinelUserInterface) {
             return new SentinelUser($user, $this->sentinel);
         }
@@ -96,7 +96,7 @@ final class SentinelAccountManagement implements AccountManagement
     {
         $this->sentinel
             ->getRoleRepository()
-            ->findByName(strtolower($role))
+            ->findByName(\strtolower($role))
             ->users()
             ->attach($this->findByLogin($email)->getId());
     }
@@ -105,7 +105,7 @@ final class SentinelAccountManagement implements AccountManagement
     {
         $this->sentinel
             ->getRoleRepository()
-            ->findByName(strtolower($role))
+            ->findByName(\strtolower($role))
             ->users()
             ->detach($this->findByLogin($email)->getId());
     }

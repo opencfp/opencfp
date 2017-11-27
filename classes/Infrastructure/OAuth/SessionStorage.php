@@ -23,7 +23,7 @@ class SessionStorage extends AbstractStorage implements SessionInterface
                             ->where('oauth_access_tokens.access_token', $accessToken->getId())
                             ->get();
 
-        if (count($result) === 1) {
+        if (\count($result) === 1) {
             $session = new SessionEntity($this->server);
             $session->setId($result[0]['id']);
             $session->setOwner($result[0]['owner_type'], $result[0]['owner_id']);
@@ -43,7 +43,7 @@ class SessionStorage extends AbstractStorage implements SessionInterface
                             ->where('oauth_auth_codes.auth_code', $authCode->getId())
                             ->get();
 
-        if (count($result) === 1) {
+        if (\count($result) === 1) {
             $session = new SessionEntity($this->server);
             $session->setId($result[0]['id']);
             $session->setOwner($result[0]['owner_type'], $result[0]['owner_id']);

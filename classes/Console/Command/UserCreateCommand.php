@@ -3,7 +3,6 @@
 namespace OpenCFP\Console\Command;
 
 use OpenCFP\Domain\Services;
-use OpenCFP\Infrastructure\Auth\UserExistsException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -62,8 +61,8 @@ final class UserCreateCommand extends Command
                 $data['password'],
                 $data
             );
-        } catch (UserExistsException $exception) {
-            $io->error(sprintf(
+        } catch (Sentry\Users\UserExistsException $exception) {
+            $io->error(\sprintf(
                 'A user with the login "%s" already exists.',
                 $data['email']
             ));
@@ -71,7 +70,7 @@ final class UserCreateCommand extends Command
             return 1;
         }
 
-        $io->writeln(sprintf(
+        $io->writeln(\sprintf(
             ' * created user with login <info>%s</info>',
             $data['email']
         ));
@@ -88,7 +87,7 @@ final class UserCreateCommand extends Command
             $roles[] = 'reviewer';
         }
 
-        if (count($roles)) {
+        if (\count($roles)) {
             foreach ($roles as $role) {
                 if ($user->hasAccess($role)) {
                     continue;
@@ -99,7 +98,7 @@ final class UserCreateCommand extends Command
                     $role
                 );
 
-                $io->writeln(sprintf(
+                $io->writeln(\sprintf(
                     ' * promoted user to <info>%s</info>',
                     $role
                 ));

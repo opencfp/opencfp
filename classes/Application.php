@@ -54,7 +54,7 @@ class Application extends SilexApplication
         $this->bindConfiguration();
 
         if ($timezone = $this->config('application.date_timezone')) {
-            date_default_timezone_set($timezone);
+            \date_default_timezone_set($timezone);
         }
 
         // Register Gateways...
@@ -73,7 +73,7 @@ class Application extends SilexApplication
         $this->register(new MonologServiceProvider(), [
             'monolog.logfile' => $this->config('log.path') ?: "{$basePath}/log/app.log",
             'monolog.name'    => 'opencfp',
-            'monlog.level'    => strtoupper(
+            'monlog.level'    => \strtoupper(
                 $this->config('log.level') ?: 'debug'
             ),
         ]);
@@ -133,15 +133,15 @@ class Application extends SilexApplication
      */
     private function camelCaseFrom($slug)
     {
-        $parts = explode('.', $slug);
+        $parts = \explode('.', $slug);
 
-        $parts = array_map(function ($value) {
-            return ucfirst($value);
+        $parts = \array_map(function ($value) {
+            return \ucfirst($value);
         }, $parts);
 
-        $parts[0] = strtolower($parts[0]);
+        $parts[0] = \strtolower($parts[0]);
 
-        return implode('', $parts);
+        return \implode('', $parts);
     }
 
     /**
@@ -152,9 +152,9 @@ class Application extends SilexApplication
         $config = $this['path']->configPath();
         $driver = new YamlConfigDriver();
 
-        if (!file_exists($config)) {
+        if (!\file_exists($config)) {
             throw new \InvalidArgumentException(
-                sprintf("The config file '%s' does not exist.", $config)
+                \sprintf("The config file '%s' does not exist.", $config)
             );
         }
 
@@ -178,7 +178,7 @@ class Application extends SilexApplication
     {
         $cursor = $this['config'];
 
-        foreach (explode('.', $path) as $part) {
+        foreach (\explode('.', $path) as $part) {
             if (!isset($cursor[$part])) {
                 return null;
             }
@@ -198,7 +198,7 @@ class Application extends SilexApplication
     private function registerGlobalErrorHandler()
     {
         $this->error(function (\Exception $e, Request $request, $code) {
-            if (in_array('application/json', $request->getAcceptableContentTypes())) {
+            if (\in_array('application/json', $request->getAcceptableContentTypes())) {
                 $headers = [];
 
                 if ($e instanceof HttpExceptionInterface) {

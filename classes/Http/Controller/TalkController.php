@@ -51,7 +51,7 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        return $this->render('talk/view.twig', compact('talkId', 'talk'));
+        return $this->render('talk/view.twig', \compact('talkId', 'talk'));
     }
 
     public function editAction(Request $req)
@@ -97,8 +97,8 @@ class TalkController extends BaseController
             'talkTypes'      => $helper->getTalkTypes(),
             'talkLevels'     => $helper->getTalkLevels(),
             'id'             => $talkId,
-            'title'          => html_entity_decode($talk['title']),
-            'description'    => html_entity_decode($talk['description']),
+            'title'          => \html_entity_decode($talk['title']),
+            'description'    => \html_entity_decode($talk['description']),
             'type'           => $talk['type'],
             'level'          => $talk['level'],
             'category'       => $talk['category'],
@@ -227,7 +227,7 @@ class TalkController extends BaseController
         $this->service('session')->set('flash', [
             'type'  => 'error',
             'short' => 'Error',
-            'ext'   => implode('<br>', $form->getErrorMessages()),
+            'ext'   => \implode('<br>', $form->getErrorMessages()),
         ]);
         $data['flash'] = $this->service('session')->get('flash');
 
@@ -315,7 +315,7 @@ class TalkController extends BaseController
         $this->service('session')->set('flash', [
             'type'  => 'error',
             'short' => 'Error',
-            'ext'   => implode('<br>', $form->getErrorMessages()),
+            'ext'   => \implode('<br>', $form->getErrorMessages()),
         ]);
 
         $data['flash'] = $this->service('session')->get('flash');

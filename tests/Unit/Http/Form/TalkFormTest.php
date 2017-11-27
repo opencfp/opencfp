@@ -30,13 +30,13 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      */
     public function correctlyDetectsRequiredFields($rawData, $response)
     {
-        $data = unserialize($rawData);
+        $data = \unserialize($rawData);
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
 
         $this->assertEquals(
             $response,
             $form->hasRequiredFields(),
-            sprintf(
+            \sprintf(
                 '%s::hasRequired() did not work correctly',
                 \OpenCFP\Http\Form\TalkForm::class
             )
@@ -70,9 +70,9 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $extendedData['extra'] = 'Extra data in $_POST but we ignore it';
 
         return [
-            [serialize($badData), false],
-            [serialize($goodData), true],
-            [serialize($extendedData), true],
+            [\serialize($badData), false],
+            [\serialize($goodData), true],
+            [\serialize($extendedData), true],
         ];
     }
 
@@ -88,12 +88,12 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      */
     public function submitsTalkWhenNoDesiredOrSponrosIncluded($rawData, $response)
     {
-        $data = unserialize($rawData);
+        $data = \unserialize($rawData);
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         $this->assertEquals(
             $response,
             $form->hasRequiredFields(),
-            sprintf(
+            \sprintf(
                 '%s::hasRequired() did not work correctly',
                 \OpenCFP\Http\Form\TalkForm::class
             )
@@ -119,7 +119,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         ];
 
         return [
-            [serialize($goodData), true],
+            [\serialize($goodData), true],
         ];
     }
 
@@ -141,7 +141,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateTitle(),
-            sprintf(
+            \sprintf(
                 '%s::validateTitle() did not apply validation rules correctly',
                 \OpenCFP\Http\Form\TalkForm::class
             )
@@ -158,7 +158,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $faker = $this->getFaker();
 
         return [
-            [substr($faker->text(90), 0, 90), true],
+            [\substr($faker->text(90), 0, 90), true],
             [null, false],
             ['This is a string that could be more than 100 characters long but will we really know for sure until I check it out?', false],
             ['A little bit of this & that', true],
@@ -183,7 +183,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateDescription(),
-            sprintf(
+            \sprintf(
                 '%s::validateDescription() did not apply validation rules correctly',
                 \OpenCFP\Http\Form\TalkForm::class
             )
@@ -228,7 +228,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateType(),
-            sprintf(
+            \sprintf(
                 '%s::validateType() did not apply validation rules correctly',
                 \OpenCFP\Http\Form\TalkForm::class
             )
@@ -271,7 +271,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateCategory(),
-            sprintf(
+            \sprintf(
                 '%s::validateType() did not apply validation rules correctly',
                 \OpenCFP\Http\Form\TalkForm::class
             )
@@ -339,7 +339,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $expectedResponse,
             $form->validateLevel(),
-            sprintf(
+            \sprintf(
                 '%s::validateType() did not apply validation rules correctly',
                 \OpenCFP\Http\Form\TalkForm::class
             )

@@ -35,10 +35,10 @@ class RequestCleaner
         $sanitized = [];
 
         foreach ($data as $key => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $sanitized[$key] = $this->clean($value);
             } else {
-                $sanitized[$key] = preg_replace(
+                $sanitized[$key] = \preg_replace(
                     ['/&amp;/', '/&lt;\b/', '/\b&gt;/'],
                     ['&', '<', '>'],
                     $this->purifier->purify($value)

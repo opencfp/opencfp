@@ -47,7 +47,7 @@ abstract class Form
     {
         // The $_taintedData property might have been already set by
         // the populate() method.
-        $this->_taintedData = array_merge($this->_taintedData, (array) $data);
+        $this->_taintedData = \array_merge($this->_taintedData, (array) $data);
     }
 
     /**
@@ -58,8 +58,8 @@ abstract class Form
      */
     public function hasRequiredFields(): bool
     {
-        $dataKeys    = array_keys($this->_taintedData);
-        $foundFields = array_intersect($this->_fieldList, $dataKeys);
+        $dataKeys    = \array_keys($this->_taintedData);
+        $foundFields = \array_intersect($this->_fieldList, $dataKeys);
 
         return $foundFields == $this->_fieldList;
     }
@@ -147,7 +147,7 @@ abstract class Form
      */
     public function hasErrors(): bool
     {
-        return count($this->_messages) > 0;
+        return \count($this->_messages) > 0;
     }
 
     /**
@@ -158,7 +158,7 @@ abstract class Form
      */
     protected function _addErrorMessage($message)
     {
-        if (!in_array($message, $this->_messages)) {
+        if (!\in_array($message, $this->_messages)) {
             $this->_messages[] = $message;
         }
     }
@@ -181,7 +181,7 @@ abstract class Form
     protected function internalSanitize(array $taintedData): array
     {
         $purifier  = $this->_purifier;
-        $filtered  = array_map(
+        $filtered  = \array_map(
             function ($field) use ($purifier) {
                 return $purifier->purify($field);
             },

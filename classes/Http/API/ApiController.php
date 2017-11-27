@@ -102,7 +102,7 @@ class ApiController
     public function respondWithError($message)
     {
         if ($this->statusCode === Response::HTTP_OK) {
-            trigger_error(
+            \trigger_error(
                 'You need to stellar reason to error with a 200 HTTP status code, Mr. Spock.',
                 E_USER_WARNING
             );

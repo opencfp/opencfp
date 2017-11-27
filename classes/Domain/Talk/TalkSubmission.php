@@ -25,7 +25,7 @@ class TalkSubmission
 
     public function toTalk(): Talk
     {
-        $data = array_merge([
+        $data = \array_merge([
             'title'       => '',
             'description' => '',
             'type'        => '',
@@ -47,7 +47,7 @@ class TalkSubmission
             throw new InvalidTalkSubmissionException('The title of the talk must be provided.');
         }
 
-        if (strlen($data['title']) > 100) {
+        if (\strlen($data['title']) > 100) {
             throw new InvalidTalkSubmissionException('The title of the talk must be 100 characters or less.');
         }
     }
@@ -83,7 +83,7 @@ class TalkSubmission
      */
     private function isValidTalkType($type)
     {
-        return in_array($type, ['regular', 'tutorial']);
+        return \in_array($type, ['regular', 'tutorial']);
     }
 
     private function guardLevelIsValid($data)
@@ -99,7 +99,7 @@ class TalkSubmission
 
     private function isValidLevel($level)
     {
-        return in_array($level, ['entry', 'mid', 'advanced']);
+        return \in_array($level, ['entry', 'mid', 'advanced']);
     }
 
     private function guardCategoryIsValid($data)
@@ -115,7 +115,7 @@ class TalkSubmission
 
     private function isValidCategory($category)
     {
-        return in_array($category, [
+        return \in_array($category, [
             'development',
             'framework',
             'database',

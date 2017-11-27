@@ -16,7 +16,7 @@ class ControllerResolver extends \Silex\ControllerResolver
      */
     protected function createController($controller)
     {
-        if (strpos($controller, '::') !== false) {
+        if (\strpos($controller, '::') !== false) {
             $instance = parent::createController($controller);
 
             // Injects container from side rather than constructor.
@@ -27,14 +27,14 @@ class ControllerResolver extends \Silex\ControllerResolver
             return $instance;
         }
 
-        if (strpos($controller, ':') === false) {
-            throw new \LogicException(sprintf('Unable to parse the controller name "%s".', $controller));
+        if (\strpos($controller, ':') === false) {
+            throw new \LogicException(\sprintf('Unable to parse the controller name "%s".', $controller));
         }
 
-        list($service, $method) = explode(':', $controller, 2);
+        list($service, $method) = \explode(':', $controller, 2);
 
         if (!isset($this->app[$service])) {
-            throw new \InvalidArgumentException(sprintf('Service "%s" does not exist.', $controller));
+            throw new \InvalidArgumentException(\sprintf('Service "%s" does not exist.', $controller));
         }
 
         return [$this->app[$service], $method];

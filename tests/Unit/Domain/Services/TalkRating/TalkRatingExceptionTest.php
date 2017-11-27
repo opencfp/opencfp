@@ -26,7 +26,7 @@ final class TalkRatingExceptionTest extends Framework\TestCase
         $this->assertInstanceOf(TalkRatingException::class, $exception);
         $this->assertSame(0, $exception->getCode());
 
-        $message = sprintf(
+        $message = \sprintf(
             'Invalid talk rating: %s',
             $rating
         );

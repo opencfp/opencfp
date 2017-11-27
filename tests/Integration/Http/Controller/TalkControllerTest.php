@@ -159,7 +159,7 @@ class TalkControllerTest extends WebTestCase
     public function cannotEditTalkWithBadToken()
     {
         $this->asLoggedInSpeaker(self::$user->id)
-            ->get('/talk/edit/' . self::$talk->id . '?token=' . uniqid())
+            ->get('/talk/edit/' . self::$talk->id . '?token=' . \uniqid())
             ->assertRedirect()
             ->assertTargetURLContains('/dashboard');
     }
@@ -242,7 +242,7 @@ class TalkControllerTest extends WebTestCase
     {
         $postData = [
             'description' => 'Talk Description',
-            '_token'      => uniqid(),
+            '_token'      => \uniqid(),
         ];
         $this->asLoggedInSpeaker()
             ->callForPapersIsOpen()
@@ -289,7 +289,7 @@ class TalkControllerTest extends WebTestCase
     {
         $postData = [
             'id'     => 2,
-            '_token' => uniqid(),
+            '_token' => \uniqid(),
         ];
         $this->asLoggedInSpeaker()
             ->callForPapersIsOpen()

@@ -113,12 +113,12 @@ class UserTest extends BaseTestCase
     private static function makeKnownUsers()
     {
         $userInfo = [
-            'password'         => password_hash('secret', PASSWORD_BCRYPT),
+            'password'         => \password_hash('secret', PASSWORD_BCRYPT),
             'activated'        => 1,
             'has_made_profile' => 1,
         ];
 
-        $user = User::create(array_merge([
+        $user = User::create(\array_merge([
             'email'      => 'henk@example.com',
             'first_name' => 'Henk',
             'last_name'  => 'de Vries',
@@ -126,25 +126,25 @@ class UserTest extends BaseTestCase
         self::giveUserThreeTalks($user);
         self::giveUserRelations($user);
 
-        User::create(array_merge([
+        User::create(\array_merge([
             'email'      => 'speaker@cfp.org',
             'first_name' => 'Speaker',
             'last_name'  => 'de Vries',
         ], $userInfo));
 
-        User::create(array_merge([
+        User::create(\array_merge([
             'email'      => 'Vries@cfp.org',
             'first_name' => 'Vries',
             'last_name'  => 'van Henk',
         ], $userInfo));
 
-        User::create(array_merge([
+        User::create(\array_merge([
             'email'      => 'd20@mail.com',
             'first_name' => 'Arthur',
             'last_name'  => 'Hunter',
         ], $userInfo));
 
-        User::create(array_merge([
+        User::create(\array_merge([
             'email'      => 'hunter@hunter.xx',
             'first_name' => 'Gon',
             'last_name'  => 'Freecss',

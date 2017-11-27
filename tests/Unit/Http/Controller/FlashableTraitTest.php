@@ -79,7 +79,7 @@ class FlashableTraitTest extends \PHPUnit\Framework\TestCase
             ->expects($this->any())
             ->method('offsetGet')
             ->willReturnCallback(function ($alias) use ($items) {
-                if (array_key_exists($alias, $items)) {
+                if (\array_key_exists($alias, $items)) {
                     return $items[$alias];
                 }
             });

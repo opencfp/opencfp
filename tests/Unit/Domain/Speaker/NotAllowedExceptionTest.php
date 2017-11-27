@@ -26,7 +26,7 @@ final class NotAllowedExceptionTest extends Framework\TestCase
         $this->assertInstanceOf(NotAllowedException::class, $exception);
         $this->assertSame(0, $exception->getCode());
 
-        $message = sprintf(
+        $message = \sprintf(
             'Not allowed to view %s. Hidden property',
             $property
         );

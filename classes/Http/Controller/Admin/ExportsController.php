@@ -82,14 +82,14 @@ class ExportsController extends BaseController
 
     private function startsWith($haystack, string $needle): bool
     {
-        $length = strlen($needle);
+        $length = \strlen($needle);
 
-        return substr($haystack, 0, $length) === $needle;
+        return \substr($haystack, 0, $length) === $needle;
     }
 
     private function csvReturn(array $contents, string $filename = 'data')
     {
-        if (count($contents) === 0) {
+        if (\count($contents) === 0) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -99,12 +99,12 @@ class ExportsController extends BaseController
             return $this->redirectTo('admin');
         }
 
-        $keys   = implode(',', array_keys($contents[0]));
+        $keys   = \implode(',', \array_keys($contents[0]));
         $output = $keys . "\n";
 
         foreach ($contents as $content) {
-            $content = array_map([$this, 'csvFormat'], $content);
-            $output  = $output . implode(',', $content) . "\n";
+            $content = \array_map([$this, 'csvFormat'], $content);
+            $output  = $output . \implode(',', $content) . "\n";
         }
 
         return $this->export($output, $filename . '.csv');
