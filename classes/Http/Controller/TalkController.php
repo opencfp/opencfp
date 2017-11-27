@@ -84,7 +84,7 @@ class TalkController extends BaseController
         }
 
         $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken('edit_talk', $req->get('token'));
+        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
 
         if (!$csrfTokenManager->isTokenValid($csrfToken)) {
             return $this->redirectTo('dashboard');
@@ -180,7 +180,7 @@ class TalkController extends BaseController
         ];
 
         $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken('speaker_talk', $req->get('_token'));
+        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
 
         if (!$csrfTokenManager->isTokenValid($csrfToken)) {
             return $this->redirectTo('dashboard');
@@ -249,7 +249,7 @@ class TalkController extends BaseController
         }
 
         $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken('speaker_talk', $req->get('_token'));
+        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
 
         if (!$csrfTokenManager->isTokenValid($csrfToken)) {
             return $this->redirectTo('dashboard');
@@ -332,7 +332,7 @@ class TalkController extends BaseController
 
         // Reject any attempt to delete a talk without a proper token
         $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken('delete_talk', $req->get('token'));
+        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
 
         if (!$csrfTokenManager->isTokenValid($csrfToken)) {
             return $this->app->json(['delete' => 'no']);

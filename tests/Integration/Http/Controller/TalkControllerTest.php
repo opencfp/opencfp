@@ -147,7 +147,7 @@ class TalkControllerTest extends WebTestCase
             ->getToken('edit_talk')
             ->getValue();
         $this->asLoggedInSpeaker(self::$user->id)
-            ->get('/talk/edit/' . self::$talk->id . '?token=' . $csrfToken)
+            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . $csrfToken)
             ->assertSee(self::$talk->title)
             ->assertSee('Edit Your Talk')
             ->assertSuccessful();
@@ -159,7 +159,7 @@ class TalkControllerTest extends WebTestCase
     public function cannotEditTalkWithBadToken()
     {
         $this->asLoggedInSpeaker(self::$user->id)
-            ->get('/talk/edit/' . self::$talk->id . '?token=' . \uniqid())
+            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . \uniqid())
             ->assertRedirect()
             ->assertTargetURLContains('/dashboard');
     }
@@ -225,7 +225,8 @@ class TalkControllerTest extends WebTestCase
             ->getValue();
         $postData = [
             'description' => 'Talk Description',
-            '_token'      => $csrfToken,
+            'token'       => $csrfToken,
+            'token_id'    => 'speaker_talk',
         ];
         $this->asLoggedInSpeaker()
             ->callForPapersIsOpen()
@@ -242,7 +243,8 @@ class TalkControllerTest extends WebTestCase
     {
         $postData = [
             'description' => 'Talk Description',
-            '_token'      => \uniqid(),
+            'token'       => \uniqid(),
+            'token_id'    => 'speaker_talk',
         ];
         $this->asLoggedInSpeaker()
             ->callForPapersIsOpen()
@@ -272,8 +274,9 @@ class TalkControllerTest extends WebTestCase
             ->getToken('speaker_talk')
             ->getValue();
         $postData = [
-            'id'     => 2,
-            '_token' => $csrfToken,
+            'id'       => 2,
+            'token'    => $csrfToken,
+            'token_id' => 'speaker_talk',
         ];
         $this->asLoggedInSpeaker()
             ->callForPapersIsOpen()
@@ -288,8 +291,9 @@ class TalkControllerTest extends WebTestCase
     public function cantUpdateActionWithBadToken()
     {
         $postData = [
-            'id'     => 2,
-            '_token' => \uniqid(),
+            'id'       => 2,
+            'token'    => \uniqid(),
+            'token_id' => 'speaker_talk',
         ];
         $this->asLoggedInSpeaker()
             ->callForPapersIsOpen()

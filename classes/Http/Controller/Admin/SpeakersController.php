@@ -124,7 +124,7 @@ class SpeakersController extends BaseController
     public function deleteAction(Request $req)
     {
         $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken('admin_speaker_delete', $req->get('token'));
+        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
 
         if (!$csrfTokenManager->isTokenValid($csrfToken)) {
             return $this->redirectTo('admin_speakers');
@@ -175,7 +175,7 @@ class SpeakersController extends BaseController
         }
 
         $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken('admin_speaker_demote', $req->get('token'));
+        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
 
         if (!$csrfTokenManager->isTokenValid($csrfToken)) {
             return $this->redirectTo('admin_speakers');
@@ -208,7 +208,7 @@ class SpeakersController extends BaseController
         $role     = $req->get('role');
 
         $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken('admin_speaker_promote', $req->get('token'));
+        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
 
         if (!$csrfTokenManager->isTokenValid($csrfToken)) {
             $this->service('session')->set('flash', [
