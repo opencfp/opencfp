@@ -14,7 +14,7 @@ interface SpeakerRepository
      *
      * @throws EntityNotFoundException
      *
-     * @return User the speaker that matches given identifier.
+     * @return User the speaker that matches given identifier
      */
     public function findById($speakerId);
 
