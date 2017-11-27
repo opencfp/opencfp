@@ -28,7 +28,7 @@ final class SentinelIdentityProvider implements IdentityProvider
     }
 
     /**
-     * Retrieves the currently authenticate user
+     * Retrieves the currently authenticated user
      *
      * @throws NotAuthenticatedException
      */
