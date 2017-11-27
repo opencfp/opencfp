@@ -43,11 +43,9 @@ class IlluminateSpeakerRepository implements SpeakerRepository
      * Saves a speaker and their talks.
      *
      * @param User $speaker
-     *
-     * @return mixed
      */
     public function persist(User $speaker)
     {
-        return $speaker->save();
+        $speaker->save();
     }
 }

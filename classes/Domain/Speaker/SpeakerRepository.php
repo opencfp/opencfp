@@ -22,8 +22,6 @@ interface SpeakerRepository
      * Saves a speaker and their talks.
      *
      * @param $speaker
-     *
-     * @return mixed
      */
     public function persist(User $speaker);
 }
