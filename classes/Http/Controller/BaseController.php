@@ -109,7 +109,6 @@ abstract class BaseController
             throw ValidationException::withErrors(array_flatten($validator->errors()->toArray()));
         }
 
-        unset($validation);
-        unset($validator);
+        unset($validation, $validator);
     }
 }
