@@ -3,6 +3,7 @@
 namespace OpenCFP\Provider\Gateways;
 
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Infrastructure\Auth\CsrfCheck;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
 use Pimple\Container;
@@ -59,6 +60,12 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             return SpeakerAccess::userHasAccess($app);
         };
 
+        $csrfChecker = function (Request $req) use ($app) {
+            $checker = $app[CsrfCheck::class];
+
+            return $checker->checkCsrf($req->get('token_id'), $req->get('token'));
+        };
+
         $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')->bind('homepage');
         $web->get('/package', 'OpenCFP\Http\Controller\PagesController::showSpeakerPackage')->bind('speaker_package');
         $web->get('/ideas', 'OpenCFP\Http\Controller\PagesController::showTalkIdeas')->bind('talk_ideas');
@@ -67,12 +74,18 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $web->get('/dashboard', 'OpenCFP\Http\Controller\DashboardController::showSpeakerProfile')->bind('dashboard');
 
         // Talks
-        $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')->bind('talk_edit')->before($asSpeaker);
-        $web->get('/talk/create', 'OpenCFP\Http\Controller\TalkController::createAction')->bind('talk_new')->before($asSpeaker);
-        $web->post('/talk/create', 'OpenCFP\Http\Controller\TalkController::processCreateAction')->bind('talk_create')->before($asSpeaker);
-        $web->post('/talk/update', 'OpenCFP\Http\Controller\TalkController::updateAction')->bind('talk_update')->before($asSpeaker);
-        $web->post('/talk/delete', 'OpenCFP\Http\Controller\TalkController::deleteAction')->bind('talk_delete')->before($asSpeaker);
-        $web->get('/talk/{id}', 'OpenCFP\Http\Controller\TalkController::viewAction')->bind('talk_view')->before($asSpeaker);
+        $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')
+            ->bind('talk_edit')->before($asSpeaker)->before($csrfChecker);
+        $web->get('/talk/create', 'OpenCFP\Http\Controller\TalkController::createAction')
+            ->bind('talk_new')->before($asSpeaker);
+        $web->post('/talk/create', 'OpenCFP\Http\Controller\TalkController::processCreateAction')
+            ->bind('talk_create')->before($asSpeaker)->before($csrfChecker);
+        $web->post('/talk/update', 'OpenCFP\Http\Controller\TalkController::updateAction')
+            ->bind('talk_update')->before($asSpeaker)->before($csrfChecker);
+        $web->post('/talk/delete', 'OpenCFP\Http\Controller\TalkController::deleteAction')
+            ->bind('talk_delete')->before($asSpeaker)->before($csrfChecker);
+        $web->get('/talk/{id}', 'OpenCFP\Http\Controller\TalkController::viewAction')
+            ->bind('talk_view')->before($asSpeaker);
 
         // Login/Logout
         $web->get('/login', 'OpenCFP\Http\Controller\SecurityController::indexAction')->bind('login');
@@ -116,11 +129,16 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $admin->post('/talks/{id}/rate', 'OpenCFP\Http\Controller\Admin\TalksController::rateAction')->bind('admin_talk_rate');
 
         // Admin::Speakers
-        $admin->get('/speakers', 'OpenCFP\Http\Controller\Admin\SpeakersController::indexAction')->bind('admin_speakers');
-        $admin->get('/speakers/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::viewAction')->bind('admin_speaker_view');
-        $admin->get('/speakers/{id}/promote', 'OpenCFP\Http\Controller\Admin\SpeakersController::promoteAction')->bind('admin_speaker_promote');
-        $admin->get('/speakers/{id}/demote', 'OpenCFP\Http\Controller\Admin\SpeakersController::demoteAction')->bind('admin_speaker_demote');
-        $admin->get('/speakers/delete/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::deleteAction')->bind('admin_speaker_delete');
+        $admin->get('/speakers', 'OpenCFP\Http\Controller\Admin\SpeakersController::indexAction')
+            ->bind('admin_speakers');
+        $admin->get('/speakers/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::viewAction')
+            ->bind('admin_speaker_view');
+        $admin->get('/speakers/{id}/promote', 'OpenCFP\Http\Controller\Admin\SpeakersController::promoteAction')
+            ->bind('admin_speaker_promote')->before($csrfChecker);
+        $admin->get('/speakers/{id}/demote', 'OpenCFP\Http\Controller\Admin\SpeakersController::demoteAction')
+            ->bind('admin_speaker_demote')->before($csrfChecker);
+        $admin->get('/speakers/delete/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::deleteAction')
+            ->bind('admin_speaker_delete')->before($csrfChecker);
 
         // CSV Exports
         $admin->get('/export/csv', 'OpenCFP\Http\Controller\Admin\ExportsController::attributedTalksExportAction')->bind('admin_export_csv');

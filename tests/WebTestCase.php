@@ -5,6 +5,7 @@ namespace OpenCFP\Test;
 use Mockery;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Infrastructure\Auth\CsrfCheck;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -207,6 +208,15 @@ abstract class WebTestCase extends BaseTestCase
         $auth->shouldReceive('user')->andReturn($user);
         $auth->shouldReceive('userId')->andReturn($id);
         $this->swap(Authentication::class, $auth);
+
+        return $this;
+    }
+
+    public function passCsrfCheck()
+    {
+        $csrf= Mockery::mock(CsrfCheck::class);
+        $csrf->shouldReceive('checkCsrf')->andReturn(null);
+        $this->swap(CsrfCheck::class, $csrf);
 
         return $this;
     }

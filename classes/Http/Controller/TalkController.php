@@ -10,7 +10,6 @@ use OpenCFP\Http\Form\TalkForm;
 use OpenCFP\Http\View\TalkHelper;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Csrf\CsrfToken;
 use Twig_Environment;
 
 class TalkController extends BaseController
@@ -80,13 +79,6 @@ class TalkController extends BaseController
         $talk = Talk::find($talkId);
 
         if (!$talk instanceof Talk || (int) $talk['user_id'] !== $userId) {
-            return $this->redirectTo('dashboard');
-        }
-
-        $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
-
-        if (!$csrfTokenManager->isTokenValid($csrfToken)) {
             return $this->redirectTo('dashboard');
         }
 
@@ -179,13 +171,6 @@ class TalkController extends BaseController
             'user_id'     => $req->get('user_id'),
         ];
 
-        $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
-
-        if (!$csrfTokenManager->isTokenValid($csrfToken)) {
-            return $this->redirectTo('dashboard');
-        }
-
         $form = $this->getTalkForm($request_data);
         $form->sanitize();
 
@@ -246,13 +231,6 @@ class TalkController extends BaseController
             );
 
             return $this->app->redirect($this->url('talk_view', ['id' => $req->get('id')]));
-        }
-
-        $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
-
-        if (!$csrfTokenManager->isTokenValid($csrfToken)) {
-            return $this->redirectTo('dashboard');
         }
 
         $user = $this->service(Authentication::class)->user();
@@ -327,14 +305,6 @@ class TalkController extends BaseController
     {
         // You can only delete talks while the CfP is open
         if (!$this->service('callforproposal')->isOpen()) {
-            return $this->app->json(['delete' => 'no']);
-        }
-
-        // Reject any attempt to delete a talk without a proper token
-        $csrfTokenManager = $this->service('csrf.token_manager');
-        $csrfToken        = new CsrfToken($req->get('token_id'), $req->get('token'));
-
-        if (!$csrfTokenManager->isTokenValid($csrfToken)) {
             return $this->app->json(['delete' => 'no']);
         }
 

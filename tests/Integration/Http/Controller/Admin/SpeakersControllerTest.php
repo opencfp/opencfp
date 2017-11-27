@@ -69,6 +69,7 @@ class SpeakersControllerTest extends WebTestCase
     public function promoteActionFailsOnUserNotFound()
     {
         $this->asAdmin()
+            ->passCsrfCheck()
             ->get('/admin/speakers/7679/promote', ['role' => 'Admin'])
             ->assertFlashContains('We were unable to promote the Admin. Please try again.')
             ->assertRedirect()
@@ -120,7 +121,7 @@ class SpeakersControllerTest extends WebTestCase
         $this->asAdmin()
             ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => \uniqid(), 'token_id'=> 'admin_speaker_promote'])
             ->assertRedirect()
-            ->assertTargetURLContains('admin/speakers');
+            ->assertTargetURLContains('/dashboard');
     }
 
     /**
@@ -186,7 +187,7 @@ class SpeakersControllerTest extends WebTestCase
         $this->asAdmin(self::$users->first()->id)
             ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin', 'token' => \uniqid(), 'token_id'=> 'admin_speaker_demote'])
             ->assertRedirect()
-            ->assertTargetURLContains('/admin/speakers');
+            ->assertTargetURLContains('/dashboard');
     }
 
     /**
@@ -197,6 +198,6 @@ class SpeakersControllerTest extends WebTestCase
         $this->asAdmin(self::$users->first()->id)
             ->get('/admin/speakers/delete/' . self::$users->last()->id . '?token_id=admin_speaker_demote&token=' . \uniqid())
             ->assertRedirect()
-            ->assertTargetURLContains('/admin/speakers');
+            ->assertTargetURLContains('/dashboard');
     }
 }
