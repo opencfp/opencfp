@@ -13,9 +13,6 @@
     processIsolation="false"
     stopOnFailure="false"
 >
-    <php>
-        <const name="BASE_PATH" value="."/>
-    </php>
     <filter>
         <whitelist>
             <directory>../../classes</directory>

@@ -22,21 +22,21 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
 
     public function testIsConsoleApplication()
     {
-        $application = new Application(new \OpenCFP\Application(BASE_PATH, Environment::testing()));
+        $application = new Application(new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing()));
 
         $this->assertInstanceOf(Console\Application::class, $application);
     }
 
     public function testConstructorSetsName()
     {
-        $application = new Application(new \OpenCFP\Application(BASE_PATH, Environment::testing()));
+        $application = new Application(new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing()));
 
         $this->assertSame('OpenCFP', $application->getName());
     }
 
     public function testConstructorAddsInputOptionForEnvironment()
     {
-        $application = new Application(new \OpenCFP\Application(BASE_PATH, Environment::testing()));
+        $application = new Application(new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing()));
 
         $inputDefinition = $application->getDefinition();
 
@@ -51,7 +51,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
 
     public function testConstructorSetsApplication()
     {
-        $baseApp     = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $baseApp     = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
         $application = new Application($baseApp);
 
         $this->assertAttributeSame($baseApp, 'app', $application);
@@ -59,7 +59,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
 
     public function testHasDefaultCommands()
     {
-        $appContainer = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $appContainer = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
         $application  = new Application($appContainer);
 
         $expected = [
@@ -94,7 +94,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
          */
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')->andThrow(UserExistsException::class);
-        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app                           = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
         $app[AccountManagement::class] = $accounts;
 
         // Create our command object and inject our application
@@ -118,7 +118,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')->andReturn($user);
-        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app                           = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
         $app[AccountManagement::class] = $accounts;
 
         // Create our command object and inject our application
@@ -150,7 +150,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
             ->with('test@opencfp.dev', 'Admin');
 
         // Create our command object and inject our application
-        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app                           = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
         $app[AccountManagement::class] = $accounts;
         $command                       = new \OpenCFP\Console\Command\AdminDemoteCommand();
         $command->setApp($app);

@@ -28,7 +28,7 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
 
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')->andThrow(new UserExistsException());
-        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app                           = new \OpenCFP\Application(__DIR__ . '/../../../..', Environment::testing());
         $app[AccountManagement::class] = $accounts;
 
         // Create our command object and inject our application
@@ -68,7 +68,7 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
             ->with('test@opencfp.dev', 'Admin');
 
         // Create our command object and inject our application
-        $app                           = new \OpenCFP\Application(BASE_PATH, Environment::testing());
+        $app                           = new \OpenCFP\Application(__DIR__ . '/../../../..', Environment::testing());
         $app[AccountManagement::class] = $accounts;
         $command                       = new \OpenCFP\Console\Command\AdminPromoteCommand();
         $command->setApp($app);
