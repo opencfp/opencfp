@@ -3,6 +3,7 @@
 namespace OpenCFP\Console\Command;
 
 use OpenCFP\Domain\Services;
+use OpenCFP\Infrastructure\Auth;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -61,7 +62,7 @@ final class UserCreateCommand extends Command
                 $data['password'],
                 $data
             );
-        } catch (Sentry\Users\UserExistsException $exception) {
+        } catch (Auth\UserExistsException $exception) {
             $io->error(\sprintf(
                 'A user with the login "%s" already exists.',
                 $data['email']
