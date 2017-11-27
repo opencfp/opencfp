@@ -16,7 +16,7 @@ interface SpeakerRepository
      *
      * @return User the speaker that matches given identifier
      */
-    public function findById($speakerId);
+    public function findById($speakerId): User;
 
     /**
      * Saves a speaker and their talks.
