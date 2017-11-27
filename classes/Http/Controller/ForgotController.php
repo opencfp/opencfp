@@ -5,6 +5,7 @@ namespace OpenCFP\Http\Controller;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Http\Form\ForgotForm;
 use OpenCFP\Http\Form\ResetForm;
+use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
 class ForgotController extends BaseController
@@ -47,7 +48,7 @@ class ForgotController extends BaseController
             $accounts = $this->service(AccountManagement::class);
 
             $user = $accounts->findByLogin($data['email']);
-        } catch (\RuntimeException $e) {
+        } catch (UserNotFoundException $e) {
             $this->service('session')->set('flash', $this->successfulSendFlashParameters($data['email']));
 
             return $this->redirectTo('forgot_password');
@@ -89,7 +90,7 @@ class ForgotController extends BaseController
             if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
                 ++$error;
             }
-        } catch (\RuntimeException $e) {
+        } catch (UserNotFoundException $e) {
             ++$error;
         }
 
@@ -141,7 +142,7 @@ class ForgotController extends BaseController
             $accounts = $this->service(AccountManagement::class);
 
             $user = $accounts->findById($req->get('user_id'));
-        } catch (\RuntimeException $e) {
+        } catch (UserNotFoundException $e) {
             ++$error;
         }
 
@@ -183,7 +184,7 @@ class ForgotController extends BaseController
             $accounts = $this->service(AccountManagement::class);
 
             $user = $accounts->findById($user_id);
-        } catch (\RuntimeException $e) {
+        } catch (UserNotFoundException $e) {
             echo $e;
             die();
         }

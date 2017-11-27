@@ -5,6 +5,7 @@ namespace OpenCFP\Http\Controller;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;
+use OpenCFP\Infrastructure\Auth\UserExistsException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -78,7 +79,7 @@ class SignupController extends BaseController
             ]);
 
             return $this->redirectBack();
-        } catch (\RuntimeException $e) {
+        } catch (UserExistsException $e) {
             $app['session']->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
