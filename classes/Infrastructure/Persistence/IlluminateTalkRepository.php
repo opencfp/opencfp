@@ -12,7 +12,7 @@ class IlluminateTalkRepository implements TalkRepository
      *
      * @return mixed
      */
-    public function persist($talk)
+    public function persist(Talk $talk)
     {
         return $talk->save();
     }
