@@ -90,7 +90,7 @@ class Environment
         return new self($type);
     }
 
-    public function equals(Environment $environment): bool
+    public function equals(self $environment): bool
     {
         return $this->type === $environment->type;
     }
