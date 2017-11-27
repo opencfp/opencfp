@@ -57,6 +57,7 @@ return PhpCsFixer\Config::create()
         'php_unit_test_class_requires_covers' => true,
         'psr0' => false,
         'return_type_declaration' => true,
+        'self_accessor' => true,
         'single_blank_line_before_namespace' => true,
         'single_quote' => true,
         'ternary_operator_spaces' => true,
