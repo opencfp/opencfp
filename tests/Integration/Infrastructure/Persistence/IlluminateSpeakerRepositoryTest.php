@@ -87,7 +87,9 @@ class IlluminateSpeakerRepositoryTest extends BaseTestCase
 
         //User hasn't been saved yet.
         $this->assertSame(0, User::count());
-        $this->assertTrue($repo->persist($user));
+
+        $repo->persist($user);
+
         $this->assertSame(1, User::count());
     }
 }
