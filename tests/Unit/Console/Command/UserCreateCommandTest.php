@@ -140,6 +140,9 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertFalse($option->isArray());
     }
 
+    /**
+     * @expectedException OpenCFP\Infrastructure\Auth\UserExistsException
+     */
     public function testExecuteFailsIfUserExists()
     {
         $faker = $this->getFaker();
