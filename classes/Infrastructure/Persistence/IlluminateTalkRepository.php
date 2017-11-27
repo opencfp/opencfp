@@ -7,9 +7,6 @@ use OpenCFP\Domain\Talk\TalkRepository;
 
 class IlluminateTalkRepository implements TalkRepository
 {
-    /**
-     * @param Talk $talk
-     */
     public function persist(Talk $talk)
     {
         $talk->save();
