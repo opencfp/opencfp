@@ -27,36 +27,36 @@ final class Path
 
     public function configPath(): string
     {
-        return $this->basePath() . "/config/{$this->env}.yml";
+        return $this->path . "/config/{$this->env}.yml";
     }
 
     public function uploadPath(): string
     {
-        return $this->basePath() . '/web/uploads';
+        return $this->path . '/web/uploads';
     }
 
     public function templatesPath(): string
     {
-        return $this->basePath() . '/resources/views';
+        return $this->path . '/resources/views';
     }
 
     public function publicPath(): string
     {
-        return $this->basePath() . '/web';
+        return $this->path . '/web';
     }
 
     public function assetsPath(): string
     {
-        return $this->basePath() . '/web/assets';
+        return $this->path . '/web/assets';
     }
 
     public function cacheTwigPath(): string
     {
-        return $this->basePath() . '/cache/twig';
+        return $this->path . '/cache/twig';
     }
 
     public function cachePurifierPath(): string
     {
-        return $this->basePath() . '/cache/htmlpurifier';
+        return $this->path . '/cache/htmlpurifier';
     }
 }
