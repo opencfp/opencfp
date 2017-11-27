@@ -24,7 +24,7 @@ class SpeakerProfile
 
     /**
      * @param User     $speaker
-     * @param string[] $hiddenProperties This is a blacklist, telling the view what fields it isn't allowed to show.
+     * @param string[] $hiddenProperties this is a blacklist, telling the view what fields it isn't allowed to show
      */
     public function __construct(User $speaker, array $hiddenProperties = [])
     {
