@@ -12,6 +12,7 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 class SpeakersController extends BaseController
 {
@@ -122,9 +123,15 @@ class SpeakersController extends BaseController
 
     public function deleteAction(Request $req)
     {
+        $csrfTokenManager = $this->service('csrf.token_manager');
+        $csrfToken        = new CsrfToken('admin_speaker_delete', $req->get('token'));
+
+        if (!$csrfTokenManager->isTokenValid($csrfToken)) {
+            return $this->redirectTo('admin_speakers');
+        }
+
         /** @var Capsule $capsule */
         $capsule = $this->service(Capsule::class);
-
         $capsule->getConnection()->beginTransaction();
 
         try {
@@ -167,6 +174,13 @@ class SpeakersController extends BaseController
             return $this->redirectTo('admin_speakers');
         }
 
+        $csrfTokenManager = $this->service('csrf.token_manager');
+        $csrfToken        = new CsrfToken('admin_speaker_demote', $req->get('token'));
+
+        if (!$csrfTokenManager->isTokenValid($csrfToken)) {
+            return $this->redirectTo('admin_speakers');
+        }
+
         try {
             $user = $accounts->findById($req->get('id'));
             $accounts->demoteFrom($user->getLogin(), $role);
@@ -192,6 +206,19 @@ class SpeakersController extends BaseController
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
         $role     = $req->get('role');
+
+        $csrfTokenManager = $this->service('csrf.token_manager');
+        $csrfToken        = new CsrfToken('admin_speaker_promote', $req->get('token'));
+
+        if (!$csrfTokenManager->isTokenValid($csrfToken)) {
+            $this->service('session')->set('flash', [
+                'type'  => 'error',
+                'short' => 'Error',
+                'ext'   => 'We were unable to promote the ' . $role . '. Please try again.',
+            ]);
+
+            return $this->redirectTo('admin_speakers');
+        }
 
         try {
             $user = $accounts->findById($req->get('id'));
