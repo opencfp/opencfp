@@ -41,7 +41,7 @@ class Talk extends Eloquent
     /**
      * Returns the most recent talks
      *
-     * @param int $limit maximum ammount of entries to return.
+     * @param int $limit maximum ammount of entries to return
      */
     public function scopeRecent(Builder $query, int $limit = 10): Builder
     {
@@ -176,7 +176,7 @@ class Talk extends Eloquent
      *
      * @param int  $userId
      * @param bool $willCreate on true it will create a new model if it doesn't exists, on false
-     *                         it will throw an error.
+     *                         it will throw an error
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      *
