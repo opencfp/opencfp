@@ -308,7 +308,7 @@ class TalkController extends BaseController
         }
 
         $userId = $this->service(Authentication::class)->userId();
-        $talk   = Talk::find($req->get('tid'), ['user_id']);
+        $talk   = Talk::find($req->get('tid'));
 
         if ((int) $talk->user_id !==  $userId) {
             return $this->app->json(['delete' => 'no']);
