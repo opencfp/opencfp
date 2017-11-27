@@ -77,7 +77,31 @@ class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
         $this->asReviewer()
-            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 8])
+            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 12])
+            ->assertNotSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function rateActionWillReturnTrueOnGoodNumericRate()
+    {
+        $talk = self::$talks->first();
+        $this->asReviewer()
+            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => '0'])
+            ->assertSee('1')
+            ->assertSuccessful();
+    }
+
+    /**
+     * @test
+     */
+    public function rateActionWillReturnFalseOnNonIntInput()
+    {
+        $talk = self::$talks->first();
+        $this->asReviewer()
+            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 'blabla'])
             ->assertNotSee('1')
             ->assertSuccessful();
     }
