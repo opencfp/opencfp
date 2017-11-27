@@ -38,11 +38,7 @@ use Twig_Environment;
 
 class Application extends SilexApplication
 {
-    /**
-     * @param array       $basePath
-     * @param Environment $environment
-     */
-    public function __construct($basePath, Environment $environment)
+    public function __construct(string $basePath, Environment $environment)
     {
         parent::__construct();
 
