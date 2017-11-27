@@ -60,19 +60,18 @@ class SignupForm extends Form
             $valid_speaker_bio = $this->validateSpeakerBio();
         }
 
-        return (
-            $valid_email &&
-            $valid_passwords &&
-            $valid_first_name &&
-            $valid_last_name &&
-            $valid_company &&
-            $valid_twitter &&
-            $valid_url &&
-            $valid_speaker_info &&
-            $valid_speaker_bio &&
+        return
+            $valid_email         &&
+            $valid_passwords     &&
+            $valid_first_name    &&
+            $valid_last_name     &&
+            $valid_company       &&
+            $valid_twitter       &&
+            $valid_url           &&
+            $valid_speaker_info  &&
+            $valid_speaker_bio   &&
             $valid_speaker_photo &&
-            $agree_coc
-        );
+            $agree_coc;
     }
 
     public function validateSpeakerPhoto(): bool

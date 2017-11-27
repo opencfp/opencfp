@@ -6,6 +6,6 @@ class YesNoRating extends TalkRating
 {
     public function isValidRating(int $rating): bool
     {
-        return ($rating >= -1 && $rating <= 1);
+        return $rating >= -1 && $rating <= 1;
     }
 }

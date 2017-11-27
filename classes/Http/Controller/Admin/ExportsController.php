@@ -84,7 +84,7 @@ class ExportsController extends BaseController
     {
         $length = strlen($needle);
 
-        return (substr($haystack, 0, $length) === $needle);
+        return substr($haystack, 0, $length) === $needle;
     }
 
     private function csvReturn(array $contents, string $filename = 'data')
@@ -103,7 +103,7 @@ class ExportsController extends BaseController
         $output = $keys . "\n";
 
         foreach ($contents as $content) {
-            $content = array_map([$this,'csvFormat'], $content);
+            $content = array_map([$this, 'csvFormat'], $content);
             $output  = $output . implode(',', $content) . "\n";
         }
 

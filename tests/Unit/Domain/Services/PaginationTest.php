@@ -18,7 +18,7 @@ class PaginationTest extends Framework\TestCase
 
     protected function setUp()
     {
-        $this->pagination = new Pagination([1,2,3,4,5,6,7,8,9,10], 2);
+        $this->pagination = new Pagination([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2);
     }
 
     /**

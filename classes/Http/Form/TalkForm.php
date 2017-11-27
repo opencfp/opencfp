@@ -55,16 +55,15 @@ class TalkForm extends Form
      */
     public function validateAll($action = 'create')
     {
-        return (
-            $this->validateTitle() &&
+        return
+            $this->validateTitle()       &&
             $this->validateDescription() &&
-            $this->validateLevel() &&
-            $this->validateCategory() &&
-            $this->validateDesired() &&
-            $this->validateSlides() &&
-            $this->validateOther() &&
-            $this->validateSponsor()
-        );
+            $this->validateLevel()       &&
+            $this->validateCategory()    &&
+            $this->validateDesired()     &&
+            $this->validateSlides()      &&
+            $this->validateOther()       &&
+            $this->validateSponsor();
     }
 
     /**
