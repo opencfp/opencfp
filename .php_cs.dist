@@ -28,6 +28,7 @@ return PhpCsFixer\Config::create()
             'use_yoda_style' => false,
         ],
         'method_separation' => true,
+        'native_function_invocation' => true,
         'new_with_braces' => true,
         'no_alias_functions' => true,
         'no_blank_lines_after_class_opening' => true,
