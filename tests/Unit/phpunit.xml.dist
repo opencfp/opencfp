@@ -19,6 +19,11 @@
     <filter>
         <whitelist>
             <directory>../../classes</directory>
+            <exclude>
+                <directory>../../classes/Provider</directory>
+                <directory>../../classes/Http/API</directory>
+                <directory>../../classes/Infrastructure/Oauth</directory>
+            </exclude>
         </whitelist>
     </filter>
     <testsuites>
