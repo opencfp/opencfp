@@ -79,7 +79,7 @@ class TalkSubmission
      *
      * @param $type
      *
-     * @return bool true if it is valid, false otherwise.
+     * @return bool true if it is valid, false otherwise
      */
     private function isValidTalkType($type)
     {

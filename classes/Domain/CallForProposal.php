@@ -26,7 +26,7 @@ class CallForProposal
     /**
      * @param \DateTimeInterface $currentTime
      *
-     * @return bool true if CFP is open, false otherwise.
+     * @return bool true if CFP is open, false otherwise
      */
     public function isOpen(\DateTimeInterface $currentTime = null): bool
     {
