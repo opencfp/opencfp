@@ -28,7 +28,7 @@ class IlluminateSpeakerRepository implements SpeakerRepository
      *
      * @return User the speaker that matches given identifier.
      */
-    public function findById($speakerId)
+    public function findById($speakerId): User
     {
         try {
             $speaker = $this->userModel->findOrFail($speakerId);
