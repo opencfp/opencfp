@@ -100,7 +100,14 @@ class SentinelUserTest extends BaseTestCase
         $this->assertTrue(self::$user->checkResetPasswordCode('secret.reset.code'));
 
         // The function resets the password code when it requests it.
-        $this->assertNotSame('secret.reset.code', self::$user->getResetPasswordCode());
+        $code = self::$user->getResetPasswordCode();
+        $this->assertNotSame('secret.reset.code', $code);
+        $databaseEntry = $capsule->getConnection()
+            ->query()
+            ->from('reminders')
+            ->where('user_id', self::$user->getId())
+            ->get()->last();
+        $this->assertSame($databaseEntry->code, $code);
         $capsule->getConnection()->query()->from('reminders')->truncate();
     }
 

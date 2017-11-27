@@ -78,7 +78,7 @@ final class SentinelUser implements UserInterface
      */
     public function getResetPasswordCode(): string
     {
-        return $this->sentinel->getReminderRepository()->create($this->user);
+        return $this->sentinel->getReminderRepository()->create($this->user)->code;
     }
 
     /**
