@@ -6,6 +6,7 @@ use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
 use Illuminate\Support\Collection;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 
 final class SentinelUser implements UserInterface
 {

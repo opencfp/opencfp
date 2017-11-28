@@ -5,12 +5,12 @@ namespace OpenCFP\Application;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\EventDispatcher;
-use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Domain\Talk\TalkWasSubmitted;
+use OpenCFP\Infrastructure\Auth\Contracts\IdentityProvider;
 
 class Speakers
 {

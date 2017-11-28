@@ -2,13 +2,13 @@
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\ValidationException;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends BaseController

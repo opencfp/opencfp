@@ -4,10 +4,10 @@ namespace OpenCFP\Test\Unit\Console\Command;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
-use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
  * @group db

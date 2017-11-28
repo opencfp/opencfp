@@ -6,13 +6,13 @@ use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\AuthenticationException;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 use OpenCFP\Infrastructure\Auth\SentinelAuthentication;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
-use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 
 /**

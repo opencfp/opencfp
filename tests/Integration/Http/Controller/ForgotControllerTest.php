@@ -4,9 +4,9 @@ namespace OpenCFP\Test\Integration\Http\Controller;
 
 use Mockery as m;
 use OpenCFP\Application;
-use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
-use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 
 /**
  * @group db

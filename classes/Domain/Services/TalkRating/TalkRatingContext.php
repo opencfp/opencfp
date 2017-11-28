@@ -3,7 +3,7 @@
 namespace OpenCFP\Domain\Services\TalkRating;
 
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 
 class TalkRatingContext
 {

@@ -3,10 +3,10 @@
 namespace OpenCFP\Test\Unit\Domain\Services\TalkRating;
 
 use Mockery;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingContext;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 
 /**
  * @covers \OpenCFP\Domain\Services\TalkRating\TalkRatingContext

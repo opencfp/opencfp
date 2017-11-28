@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Infrastructure\Auth;
+namespace OpenCFP\Infrastructure\Auth\Contracts;
 
 /**
  * This interface is intended to be used as a representation of a user.

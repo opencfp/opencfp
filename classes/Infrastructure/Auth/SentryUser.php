@@ -2,6 +2,8 @@
 
 namespace OpenCFP\Infrastructure\Auth;
 
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
+
 class SentryUser implements UserInterface
 {
     /**

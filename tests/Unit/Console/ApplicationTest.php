@@ -6,10 +6,10 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Console\Application;
 use OpenCFP\Console\Command;
-use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
-use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\Console;
 
 /**

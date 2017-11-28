@@ -2,9 +2,9 @@
 
 namespace OpenCFP\Http\Controller;
 
-use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Http\Form\ForgotForm;
 use OpenCFP\Http\Form\ResetForm;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
 use Symfony\Component\HttpFoundation\Request;
 
 class ForgotController extends BaseController

@@ -4,9 +4,9 @@ namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentry\Sentry;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
+use OpenCFP\Infrastructure\Auth\Contracts\IdentityProvider;
 
 class SentryIdentityProvider implements IdentityProvider
 {

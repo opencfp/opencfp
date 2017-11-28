@@ -3,9 +3,9 @@
 namespace OpenCFP\Test\Integration\Http\Controller;
 
 use Mockery as m;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
-use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use OpenCFP\Test\WebTestCase;
 

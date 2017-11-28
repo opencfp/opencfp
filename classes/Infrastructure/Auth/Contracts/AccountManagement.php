@@ -1,8 +1,6 @@
 <?php
 
-namespace OpenCFP\Domain\Services;
-
-use OpenCFP\Infrastructure\Auth\UserInterface;
+namespace OpenCFP\Infrastructure\Auth\Contracts;
 
 interface AccountManagement
 {

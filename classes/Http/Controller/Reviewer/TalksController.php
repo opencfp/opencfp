@@ -2,12 +2,12 @@
 
 namespace OpenCFP\Http\Controller\Reviewer;
 
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\ValidationException;
 use OpenCFP\Http\Controller\BaseController;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends BaseController

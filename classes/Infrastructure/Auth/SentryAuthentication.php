@@ -3,9 +3,10 @@
 namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentry\Sentry;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\AuthenticationException;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 
 class SentryAuthentication implements Authentication
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace OpenCFP\Domain\Services;
+namespace OpenCFP\Infrastructure\Auth\Contracts;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;

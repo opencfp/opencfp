@@ -1,8 +1,8 @@
 <?php
 
-namespace OpenCFP\Domain\Services;
+namespace OpenCFP\Infrastructure\Auth\Contracts;
 
-use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Domain\Services\NotAuthenticatedException;
 
 interface Authentication
 {

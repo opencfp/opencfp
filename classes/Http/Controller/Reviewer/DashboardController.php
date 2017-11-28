@@ -6,9 +6,9 @@ use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Http\Controller\BaseController;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 
 class DashboardController extends BaseController
 {

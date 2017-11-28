@@ -4,7 +4,7 @@ namespace OpenCFP\Domain\Services\TalkRating;
 
 use Illuminate\Database\Eloquent\Model;
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 
 abstract class TalkRating implements TalkRatingStrategy
 {
