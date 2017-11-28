@@ -46,7 +46,7 @@ class SpeakerProfile
 
     public function needsProfile(): bool
     {
-        return $this->speaker->has_made_profile == 0;
+        return $this->speaker->has_made_profile === 0;
     }
 
     /**
@@ -114,7 +114,7 @@ class SpeakerProfile
     {
         $this->assertAllowedToSee('transportation');
 
-        return $this->speaker->transportation == '1';
+        return $this->speaker->transportation === 1;
     }
 
     public function getHotel()
