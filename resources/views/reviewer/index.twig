@@ -62,8 +62,7 @@
                     </div>
                 </div>
                 <div>
-                    <a href="#" id="talk-upvote-{{ talk.id }}" class="js-talk-rating" data-id="{{ talk.id }}" data-rating="1" title="I want to see this talk"><i class="fa fa-thumbs-up {% if talk.rating == 1 %}text-green-dark{% endif %}"></i></a>
-                    <a href="#" id="talk-downvote-{{ talk.id }}" class="js-talk-rating" data-id="{{ talk.id }}" data-rating="-1" title="I don't want to see this talk"><i class="fa fa-thumbs-down {% if talk.rating == -1 %}text-red-dark{% endif %}"></i></a>
+                    {% include "ratings/ratingsystem.twig" %}
                 </div>
             </div>
         {% endfor %}
