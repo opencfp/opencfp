@@ -25,7 +25,7 @@ interface AccountManagement
 
     public function activate($email);
 
-    public function promoteTo($email, $role = 'Admin');
+    public function promoteTo($email, $role);
 
-    public function demoteFrom($email, $role = 'Admin');
+    public function demoteFrom($email, $role);
 }

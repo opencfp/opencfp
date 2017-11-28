@@ -19,12 +19,14 @@ use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
+use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelAccountManagement
  */
 class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 {
+    use GeneratorTrait;
     use MockeryPHPUnitIntegration;
 
     public function testIsFinal()
@@ -127,23 +129,27 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 
     public function testPromoteToIsVoid()
     {
+        $role = $this->getFaker()->word;
+
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $user->shouldReceive('getUserId')->andReturn(2);
         $sentinel = Mockery::mock(Sentinel::class);
         $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn($user);
         $sentinel->shouldReceive('getRoleRepository->findByName->users->attach')->andReturn(true);
         $account = new SentinelAccountManagement($sentinel);
-        $this->assertNull($account->promoteTo('mail@mail.mail'));
+        $this->assertNull($account->promoteTo('mail@mail.mail', $role));
     }
 
     public function testDemoteFromIsVoid()
     {
+        $role = $this->getFaker()->word;
+
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $user->shouldReceive('getUserId')->andReturn(2);
         $sentinel = Mockery::mock(Sentinel::class);
         $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn($user);
         $sentinel->shouldReceive('getRoleRepository->findByName->users->detach')->andReturn(true);
         $account = new SentinelAccountManagement($sentinel);
-        $this->assertNull($account->demoteFrom('mail@mail.mail'));
+        $this->assertNull($account->demoteFrom('mail@mail.mail', $role));
     }
 }
