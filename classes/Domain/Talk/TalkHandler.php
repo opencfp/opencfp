@@ -5,9 +5,9 @@ namespace OpenCFP\Domain\Talk;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkComment;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 
 class TalkHandler
 {

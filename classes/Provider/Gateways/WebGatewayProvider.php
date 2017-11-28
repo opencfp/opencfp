@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Provider\Gateways;
 
-use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
 use Pimple\Container;

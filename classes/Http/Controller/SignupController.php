@@ -2,9 +2,9 @@
 
 namespace OpenCFP\Http\Controller;
 
-use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 
 class SignupController extends BaseController

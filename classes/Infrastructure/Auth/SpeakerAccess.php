@@ -2,8 +2,8 @@
 
 namespace OpenCFP\Infrastructure\Auth;
 
-use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Domain\Services\UserAccess;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\UserAccess;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 

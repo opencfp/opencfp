@@ -4,8 +4,8 @@ namespace OpenCFP\Test;
 
 use Mockery;
 use OpenCFP\Domain\CallForProposal;
-use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class WebTestCase extends BaseTestCase

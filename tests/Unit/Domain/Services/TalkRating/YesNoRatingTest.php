@@ -5,8 +5,8 @@ namespace OpenCFP\Test\Unit\Domain\Services\TalkRating;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 
 /**
  * @covers \OpenCFP\Domain\Services\TalkRating\YesNoRating

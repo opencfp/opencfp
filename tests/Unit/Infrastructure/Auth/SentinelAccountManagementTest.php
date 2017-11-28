@@ -5,7 +5,7 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 use Cartalyst\Sentinel\Sentinel;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Infrastructure\Auth\UserExistsException;

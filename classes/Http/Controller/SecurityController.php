@@ -2,7 +2,7 @@
 
 namespace OpenCFP\Http\Controller;
 
-use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

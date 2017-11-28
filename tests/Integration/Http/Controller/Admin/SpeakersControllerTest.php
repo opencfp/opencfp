@@ -4,8 +4,8 @@ namespace OpenCFP\Test\Integration\Http\Controller\Admin;
 
 use Mockery;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\WebTestCase;
 

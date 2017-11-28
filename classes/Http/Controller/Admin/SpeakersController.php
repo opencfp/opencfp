@@ -4,13 +4,13 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use OpenCFP\Http\Controller\FlashableTrait;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 

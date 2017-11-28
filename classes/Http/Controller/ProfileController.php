@@ -3,8 +3,8 @@
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\SignupForm;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProfileController extends BaseController

@@ -3,7 +3,7 @@
 namespace OpenCFP\Test\Integration;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
 use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Test\BaseTestCase;
 use Phinx\Console\PhinxApplication;

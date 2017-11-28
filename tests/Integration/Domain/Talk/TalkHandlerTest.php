@@ -5,11 +5,11 @@ namespace OpenCFP\Test\Integration\Domain\Talk;
 use Mockery;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkComment;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\Talk\TalkProfile;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 

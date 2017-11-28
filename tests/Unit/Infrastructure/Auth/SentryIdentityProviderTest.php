@@ -6,8 +6,8 @@ use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users;
 use Mockery as m;
 use OpenCFP\Domain\Model;
-use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
+use OpenCFP\Infrastructure\Auth\Contracts\IdentityProvider;
 use OpenCFP\Infrastructure\Auth\SentryIdentityProvider;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 

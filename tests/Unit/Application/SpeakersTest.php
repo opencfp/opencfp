@@ -10,10 +10,10 @@ use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\EventDispatcher;
-use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
+use OpenCFP\Infrastructure\Auth\Contracts\IdentityProvider;
 
 /**
  * @covers \OpenCFP\Application\Speakers
@@ -44,7 +44,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->identityProvider  = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
+        $this->identityProvider  = m::mock(\OpenCFP\Infrastructure\Auth\Contracts\IdentityProvider::class);
         $this->speakerRepository = m::mock(\OpenCFP\Domain\Speaker\SpeakerRepository::class);
         $this->talkRepository    = m::mock(\OpenCFP\Domain\Talk\TalkRepository::class);
         $this->callForProposal   = m::mock(\OpenCFP\Domain\CallForProposal::class);

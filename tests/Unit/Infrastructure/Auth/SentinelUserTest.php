@@ -20,7 +20,7 @@ class SentinelUserTest extends \PHPUnit\Framework\TestCase
     public function testWeHaveTheRightUser()
     {
         $user = new SentinelUser(m::mock(\Cartalyst\Sentinel\Users\UserInterface::class), $this->getSentinel());
-        $this->assertInstanceOf(\OpenCFP\Infrastructure\Auth\UserInterface::class, $user);
+        $this->assertInstanceOf(\OpenCFP\Infrastructure\Auth\Contracts\UserInterface::class, $user);
     }
 
     public function testGetIdWorks()

@@ -3,9 +3,9 @@
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Mockery;
-use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
-use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 

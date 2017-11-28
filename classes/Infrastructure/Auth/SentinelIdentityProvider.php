@@ -5,9 +5,9 @@ namespace OpenCFP\Infrastructure\Auth;
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
+use OpenCFP\Infrastructure\Auth\Contracts\IdentityProvider;
 
 final class SentinelIdentityProvider implements IdentityProvider
 {

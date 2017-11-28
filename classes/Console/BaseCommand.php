@@ -3,7 +3,7 @@
 namespace OpenCFP\Console;
 
 use OpenCFP\Application as ApplicationContainer;
-use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

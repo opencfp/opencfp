@@ -1,8 +1,9 @@
 <?php
 
-namespace OpenCFP\Domain\Services;
+namespace OpenCFP\Infrastructure\Auth\Contracts;
 
 use OpenCFP\Domain\Model\User;
+use OpenCFP\Domain\Services\NotAuthenticatedException;
 
 interface IdentityProvider
 {

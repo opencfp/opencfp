@@ -4,7 +4,8 @@ namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
-use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 
 final class SentinelAccountManagement implements AccountManagement
 {

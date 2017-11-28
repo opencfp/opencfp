@@ -4,7 +4,8 @@ namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentry\Sentry;
 use Cartalyst\Sentry\Users\UserAlreadyActivatedException;
-use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\AccountManagement;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 
 class SentryAccountManagement implements AccountManagement
 {

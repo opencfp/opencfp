@@ -3,8 +3,8 @@
 namespace OpenCFP\Test\Unit\Console\Command;
 
 use OpenCFP\Console\Command\UserCreateCommand;
-use OpenCFP\Domain\Services;
 use OpenCFP\Infrastructure\Auth;
+use OpenCFP\Infrastructure\Auth\Contracts;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
@@ -354,11 +354,11 @@ final class UserCreateCommandTest extends Framework\TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Services\AccountManagement
+     * @return Contracts\AccountManagement|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function createAccountManagementMock(): Services\AccountManagement
+    private function createAccountManagementMock(): Contracts\AccountManagement
     {
-        return $this->createMock(Services\AccountManagement::class);
+        return $this->createMock(Contracts\AccountManagement::class);
     }
 
     /**

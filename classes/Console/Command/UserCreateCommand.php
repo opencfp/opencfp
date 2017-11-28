@@ -2,8 +2,8 @@
 
 namespace OpenCFP\Console\Command;
 
-use OpenCFP\Domain\Services;
 use OpenCFP\Infrastructure\Auth;
+use OpenCFP\InfraStructure\Auth\Contracts;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,11 +13,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class UserCreateCommand extends Command
 {
     /**
-     * @var Services\AccountManagement
+     * @var Contracts\AccountManagement
      */
     private $accountManagement;
 
-    public function __construct(Services\AccountManagement $accountManagement)
+    public function __construct(Contracts\AccountManagement $accountManagement)
     {
         parent::__construct('user:create');
 

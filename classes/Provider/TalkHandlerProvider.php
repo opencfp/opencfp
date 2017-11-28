@@ -2,9 +2,9 @@
 
 namespace OpenCFP\Provider;
 
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkHandler;
+use OpenCFP\Infrastructure\Auth\Contracts\Authentication;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

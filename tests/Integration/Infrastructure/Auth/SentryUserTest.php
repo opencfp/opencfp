@@ -3,9 +3,9 @@
 namespace OpenCFP\Test\Integration\Infrastructure\Auth;
 
 use OpenCFP\Domain\Model\User;
+use OpenCFP\Infrastructure\Auth\Contracts\UserInterface;
 use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentryUser;
-use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
 use OpenCFP\Test\Helper\SentryTestHelpers;
