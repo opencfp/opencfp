@@ -26,8 +26,8 @@ class DashboardControllerTest extends WebTestCase
      */
     public function indexDisplaysListOfTalks()
     {
-        $this->asAdmin()
-            ->get('/admin/')
+        $this->asReviewer()
+            ->get('/reviewer/')
             ->assertSee(self::$talks->first()->title)
             ->assertSuccessful()
             ->assertNoFlashSet();
