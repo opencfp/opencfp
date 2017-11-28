@@ -52,6 +52,8 @@ class SpeakerProfile
     /**
      * Retrieves all of the speakers talks
      *
+     * @throws NotAllowedException
+     *
      * @return Talk[]
      */
     public function getTalks()
@@ -61,6 +63,11 @@ class SpeakerProfile
         return $this->speaker->talks;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return string
+     */
     public function getName(): string
     {
         $this->assertAllowedToSee('name');
@@ -68,6 +75,11 @@ class SpeakerProfile
         return $this->speaker->first_name . ' ' . $this->speaker->last_name;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
     public function getEmail()
     {
         $this->assertAllowedToSee('email');
@@ -75,6 +87,11 @@ class SpeakerProfile
         return $this->speaker->email;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
     public function getCompany()
     {
         $this->assertAllowedToSee('company');
@@ -82,6 +99,11 @@ class SpeakerProfile
         return $this->speaker->company ?: null;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
     public function getTwitter()
     {
         $this->assertAllowedToSee('twitter');
@@ -89,6 +111,11 @@ class SpeakerProfile
         return $this->speaker->twitter;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
     public function getUrl()
     {
         $this->assertAllowedToSee('url');
@@ -96,6 +123,11 @@ class SpeakerProfile
         return $this->speaker->url;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
     public function getInfo()
     {
         $this->assertAllowedToSee('info');
@@ -103,6 +135,11 @@ class SpeakerProfile
         return $this->speaker->info;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
     public function getBio()
     {
         $this->assertAllowedToSee('bio');
@@ -110,6 +147,11 @@ class SpeakerProfile
         return $this->speaker->bio;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return bool
+     */
     public function getTransportation()
     {
         $this->assertAllowedToSee('transportation');
@@ -117,6 +159,11 @@ class SpeakerProfile
         return $this->speaker->transportation == '1';
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
     public function getHotel()
     {
         $this->assertAllowedToSee('hotel');
@@ -124,6 +171,11 @@ class SpeakerProfile
         return $this->speaker->hotel;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
     public function getAirport()
     {
         $this->assertAllowedToSee('airport');
@@ -131,6 +183,11 @@ class SpeakerProfile
         return $this->speaker->airport;
     }
 
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
     public function getPhoto()
     {
         $this->assertAllowedToSee('photo');
