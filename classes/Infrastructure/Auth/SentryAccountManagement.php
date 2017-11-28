@@ -59,7 +59,7 @@ class SentryAccountManagement implements AccountManagement
             return new SentryUser($user);
         } catch (\Cartalyst\Sentry\Users\UserExistsException $e) {
             // Convert the error to one we own.
-            throw new UserExistsException();
+            throw UserExistsException::fromEmail($email);
         }
     }
 

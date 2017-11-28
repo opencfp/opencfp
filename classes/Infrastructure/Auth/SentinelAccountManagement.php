@@ -74,7 +74,7 @@ final class SentinelAccountManagement implements AccountManagement
                 ->findByCredentials(['email' => $email])
             instanceof SentinelUserInterface
         ) {
-            throw new UserExistsException();
+            throw UserExistsException::fromEmail($email);
         }
         $user = $this->sentinel
             ->getUserRepository()
