@@ -1,5 +1,16 @@
 <?php
 
+$year = date('Y');
+
+$header = <<<TXT
+Copyright (c) 2013-$year OpenCFP
+
+For the full copyright and license information, please view
+the LICENSE file that was distributed with this source code.
+
+@see https://github.com/opencfp/opencfp
+TXT;
+
 $finder = PhpCsFixer\Finder::create()
     ->exclude('migrations')
     ->in(__DIR__);
@@ -24,6 +35,10 @@ return PhpCsFixer\Config::create()
         ],
         'function_to_constant' => true,
         'function_typehint_space' => true,
+        'header_comment' => [
+            'commentType' => 'PHPDoc',
+            'header' => $header,
+        ],
         'increment_style' => true,
         'is_null' => [
             'use_yoda_style' => false,
