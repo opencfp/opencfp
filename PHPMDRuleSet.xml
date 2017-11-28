@@ -8,10 +8,4 @@
     <rule ref="rulesets/cleancode.xml">
         <exclude name="StaticAccess"/>
     </rule>
-
-    <rule ref="rulesets/cleancode.xml/StaticAccess">
-        <properties>
-            <property name="exceptions" value="\OpenCFP\Domain\Model\Airport,\OpenCFP\Domain\Model\Favorite,\OpenCFP\Domain\Model\Group,\OpenCFP\Domain\Model\Talk,\OpenCFP\Domain\Model\TalkComment,\OpenCFP\Domain\Model\TalkMeta,\OpenCFP\Domain\Model\User,\OpenCFP\Environment" />
-        </properties>
-    </rule>
 </ruleset>
