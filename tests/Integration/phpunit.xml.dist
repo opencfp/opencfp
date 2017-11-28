@@ -13,9 +13,6 @@
     stopOnFailure="false"
     verbose="true"
 >
-    <php>
-        <const name="BASE_PATH" value="."/>
-    </php>
     <testsuites>
         <testsuite name="Integration Tests">
             <directory>.</directory>

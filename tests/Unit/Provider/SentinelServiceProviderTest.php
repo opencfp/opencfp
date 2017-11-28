@@ -15,7 +15,7 @@ class SentinelServiceProviderTest extends \PHPUnit\Framework\TestCase
     {
         //The Reminder and Throttle repositories aren't set in the controller.
         //This allows us to make sure they are properly set
-        $app                 = new Application(BASE_PATH, Environment::testing());
+        $app                 = new Application(__DIR__ . '/../../..', Environment::testing());
         $app['session.test'] = true;
         /** @var Sentinel $sentinel */
         $sentinel = $app[Sentinel::class];

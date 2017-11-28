@@ -19,7 +19,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
      */
     public function it_should_run_and_have_output()
     {
-        $this->sut                 = new Application(BASE_PATH, Environment::testing());
+        $this->sut                 = new Application(__DIR__ . '/../..', Environment::testing());
         $this->sut['session.test'] = true;
 
         // We start an output buffer because the Application sends its response to
@@ -34,7 +34,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
     /** @test */
     public function it_should_resolve_configuration_path_based_on_environment()
     {
-        $this->sut = new Application(BASE_PATH, Environment::testing());
+        $this->sut = new Application(__DIR__ . '/../..', Environment::testing());
 
         $this->assertTrue($this->sut['env']->isTesting());
         $this->assertContains('testing.yml', $this->sut['path']->configPath());
@@ -45,7 +45,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
      */
     public function itIsNotDevOrProdWhenTesting()
     {
-        $app = new Application(BASE_PATH, Environment::testing());
+        $app = new Application(__DIR__ . '/../..', Environment::testing());
 
         $this->assertTrue($app['env']->isTesting());
         $this->assertFalse($app['env']->isDevelopment());
