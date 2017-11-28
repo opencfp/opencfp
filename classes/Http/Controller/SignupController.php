@@ -5,7 +5,6 @@ namespace OpenCFP\Http\Controller;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class SignupController extends BaseController
@@ -51,14 +50,6 @@ class SignupController extends BaseController
                 'activated' => 1,
             ]);
             $accounts->activate($req->get('email'));
-
-            // This is for redirecting to OAuth endpoint if we arrived
-            // as part of the Authorization Code Grant flow.
-            if ($this->service('session')->has('redirectTo')) {
-                $this->service(Authentication::class)->authenticate($req->get('email'), $req->get('password'));
-
-                return new RedirectResponse($this->service('session')->get('redirectTo'));
-            }
 
             $app['session']->set('flash', [
                 'type'  => 'success',

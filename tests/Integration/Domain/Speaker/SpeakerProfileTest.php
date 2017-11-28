@@ -129,24 +129,4 @@ class SpeakerProfileTest extends BaseTestCase
         $this->expectException(NotAllowedException::class);
         $profile->getEmail();
     }
-
-    public function testToArrayForApiReturnsImportantBits()
-    {
-        $firstName = self::$user->first_name;
-        $lastName  = self::$user->last_name;
-        $email     = self::$user->email;
-        $twitter   = self::$user->twitter;
-        $url       = self::$user->url;
-        $bio       = self::$user->bio;
-
-        $expected = [
-            'name'    => $firstName . ' ' . $lastName,
-            'email'   => $email,
-            'twitter' => $twitter,
-            'url'     => $url,
-            'bio'     => $bio,
-        ];
-
-        $this->assertSame($expected, self::$profile->toArrayForApi());
-    }
 }
