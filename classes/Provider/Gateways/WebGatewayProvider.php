@@ -66,12 +66,16 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             return $checker->checkCsrf($req->get('token_id'), $req->get('token'));
         };
 
-        $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')->bind('homepage');
-        $web->get('/package', 'OpenCFP\Http\Controller\PagesController::showSpeakerPackage')->bind('speaker_package');
-        $web->get('/ideas', 'OpenCFP\Http\Controller\PagesController::showTalkIdeas')->bind('talk_ideas');
+        $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')
+            ->bind('homepage');
+        $web->get('/package', 'OpenCFP\Http\Controller\PagesController::showSpeakerPackage')
+            ->bind('speaker_package');
+        $web->get('/ideas', 'OpenCFP\Http\Controller\PagesController::showTalkIdeas')
+            ->bind('talk_ideas');
 
         // User Dashboard
-        $web->get('/dashboard', 'OpenCFP\Http\Controller\DashboardController::showSpeakerProfile')->bind('dashboard');
+        $web->get('/dashboard', 'OpenCFP\Http\Controller\DashboardController::showSpeakerProfile')
+            ->bind('dashboard');
 
         // Talks
         $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')
@@ -88,28 +92,44 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             ->bind('talk_view')->before($asSpeaker);
 
         // Login/Logout
-        $web->get('/login', 'OpenCFP\Http\Controller\SecurityController::indexAction')->bind('login');
-        $web->post('/login', 'OpenCFP\Http\Controller\SecurityController::processAction')->bind('login_check');
-        $web->get('/logout', 'OpenCFP\Http\Controller\SecurityController::outAction')->bind('logout');
+        $web->get('/login', 'OpenCFP\Http\Controller\SecurityController::indexAction')
+            ->bind('login');
+        $web->post('/login', 'OpenCFP\Http\Controller\SecurityController::processAction')
+            ->bind('login_check');
+        $web->get('/logout', 'OpenCFP\Http\Controller\SecurityController::outAction')
+            ->bind('logout');
 
         // Create Account
-        $web->get('/signup', 'OpenCFP\Http\Controller\SignupController::indexAction')->bind('user_new');
-        $web->post('/signup', 'OpenCFP\Http\Controller\SignupController::processAction')->bind('user_create');
-        $web->get('/signup/success', 'OpenCFP\Http\Controller\SignupController::successAction')->bind('user_success');
+        $web->get('/signup', 'OpenCFP\Http\Controller\SignupController::indexAction')
+            ->bind('user_new');
+        $web->post('/signup', 'OpenCFP\Http\Controller\SignupController::processAction')
+            ->bind('user_create');
+        $web->get('/signup/success', 'OpenCFP\Http\Controller\SignupController::successAction')
+            ->bind('user_success');
 
         // Edit Profile/Account
-        $web->get('/profile/edit/{id}', 'OpenCFP\Http\Controller\ProfileController::editAction')->bind('user_edit')->before($asSpeaker);
-        $web->post('/profile/edit', 'OpenCFP\Http\Controller\ProfileController::processAction')->bind('user_update')->before($asSpeaker);
+        $web->get('/profile/edit/{id}', 'OpenCFP\Http\Controller\ProfileController::editAction')
+            ->bind('user_edit')->before($asSpeaker);
+        $web->post('/profile/edit', 'OpenCFP\Http\Controller\ProfileController::processAction')
+            ->bind('user_update')->before($asSpeaker);
 
         // Change/forgot Password
-        $web->get('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordAction')->bind('password_edit')->before($asSpeaker);
-        $web->post('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordProcessAction')->bind('password_change')->before($asSpeaker);
-        $web->get('/forgot', 'OpenCFP\Http\Controller\ForgotController::indexAction')->bind('forgot_password');
-        $web->post('/forgot', 'OpenCFP\Http\Controller\ForgotController::sendResetAction')->bind('forgot_password_create');
-        $web->get('/forgot_success', 'OpenCFP\Http\Controller\ForgotController::successAction')->bind('forgot_password_success');
-        $web->post('/reset', 'OpenCFP\Http\Controller\ForgotController::resetAction')->bind('reset_password_create');
-        $web->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Http\Controller\ForgotController::processResetAction')->bind('reset_password');
-        $web->post('/updatepassword', 'OpenCFP\Http\Controller\ForgotController::updatePasswordAction')->bind('password_update');
+        $web->get('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordAction')
+            ->bind('password_edit')->before($asSpeaker);
+        $web->post('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordProcessAction')
+            ->bind('password_change')->before($asSpeaker);
+        $web->get('/forgot', 'OpenCFP\Http\Controller\ForgotController::indexAction')
+            ->bind('forgot_password');
+        $web->post('/forgot', 'OpenCFP\Http\Controller\ForgotController::sendResetAction')
+            ->bind('forgot_password_create');
+        $web->get('/forgot_success', 'OpenCFP\Http\Controller\ForgotController::successAction')
+            ->bind('forgot_password_success');
+        $web->post('/reset', 'OpenCFP\Http\Controller\ForgotController::resetAction')
+            ->bind('reset_password_create');
+        $web->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Http\Controller\ForgotController::processResetAction')
+            ->bind('reset_password');
+        $web->post('/updatepassword', 'OpenCFP\Http\Controller\ForgotController::updatePasswordAction')
+            ->bind('password_update');
 
         /** @var ControllerCollection $admin */
         $admin = $app['controllers_factory'];
@@ -118,15 +138,22 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         });
 
         // Admin Routes
-        $admin->get('/', 'OpenCFP\Http\Controller\Admin\DashboardController::indexAction')->bind('admin');
+        $admin->get('/', 'OpenCFP\Http\Controller\Admin\DashboardController::indexAction')
+            ->bind('admin');
 
         // Admin::Talks
-        $admin->get('/talks', 'OpenCFP\Http\Controller\Admin\TalksController::indexAction')->bind('admin_talks');
-        $admin->get('/talks/{id}', 'OpenCFP\Http\Controller\Admin\TalksController::viewAction')->bind('admin_talk_view');
-        $admin->post('/talks/{id}/favorite', 'OpenCFP\Http\Controller\Admin\TalksController::favoriteAction')->bind('admin_talk_favorite');
-        $admin->post('/talks/{id}/select', 'OpenCFP\Http\Controller\Admin\TalksController::selectAction')->bind('admin_talk_select');
-        $admin->post('/talks/{id}/comment', 'OpenCFP\Http\Controller\Admin\TalksController::commentCreateAction')->bind('admin_talk_comment_create');
-        $admin->post('/talks/{id}/rate', 'OpenCFP\Http\Controller\Admin\TalksController::rateAction')->bind('admin_talk_rate');
+        $admin->get('/talks', 'OpenCFP\Http\Controller\Admin\TalksController::indexAction')
+            ->bind('admin_talks');
+        $admin->get('/talks/{id}', 'OpenCFP\Http\Controller\Admin\TalksController::viewAction')
+            ->bind('admin_talk_view');
+        $admin->post('/talks/{id}/favorite', 'OpenCFP\Http\Controller\Admin\TalksController::favoriteAction')
+            ->bind('admin_talk_favorite');
+        $admin->post('/talks/{id}/select', 'OpenCFP\Http\Controller\Admin\TalksController::selectAction')
+            ->bind('admin_talk_select');
+        $admin->post('/talks/{id}/comment', 'OpenCFP\Http\Controller\Admin\TalksController::commentCreateAction')
+            ->bind('admin_talk_comment_create');
+        $admin->post('/talks/{id}/rate', 'OpenCFP\Http\Controller\Admin\TalksController::rateAction')
+            ->bind('admin_talk_rate');
 
         // Admin::Speakers
         $admin->get('/speakers', 'OpenCFP\Http\Controller\Admin\SpeakersController::indexAction')
@@ -141,10 +168,14 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             ->bind('admin_speaker_delete')->before($csrfChecker);
 
         // CSV Exports
-        $admin->get('/export/csv', 'OpenCFP\Http\Controller\Admin\ExportsController::attributedTalksExportAction')->bind('admin_export_csv');
-        $admin->get('/export/csv/anon', 'OpenCFP\Http\Controller\Admin\ExportsController::anonymousTalksExportAction')->bind('admin_export_csv_anon');
-        $admin->get('/export/csv/selected', 'OpenCFP\Http\Controller\Admin\ExportsController::selectedTalksExportAction')->bind('admin_export_csv_selected');
-        $admin->get('/export/csv/emails', 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction')->bind('admin_export_csv_emails');
+        $admin->get('/export/csv', 'OpenCFP\Http\Controller\Admin\ExportsController::attributedTalksExportAction')
+            ->bind('admin_export_csv');
+        $admin->get('/export/csv/anon', 'OpenCFP\Http\Controller\Admin\ExportsController::anonymousTalksExportAction')
+            ->bind('admin_export_csv_anon');
+        $admin->get('/export/csv/selected', 'OpenCFP\Http\Controller\Admin\ExportsController::selectedTalksExportAction')
+            ->bind('admin_export_csv_selected');
+        $admin->get('/export/csv/emails', 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction')
+            ->bind('admin_export_csv_emails');
         $app->mount('/admin/', $admin);
 
         /** @var ControllerCollection $reviewer */
@@ -154,18 +185,26 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         });
 
         //Reviewer Routes
-        $reviewer->get('/', 'OpenCFP\Http\Controller\Reviewer\DashboardController::indexAction')->bind('reviewer');
+        $reviewer->get('/', 'OpenCFP\Http\Controller\Reviewer\DashboardController::indexAction')
+            ->bind('reviewer');
 
         // Reviewer::Talks
-        $reviewer->get('/talks', 'OpenCFP\Http\Controller\Reviewer\TalksController::indexAction')->bind('reviewer_talks');
-        $reviewer->get('/talks/{id}', 'OpenCFP\Http\Controller\Reviewer\TalksController::viewAction')->bind('reviewer_talk_view');
-        $reviewer->post('/talks/{id}/favorite', 'OpenCFP\Http\Controller\Reviewer\TalksController::favoriteAction')->bind('reviewer_talk_favorite');
-        $reviewer->post('/talks/{id}/comment', 'OpenCFP\Http\Controller\Reviewer\TalksController::commentCreateAction')->bind('reviewer_talk_comment_create');
-        $reviewer->post('/talks/{id}/rate', 'OpenCFP\Http\Controller\Reviewer\TalksController::rateAction')->bind('reviewer_talk_rate');
+        $reviewer->get('/talks', 'OpenCFP\Http\Controller\Reviewer\TalksController::indexAction')
+            ->bind('reviewer_talks');
+        $reviewer->get('/talks/{id}', 'OpenCFP\Http\Controller\Reviewer\TalksController::viewAction')
+            ->bind('reviewer_talk_view');
+        $reviewer->post('/talks/{id}/favorite', 'OpenCFP\Http\Controller\Reviewer\TalksController::favoriteAction')
+            ->bind('reviewer_talk_favorite');
+        $reviewer->post('/talks/{id}/comment', 'OpenCFP\Http\Controller\Reviewer\TalksController::commentCreateAction')
+            ->bind('reviewer_talk_comment_create');
+        $reviewer->post('/talks/{id}/rate', 'OpenCFP\Http\Controller\Reviewer\TalksController::rateAction')
+            ->bind('reviewer_talk_rate');
 
         // Reviewer::Speakers
-        $reviewer->get('/speakers', 'OpenCFP\Http\Controller\Reviewer\SpeakersController::indexAction')->bind('reviewer_speakers');
-        $reviewer->get('/speakers/{id}', 'OpenCFP\Http\Controller\Reviewer\SpeakersController::viewAction')->bind('reviewer_speaker_view');
+        $reviewer->get('/speakers', 'OpenCFP\Http\Controller\Reviewer\SpeakersController::indexAction')
+             ->bind('reviewer_speakers');
+        $reviewer->get('/speakers/{id}', 'OpenCFP\Http\Controller\Reviewer\SpeakersController::viewAction')
+            ->bind('reviewer_speaker_view');
 
         $app->mount('/reviewer/', $reviewer);
 
