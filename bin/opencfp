@@ -17,10 +17,14 @@ $input = new ArgvInput();
 $environment = $input->getParameterOption(array('--env'), getenv('CFP_ENV') ?: 'development');
 
 $container = new ApplicationContainer($basePath, Environment::fromString($environment));
+
+$accountManagement = $container[Services\AccountManagement::class];
+
 $app = new Application($container);
 
 $app->addCommands([
-    new Command\UserCreateCommand($container[Services\AccountManagement::class]),
+    new Command\ReviewerPromoteCommand($accountManagement),
+    new Command\UserCreateCommand($accountManagement),
 ]);
 $status = $app->run($input);
 

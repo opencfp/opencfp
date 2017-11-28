@@ -11,21 +11,35 @@
 
 namespace OpenCFP\Console\Command;
 
-use OpenCFP\Console\BaseCommand;
+use Cartalyst\Sentry;
+use OpenCFP\Domain\Services;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ReviewerPromoteCommand extends BaseCommand
+final class ReviewerPromoteCommand extends Command
 {
+    /**
+     * @var Services\AccountManagement
+     */
+    private $accountManagement;
+
+    public function __construct(Services\AccountManagement $accountManagement)
+    {
+        parent::__construct('reviewer:promote');
+
+        $this->accountManagement = $accountManagement;
+    }
+
     protected function configure()
     {
         $this
-            ->setName('reviewer:promote')
+            ->setDescription('Promote an existing user to be a reviewer')
             ->setDefinition([
                 new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to promote to reviewer'),
             ])
-            ->setDescription('Promote an existing user to be a reviewer')
             ->setHelp(
                 <<<EOF
 The <info>%command.name%</info> command promotes a user to the reviewer group for a given environment:
@@ -38,11 +52,39 @@ EOF
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        return $this->promote($input, $output, 'Reviewer');
-    }
+        $email = $input->getArgument('email');
 
-    public function setApp($app)
-    {
-        $this->app = $app;
+        $io = new SymfonyStyle(
+            $input,
+            $output
+        );
+
+        $io->title('OpenCFP');
+
+        $io->section(\sprintf(
+            'Promoting account with email "%s" to "Reviewer"',
+            $email
+        ));
+
+        try {
+            $this->accountManagement->findByLogin($email);
+        } catch (Sentry\Users\UserNotFoundException $exception) {
+            $io->error(\sprintf(
+                'Could not find account with email "%s".',
+                $email
+            ));
+
+            return 1;
+        }
+
+        $this->accountManagement->promoteTo(
+            $email,
+            'Reviewer'
+        );
+
+        $io->success(\sprintf(
+            'Added account with email "%s" to the "Reviewer" group',
+            $email
+        ));
     }
 }
