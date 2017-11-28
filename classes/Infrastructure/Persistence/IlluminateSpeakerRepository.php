@@ -19,15 +19,6 @@ class IlluminateSpeakerRepository implements SpeakerRepository
         $this->userModel = $userModel;
     }
 
-    /**
-     * Retrieves a speaker with associated talks.
-     *
-     * @param string $speakerId
-     *
-     * @throws EntityNotFoundException
-     *
-     * @return User the speaker that matches given identifier
-     */
     public function findById($speakerId): User
     {
         try {
@@ -39,11 +30,6 @@ class IlluminateSpeakerRepository implements SpeakerRepository
         return $speaker;
     }
 
-    /**
-     * Saves a speaker and their talks.
-     *
-     * @param User $speaker
-     */
     public function persist(User $speaker)
     {
         $speaker->save();
