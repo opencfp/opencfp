@@ -3,9 +3,7 @@
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Domain\Services\Login;
 use Silex\Application;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,12 +23,6 @@ class SecurityController extends BaseController
 
         try {
             $auth->authenticate($req->get('email'), $req->get('password'));
-
-            // This is for redirecting to OAuth endpoint if we arrived
-            // as part of the Authorization Code Grant flow.
-            if ($this->service('session')->has('redirectTo')) {
-                return new RedirectResponse($this->service('session')->get('redirectTo'));
-            }
 
             return $this->redirectTo('dashboard');
         } catch (\Exception $e) {

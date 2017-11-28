@@ -3,12 +3,9 @@
 namespace OpenCFP;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use League\OAuth2\Server\Exception\OAuthException;
 use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\CallForProposalProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
-use OpenCFP\Provider\Gateways\ApiGatewayProvider;
-use OpenCFP\Provider\Gateways\OAuthGatewayProvider;
 use OpenCFP\Provider\Gateways\WebGatewayProvider;
 use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
@@ -59,8 +56,6 @@ class Application extends SilexApplication
 
         // Register Gateways...
         $this->register(new WebGatewayProvider());
-        $this->register(new ApiGatewayProvider());
-        $this->register(new OAuthGatewayProvider());
 
         // Services...
         $this->register(new SessionServiceProvider());
@@ -204,11 +199,6 @@ class Application extends SilexApplication
                 if ($e instanceof HttpExceptionInterface) {
                     $code = $e->getStatusCode();
                     $headers = $e->getHeaders();
-                }
-
-                if ($e instanceof OAuthException) {
-                    $code = $e->httpStatusCode;
-                    $headers = $e->getHttpHeaders();
                 }
 
                 return new JsonResponse([
