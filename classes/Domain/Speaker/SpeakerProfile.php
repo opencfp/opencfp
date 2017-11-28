@@ -79,7 +79,7 @@ class SpeakerProfile
     {
         $this->assertAllowedToSee('company');
 
-        return $this->speaker->company ?: null;
+        return $this->speaker->company;
     }
 
     public function getTwitter()
