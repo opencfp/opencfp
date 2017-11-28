@@ -2,12 +2,12 @@
 
 namespace OpenCFP\Infrastructure\Auth;
 
-use OpenCFP\Domain\Services\Validator;
+use OpenCFP\Domain\Services\RequestValidator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
-final class CsrfValidator implements Validator
+final class CsrfValidator implements RequestValidator
 {
     /**
      * @var CsrfTokenManager

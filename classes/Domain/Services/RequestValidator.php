@@ -4,7 +4,7 @@ namespace OpenCFP\Domain\Services;
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface Validator
+interface RequestValidator
 {
     public function isValid(Request $request): bool;
 }
