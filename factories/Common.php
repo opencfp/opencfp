@@ -1,6 +1,14 @@
 <?php
 
-/** @var $factory \Illuminate\Database\Eloquent\Factory */
+/**
+ * Copyright (c) 2013-2017 OpenCFP
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/opencfp/opencfp
+ */
+
 $factory->define(\OpenCFP\Domain\Model\User::class, function (\Faker\Generator $faker) {
     return [
         'email'          => $faker->unique()->safeEmail,
