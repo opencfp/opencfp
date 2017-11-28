@@ -4,32 +4,38 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use OpenCFP\Infrastructure\Auth\CsrfCheck;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use OpenCFP\Infrastructure\Auth\CsrfValidator;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 /**
- * @covers \OpenCFP\Infrastructure\Auth\CsrfCheck
+ * @covers \OpenCFP\Infrastructure\Auth\CsrfValidator
  */
-class CsrfCheckTest extends \PHPUnit\Framework\TestCase
+class CsrfValidatorTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testNothingHappensWhenTokenIsValid()
+    public function testIsFinal()
+    {
+        $reflection = new \ReflectionClass(CsrfValidator::class);
+        $this->assertTrue($reflection->isFinal());
+    }
+
+    public function testReturnsTrueWhenTokenMangerReturnsTrue()
     {
         $manager = Mockery::mock(CsrfTokenManager::class);
         $manager->shouldReceive('isTokenValid')->andReturn(true);
 
-        $csrf = new CsrfCheck($manager);
-        $this->assertNull($csrf->checkCsrf('bla', 'bla'));
+        $csrf = new CsrfValidator($manager);
+        $this->assertTrue($csrf->isValid(new Request()));
     }
 
-    public function testIsRedirectWhenTokenIsNotValid()
+    public function testReturnsFalseWhenTokenManagersReturnsFalse()
     {
         $manager = Mockery::mock(CsrfTokenManager::class);
         $manager->shouldReceive('isTokenValid')->andReturn(false);
 
-        $csrf = new CsrfCheck($manager);
-        $this->assertInstanceOf(RedirectResponse::class, $csrf->checkCsrf('bla', 'bla'));
+        $csrf = new CsrfValidator($manager);
+        $this->assertFalse($csrf->isValid(new Request()));
     }
 }

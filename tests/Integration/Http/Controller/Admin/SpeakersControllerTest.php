@@ -69,7 +69,7 @@ class SpeakersControllerTest extends WebTestCase
     public function promoteActionFailsOnUserNotFound()
     {
         $this->asAdmin()
-            ->passCsrfCheck()
+            ->passCsrfValidator()
             ->get('/admin/speakers/7679/promote', ['role' => 'Admin'])
             ->assertFlashContains('We were unable to promote the Admin. Please try again.')
             ->assertRedirect()

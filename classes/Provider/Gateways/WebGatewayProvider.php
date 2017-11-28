@@ -3,7 +3,7 @@
 namespace OpenCFP\Provider\Gateways;
 
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Infrastructure\Auth\CsrfCheck;
+use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
 use Pimple\Container;
@@ -11,6 +11,7 @@ use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 use Twig_SimpleFunction;
@@ -60,10 +61,12 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             return SpeakerAccess::userHasAccess($app);
         };
 
-        $csrfChecker = function (Request $req) use ($app) {
-            $checker = $app[CsrfCheck::class];
+        $csrfChecker = function (Request $request) use ($app) {
+            $checker = $app[CsrfValidator::class];
 
-            return $checker->checkCsrf($req->get('token_id'), $req->get('token'));
+            if (!$checker->isValid($request)) {
+                return new RedirectResponse('/dashboard');
+            }
         };
 
         $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')

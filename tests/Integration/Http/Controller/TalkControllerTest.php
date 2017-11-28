@@ -62,7 +62,7 @@ class TalkControllerTest extends WebTestCase
 
         $this->asLoggedInSpeaker(1)
             ->callForPapersIsOpen()
-            ->passCsrfCheck()
+            ->passCsrfValidator()
             ->post('/talk/create', $talk_data)
             ->assertRedirect();
     }
@@ -110,7 +110,7 @@ class TalkControllerTest extends WebTestCase
     {
         $this->asLoggedInSpeaker(self::$user->id)
             ->callForPapersIsClosed()
-            ->passCsrfCheck()
+            ->passCsrfValidator()
             ->get('/talk/edit/' . self::$talk->id)
             ->assertFlashContains('error')
             ->assertFlashContains('You cannot edit talks once the call for papers has ended')
@@ -173,7 +173,7 @@ class TalkControllerTest extends WebTestCase
     {
         $this->asLoggedInSpeaker(self::$user->id)
             ->callForPapersIsClosed()
-            ->passCsrfCheck()
+            ->passCsrfValidator()
             ->post('/talk/delete', ['tid' => self::$talk->id])
             ->assertNotSee('ok')
             ->assertSee('no')
@@ -186,7 +186,7 @@ class TalkControllerTest extends WebTestCase
     public function notAllowedToDeleteSomeoneElseTalk()
     {
         $this->asLoggedInSpeaker(self::$user->id +1)
-            ->passCsrfCheck()
+            ->passCsrfValidator()
             ->post('/talk/delete', ['tid' => self::$talk->id])
             ->assertNotSee('ok')
             ->assertSee('no')
@@ -213,7 +213,7 @@ class TalkControllerTest extends WebTestCase
     {
         $this->asLoggedInSpeaker()
             ->callForPapersIsClosed()
-            ->passCsrfCheck()
+            ->passCsrfValidator()
             ->post('/talk/create')
             ->assertRedirect()
             ->assertFlashContains('You cannot create talks once the call for papers has ended')
@@ -235,7 +235,7 @@ class TalkControllerTest extends WebTestCase
         ];
         $this->asLoggedInSpeaker()
             ->callForPapersIsOpen()
-            ->passCsrfCheck()
+            ->passCsrfValidator()
             ->post('/talk/create', $postData)
             ->assertSuccessful()
             ->assertSee('Create Your Talk')
@@ -266,7 +266,7 @@ class TalkControllerTest extends WebTestCase
     {
         $this->asLoggedInSpeaker()
             ->callForPapersIsClosed()
-            ->passCsrfCheck()
+            ->passCsrfValidator()
             ->post('/talk/update', ['id' => 2])
             ->assertFlashContains('Read Only')
             ->assertRedirect();
