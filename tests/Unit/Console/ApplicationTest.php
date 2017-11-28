@@ -118,10 +118,6 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
         $output = $this->createOutputInterface();
 
-        /**
-         * Create a mock Sentry object that returns a user that is in the
-         * system but does not have admin access
-         */
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
         $accounts = Mockery::mock(AccountManagement::class);

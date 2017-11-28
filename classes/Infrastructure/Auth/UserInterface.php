@@ -11,11 +11,6 @@
 
 namespace OpenCFP\Infrastructure\Auth;
 
-/**
- * This interface is intended to be used as a representation of a user.
- *
- * It should serve as a bridge to allow switching between Sentry and Sentinel
- */
 interface UserInterface
 {
     /**

@@ -65,11 +65,6 @@ class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
         $user->shouldReceive('getLogin')->andReturn('test@opencfp.dev');
         $user->shouldReceive('addGroup');
 
-        /**
-         * Create a Sentry object that also returns an ID that represents
-         * an admin group provider. Number doesn't matter for this particular
-         * test
-         */
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findByLogin')
             ->andReturn($user);

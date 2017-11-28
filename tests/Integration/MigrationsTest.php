@@ -12,8 +12,6 @@
 namespace OpenCFP\Test\Integration;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Infrastructure\Auth\SentryAccountManagement;
 use OpenCFP\Test\BaseTestCase;
 use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -45,62 +43,6 @@ class MigrationsTest extends BaseTestCase
         $this->assertContains('20171120102354 SentinelMigration', $content);
     }
 
-    /**
-     * @test
-     */
-    public function oldUsersGetActivated()
-    {
-        if (!$this->app[AccountManagement::class] instanceof SentryAccountManagement) {
-            $this->markTestSkipped();
-        }
-        $capsule = $this->getCapsule();
-        $this->migrateTo('20171120102354');
-        //We are now at the migration before the users get activated
-
-        /** @var AccountManagement $accounts */
-        $accounts =$this->app[AccountManagement::class];
-        $accounts->create('test@example.com', 'secret');
-        $accounts->activate('test@example.com');
-
-        $activations = $capsule->getConnection()->query()->from('activations')->get();
-        $this->assertCount(0, $activations);
-        $this->migrateContinue();
-
-        $postActivations = $capsule->getConnection()->query()->from('activations')->get();
-        $this->assertCount(1, $postActivations);
-        $this->assertSame(1, $postActivations->first()->completed);
-    }
-
-    /**
-     * @test
-     */
-    public function adminsGetPromoted()
-    {
-        if (!$this->app[AccountManagement::class] instanceof SentryAccountManagement) {
-            $this->markTestSkipped();
-        }
-        $capsule = $this->getCapsule();
-        $this->migrateTo('20171120122725');
-        //We are now at the migration before the roles get done.
-
-        /** @var AccountManagement $accounts */
-        $accounts = $this->app[AccountManagement::class];
-        $accounts->create('test@example.com', 'secret');
-        $accounts->activate('test@example.com');
-        $accounts->promoteTo('test@example.com', 'Admin');
-        $accounts->create('speaker@example.com', 'secret');
-        $accounts->activate('speaker@example.com');
-
-        $userRoles = $capsule->getConnection()->query()->from('role_users')->get();
-        $this->assertCount(0, $userRoles);
-        $this->migrateContinue();
-
-        $postUserRoles = $capsule->getConnection()->query()->from('role_users')->get();
-        $this->assertCount(2, $postUserRoles);
-        $user= $accounts->findById($postUserRoles->first()->user_id);
-        $this->assertSame('test@example.com', $user->getLogin());
-    }
-
     private function migrateTo($target = ''): BufferedOutput
     {
         $this->dropAndCreateDatabase();
@@ -110,18 +52,6 @@ class MigrationsTest extends BaseTestCase
             ['phinx', 'migrate', '--environment=testing'];
 
         $input  = new ArgvInput($inputArg);
-        $output = new BufferedOutput();
-        $phinx  = new PhinxApplication();
-
-        $phinx->setAutoExit(false);
-        $phinx->run($input, $output);
-
-        return $output;
-    }
-
-    private function migrateContinue(): BufferedOutput
-    {
-        $input  = new ArgvInput(['phinx', 'migrate', '--environment=testing']);
         $output = new BufferedOutput();
         $phinx  = new PhinxApplication();
 

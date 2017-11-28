@@ -172,7 +172,6 @@ abstract class WebTestCase extends BaseTestCase
         $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
         $user->shouldReceive('getLogin')->andReturn('my@email.com');
 
-        // Create a test double for Sentry
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
@@ -184,7 +183,6 @@ abstract class WebTestCase extends BaseTestCase
 
     public function asAdmin(int $id = 1): self
     {
-        // Set things up so Sentry believes we're logged in
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);
         $user->shouldReceive('getId')->andReturn($id);
@@ -194,7 +192,6 @@ abstract class WebTestCase extends BaseTestCase
         $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
         $auth = Mockery::mock(Authentication::class);
 
-        // Create a test double for Sentry
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
         $auth->shouldReceive('userId')->andReturn($id);
