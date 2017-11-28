@@ -69,6 +69,7 @@ class SpeakersControllerTest extends WebTestCase
     public function promoteActionFailsOnUserNotFound()
     {
         $this->asAdmin()
+            ->passCsrfValidator()
             ->get('/admin/speakers/7679/promote', ['role' => 'Admin'])
             ->assertFlashContains('We were unable to promote the Admin. Please try again.')
             ->assertRedirect()
@@ -91,7 +92,7 @@ class SpeakersControllerTest extends WebTestCase
             ->getToken('admin_speaker_promote')
             ->getValue();
         $this->asAdmin()
-            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => $csrfToken])
+            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => $csrfToken, 'token_id'=> 'admin_speaker_promote'])
             ->assertFlashContains('User already is in the Admin group.')
             ->assertRedirect()
             ->assertTargetURLContains('admin/speakers');
@@ -106,7 +107,7 @@ class SpeakersControllerTest extends WebTestCase
             ->getToken('admin_speaker_promote')
             ->getValue();
         $this->asAdmin()
-            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => $csrfToken])
+            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => $csrfToken, 'token_id'=> 'admin_speaker_promote'])
             ->assertFlashContains('success')
             ->assertRedirect()
             ->assertTargetURLContains('admin/speakers');
@@ -118,9 +119,9 @@ class SpeakersControllerTest extends WebTestCase
     public function promoteActionFailsOnBadToken()
     {
         $this->asAdmin()
-            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => \uniqid()])
+            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', ['role' => 'Admin', 'token' => \uniqid(), 'token_id'=> 'admin_speaker_promote'])
             ->assertRedirect()
-            ->assertTargetURLContains('admin/speakers');
+            ->assertTargetURLContains('/dashboard');
     }
 
     /**
@@ -132,7 +133,7 @@ class SpeakersControllerTest extends WebTestCase
             ->getToken('admin_speaker_demote')
             ->getValue();
         $this->asAdmin()
-            ->get('/admin/speakers/7679/demote', ['role' => 'Admin', 'token' => $csrfToken])
+            ->get('/admin/speakers/7679/demote', ['role' => 'Admin', 'token' => $csrfToken, 'token_id'=> 'admin_speaker_demote'])
             ->assertFlashContains('We were unable to remove the Admin. Please try again.')
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
@@ -148,7 +149,7 @@ class SpeakersControllerTest extends WebTestCase
             ->getToken('admin_speaker_demote')
             ->getValue();
         $this->asAdmin($user->id)
-            ->get('/admin/speakers/' . $user->id . '/demote', ['role' => 'Admin', 'token' => $csrfToken])
+            ->get('/admin/speakers/' . $user->id . '/demote', ['role' => 'Admin', 'token' => $csrfToken, 'token_id'=> 'admin_speaker_demote'])
             ->assertFlashContains('Sorry, you cannot remove yourself as Admin.')
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
@@ -172,7 +173,7 @@ class SpeakersControllerTest extends WebTestCase
             ->getToken('admin_speaker_demote')
             ->getValue();
         $this->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin', 'token' => $csrfToken])
+            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin', 'token' => $csrfToken, 'token_id'=> 'admin_speaker_demote'])
             ->assertFlashContains('success')
             ->assertRedirect()
             ->assertTargetURLContains('/admin/speakers');
@@ -184,9 +185,9 @@ class SpeakersControllerTest extends WebTestCase
     public function demoteActionFailsWithBadToken()
     {
         $this->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin', 'token' => \uniqid()])
+            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', ['role' => 'Admin', 'token' => \uniqid(), 'token_id'=> 'admin_speaker_demote'])
             ->assertRedirect()
-            ->assertTargetURLContains('/admin/speakers');
+            ->assertTargetURLContains('/dashboard');
     }
 
     /**
@@ -195,8 +196,8 @@ class SpeakersControllerTest extends WebTestCase
     public function deleteActionFailsWithBadToken()
     {
         $this->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/delete/' . self::$users->last()->id . '?token=' . \uniqid())
+            ->get('/admin/speakers/delete/' . self::$users->last()->id . '?token_id=admin_speaker_demote&token=' . \uniqid())
             ->assertRedirect()
-            ->assertTargetURLContains('/admin/speakers');
+            ->assertTargetURLContains('/dashboard');
     }
 }

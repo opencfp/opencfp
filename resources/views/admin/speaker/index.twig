@@ -37,16 +37,16 @@
             </div>
             <div>
                 {% if speaker.is_admin == false %}
-                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_promote', { id: speaker.id ,role: 'Admin', token: csrf_token('admin_speaker_promote')}) }}" onClick="return confirm('Are you sure you want promote this user as an admin?');">Promote To Admin</a>
+                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_promote', { id: speaker.id ,role: 'Admin', token: csrf_token('admin_speaker_promote'), token_id:'admin_speaker_promote'}) }}" onClick="return confirm('Are you sure you want promote this user as an admin?');">Promote To Admin</a>
                 {% else %}
-                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_demote', { id: speaker.id ,role: 'Admin', token: csrf_token('admin_speaker_demote') }) }}" onClick="return confirm('Are you sure you want demote this admin?');">Demote Admin</a>
+                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_demote', { id: speaker.id ,role: 'Admin', token: csrf_token('admin_speaker_demote'), token_id:'admin_speaker_demote' }) }}" onClick="return confirm('Are you sure you want demote this admin?');">Demote Admin</a>
                 {% endif %}
                 {% if speaker.is_reviewer == false %}
-                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_promote', { id: speaker.id ,role: 'Reviewer', token: csrf_token('admin_speaker_promote')}) }}" onClick="return confirm('Are you sure you want promote this user as a reviewer?');">Promote To Reviewer</a>
+                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_promote', { id: speaker.id ,role: 'Reviewer', token: csrf_token('admin_speaker_promote'), token_id:'admin_speaker_promote'}) }}" onClick="return confirm('Are you sure you want promote this user as a reviewer?');">Promote To Reviewer</a>
                 {% else %}
-                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_demote', { id: speaker.id ,role: 'Reviewer', token: csrf_token('admin_speaker_demote') }) }}" onClick="return confirm('Are you sure you want demote this reviewer?');">Demote Reviewer</a>
+                    <a class="text-sm text-brand underline mr-3" href="{{ url('admin_speaker_demote', { id: speaker.id ,role: 'Reviewer', token: csrf_token('admin_speaker_demote'), token_id:'admin_speaker_demote' }) }}" onClick="return confirm('Are you sure you want demote this reviewer?');">Demote Reviewer</a>
                 {% endif %}
-                <a class="text-sm text-brand underline" href="{{ url('admin_speaker_delete', { id: speaker.id, token: csrf_token('admin_speaker_delete') }) }}" onClick="return confirm('Are you sure you want to delete this user');">Delete</a>
+                <a class="text-sm text-brand underline" href="{{ url('admin_speaker_delete', { id: speaker.id, token: csrf_token('admin_speaker_delete'), token_id:'admin_speaker_delete' }) }}" onClick="return confirm('Are you sure you want to delete this user');">Delete</a>
             </div>
         </div>
     {% endfor %}

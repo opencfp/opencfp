@@ -6,7 +6,7 @@ function deleteTalk(tid) {
     $.ajax({
         type: "POST",
         url: "/talk/delete",
-        data: "tid=" + tid + "&user_id=" + {{ user.id }} + "&token={{ csrf_token('delete_talk') }}",
+        data: "tid=" + tid + "&user_id=" + {{ user.id }} + "&token={{ csrf_token('delete_talk') }}&token_id=delete_talk" ,
         success: function(data, textStatus, jqXHR) {
             if (data.delete == 'ok') {
                 $("#talk-"+tid).remove();
@@ -73,7 +73,7 @@ function deleteTalk(tid) {
                     </div>
                     <div>
                         {% if cfp_open %}
-                            <a href="{{ url('talk_edit', { id: talk.id, token: csrf_token('edit_talk') }) }}" class="underline text-sm text-brand">Edit</a>
+                            <a href="{{ url('talk_edit', { id: talk.id, token: csrf_token('edit_talk'), token_id:'edit_talk'} ) }}" class="underline text-sm text-brand">Edit</a>
                         {% else %}
                             <a href="{{ url('talk_view', { id: talk.id }) }}" class="underline text-sm text-brand">View</a>
                         {% endif %}

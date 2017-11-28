@@ -4,6 +4,7 @@ namespace OpenCFP\Provider;
 
 use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use OpenCFP\Application;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForProposal;
 use OpenCFP\Domain\Model\Airport;
@@ -14,6 +15,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
+use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelAuthentication;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
@@ -40,6 +42,10 @@ class ApplicationServiceProvider implements ServiceProviderInterface
 
         $app[Authentication::class] = function ($app) {
             return new SentinelAuthentication($app[Sentinel::class], $app[AccountManagement::class]);
+        };
+
+        $app[CsrfValidator::class] = function (Application $app) {
+            return new CsrfValidator($app['csrf.token_manager']);
         };
 
         $app[SpeakerRepository::class] = function () {

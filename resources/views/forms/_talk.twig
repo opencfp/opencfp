@@ -1,6 +1,7 @@
 {% include "_flash.twig" %}
 <form action="{{ formAction }}" method="POST" class="form-horizontal">
-    <input type="hidden" name="_token" value="{{ csrf_token("speaker_talk") }}">
+    <input type="hidden" name="token" value="{{ csrf_token("speaker_talk") }}">
+    <input type="hidden" name="token_id" value="speaker_talk">
     {% if id is defined %}
         <input name="id" type="hidden" value="{{ id }}">
     {% endif %}
