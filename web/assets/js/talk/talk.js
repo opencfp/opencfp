@@ -1,8 +1,14 @@
 function Talk(id, $el) {
   this.$el = $el;
   this.id = id;
-  this.baseUrl = '/admin/talks/';
-};
+  if (location.href.includes('/admin/')) {
+    url = '/admin/talks/';
+  }
+  if (location.href.includes('/reviewer/')) {
+    url = '/reviewer/talks/';
+  }
+  this.baseUrl = url;
+}
 
 Talk.prototype.favorite = function() {
   var _this = this;
@@ -58,46 +64,13 @@ Talk.prototype.rate = function(rating) {
     url: url,
     data: data,
     success: function() {
-      if (data.rating === -1) {
-        console.log('here')
-        $('#talk-downvote-' + _this.id + ' i').addClass('text-red-dark');
-        $('#talk-upvote-' + _this.id + ' i').removeClass('text-green-dark');
-      }
-
-      if (data.rating === 1) {
-        $('#talk-upvote-' + _this.id + ' i').addClass('text-green-dark');
-        $('#talk-downvote-' + _this.id + ' i').removeClass('text-red-dark');
-      }
-
-      if (data.rating === 0) {
-        $('#talk-upvote-' + _this.id + ' i').removeClass('text-green-dark');
-        $('#talk-downvote-' + _this.id + ' i').removeClass('text-red-dark');
-      }
+      return true;
     },
     error: _this.onError
   });
+  return true;
 };
 
 Talk.prototype.onError = function(xhr, status, errorMessage) {
   console.log(status + ': ' + errorMessage);
 };
-
-// Add Listeners
-$('.js-talk-rating').on('click', function(e) {
-    var talk = new Talk($(this).data('id'), $(this));
-    var rating = $(this).data('rating');
-    e.preventDefault();
-    talk.rate(rating);
-});
-
-$('.js-talk-favorite').on('click', function(e) {
-    var talk = new Talk($(this).data('id'), $(this));
-    e.preventDefault();
-    talk.favorite();
-});
-
-$('.js-talk-select').on('click', function(e) {
-    var talk = new Talk($(this).data('id'), $(this));
-    e.preventDefault();
-    talk.select();
-});
