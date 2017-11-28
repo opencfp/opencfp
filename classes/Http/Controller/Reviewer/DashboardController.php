@@ -10,7 +10,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Http\Controller\BaseController;
 
-class DashBoardController extends BaseController
+class DashboardController extends BaseController
 {
     public function indexAction()
     {
