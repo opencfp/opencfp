@@ -3,6 +3,7 @@
 namespace OpenCFP\Provider;
 
 use Cartalyst\Sentinel\Activations\IlluminateActivationRepository;
+use Cartalyst\Sentinel\Cookies\NullCookie;
 use Cartalyst\Sentinel\Hashing\NativeHasher;
 use Cartalyst\Sentinel\Persistences\IlluminatePersistenceRepository;
 use Cartalyst\Sentinel\Reminders\IlluminateReminderRepository;
@@ -12,7 +13,6 @@ use Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository;
 use Cartalyst\Sentinel\Users\IlluminateUserRepository;
 use Cartalyst\Sentinel\Users\UserRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
-use OpenCFP\Infrastructure\Persistence\NullCookie;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

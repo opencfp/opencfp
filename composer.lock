@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b1b1b2b65aa5d1cf5649b403b65b0e3",
+    "content-hash": "87ae4311546b93a0d94677515366305c",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -62,16 +62,16 @@
         },
         {
             "name": "cartalyst/sentinel",
-            "version": "v2.0.16",
+            "version": "v2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cartalyst/sentinel.git",
-                "reference": "7b4b210ee98c38f4310ae428b74955da58c5133d"
+                "reference": "8ee7778f96ab6193f4be118a52d265c6861de0a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cartalyst/sentinel/zipball/7b4b210ee98c38f4310ae428b74955da58c5133d",
-                "reference": "7b4b210ee98c38f4310ae428b74955da58c5133d",
+                "url": "https://api.github.com/repos/cartalyst/sentinel/zipball/8ee7778f96ab6193f4be118a52d265c6861de0a5",
+                "reference": "8ee7778f96ab6193f4be118a52d265c6861de0a5",
                 "shasum": ""
             },
             "require": {
@@ -139,7 +139,7 @@
                 "php",
                 "security"
             ],
-            "time": "2017-10-09T01:03:12+00:00"
+            "time": "2017-11-28T13:10:46+00:00"
         },
         {
             "name": "cartalyst/sentry",

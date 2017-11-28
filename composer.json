@@ -11,7 +11,7 @@
     "require": {
         "php": ">=7",
         "aptoma/twig-markdown": "0.2.*",
-        "cartalyst/sentinel": "^2.0",
+        "cartalyst/sentinel": "^2.0.17",
         "cartalyst/sentry": "2.1.*",
         "doctrine/dbal": "~2.3",
         "ezyang/htmlpurifier": "dev-master",
