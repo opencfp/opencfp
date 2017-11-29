@@ -31,10 +31,12 @@ class YesNoRatingTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidRatings($rating, $valid)
     {
-        $mockAuth = Mockery::mock(Authentication::class);
+        $mockAuth = Mockery::mock(Authentication::class)->makePartial();
         $mockAuth->shouldReceive('userId');
         $metaMock = Mockery::mock(TalkMeta::class);
+
         $yesno    = new YesNoRating($metaMock, $mockAuth);
+
         $this->assertSame($valid, $yesno->isValidRating($rating));
     }
 
@@ -43,7 +45,9 @@ class YesNoRatingTest extends \PHPUnit\Framework\TestCase
         $mockAuth = Mockery::mock(Authentication::class);
         $mockAuth->shouldReceive('userId');
         $metaMock = Mockery::mock(TalkMeta::class);
+
         $yesno    = new YesNoRating($metaMock, $mockAuth);
+
         $this->assertSame('YesNo', $yesno->getRatingName());
     }
 

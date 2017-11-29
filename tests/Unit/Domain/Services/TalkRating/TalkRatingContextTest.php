@@ -47,13 +47,6 @@ class TalkRatingContextTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testNullInputThrowsAnError()
-    {
-        //This means null input should be checked before handing it to the getTalkStrategy function
-        $this->expectException(\TypeError::class);
-        TalkRatingContext::getTalkStrategy(null, $this->authMock());
-    }
-
     public function testGetTalkStrategyReturnsATalkRatingStrategy()
     {
         $strategy = TalkRatingContext::getTalkStrategy('yesno', $this->authMock());
