@@ -74,12 +74,11 @@ class TalksController extends BaseController
 
             return $this->app->redirect($this->url('admin_talks'));
         }
-        $data = [
-                'ratingSystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
-                'talk'         => $handler->getProfile(),
-            ];
 
-        return $this->render('reviewer/talks/view.twig', $data);
+        return $this->render('reviewer/talks/view.twig', [
+            'ratingSystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
+            'talk'         => $handler->getProfile(),
+        ]);
     }
 
     public function rateAction(Request $req)
