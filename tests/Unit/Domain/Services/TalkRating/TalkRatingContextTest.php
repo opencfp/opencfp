@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright (c) 2013-2017 OpenCFP
  *
@@ -63,12 +65,9 @@ class TalkRatingContextTest extends \PHPUnit\Framework\TestCase
     public function strategyProvider(): array
     {
         return [
-            [1],
             ['asdf'],
             [''],
             ['NULL'],
-            [false],
-            [true],
         ];
     }
 
