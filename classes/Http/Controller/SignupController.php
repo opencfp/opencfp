@@ -30,7 +30,7 @@ class SignupController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $cfp = $this->service('callforproposal');
+        $cfp = $this->service('callforpapers');
 
         if (!$cfp->isOpen()) {
             $this->service('session')->set('flash', [

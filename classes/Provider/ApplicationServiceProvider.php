@@ -17,7 +17,7 @@ use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Application;
 use OpenCFP\Application\Speakers;
-use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -82,7 +82,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
 
         $app['application.speakers'] = function ($app) {
             return new Speakers(
-                new CallForProposal(new \DateTimeImmutable($app->config('application.enddate'))),
+                new CallForPapers(new \DateTimeImmutable($app->config('application.enddate'))),
                 $app[IdentityProvider::class],
                 $app[SpeakerRepository::class],
                 new IlluminateTalkRepository(),

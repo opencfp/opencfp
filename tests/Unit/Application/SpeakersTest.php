@@ -17,7 +17,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
-use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\EventDispatcher;
@@ -47,8 +47,8 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     /** @var IdentityProvider | MockInterface */
     private $identityProvider;
 
-    /** @var CallForProposal | MockInterface */
-    private $callForProposal;
+    /** @var CallForPapers | MockInterface */
+    private $callForPapers;
 
     /** @var EventDispatcher | MockInterface */
     private $dispatcher;
@@ -58,10 +58,10 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         $this->identityProvider  = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
         $this->speakerRepository = m::mock(\OpenCFP\Domain\Speaker\SpeakerRepository::class);
         $this->talkRepository    = m::mock(\OpenCFP\Domain\Talk\TalkRepository::class);
-        $this->callForProposal   = m::mock(\OpenCFP\Domain\CallForProposal::class);
+        $this->callForPapers     = m::mock(\OpenCFP\Domain\CallForPapers::class);
         $this->dispatcher        = m::mock(\OpenCFP\Domain\Services\EventDispatcher::class);
 
-        $this->sut = new Speakers($this->callForProposal, $this->identityProvider, $this->speakerRepository, $this->talkRepository, $this->dispatcher);
+        $this->sut = new Speakers($this->callForPapers, $this->identityProvider, $this->speakerRepository, $this->talkRepository, $this->dispatcher);
     }
 
     //
@@ -152,7 +152,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     /** @test */
     public function it_should_allow_authenticated_speakers_to_submit_talks()
     {
-        $this->callForProposal->shouldReceive('isOpen')
+        $this->callForPapers->shouldReceive('isOpen')
             ->once()
             ->andReturn(true);
 
@@ -191,7 +191,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
      */
     public function it_doesnt_allow_talk_submissions_after_cfp_has_ended()
     {
-        $this->callForProposal->shouldReceive('isOpen')
+        $this->callForPapers->shouldReceive('isOpen')
             ->once()
             ->andReturn(false);
         $submission = TalkSubmission::fromNative([

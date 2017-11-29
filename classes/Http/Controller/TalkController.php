@@ -69,7 +69,7 @@ class TalkController extends BaseController
         $talkId      = (int) $req->get('id');
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
-        if (!$this->service('callforproposal')->isOpen()) {
+        if (!$this->service('callforpapers')->isOpen()) {
             $this->service('session')->set(
                 'flash',
                 [
@@ -118,7 +118,7 @@ class TalkController extends BaseController
     public function createAction(Request $req)
     {
         // You can only create talks while the CfP is open
-        if (!$this->service('callforproposal')->isOpen()) {
+        if (!$this->service('callforpapers')->isOpen()) {
             $this->service('session')->set(
                 'flash',
                 [
@@ -155,7 +155,7 @@ class TalkController extends BaseController
     public function processCreateAction(Request $req)
     {
         // You can only create talks while the CfP is open
-        if (!$this->service('callforproposal')->isOpen()) {
+        if (!$this->service('callforpapers')->isOpen()) {
             $this->service('session')->set(
                 'flash',
                 [
@@ -232,7 +232,7 @@ class TalkController extends BaseController
 
     public function updateAction(Request $req)
     {
-        if (!$this->service('callforproposal')->isOpen()) {
+        if (!$this->service('callforpapers')->isOpen()) {
             $this->service('session')->set(
                 'flash',
                 [
@@ -315,7 +315,7 @@ class TalkController extends BaseController
     public function deleteAction(Request $req)
     {
         // You can only delete talks while the CfP is open
-        if (!$this->service('callforproposal')->isOpen()) {
+        if (!$this->service('callforpapers')->isOpen()) {
             return $this->app->json(['delete' => 'no']);
         }
 

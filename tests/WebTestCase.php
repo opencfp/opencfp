@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test;
 
 use Mockery;
-use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\RequestValidator;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
@@ -135,9 +135,9 @@ abstract class WebTestCase extends BaseTestCase
 
     public function callForPapersIsOpen(): self
     {
-        $cfp = Mockery::mock(CallForProposal::class);
+        $cfp = Mockery::mock(CallForPapers::class);
         $cfp->shouldReceive('isOpen')->andReturn(true);
-        $this->swap('callforproposal', $cfp);
+        $this->swap('callforpapers', $cfp);
         $this->app['twig']->addGlobal('cfp_open', true);
 
         return $this;
@@ -145,9 +145,9 @@ abstract class WebTestCase extends BaseTestCase
 
     public function callForPapersIsClosed(): self
     {
-        $cfp = Mockery::mock(CallForProposal::class);
+        $cfp = Mockery::mock(CallForPapers::class);
         $cfp->shouldReceive('isOpen')->andReturn(false);
-        $this->swap('callforproposal', $cfp);
+        $this->swap('callforpapers', $cfp);
         $this->app['twig']->addGlobal('cfp_open', false);
 
         return $this;
