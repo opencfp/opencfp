@@ -24,7 +24,9 @@ class TalkRatingProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app[TalkRatingStrategy::class] = function ($app) {
-            return TalkRatingContext::getTalkStrategy('YesNo', $app[Authentication::class]);
+            $strategy = $app->config('application.rating_system') ?: 'yesno';
+
+            return TalkRatingContext::getTalkStrategy($strategy, $app[Authentication::class]);
         };
     }
 }
