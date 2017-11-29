@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright (c) 2013-2017 OpenCFP
  *
@@ -67,7 +69,7 @@ class TalksController extends BaseController
     {
         /** @var TalkHandler $handler */
         $handler = $this->service(TalkHandler::class)
-            ->grabTalk($req->get('id'));
+            ->grabTalk((int) $req->get('id'));
 
         if (!$handler->view()) {
             $this->service('session')->set('flash', [

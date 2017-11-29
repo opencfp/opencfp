@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright (c) 2013-2017 OpenCFP
  *
@@ -78,6 +80,10 @@ class ExportsController extends BaseController
      */
     private function csvFormat($info)
     {
+        if (!\is_string($info)) {
+            return $info;
+        }
+        
         if ($this->startsWith($info, '=')
                 || $this->startsWith($info, '+')
                 || $this->startsWith($info, '-')
