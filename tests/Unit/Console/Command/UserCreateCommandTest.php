@@ -205,7 +205,7 @@ final class UserCreateCommandTest extends Framework\TestCase
         $email     = $faker->email;
         $password  = $faker->password;
 
-        $user = $this->createSentryUserMock();
+        $user = $this->createUserMock();
 
         $accountManagement = $this->createAccountManagementMock();
 
@@ -282,7 +282,7 @@ final class UserCreateCommandTest extends Framework\TestCase
                     'password'   => $password,
                 ])
             )
-            ->willReturn($this->createSentryUserMock());
+            ->willReturn($this->createUserMock());
 
         $accountManagement
             ->expects($this->at(1))
@@ -371,10 +371,10 @@ final class UserCreateCommandTest extends Framework\TestCase
     }
 
     /**
-     * @return Auth\SentryUser|\PHPUnit_Framework_MockObject_MockObject
+     * @return Auth\UserInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function createSentryUserMock(): Auth\SentryUser
+    private function createUserMock(): Auth\UserInterface
     {
-        return $this->createMock(Auth\SentryUser::class);
+        return $this->createMock(Auth\UserInterface::class);
     }
 }

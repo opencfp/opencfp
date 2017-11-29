@@ -134,10 +134,6 @@ class ProfileController extends BaseController
             return $this->redirectTo('password_edit');
         }
 
-        /**
-         * Resetting passwords looks weird because we need to use Sentry's
-         * own built-in password reset functionality to do it
-         */
         $sanitized_data = $form->getCleanData();
         $reset_code     = $user->getResetPasswordCode();
 

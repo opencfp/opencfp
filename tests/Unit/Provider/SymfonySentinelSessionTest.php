@@ -42,12 +42,12 @@ class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
                 $this->identicalTo($value)
             );
 
-        $sentrySession = new SymfonySentinelSession(
+        $sentinelSession = new SymfonySentinelSession(
             $session,
             $key
         );
 
-        $sentrySession->put($value);
+        $sentinelSession->put($value);
     }
 
     public function testGetReturnsValue()
@@ -63,12 +63,12 @@ class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
             ->with($this->identicalTo($key))
             ->willReturn($value);
 
-        $sentrySession = new SymfonySentinelSession(
+        $sentinelSession = new SymfonySentinelSession(
             $session,
             $key
         );
 
-        $this->assertSame($value, $sentrySession->get());
+        $this->assertSame($value, $sentinelSession->get());
     }
 
     public function testForgetRemovesKey()
@@ -82,12 +82,12 @@ class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
             ->method('remove')
             ->with($this->identicalTo($key));
 
-        $sentrySession = new SymfonySentinelSession(
+        $sentinelSession = new SymfonySentinelSession(
             $session,
             $key
         );
 
-        $sentrySession->forget();
+        $sentinelSession->forget();
     }
 
     private function getSessionMock()

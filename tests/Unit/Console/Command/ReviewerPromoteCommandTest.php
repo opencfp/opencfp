@@ -11,7 +11,6 @@
 
 namespace OpenCFP\Test\Unit\Console\Command;
 
-use Cartalyst\Sentry;
 use OpenCFP\Console\Command\ReviewerPromoteCommand;
 use OpenCFP\Domain\Services;
 use OpenCFP\Infrastructure\Auth;
@@ -74,7 +73,7 @@ final class ReviewerPromoteCommandTest extends Framework\TestCase
             ->expects($this->once())
             ->method('findByLogin')
             ->with($this->identicalTo($email))
-            ->willThrowException(new Sentry\Users\UserNotFoundException());
+            ->willThrowException(new Auth\UserNotFoundException());
 
         $command = new ReviewerPromoteCommand($accountManagement);
 
@@ -105,7 +104,7 @@ final class ReviewerPromoteCommandTest extends Framework\TestCase
     {
         $email = $this->getFaker()->email;
 
-        $user = $this->createSentryUserMock();
+        $user = $this->createUserMock();
 
         $accountManagement = $this->createAccountManagementMock();
 
@@ -157,10 +156,10 @@ final class ReviewerPromoteCommandTest extends Framework\TestCase
     }
 
     /**
-     * @return Auth\SentryUser|\PHPUnit_Framework_MockObject_MockObject
+     * @return Auth\UserInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function createSentryUserMock(): Auth\SentryUser
+    private function createUserMock(): Auth\UserInterface
     {
-        return $this->createMock(Auth\SentryUser::class);
+        return $this->createMock(Auth\UserInterface::class);
     }
 }

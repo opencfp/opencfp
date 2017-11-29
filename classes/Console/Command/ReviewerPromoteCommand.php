@@ -11,8 +11,8 @@
 
 namespace OpenCFP\Console\Command;
 
-use Cartalyst\Sentry;
 use OpenCFP\Domain\Services;
+use OpenCFP\Infrastructure\Auth;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -68,7 +68,7 @@ EOF
 
         try {
             $this->accountManagement->findByLogin($email);
-        } catch (Sentry\Users\UserNotFoundException $exception) {
+        } catch (Auth\UserNotFoundException $exception) {
             $io->error(\sprintf(
                 'Could not find account with email "%s".',
                 $email

@@ -34,14 +34,12 @@ class DashboardControllerTest extends WebTestCase
      */
     public function indexDisplaysUserAndTalks()
     {
-        // Set things up so Sentry believes we're logged in
         $user = m::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn(1);
         $user->shouldReceive('getId')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
 
-        // Create a test double for Sentry
         $auth = m::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
@@ -80,8 +78,6 @@ class DashboardControllerTest extends WebTestCase
     {
         $faker = $this->getFaker();
 
-        // There's some global before filters that call Sentry directly.
-        // We have to stub that behaviour here to have it think we are not admin.
         $user = m::mock(UserInterface::class);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
         $user->shouldReceive('getId')->andReturn(1);
