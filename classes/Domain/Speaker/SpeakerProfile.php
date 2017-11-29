@@ -65,7 +65,7 @@ class SpeakerProfile
      *
      * @return Talk[]
      */
-    public function getTalks()
+    public function getTalks(): array
     {
         $this->assertAllowedToSee('talks');
 
@@ -161,7 +161,7 @@ class SpeakerProfile
      *
      * @return bool
      */
-    public function getTransportation()
+    public function getTransportation(): bool
     {
         $this->assertAllowedToSee('transportation');
 
