@@ -48,12 +48,7 @@ class YesNoRatingTest extends \PHPUnit\Framework\TestCase
             [-2, false],
             [10, false],
             [PHP_INT_MAX, false],
-            ['3', false],
-            ['-1', true],
-            ['0', true],
-            ['1', true],
             [-0, true],
-            ['-0', true],
         ];
     }
 }

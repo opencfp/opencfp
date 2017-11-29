@@ -166,8 +166,9 @@ class SpeakersController extends BaseController
         /** @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
         $role     = $req->get('role');
+        $id       = (int) $req->get('id');
 
-        if ($this->service(Authentication::class)->userId() == $req->get('id')) {
+        if ($this->service(Authentication::class)->userId() == $id) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -178,7 +179,7 @@ class SpeakersController extends BaseController
         }
 
         try {
-            $user = $accounts->findById($req->get('id'));
+            $user = $accounts->findById($id);
             $accounts->demoteFrom($user->getLogin(), $role);
 
             $this->service('session')->set('flash', [
@@ -202,9 +203,10 @@ class SpeakersController extends BaseController
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
         $role     = $req->get('role');
+        $id       = (int) $req->get('id');
 
         try {
-            $user = $accounts->findById($req->get('id'));
+            $user = $accounts->findById($id);
             if ($user->hasAccess(\strtolower($role))) {
                 $this->service('session')->set('flash', [
                     'type'  => 'error',

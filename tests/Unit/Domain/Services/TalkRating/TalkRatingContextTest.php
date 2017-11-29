@@ -65,12 +65,9 @@ class TalkRatingContextTest extends \PHPUnit\Framework\TestCase
     public function strategyProvider(): array
     {
         return [
-            [1],
             ['asdf'],
             [''],
             ['NULL'],
-            [false],
-            [true],
         ];
     }
 

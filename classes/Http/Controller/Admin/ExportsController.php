@@ -80,6 +80,10 @@ class ExportsController extends BaseController
      */
     private function csvFormat($info)
     {
+        if (!\is_string($info)) {
+            return $info;
+        }
+        
         if ($this->startsWith($info, '=')
                 || $this->startsWith($info, '+')
                 || $this->startsWith($info, '-')
