@@ -15,7 +15,6 @@ use OpenCFP\Application as ApplicationContainer;
 use OpenCFP\Console\Command\AdminDemoteCommand;
 use OpenCFP\Console\Command\AdminPromoteCommand;
 use OpenCFP\Console\Command\ClearCacheCommand;
-use OpenCFP\Console\Command\ReviewerDemoteCommand;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Command\ListCommand;
@@ -50,7 +49,6 @@ class Application extends ConsoleApplication
             new ListCommand(),
             new AdminPromoteCommand(),
             new AdminDemoteCommand(),
-            new ReviewerDemoteCommand(),
             new ClearCacheCommand(),
         ];
     }
