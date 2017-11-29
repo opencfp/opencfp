@@ -23,14 +23,10 @@ $('.js-talk-rating-yes-no').on('click', function(e) {
     if (rating === -1) {
       $('#talk-downvote-' + id + ' i').addClass('text-red-dark');
       $('#talk-upvote-' + id + ' i').removeClass('text-green-dark');
-    }
-
-    if (rating === 1) {
+    } else  if (rating === 1) {
       $('#talk-upvote-' + id + ' i').addClass('text-green-dark');
       $('#talk-downvote-' + id + ' i').removeClass('text-red-dark');
-    }
-
-    if (rating === 0) {
+    } else if (rating === 0) {
       $('#talk-upvote-' + id + ' i').removeClass('text-green-dark');
       $('#talk-downvote-' + id + ' i').removeClass('text-red-dark');
     }
