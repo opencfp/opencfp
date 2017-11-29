@@ -34,28 +34,28 @@ class ProfileController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $speaker_data = User::find($user->getId())->toArray();
+        $speakerData = User::find($user->getId())->toArray();
 
-        $form_data = [
+        $formData = [
             'email'          => $user->getLogin(),
-            'first_name'     => $speaker_data['first_name'],
-            'last_name'      => $speaker_data['last_name'],
-            'company'        => $speaker_data['company'],
-            'twitter'        => $speaker_data['twitter'],
-            'url'            => $speaker_data['url'],
-            'speaker_info'   => $speaker_data['info'],
-            'speaker_bio'    => $speaker_data['bio'],
-            'speaker_photo'  => $speaker_data['photo_path'],
-            'preview_photo'  => '/uploads/' . $speaker_data['photo_path'],
-            'airport'        => $speaker_data['airport'],
-            'transportation' => $speaker_data['transportation'],
-            'hotel'          => $speaker_data['hotel'],
+            'first_name'     => $speakerData['first_name'],
+            'last_name'      => $speakerData['last_name'],
+            'company'        => $speakerData['company'],
+            'twitter'        => $speakerData['twitter'],
+            'url'            => $speakerData['url'],
+            'speaker_info'   => $speakerData['info'],
+            'speaker_bio'    => $speakerData['bio'],
+            'speaker_photo'  => $speakerData['photo_path'],
+            'preview_photo'  => '/uploads/' . $speakerData['photo_path'],
+            'airport'        => $speakerData['airport'],
+            'transportation' => $speakerData['transportation'],
+            'hotel'          => $speakerData['hotel'],
             'id'             => $user->getId(),
             'formAction'     => $this->url('user_update'),
             'buttonInfo'     => 'Update Profile',
         ];
 
-        return $this->render('user/edit.twig', $form_data);
+        return $this->render('user/edit.twig', $formData);
     }
 
     public function processAction(Request $req)
@@ -72,23 +72,23 @@ class ProfileController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $form_data = $this->getFormData($req);
+        $formData = $this->getFormData($req);
 
         if ($req->files->get('speaker_photo') != null) {
-            $form_data['speaker_photo'] = $req->files->get('speaker_photo');
+            $formData['speaker_photo'] = $req->files->get('speaker_photo');
         }
 
-        $form    = new SignupForm($form_data, $this->service('purifier'));
+        $form    = new SignupForm($formData, $this->service('purifier'));
         $isValid = $form->validateAll('update');
 
         if ($isValid) {
-            $sanitized_data = $this->transformSanitizedData($form->getCleanData());
-            if (isset($form_data['speaker_photo'])) {
-                $sanitized_data['photo_path'] = $this->service('profile_image_processor')
-                    ->process($form_data['speaker_photo']);
+            $sanitizedData = $this->transformSanitizedData($form->getCleanData());
+            if (isset($formData['speaker_photo'])) {
+                $sanitizedData['photo_path'] = $this->service('profile_image_processor')
+                    ->process($formData['speaker_photo']);
             }
-            unset($sanitized_data['speaker_photo']);
-            User::find($userId)->update($sanitized_data);
+            unset($sanitizedData['speaker_photo']);
+            User::find($userId)->update($sanitizedData);
 
             return $this->redirectTo('dashboard');
         }
@@ -98,12 +98,12 @@ class ProfileController extends BaseController
                 'ext'   => \implode('<br>', $form->getErrorMessages()),
             ]);
 
-        $form_data['formAction'] = $this->url('user_update');
-        $form_data['buttonInfo'] = 'Update Profile';
-        $form_data['id']         = $userId;
-        $form_data['flash']      = $this->service('session')->get('flash');
+        $formData['formAction'] = $this->url('user_update');
+        $formData['buttonInfo'] = 'Update Profile';
+        $formData['id']         = $userId;
+        $formData['flash']      = $this->service('session')->get('flash');
 
-        return $this->render('user/edit.twig', $form_data);
+        return $this->render('user/edit.twig', $formData);
     }
 
     public function passwordAction()
@@ -136,10 +136,10 @@ class ProfileController extends BaseController
             return $this->redirectTo('password_edit');
         }
 
-        $sanitized_data = $form->getCleanData();
-        $reset_code     = $user->getResetPasswordCode();
+        $sanitizedData = $form->getCleanData();
+        $resetCode     = $user->getResetPasswordCode();
 
-        if (!$user->attemptResetPassword($reset_code, $sanitized_data['password'])) {
+        if (!$user->attemptResetPassword($resetCode, $sanitizedData['password'])) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -165,7 +165,7 @@ class ProfileController extends BaseController
      */
     private function getFormData(Request $req): array
     {
-        $form_data = [
+        $formData = [
             'email'          => $req->get('email'),
             'user_id'        => $req->get('id'),
             'first_name'     => $req->get('first_name'),
@@ -180,7 +180,7 @@ class ProfileController extends BaseController
             'speaker_bio'    => $req->get('speaker_bio') ?: null,
         ];
 
-        return $form_data;
+        return $formData;
     }
 
     /**

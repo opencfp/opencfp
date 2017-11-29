@@ -45,12 +45,12 @@ class SecurityController extends BaseController
                 'ext'   => $e->getMessage(),
             ]);
 
-            $template_data = [
+            $templateData = [
                 'email' => $req->get('email'),
                 'flash' => $this->getFlash($app),
             ];
 
-            return $this->render('security/login.twig', $template_data, Response::HTTP_BAD_REQUEST);
+            return $this->render('security/login.twig', $templateData, Response::HTTP_BAD_REQUEST);
         }
     }
 

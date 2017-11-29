@@ -31,8 +31,8 @@ class RemoveSpeakerTable extends AbstractMigration
         foreach ($rows as $row) {
             $info       = \filter_var($row['info'], FILTER_SANITIZE_MAGIC_QUOTES);
             $bio        = \filter_var($row['bio'], FILTER_SANITIZE_MAGIC_QUOTES);
-            $photo_path = \filter_var($row['photo_path'], FILTER_SANITIZE_MAGIC_QUOTES);
-            $sql        = "UPDATE users SET info = '{$info}', bio = '{$bio}', photo_path = '{$photo_path}' WHERE id = {$row['user_id']}";
+            $photoPath  = \filter_var($row['photo_path'], FILTER_SANITIZE_MAGIC_QUOTES);
+            $sql        = "UPDATE users SET info = '{$info}', bio = '{$bio}', photo_path = '{$photoPath}' WHERE id = {$row['user_id']}";
             $this->execute($sql);
         }
 
@@ -65,9 +65,9 @@ class RemoveSpeakerTable extends AbstractMigration
         foreach ($rows as $row) {
             $info       = \filter_var($row['info'], FILTER_SANITIZE_MAGIC_QUOTES);
             $bio        = \filter_var($row['bio'], FILTER_SANITIZE_MAGIC_QUOTES);
-            $photo_path = \filter_var($row['photo_path'], FILTER_SANITIZE_MAGIC_QUOTES);
+            $photoPath  = \filter_var($row['photo_path'], FILTER_SANITIZE_MAGIC_QUOTES);
             $sql        = "INSERT INTO speakers (user_id, info, bio, photo_path)
-                VALUES ({$row['user_id']}, '{$info}', '{$bio}', '{$photo_path}')";
+                VALUES ({$row['user_id']}, '{$info}', '{$bio}', '{$photoPath}')";
             $this->execute($sql);
         }
     }

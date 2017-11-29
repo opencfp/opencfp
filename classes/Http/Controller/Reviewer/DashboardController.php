@@ -28,16 +28,16 @@ class DashboardController extends BaseController
         $userId        = $this->service(Authentication::class)->userId();
         $talkFormatter = new TalkFormatter();
 
-        /** @var Collection $recent_talks */
-        $recent_talks = Talk::recent()->get();
-        $recent_talks = $talkFormatter->formatList($recent_talks, $userId);
+        /** @var Collection $recentTalks */
+        $recentTalks = Talk::recent()->get();
+        $recentTalks = $talkFormatter->formatList($recentTalks, $userId);
 
         $templateData = [
             'speakerTotal'  => User::count(),
             'talkTotal'     => Talk::count(),
             'favoriteTotal' => Favorite::count(),
             'selectTotal'   => Talk::where('selected', 1)->count(),
-            'talks'         => $recent_talks,
+            'talks'         => $recentTalks,
         ];
 
         return $this->render('reviewer/index.twig', $templateData);
