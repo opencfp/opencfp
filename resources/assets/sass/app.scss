@@ -134,3 +134,14 @@ div:empty {
     @apply .font-bold;
   }
 }
+
+//
+// Login / SignUp
+//
+@responsive {
+  .opencfp-login,
+  .opencfp-signup {
+    @apply .text-white;
+    @apply .w-1/6;
+  }
+}
