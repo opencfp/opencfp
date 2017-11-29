@@ -22,6 +22,6 @@ final class YesNoRating extends TalkRating
 
     public function getRatingName(): string
     {
-        return 'yesno';
+        return 'YesNo';
     }
 }

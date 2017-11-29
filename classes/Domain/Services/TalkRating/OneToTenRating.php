@@ -22,6 +22,6 @@ final class OneToTenRating extends TalkRating
 
     public function getRatingName(): string
     {
-        return 'onetoten';
+        return 'OneToTen';
     }
 }

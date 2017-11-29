@@ -44,7 +44,7 @@ class YesNoRatingTest extends \PHPUnit\Framework\TestCase
         $mockAuth->shouldReceive('userId');
         $metaMock = Mockery::mock(TalkMeta::class);
         $yesno    = new YesNoRating($metaMock, $mockAuth);
-        $this->assertSame('yesno', $yesno->getRatingName());
+        $this->assertSame('YesNo', $yesno->getRatingName());
     }
 
     public function ratingProvider(): array

@@ -44,7 +44,7 @@ class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
         $mockAuth->shouldReceive('userId');
         $metaMock    = Mockery::mock(TalkMeta::class);
         $oneToTen    = new OneToTenRating($metaMock, $mockAuth);
-        $this->assertSame('onetoten', $oneToTen->getRatingName());
+        $this->assertSame('OneToTen', $oneToTen->getRatingName());
     }
 
     public function ratingProvider()
