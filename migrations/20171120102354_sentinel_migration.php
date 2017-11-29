@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Copyright (c) 2013-2017 OpenCFP
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/opencfp/opencfp
+ */
+
 use Phinx\Migration\AbstractMigration;
 
 /**
@@ -8,7 +19,6 @@ use Phinx\Migration\AbstractMigration;
  */
 class SentinelMigration extends AbstractMigration
 {
-
     public function up()
     {
         $this->activationsTable();
@@ -35,7 +45,7 @@ class SentinelMigration extends AbstractMigration
             ->addColumn('user_id', 'integer')
             ->addColumn('code', 'string')
             ->addColumn('completed', 'boolean', ['default' => 0])
-            ->addColumn('completed_at','timestamp', ['null' => true])
+            ->addColumn('completed_at', 'timestamp', ['null' => true])
             ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'timestamp', ['null' => true])
             ->create();
@@ -45,7 +55,7 @@ class SentinelMigration extends AbstractMigration
     {
         $this->table('persistences')
             ->addColumn('user_id', 'integer')
-            ->addColumn('code','string')
+            ->addColumn('code', 'string')
             ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'timestamp', ['null' => true])
             ->create();
@@ -90,7 +100,7 @@ class SentinelMigration extends AbstractMigration
     {
         $this->table('throttle')
             ->renameColumn('ip_address', 'ip')
-            ->changeColumn('ip','string', ['null' => true])
+            ->changeColumn('ip', 'string', ['null' => true])
             ->changeColumn('user_id', 'integer', ['null' => true])
             ->addColumn('type', 'string')
             ->update();
@@ -103,5 +113,4 @@ class SentinelMigration extends AbstractMigration
             ->removeColumn('type')
             ->update();
     }
-
 }
