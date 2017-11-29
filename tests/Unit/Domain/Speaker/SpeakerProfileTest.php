@@ -49,13 +49,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertTrue($profile->isAllowedToSee($property));
     }
 
-    /**
-     * @dataProvider providerHasMadeProfile
-     *
-     * @param mixed $hasMadeProfile
-     */
-    public function testNeedsProfileReturnsFalseIfUserHasMadeProfile($hasMadeProfile)
+    public function testNeedsProfileReturnsFalseIfUserHasMadeProfile()
     {
+        $hasMadeProfile = 1;
+
         $speaker = $this->createUserMock([
             'has_made_profile' => $hasMadeProfile,
         ]);
@@ -65,31 +62,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertFalse($profile->needsProfile());
     }
 
-    public function providerHasMadeProfile(): \Generator
+    public function testNeedsProfileReturnsTrueIfUserHasNotMadeProfile()
     {
-        $faker = $this->getFaker();
+        $hasMadeProfile = 0;
 
-        $values = [
-            'boolean-true'  => true,
-            'float'         => $faker->randomFloat(3, 0.1),
-            'int'           => $faker->numberBetween(1),
-            'string-number' => '1',
-        ];
-
-        foreach ($values as $key => $value) {
-            yield $key => [
-                $value,
-            ];
-        }
-    }
-
-    /**
-     * @dataProvider providerHasNotMadeProfile
-     *
-     * @param mixed $hasMadeProfile
-     */
-    public function testNeedsProfileReturnsTrueIfUserHasNotMadeProfile($hasMadeProfile)
-    {
         $speaker = $this->createUserMock([
             'has_made_profile' => $hasMadeProfile,
         ]);
@@ -97,23 +73,6 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile = new SpeakerProfile($speaker);
 
         $this->assertTrue($profile->needsProfile());
-    }
-
-    public function providerHasNotMadeProfile(): \Generator
-    {
-        $values = [
-            'boolean-false' => false,
-            'float-zero'    => 0.0,
-            'int-zero'      => 0,
-            'null'          => null,
-            'string-zero'   => '0',
-        ];
-
-        foreach ($values as $key => $value) {
-            yield $key => [
-                $value,
-            ];
-        }
     }
 
     public function testGetTalksThrowsNotAllowedExceptionIfPropertyIsHidden()
@@ -387,15 +346,9 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function providerDoesNotNeedTransportation(): \Generator
     {
-        $faker = $this->getFaker();
-
         $values = [
-            'boolean-false' => false,
-            'float-zero'    => 0.0,
             'int-zero'      => 0,
             'null'          => null,
-            'string'        => $faker->word,
-            'string-zero'   => '0',
         ];
 
         foreach ($values as $key => $value) {
@@ -405,13 +358,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         }
     }
 
-    /**
-     * @dataProvider providerNeedsTransportation
-     *
-     * @param mixed $transportation
-     */
-    public function testGetTransportationReturnsTrueIfPropertyIsNotHidden($transportation)
+    public function testGetTransportationReturnsTrueIfPropertyIsNotHidden()
     {
+        $transportation = 1;
+
         $speaker = $this->createUserMock([
             'transportation' => $transportation,
         ]);
@@ -419,20 +369,6 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile = new SpeakerProfile($speaker);
 
         $this->assertTrue($profile->getTransportation());
-    }
-
-    public function providerNeedsTransportation(): \Generator
-    {
-        $values = [
-            'boolean-true'  => true,
-            'string-number' => '1',
-        ];
-
-        foreach ($values as $key => $value) {
-            yield $key => [
-                $value,
-            ];
-        }
     }
 
     public function testGetHotelThrowsNotAllowedExceptionIfPropertyIsHidden()
