@@ -15,7 +15,7 @@ namespace OpenCFP\Test\Integration\Http\Controller;
 
 use Mockery as m;
 use OpenCFP\Application\Speakers;
-use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\Helper\RefreshDatabase;
@@ -87,7 +87,7 @@ class TalkControllerTest extends WebTestCase
         // Previously, this fails because it checked midnight
         // for the current date. `isCfpOpen` now uses 11:59pm current date.
         $now = new \DateTime();
-        $this->swap('callforproposal', new CallForProposal(new \DateTimeImmutable($now->format('M. jS, Y'))));
+        $this->swap('callforpapers', new CallForPapers(new \DateTimeImmutable($now->format('M. jS, Y'))));
 
         /*
          * This should not have a flash message. The fact that this

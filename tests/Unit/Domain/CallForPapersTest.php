@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Domain;
 
-use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\CallForPapers;
 
 /**
- * @covers \OpenCFP\Domain\CallForProposal
+ * @covers \OpenCFP\Domain\CallForPapers
  */
-class CallForProposalTest extends \PHPUnit\Framework\TestCase
+class CallForPapersTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test
@@ -26,7 +26,7 @@ class CallForProposalTest extends \PHPUnit\Framework\TestCase
      */
     public function it_should_tell_whether_or_not_the_cfp_is_open($endDate)
     {
-        $cfp = new CallForProposal(new \DateTimeImmutable($endDate));
+        $cfp = new CallForPapers(new \DateTimeImmutable($endDate));
         $this->assertTrue($cfp->isOpen());
     }
 
@@ -41,7 +41,7 @@ class CallForProposalTest extends \PHPUnit\Framework\TestCase
     /** @test */
     public function it_should_say_cfp_is_closed_after_end_date_has_passed()
     {
-        $cfp = new CallForProposal(new \DateTimeImmutable('-1 day'));
+        $cfp = new CallForPapers(new \DateTimeImmutable('-1 day'));
         $this->assertFalse($cfp->isOpen());
     }
 }

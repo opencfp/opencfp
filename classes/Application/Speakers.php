@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Application;
 
-use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
@@ -25,8 +25,8 @@ use OpenCFP\Domain\Talk\TalkWasSubmitted;
 
 class Speakers
 {
-    /** @var CallForProposal */
-    private $callForProposal;
+    /** @var CallForPapers */
+    private $callForPapers;
 
     /** @var IdentityProvider */
     private $identityProvider;
@@ -41,7 +41,7 @@ class Speakers
     private $dispatcher;
 
     public function __construct(
-        CallForProposal $callForProposal,
+        CallForPapers $callForPapers,
         IdentityProvider $identityProvider,
         SpeakerRepository $speakers,
         TalkRepository $talks,
@@ -50,7 +50,7 @@ class Speakers
         $this->speakers         = $speakers;
         $this->identityProvider = $identityProvider;
         $this->talks            = $talks;
-        $this->callForProposal  = $callForProposal;
+        $this->callForPapers    = $callForPapers;
         $this->dispatcher       = $dispatcher;
     }
 
@@ -111,7 +111,7 @@ class Speakers
      */
     public function submitTalk(TalkSubmission $submission)
     {
-        if (!$this->callForProposal->isOpen()) {
+        if (!$this->callForPapers->isOpen()) {
             throw new \Exception('You cannot create talks once the call for papers has ended.');
         }
 

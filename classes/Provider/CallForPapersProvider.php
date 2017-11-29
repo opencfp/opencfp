@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace OpenCFP\Provider;
 
-use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\CallForPapers;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Application;
 
-class CallForProposalProvider implements ServiceProviderInterface
+class CallForPapersProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}
      */
     public function register(Container $app)
     {
-        $cfp = new CallForProposal(new \DateTimeImmutable($app->config('application.enddate')));
+        $cfp = new CallForPapers(new \DateTimeImmutable($app->config('application.enddate')));
 
-        $app['callforproposal'] = $cfp;
+        $app['callforpapers'] = $cfp;
     }
 
     /**

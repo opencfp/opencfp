@@ -15,7 +15,7 @@ namespace OpenCFP;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Provider\ApplicationServiceProvider;
-use OpenCFP\Provider\CallForProposalProvider;
+use OpenCFP\Provider\CallForPapersProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
 use OpenCFP\Provider\Gateways\WebGatewayProvider;
 use OpenCFP\Provider\HtmlPurifierServiceProvider;
@@ -89,7 +89,7 @@ class Application extends SilexApplication
             ],
         ]);
 
-        $this->register(new CallForProposalProvider());
+        $this->register(new CallForPapersProvider());
         $this->register(new SentinelServiceProvider());
         $app = $this;
         $this->register(new TwigServiceProvider($app));

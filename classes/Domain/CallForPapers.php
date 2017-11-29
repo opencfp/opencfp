@@ -19,7 +19,7 @@ namespace OpenCFP\Domain;
  * CFP is open. This is useful in service-layer testing as you can easily modify the temporal
  * aspect.
  */
-class CallForProposal
+class CallForPapers
 {
     /**
      * @var \DateTimeInterface

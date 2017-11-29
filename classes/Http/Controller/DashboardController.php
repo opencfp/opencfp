@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application\Speakers;
-use OpenCFP\Domain\CallForProposal;
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 
 class DashboardController extends BaseController
@@ -35,8 +35,8 @@ class DashboardController extends BaseController
         try {
             $profile = $speakers->findProfile();
 
-            /** @var CallForProposal $cfp */
-            $cfp = $this->service('callforproposal');
+            /** @var CallForPapers $cfp */
+            $cfp = $this->service('callforpapers');
 
             return $this->render('dashboard.twig', [
                 'profile'  => $profile,

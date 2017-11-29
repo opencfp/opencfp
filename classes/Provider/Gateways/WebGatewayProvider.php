@@ -45,7 +45,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             $twig = $app['twig'];
 
             $twig->addGlobal('current_page', $request->getRequestUri());
-            $twig->addGlobal('cfp_open', $app['callforproposal']->isOpen());
+            $twig->addGlobal('cfp_open', $app['callforpapers']->isOpen());
 
             $twig->addFunction(new Twig_SimpleFunction('active', function ($route) use ($app, $request) {
                 return $app['url_generator']->generate($route) == $request->getRequestUri();
