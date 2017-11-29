@@ -66,10 +66,10 @@ class SentinelUserTest extends BaseTestCase
     public function hasAccessWorks()
     {
         $user = self::$user;
-        $this->assertSame(false, $user->hasAccess('Admin'));
-        $this->assertSame(false, $user->hasAccess('Reviewer'));
-        $this->assertSame(true, $user->hasAccess('Speaker'));
-        $this->assertSame(false, $user->hasAccess('NotExistingThing'));
+        $this->assertFalse($user->hasAccess('Admin'));
+        $this->assertFalse($user->hasAccess('Reviewer'));
+        $this->assertTrue($user->hasAccess('Speaker'));
+        $this->assertFalse($user->hasAccess('NotExistingThing'));
     }
 
     /**
