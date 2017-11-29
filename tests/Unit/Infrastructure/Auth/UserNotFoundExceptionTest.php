@@ -12,12 +12,15 @@
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
+use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\UserNotFoundException
  */
 class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
+    use GeneratorTrait;
+
     public function testIsFinal()
     {
         $reflection = new \ReflectionClass(UserNotFoundException::class);
@@ -33,24 +36,37 @@ class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(\RuntimeException::class, $exception);
     }
 
-    /**
-     * @test
-     */
-    public function functionReturnsCorrectInstance()
+    public function testFromEmailReturnsException()
     {
-        $exception = UserNotFoundException::userNotFound('mail');
-        $this->assertInstanceOf(\RuntimeException::class, $exception);
+        $email = $this->getFaker()->email;
+
+        $exception = UserNotFoundException::fromEmail($email);
+
+        $this->assertInstanceOf(UserNotFoundException::class, $exception);
+
+        $message = \sprintf(
+            'Unable to find a user with email "%s".',
+            $email
+        );
+
+        $this->assertSame($message, $exception->getMessage());
+        $this->assertSame(0, $exception->getCode());
     }
 
-    /**
-     * @test
-     */
-    public function unableToFindUserMatchingMessage()
+    public function testFromIdReturnsException()
     {
-        $exception = UserNotFoundException::userNotFound('mail');
-        $message   = \sprintf('Unable to find a user matching %s', 'mail');
+        $id = $this->getFaker()->numberBetween(1);
 
-        $this->assertSame($exception->getMessage(), $message);
+        $exception = UserNotFoundException::fromId($id);
+
+        $this->assertInstanceOf(UserNotFoundException::class, $exception);
+
+        $message = \sprintf(
+            'Unable to find a user with id "%d".',
+            $id
+        );
+
+        $this->assertSame($message, $exception->getMessage());
         $this->assertSame(0, $exception->getCode());
     }
 }
