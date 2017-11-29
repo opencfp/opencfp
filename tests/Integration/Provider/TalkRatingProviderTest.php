@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit\Provider;
+namespace OpenCFP\Test\Integration\Provider;
 
 use Mockery;
 use OpenCFP\Application;
