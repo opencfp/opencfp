@@ -47,7 +47,7 @@ class TalksController extends BaseController
         $templateData = [
             'pagination'   => $pagination,
             'talks'        => $pagerfanta->getFanta(),
-            'ratingsystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
+            'ratingSystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
             'page'         => $pagerfanta->getCurrentPage(),
             'current_page' => $req->getRequestUri(),
             'totalRecords' => \count($formattedTalks),
@@ -75,7 +75,7 @@ class TalksController extends BaseController
             return $this->app->redirect($this->url('admin_talks'));
         }
         $data = [
-                'ratingsystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
+                'ratingSystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
                 'talk'         => $handler->getProfile(),
             ];
 

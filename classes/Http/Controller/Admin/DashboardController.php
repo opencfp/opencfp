@@ -39,7 +39,7 @@ class DashboardController extends BaseController
             'favoriteTotal' => Favorite::count(),
             'selectTotal'   => Talk::where('selected', 1)->count(),
             'talks'         => $recentTalks,
-            'ratingsystem'  => $this->service(TalkRatingStrategy::class)->getRatingName(),
+            'ratingSystem'  => $this->service(TalkRatingStrategy::class)->getRatingName(),
         ];
 
         return $this->render('admin/index.twig', $templateData);

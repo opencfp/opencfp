@@ -51,7 +51,7 @@ class TalksController extends BaseController
         $templateData = [
             'pagination'   => $pagination,
             'talks'        => $pagerfanta->getFanta(),
-            'ratingsystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
+            'ratingSystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
             'page'         => $pagerfanta->getCurrentPage(),
             'current_page' => $req->getRequestUri(),
             'totalRecords' => \count($formattedTalks),
@@ -81,7 +81,7 @@ class TalksController extends BaseController
         }
         $data = [
             'talk'         => $handler->getProfile(),
-            'ratingsystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
+            'ratingSystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
             ];
 
         return $this->render('admin/talks/view.twig', $data);
