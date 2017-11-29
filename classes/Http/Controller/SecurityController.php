@@ -22,7 +22,9 @@ class SecurityController extends BaseController
 
     public function indexAction()
     {
-        return $this->render('security/login.twig');
+        return $this->render('security/login.twig', [
+            'email' => null,
+        ]);
     }
 
     public function processAction(Request $req, Application $app)
