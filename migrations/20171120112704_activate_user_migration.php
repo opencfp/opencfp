@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Copyright (c) 2013-2017 OpenCFP
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/opencfp/opencfp
+ */
+
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -15,13 +26,14 @@ class ActivateUserMigration extends AbstractMigration
     /** @var Capsule $capsule */
     public $capsule;
 
-    public function bootEloquent()  {
-        $adapter = $this->getAdapter()->getAdapter();
-        $options = $adapter->getOptions();
-        $this->capsule = new Capsule;
+    public function bootEloquent()
+    {
+        $adapter       = $this->getAdapter()->getAdapter();
+        $options       = $adapter->getOptions();
+        $this->capsule = new Capsule();
         $this->capsule->addConnection([
             'driver'    => 'mysql',
-            'database'  => $options['name']
+            'database'  => $options['name'],
         ]);
         $this->capsule->getConnection()->setPdo($adapter->getConnection());
         $this->capsule->bootEloquent();
@@ -38,6 +50,7 @@ class ActivateUserMigration extends AbstractMigration
             $activations->complete($user, $activation->getCode());
         });
     }
+
     public function down()
     {
         $this->bootEloquent();
