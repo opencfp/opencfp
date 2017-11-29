@@ -391,9 +391,9 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getHotel();
     }
 
-    public function testGetHotelReturnsHotelIfPropertyIsNotHidden()
+    public function testGetHotelReturnsFalseIfPropertyIsNotHidden()
     {
-        $hotel = $this->getFaker()->company;
+        $hotel = 0;
 
         $speaker = $this->createUserMock([
             'hotel' => $hotel,
@@ -401,7 +401,20 @@ final class SpeakerProfileTest extends Framework\TestCase
 
         $profile = new SpeakerProfile($speaker);
 
-        $this->assertSame($hotel, $profile->getHotel());
+        $this->assertFalse($profile->getHotel());
+    }
+
+    public function testGetHotelReturnsTrueIfPropertyIsNotHidden()
+    {
+        $hotel = 1;
+
+        $speaker = $this->createUserMock([
+            'hotel' => $hotel,
+        ]);
+
+        $profile = new SpeakerProfile($speaker);
+
+        $this->assertTrue($profile->getHotel());
     }
 
     public function testGetAirportThrowsNotAllowedExceptionIfPropertyIsHidden()

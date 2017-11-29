@@ -173,13 +173,13 @@ class SpeakerProfile
     /**
      * @throws NotAllowedException
      *
-     * @return null|string
+     * @return bool
      */
-    public function getHotel()
+    public function getHotel(): bool
     {
         $this->assertAllowedToSee('hotel');
 
-        return $this->speaker->hotel;
+        return $this->speaker->hotel === 1;
     }
 
     /**
