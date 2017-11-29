@@ -69,7 +69,7 @@ class SpeakerProfile
     {
         $this->assertAllowedToSee('talks');
 
-        return $this->speaker->talks;
+        return $this->speaker->talks->toArray();
     }
 
     /**

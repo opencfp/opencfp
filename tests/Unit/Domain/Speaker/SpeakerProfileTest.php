@@ -11,6 +11,7 @@
 
 namespace OpenCFP\Test\Unit\Domain\Speaker;
 
+use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model;
 use OpenCFP\Domain\Speaker\NotAllowedException;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
@@ -97,9 +98,11 @@ final class SpeakerProfileTest extends Framework\TestCase
             $this->createTalkMock(),
             $this->createTalkMock(),
         ];
+        $collection = $this->createMock(Collection::class);
+        $collection->method('toArray')->willReturn($talks);
 
         $speaker = $this->createUserMock([
-            'talks' => $talks,
+            'talks' => $collection,
         ]);
 
         $profile = new SpeakerProfile($speaker);
