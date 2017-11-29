@@ -38,12 +38,24 @@ class TalkRatingContextTest extends \PHPUnit\Framework\TestCase
     public function strategyProvider(): array
     {
         return [
-            'Input is empty string'            => ['', YesNoRating::class],
-            'Input is yesno'                   => ['yesno', YesNoRating::class],
-            'Input is onetoten'                => ['onetoten', OneToTenRating::class],
-            'Casing of yesno doesnt matter'    => ['YeSNo', YesNoRating::class],
-            'Casing of onetoten doesnt matter' => ['OnEToTen', OneToTenRating::class],
-            'Giberish defaults to YesNo'       => ['asdfgo87yhl', YesNoRating::class],
+            'Input is empty string' => [
+                '', YesNoRating::class,
+            ],
+            'Input is yesno' => [
+                'yesno', YesNoRating::class,
+            ],
+            'Input is onetoten' => [
+                'onetoten', OneToTenRating::class,
+            ],
+            'Casing of yesno doesnt matter' => [
+                'YeSNo', YesNoRating::class,
+            ],
+            'Casing of onetoten doesnt matter' => [
+                'OnEToTen', OneToTenRating::class,
+            ],
+            'Giberish defaults to YesNo' => [
+                'asdfgo87yhl', YesNoRating::class,
+            ],
         ];
     }
 

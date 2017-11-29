@@ -51,11 +51,22 @@ class TalkRatingProviderTest extends \PHPUnit\Framework\TestCase
     public function strategySettingsProvider(): array
     {
         return [
-            'Input is yesno'           => ['yesno', YesNoRating::class],
-            'Input is onetoten'        => ['onetoten', OneToTenRating::class],
-            'Input is null'            => [null, YesNoRating::class],
-            'Input is empty string'    => ['', YesNoRating::class],
-            'Input is random giberish' => ['asdfasdfhj098yh', YesNoRating::class],
+
+            'Input is yesno' => [
+                'yesno', YesNoRating::class,
+            ],
+            'Input is onetoten' => [
+                'onetoten', OneToTenRating::class,
+            ],
+            'Input is null' => [
+                null, YesNoRating::class,
+            ],
+            'Input is empty string' => [
+                '', YesNoRating::class,
+            ],
+            'Input is random giberish' => [
+                'asdfasdfhj098yh', YesNoRating::class,
+            ],
         ];
     }
 }

@@ -57,15 +57,8 @@ class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
             [10, true],
             [11, false],
             [9, true],
-            [true, true], //True becomes 1 when converted to an int, so this is allowed
-            [false, true], //False becomes 0 when converted to an int, so this is allowed
             [PHP_INT_MAX, false],
-            ['7', true],
             [-0, true],
-            ['-0', true],
-            ['-1', false],
-            ['10', true],
-            ['-10', false],
         ];
     }
 }
