@@ -27,14 +27,25 @@ class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @dataProvider ratingProvider
+     * @dataProvider validRatingProvider
      */
-    public function testValidRatings($rating, $valid)
+    public function testGoodRatingsAreSuccessful($rating)
     {
-        $mockAuth = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
+        $mockAuth    = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
         $metaMock    = Mockery::mock(TalkMeta::class);
         $oneToTen    = new OneToTenRating($metaMock, $mockAuth);
-        $this->assertSame($valid, $oneToTen->isValidRating($rating));
+        $this->assertTrue($oneToTen->isValidRating($rating));
+    }
+
+    /**
+     * @dataProvider invalidRatingProvider
+     */
+    public function testBadRatingsAreNotSuccessFul($rating)
+    {
+        $mockAuth    = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
+        $metaMock    = Mockery::mock(TalkMeta::class);
+        $oneToTen    = new OneToTenRating($metaMock, $mockAuth);
+        $this->assertFalse($oneToTen->isValidRating($rating));
     }
 
     public function testGetRatingNameReturnsOneToTen()
@@ -46,18 +57,27 @@ class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('OneToTen', $oneToTen->getRatingName());
     }
 
-    public function ratingProvider()
+    public function validRatingProvider(): array
     {
         return [
-            [-1, false],
-            [0, true],
-            [1, true],
-            [5, true],
-            [10, true],
-            [11, false],
-            [9, true],
-            [PHP_INT_MAX, false],
-            [-0, true],
+            [0],
+            [1],
+            [5],
+            [10],
+            [9],
+            [-0],
+        ];
+    }
+
+    public function invalidRatingProvider(): array
+    {
+        return [
+            [-1],
+            [11],
+            [PHP_INT_MAX],
+            [100],
+            [12],
+            [-5],
         ];
     }
 }
