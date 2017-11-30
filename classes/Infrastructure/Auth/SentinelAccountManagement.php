@@ -103,7 +103,7 @@ final class SentinelAccountManagement implements AccountManagement
         return $this->sentinel->getActivationRepository()->complete($user, $activationCode);
     }
 
-    public function promoteTo($email, $role = 'Admin')
+    public function promoteTo($email, $role)
     {
         $this->sentinel
             ->getRoleRepository()
@@ -112,7 +112,7 @@ final class SentinelAccountManagement implements AccountManagement
             ->attach($this->findByLogin($email)->getId());
     }
 
-    public function demoteFrom($email, $role = 'Admin')
+    public function demoteFrom($email, $role)
     {
         $this->sentinel
             ->getRoleRepository()
