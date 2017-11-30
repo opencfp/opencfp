@@ -13,105 +13,155 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Console\Command;
 
-use Mockery;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Environment;
-use OpenCFP\Infrastructure\Auth\UserExistsException;
-use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Console\Command\AdminPromoteCommand;
+use OpenCFP\Domain\Services;
+use OpenCFP\Infrastructure\Auth;
+use OpenCFP\Test\Helper\Faker\GeneratorTrait;
+use PHPUnit\Framework;
+use Symfony\Component\Console;
 
 /**
- * @group db
  * @covers \OpenCFP\Console\Command\AdminPromoteCommand
  */
-class AdminPromoteCommandTest extends \PHPUnit\Framework\TestCase
+final class AdminPromoteCommandTest extends Framework\TestCase
 {
-    use MockeryPHPUnitIntegration;
+    use GeneratorTrait;
 
-    /**
-     * @test
-     */
-    public function promoteDetectsNonExistentUser()
+    public function testIsFinal()
     {
-        // Create our input and output dependencies
-        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
-        $output = $this->createOutputInterface();
+        $reflection = new \ReflectionClass(AdminPromoteCommand::class);
 
-        $accounts = Mockery::mock(AccountManagement::class);
-        $accounts->shouldReceive('findByLogin')->andThrow(new UserExistsException());
-        $app                           = new \OpenCFP\Application(__DIR__ . '/../../../..', Environment::testing());
-        $app[AccountManagement::class] = $accounts;
+        $this->assertTrue($reflection->isFinal());
+    }
 
-        // Create our command object and inject our application
-        $command = new \OpenCFP\Console\Command\AdminPromoteCommand();
-        $command->setApp($app);
-        $response = $command->execute($input, $output);
-        $this->assertEquals($response, 1);
+    public function testExtendsCommand()
+    {
+        $command = new AdminPromoteCommand($this->createAccountManagementMock());
+
+        $this->assertInstanceOf(Console\Command\Command::class, $command);
+    }
+
+    public function testHasNameAndDescription()
+    {
+        $command = new AdminPromoteCommand($this->createAccountManagementMock());
+
+        $this->assertSame('admin:promote', $command->getName());
+        $this->assertSame('Promote an existing user to be an admin', $command->getDescription());
+    }
+
+    public function testHasEmailArgument()
+    {
+        $command = new AdminPromoteCommand($this->createAccountManagementMock());
+
+        $inputDefinition = $command->getDefinition();
+
+        $this->assertTrue($inputDefinition->hasArgument('email'));
+
+        $argument = $inputDefinition->getArgument('email');
+
+        $this->assertSame('Email address of user to promote to admin', $argument->getDescription());
+        $this->assertTrue($argument->isRequired());
+        $this->assertNull($argument->getDefault());
+        $this->assertFalse($argument->isArray());
+    }
+
+    public function testExecuteFailsIfUserDoesNotExist()
+    {
+        $email= $this->getFaker()->email;
+
+        $accountManagement = $this->createAccountManagementMock();
+
+        $accountManagement
+            ->expects($this->once())
+            ->method('findByLogin')
+            ->with($this->identicalTo($email))
+            ->willThrowException(new Auth\UserNotFoundException());
+
+        $command = new AdminPromoteCommand($accountManagement);
+
+        $commandTester = new Console\Tester\CommandTester($command);
+
+        $commandTester->execute([
+            'email' => $email,
+        ]);
+
+        $this->assertSame(1, $commandTester->getStatusCode());
+
+        $sectionMessage = \sprintf(
+            'Promoting account with email "%s" to "Admin"',
+            $email
+        );
+
+        $this->assertContains($sectionMessage, $commandTester->getDisplay());
+
+        $failureMessage = \sprintf(
+            'Could not find account with email "%s".',
+            $email
+        );
+
+        $this->assertContains($failureMessage, $commandTester->getDisplay());
+    }
+
+    public function testExecuteSucceedsIfUserExists()
+    {
+        $email = $this->getFaker()->email;
+
+        $user = $this->createUserMock();
+
+        $accountManagement = $this->createAccountManagementMock();
+
+        $accountManagement
+            ->expects($this->at(0))
+            ->method('findByLogin')
+            ->with($this->identicalTo($email))
+            ->willReturn($user);
+
+        $accountManagement
+            ->expects($this->at(1))
+            ->method('promoteTo')
+            ->with(
+                $this->identicalTo($email),
+                $this->identicalTo('Admin')
+            );
+
+        $command = new AdminPromoteCommand($accountManagement);
+
+        $commandTester = new Console\Tester\CommandTester($command);
+
+        $commandTester->execute([
+            'email' => $email,
+        ]);
+
+        $this->assertSame(0, $commandTester->getStatusCode());
+
+        $sectionMessage = \sprintf(
+            'Promoting account with email "%s" to "Admin"',
+            $email
+        );
+
+        $this->assertContains($sectionMessage, $commandTester->getDisplay());
+
+        $successMessage = \sprintf(
+            'Added account with email "%s" to the "Admin" group',
+            $email
+        );
+
+        $this->assertContains($successMessage, $commandTester->getDisplay());
     }
 
     /**
-     * @test
+     * @return \PHPUnit_Framework_MockObject_MockObject|Services\AccountManagement
      */
-    public function promoteExistingNonAdminAccount()
+    private function createAccountManagementMock(): Services\AccountManagement
     {
-        // Create our input and output dependencies
-        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
-        $output = $this->createOutputInterface();
-
-        /**
-         * Create a mock User that has admin access and add an `addGroup`
-         * method that is stubbed out
-         */
-        $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $user->shouldReceive('getLogin')->andReturn('test@opencfp.dev');
-        $user->shouldReceive('addGroup');
-
-        $accounts = Mockery::mock(AccountManagement::class);
-        $accounts->shouldReceive('findByLogin')
-            ->andReturn($user);
-        $accounts->shouldReceive('promoteTo')
-            ->with('test@opencfp.dev', 'Admin');
-
-        // Create our command object and inject our application
-        $app                           = new \OpenCFP\Application(__DIR__ . '/../../../..', Environment::testing());
-        $app[AccountManagement::class] = $accounts;
-        $command                       = new \OpenCFP\Console\Command\AdminPromoteCommand();
-        $command->setApp($app);
-        $response = $command->execute($input, $output);
-
-        /**
-         * A response of 0 signifies that the console command ran without an
-         * error
-         */
-        $this->assertEquals($response, 0);
+        return $this->createMock(Services\AccountManagement::class);
     }
 
-    protected function createInputInterfaceWithEmail($email): \Symfony\Component\Console\Input\InputInterface
+    /**
+     * @return Auth\UserInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function createUserMock(): Auth\UserInterface
     {
-        $input = Mockery::mock(\Symfony\Component\Console\Input\InputInterface::class);
-        $input->shouldReceive('getArgument')->with('email')->andReturn($email);
-
-        return $input;
-    }
-
-    protected function createOutputInterface(): \Symfony\Component\Console\Output\OutputInterface
-    {
-        /**
-         * Create a partial mock that stubs out method calls where we don't
-         * care about the output and create a formatter object
-         */
-        $output = Mockery::mock(\Symfony\Component\Console\Output\OutputInterface::class);
-        $output->shouldReceive('getVerbosity');
-        $output->shouldReceive('write');
-        $output->shouldReceive('writeln');
-        $output->shouldReceive('isDecorated');
-        $formatter = Mockery::mock(\Symfony\Component\Console\Formatter\OutputFormatterInterface::class);
-        $formatter->shouldReceive('setDecorated');
-        $formatter->shouldReceive('format');
-        $formatter->shouldReceive('isDecorated');
-        $output->shouldReceive('getFormatter')->andReturn($formatter);
-
-        return $output;
+        return $this->createMock(Auth\UserInterface::class);
     }
 }
