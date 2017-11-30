@@ -60,7 +60,7 @@ class SignupControllerTest extends WebTestCase
     public function signUpWorksCorrectly()
     {
         // We need to set up our speaker information
-        $form_data = [
+        $formData = [
             'first_name'     => 'Testy',
             'last_name'      => 'McTesterton',
             'email'          => 'test@opencfp.org',
@@ -77,7 +77,7 @@ class SignupControllerTest extends WebTestCase
             'buttonInfo'     => 'Create my speaker profile',
             'coc'            => 1,
         ];
-        $this->post('/signup', $form_data)
+        $this->post('/signup', $formData)
             ->assertFlashContains("You've successfully created your account!")
             ->assertRedirect()
             ->assertTargetURLContains('dashboard');
@@ -89,7 +89,7 @@ class SignupControllerTest extends WebTestCase
     public function signUpWithoutJoindInWorks()
     {
         // We need to set up our speaker information
-        $form_data = [
+        $formData = [
             'first_name'     => 'Testy',
             'last_name'      => 'McTesterton',
             'email'          => 'test@example.org',
@@ -106,7 +106,7 @@ class SignupControllerTest extends WebTestCase
             'buttonInfo'     => 'Create my speaker profile',
             'coc'            => 1,
         ];
-        $this->post('/signup', $form_data)
+        $this->post('/signup', $formData)
             ->assertFlashContains("You've successfully created your account!")
             ->assertRedirect()
             ->assertTargetURLContains('dashboard');

@@ -31,21 +31,21 @@ class TalksController extends BaseController
         /* @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
-        $admin_user_id = $auth->userId();
+        $adminUserId   = $auth->userId();
         $options       = [
             'order_by' => $req->get('order_by'),
             'sort'     => $req->get('sort'),
         ];
 
         $formattedTalks = $this->service(TalkFilter::class)->getTalks(
-            $admin_user_id,
+            $adminUserId,
             $req->get('filter'),
             $options
         );
 
         // Set up our page stuff
-        $per_page   = (int) $req->get('per_page') ?: 20;
-        $pagerfanta = new Pagination($formattedTalks, $per_page);
+        $perPage    = (int) $req->get('per_page') ?: 20;
+        $pagerfanta = new Pagination($formattedTalks, $perPage);
 
         $pagerfanta->setCurrentPage($req->get('page'));
         $pagination = $pagerfanta->createView('/admin/talks?', $req->query->all());
@@ -57,7 +57,7 @@ class TalksController extends BaseController
             'current_page' => $req->getRequestUri(),
             'totalRecords' => \count($formattedTalks),
             'filter'       => $req->get('filter'),
-            'per_page'     => $per_page,
+            'per_page'     => $perPage,
             'sort'         => $req->get('sort'),
             'order_by'     => $req->get('order_by'),
         ];

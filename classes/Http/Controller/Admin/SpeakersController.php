@@ -85,9 +85,9 @@ class SpeakersController extends BaseController
 
     public function viewAction(Request $req)
     {
-        $speaker_details = User::find($req->get('id'));
+        $speakerDetails = User::find($req->get('id'));
 
-        if (!$speaker_details instanceof User) {
+        if (!$speakerDetails instanceof User) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -100,29 +100,29 @@ class SpeakersController extends BaseController
         $airports = $this->service(AirportInformationDatabase::class);
 
         try {
-            $airport = $airports->withCode($speaker_details->airport);
+            $airport = $airports->withCode($speakerDetails->airport);
 
-            $speaker_details->airport = [
+            $speakerDetails->airport = [
                 'code'    => $airport->code,
                 'name'    => $airport->name,
                 'country' => $airport->country,
             ];
         } catch (\Exception $e) {
-            $speaker_details->airport = [
+            $speakerDetails->airport = [
                 'code'    => null,
                 'name'    => null,
                 'country' => null,
             ];
         }
 
-        $talks = $speaker_details->talks()->get();
+        $talks = $speakerDetails->talks()->get();
 
         // Build and render the template
         $templateData = [
             'airport'    => $this->app->config('application.airport'),
             'arrival'    => \date('Y-m-d', $this->app->config('application.arrival')),
             'departure'  => \date('Y-m-d', $this->app->config('application.departure')),
-            'speaker'    => new SpeakerProfile($speaker_details),
+            'speaker'    => new SpeakerProfile($speakerDetails),
             'talks'      => $talks,
             'photo_path' => '/uploads/',
             'page'       => $req->get('page'),

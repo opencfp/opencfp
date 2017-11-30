@@ -169,7 +169,7 @@ class TalkController extends BaseController
 
         $user = $this->service(Authentication::class)->user();
 
-        $request_data = [
+        $requestData = [
             'title'       => $req->get('title'),
             'description' => $req->get('description'),
             'type'        => $req->get('type'),
@@ -182,7 +182,7 @@ class TalkController extends BaseController
             'user_id'     => $req->get('user_id'),
         ];
 
-        $form = $this->getTalkForm($request_data);
+        $form = $this->getTalkForm($requestData);
         $form->sanitize();
 
         if ($form->validateAll()) {
@@ -246,7 +246,7 @@ class TalkController extends BaseController
 
         $user = $this->service(Authentication::class)->user();
 
-        $request_data = [
+        $requestData = [
             'id'          => $req->get('id'),
             'title'       => $req->get('title'),
             'description' => $req->get('description'),
@@ -260,7 +260,7 @@ class TalkController extends BaseController
             'user_id'     => $req->get('user_id'),
         ];
 
-        $form = $this->getTalkForm($request_data);
+        $form = $this->getTalkForm($requestData);
         $form->sanitize();
 
         if ($form->validateAll()) {

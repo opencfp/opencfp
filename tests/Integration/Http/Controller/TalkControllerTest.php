@@ -61,7 +61,7 @@ class TalkControllerTest extends WebTestCase
         $this->swap('mailer', $swiftMailer);
 
         // Get our request object to return expected data
-        $talk_data = [
+        $talkData = [
             'title'       => 'Test Title With Ampersand',
             'description' => 'The title should contain this & that',
             'type'        => 'regular',
@@ -74,7 +74,7 @@ class TalkControllerTest extends WebTestCase
         $this->asLoggedInSpeaker(1)
             ->callForPapersIsOpen()
             ->passCsrfValidator()
-            ->post('/talk/create', $talk_data)
+            ->post('/talk/create', $talkData)
             ->assertRedirect();
     }
 

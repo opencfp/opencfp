@@ -15,12 +15,12 @@ namespace OpenCFP\Http\Form;
 
 abstract class Form
 {
-    protected $_options;
-    protected $_messages;
-    protected $_cleanData;
-    protected $_taintedData;
-    protected $_purifier;
-    protected $_fieldList = [];
+    protected $options;
+    protected $messages;
+    protected $cleanData;
+    protected $taintedData;
+    protected $purifier;
+    protected $fieldList = [];
 
     /**
      * @param $data array of form data
@@ -29,11 +29,11 @@ abstract class Form
      */
     public function __construct($data, \HTMLPurifier $purifier, array $options = [])
     {
-        $this->_purifier    = $purifier;
-        $this->_options     = $options;
-        $this->_messages    = [];
-        $this->_cleanData   = [];
-        $this->_taintedData = [];
+        $this->purifier    = $purifier;
+        $this->options     = $options;
+        $this->messages    = [];
+        $this->cleanData   = [];
+        $this->taintedData = [];
 
         $this->populate($data);
     }
@@ -45,8 +45,8 @@ abstract class Form
      */
     public function populate(array $data)
     {
-        $this->_taintedData = $data;
-        $this->_cleanData   = null;
+        $this->taintedData = $data;
+        $this->cleanData   = null;
     }
 
     /**
@@ -56,9 +56,9 @@ abstract class Form
      */
     public function update(array $data)
     {
-        // The $_taintedData property might have been already set by
+        // The $taintedData property might have been already set by
         // the populate() method.
-        $this->_taintedData = \array_merge($this->_taintedData, (array) $data);
+        $this->taintedData = \array_merge($this->taintedData, (array) $data);
     }
 
     /**
@@ -69,10 +69,10 @@ abstract class Form
      */
     public function hasRequiredFields(): bool
     {
-        $dataKeys    = \array_keys($this->_taintedData);
-        $foundFields = \array_intersect($this->_fieldList, $dataKeys);
+        $dataKeys    = \array_keys($this->taintedData);
+        $foundFields = \array_intersect($this->fieldList, $dataKeys);
 
-        return $foundFields == $this->_fieldList;
+        return $foundFields == $this->fieldList;
     }
 
     /**
@@ -87,13 +87,13 @@ abstract class Form
     public function getCleanData(array $keys = [])
     {
         if (empty($keys)) {
-            return $this->_cleanData;
+            return $this->cleanData;
         }
 
         $data = [];
         foreach ($keys as $key) {
-            if (isset($this->_cleanData[$key])) {
-                $data[$key] = $this->_cleanData[$key];
+            if (isset($this->cleanData[$key])) {
+                $data[$key] = $this->cleanData[$key];
             }
         }
 
@@ -110,7 +110,7 @@ abstract class Form
      */
     public function getTaintedField($name, $default = null)
     {
-        return $this->_taintedData[$name] ?? $default;
+        return $this->taintedData[$name] ?? $default;
     }
 
     /**
@@ -120,7 +120,7 @@ abstract class Form
      */
     public function getTaintedData(): array
     {
-        return $this->_taintedData;
+        return $this->taintedData;
     }
 
     /**
@@ -133,7 +133,7 @@ abstract class Form
      */
     public function getOption($name, $default = null)
     {
-        return $this->_options[$name] ?? $default;
+        return $this->options[$name] ?? $default;
     }
 
     /**
@@ -148,7 +148,7 @@ abstract class Form
      */
     public function getErrorMessages(): array
     {
-        return $this->_messages;
+        return $this->messages;
     }
 
     /**
@@ -158,7 +158,7 @@ abstract class Form
      */
     public function hasErrors(): bool
     {
-        return \count($this->_messages) > 0;
+        return \count($this->messages) > 0;
     }
 
     /**
@@ -167,10 +167,10 @@ abstract class Form
      *
      * @param string $message The error messages to add to the list
      */
-    protected function _addErrorMessage($message)
+    protected function addErrorMessage($message)
     {
-        if (!\in_array($message, $this->_messages)) {
-            $this->_messages[] = $message;
+        if (!\in_array($message, $this->messages)) {
+            $this->messages[] = $message;
         }
     }
 
@@ -179,7 +179,7 @@ abstract class Form
      */
     public function sanitize()
     {
-        $this->_cleanData = $this->internalSanitize($this->_taintedData);
+        $this->cleanData = $this->internalSanitize($this->taintedData);
     }
 
     /**
@@ -191,7 +191,7 @@ abstract class Form
      */
     protected function internalSanitize(array $taintedData): array
     {
-        $purifier  = $this->_purifier;
+        $purifier  = $this->purifier;
         $filtered  = \array_map(
             function ($field) use ($purifier) {
                 return $purifier->purify($field);

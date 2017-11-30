@@ -113,13 +113,13 @@ class ForgotController extends BaseController
         }
         
         // Build password form and display it to the user
-        $form_options = [
+        $formOptions = [
             'user_id'    => $req->get('user_id'),
             'reset_code' => $req->get('reset_code'),
         ];
         $form = $this->service('form.factory')->create(new ResetForm());
 
-        $data['form']  = $form->createView($form_options);
+        $data['form']  = $form->createView($formOptions);
         $data['flash'] = $this->getFlash($this->app);
 
         return $this->render('user/forgot_password.twig', $data);
@@ -127,10 +127,10 @@ class ForgotController extends BaseController
 
     public function processResetAction(Request $req)
     {
-        $user_id    = $req->get('user_id');
-        $reset_code = $req->get('reset_code');
+        $userId    = $req->get('user_id');
+        $resetCode = $req->get('reset_code');
 
-        if (empty($reset_code)) {
+        if (empty($resetCode)) {
             throw new \Exception();
         }
 
@@ -138,8 +138,8 @@ class ForgotController extends BaseController
         $form->handleRequest($req);
         
         if (!$form->isValid()) {
-            $form->get('user_id')->setData($user_id);
-            $form->get('reset_code')->setData($reset_code);
+            $form->get('user_id')->setData($userId);
+            $form->get('reset_code')->setData($resetCode);
 
             return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
         }
@@ -181,11 +181,11 @@ class ForgotController extends BaseController
         }
 
         $data       = $form->getData();
-        $user_id    = $data['user_id'];
-        $reset_code = $data['reset_code'];
+        $userId     = $data['user_id'];
+        $resetCode  = $data['reset_code'];
         $password   = $data['password'];
 
-        if (empty($reset_code)) {
+        if (empty($resetCode)) {
             throw new \Exception();
         }
 
@@ -193,7 +193,7 @@ class ForgotController extends BaseController
             /** @var AccountManagement $accounts */
             $accounts = $this->service(AccountManagement::class);
 
-            $user = $accounts->findById($user_id);
+            $user = $accounts->findById($userId);
         } catch (\RuntimeException $e) {
             echo $e;
             die();
@@ -214,7 +214,7 @@ class ForgotController extends BaseController
         }
 
         // Everything looks good, let's actually reset their password
-        if ($user->attemptResetPassword($reset_code, $password)) {
+        if ($user->attemptResetPassword($resetCode, $password)) {
             $this->service('session')->set('flash', [
                 'type'  => 'success',
                 'short' => 'Success',

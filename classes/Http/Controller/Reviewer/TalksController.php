@@ -38,8 +38,8 @@ class TalksController extends BaseController
             $options
         );
 
-        $per_page   = (int) $req->get('per_page') ?: 20;
-        $pagerfanta = new Pagination($formattedTalks, $per_page);
+        $perPage    = (int) $req->get('per_page') ?: 20;
+        $pagerfanta = new Pagination($formattedTalks, $perPage);
         $pagerfanta->setCurrentPage($req->get('page'));
         $pagination = $pagerfanta->createView('/reviewer/talks?', $req->query->all());
 
@@ -50,7 +50,7 @@ class TalksController extends BaseController
             'current_page' => $req->getRequestUri(),
             'totalRecords' => \count($formattedTalks),
             'filter'       => $req->get('filter'),
-            'per_page'     => $per_page,
+            'per_page'     => $perPage,
             'sort'         => $req->get('sort'),
             'order_by'     => $req->get('order_by'),
         ];

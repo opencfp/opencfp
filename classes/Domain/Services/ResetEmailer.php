@@ -18,7 +18,7 @@ class ResetEmailer
     /**
      * @var \Swift_Mailer
      */
-    private $swift_mailer;
+    private $swiftMailer;
 
     /**
      * @var \Twig_Template
@@ -28,12 +28,12 @@ class ResetEmailer
     /**
      * @var string
      */
-    private $config_email;
+    private $configEmail;
 
     /**
      * @var string
      */
-    private $config_title;
+    private $configTitle;
 
     /**
      * @param \Swift_Mailer  $swiftMailer
@@ -43,10 +43,10 @@ class ResetEmailer
      */
     public function __construct(\Swift_Mailer $swiftMailer, \Twig_Template $template, $configEmail, $configTitle)
     {
-        $this->swift_mailer = $swiftMailer;
+        $this->swiftMailer  = $swiftMailer;
         $this->template     = $template;
-        $this->config_email = $configEmail;
-        $this->config_title = $configTitle;
+        $this->configEmail  = $configEmail;
+        $this->configTitle  = $configTitle;
     }
 
     /**
@@ -63,7 +63,7 @@ class ResetEmailer
         try {
             $message = $this->preparedMessage($email, $parameters);
 
-            return $this->swift_mailer->send($message);
+            return $this->swiftMailer->send($message);
         } catch (\Exception $e) {
             echo $e;
             die();
@@ -84,8 +84,8 @@ class ResetEmailer
                 ? 'https' : 'http',
             'host'    => !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost',
             'user_id' => $userId,
-            'email'   => $this->config_email,
-            'title'   => $this->config_title,
+            'email'   => $this->configEmail,
+            'title'   => $this->configTitle,
         ];
     }
 
