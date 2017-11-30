@@ -213,22 +213,19 @@ class Application extends SilexApplication
             /* @var Twig_Environment $twig */
             $twig = $this['twig'];
 
-            switch ($code) {
-                case Response::HTTP_UNAUTHORIZED:
-                    $message = $twig->render('error/401.twig');
+            $template = 'error/500.twig';
 
-                    break;
-                case Response::HTTP_FORBIDDEN:
-                    $message = $twig->render('error/403.twig');
+            $templates = [
+                Response::HTTP_UNAUTHORIZED => 'error/401.twig',
+                Response::HTTP_FORBIDDEN    => 'error/403.twig',
+                Response::HTTP_NOT_FOUND    => 'error/404.twig',
+            ];
 
-                    break;
-                case Response::HTTP_NOT_FOUND:
-                    $message = $twig->render('error/404.twig');
-
-                    break;
-                default:
-                    $message = $twig->render('error/500.twig');
+            if (\array_key_exists($code, $templates)) {
+                $template = $templates[$code];
             }
+
+            $message = $twig->render($template);
 
             return new Response($message, $code);
         });
