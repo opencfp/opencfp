@@ -15,12 +15,27 @@ namespace OpenCFP\Test\Unit;
 
 use OpenCFP\Environment;
 use OpenCFP\Path;
+use OpenCFP\PathInterface;
 
 /**
  * @covers \OpenCFP\Path
  */
 final class PathTest extends \PHPUnit\Framework\TestCase
 {
+    public function testIsFinal()
+    {
+        $reflection = new \ReflectionClass(Path::class);
+
+        $this->assertTrue($reflection->isFinal());
+    }
+
+    public function testImplementsPathInterface()
+    {
+        $reflection = new \ReflectionClass(Path::class);
+
+        $this->assertTrue($reflection->implementsInterface(PathInterface::class));
+    }
+
     /**
      * @test
      */

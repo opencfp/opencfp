@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP;
 
-final class Path
+final class Path implements PathInterface
 {
     /**
      * @var string
