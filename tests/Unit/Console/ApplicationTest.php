@@ -17,10 +17,7 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Console\Application;
 use OpenCFP\Console\Command;
-use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Environment;
-use OpenCFP\Infrastructure\Auth\UserExistsException;
-use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\Console;
 
 /**
@@ -76,7 +73,6 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $expected = [
             Console\Command\HelpCommand::class,
             Console\Command\ListCommand::class,
-            Command\AdminDemoteCommand::class,
             Command\ClearCacheCommand::class,
         ];
 
@@ -88,78 +84,6 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         \sort($actual);
 
         $this->assertEquals($expected, $actual);
-    }
-
-    public function testAdminDemoteDetectsNonExistentUser()
-    {
-        // Create our input and output dependencies
-        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
-        $output = $this->createOutputInterface();
-
-        /**
-         * Create an AccountManagement mock that throws our expected exception and then
-         * add it to our Application mock
-         */
-        $accounts = Mockery::mock(AccountManagement::class);
-        $accounts->shouldReceive('findByLogin')->andThrow(UserExistsException::class);
-        $app                           = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
-        $app[AccountManagement::class] = $accounts;
-
-        // Create our command object and inject our application
-        $command = new \OpenCFP\Console\Command\AdminDemoteCommand();
-        $command->setApp($app);
-        $response = $command->execute($input, $output);
-        $this->assertEquals($response, 1);
-    }
-
-    public function testAdminDemoteWillNotDemoteNonAdminAccounts()
-    {
-        // Create our input and output dependencies
-        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
-        $output = $this->createOutputInterface();
-
-        $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $accounts = Mockery::mock(AccountManagement::class);
-        $accounts->shouldReceive('findByLogin')->andReturn($user);
-        $app                           = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
-        $app[AccountManagement::class] = $accounts;
-
-        // Create our command object and inject our application
-        $command = new \OpenCFP\Console\Command\AdminDemoteCommand();
-        $command->setApp($app);
-        $response = $command->execute($input, $output);
-        $this->assertEquals($response, 1);
-    }
-
-    public function testAdminDemoteSuccess()
-    {
-        // Create our input and output dependencies
-        $input  = $this->createInputInterfaceWithEmail('test@opencfp.dev');
-        $output = $this->createOutputInterface();
-
-        /**
-         * Create a mock User that has admin access and a removeGroup
-         * method that is stubbed out
-         */
-        $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
-        $user->shouldReceive('getLogin')->andReturn('test@opencfp.dev');
-        $user->shouldReceive('removeGroup');
-
-        $accounts = Mockery::mock(AccountManagement::class);
-        $accounts->shouldReceive('findByLogin')
-            ->andReturn($user);
-        $accounts->shouldReceive('demoteFrom')
-            ->with('test@opencfp.dev', 'Admin');
-
-        // Create our command object and inject our application
-        $app                           = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
-        $app[AccountManagement::class] = $accounts;
-        $command                       = new \OpenCFP\Console\Command\AdminDemoteCommand();
-        $command->setApp($app);
-        $response = $command->execute($input, $output);
-        $this->assertEquals($response, 0);
     }
 
     protected function createInputInterfaceWithEmail($email): \Symfony\Component\Console\Input\InputInterface
