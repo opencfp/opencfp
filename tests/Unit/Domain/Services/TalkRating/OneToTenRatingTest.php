@@ -31,8 +31,7 @@ class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidRatings($rating, $valid)
     {
-        $mockAuth = Mockery::mock(Authentication::class);
-        $mockAuth->shouldReceive('userId');
+        $mockAuth = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
         $metaMock    = Mockery::mock(TalkMeta::class);
         $oneToTen    = new OneToTenRating($metaMock, $mockAuth);
         $this->assertSame($valid, $oneToTen->isValidRating($rating));
