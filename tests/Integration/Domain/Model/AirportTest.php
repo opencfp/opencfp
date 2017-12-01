@@ -25,12 +25,16 @@ class AirportTest extends BaseTestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @var Airport
+     */
     private $airports;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->airports = $this->getAirport();
+
+        $this->airports = new Airport();
     }
 
     /** @test */
@@ -52,10 +56,5 @@ class AirportTest extends BaseTestCase
         $this->expectExceptionMessage('not found');
 
         $this->airports->withCode('foobarbaz');
-    }
-
-    private function getAirport(): Airport
-    {
-        return new Airport();
     }
 }
