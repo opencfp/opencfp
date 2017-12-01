@@ -48,4 +48,10 @@ final class AuthenticationExceptionTest extends Framework\TestCase
         $this->assertSame('Failure to login.', $exception->getMessage());
         $this->assertSame(0, $exception->getCode());
     }
+
+    public function testLoginFailureReturnsAnAuthenticationException()
+    {
+        $exception = AuthenticationException::loginFailure();
+        $this->assertInstanceOf(AuthenticationException::class, $exception);
+    }
 }
