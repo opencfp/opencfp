@@ -72,8 +72,8 @@ class Application extends SilexApplication
         $this->register(new LocaleServiceProvider());
         $this->register(new TranslationServiceProvider());
         $this->register(new MonologServiceProvider(), [
-            'monolog.logfile' => $this->config('log.path') ?: "{$basePath}/log/app.log",
-            'monolog.name'    => 'opencfp',
+            'monolog.logfile'  => $this->config('log.path') ?: "{$basePath}/log/app.log",
+            'monolog.name'     => 'opencfp',
             'monolog.level'    => \strtoupper(
                 $this->config('log.level') ?: 'debug'
             ),
