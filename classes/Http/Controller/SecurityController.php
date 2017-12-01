@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Domain\Services\Authentication;
-use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,7 +28,7 @@ class SecurityController extends BaseController
         ]);
     }
 
-    public function processAction(Request $req, Application $app)
+    public function processAction(Request $req)
     {
         /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
@@ -47,7 +46,7 @@ class SecurityController extends BaseController
 
             $templateData = [
                 'email' => $req->get('email'),
-                'flash' => $this->getFlash($app),
+                'flash' => $this->getFlash($this->app),
             ];
 
             return $this->render('security/login.twig', $templateData, Response::HTTP_BAD_REQUEST);
