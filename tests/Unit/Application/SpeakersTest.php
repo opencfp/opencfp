@@ -22,7 +22,6 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
-use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
 
@@ -37,9 +36,6 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
 
     /** @var Speakers */
     private $sut;
-
-    /** @var SpeakerRepository | MockInterface */
-    private $speakerRepository;
 
     /** @var TalkRepository | MockInterface */
     private $talkRepository;
@@ -56,12 +52,11 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
     protected function setUp()
     {
         $this->identityProvider  = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
-        $this->speakerRepository = m::mock(\OpenCFP\Domain\Speaker\SpeakerRepository::class);
         $this->talkRepository    = m::mock(\OpenCFP\Domain\Talk\TalkRepository::class);
         $this->callForPapers     = m::mock(\OpenCFP\Domain\CallForPapers::class);
         $this->dispatcher        = m::mock(\OpenCFP\Domain\Services\EventDispatcher::class);
 
-        $this->sut = new Speakers($this->callForPapers, $this->identityProvider, $this->speakerRepository, $this->talkRepository, $this->dispatcher);
+        $this->sut = new Speakers($this->callForPapers, $this->identityProvider, $this->talkRepository, $this->dispatcher);
     }
 
     //

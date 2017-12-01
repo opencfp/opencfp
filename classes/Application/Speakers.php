@@ -18,7 +18,6 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
-use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Domain\Talk\TalkWasSubmitted;
@@ -31,9 +30,6 @@ class Speakers
     /** @var IdentityProvider */
     private $identityProvider;
 
-    /** @var SpeakerRepository */
-    private $speakers;
-
     /** @var TalkRepository */
     private $talks;
 
@@ -43,11 +39,9 @@ class Speakers
     public function __construct(
         CallForPapers $callForPapers,
         IdentityProvider $identityProvider,
-        SpeakerRepository $speakers,
         TalkRepository $talks,
         EventDispatcher $dispatcher
     ) {
-        $this->speakers         = $speakers;
         $this->identityProvider = $identityProvider;
         $this->talks            = $talks;
         $this->callForPapers    = $callForPapers;
