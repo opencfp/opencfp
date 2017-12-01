@@ -53,11 +53,7 @@ class SpeakersController extends BaseController
                     'country' => $airport->country,
                 ];
             } catch (EntityNotFoundException $e) {
-                $speaker['airport'] = [
-                    'code'    => null,
-                    'name'    => null,
-                    'country' => null,
-                ];
+                //Do nothing
             }
 
             $speaker['is_admin'] = \in_array($speaker['id'], $adminUserIds);
@@ -109,11 +105,7 @@ class SpeakersController extends BaseController
                 'country' => $airport->country,
             ];
         } catch (EntityNotFoundException $e) {
-            $speakerDetails->airport = [
-                'code'    => null,
-                'name'    => null,
-                'country' => null,
-            ];
+            //Do nothing
         }
 
         $talks = $speakerDetails->talks()->get();
