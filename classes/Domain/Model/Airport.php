@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Model;
 
+use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 
 class Airport extends Eloquent implements AirportInformationDatabase
@@ -23,7 +24,7 @@ class Airport extends Eloquent implements AirportInformationDatabase
     /**
      * @param string $code the IATA Airport Code to get information for
      *
-     * @throws \Exception
+     * @throws EntityNotFoundException
      *
      * @return self
      */
@@ -31,8 +32,8 @@ class Airport extends Eloquent implements AirportInformationDatabase
     {
         $airport = $this->where('code', $code)->first(['code', 'name', 'country']);
 
-        if (!$airport) {
-            throw new \Exception("An airport matching '{$code}' was not found.");
+        if (!$airport instanceof self) {
+            throw new EntityNotFoundException("An airport matching '{$code}' was not found.");
         }
 
         return $airport;
