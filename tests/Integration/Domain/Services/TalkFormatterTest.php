@@ -44,10 +44,10 @@ class TalkFormatterTest extends BaseTestCase
 
         $format =$formatter->createdFormattedOutput($talk->first(), 1);
 
-        $this->assertEquals('One talk to rule them all', $format->getTitle());
-        $this->assertEquals('api', $format->getCategory());
-        $this->assertEquals(0, $format->getRating());
-        $this->assertEquals(0, $format->isViewedByMe());
+        $this->assertSame('One talk to rule them all', $format->getTitle());
+        $this->assertSame('api', $format->getCategory());
+        $this->assertSame(0, $format->getRating());
+        $this->assertFalse($format->isViewedByMe());
     }
 
     /**
@@ -61,8 +61,8 @@ class TalkFormatterTest extends BaseTestCase
         // Now to see if the meta gets put in correctly
         $secondFormat =$formatter->createdFormattedOutput($talk->first(), 2);
 
-        $this->assertEquals(1, $secondFormat->getRating());
-        $this->assertEquals(1, $secondFormat->isViewedByMe());
+        $this->assertSame(1, $secondFormat->getRating());
+        $this->assertTrue($secondFormat->isViewedByMe());
     }
 
     /**
@@ -73,7 +73,7 @@ class TalkFormatterTest extends BaseTestCase
         $formatter = new TalkFormatter();
         $talks     = Talk::all();
         $formatted = $formatter->formatList($talks, 2);
-        $this->assertEquals(\count($talks), \count($formatted));
+        $this->assertSame(\count($talks), \count($formatted));
         $this->assertInstanceOf(Collection::class, $formatted);
     }
 

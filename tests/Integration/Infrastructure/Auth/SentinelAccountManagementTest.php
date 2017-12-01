@@ -55,7 +55,7 @@ class SentinelAccountManagementTest extends BaseTestCase
         ]);
 
         $user = $this->sut->findByLogin('test@example.com');
-        $this->assertEquals('Test Account', "{$user->getUser()->first_name} {$user->getUser()->last_name}");
+        $this->assertSame('Test Account', "{$user->getUser()->first_name} {$user->getUser()->last_name}");
     }
 
     public function testCreatingDuplicateUserThrowsError()

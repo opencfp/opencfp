@@ -83,7 +83,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         \sort($expected);
         \sort($actual);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     protected function createInputInterfaceWithEmail($email): \Symfony\Component\Console\Input\InputInterface

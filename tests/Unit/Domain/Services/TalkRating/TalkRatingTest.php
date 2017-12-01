@@ -53,6 +53,6 @@ class TalkRatingTest extends \PHPUnit\Framework\TestCase
 
         $sut->rate(7, 1);
 
-        $this->assertEquals(1, $metaMock->rating);
+        $this->assertSame(1, $metaMock->rating);
     }
 }

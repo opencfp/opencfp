@@ -51,7 +51,7 @@ class SentinelAuthenticationTest extends BaseTestCase
 
         $user = $this->sut->user();
 
-        $this->assertEquals('test@example.com', $user->getLogin());
+        $this->assertSame('test@example.com', $user->getLogin());
     }
 
     /**

@@ -47,7 +47,7 @@ class TalkProfileTest extends \PHPUnit\Framework\TestCase
         $talk        = m::mock(Talk::class)->makePartial();
         $talk->id    = 2;
         $talkProfile = new TalkProfile($talk);
-        $this->assertEquals($talk->id, $talkProfile->getId());
+        $this->assertSame($talk->id, $talkProfile->getId());
     }
 
     /**

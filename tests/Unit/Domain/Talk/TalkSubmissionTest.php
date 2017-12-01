@@ -39,11 +39,11 @@ class TalkSubmissionTest extends \PHPUnit\Framework\TestCase
         // Responsible for creating data-mapper Talk entity from cleaned inputs.
         $talk = $submission->toTalk();
 
-        $this->assertEquals('Happy Path Submission', $talk->title);
-        $this->assertEquals('I play by the rules.', $talk->description);
-        $this->assertEquals('regular', $talk->type);
-        $this->assertEquals('entry', $talk->level);
-        $this->assertEquals('api', $talk->category);
+        $this->assertSame('Happy Path Submission', $talk->title);
+        $this->assertSame('I play by the rules.', $talk->description);
+        $this->assertSame('regular', $talk->type);
+        $this->assertSame('entry', $talk->level);
+        $this->assertSame('api', $talk->category);
         $this->assertEmpty($talk->slides);
     }
 

@@ -35,7 +35,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($environment->isProduction());
         $this->assertFalse($environment->isDevelopment());
         $this->assertFalse($environment->isTesting());
-        $this->assertEquals(Environment::TYPE_PRODUCTION, $environment);
+        $this->assertSame(Environment::TYPE_PRODUCTION, (string) $environment);
     }
 
     public function testDevelopmentReturnsEnvironment()
@@ -46,7 +46,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($environment->isProduction());
         $this->assertTrue($environment->isDevelopment());
         $this->assertFalse($environment->isTesting());
-        $this->assertEquals(Environment::TYPE_DEVELOPMENT, $environment);
+        $this->assertSame(Environment::TYPE_DEVELOPMENT, (string) $environment);
     }
 
     public function testTestingReturnsEnvironment()
@@ -57,7 +57,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($environment->isProduction());
         $this->assertFalse($environment->isDevelopment());
         $this->assertTrue($environment->isTesting());
-        $this->assertEquals(Environment::TYPE_TESTING, $environment);
+        $this->assertSame(Environment::TYPE_TESTING, (string) $environment);
     }
 
     /**
@@ -73,7 +73,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $environment = Environment::fromEnvironmentVariable();
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertEquals($type, $environment);
+        $this->assertSame($type, (string) $environment);
     }
 
     /**
@@ -88,7 +88,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertEquals($type, $environment);
+        $this->assertSame($type, (string) $environment);
     }
 
     /**
@@ -102,7 +102,7 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $environment = Environment::fromString($type);
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertEquals($type, $environment);
+        $this->assertSame($type, (string) $environment);
     }
 
     public function providerEnvironment(): \Generator

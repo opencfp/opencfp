@@ -85,7 +85,7 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $sentinel = Mockery::mock(Sentinel::class);
         $sentinel->shouldReceive('getRoleRepository->findByName->getUsers->toArray')->andReturn([]);
         $accounts = new SentinelAccountManagement($sentinel);
-        $this->assertEquals([], $accounts->findByRole('blabla'));
+        $this->assertSame([], $accounts->findByRole('blabla'));
     }
 
     public function testCreateThrowsCorrectErrorWhenUserAlreadyExists()

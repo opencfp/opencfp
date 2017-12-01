@@ -45,7 +45,7 @@ class TalkFilterTest extends Framework\TestCase
     {
         $filter = new TalkFilter(new TalkFormatter(), $this->talk);
         $talk   = $filter->getFilteredTalks(1);
-        $this->assertEquals($this->talk, $talk);
+        $this->assertSame($this->talk, $talk);
     }
 
     /**
@@ -55,7 +55,7 @@ class TalkFilterTest extends Framework\TestCase
     {
         $filter = new TalkFilter(new TalkFormatter(), $this->talk);
         $talk   = $filter->getFilteredTalks(1, 'secrets');
-        $this->assertEquals($this->talk, $talk);
+        $this->assertSame($this->talk, $talk);
     }
 
     /**
@@ -66,7 +66,7 @@ class TalkFilterTest extends Framework\TestCase
         $this->talk->shouldReceive('selected')->andReturn('gotSelected');
         $filter = new TalkFilter(new TalkFormatter(), $this->talk);
         $talk   = $filter->getFilteredTalks(1, 'selEcteD');
-        $this->assertEquals('gotSelected', $talk);
+        $this->assertSame('gotSelected', $talk);
     }
 
     /**
@@ -77,7 +77,7 @@ class TalkFilterTest extends Framework\TestCase
         $this->talk->shouldReceive('topRated')->andReturn('gotTopRated');
         $filter = new TalkFilter(new TalkFormatter(), $this->talk);
         $talk   = $filter->getFilteredTalks(1, 'toprated');
-        $this->assertEquals('gotTopRated', $talk);
+        $this->assertSame('gotTopRated', $talk);
     }
 
     /**
@@ -91,13 +91,13 @@ class TalkFilterTest extends Framework\TestCase
         $this->talk->shouldReceive('favoritedBy')->andReturn('gotfavorited');
         $filter = new TalkFilter(new TalkFormatter(), $this->talk);
         $talk   = $filter->getFilteredTalks(1, 'notrated');
-        $this->assertEquals('gotnotrated', $talk);
+        $this->assertSame('gotnotrated', $talk);
         $talk = $filter->getFilteredTalks(1, 'plusone');
-        $this->assertEquals('gotplusone', $talk);
+        $this->assertSame('gotplusone', $talk);
         $talk = $filter->getFilteredTalks(1, 'viewed');
-        $this->assertEquals('gotviewed', $talk);
+        $this->assertSame('gotviewed', $talk);
         $talk = $filter->getFilteredTalks(1, 'favorited');
-        $this->assertEquals('gotfavorited', $talk);
+        $this->assertSame('gotfavorited', $talk);
     }
 
     /**
