@@ -45,7 +45,7 @@ class SignupController extends BaseController
         return $this->render('security/signup.twig');
     }
 
-    public function processAction(Request $req, \OpenCFP\Application $app)
+    public function processAction(Request $req)
     {
         try {
             $this->validate([
@@ -62,7 +62,7 @@ class SignupController extends BaseController
             ]);
             $accounts->activate($req->get('email'));
 
-            $app['session']->set('flash', [
+            $this->app['session']->set('flash', [
                 'type'  => 'success',
                 'short' => 'Success',
                 'ext'   => "You've successfully created your account!",
@@ -73,7 +73,7 @@ class SignupController extends BaseController
 
             return $this->redirectTo('dashboard');
         } catch (ValidationException $e) {
-            $app['session']->set('flash', [
+            $this->app['session']->set('flash', [
                 'type'  => 'error',
                 'short' => $e->getMessage(),
                 'ext'   => $e->errors(),
@@ -81,7 +81,7 @@ class SignupController extends BaseController
 
             return $this->redirectBack();
         } catch (\RuntimeException $e) {
-            $app['session']->set('flash', [
+            $this->app['session']->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'A user already exists with that email address',
