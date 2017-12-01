@@ -22,7 +22,6 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Talk\TalkRepository;
-use OpenCFP\Domain\Talk\TalkSubmission;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -138,68 +137,6 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\OpenCFP\Application\NotAuthorizedException::class);
 
         $this->sut->getTalk(1);
-    }
-
-    //
-    // Talk Submission
-    //
-
-    /** @test */
-    public function it_should_allow_authenticated_speakers_to_submit_talks()
-    {
-        $this->callForPapers->shouldReceive('isOpen')
-            ->once()
-            ->andReturn(true);
-
-        $this->identityProvider->shouldReceive('getCurrentUser')
-            ->once()
-            ->andReturn($this->getSpeaker());
-
-        $this->talkRepository->shouldReceive('persist')
-            ->with(m::type(\OpenCFP\Domain\Model\Talk::class))
-            ->once();
-
-        $this->dispatcher->shouldReceive('dispatch')
-            ->with('opencfp.talk.submit', m::type(\OpenCFP\Domain\Talk\TalkWasSubmitted::class))
-            ->once();
-
-        $submission = TalkSubmission::fromNative([
-            'title'       => 'Sample Talk',
-            'description' => 'Some example talk for our submission',
-            'type'        => 'regular',
-            'category'    => 'api',
-            'level'       => 'mid',
-        ]);
-
-        /**
-         * This should determine the current authenticated speaker, create a Talk from
-         * the data in the TalkSubmission and then persist that Talk. It should dispatch
-         * an event when a talk is submitted.
-         */
-        $talk = $this->sut->submitTalk($submission);
-        $this->assertEquals($talk->title, 'Sample Talk');
-        $this->assertEquals($talk->description, 'Some example talk for our submission');
-    }
-
-    /**
-     * @test
-     */
-    public function it_doesnt_allow_talk_submissions_after_cfp_has_ended()
-    {
-        $this->callForPapers->shouldReceive('isOpen')
-            ->once()
-            ->andReturn(false);
-        $submission = TalkSubmission::fromNative([
-            'title'       => 'Sample Talk',
-            'description' => 'Some example talk for our submission',
-            'type'        => 'regular',
-            'category'    => 'api',
-            'level'       => 'mid',
-        ]);
-
-        $this->expectException(\Exception::class);
-
-        $this->sut->submitTalk($submission);
     }
 
     //
