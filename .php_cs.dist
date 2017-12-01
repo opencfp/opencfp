@@ -11,7 +11,9 @@ the LICENSE file that was distributed with this source code.
 @see https://github.com/opencfp/opencfp
 TXT;
 
-$finder = PhpCsFixer\Finder::create()->in(__DIR__);
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+    ->name('opencfp');
 
 return PhpCsFixer\Config::create()
     ->setUsingCache(true)
