@@ -20,8 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ForgotController extends BaseController
 {
-    use FlashableTrait;
-
     public function indexAction()
     {
         $form = $this->service('form.factory')->createBuilder(ForgotForm::class)->getForm();
@@ -120,7 +118,7 @@ class ForgotController extends BaseController
         $form = $this->service('form.factory')->create(new ResetForm());
 
         $data['form']  = $form->createView($formOptions);
-        $data['flash'] = $this->getFlash($this->app);
+        $data['flash'] = $this->app['session']->get('flash');
 
         return $this->render('user/forgot_password.twig', $data);
     }

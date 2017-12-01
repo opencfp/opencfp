@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecurityController extends BaseController
 {
-    use FlashableTrait;
-
     public function indexAction()
     {
         return $this->render('security/login.twig', [
@@ -46,7 +44,7 @@ class SecurityController extends BaseController
 
             $templateData = [
                 'email' => $req->get('email'),
-                'flash' => $this->getFlash($this->app),
+                'flash' => $this->app['session']->get('flash'),
             ];
 
             return $this->render('security/login.twig', $templateData, Response::HTTP_BAD_REQUEST);

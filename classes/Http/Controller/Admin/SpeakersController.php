@@ -22,13 +22,10 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
-use OpenCFP\Http\Controller\FlashableTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 class SpeakersController extends BaseController
 {
-    use FlashableTrait;
-
     public function indexAction(Request $req)
     {
         $search = $req->get('search');

@@ -19,13 +19,10 @@ use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\ValidationException;
 use OpenCFP\Http\Controller\BaseController;
-use OpenCFP\Http\Controller\FlashableTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends BaseController
 {
-    use FlashableTrait;
-
     public function indexAction(Request $req)
     {
         /* @var Authentication $auth */
