@@ -137,7 +137,7 @@ abstract class WebTestCase extends BaseTestCase
     {
         $cfp = Mockery::mock(CallForPapers::class);
         $cfp->shouldReceive('isOpen')->andReturn(true);
-        $this->swap('callforpapers', $cfp);
+        $this->swap(CallForPapers::class, $cfp);
         $this->app['twig']->addGlobal('cfp_open', true);
 
         return $this;
@@ -147,7 +147,7 @@ abstract class WebTestCase extends BaseTestCase
     {
         $cfp = Mockery::mock(CallForPapers::class);
         $cfp->shouldReceive('isOpen')->andReturn(false);
-        $this->swap('callforpapers', $cfp);
+        $this->swap(CallForPapers::class, $cfp);
         $this->app['twig']->addGlobal('cfp_open', false);
 
         return $this;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;
@@ -30,7 +31,7 @@ class SignupController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $cfp = $this->service('callforpapers');
+        $cfp = $this->service(CallForPapers::class);
 
         if (!$cfp->isOpen()) {
             $this->service('session')->set('flash', [
