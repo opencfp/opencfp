@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Domain\Model;
 
+use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
@@ -53,6 +54,23 @@ class AirportTest extends BaseTestCase
     public function it_squawks_when_airport_is_not_found()
     {
         $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('not found');
+
+        $this->airports->withCode('foobarbaz');
+    }
+
+    public function testItIsNotCaseSensitive()
+    {
+        $airport = $this->airports->withCode('aac');
+
+        $this->assertSame('AAC', $airport->code);
+        $this->assertSame('Al Arish', $airport->name);
+        $this->assertSame('Egypt', $airport->country);
+    }
+
+    public function testItThrowsTheCorrectError()
+    {
+        $this->expectException(EntityNotFoundException::class);
         $this->expectExceptionMessage('not found');
 
         $this->airports->withCode('foobarbaz');

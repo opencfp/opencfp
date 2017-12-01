@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller\Admin;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
@@ -51,7 +52,7 @@ class SpeakersController extends BaseController
                     'name'    => $airport->name,
                     'country' => $airport->country,
                 ];
-            } catch (\Exception $e) {
+            } catch (EntityNotFoundException $e) {
                 $speaker['airport'] = [
                     'code'    => null,
                     'name'    => null,
@@ -107,7 +108,7 @@ class SpeakersController extends BaseController
                 'name'    => $airport->name,
                 'country' => $airport->country,
             ];
-        } catch (\Exception $e) {
+        } catch (EntityNotFoundException $e) {
             $speakerDetails->airport = [
                 'code'    => null,
                 'name'    => null,
