@@ -17,7 +17,6 @@ use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Application;
 use OpenCFP\Application\Speakers;
-use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -31,10 +30,8 @@ use OpenCFP\Infrastructure\Auth\SentinelAuthentication;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
-use OpenCFP\Infrastructure\Persistence\IlluminateTalkRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
@@ -82,10 +79,7 @@ class ApplicationServiceProvider implements ServiceProviderInterface
 
         $app['application.speakers'] = function ($app) {
             return new Speakers(
-                new CallForPapers(new \DateTimeImmutable($app->config('application.enddate'))),
-                $app[IdentityProvider::class],
-                new IlluminateTalkRepository(),
-                new EventDispatcher()
+                $app[IdentityProvider::class]
             );
         };
 
