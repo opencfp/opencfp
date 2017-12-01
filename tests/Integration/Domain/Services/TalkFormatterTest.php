@@ -47,7 +47,7 @@ class TalkFormatterTest extends BaseTestCase
         $this->assertSame('One talk to rule them all', $format->getTitle());
         $this->assertSame('api', $format->getCategory());
         $this->assertSame(0, $format->getRating());
-        $this->assertSame(0, $format->isViewedByMe());
+        $this->assertFalse($format->isViewedByMe());
     }
 
     /**
@@ -62,7 +62,7 @@ class TalkFormatterTest extends BaseTestCase
         $secondFormat =$formatter->createdFormattedOutput($talk->first(), 2);
 
         $this->assertSame(1, $secondFormat->getRating());
-        $this->assertSame(1, $secondFormat->isViewedByMe());
+        $this->assertTrue($secondFormat->isViewedByMe());
     }
 
     /**
