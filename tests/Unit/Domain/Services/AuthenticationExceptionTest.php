@@ -21,10 +21,37 @@ use PHPUnit\Framework;
  */
 final class AuthenticationExceptionTest extends Framework\TestCase
 {
+    public function testIsFinal()
+    {
+        $reflection = new \ReflectionClass(AuthenticationException::class);
+        $this->assertTrue($reflection->isFinal());
+    }
+
     public function testIsException()
     {
         $exception = new AuthenticationException();
 
         $this->assertInstanceOf(\Exception::class, $exception);
+    }
+
+    public function testIsRuntimeException()
+    {
+        $exception = new AuthenticationException();
+
+        $this->assertInstanceOf(\RuntimeException::class, $exception);
+    }
+
+    public function testLoginFailureHasCorrectMessage()
+    {
+        $exception = AuthenticationException::loginFailure();
+
+        $this->assertSame('Failure to login.', $exception->getMessage());
+        $this->assertSame(0, $exception->getCode());
+    }
+
+    public function testLoginFailureReturnsAnAuthenticationException()
+    {
+        $exception = AuthenticationException::loginFailure();
+        $this->assertInstanceOf(AuthenticationException::class, $exception);
     }
 }

@@ -55,10 +55,10 @@ final class SentinelAuthentication implements Authentication
                 $success = $this->sentinel->login($user->getUser());
             }
             if (!$success) {
-                throw new AuthenticationException('Failure to login.');
+                throw AuthenticationException::loginFailure();
             }
         } catch (\Throwable $e) {
-            throw new AuthenticationException('Failure to login.');
+            throw AuthenticationException::loginFailure();
         }
     }
 

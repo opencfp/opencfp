@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Services;
 
-class AuthenticationException extends \Exception
+final class AuthenticationException extends \RuntimeException
 {
+    public static function loginFailure(): self
+    {
+        return new self('Failure to login.');
+    }
 }
