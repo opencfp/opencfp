@@ -13,44 +13,80 @@ declare(strict_types=1);
 
 namespace OpenCFP\Console\Command;
 
-use OpenCFP\Console\BaseCommand;
+use OpenCFP\Domain\Services;
+use OpenCFP\Infrastructure\Auth;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class AdminDemoteCommand extends BaseCommand
+final class AdminDemoteCommand extends Command
 {
+    /**
+     * @var Services\AccountManagement
+     */
+    private $accountManagement;
+
+    public function __construct(Services\AccountManagement $accountManagement)
+    {
+        parent::__construct('admin:demote');
+
+        $this->accountManagement = $accountManagement;
+    }
+
     protected function configure()
     {
         $this
-            ->setName('admin:demote')
+            ->setDescription('Demote an existing user from admin')
             ->setDefinition([
-                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to demote'),
+                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to demote from admin'),
             ])
-            ->setDescription('Demote an existing user from being an admin')
             ->setHelp(
                 <<<EOF
-The <info>%command.name%</info> command removes a user from the admin group for a given environment:
+The <info>%command.name%</info> command demotes a user from the admin group for a given environment:
 
 <info>php %command.full_name% speaker@opencfp.org --env=production</info>
 <info>php %command.full_name% speaker@opencfp.org --env=development</info>
 EOF
-);
+            );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        return $this->demote($input, $output, 'Admin');
-    }
+        $email = $input->getArgument('email');
 
-    /**
-     * Method used to inject a OpenCFP\Application object into the command
-     * for testing purposes
-     *
-     * @param $app \OpenCFP\Application
-     */
-    public function setApp($app)
-    {
-        $this->app = $app;
+        $io = new SymfonyStyle(
+            $input,
+            $output
+        );
+
+        $io->title('OpenCFP');
+
+        $io->section(\sprintf(
+            'Demoting account with email "%s" from "Admin"',
+            $email
+        ));
+
+        try {
+            $this->accountManagement->findByLogin($email);
+        } catch (Auth\UserNotFoundException $exception) {
+            $io->error(\sprintf(
+                'Could not find account with email "%s".',
+                $email
+            ));
+
+            return 1;
+        }
+
+        $this->accountManagement->demoteFrom(
+            $email,
+            'Admin'
+        );
+
+        $io->success(\sprintf(
+            'Removed account with email "%s" from the "Admin" group',
+            $email
+        ));
     }
 }

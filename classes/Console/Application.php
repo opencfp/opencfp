@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Console;
 
 use OpenCFP\Application as ApplicationContainer;
-use OpenCFP\Console\Command\AdminDemoteCommand;
 use OpenCFP\Console\Command\ClearCacheCommand;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Command\HelpCommand;
@@ -48,7 +47,6 @@ class Application extends ConsoleApplication
         return [
             new HelpCommand(),
             new ListCommand(),
-            new AdminDemoteCommand(),
             new ClearCacheCommand(),
         ];
     }
