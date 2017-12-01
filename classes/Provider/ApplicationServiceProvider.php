@@ -23,7 +23,6 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
@@ -35,6 +34,7 @@ use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
 use OpenCFP\Infrastructure\Persistence\IlluminateTalkRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
