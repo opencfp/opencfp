@@ -20,10 +20,10 @@ use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @covers \OpenCFP\Application\Speakers
@@ -54,7 +54,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         $this->identityProvider  = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
         $this->talkRepository    = m::mock(\OpenCFP\Domain\Talk\TalkRepository::class);
         $this->callForPapers     = m::mock(\OpenCFP\Domain\CallForPapers::class);
-        $this->dispatcher        = m::mock(\OpenCFP\Domain\Services\EventDispatcher::class);
+        $this->dispatcher        = m::mock(EventDispatcher::class);
 
         $this->sut = new Speakers($this->callForPapers, $this->identityProvider, $this->talkRepository, $this->dispatcher);
     }

@@ -15,12 +15,12 @@ namespace OpenCFP\Application;
 
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Services\EventDispatcher;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Talk\TalkRepository;
 use OpenCFP\Domain\Talk\TalkSubmission;
 use OpenCFP\Domain\Talk\TalkWasSubmitted;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Speakers
 {
