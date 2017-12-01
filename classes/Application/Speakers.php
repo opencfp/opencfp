@@ -13,37 +13,19 @@ declare(strict_types=1);
 
 namespace OpenCFP\Application;
 
-use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
-use OpenCFP\Domain\Talk\TalkRepository;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Speakers
 {
-    /** @var CallForPapers */
-    private $callForPapers;
-
     /** @var IdentityProvider */
     private $identityProvider;
 
-    /** @var TalkRepository */
-    private $talks;
-
-    /** @var EventDispatcher */
-    private $dispatcher;
-
     public function __construct(
-        CallForPapers $callForPapers,
-        IdentityProvider $identityProvider,
-        TalkRepository $talks,
-        EventDispatcher $dispatcher
+        IdentityProvider $identityProvider
     ) {
         $this->identityProvider = $identityProvider;
-        $this->talks            = $talks;
-        $this->callForPapers    = $callForPapers;
-        $this->dispatcher       = $dispatcher;
     }
 
     /**
