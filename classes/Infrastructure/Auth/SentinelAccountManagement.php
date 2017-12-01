@@ -36,7 +36,7 @@ final class SentinelAccountManagement implements AccountManagement
      *
      * @return UserInterface
      */
-    public function findById($userId): UserInterface
+    public function findById(int $userId): UserInterface
     {
         $user = $this->sentinel->getUserRepository()->findById($userId);
 
@@ -54,7 +54,7 @@ final class SentinelAccountManagement implements AccountManagement
      *
      * @return UserInterface
      */
-    public function findByLogin($email): UserInterface
+    public function findByLogin(string $email): UserInterface
     {
         $user = $this->sentinel->getUserRepository()->findByCredentials(['email' => $email]);
         if ($user instanceof SentinelUserInterface) {
@@ -64,12 +64,12 @@ final class SentinelAccountManagement implements AccountManagement
         throw UserNotFoundException::fromEmail($email);
     }
 
-    public function findByRole($role): array
+    public function findByRole(string $role): array
     {
         return $this->sentinel->getRoleRepository()->findByName($role)->getUsers()->toArray();
     }
 
-    public function create($email, $password, array $data = []): UserInterface
+    public function create(string $email, string $password, array $data = []): UserInterface
     {
         if ($this->sentinel
                 ->getUserRepository()
@@ -95,7 +95,7 @@ final class SentinelAccountManagement implements AccountManagement
      *
      * @return bool
      */
-    public function activate($email): bool
+    public function activate(string $email): bool
     {
         $user           = $this->findByLogin($email)->getUser();
         $activationCode = $this->sentinel->getActivationRepository()->create($user)->getCode();
@@ -103,7 +103,7 @@ final class SentinelAccountManagement implements AccountManagement
         return $this->sentinel->getActivationRepository()->complete($user, $activationCode);
     }
 
-    public function promoteTo($email, $role)
+    public function promoteTo(string $email, string $role)
     {
         $this->sentinel
             ->getRoleRepository()
@@ -112,7 +112,7 @@ final class SentinelAccountManagement implements AccountManagement
             ->attach($this->findByLogin($email)->getId());
     }
 
-    public function demoteFrom($email, $role)
+    public function demoteFrom(string $email, string $role)
     {
         $this->sentinel
             ->getRoleRepository()
