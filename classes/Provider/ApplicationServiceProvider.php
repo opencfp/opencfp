@@ -84,7 +84,6 @@ class ApplicationServiceProvider implements ServiceProviderInterface
             return new Speakers(
                 new CallForPapers(new \DateTimeImmutable($app->config('application.enddate'))),
                 $app[IdentityProvider::class],
-                $app[SpeakerRepository::class],
                 new IlluminateTalkRepository(),
                 new EventDispatcher()
             );
