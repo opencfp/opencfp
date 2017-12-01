@@ -47,7 +47,7 @@ class TalkTest extends BaseTestCase
     {
         $selected = Talk::selected()->get();
         $this->assertCount(1, $selected);
-        $this->assertEquals('talks title NO 2', $selected->first()->title);
+        $this->assertSame('talks title NO 2', $selected->first()->title);
     }
 
     /**
@@ -70,7 +70,7 @@ class TalkTest extends BaseTestCase
         $favorited = Talk::favoritedBy(1)->get();
 
         $this->assertCount(1, $favorited);
-        $this->assertEquals('talks title', $favorited->first()->title);
+        $this->assertSame('talks title', $favorited->first()->title);
 
         $favoritedByOther = Talk::viewedBy(25)->get();
         $this->assertCount(0, $favoritedByOther);
@@ -84,7 +84,7 @@ class TalkTest extends BaseTestCase
         $ratedPlusOne = Talk::ratedPlusOneBy(1)->get();
 
         $this->assertCount(1, $ratedPlusOne);
-        $this->assertEquals('talks title NO 2', $ratedPlusOne->first()->title);
+        $this->assertSame('talks title NO 2', $ratedPlusOne->first()->title);
 
         $ratedPlusOneByOther = Talk::ratedPlusOneBy(25)->get();
         $this->assertCount(0, $ratedPlusOneByOther);
@@ -116,7 +116,7 @@ class TalkTest extends BaseTestCase
         $notViewed = Talk::notViewedBy(1)->get();
 
         $this->assertCount(1, $notViewed);
-        $this->assertEquals('talks title NO 3', $notViewed->first()->title);
+        $this->assertSame('talks title NO 3', $notViewed->first()->title);
 
         $notViewedByOther = Talk::notViewedBy(2)->get();
 
@@ -129,7 +129,7 @@ class TalkTest extends BaseTestCase
     public function topRatedSortsOnBestRatings()
     {
         $topRated = Talk::topRated()->get();
-        $this->assertEquals('talks title NO 2', $topRated->first()->title);
+        $this->assertSame('talks title NO 2', $topRated->first()->title);
         $this->assertCount(2, $topRated);
     }
 

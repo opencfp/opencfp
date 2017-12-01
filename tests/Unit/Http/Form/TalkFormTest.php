@@ -44,7 +44,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $data = \unserialize($rawData);
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
 
-        $this->assertEquals(
+        $this->assertSame(
             $response,
             $form->hasRequiredFields(),
             \sprintf(
@@ -101,7 +101,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
     {
         $data = \unserialize($rawData);
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
-        $this->assertEquals(
+        $this->assertSame(
             $response,
             $form->hasRequiredFields(),
             \sprintf(
@@ -149,7 +149,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateTitle(),
             \sprintf(
@@ -191,7 +191,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
         $form->sanitize();
 
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateDescription(),
             \sprintf(
@@ -236,7 +236,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         );
         $form->sanitize();
 
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateType(),
             \sprintf(
@@ -279,7 +279,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
         $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier, ['categories' => ['test1' => 'Test 1', 'test2' => 'Test 2']]);
         $form->sanitize();
 
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateCategory(),
             \sprintf(
@@ -347,7 +347,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
             ['levels' => ['entry' => 'Entry', 'advanced' => 'Advanced']]
         );
         $form->sanitize();
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateLevel(),
             \sprintf(

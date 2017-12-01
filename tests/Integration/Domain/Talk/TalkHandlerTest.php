@@ -77,13 +77,13 @@ class TalkHandlerTest extends BaseTestCase
         $talk        = self::$talk;
         $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
         $talkHandler->with($talk);
-        $this->assertEquals(0, $talk->selected);
+        $this->assertSame(0, $talk->selected);
 
         $this->assertTrue($talkHandler->select());
-        $this->assertEquals(1, $talk->selected);
+        $this->assertSame(1, $talk->selected);
 
         $this->assertTrue($talkHandler->select(false));
-        $this->assertEquals(0, $talk->selected);
+        $this->assertSame(0, $talk->selected);
     }
 
     /**
@@ -101,13 +101,13 @@ class TalkHandlerTest extends BaseTestCase
         //The handler should have favorited the talk now.
         $favorite = $talk->favorites()->get();
         $this->assertCount(1, $favorite);
-        $this->assertEquals(1, $favorite->first()->admin_user_id);
+        $this->assertSame(1, $favorite->first()->admin_user_id);
         
         //Calling favorite again doesn't do anything
         $this->assertTrue($talkHandler->setFavorite());
         $favoriteAgain = $talk->favorites()->get();
         $this->assertCount(1, $favoriteAgain);
-        $this->assertEquals(1, $favoriteAgain->first()->admin_user_id);
+        $this->assertSame(1, $favoriteAgain->first()->admin_user_id);
 
         //Now to delete the favorite
         $this->assertTrue($talkHandler->setFavorite(false));
@@ -175,10 +175,10 @@ class TalkHandlerTest extends BaseTestCase
         $talkHandler->with($talk);
 
         $this->assertTrue($talkHandler->view());
-        $this->assertEquals(1, $talk->viewed);
+        $this->assertSame(1, $talk->viewed);
         //Calling it again doesn't do anything funky
         $this->assertTrue($talkHandler->view());
-        $this->assertEquals(1, $talk->viewed);
+        $this->assertSame(1, $talk->viewed);
     }
 
     /**
@@ -192,7 +192,7 @@ class TalkHandlerTest extends BaseTestCase
         $talkHandler->with($talk);
 
         $this->assertFalse($talkHandler->view());
-        $this->assertNotEquals(1, $talk->viewed);
+        $this->assertNotSame(1, $talk->viewed);
     }
 
     /**
@@ -243,6 +243,6 @@ class TalkHandlerTest extends BaseTestCase
         $profile = $talkHandler->getProfile();
         $this->assertInstanceOf(TalkProfile::class, $profile);
         //Check the talk got set correctly in the profile.
-        $this->assertEquals($talk->title, $profile->getTitle());
+        $this->assertSame($talk->title, $profile->getTitle());
     }
 }

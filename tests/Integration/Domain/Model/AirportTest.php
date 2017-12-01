@@ -42,9 +42,9 @@ class AirportTest extends BaseTestCase
     {
         $airport = $this->airports->withCode('AAC');
 
-        $this->assertEquals('AAC', $airport->code);
-        $this->assertEquals('Al Arish', $airport->name);
-        $this->assertEquals('Egypt', $airport->country);
+        $this->assertSame('AAC', $airport->code);
+        $this->assertSame('Al Arish', $airport->name);
+        $this->assertSame('Egypt', $airport->country);
     }
 
     /**

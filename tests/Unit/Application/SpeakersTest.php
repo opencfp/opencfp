@@ -77,8 +77,8 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
         $profile = $this->sut->findProfile();
 
         $this->assertInstanceOf(\OpenCFP\Domain\Speaker\SpeakerProfile::class, $profile);
-        $this->assertEquals($speaker->email, $profile->getEmail());
-        $this->assertEquals($speaker->first_name . ' ' . $speaker->last_name, $profile->getName());
+        $this->assertSame($speaker->email, $profile->getEmail());
+        $this->assertSame($speaker->first_name . ' ' . $speaker->last_name, $profile->getName());
     }
 
     /**
@@ -102,7 +102,7 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
 
         $talk = $this->sut->getTalk(1);
 
-        $this->assertEquals('Testy Talk', $talk->title);
+        $this->assertSame('Testy Talk', $talk->title);
     }
 
     /**
@@ -128,9 +128,9 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
 
         $talks = $this->sut->getTalks();
 
-        $this->assertEquals('Testy Talk', $talks[0]->title);
-        $this->assertEquals('Another Talk', $talks[1]->title);
-        $this->assertEquals('Yet Another Talk', $talks[2]->title);
+        $this->assertSame('Testy Talk', $talks[0]->title);
+        $this->assertSame('Another Talk', $talks[1]->title);
+        $this->assertSame('Yet Another Talk', $talks[2]->title);
     }
 
     /**
@@ -182,8 +182,8 @@ class SpeakersTest extends \PHPUnit\Framework\TestCase
          * an event when a talk is submitted.
          */
         $talk = $this->sut->submitTalk($submission);
-        $this->assertEquals($talk->title, 'Sample Talk');
-        $this->assertEquals($talk->description, 'Some example talk for our submission');
+        $this->assertSame($talk->title, 'Sample Talk');
+        $this->assertSame($talk->description, 'Some example talk for our submission');
     }
 
     /**

@@ -76,7 +76,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     {
         $data = ['email' => $email];
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
-        $this->assertEquals(
+        $this->assertSame(
             $form->validateEmail(),
             $expectedResponse,
             "Did not validate {$email} as expected"
@@ -176,7 +176,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
         $form->sanitize();
         $testResponse = $form->validatePasswords();
 
-        $this->assertEquals($expectedResponse, $testResponse);
+        $this->assertSame($expectedResponse, $testResponse);
         $this->assertContains(
             $expectedMessage,
             $form->getErrorMessages(),
@@ -214,7 +214,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
         $form               = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateFirstName(),
             'Did not validate first name as expected'
@@ -258,7 +258,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
         $form              = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateLastName(),
             'Did not validate last name as expected'
@@ -300,7 +300,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function validateAllWorksCorrectly($data, $expectedResponse)
     {
         $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateAll(),
             'All submitted data did not validate as expected'
@@ -346,7 +346,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
         $form                 = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
 
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateSpeakerInfo(),
             'Speaker info was not validated as expected'
@@ -367,7 +367,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
         $data['speaker_bio'] = $speakerBio;
         $form                = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
         $form->sanitize();
-        $this->assertEquals(
+        $this->assertSame(
             $expectedResponse,
             $form->validateSpeakerBio(),
             'Speaker bio was not validated as expected'
@@ -401,7 +401,7 @@ class SignupFormTest extends \PHPUnit\Framework\TestCase
         $form = new \OpenCFP\Http\Form\SignupForm($inputData, $this->purifier);
         $form->sanitize();
         $sanitizedData = $form->getCleanData();
-        $this->assertEquals(
+        $this->assertSame(
             $expectedData,
             $sanitizedData,
             'Data was not sanitized properly'
