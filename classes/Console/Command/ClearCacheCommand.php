@@ -13,18 +13,29 @@ declare(strict_types=1);
 
 namespace OpenCFP\Console\Command;
 
-use OpenCFP\Console\BaseCommand;
+use OpenCFP\PathInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ClearCacheCommand extends BaseCommand
+final class ClearCacheCommand extends Command
 {
+    /**
+     * @var PathInterface
+     */
+    private $path;
+
+    public function __construct(PathInterface $path)
+    {
+        parent::__construct('cache:clear');
+
+        $this->path = $path;
+    }
+
     protected function configure()
     {
-        $this
-            ->setName('cache:clear')
-            ->setDescription('Clears the caches');
+        $this->setDescription('Clears the caches');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -39,19 +50,57 @@ class ClearCacheCommand extends BaseCommand
         $io->section('Clearing caches');
 
         $paths = [
-            $this->app['path']->cachePurifierPath(),
-            $this->app['path']->cacheTwigPath(),
+            $this->path->cachePurifierPath(),
+            $this->path->cacheTwigPath(),
         ];
 
         \array_walk($paths, function ($path) use ($io) {
-            \passthru(\sprintf('rm -rf %s/*', $path));
+            $count = $this->deleteFilesAndDirectoriesIn($path);
 
             $io->writeln(\sprintf(
-                '  * %s',
-                $path
+                '  * %s (%d files and directories)',
+                $path,
+                $count
             ));
         });
 
         $io->success('Cleared caches.');
+    }
+
+    private function deleteFilesAndDirectoriesIn(string $path): int
+    {
+        $count = 0;
+
+        $filesAndDirectories = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator(
+                $path,
+                \RecursiveDirectoryIterator::SKIP_DOTS
+            ),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        foreach ($filesAndDirectories as $fileInfo) {
+            if ($this->delete($fileInfo)) {
+                ++$count;
+            }
+        }
+
+        return $count;
+    }
+
+    private function delete(\SplFileInfo $fileInfo): bool
+    {
+        $filePath = (string) $fileInfo;
+
+        /** @var \SplFileInfo $fileInfo */
+        if ($fileInfo->isDir()) {
+            return \rmdir($filePath);
+        }
+
+        if ($fileInfo->isFile()) {
+            return \unlink($filePath);
+        }
+
+        return false;
     }
 }

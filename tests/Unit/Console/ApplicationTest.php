@@ -73,7 +73,6 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
         $expected = [
             Console\Command\HelpCommand::class,
             Console\Command\ListCommand::class,
-            Command\ClearCacheCommand::class,
         ];
 
         $actual = \array_map(function (Console\Command\Command $command) {
