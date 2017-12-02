@@ -56,6 +56,8 @@ EOF
     {
         $email = $input->getArgument('email');
 
+        $roleName = 'Reviewer';
+
         $io = new SymfonyStyle(
             $input,
             $output
@@ -64,8 +66,9 @@ EOF
         $io->title('OpenCFP');
 
         $io->section(\sprintf(
-            'Demoting account with email "%s" from "Reviewer"',
-            $email
+            'Demoting account with email "%s" from "%s"',
+            $email,
+            $roleName
         ));
 
         try {
@@ -81,12 +84,13 @@ EOF
 
         $this->accountManagement->demoteFrom(
             $email,
-            'Reviewer'
+            $roleName
         );
 
         $io->success(\sprintf(
-            'Removed account with email "%s" from the "Reviewer" group',
-            $email
+            'Removed account with email "%s" from the "%s" group',
+            $email,
+            $roleName
         ));
     }
 }

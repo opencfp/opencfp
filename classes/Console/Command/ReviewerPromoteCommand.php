@@ -56,6 +56,8 @@ EOF
     {
         $email = $input->getArgument('email');
 
+        $roleName = 'Reviewer';
+
         $io = new SymfonyStyle(
             $input,
             $output
@@ -64,8 +66,9 @@ EOF
         $io->title('OpenCFP');
 
         $io->section(\sprintf(
-            'Promoting account with email "%s" to "Reviewer"',
-            $email
+            'Promoting account with email "%s" to "%s"',
+            $email,
+            $roleName
         ));
 
         try {
@@ -81,12 +84,13 @@ EOF
 
         $this->accountManagement->promoteTo(
             $email,
-            'Reviewer'
+            $roleName
         );
 
         $io->success(\sprintf(
-            'Added account with email "%s" to the "Reviewer" group',
-            $email
+            'Added account with email "%s" to the "%s" group',
+            $email,
+            $roleName
         ));
     }
 }

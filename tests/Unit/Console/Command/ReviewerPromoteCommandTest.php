@@ -67,7 +67,9 @@ final class ReviewerPromoteCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfUserDoesNotExist()
     {
-        $email= $this->getFaker()->email;
+        $email = $this->getFaker()->email;
+
+        $roleName = 'Reviewer';
 
         $accountManagement = $this->createAccountManagementMock();
 
@@ -88,8 +90,9 @@ final class ReviewerPromoteCommandTest extends Framework\TestCase
         $this->assertSame(1, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Promoting account with email "%s" to "Reviewer"',
-            $email
+            'Promoting account with email "%s" to "%s"',
+            $email,
+            $roleName
         );
 
         $this->assertContains($sectionMessage, $commandTester->getDisplay());
@@ -105,6 +108,8 @@ final class ReviewerPromoteCommandTest extends Framework\TestCase
     public function testExecuteSucceedsIfUserExists()
     {
         $email = $this->getFaker()->email;
+
+        $roleName = 'Reviewer';
 
         $user = $this->createUserMock();
 
@@ -135,15 +140,17 @@ final class ReviewerPromoteCommandTest extends Framework\TestCase
         $this->assertSame(0, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Promoting account with email "%s" to "Reviewer"',
-            $email
+            'Promoting account with email "%s" to "%s"',
+            $email,
+            $roleName
         );
 
         $this->assertContains($sectionMessage, $commandTester->getDisplay());
 
         $successMessage = \sprintf(
-            'Added account with email "%s" to the "Reviewer" group',
-            $email
+            'Added account with email "%s" to the "%s" group',
+            $email,
+            $roleName
         );
 
         $this->assertContains($successMessage, $commandTester->getDisplay());

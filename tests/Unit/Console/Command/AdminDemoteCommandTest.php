@@ -67,7 +67,9 @@ final class AdminDemoteCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfUserDoesNotExist()
     {
-        $email= $this->getFaker()->email;
+        $email = $this->getFaker()->email;
+
+        $roleName = 'Admin';
 
         $accountManagement = $this->createAccountManagementMock();
 
@@ -88,8 +90,9 @@ final class AdminDemoteCommandTest extends Framework\TestCase
         $this->assertSame(1, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Demoting account with email "%s" from "Admin"',
-            $email
+            'Demoting account with email "%s" from "%s"',
+            $email,
+            $roleName
         );
 
         $this->assertContains($sectionMessage, $commandTester->getDisplay());
@@ -106,6 +109,8 @@ final class AdminDemoteCommandTest extends Framework\TestCase
     {
         $email = $this->getFaker()->email;
 
+        $roleName = 'Admin';
+
         $user = $this->createUserMock();
 
         $accountManagement = $this->createAccountManagementMock();
@@ -121,7 +126,7 @@ final class AdminDemoteCommandTest extends Framework\TestCase
             ->method('demoteFrom')
             ->with(
                 $this->identicalTo($email),
-                $this->identicalTo('Admin')
+                $this->identicalTo($roleName)
             );
 
         $command = new AdminDemoteCommand($accountManagement);
@@ -135,15 +140,17 @@ final class AdminDemoteCommandTest extends Framework\TestCase
         $this->assertSame(0, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Demoting account with email "%s" from "Admin"',
-            $email
+            'Demoting account with email "%s" from "%s"',
+            $email,
+            $roleName
         );
 
         $this->assertContains($sectionMessage, $commandTester->getDisplay());
 
         $successMessage = \sprintf(
-            'Removed account with email "%s" from the "Admin" group',
-            $email
+            'Removed account with email "%s" from the "%s" group',
+            $email,
+            $roleName
         );
 
         $this->assertContains($successMessage, $commandTester->getDisplay());

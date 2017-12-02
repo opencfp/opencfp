@@ -67,7 +67,9 @@ final class ReviewerDemoteCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfUserDoesNotExist()
     {
-        $email= $this->getFaker()->email;
+        $email = $this->getFaker()->email;
+
+        $roleName = 'Reviewer';
 
         $accountManagement = $this->createAccountManagementMock();
 
@@ -88,8 +90,9 @@ final class ReviewerDemoteCommandTest extends Framework\TestCase
         $this->assertSame(1, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Demoting account with email "%s" from "Reviewer"',
-            $email
+            'Demoting account with email "%s" from "%s"',
+            $email,
+            $roleName
         );
 
         $this->assertContains($sectionMessage, $commandTester->getDisplay());
@@ -106,6 +109,8 @@ final class ReviewerDemoteCommandTest extends Framework\TestCase
     {
         $email = $this->getFaker()->email;
 
+        $roleName = 'Reviewer';
+
         $user = $this->createUserMock();
 
         $accountManagement = $this->createAccountManagementMock();
@@ -121,7 +126,7 @@ final class ReviewerDemoteCommandTest extends Framework\TestCase
             ->method('demoteFrom')
             ->with(
                 $this->identicalTo($email),
-                $this->identicalTo('Reviewer')
+                $this->identicalTo($roleName)
             );
 
         $command = new ReviewerDemoteCommand($accountManagement);
@@ -135,15 +140,17 @@ final class ReviewerDemoteCommandTest extends Framework\TestCase
         $this->assertSame(0, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Demoting account with email "%s" from "Reviewer"',
-            $email
+            'Demoting account with email "%s" from "%s"',
+            $email,
+            $roleName
         );
 
         $this->assertContains($sectionMessage, $commandTester->getDisplay());
 
         $successMessage = \sprintf(
-            'Removed account with email "%s" from the "Reviewer" group',
-            $email
+            'Removed account with email "%s" from the "%s" group',
+            $email,
+            $roleName
         );
 
         $this->assertContains($successMessage, $commandTester->getDisplay());
