@@ -67,7 +67,9 @@ final class AdminPromoteCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfUserDoesNotExist()
     {
-        $email= $this->getFaker()->email;
+        $email = $this->getFaker()->email;
+
+        $roleName = 'Admin';
 
         $accountManagement = $this->createAccountManagementMock();
 
@@ -88,8 +90,9 @@ final class AdminPromoteCommandTest extends Framework\TestCase
         $this->assertSame(1, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Promoting account with email "%s" to "Admin"',
-            $email
+            'Promoting account with email "%s" to "%s"',
+            $email,
+            $roleName
         );
 
         $this->assertContains($sectionMessage, $commandTester->getDisplay());
@@ -106,6 +109,8 @@ final class AdminPromoteCommandTest extends Framework\TestCase
     {
         $email = $this->getFaker()->email;
 
+        $roleName = 'Admin';
+
         $user = $this->createUserMock();
 
         $accountManagement = $this->createAccountManagementMock();
@@ -121,7 +126,7 @@ final class AdminPromoteCommandTest extends Framework\TestCase
             ->method('promoteTo')
             ->with(
                 $this->identicalTo($email),
-                $this->identicalTo('Admin')
+                $this->identicalTo($roleName)
             );
 
         $command = new AdminPromoteCommand($accountManagement);
@@ -135,15 +140,17 @@ final class AdminPromoteCommandTest extends Framework\TestCase
         $this->assertSame(0, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Promoting account with email "%s" to "Admin"',
-            $email
+            'Promoting account with email "%s" to "%s"',
+            $email,
+            $roleName
         );
 
         $this->assertContains($sectionMessage, $commandTester->getDisplay());
 
         $successMessage = \sprintf(
-            'Added account with email "%s" to the "Admin" group',
-            $email
+            'Added account with email "%s" to the "%s" group',
+            $email,
+            $roleName
         );
 
         $this->assertContains($successMessage, $commandTester->getDisplay());
