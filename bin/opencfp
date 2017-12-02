@@ -23,11 +23,9 @@ $accountManagement = $container[Services\AccountManagement::class];
 $app = new Application($container);
 
 $app->addCommands([
-    new Command\AdminDemoteCommand($accountManagement),
-    new Command\AdminPromoteCommand($accountManagement),
-    new Command\ReviewerDemoteCommand($accountManagement),
-    new Command\ReviewerPromoteCommand($accountManagement),
     new Command\UserCreateCommand($accountManagement),
+    new Command\UserDemoteCommand($accountManagement),
+    new Command\UserPromoteCommand($accountManagement),
 ]);
 $status = $app->run($input);
 

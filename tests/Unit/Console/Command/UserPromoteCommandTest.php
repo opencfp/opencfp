@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Console\Command;
 
-use OpenCFP\Console\Command\AdminDemoteCommand;
+use OpenCFP\Console\Command\UserPromoteCommand;
 use OpenCFP\Domain\Services;
 use OpenCFP\Infrastructure\Auth;
 use OpenCFP\Test\Helper\Faker\GeneratorTrait;
@@ -21,37 +21,37 @@ use PHPUnit\Framework;
 use Symfony\Component\Console;
 
 /**
- * @covers \OpenCFP\Console\Command\AdminDemoteCommand
+ * @covers \OpenCFP\Console\Command\UserPromoteCommand
  */
-final class AdminDemoteCommandTest extends Framework\TestCase
+final class UserPromoteCommandTest extends Framework\TestCase
 {
     use GeneratorTrait;
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(AdminDemoteCommand::class);
+        $reflection = new \ReflectionClass(UserPromoteCommand::class);
 
         $this->assertTrue($reflection->isFinal());
     }
 
     public function testExtendsCommand()
     {
-        $command = new AdminDemoteCommand($this->createAccountManagementMock());
+        $command = new UserPromoteCommand($this->createAccountManagementMock());
 
         $this->assertInstanceOf(Console\Command\Command::class, $command);
     }
 
     public function testHasNameAndDescription()
     {
-        $command = new AdminDemoteCommand($this->createAccountManagementMock());
+        $command = new UserPromoteCommand($this->createAccountManagementMock());
 
-        $this->assertSame('admin:demote', $command->getName());
-        $this->assertSame('Demote an existing user from admin', $command->getDescription());
+        $this->assertSame('user:promote', $command->getName());
+        $this->assertSame('Promote an existing user to a role', $command->getDescription());
     }
 
     public function testHasEmailArgument()
     {
-        $command = new AdminDemoteCommand($this->createAccountManagementMock());
+        $command = new UserPromoteCommand($this->createAccountManagementMock());
 
         $inputDefinition = $command->getDefinition();
 
@@ -59,7 +59,23 @@ final class AdminDemoteCommandTest extends Framework\TestCase
 
         $argument = $inputDefinition->getArgument('email');
 
-        $this->assertSame('Email address of user to demote from admin', $argument->getDescription());
+        $this->assertSame('Email address of user', $argument->getDescription());
+        $this->assertTrue($argument->isRequired());
+        $this->assertNull($argument->getDefault());
+        $this->assertFalse($argument->isArray());
+    }
+
+    public function testHasRoleNameArgument()
+    {
+        $command = new UserPromoteCommand($this->createAccountManagementMock());
+
+        $inputDefinition = $command->getDefinition();
+
+        $this->assertTrue($inputDefinition->hasArgument('role-name'));
+
+        $argument = $inputDefinition->getArgument('role-name');
+
+        $this->assertSame('Name of role user should be promoted to', $argument->getDescription());
         $this->assertTrue($argument->isRequired());
         $this->assertNull($argument->getDefault());
         $this->assertFalse($argument->isArray());
@@ -67,9 +83,10 @@ final class AdminDemoteCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfUserDoesNotExist()
     {
-        $email = $this->getFaker()->email;
+        $faker = $this->getFaker();
 
-        $roleName = 'Admin';
+        $email    = $faker->email;
+        $roleName = $faker->word;
 
         $accountManagement = $this->createAccountManagementMock();
 
@@ -79,18 +96,19 @@ final class AdminDemoteCommandTest extends Framework\TestCase
             ->with($this->identicalTo($email))
             ->willThrowException(new Auth\UserNotFoundException());
 
-        $command = new AdminDemoteCommand($accountManagement);
+        $command = new UserPromoteCommand($accountManagement);
 
         $commandTester = new Console\Tester\CommandTester($command);
 
         $commandTester->execute([
-            'email' => $email,
+            'email'     => $email,
+            'role-name' => $roleName,
         ]);
 
         $this->assertSame(1, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Demoting account with email "%s" from "%s"',
+            'Promoting account with email "%s" to "%s"',
             $email,
             $roleName
         );
@@ -107,9 +125,10 @@ final class AdminDemoteCommandTest extends Framework\TestCase
 
     public function testExecuteSucceedsIfUserExists()
     {
-        $email = $this->getFaker()->email;
+        $faker = $this->getFaker();
 
-        $roleName = 'Admin';
+        $email    = $faker->email;
+        $roleName = $faker->word;
 
         $user = $this->createUserMock();
 
@@ -123,24 +142,25 @@ final class AdminDemoteCommandTest extends Framework\TestCase
 
         $accountManagement
             ->expects($this->at(1))
-            ->method('demoteFrom')
+            ->method('promoteTo')
             ->with(
                 $this->identicalTo($email),
                 $this->identicalTo($roleName)
             );
 
-        $command = new AdminDemoteCommand($accountManagement);
+        $command = new UserPromoteCommand($accountManagement);
 
         $commandTester = new Console\Tester\CommandTester($command);
 
         $commandTester->execute([
-            'email' => $email,
+            'email'     => $email,
+            'role-name' => $roleName,
         ]);
 
         $this->assertSame(0, $commandTester->getStatusCode());
 
         $sectionMessage = \sprintf(
-            'Demoting account with email "%s" from "%s"',
+            'Promoting account with email "%s" to "%s"',
             $email,
             $roleName
         );
@@ -148,7 +168,7 @@ final class AdminDemoteCommandTest extends Framework\TestCase
         $this->assertContains($sectionMessage, $commandTester->getDisplay());
 
         $successMessage = \sprintf(
-            'Removed account with email "%s" from the "%s" group',
+            'Added account with email "%s" to the "%s" group.',
             $email,
             $roleName
         );

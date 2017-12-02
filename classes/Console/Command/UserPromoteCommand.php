@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class AdminDemoteCommand extends Command
+final class UserPromoteCommand extends Command
 {
     /**
      * @var Services\AccountManagement
@@ -30,7 +30,7 @@ final class AdminDemoteCommand extends Command
 
     public function __construct(Services\AccountManagement $accountManagement)
     {
-        parent::__construct('admin:demote');
+        parent::__construct('user:promote');
 
         $this->accountManagement = $accountManagement;
     }
@@ -38,25 +38,25 @@ final class AdminDemoteCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Demote an existing user from admin')
+            ->setDescription('Promote an existing user to a role')
             ->setDefinition([
-                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to demote from admin'),
+                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user'),
+                new InputArgument('role-name', InputArgument::REQUIRED, 'Name of role user should be promoted to'),
             ])
             ->setHelp(
                 <<<EOF
-The <info>%command.name%</info> command demotes a user from the admin group for a given environment:
+The <info>%command.name%</info> command promotes a user to a role group for a given environment:
 
-<info>php %command.full_name% speaker@opencfp.org --env=production</info>
-<info>php %command.full_name% speaker@opencfp.org --env=development</info>
+<info>php %command.full_name% <email> <role-name> --env=production</info>
+<info>php %command.full_name% <email> <role-name> --env=development</info>
 EOF
             );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $email = $input->getArgument('email');
-
-        $roleName = 'Admin';
+        $email    = $input->getArgument('email');
+        $roleName = $input->getArgument('role-name');
 
         $io = new SymfonyStyle(
             $input,
@@ -66,11 +66,11 @@ EOF
         $io->title('OpenCFP');
 
         $io->section(\sprintf(
-            'Demoting account with email "%s" from "%s"',
+            'Promoting account with email "%s" to "%s"',
             $email,
             $roleName
         ));
-
+        
         try {
             $this->accountManagement->findByLogin($email);
         } catch (Auth\UserNotFoundException $exception) {
@@ -82,13 +82,13 @@ EOF
             return 1;
         }
 
-        $this->accountManagement->demoteFrom(
+        $this->accountManagement->promoteTo(
             $email,
             $roleName
         );
 
         $io->success(\sprintf(
-            'Removed account with email "%s" from the "%s" group',
+            'Added account with email "%s" to the "%s" group.',
             $email,
             $roleName
         ));
