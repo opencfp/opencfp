@@ -24,7 +24,7 @@ return PhpCsFixer\Config::create()
             'syntax' => 'short'
         ],
         'binary_operator_spaces' => [
-            'default' => 'align',
+            'default' => 'align_single_space_minimal',
         ],
         'blank_line_after_opening_tag' => true,
         'blank_line_before_statement' => true,
