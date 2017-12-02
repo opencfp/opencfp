@@ -50,12 +50,7 @@ You can find screenshots of the application in our [wiki](https://github.com/ope
 
 ## [Contributing](#contributing)
 
-We welcome and love contributions! To facilitate receiving updates to OpenCFP, we encourage you to create a new
-personal branch after you fork this repository. This branch should be used for content and changes that are specific
-to your event. However, anything you are willing to push back should be updated in your master branch. This will help
-keep the master branch generic for future event organizers that choose to use the system. You would then be able to
-merge master to your private branch and get updates when desired!
-
+See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 ## [Requirements](#requirements)
 

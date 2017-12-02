@@ -77,6 +77,6 @@ to run both all the tests and to automatically fix code style issues.
 
 ## Credit
 
-This [CONTRIBUTING.md](CONTRIBUTING.md) format was graciously lifted from The PHP League's [example](https://github.com/thephpleague/skeleton/blob/master/CONTRIBUTING.md). Thanks!
+This `CONTRIBUTING.md` format was graciously lifted from The PHP League's [example](https://github.com/thephpleague/skeleton/blob/master/CONTRIBUTING.md). Thanks!
 
 **Happy coding**!
