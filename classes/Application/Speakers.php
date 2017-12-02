@@ -22,9 +22,8 @@ class Speakers
     /** @var IdentityProvider */
     private $identityProvider;
 
-    public function __construct(
-        IdentityProvider $identityProvider
-    ) {
+    public function __construct(IdentityProvider $identityProvider)
+    {
         $this->identityProvider = $identityProvider;
     }
 
