@@ -21,8 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SignupController extends BaseController
 {
-    use FlashableTrait;
-
     public function indexAction()
     {
         $auth = $this->service(Authentication::class);
