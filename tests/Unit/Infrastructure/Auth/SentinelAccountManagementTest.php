@@ -118,7 +118,7 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $account->create('mail@mail.mail', 'pass');
     }
 
-    public function testActivateReturnsBool()
+    public function testActivateActivatesUser()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);
@@ -126,7 +126,8 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $sentinel->shouldReceive('getActivationRepository->create->getCode');
         $sentinel->shouldReceive('getActivationRepository->complete')->andReturn(true);
         $account = new SentinelAccountManagement($sentinel);
-        $this->assertTrue($account->activate('mail@mail'));
+
+        $account->activate('mail@mail');
     }
 
     public function testPromoteToIsVoid()
