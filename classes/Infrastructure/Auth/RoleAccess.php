@@ -28,7 +28,7 @@ class RoleAccess implements UserAccess
      *
      * @return RedirectResponse|void
      */
-    public static function userHasAccess(Application $app, $role = 'admin')
+    public static function userHasAccess(Application $app, string $role = 'admin')
     {
         /** @var Authentication $auth */
         $auth = $app[Authentication::class];
