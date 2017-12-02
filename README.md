@@ -256,13 +256,13 @@ Administrators are authorized to review speaker information in addition to speci
 Adding `speaker@opencfp.org` to the admin group:
 
 ```
-$ bin/opencfp admin:promote --env=production speaker@opencfp.org
+$ bin/opencfp user:promote --env=production speaker@opencfp.org admin
 ```
 
 Removing `speaker@opencfp.org` from the admin group:
 
 ```
-$ bin/opencfp admin:demote --env=production speaker@opencfp.org
+$ bin/opencfp user:demote --env=production speaker@opencfp.org admin
 ```
 
 ### [Reviewer Group Management](#reviewer-group-management)
@@ -271,13 +271,13 @@ Reviewers are authorized to see talks and give ratings to them.
 Adding `speaker@opencfp.org` to the reviewer group:
 
 ```
-$ bin/opencfp reviewer:promote --env=production speaker@opencfp.org
+$ bin/opencfp user:promote --env=production speaker@opencfp.org reviewer
 ```
 
 Removing `speaker@opencfp.org` from the reviewer group:
 
 ```
-$ bin/opencfp reviewer:demote --env=production speaker@opencfp.org
+$ bin/opencfp user:demote --env=production speaker@opencfp.org reviewer
 ```
 
 
