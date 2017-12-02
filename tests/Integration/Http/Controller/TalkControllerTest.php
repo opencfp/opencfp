@@ -87,7 +87,7 @@ class TalkControllerTest extends WebTestCase
         // Previously, this fails because it checked midnight
         // for the current date. `isCfpOpen` now uses 11:59pm current date.
         $now = new \DateTime();
-        $this->swap('callforpapers', new CallForPapers(new \DateTimeImmutable($now->format('M. jS, Y'))));
+        $this->swap(CallForPapers::class, new CallForPapers(new \DateTimeImmutable($now->format('M. jS, Y'))));
 
         /*
          * This should not have a flash message. The fact that this

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Provider\Gateways;
 
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
@@ -45,7 +46,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             $twig = $app['twig'];
 
             $twig->addGlobal('current_page', $request->getRequestUri());
-            $twig->addGlobal('cfp_open', $app['callforpapers']->isOpen());
+            $twig->addGlobal('cfp_open', $app[CallForPapers::class]->isOpen());
 
             $twig->addFunction(new Twig_SimpleFunction('active', function ($route) use ($app, $request) {
                 return $app['url_generator']->generate($route) == $request->getRequestUri();

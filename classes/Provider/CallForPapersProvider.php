@@ -25,15 +25,8 @@ class CallForPapersProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $cfp = new CallForPapers(new \DateTimeImmutable($app->config('application.enddate')));
-
-        $app['callforpapers'] = $cfp;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot(Application $app)
-    {
+        $app[CallForPapers::class] = function ($app) {
+            return new CallForPapers(new \DateTimeImmutable($app->config('application.enddate')));
+        };
     }
 }

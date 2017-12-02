@@ -15,6 +15,7 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application\NotAuthorizedException;
 use OpenCFP\Application\Speakers;
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Form\TalkForm;
@@ -69,7 +70,7 @@ class TalkController extends BaseController
         $talkId      = (int) $req->get('id');
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
-        if (!$this->service('callforpapers')->isOpen()) {
+        if (!$this->service(CallForPapers::class)->isOpen()) {
             $this->service('session')->set(
                 'flash',
                 [
@@ -118,7 +119,7 @@ class TalkController extends BaseController
     public function createAction(Request $req)
     {
         // You can only create talks while the CfP is open
-        if (!$this->service('callforpapers')->isOpen()) {
+        if (!$this->service(CallForPapers::class)->isOpen()) {
             $this->service('session')->set(
                 'flash',
                 [
@@ -155,7 +156,7 @@ class TalkController extends BaseController
     public function processCreateAction(Request $req)
     {
         // You can only create talks while the CfP is open
-        if (!$this->service('callforpapers')->isOpen()) {
+        if (!$this->service(CallForPapers::class)->isOpen()) {
             $this->service('session')->set(
                 'flash',
                 [
@@ -232,7 +233,7 @@ class TalkController extends BaseController
 
     public function updateAction(Request $req)
     {
-        if (!$this->service('callforpapers')->isOpen()) {
+        if (!$this->service(CallForPapers::class)->isOpen()) {
             $this->service('session')->set(
                 'flash',
                 [
@@ -315,7 +316,7 @@ class TalkController extends BaseController
     public function deleteAction(Request $req)
     {
         // You can only delete talks while the CfP is open
-        if (!$this->service('callforpapers')->isOpen()) {
+        if (!$this->service(CallForPapers::class)->isOpen()) {
             return $this->app->json(['delete' => 'no']);
         }
 

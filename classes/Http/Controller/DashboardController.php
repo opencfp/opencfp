@@ -36,7 +36,7 @@ class DashboardController extends BaseController
             $profile = $speakers->findProfile();
 
             /** @var CallForPapers $cfp */
-            $cfp = $this->service('callforpapers');
+            $cfp = $this->service(CallForPapers::class);
 
             return $this->render('dashboard.twig', [
                 'profile'  => $profile,
