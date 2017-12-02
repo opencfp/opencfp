@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f135c2ff1306af22af02c68b216f24b",
+    "content-hash": "f5dc5590d2e173aded9dcf18d9a73eea",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -4004,16 +4004,16 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "dev-master",
+            "version": "1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "ff6f0691b7c3c122c1665ff67d0f9d205ed2c83a"
+                "reference": "1bac8c362b12f522fdd1f1fa3556284c91affa38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/ff6f0691b7c3c122c1665ff67d0f9d205ed2c83a",
-                "reference": "ff6f0691b7c3c122c1665ff67d0f9d205ed2c83a",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/1bac8c362b12f522fdd1f1fa3556284c91affa38",
+                "reference": "1bac8c362b12f522fdd1f1fa3556284c91affa38",
                 "shasum": ""
             },
             "require": {
@@ -4052,7 +4052,7 @@
                 }
             ],
             "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succinct API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
-            "homepage": "https://github.com/mockery/mockery",
+            "homepage": "http://github.com/mockery/mockery",
             "keywords": [
                 "BDD",
                 "TDD",
@@ -4065,7 +4065,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2017-11-22T15:50:10+00:00"
+            "time": "2017-10-06T16:20:43+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5837,8 +5837,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "ezyang/htmlpurifier": 20,
-        "pagerfanta/pagerfanta": 20,
-        "mockery/mockery": 20
+        "pagerfanta/pagerfanta": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
