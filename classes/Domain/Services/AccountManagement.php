@@ -17,17 +17,17 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 
 interface AccountManagement
 {
-    public function findById($userId): UserInterface;
+    public function findById(int $userId): UserInterface;
 
-    public function findByLogin($email): UserInterface;
+    public function findByLogin(string $email): UserInterface;
 
-    public function findByRole($role): array;
+    public function findByRole(string $role): array;
 
-    public function create($email, $password, array $data = []): UserInterface;
+    public function create(string $email, string $password, array $data = []): UserInterface;
 
-    public function activate($email);
+    public function activate(string $email);
 
-    public function promoteTo($email, $role);
+    public function promoteTo(string $email, string $role);
 
-    public function demoteFrom($email, $role);
+    public function demoteFrom(string $email, string $role);
 }
