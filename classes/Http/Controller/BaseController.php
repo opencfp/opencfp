@@ -22,6 +22,7 @@ use OpenCFP\ContainerAware;
 use OpenCFP\Domain\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -61,7 +62,10 @@ abstract class BaseController
      */
     protected function url($route, $parameters = [])
     {
-        return $this->service('url_generator')->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $this->service('url_generator');
+
+        return $urlGenerator->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
@@ -105,8 +109,10 @@ abstract class BaseController
 
     protected function validate($rules = [], $messages = [], $customAttributes = [])
     {
-        /** @var Request $request */
-        $request = $this->service('request_stack')->getCurrentRequest();
+        /** @var RequestStack $requestStack */
+        $requestStack = $this->service('request_stack');
+
+        $request = $requestStack->getCurrentRequest();
         $data    = $request->query->all() + $request->request->all() + $request->files->all();
 
         $validation = new Factory(

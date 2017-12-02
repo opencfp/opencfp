@@ -10,6 +10,7 @@ use OpenCFP\Console\Application;
 use OpenCFP\Console\Command;
 use OpenCFP\Domain\Services;
 use OpenCFP\Environment;
+use OpenCFP\PathInterface;
 use Symfony\Component\Console\Input\ArgvInput;
 
 $basePath    = \realpath(\dirname(__DIR__));
@@ -18,8 +19,11 @@ $environment = $input->getParameterOption(['--env'], \getenv('CFP_ENV') ?: 'deve
 
 $container = new ApplicationContainer($basePath, Environment::fromString($environment));
 
+/** @var Services\AccountManagement $accountManagement */
 $accountManagement = $container[Services\AccountManagement::class];
-$path              = $container['path'];
+
+/** @var PathInterface $path */
+$path = $container['path'];
 
 $app = new Application($container);
 

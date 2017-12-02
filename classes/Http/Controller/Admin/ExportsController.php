@@ -15,6 +15,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Http\Controller\BaseController;
+use Symfony\Component\HttpFoundation\Session;
 
 class ExportsController extends BaseController
 {
@@ -105,7 +106,10 @@ class ExportsController extends BaseController
     private function csvReturn(array $contents, string $filename = 'data')
     {
         if (\count($contents) === 0) {
-            $this->service('session')->set('flash', [
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'There were no talks that matched selected criteria.',

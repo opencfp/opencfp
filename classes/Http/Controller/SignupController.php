@@ -18,21 +18,27 @@ use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session;
 
 class SignupController extends BaseController
 {
     public function indexAction()
     {
+        /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
         if ($auth->isAuthenticated()) {
             return $this->redirectTo('dashboard');
         }
 
+        /** @var CallForPapers $cfp */
         $cfp = $this->service(CallForPapers::class);
 
         if (!$cfp->isOpen()) {
-            $this->service('session')->set('flash', [
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Sorry, the call for papers has ended.',
@@ -67,8 +73,11 @@ class SignupController extends BaseController
                 'ext'   => "You've successfully created your account!",
             ]);
 
+            /** @var Authentication $authentication */
+            $authentication = $this->service(Authentication::class);
+
             // Automatically authenticate the newly created user.
-            $this->service(Authentication::class)->authenticate($request->get('email'), $request->get('password'));
+            $authentication->authenticate($request->get('email'), $request->get('password'));
 
             return $this->redirectTo('dashboard');
         } catch (ValidationException $e) {

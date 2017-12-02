@@ -25,7 +25,11 @@ class DashboardController extends BaseController
 {
     public function indexAction()
     {
-        $userId        = $this->service(Authentication::class)->userId();
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        $userId = $authentication->userId();
+
         $talkFormatter = new TalkFormatter();
 
         /** @var Collection $recentTalks */

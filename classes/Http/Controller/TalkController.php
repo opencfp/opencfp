@@ -22,6 +22,7 @@ use OpenCFP\Http\Form\TalkForm;
 use OpenCFP\Http\View\TalkHelper;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session;
 use Twig_Environment;
 
 class TalkController extends BaseController
@@ -33,14 +34,19 @@ class TalkController extends BaseController
      */
     private function getTalkForm($requestData): TalkForm
     {
+        /** @var TalkHelper $helper */
         $helper  = $this->service(TalkHelper::class);
+
         $options = [
             'categories' => $helper->getTalkCategories(),
             'levels'     => $helper->getTalkLevels(),
             'types'      => $helper->getTalkTypes(),
         ];
 
-        return new TalkForm($requestData, $this->service('purifier'), $options);
+        /** @var \HTMLPurifier $htmlPurifier */
+        $htmlPurifier = $this->service('purifier');
+
+        return new TalkForm($requestData, $htmlPurifier, $options);
     }
 
     /**
@@ -68,16 +74,21 @@ class TalkController extends BaseController
     public function editAction(Request $request)
     {
         $talkId      = (int) $request->get('id');
+
+        /** @var CallForPapers $callForPapers */
+        $callForPapers = $this->service(CallForPapers::class);
+
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
-        if (!$this->service(CallForPapers::class)->isOpen()) {
-            $this->service('session')->set(
-                'flash',
-                [
+        if (!$callForPapers->isOpen()) {
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Read Only',
-                'ext'   => 'You cannot edit talks once the call for papers has ended', ]
-            );
+                'ext'   => 'You cannot edit talks once the call for papers has ended',
+            ]);
 
             return $this->app->redirect($this->url('talk_view', ['id' => $talkId]));
         }
@@ -86,7 +97,10 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $userId = $this->service(Authentication::class)->userId();
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        $userId = $authentication->userId();
 
         $talk = Talk::find($talkId);
 
@@ -94,8 +108,10 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
+        /** @var TalkHelper $helper */
         $helper = $this->service(TalkHelper::class);
-        $data   = [
+
+        $data = [
             'formAction'     => $this->url('talk_update'),
             'talkCategories' => $helper->getTalkCategories(),
             'talkTypes'      => $helper->getTalkTypes(),
@@ -118,19 +134,24 @@ class TalkController extends BaseController
 
     public function createAction(Request $request)
     {
+        /** @var CallForPapers $callForPapers */
+        $callForPapers = $this->service(CallForPapers::class);
+
         // You can only create talks while the CfP is open
-        if (!$this->service(CallForPapers::class)->isOpen()) {
-            $this->service('session')->set(
-                'flash',
-                [
+        if (!$callForPapers->isOpen()) {
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'You cannot create talks once the call for papers has ended', ]
-            );
+                'ext'   => 'You cannot create talks once the call for papers has ended',
+            ]);
 
             return $this->redirectTo('dashboard');
         }
 
+        /** @var TalkHelper $helper */
         $helper = $this->service(TalkHelper::class);
 
         $data = [
@@ -155,20 +176,27 @@ class TalkController extends BaseController
 
     public function processCreateAction(Request $request)
     {
+        /** @var CallForPapers $callForPapers */
+        $callForPapers = $this->service(CallForPapers::class);
+
+        /** @var Session\Session $session */
+        $session = $this->service('session');
+
         // You can only create talks while the CfP is open
-        if (!$this->service(CallForPapers::class)->isOpen()) {
-            $this->service('session')->set(
-                'flash',
-                [
+        if (!$callForPapers->isOpen()) {
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'You cannot create talks once the call for papers has ended', ]
-            );
+                'ext'   => 'You cannot create talks once the call for papers has ended',
+            ]);
 
             return $this->redirectTo('dashboard');
         }
 
-        $user = $this->service(Authentication::class)->user();
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        $user = $authentication->user();
 
         $requestData = [
             'title'       => $request->get('title'),
@@ -191,7 +219,7 @@ class TalkController extends BaseController
             $sanitizedData['user_id'] =  (int) $user->getId();
             $talk                     = Talk::create($sanitizedData);
 
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'success',
                 'short' => 'Success',
                 'ext'   => 'Successfully saved talk.',
@@ -202,6 +230,8 @@ class TalkController extends BaseController
 
             return $this->redirectTo('dashboard');
         }
+
+        /** @var TalkHelper $helper */
         $helper = $this->service(TalkHelper::class);
 
         $data = [
@@ -221,31 +251,39 @@ class TalkController extends BaseController
             'buttonInfo'     => 'Submit my talk!',
         ];
 
-        $this->service('session')->set('flash', [
+        $session->set('flash', [
             'type'  => 'error',
             'short' => 'Error',
             'ext'   => \implode('<br>', $form->getErrorMessages()),
         ]);
-        $data['flash'] = $this->service('session')->get('flash');
+
+        $data['flash'] = $session->get('flash');
 
         return $this->render('talk/create.twig', $data);
     }
 
     public function updateAction(Request $request)
     {
-        if (!$this->service(CallForPapers::class)->isOpen()) {
-            $this->service('session')->set(
-                'flash',
-                [
-                    'type'  => 'error',
-                    'short' => 'Read Only',
-                    'ext'   => 'You cannot edit talks once the call for papers has ended', ]
-            );
+        /** @var CallForPapers $callForPapers */
+        $callForPapers = $this->service(CallForPapers::class);
+
+        /** @var Session\Session $session */
+        $session = $this->service('session');
+
+        if (!$callForPapers->isOpen()) {
+            $session->set('flash', [
+                'type'  => 'error',
+                'short' => 'Read Only',
+                'ext'   => 'You cannot edit talks once the call for papers has ended',
+            ]);
 
             return $this->app->redirect($this->url('talk_view', ['id' => $request->get('id')]));
         }
 
-        $user = $this->service(Authentication::class)->user();
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        $user = $authentication->user();
 
         $requestData = [
             'id'          => $request->get('id'),
@@ -269,7 +307,7 @@ class TalkController extends BaseController
             $sanitizedData['user_id'] =(int) $user->getId();
             
             if (Talk::find((int) $sanitizedData['id'])->update($sanitizedData)) {
-                $this->service('session')->set('flash', [
+                $session->set('flash', [
                     'type'  => 'success',
                     'short' => 'Success',
                     'ext'   => 'Successfully saved talk.',
@@ -281,7 +319,8 @@ class TalkController extends BaseController
                 return $this->redirectTo('dashboard');
             }
         }
-      
+
+        /** @var TalkHelper $helper */
         $helper = $this->service(TalkHelper::class);
 
         $data = [
@@ -302,25 +341,31 @@ class TalkController extends BaseController
             'buttonInfo'     => 'Update my talk!',
         ];
 
-        $this->service('session')->set('flash', [
+        $session->set('flash', [
             'type'  => 'error',
             'short' => 'Error',
             'ext'   => \implode('<br>', $form->getErrorMessages()),
         ]);
 
-        $data['flash'] = $this->service('session')->get('flash');
+        $data['flash'] = $session->get('flash');
 
         return $this->render('talk/edit.twig', $data);
     }
 
     public function deleteAction(Request $request)
     {
+        /** @var CallForPapers $callForPapers */
+        $callForPapers = $this->service(CallForPapers::class);
+
         // You can only delete talks while the CfP is open
-        if (!$this->service(CallForPapers::class)->isOpen()) {
+        if (!$callForPapers->isOpen()) {
             return $this->app->json(['delete' => 'no']);
         }
 
-        $userId = $this->service(Authentication::class)->userId();
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        $userId = $authentication->userId();
         $talk   = Talk::find($request->get('tid'), ['id', 'user_id']);
 
         if ((int) $talk->user_id !==  $userId) {
@@ -357,7 +402,9 @@ class TalkController extends BaseController
         ];
 
         try {
+            /** @var \Swift_Mailer $mailer */
             $mailer  = $this->service('mailer');
+
             $message = new Swift_Message();
 
             $message->setTo($email);
