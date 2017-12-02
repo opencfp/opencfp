@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
+use Cartalyst\Sentinel\Roles;
 use Cartalyst\Sentinel\Sentinel;
+use Cartalyst\Sentinel\Users;
+use Illuminate\Support\Collection;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Infrastructure\Auth\RoleNotFoundException;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
@@ -80,12 +84,72 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SentinelUser::class, $account->findByLogin('mail@mail.mail'));
     }
 
-    public function testFindByRoleReturnsArray()
+    public function testFindByRoleThrowsRoleNotFoundExceptionIfRoleWasNotFound()
     {
+        $name = $this->getFaker()->word;
+
+        $roleRepository = Mockery::mock(Roles\IlluminateRoleRepository::class);
+
+        $roleRepository
+            ->shouldReceive('findByName')
+            ->with($name)
+            ->andReturn(null);
+
         $sentinel = Mockery::mock(Sentinel::class);
-        $sentinel->shouldReceive('getRoleRepository->findByName->getUsers->toArray')->andReturn([]);
+
+        $sentinel
+            ->shouldReceive('getRoleRepository')
+            ->andReturn($roleRepository);
+
+        $accountManagement = new SentinelAccountManagement($sentinel);
+
+        $this->expectException(RoleNotFoundException::class);
+        $this->expectExceptionMessage(\sprintf(
+            'Unable to find a role with name "%s".',
+            $name
+        ));
+
+        $accountManagement->findByRole($name);
+    }
+
+    public function testFindByRoleReturnsArrayOfUsers()
+    {
+        $name = $this->getFaker()->word;
+
+        $users = [
+            Mockery::mock(Users\UserInterface::class),
+            Mockery::mock(Users\UserInterface::class),
+            Mockery::mock(Users\UserInterface::class),
+        ];
+
+        $userCollection = Mockery::mock(Collection::class);
+
+        $userCollection
+            ->shouldReceive('toArray')
+            ->andReturn($users);
+
+        $role = Mockery::mock(Roles\EloquentRole::class);
+
+        $role
+            ->shouldReceive('getUsers')
+            ->andReturn($userCollection);
+
+        $roleRepository = Mockery::mock(Roles\IlluminateRoleRepository::class);
+
+        $roleRepository
+            ->shouldReceive('findByName')
+            ->with($name)
+            ->andReturn($role);
+
+        $sentinel = Mockery::mock(Sentinel::class);
+
+        $sentinel
+            ->shouldReceive('getRoleRepository')
+            ->andReturn($roleRepository);
+
         $accounts = new SentinelAccountManagement($sentinel);
-        $this->assertSame([], $accounts->findByRole('blabla'));
+        
+        $this->assertSame($users, $accounts->findByRole($name));
     }
 
     public function testCreateThrowsCorrectErrorWhenUserAlreadyExists()
@@ -129,29 +193,191 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($account->activate('mail@mail'));
     }
 
-    public function testPromoteToIsVoid()
+    public function testPromoteToThrowsRoleNotFoundExceptionIfRoleWasNotFound()
     {
-        $role = $this->getFaker()->word;
+        $faker = $this->getFaker();
 
-        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
-        $user->shouldReceive('getUserId')->andReturn(2);
+        $email = $faker->word;
+        $name  = $faker->word;
+
+        $roleRepository = Mockery::mock(Roles\RoleRepositoryInterface::class);
+
+        $roleRepository
+            ->shouldReceive('findByName')
+            ->with($name)
+            ->andReturn(null);
+
         $sentinel = Mockery::mock(Sentinel::class);
-        $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn($user);
-        $sentinel->shouldReceive('getRoleRepository->findByName->users->attach')->andReturn(true);
-        $account = new SentinelAccountManagement($sentinel);
-        $this->assertNull($account->promoteTo('mail@mail.mail', $role));
+
+        $sentinel
+            ->shouldReceive('getRoleRepository')
+            ->andReturn($roleRepository);
+
+        $accountManagement = new SentinelAccountManagement($sentinel);
+
+        $this->expectException(RoleNotFoundException::class);
+        $this->expectExceptionMessage(\sprintf(
+            'Unable to find a role with name "%s".',
+            $name
+        ));
+
+        $accountManagement->promoteTo(
+            $email,
+            $name
+        );
     }
 
-    public function testDemoteFromIsVoid()
+    public function testPromoteToAttachesUserToUserCollection()
     {
-        $role = $this->getFaker()->word;
+        $faker = $this->getFaker();
 
-        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
-        $user->shouldReceive('getUserId')->andReturn(2);
+        $userId    = $faker->numberBetween(1);
+        $email     = $faker->word;
+        $roleName  = $faker->word;
+
+        $user = Mockery::mock(Users\UserInterface::class);
+
+        $user
+            ->shouldReceive('getUserId')
+            ->andReturn($userId);
+
+        $userCollection = Mockery::mock(Collection::class);
+
+        $userCollection
+            ->shouldReceive('attach')
+            ->with($userId);
+
+        $role = Mockery::mock(Roles\EloquentRole::class);
+
+        $role
+            ->shouldReceive('users')
+            ->andReturn($userCollection);
+
+        $roleRepository = Mockery::mock(Roles\RoleRepositoryInterface::class);
+
+        $roleRepository
+            ->shouldReceive('findByName')
+            ->with($roleName)
+            ->andReturn($role);
+
+        $userRepository = Mockery::mock(Roles\RoleRepositoryInterface::class);
+
+        $userRepository
+            ->shouldReceive('findByCredentials')
+            ->with([
+                'email' => $email,
+            ])
+            ->andReturn($user);
+
         $sentinel = Mockery::mock(Sentinel::class);
-        $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn($user);
-        $sentinel->shouldReceive('getRoleRepository->findByName->users->detach')->andReturn(true);
-        $account = new SentinelAccountManagement($sentinel);
-        $this->assertNull($account->demoteFrom('mail@mail.mail', $role));
+
+        $sentinel
+            ->shouldReceive('getRoleRepository')
+            ->andReturn($roleRepository);
+
+        $sentinel
+            ->shouldReceive('getUserRepository')
+            ->andReturn($userRepository);
+
+        $accountManagement = new SentinelAccountManagement($sentinel);
+
+        $accountManagement->promoteTo(
+            $email,
+            $roleName
+        );
+    }
+
+    public function testDemoteFromThrowsRoleNotFoundExceptionIfRoleWasNotFound()
+    {
+        $faker = $this->getFaker();
+
+        $email = $faker->word;
+        $name  = $faker->word;
+
+        $roleRepository = Mockery::mock(Roles\RoleRepositoryInterface::class);
+
+        $roleRepository
+            ->shouldReceive('findByName')
+            ->with($name)
+            ->andReturn(null);
+
+        $sentinel = Mockery::mock(Sentinel::class);
+
+        $sentinel
+            ->shouldReceive('getRoleRepository')
+            ->andReturn($roleRepository);
+
+        $accountManagement = new SentinelAccountManagement($sentinel);
+
+        $this->expectException(RoleNotFoundException::class);
+        $this->expectExceptionMessage(\sprintf(
+            'Unable to find a role with name "%s".',
+            $name
+        ));
+
+        $accountManagement->demoteFrom(
+            $email,
+            $name
+        );
+    }
+
+    public function testDemoteFromDetachesUserFromUserCollection()
+    {
+        $faker = $this->getFaker();
+
+        $userId    = $faker->numberBetween(1);
+        $email     = $faker->word;
+        $roleName  = $faker->word;
+
+        $user = Mockery::mock(Users\UserInterface::class);
+
+        $user
+            ->shouldReceive('getUserId')
+            ->andReturn($userId);
+
+        $userCollection = Mockery::mock(Collection::class);
+
+        $userCollection
+            ->shouldReceive('detach')
+            ->with($userId);
+
+        $role = Mockery::mock(Roles\EloquentRole::class);
+
+        $role
+            ->shouldReceive('users')
+            ->andReturn($userCollection);
+
+        $roleRepository = Mockery::mock(Roles\RoleRepositoryInterface::class);
+
+        $roleRepository
+            ->shouldReceive('findByName')
+            ->with($roleName)
+            ->andReturn($role);
+
+        $userRepository = Mockery::mock(Roles\RoleRepositoryInterface::class);
+
+        $userRepository
+            ->shouldReceive('findByCredentials')
+            ->with([
+                'email' => $email,
+            ])
+            ->andReturn($user);
+
+        $sentinel = Mockery::mock(Sentinel::class);
+
+        $sentinel
+            ->shouldReceive('getRoleRepository')
+            ->andReturn($roleRepository);
+
+        $sentinel
+            ->shouldReceive('getUserRepository')
+            ->andReturn($userRepository);
+
+        $accountManagement = new SentinelAccountManagement($sentinel);
+
+        $accountManagement->demoteFrom(
+            $email,
+            $roleName
+        );
     }
 }
