@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class ReviewerDemoteCommand extends Command
+final class UserDemoteCommand extends Command
 {
     /**
      * @var Services\AccountManagement
@@ -30,7 +30,7 @@ final class ReviewerDemoteCommand extends Command
 
     public function __construct(Services\AccountManagement $accountManagement)
     {
-        parent::__construct('reviewer:demote');
+        parent::__construct('user:demote');
 
         $this->accountManagement = $accountManagement;
     }
@@ -38,25 +38,25 @@ final class ReviewerDemoteCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Demote an existing user from reviewer')
+            ->setDescription('Demote an existing user from a role')
             ->setDefinition([
-                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user to demote from reviewer'),
+                new InputArgument('email', InputArgument::REQUIRED, 'Email address of user'),
+                new InputArgument('role-name', InputArgument::REQUIRED, 'Name of role user should be demoted from'),
             ])
             ->setHelp(
                 <<<EOF
-The <info>%command.name%</info> command demotes a user from the reviewer group for a given environment:
+The <info>%command.name%</info> command demotes a user from a role group for a given environment:
 
-<info>php %command.full_name% speaker@opencfp.org --env=production</info>
-<info>php %command.full_name% speaker@opencfp.org --env=development</info>
+<info>php %command.full_name% <email> <role-name> --env=production</info>
+<info>php %command.full_name% <email> <role-name> --env=development</info>
 EOF
             );
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $email = $input->getArgument('email');
-
-        $roleName = 'Reviewer';
+        $email    = $input->getArgument('email');
+        $roleName = $input->getArgument('role-name');
 
         $io = new SymfonyStyle(
             $input,
@@ -88,7 +88,7 @@ EOF
         );
 
         $io->success(\sprintf(
-            'Removed account with email "%s" from the "%s" group',
+            'Removed account with email "%s" from the "%s" group.',
             $email,
             $roleName
         ));
