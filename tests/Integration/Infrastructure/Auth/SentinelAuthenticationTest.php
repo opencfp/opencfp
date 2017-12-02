@@ -31,7 +31,7 @@ class SentinelAuthenticationTest extends BaseTestCase
      */
     private $sut;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $sentinel = (new Sentinel())->getSentinel();
