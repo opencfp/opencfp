@@ -50,7 +50,7 @@ interface Authentication
      *
      * @return bool
      */
-    public function check(): bool;
+    public function isAuthenticated(): bool;
 
     /**
      * Determine whether the user is a non-authenticated guest.

@@ -47,7 +47,7 @@ class SentinelAuthenticationTest extends BaseTestCase
     public function existing_user_can_authenticate()
     {
         $this->sut->authenticate('test@example.com', 'secret');
-        $this->assertTrue($this->sut->check());
+        $this->assertTrue($this->sut->isAuthenticated());
 
         $user = $this->sut->user();
 
@@ -86,9 +86,9 @@ class SentinelAuthenticationTest extends BaseTestCase
      */
     public function checkWorks()
     {
-        $this->assertFalse($this->sut->check());
+        $this->assertFalse($this->sut->isAuthenticated());
         $this->sut->authenticate('test@example.com', 'secret');
-        $this->assertTrue($this->sut->check());
+        $this->assertTrue($this->sut->isAuthenticated());
     }
 
     /**

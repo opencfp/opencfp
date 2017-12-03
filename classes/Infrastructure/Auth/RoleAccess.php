@@ -29,7 +29,7 @@ class RoleAccess implements UserAccess
      */
     public static function userHasAccess(Authentication $auth, string $role = 'admin')
     {
-        if (!$auth->check()) {
+        if (!$auth->isAuthenticated()) {
             return new RedirectResponse('/dashboard');
         }
 

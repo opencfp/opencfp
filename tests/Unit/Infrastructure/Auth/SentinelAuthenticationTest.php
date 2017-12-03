@@ -134,7 +134,7 @@ class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $account  = Mockery::mock(AccountManagement::class);
         $sentinel->shouldReceive('check')->andReturn($user);
         $auth    = new SentinelAuthentication($sentinel, $account);
-        $this->assertTrue($auth->check());
+        $this->assertTrue($auth->isAuthenticated());
     }
 
     public function testCheckReturnsFalseWhenNotLoggedIn()
@@ -143,7 +143,7 @@ class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $account  = Mockery::mock(AccountManagement::class);
         $sentinel->shouldReceive('check')->andReturn(false);
         $auth    = new SentinelAuthentication($sentinel, $account);
-        $this->assertFalse($auth->check());
+        $this->assertFalse($auth->isAuthenticated());
     }
 
     public function testGuestReturnsTheOppositeOfCheck()
