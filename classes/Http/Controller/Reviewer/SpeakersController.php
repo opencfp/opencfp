@@ -21,13 +21,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakersController extends BaseController
 {
-    public function indexAction(Request $req)
+    public function indexAction(Request $request)
     {
-        $search   = $req->get('search');
+        $search   = $request->get('search');
         $speakers = User::search($search)->get()->toArray();
         // Set up our page stuff
         $pagerfanta = new Pagination($speakers);
-        $pagerfanta->setCurrentPage($req->get('page'));
+        $pagerfanta->setCurrentPage($request->get('page'));
         $pagination = $pagerfanta->createView('/reviewer/speakers?');
 
         $templateData = [
@@ -40,9 +40,9 @@ class SpeakersController extends BaseController
         return $this->render('reviewer/speaker/index.twig', $templateData);
     }
 
-    public function viewAction(Request $req)
+    public function viewAction(Request $request)
     {
-        $speakerDetails = User::where('id', $req->get('id'))->first();
+        $speakerDetails = User::where('id', $request->get('id'))->first();
 
         if (!$speakerDetails instanceof User) {
             $this->service('session')->set('flash', [
@@ -59,7 +59,7 @@ class SpeakersController extends BaseController
             'speaker'    => new SpeakerProfile($speakerDetails, $this->app->config('reviewer.users') ?: []),
             'talks'      => $talks,
             'photo_path' => '/uploads/',
-            'page'       => $req->get('page'),
+            'page'       => $request->get('page'),
         ];
 
         return $this->render('reviewer/speaker/view.twig', $templateData);

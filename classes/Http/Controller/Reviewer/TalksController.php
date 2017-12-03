@@ -23,46 +23,46 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends BaseController
 {
-    public function indexAction(Request $req)
+    public function indexAction(Request $request)
     {
         $reviewerId = $this->service(Authentication::class)->userId();
 
         $options = [
-            'order_by' => $req->get('order_by'),
-            'sort'     => $req->get('sort'),
+            'order_by' => $request->get('order_by'),
+            'sort'     => $request->get('sort'),
         ];
 
         $formattedTalks = $this->service(TalkFilter::class)->getTalks(
             $reviewerId,
-            $req->get('filter'),
+            $request->get('filter'),
             $options
         );
 
-        $perPage    = (int) $req->get('per_page') ?: 20;
+        $perPage    = (int) $request->get('per_page') ?: 20;
         $pagerfanta = new Pagination($formattedTalks, $perPage);
-        $pagerfanta->setCurrentPage($req->get('page'));
-        $pagination = $pagerfanta->createView('/reviewer/talks?', $req->query->all());
+        $pagerfanta->setCurrentPage($request->get('page'));
+        $pagination = $pagerfanta->createView('/reviewer/talks?', $request->query->all());
 
         $templateData = [
             'pagination'   => $pagination,
             'talks'        => $pagerfanta->getFanta(),
             'page'         => $pagerfanta->getCurrentPage(),
-            'current_page' => $req->getRequestUri(),
+            'current_page' => $request->getRequestUri(),
             'totalRecords' => \count($formattedTalks),
-            'filter'       => $req->get('filter'),
+            'filter'       => $request->get('filter'),
             'per_page'     => $perPage,
-            'sort'         => $req->get('sort'),
-            'order_by'     => $req->get('order_by'),
+            'sort'         => $request->get('sort'),
+            'order_by'     => $request->get('order_by'),
         ];
 
         return $this->render('reviewer/talks/index.twig', $templateData);
     }
 
-    public function viewAction(Request $req)
+    public function viewAction(Request $request)
     {
         /** @var TalkHandler $handler */
         $handler = $this->service(TalkHandler::class)
-            ->grabTalk((int) $req->get('id'));
+            ->grabTalk((int) $request->get('id'));
 
         if (!$handler->view()) {
             $this->service('session')->set('flash', [
@@ -77,7 +77,7 @@ class TalksController extends BaseController
         return $this->render('reviewer/talks/view.twig', ['talk' => $handler->getProfile()]);
     }
 
-    public function rateAction(Request $req)
+    public function rateAction(Request $request)
     {
         try {
             $this->validate([
@@ -85,8 +85,8 @@ class TalksController extends BaseController
             ]);
 
             return $this->service(TalkHandler::class)
-                ->grabTalk((int) $req->get('id'))
-                ->rate((int) $req->get('rating'));
+                ->grabTalk((int) $request->get('id'))
+                ->rate((int) $request->get('rating'));
         } catch (ValidationException $e) {
             return false;
         }

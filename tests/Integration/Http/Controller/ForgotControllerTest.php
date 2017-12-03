@@ -83,10 +83,10 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $formFactory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
         $this->app['form.factory'] = $formFactory;
 
-        $req        = m::mock(\Symfony\Component\HttpFoundation\Request::class);
-        $controller = new \OpenCFP\Http\Controller\ForgotController();
+        $request        = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $controller     = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
-        $controller->sendResetAction($req);
+        $controller->sendResetAction($request);
 
         // As long as the email validates as being a potential email, the flash message should indicate success
         $flashMessage = $this->app['session']->get('flash');
@@ -105,10 +105,10 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $formFactory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('not valid'));
         $this->app['form.factory'] = $formFactory;
 
-        $req        = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $request    = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
-        $controller->sendResetAction($req);
+        $controller->sendResetAction($request);
 
         $flashMessage = $this->app['session']->get('flash');
         $this->assertContains(
@@ -126,10 +126,10 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $formFactory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
         $this->app['form.factory'] = $formFactory;
 
-        $req        = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $request    = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
-        $controller->sendResetAction($req);
+        $controller->sendResetAction($request);
 
         $flashMessage = $this->app['session']->get('flash');
         $this->assertContains(
@@ -158,10 +158,10 @@ class ForgotControllerTest extends \PHPUnit\Framework\TestCase
         $formFactory->shouldReceive('createBuilder->getForm')->andReturn($this->createForm('valid'));
         $this->app['form.factory'] = $formFactory;
 
-        $req        = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $request    = m::mock(\Symfony\Component\HttpFoundation\Request::class);
         $controller = new \OpenCFP\Http\Controller\ForgotController();
         $controller->setApplication($this->app);
-        $controller->sendResetAction($req);
+        $controller->sendResetAction($request);
 
         // As long as the email validates as being a potential email, the flash message should indicate success
         $flashMessage = $this->app['session']->get('flash');
