@@ -1,20 +1,20 @@
 #!/usr/bin/env php
 <?php
 
-set_time_limit(0);
+\set_time_limit(0);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use OpenCFP\Environment;
-use OpenCFP\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
 use OpenCFP\Application as ApplicationContainer;
+use OpenCFP\Console\Application;
 use OpenCFP\Console\Command;
 use OpenCFP\Domain\Services;
+use OpenCFP\Environment;
+use Symfony\Component\Console\Input\ArgvInput;
 
-$basePath = realpath(dirname(__DIR__));
-$input = new ArgvInput();
-$environment = $input->getParameterOption(array('--env'), getenv('CFP_ENV') ?: 'development');
+$basePath    = \realpath(\dirname(__DIR__));
+$input       = new ArgvInput();
+$environment = $input->getParameterOption(['--env'], \getenv('CFP_ENV') ?: 'development');
 
 $container = new ApplicationContainer($basePath, Environment::fromString($environment));
 
