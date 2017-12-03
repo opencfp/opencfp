@@ -21,9 +21,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SpeakerAccess
  */
-class SpeakerAccessTest extends \PHPUnit\Framework\TestCase
+final class SpeakerAccessTest extends \PHPUnit\Framework\TestCase
 {
-    public function testReturnsRedirectIfCheckFailed()
+    public function testReturnsRedirectResponseIfCheckFailed()
     {
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(false);
@@ -31,7 +31,7 @@ class SpeakerAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(RedirectResponse::class, SpeakerAccess::userHasAccess($auth));
     }
 
-    public function testReturnsNothingIfUserIsLoggedIn()
+    public function testReturnsNothingIfCheckSucceeded()
     {
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);

@@ -14,76 +14,56 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\RoleAccess
  */
-class RoleAccessTest extends \PHPUnit\Framework\TestCase
+final class RoleAccessTest extends \PHPUnit\Framework\TestCase
 {
-    use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+    use GeneratorTrait;
+    use MockeryPHPUnitIntegration;
 
-    public function testReturnsRedirectIfCheckFailed()
+    public function testReturnsRedirectResponseIfCheckFailed()
     {
+        $role = $this->getFaker()->word;
+
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(false);
 
-        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, 'admin'));
+        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, $role));
     }
 
-    public function testReturnsFalseIfCheckSucceededButUserHasNoAdminPermission()
+    public function testReturnsRedirectResponseIfCheckSucceededButUserHasAccess()
     {
+        $role = $this->getFaker()->word;
+
         $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
+        $user->shouldReceive('hasAccess')->with($role)->andReturn(false);
 
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
 
-        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, 'admin'));
+        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, $role));
     }
 
-    public function testReturnsNothingIfCheckSucceededAndUserHasAdminPermission()
+    public function testReturnsNothingIfCheckSucceededAndUserHasAccess()
     {
+        $role = $this->getFaker()->word;
+
         $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
+        $user->shouldReceive('hasAccess')->with($role)->andReturn(true);
 
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
 
-        //The middleware doesn't do anything if the user is an admin, so it returns null (void)
-        $this->assertNull(RoleAccess::userHasAccess($auth, 'admin'));
-    }
-
-    public function testReviewerCantGetToAdminPages()
-    {
-        $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(true);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-
-        $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-
-        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, 'admin'));
-        $this->assertNull(RoleAccess::userHasAccess($auth, 'reviewer'));
-    }
-
-    public function testAdminCantGetToReviewerPage()
-    {
-        $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
-        $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
-
-        $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-
-        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, 'reviewer'));
-        $this->assertNull(RoleAccess::userHasAccess($auth, 'admin'));
+        $this->assertNull(RoleAccess::userHasAccess($auth, $role));
     }
 }
