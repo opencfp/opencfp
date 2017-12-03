@@ -34,7 +34,7 @@ final class RoleAccessTest extends \PHPUnit\Framework\TestCase
         $role = $this->getFaker()->word;
 
         $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(false);
+        $auth->shouldReceive('isAuthenticated')->andReturn(false);
 
         $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, $role));
     }
@@ -47,7 +47,7 @@ final class RoleAccessTest extends \PHPUnit\Framework\TestCase
         $user->shouldReceive('hasAccess')->with($role)->andReturn(false);
 
         $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('isAuthenticated')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
 
         $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, $role));
@@ -61,7 +61,7 @@ final class RoleAccessTest extends \PHPUnit\Framework\TestCase
         $user->shouldReceive('hasAccess')->with($role)->andReturn(true);
 
         $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('isAuthenticated')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
 
         $this->assertNull(RoleAccess::userHasAccess($auth, $role));

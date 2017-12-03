@@ -26,7 +26,7 @@ final class SpeakerAccessTest extends \PHPUnit\Framework\TestCase
     public function testReturnsRedirectResponseIfCheckFailed()
     {
         $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(false);
+        $auth->shouldReceive('isAuthenticated')->andReturn(false);
 
         $this->assertInstanceOf(RedirectResponse::class, SpeakerAccess::userHasAccess($auth));
     }
@@ -34,7 +34,7 @@ final class SpeakerAccessTest extends \PHPUnit\Framework\TestCase
     public function testReturnsNothingIfCheckSucceeded()
     {
         $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('isAuthenticated')->andReturn(true);
 
         $this->assertNull(SpeakerAccess::userHasAccess($auth));
     }

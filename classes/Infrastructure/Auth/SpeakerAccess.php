@@ -29,7 +29,7 @@ class SpeakerAccess implements UserAccess
      */
     public static function userHasAccess(Authentication $auth, string $role = '')
     {
-        if (!$auth->check()) {
+        if (!$auth->isAuthenticated()) {
             return new RedirectResponse('/dashboard');
         }
     }

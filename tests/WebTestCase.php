@@ -175,7 +175,7 @@ abstract class WebTestCase extends BaseTestCase
         $user->shouldReceive('getLogin')->andReturn('my@email.com');
 
         $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('isAuthenticated')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
         $auth->shouldReceive('userId')->andReturn($id);
         $this->swap(Authentication::class, $auth);
@@ -194,7 +194,7 @@ abstract class WebTestCase extends BaseTestCase
         $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
         $auth = Mockery::mock(Authentication::class);
 
-        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('isAuthenticated')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
         $auth->shouldReceive('userId')->andReturn($id);
         $this->swap(Authentication::class, $auth);
@@ -213,7 +213,7 @@ abstract class WebTestCase extends BaseTestCase
         $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(true);
 
         $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('isAuthenticated')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
         $auth->shouldReceive('userId')->andReturn($id);
         $this->swap(Authentication::class, $auth);

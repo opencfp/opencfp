@@ -25,7 +25,7 @@ class SignupController extends BaseController
     {
         $auth = $this->service(Authentication::class);
 
-        if ($auth->check()) {
+        if ($auth->isAuthenticated()) {
             return $this->redirectTo('dashboard');
         }
 

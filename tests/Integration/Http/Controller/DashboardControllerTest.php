@@ -43,7 +43,7 @@ class DashboardControllerTest extends WebTestCase
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
 
         $auth = m::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('isAuthenticated')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
         $this->swap(Authentication::class, $auth);
 
@@ -86,7 +86,7 @@ class DashboardControllerTest extends WebTestCase
         $user->shouldReceive('id')->andReturn(1);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
         $auth = m::mock(Authentication::class);
-        $auth->shouldReceive('check')->andReturn(true);
+        $auth->shouldReceive('isAuthenticated')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
         $this->swap(Authentication::class, $auth);
         $this->swap('user', $user);

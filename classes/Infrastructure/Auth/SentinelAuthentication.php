@@ -90,7 +90,7 @@ final class SentinelAuthentication implements Authentication
     /**
      * Determines whether or not the user is logged in.
      */
-    public function check(): bool
+    public function isAuthenticated(): bool
     {
         return $this->sentinel->check() !== false;
     }
