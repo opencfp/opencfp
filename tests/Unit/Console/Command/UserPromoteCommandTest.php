@@ -92,8 +92,11 @@ final class UserPromoteCommandTest extends Framework\TestCase
 
         $accountManagement
             ->expects($this->once())
-            ->method('findByLogin')
-            ->with($this->identicalTo($email))
+            ->method('promoteTo')
+            ->with(
+                $this->identicalTo($email),
+                $this->identicalTo($roleName)
+            )
             ->willThrowException(new Auth\UserNotFoundException());
 
         $command = new UserPromoteCommand($accountManagement);
@@ -130,18 +133,10 @@ final class UserPromoteCommandTest extends Framework\TestCase
         $email    = $faker->email;
         $roleName = $faker->word;
 
-        $user = $this->createUserMock();
-
         $accountManagement = $this->createAccountManagementMock();
 
         $accountManagement
-            ->expects($this->at(0))
-            ->method('findByLogin')
-            ->with($this->identicalTo($email))
-            ->willReturn($user);
-
-        $accountManagement
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('promoteTo')
             ->with(
                 $this->identicalTo($email),
@@ -182,13 +177,5 @@ final class UserPromoteCommandTest extends Framework\TestCase
     private function createAccountManagementMock(): Services\AccountManagement
     {
         return $this->createMock(Services\AccountManagement::class);
-    }
-
-    /**
-     * @return Auth\UserInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function createUserMock(): Auth\UserInterface
-    {
-        return $this->createMock(Auth\UserInterface::class);
     }
 }

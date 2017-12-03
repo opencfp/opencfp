@@ -72,7 +72,10 @@ EOF
         ));
         
         try {
-            $this->accountManagement->findByLogin($email);
+            $this->accountManagement->promoteTo(
+                $email,
+                $roleName
+            );
         } catch (Auth\UserNotFoundException $exception) {
             $io->error(\sprintf(
                 'Could not find account with email "%s".',
@@ -81,11 +84,6 @@ EOF
 
             return 1;
         }
-
-        $this->accountManagement->promoteTo(
-            $email,
-            $roleName
-        );
 
         $io->success(\sprintf(
             'Added account with email "%s" to the "%s" group.',
