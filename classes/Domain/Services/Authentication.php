@@ -53,13 +53,6 @@ interface Authentication
     public function isAuthenticated(): bool;
 
     /**
-     * Determine whether the user is a non-authenticated guest.
-     *
-     * @return bool
-     */
-    public function guest(): bool;
-
-    /**
      * Destroys the user's active authenticated session.
      */
     public function logout();
