@@ -127,7 +127,9 @@ class SentinelAccountManagementTest extends BaseTestCase
         $user = $this->sut->findByLogin('test@example.com')->getUser();
         //Check there are no records of activation for the user;
         $this->assertFalse($this->sentinel->getActivationRepository()->exists($user));
-        $this->assertTrue($this->sut->activate('test@example.com'));
+
+        $this->sut->activate('test@example.com');
+        
         //Check we completed activation
         $this->assertTrue($this->sentinel->getActivationRepository()->completed($user)->completed);
     }

@@ -74,19 +74,12 @@ final class SentinelAccountManagement implements AccountManagement
         throw new UserExistsException();
     }
 
-    /**
-     * @param string $email
-     *
-     * @throws UserNotFoundException
-     *
-     * @return bool
-     */
-    public function activate(string $email): bool
+    public function activate(string $email)
     {
         $user           = $this->findByLogin($email)->getUser();
         $activationCode = $this->sentinel->getActivationRepository()->create($user)->getCode();
 
-        return $this->sentinel->getActivationRepository()->complete($user, $activationCode);
+        $this->sentinel->getActivationRepository()->complete($user, $activationCode);
     }
 
     public function promoteTo(string $email, string $role)
