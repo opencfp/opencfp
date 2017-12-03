@@ -91,7 +91,7 @@ class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $sentinel = Mockery::mock(Sentinel::class);
         $sentinel->shouldReceive('login')->andReturn(true);
         $account  = Mockery::mock(AccountManagement::class);
-        $account->shouldReceive('findbyLogin')->andReturn($user);
+        $account->shouldReceive('findByLogin')->andReturn($user);
         $auth = new SentinelAuthentication($sentinel, $account);
         $auth->authenticate('mail', 'pass');
     }
