@@ -23,6 +23,15 @@ class GeneratorTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 
+    public function testGetFakerIsFinal()
+    {
+        $reflection = new \ReflectionClass(GeneratorTrait::class);
+
+        $method = $reflection->getMethod('getFaker');
+
+        $this->assertTrue($method->isFinal());
+    }
+
     public function testGetFakerReturnsFaker()
     {
         $faker = $this->getFaker();
