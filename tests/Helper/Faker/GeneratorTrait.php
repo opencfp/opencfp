@@ -18,7 +18,7 @@ use Faker\Generator;
 
 trait GeneratorTrait
 {
-    protected function getFaker(): Generator
+    final protected function getFaker(): Generator
     {
         static $faker;
 
