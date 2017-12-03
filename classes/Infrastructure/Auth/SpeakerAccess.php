@@ -28,7 +28,7 @@ class SpeakerAccess implements UserAccess
      *
      * @return RedirectResponse|void
      */
-    public static function userHasAccess(Application $app, $role = '')
+    public static function userHasAccess(Application $app, string $role = '')
     {
         /** @var Authentication $auth */
         $auth = $app[Authentication::class];

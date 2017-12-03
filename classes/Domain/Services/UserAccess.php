@@ -26,5 +26,5 @@ interface UserAccess
      *
      * @return RedirectResponse|void
      */
-    public static function userHasAccess(Application $app, $role = '');
+    public static function userHasAccess(Application $app, string $role = '');
 }
