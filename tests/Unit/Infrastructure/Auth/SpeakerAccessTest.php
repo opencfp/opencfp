@@ -16,33 +16,26 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 use Mockery;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
-use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SpeakerAccess
  */
-class SpeakerAccessTest extends WebTestCase
+final class SpeakerAccessTest extends \PHPUnit\Framework\TestCase
 {
-    public function testReturnsRedirectIfCheckFailed()
+    public function testReturnsRedirectResponseIfCheckFailed()
     {
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(false);
-        $this->swap(Authentication::class, $auth);
-        $this->assertInstanceOf(RedirectResponse::class, SpeakerAccess::userHasAccess($this->app));
+
+        $this->assertInstanceOf(RedirectResponse::class, SpeakerAccess::userHasAccess($auth));
     }
 
-    public function testReturnsNothingIfUserIsLoggedIn()
+    public function testReturnsNothingIfCheckSucceeded()
     {
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
-        $this->swap(Authentication::class, $auth);
-        $this->assertNull(SpeakerAccess::userHasAccess($this->app));
-    }
 
-    public function testAnAdminHasAccessToSpeakerPages()
-    {
-        $this->asAdmin();
-        $this->assertNull(SpeakerAccess::userHasAccess($this->app));
+        $this->assertNull(SpeakerAccess::userHasAccess($auth));
     }
 }

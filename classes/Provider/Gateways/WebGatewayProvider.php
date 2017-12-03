@@ -70,7 +70,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         }
 
         $asSpeaker = function () use ($app) {
-            return SpeakerAccess::userHasAccess($app);
+            return SpeakerAccess::userHasAccess($app[Authentication::class]);
         };
 
         $csrfChecker = function (Request $request) use ($app) {
@@ -149,7 +149,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         /** @var ControllerCollection $admin */
         $admin = $app['controllers_factory'];
         $admin->before(function () use ($app) {
-            return RoleAccess::userHasAccess($app, 'admin');
+            return RoleAccess::userHasAccess($app[Authentication::class], 'admin');
         });
 
         // Admin Routes
@@ -196,7 +196,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         /** @var ControllerCollection $reviewer */
         $reviewer = $app['controllers_factory'];
         $reviewer->before(function () use ($app) {
-            return RoleAccess::userHasAccess($app, 'reviewer');
+            return RoleAccess::userHasAccess($app[Authentication::class], 'reviewer');
         });
 
         //Reviewer Routes

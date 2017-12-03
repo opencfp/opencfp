@@ -14,64 +14,56 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\UserInterface;
-use OpenCFP\Test\WebTestCase;
+use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\RoleAccess
  */
-class RoleAccessTest extends WebTestCase
+final class RoleAccessTest extends \PHPUnit\Framework\TestCase
 {
-    public function testReturnsRedirectIfCheckFailed()
+    use GeneratorTrait;
+    use MockeryPHPUnitIntegration;
+
+    public function testReturnsRedirectResponseIfCheckFailed()
     {
+        $role = $this->getFaker()->word;
+
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(false);
-        $this->swap(Authentication::class, $auth);
 
-        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($this->app, 'admin'));
+        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, $role));
     }
 
-    public function testReturnsFalseIfCheckSucceededButUserHasNoAdminPermission()
+    public function testReturnsRedirectResponseIfCheckSucceededButUserHasAccess()
     {
+        $role = $this->getFaker()->word;
+
         $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
+        $user->shouldReceive('hasAccess')->with($role)->andReturn(false);
 
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
-        $this->swap(Authentication::class, $auth);
 
-        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($this->app, 'admin'));
+        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, $role));
     }
 
-    public function testReturnsNothingIfCheckSucceededAndUserHasAdminPermission()
+    public function testReturnsNothingIfCheckSucceededAndUserHasAccess()
     {
+        $role = $this->getFaker()->word;
+
         $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
+        $user->shouldReceive('hasAccess')->with($role)->andReturn(true);
 
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('check')->andReturn(true);
         $auth->shouldReceive('user')->andReturn($user);
-        $this->swap(Authentication::class, $auth);
 
-        //The middleware doesn't do anything if the user is an admin, so it returns null (void)
-        $this->assertNull(RoleAccess::userHasAccess($this->app, 'admin'));
-    }
-
-    public function testReviewerCantGetToAdminPages()
-    {
-        $this->asReviewer();
-        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($this->app, 'admin'));
-        $this->assertNull(RoleAccess::userHasAccess($this->app, 'reviewer'));
-    }
-
-    public function testAdminCantGetToReviewerPage()
-    {
-        $this->asAdmin();
-        $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($this->app, 'reviewer'));
-        $this->assertNull(RoleAccess::userHasAccess($this->app, 'admin'));
+        $this->assertNull(RoleAccess::userHasAccess($auth, $role));
     }
 }

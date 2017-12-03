@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Services;
 
-use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 interface UserAccess
@@ -21,10 +20,10 @@ interface UserAccess
     /**
      * If a user doesn't have access to a page they get redirected, otherwise nothing happens
      *
-     * @param Application $app
-     * @param string      $role Role to check against
+     * @param Authentication $auth
+     * @param string         $role Role to check against
      *
      * @return RedirectResponse|void
      */
-    public static function userHasAccess(Application $app, string $role = '');
+    public static function userHasAccess(Authentication $auth, string $role = '');
 }
