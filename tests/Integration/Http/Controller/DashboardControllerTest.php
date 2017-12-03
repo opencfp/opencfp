@@ -17,7 +17,6 @@ use Mockery as m;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Infrastructure\Auth\UserInterface;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use OpenCFP\Test\WebTestCase;
 
 /**
@@ -26,8 +25,6 @@ use OpenCFP\Test\WebTestCase;
  */
 class DashboardControllerTest extends WebTestCase
 {
-    use GeneratorTrait;
-
     /**
      * Test that the index page returns a list of talks associated
      * with a specific user and information about that user as well
