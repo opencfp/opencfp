@@ -169,7 +169,7 @@ final class UserPromoteCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfPromoteToThrowsGenericException()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $email    = $faker->email;
         $roleName = $faker->word;
