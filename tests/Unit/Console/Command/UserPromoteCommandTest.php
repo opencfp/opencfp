@@ -171,6 +171,51 @@ final class UserPromoteCommandTest extends Framework\TestCase
         $this->assertContains($failureMessage, $commandTester->getDisplay());
     }
 
+    public function testExecuteFailsIfPromoteToThrowsGenericException()
+    {
+        $faker = $this->getFaker();
+
+        $email    = $faker->email;
+        $roleName = $faker->word;
+
+        $accountManagement = $this->createAccountManagementMock();
+
+        $accountManagement
+            ->expects($this->once())
+            ->method('promoteTo')
+            ->with(
+                $this->identicalTo($email),
+                $this->identicalTo($roleName)
+            )
+            ->willThrowException(new \Exception());
+
+        $command = new UserPromoteCommand($accountManagement);
+
+        $commandTester = new Console\Tester\CommandTester($command);
+
+        $commandTester->execute([
+            'email'     => $email,
+            'role-name' => $roleName,
+        ]);
+
+        $this->assertSame(1, $commandTester->getStatusCode());
+
+        $sectionMessage = \sprintf(
+            'Promoting account with email "%s" to "%s"',
+            $email,
+            $roleName
+        );
+
+        $this->assertContains($sectionMessage, $commandTester->getDisplay());
+
+        $failureMessage = \sprintf(
+            'Could not promote account with email "%s".',
+            $email
+        );
+
+        $this->assertContains($failureMessage, $commandTester->getDisplay());
+    }
+
     public function testExecuteSucceedsIfUserAndRoleWereFound()
     {
         $faker = $this->getFaker();
