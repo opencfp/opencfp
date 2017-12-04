@@ -146,16 +146,6 @@ class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($auth->isAuthenticated());
     }
 
-    public function testGuestReturnsTheOppositeOfCheck()
-    {
-        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
-        $sentinel = Mockery::mock(Sentinel::class);
-        $account  = Mockery::mock(AccountManagement::class);
-        $sentinel->shouldReceive('check')->andReturn($user);
-        $auth    = new SentinelAuthentication($sentinel, $account);
-        $this->assertFalse($auth->guest());
-    }
-
     public function testLogoutReturnsBool()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);

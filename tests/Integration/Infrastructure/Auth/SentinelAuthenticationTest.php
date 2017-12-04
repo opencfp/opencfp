@@ -90,14 +90,4 @@ class SentinelAuthenticationTest extends BaseTestCase
         $this->sut->authenticate('test@example.com', 'secret');
         $this->assertTrue($this->sut->isAuthenticated());
     }
-
-    /**
-     * @test
-     */
-    public function guestWorks()
-    {
-        $this->assertTrue($this->sut->guest());
-        $this->sut->authenticate('test@example.com', 'secret');
-        $this->assertFalse($this->sut->guest());
-    }
 }

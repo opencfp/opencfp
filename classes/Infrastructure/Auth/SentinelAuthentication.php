@@ -74,11 +74,6 @@ final class SentinelAuthentication implements Authentication
         return $this->sentinel->check() !== false;
     }
 
-    public function guest(): bool
-    {
-        return !$this->sentinel->check();
-    }
-
     public function logout(): bool
     {
         return $this->sentinel->logout() !== false;
