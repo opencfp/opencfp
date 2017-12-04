@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Services\TalkRating;
 
-final class TalkRatingException extends \RuntimeException
+final class OneToTenRating extends TalkRating
 {
-    public static function invalidRating($rating): self
+    public function isValidRating(int $rating): bool
     {
-        return new self(\sprintf('Invalid talk rating: %s', $rating));
+        return $rating >= 0 && $rating <= 10;
+    }
+
+    public function getRatingName(): string
+    {
+        return 'OneToTen';
     }
 }

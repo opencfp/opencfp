@@ -21,8 +21,7 @@
 
             {% if talk.desired or talk.sponsor %}<span class="mr- border-r border-grey"></span>{% endif %}
 
-            <a href="#" id="talk-upvote-{{ talk.id }}" class="js-talk-rating mr-3" data-id="{{ talk.id }}" data-rating="1" title="I want to see this talk"><i class="fa fa-thumbs-up admin-icon{% if talk.rating == 1 %} text-green-dark{% endif %}"></i></a>
-            <a href="#" id="talk-downvote-{{ talk.id }}" class="js-talk-rating mr-3" data-id="{{ talk.id }}" data-rating="-1" title="I don't want to see this talk"><i class="fa fa-thumbs-down admin-icon{% if talk.rating == -1 %} text-red-dark{% endif %}"></i></a>
+            {% include "ratings/ratingsystem.twig" %}
         </div>
     </div>
 
@@ -66,5 +65,6 @@
 {% endblock %}
 {% block scripts %}
     {{ parent() }}
-    <script src="/assets/js/reviewer/talk.js"></script>
+    <script src="/assets/js/talk/talk.js"></script>
+    <script src="/assets/js/talk/listeners.js"></script>
 {% endblock %}

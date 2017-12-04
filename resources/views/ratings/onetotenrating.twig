@@ -1,0 +1,6 @@
+<select class="js-talk-rating-one-to-ten" id="{{ talk.id }}" data-id="{{ talk.id }}" {% if loop is defined %}tabindex="{{ loop.index }}" {% endif %}>
+    <option {% if talk.rating is empty %} selected="selected" {% endif %} value="0"></option>
+    {% for i in 1 ..10  %}
+    <option {% if talk.rating == i %} selected="selected" {% endif %} value="{{ i }}">{{ i }}</option>
+    {% endfor %}
+</select>

@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Services\TalkRating;
 
-class YesNoRating extends TalkRating
+final class YesNoRating extends TalkRating
 {
     public function isValidRating(int $rating): bool
     {
         return $rating >= -1 && $rating <= 1;
+    }
+
+    public function getRatingName(): string
+    {
+        return 'YesNo';
     }
 }

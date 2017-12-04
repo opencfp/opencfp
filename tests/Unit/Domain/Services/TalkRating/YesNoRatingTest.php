@@ -27,28 +27,60 @@ class YesNoRatingTest extends \PHPUnit\Framework\TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @dataProvider ratingProvider
+     * @dataProvider validRatingProvider
      */
-    public function testValidRatings($rating, $valid)
+    public function testValidRatings(int $rating)
+    {
+        $mockAuth = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
+        $metaMock = Mockery::mock(TalkMeta::class);
+
+        $yesno    = new YesNoRating($metaMock, $mockAuth);
+
+        $this->assertTrue($yesno->isValidRating($rating));
+    }
+
+    /**
+     * @dataProvider invalidRatingProvider
+     */
+    public function testInvalidRatings(int $rating)
+    {
+        $mockAuth = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
+        $metaMock = Mockery::mock(TalkMeta::class);
+
+        $yesno    = new YesNoRating($metaMock, $mockAuth);
+
+        $this->assertFalse($yesno->isValidRating($rating));
+    }
+
+    public function testGetRatingNameReturnsYesNo()
     {
         $mockAuth = Mockery::mock(Authentication::class);
         $mockAuth->shouldReceive('userId');
         $metaMock = Mockery::mock(TalkMeta::class);
+
         $yesno    = new YesNoRating($metaMock, $mockAuth);
-        $this->assertSame($valid, $yesno->isValidRating($rating));
+
+        $this->assertSame('YesNo', $yesno->getRatingName());
     }
 
-    public function ratingProvider(): array
+    public function validRatingProvider(): array
     {
         return [
-            [-1, true],
-            [0, true],
-            [1, true],
-            [2, false],
-            [-2, false],
-            [10, false],
-            [PHP_INT_MAX, false],
-            [-0, true],
+            [-1],
+            [0],
+            [1],
+        ];
+    }
+
+    public function invalidRatingProvider()
+    {
+        return [
+            [2],
+            [-2],
+            [10],
+            [PHP_INT_MAX],
+            [PHP_INT_MIN],
+            [3],
         ];
     }
 }

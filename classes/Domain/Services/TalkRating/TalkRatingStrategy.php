@@ -21,4 +21,9 @@ interface TalkRatingStrategy
      * @throws TalkRatingException
      */
     public function rate(int $talkId, int $rating);
+
+    /**
+     * The name of the rating system, Used in the views to determine what kind of rating system to display
+     */
+    public function getRatingName(): string;
 }

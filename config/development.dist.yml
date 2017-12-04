@@ -16,6 +16,7 @@ application:
   coc_link: http://confcodeofconduct.com/
   show_contrib_banner: true
   venue_image_path: /assets/img/venue.jpg
+  rating_system: YesNo
 
 cache:
   enabled: false

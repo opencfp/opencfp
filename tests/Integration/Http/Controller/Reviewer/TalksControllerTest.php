@@ -76,7 +76,7 @@ class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
         $this->asReviewer()
-            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 1])
+            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => 0])
             ->assertSee('1')
             ->assertSuccessful();
     }

@@ -18,6 +18,7 @@ use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Http\Controller\BaseController;
 
@@ -32,12 +33,16 @@ class DashboardController extends BaseController
         $recentTalks = Talk::recent()->get();
         $recentTalks = $talkFormatter->formatList($recentTalks, $userId);
 
+        /** @var TalkRatingStrategy $talkRatingStrategy */
+        $talkRatingStrategy = $this->service(TalkRatingStrategy::class);
+
         $templateData = [
             'speakerTotal'  => User::count(),
             'talkTotal'     => Talk::count(),
             'favoriteTotal' => Favorite::count(),
             'selectTotal'   => Talk::where('selected', 1)->count(),
             'talks'         => $recentTalks,
+            'ratingSystem'  => $talkRatingStrategy->getRatingName(),
         ];
 
         return $this->render('admin/index.twig', $templateData);
