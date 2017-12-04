@@ -22,6 +22,15 @@ use PHPUnit\Framework;
 final class ProjectCodeTest extends Framework\TestCase
 {
     use Helper;
+
+    public function testProductionClassesHaveUnitTests()
+    {
+        $this->assertClassesHaveTests(
+            __DIR__ . '/../../classes',
+            'OpenCFP\\',
+            'OpenCFP\\Test\\Unit\\'
+        );
+    }
     
     public function testTestClassesAreAbstractOrFinal()
     {
