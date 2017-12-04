@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\UserExistsException
  */
 class UserExistsExceptionTest extends \PHPUnit\Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     public function testItIsTheCorrectTypeOfException()
     {
@@ -33,7 +33,7 @@ class UserExistsExceptionTest extends \PHPUnit\Framework\TestCase
 
     public function testFromEmailReturnsException()
     {
-        $email = $this->getFaker()->email;
+        $email = $this->faker()->email;
 
         $exception = UserExistsException::fromEmail($email);
 

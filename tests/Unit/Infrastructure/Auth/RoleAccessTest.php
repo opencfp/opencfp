@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
+use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\UserInterface;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -26,12 +26,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 final class RoleAccessTest extends \PHPUnit\Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
     use MockeryPHPUnitIntegration;
 
     public function testReturnsRedirectResponseIfCheckFailed()
     {
-        $role = $this->getFaker()->word;
+        $role = $this->faker()->word;
 
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('isAuthenticated')->andReturn(false);
@@ -41,7 +41,7 @@ final class RoleAccessTest extends \PHPUnit\Framework\TestCase
 
     public function testReturnsRedirectResponseIfCheckSucceededButUserHasAccess()
     {
-        $role = $this->getFaker()->word;
+        $role = $this->faker()->word;
 
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('hasAccess')->with($role)->andReturn(false);
@@ -55,7 +55,7 @@ final class RoleAccessTest extends \PHPUnit\Framework\TestCase
 
     public function testReturnsNothingIfCheckSucceededAndUserHasAccess()
     {
-        $role = $this->getFaker()->word;
+        $role = $this->faker()->word;
 
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('hasAccess')->with($role)->andReturn(true);

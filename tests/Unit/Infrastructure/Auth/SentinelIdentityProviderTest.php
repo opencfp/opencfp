@@ -70,7 +70,7 @@ class SentinelIdentityProviderTest extends BaseTestCase
 
     public function testGetCurrentUserReturnsUserWhenAuthenticated()
     {
-        $id = $this->getFaker()->randomNumber();
+        $id = $this->faker()->randomNumber();
 
         $sentinelUser =  $this->getSentinelUserMock();
 

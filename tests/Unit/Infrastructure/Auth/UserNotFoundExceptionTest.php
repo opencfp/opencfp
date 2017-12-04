@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\UserNotFoundException
  */
 class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     public function testIsFinal()
     {
@@ -40,7 +40,7 @@ class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 
     public function testFromEmailReturnsException()
     {
-        $email = $this->getFaker()->email;
+        $email = $this->faker()->email;
 
         $exception = UserNotFoundException::fromEmail($email);
 
@@ -57,7 +57,7 @@ class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 
     public function testFromIdReturnsException()
     {
-        $id = $this->getFaker()->numberBetween(1);
+        $id = $this->faker()->numberBetween(1);
 
         $exception = UserNotFoundException::fromId($id);
 

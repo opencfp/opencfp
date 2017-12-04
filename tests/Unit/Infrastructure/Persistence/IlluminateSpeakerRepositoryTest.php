@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Infrastructure\Persistence;
 
 use Illuminate\Database\Eloquent;
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model;
 use OpenCFP\Domain\Speaker;
 use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use PHPUnit\Framework;
 
 /**
@@ -26,7 +26,7 @@ use PHPUnit\Framework;
  */
 final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     public function testImplementsSpeakerRepository()
     {
@@ -37,7 +37,7 @@ final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
 
     public function testFindByIdThrowsEntityNotFoundExceptionIfUserNotFound()
     {
-        $id = $this->getFaker()->numberBetween(1);
+        $id = $this->faker()->numberBetween(1);
 
         $userModel = $this->createUserMock([
             'findOrFail',
@@ -58,7 +58,7 @@ final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
 
     public function testFindByIdReturnsUserIfUserFound()
     {
-        $id = $this->getFaker()->numberBetween(1);
+        $id = $this->faker()->numberBetween(1);
 
         $user = $this->createUserMock();
 

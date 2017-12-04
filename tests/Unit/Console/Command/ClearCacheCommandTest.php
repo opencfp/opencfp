@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Console\Command;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Console\Command\ClearCacheCommand;
 use OpenCFP\PathInterface;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use org\bovigo\vfs;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
@@ -25,7 +25,7 @@ use Symfony\Component\Console;
  */
 final class ClearCacheCommandTest extends Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     /**
      * @var string
@@ -136,7 +136,7 @@ final class ClearCacheCommandTest extends Framework\TestCase
         $directory = \sprintf(
             '%s/%s',
             $rootDirectory,
-            $this->getFaker()->word
+            $this->faker()->word
         );
 
         \mkdir($directory, 0777, true);
@@ -156,13 +156,13 @@ final class ClearCacheCommandTest extends Framework\TestCase
 
         \file_put_contents(
             $filePath,
-            $this->getFaker()->text
+            $this->faker()->text
         );
     }
 
     private function createFileName(): string
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $withExtension = $faker->boolean;
 

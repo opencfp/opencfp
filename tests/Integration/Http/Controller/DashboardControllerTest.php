@@ -75,7 +75,7 @@ class DashboardControllerTest extends WebTestCase
      */
     public function it_hides_transportation_and_hotel_when_doing_an_online_conference()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $user = m::mock(UserInterface::class);
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);

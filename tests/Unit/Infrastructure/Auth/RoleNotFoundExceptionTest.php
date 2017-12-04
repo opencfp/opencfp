@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Infrastructure\Auth\RoleNotFoundException;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\RoleNotFoundException
  */
 final class RoleNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     public function testIsFinal()
     {
@@ -39,7 +39,7 @@ final class RoleNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 
     public function testFromNameReturnsException()
     {
-        $name = $this->getFaker()->word;
+        $name = $this->faker()->word;
 
         $exception = RoleNotFoundException::fromName($name);
 

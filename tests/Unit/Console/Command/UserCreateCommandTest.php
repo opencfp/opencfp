@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Console\Command;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Console\Command\UserCreateCommand;
 use OpenCFP\Domain\Services;
 use OpenCFP\Infrastructure\Auth;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
 
@@ -25,7 +25,7 @@ use Symfony\Component\Console;
  */
 final class UserCreateCommandTest extends Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     public function testIsFinal()
     {
@@ -153,7 +153,7 @@ final class UserCreateCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfUserExists()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $firstName = $faker->firstName;
         $lastName  = $faker->lastName;
@@ -200,7 +200,7 @@ final class UserCreateCommandTest extends Framework\TestCase
 
     public function testExecuteSucceedsIfUserDoesNotExist()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $firstName = $faker->firstName;
         $lastName  = $faker->lastName;
@@ -262,7 +262,7 @@ final class UserCreateCommandTest extends Framework\TestCase
      */
     public function testExecuteSucceedsIfUserDoesNotExistAndPromotesUser(array $options, array $roles)
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $firstName = $faker->firstName;
         $lastName  = $faker->lastName;
