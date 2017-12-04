@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Console;
 
+use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Console\Application;
@@ -26,13 +27,12 @@ use Symfony\Component\Console;
  */
 class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
+    use Helper;
     use MockeryPHPUnitIntegration;
 
     public function testIsConsoleApplication()
     {
-        $application = new Application(new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing()));
-
-        $this->assertInstanceOf(Console\Application::class, $application);
+        $this->assertClassExtends(Console\Application::class, Application::class);
     }
 
     public function testConstructorSetsName()

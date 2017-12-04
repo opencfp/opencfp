@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Domain;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\EntityNotFoundException;
 use PHPUnit\Framework;
 
@@ -21,10 +22,10 @@ use PHPUnit\Framework;
  */
 final class EntityNotFoundExceptionTest extends Framework\TestCase
 {
+    use Helper;
+
     public function testIsException()
     {
-        $exception = new EntityNotFoundException();
-
-        $this->assertInstanceOf(\Exception::class, $exception);
+        $this->assertClassExtends(\Exception::class, EntityNotFoundException::class);
     }
 }

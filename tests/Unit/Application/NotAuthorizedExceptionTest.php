@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Application;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Application\NotAuthorizedException;
 use PHPUnit\Framework;
 
@@ -21,10 +22,10 @@ use PHPUnit\Framework;
  */
 final class NotAuthorizedExceptionTest extends Framework\TestCase
 {
+    use Helper;
+
     public function testIsException()
     {
-        $exception = new NotAuthorizedException();
-
-        $this->assertInstanceOf(\Exception::class, $exception);
+        $this->assertClassExtends(\Exception::class, NotAuthorizedException::class);
     }
 }

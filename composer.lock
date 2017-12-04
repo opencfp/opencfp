@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5dc5590d2e173aded9dcf18d9a73eea",
+    "content-hash": "352e0fa827307572995a5ae6dc395cac",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -3955,6 +3955,96 @@
                 "unit testing"
             ],
             "time": "2017-11-18T20:47:17+00:00"
+        },
+        {
+            "name": "localheinz/classy",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/localheinz/classy.git",
+                "reference": "8f1413f01a464f88521eac735f0e62b02da9ac67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/localheinz/classy/zipball/8f1413f01a464f88521eac735f0e62b02da9ac67",
+                "reference": "8f1413f01a464f88521eac735f0e62b02da9ac67",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "localheinz/php-cs-fixer-config": "~1.6.2",
+                "localheinz/test-util": "0.2.2",
+                "phpbench/phpbench": "0.13.0",
+                "phpunit/phpunit": "^6.4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Localheinz\\Classy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Möller",
+                    "email": "am@localheinz.com"
+                }
+            ],
+            "description": "Provides a way to collect classy constructs from source or a directory.",
+            "time": "2017-10-24T14:31:40+00:00"
+        },
+        {
+            "name": "localheinz/test-util",
+            "version": "0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/localheinz/test-util.git",
+                "reference": "6c74682f16490fc5b3627a8acf92a956ef4177b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/localheinz/test-util/zipball/6c74682f16490fc5b3627a8acf92a956ef4177b4",
+                "reference": "6c74682f16490fc5b3627a8acf92a956ef4177b4",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "^1.7.1",
+                "localheinz/classy": "0.3.0",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "localheinz/php-cs-fixer-config": "~1.7.0",
+                "phpunit/phpunit": "^6.4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Localheinz\\Test\\Util\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Möller",
+                    "email": "am@localheinz.com"
+                }
+            ],
+            "description": "Provides utilities for tests.",
+            "keywords": [
+                "assertion",
+                "faker",
+                "phpunit",
+                "test"
+            ],
+            "time": "2017-11-04T15:44:48+00:00"
         },
         {
             "name": "mikey179/vfsStream",

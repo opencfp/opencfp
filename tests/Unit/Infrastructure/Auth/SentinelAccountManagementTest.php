@@ -17,6 +17,7 @@ use Cartalyst\Sentinel\Roles;
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users;
 use Illuminate\Support\Collection;
+use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -25,27 +26,23 @@ use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelAccountManagement
  */
 class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
     use MockeryPHPUnitIntegration;
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(SentinelAccountManagement::class);
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(SentinelAccountManagement::class);
     }
 
     public function testInstanceOfAccountManagement()
     {
-        $sentinel = (new \Cartalyst\Sentinel\Native\Facades\Sentinel())->getSentinel();
-        $account  = new SentinelAccountManagement($sentinel);
-        $this->assertInstanceOf(AccountManagement::class, $account);
+        $this->assertClassImplementsInterface(AccountManagement::class, SentinelAccountManagement::class);
     }
 
     public function testFindByIdThrowsCorrectError()
@@ -86,7 +83,7 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 
     public function testFindByRoleThrowsRoleNotFoundExceptionIfRoleWasNotFound()
     {
-        $name = $this->getFaker()->word;
+        $name = $this->faker()->word;
 
         $roleRepository = Mockery::mock(Roles\IlluminateRoleRepository::class);
 
@@ -114,7 +111,7 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 
     public function testFindByRoleReturnsArrayOfUsers()
     {
-        $name = $this->getFaker()->word;
+        $name = $this->faker()->word;
 
         $users = [
             Mockery::mock(Users\UserInterface::class),
@@ -196,7 +193,7 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 
     public function testPromoteToThrowsRoleNotFoundExceptionIfRoleWasNotFound()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $email = $faker->word;
         $name  = $faker->word;
@@ -230,7 +227,7 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 
     public function testPromoteToAttachesUserToUserCollection()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $userId    = $faker->numberBetween(1);
         $email     = $faker->word;
@@ -290,7 +287,7 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 
     public function testDemoteFromThrowsRoleNotFoundExceptionIfRoleWasNotFound()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $email = $faker->word;
         $name  = $faker->word;
@@ -324,7 +321,7 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 
     public function testDemoteFromDetachesUserFromUserCollection()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $userId    = $faker->numberBetween(1);
         $email     = $faker->word;

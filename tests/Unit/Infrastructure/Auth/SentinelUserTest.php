@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
+use Localheinz\Test\Util\Helper;
 use Mockery as m;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 
@@ -22,16 +23,16 @@ use OpenCFP\Infrastructure\Auth\SentinelUser;
  */
 class SentinelUserTest extends \PHPUnit\Framework\TestCase
 {
+    use Helper;
+
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(SentinelUser::class);
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(SentinelUser::class);
     }
 
     public function testWeHaveTheRightUser()
     {
-        $user = new SentinelUser(m::mock(\Cartalyst\Sentinel\Users\UserInterface::class), $this->getSentinel());
-        $this->assertInstanceOf(\OpenCFP\Infrastructure\Auth\UserInterface::class, $user);
+        $this->assertClassImplementsInterface(\OpenCFP\Infrastructure\Auth\UserInterface::class, SentinelUser::class);
     }
 
     public function testGetIdWorks()

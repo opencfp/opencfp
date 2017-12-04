@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Domain\Speaker;
 
 use Illuminate\Support\Collection;
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Model;
 use OpenCFP\Domain\Speaker\NotAllowedException;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use PHPUnit\Framework;
 
 /**
@@ -25,11 +25,11 @@ use PHPUnit\Framework;
  */
 final class SpeakerProfileTest extends Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     public function testIsAllowedToSeeReturnsFalseIfPropertyIsHidden()
     {
-        $property = $this->getFaker()->word;
+        $property = $this->faker()->word;
 
         $hiddenProperties = [
             $property,
@@ -45,7 +45,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testIsAllowedToSeeReturnsTrueIfPropertyIsNotHidden()
     {
-        $property = $this->getFaker()->word;
+        $property = $this->faker()->word;
 
         $profile = new SpeakerProfile($this->createUserMock());
 
@@ -129,7 +129,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testGetNameReturnsNameIfPropertyIsNotHidden()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $firstName = $faker->firstName;
         $lastName  = $faker->lastName;
@@ -167,7 +167,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testGetEmailReturnsEmailIfPropertyIsNotHidden()
     {
-        $email = $this->getFaker()->email;
+        $email = $this->faker()->email;
 
         $speaker = $this->createUserMock([
             'email' => $email,
@@ -195,7 +195,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testGetCompanyReturnsCompanyIfPropertyIsNotHidden()
     {
-        $company = $this->getFaker()->company;
+        $company = $this->faker()->company;
 
         $speaker = $this->createUserMock([
             'company' => $company,
@@ -223,7 +223,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testGetTwitterReturnsTwitterIfPropertyIsNotHidden()
     {
-        $twitter = $this->getFaker()->userName;
+        $twitter = $this->faker()->userName;
 
         $speaker = $this->createUserMock([
             'twitter' => $twitter,
@@ -251,7 +251,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testGetUrlReturnsUrlIfPropertyIsNotHidden()
     {
-        $url = $this->getFaker()->url;
+        $url = $this->faker()->url;
 
         $speaker = $this->createUserMock([
             'url' => $url,
@@ -279,7 +279,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testGetInfoReturnsInfoIfPropertyIsNotHidden()
     {
-        $info = $this->getFaker()->text;
+        $info = $this->faker()->text;
 
         $speaker = $this->createUserMock([
             'info' => $info,
@@ -307,7 +307,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testGetBioReturnsBioIfPropertyIsNotHidden()
     {
-        $bio = $this->getFaker()->text;
+        $bio = $this->faker()->text;
 
         $speaker = $this->createUserMock([
             'bio' => $bio,
@@ -434,7 +434,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testGetAirportReturnsAirportIfPropertyIsNotHidden()
     {
-        $airport = $this->getFaker()->company;
+        $airport = $this->faker()->company;
 
         $speaker = $this->createUserMock([
             'airport' => $airport,
@@ -462,7 +462,7 @@ final class SpeakerProfileTest extends Framework\TestCase
 
     public function testGetPhotoReturnsPhotoIfPropertyIsNotHidden()
     {
-        $photo = $this->getFaker()->url;
+        $photo = $this->faker()->url;
 
         $speaker = $this->createUserMock([
             'photo_path' => $photo,

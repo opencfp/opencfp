@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Domain\Services;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Services\AuthenticationException;
 use PHPUnit\Framework;
 
@@ -21,24 +22,16 @@ use PHPUnit\Framework;
  */
 final class AuthenticationExceptionTest extends Framework\TestCase
 {
+    use Helper;
+
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(AuthenticationException::class);
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(AuthenticationException::class);
     }
-
-    public function testIsException()
-    {
-        $exception = new AuthenticationException();
-
-        $this->assertInstanceOf(\Exception::class, $exception);
-    }
-
+    
     public function testIsRuntimeException()
     {
-        $exception = new AuthenticationException();
-
-        $this->assertInstanceOf(\RuntimeException::class, $exception);
+        $this->assertClassExtends(\RuntimeException::class, AuthenticationException::class);
     }
 
     public function testLoginFailureHasCorrectMessage()

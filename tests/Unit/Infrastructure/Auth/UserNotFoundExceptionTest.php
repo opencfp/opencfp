@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\UserNotFoundException
  */
 class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(UserNotFoundException::class);
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(UserNotFoundException::class);
     }
 
     /**
@@ -34,13 +33,12 @@ class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
      */
     public function isInstanceOfRuntimeException()
     {
-        $exception = new UserNotFoundException();
-        $this->assertInstanceOf(\RuntimeException::class, $exception);
+        $this->assertClassExtends(\RuntimeException::class, UserNotFoundException::class);
     }
 
     public function testFromEmailReturnsException()
     {
-        $email = $this->getFaker()->email;
+        $email = $this->faker()->email;
 
         $exception = UserNotFoundException::fromEmail($email);
 
@@ -57,7 +55,7 @@ class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 
     public function testFromIdReturnsException()
     {
-        $id = $this->getFaker()->numberBetween(1);
+        $id = $this->faker()->numberBetween(1);
 
         $exception = UserNotFoundException::fromId($id);
 

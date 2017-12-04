@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Domain\Services;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use PHPUnit\Framework;
 
@@ -21,10 +22,10 @@ use PHPUnit\Framework;
  */
 final class NotAuthenticatedExceptionTest extends Framework\TestCase
 {
+    use Helper;
+
     public function testIsException()
     {
-        $exception = new NotAuthenticatedException();
-
-        $this->assertInstanceOf(\Exception::class, $exception);
+        $this->assertClassExtends(\Exception::class, NotAuthenticatedException::class);
     }
 }

@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test;
 
+use Localheinz\Test\Util\Helper;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 use OpenCFP\Test\Helper\DataBaseInteraction;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
 abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
     use MockeryPHPUnitIntegration;
 
     /**

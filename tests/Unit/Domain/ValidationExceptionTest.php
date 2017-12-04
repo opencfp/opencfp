@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Domain;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\ValidationException;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use PHPUnit\Framework;
 
 /**
@@ -22,18 +22,16 @@ use PHPUnit\Framework;
  */
 final class ValidationExceptionTest extends Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     public function testIsException()
     {
-        $exception = new ValidationException();
-
-        $this->assertInstanceOf(\Exception::class, $exception);
+        $this->assertClassExtends(\Exception::class, ValidationException::class);
     }
 
     public function testWithErrorsReturnsException()
     {
-        $errors = $this->getFaker()->sentences;
+        $errors = $this->faker()->sentences;
 
         $exception = ValidationException::withErrors($errors);
 

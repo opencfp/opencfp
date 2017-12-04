@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Http\Form;
 
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
+use Localheinz\Test\Util\Helper;
 
 /**
  * @covers \OpenCFP\Http\Form\TalkForm
  */
 class TalkFormTest extends \PHPUnit\Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     private $purifier;
 
@@ -166,7 +166,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      */
     public function titleValidatesProvider(): array
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         return [
             [\substr($faker->text(90), 0, 90), true],
@@ -208,7 +208,7 @@ class TalkFormTest extends \PHPUnit\Framework\TestCase
      */
     public function descriptionValidatesProvider(): array
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         return [
             [$faker->text(), true],

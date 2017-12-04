@@ -28,21 +28,12 @@ class SentinelIdentityProviderTest extends BaseTestCase
 {
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(SentinelIdentityProvider::class);
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(SentinelIdentityProvider::class);
     }
 
     public function testImplementsIdentityProvider()
     {
-        $sentinel            = $this->getSentinel();
-        $speakerRepository   = $this->getSpeakerRepositoryMock();
-
-        $provider = new SentinelIdentityProvider(
-            $sentinel,
-            $speakerRepository
-        );
-
-        $this->assertInstanceOf(IdentityProvider::class, $provider);
+        $this->assertClassImplementsInterface(IdentityProvider::class, SentinelIdentityProvider::class);
     }
 
     public function testGetCurrentUserThrowsNotAuthenticatedExceptionWhenNotAuthenticated()
@@ -70,7 +61,7 @@ class SentinelIdentityProviderTest extends BaseTestCase
 
     public function testGetCurrentUserReturnsUserWhenAuthenticated()
     {
-        $id = $this->getFaker()->randomNumber();
+        $id = $this->faker()->randomNumber();
 
         $sentinelUser =  $this->getSentinelUserMock();
 

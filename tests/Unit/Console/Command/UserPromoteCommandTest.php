@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Console\Command;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Console\Command\UserPromoteCommand;
 use OpenCFP\Domain\Services;
 use OpenCFP\Infrastructure\Auth;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
 
@@ -25,20 +25,16 @@ use Symfony\Component\Console;
  */
 final class UserPromoteCommandTest extends Framework\TestCase
 {
-    use GeneratorTrait;
+    use Helper;
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(UserPromoteCommand::class);
-
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(UserPromoteCommand::class);
     }
 
     public function testExtendsCommand()
     {
-        $command = new UserPromoteCommand($this->createAccountManagementMock());
-
-        $this->assertInstanceOf(Console\Command\Command::class, $command);
+        $this->assertClassExtends(Console\Command\Command::class, UserPromoteCommand::class);
     }
 
     public function testHasNameAndDescription()
@@ -83,7 +79,7 @@ final class UserPromoteCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfUserWasNotFound()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $email    = $faker->email;
         $roleName = $faker->word;
@@ -128,7 +124,7 @@ final class UserPromoteCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfRoleWasNotFound()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $email    = $faker->email;
         $roleName = $faker->word;
@@ -218,7 +214,7 @@ final class UserPromoteCommandTest extends Framework\TestCase
 
     public function testExecuteSucceedsIfUserAndRoleWereFound()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $email    = $faker->email;
         $roleName = $faker->word;
