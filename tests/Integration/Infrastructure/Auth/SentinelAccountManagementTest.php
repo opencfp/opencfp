@@ -37,7 +37,7 @@ class SentinelAccountManagementTest extends BaseTestCase
      */
     private $sentinel;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->sentinel = (new Sentinel())->getSentinel();
