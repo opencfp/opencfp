@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Infrastructure\Auth;
 
+use Cartalyst\Sentinel\Roles;
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -50,9 +51,15 @@ final class SentinelAccountManagement implements AccountManagement
         throw UserNotFoundException::fromEmail($email);
     }
 
-    public function findByRole(string $role): array
+    public function findByRole(string $name): array
     {
-        return $this->sentinel->getRoleRepository()->findByName($role)->getUsers()->toArray();
+        $role = $this->sentinel->getRoleRepository()->findByName($name);
+
+        if (!$role instanceof Roles\RoleInterface) {
+            throw RoleNotFoundException::fromName($name);
+        }
+
+        return $role->getUsers()->toArray();
     }
 
     public function create(string $email, string $password, array $data = []): UserInterface
@@ -82,20 +89,28 @@ final class SentinelAccountManagement implements AccountManagement
         $this->sentinel->getActivationRepository()->complete($user, $activationCode);
     }
 
-    public function promoteTo(string $email, string $role)
+    public function promoteTo(string $email, string $roleName)
     {
-        $this->sentinel
-            ->getRoleRepository()
-            ->findByName(\strtolower($role))
+        $role = $this->sentinel->getRoleRepository()->findByName(\strtolower($roleName));
+
+        if (!$role instanceof Roles\RoleInterface) {
+            throw RoleNotFoundException::fromName($roleName);
+        }
+
+        $role
             ->users()
             ->attach($this->findByLogin($email)->getId());
     }
 
-    public function demoteFrom(string $email, string $role)
+    public function demoteFrom(string $email, string $roleName)
     {
-        $this->sentinel
-            ->getRoleRepository()
-            ->findByName(\strtolower($role))
+        $role = $this->sentinel->getRoleRepository()->findByName(\strtolower($roleName));
+
+        if (!$role instanceof Roles\RoleInterface) {
+            throw RoleNotFoundException::fromName($roleName);
+        }
+
+        $role
             ->users()
             ->detach($this->findByLogin($email)->getId());
     }

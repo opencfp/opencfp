@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Services;
 
+use OpenCFP\Infrastructure\Auth\RoleNotFoundException;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
@@ -38,11 +39,13 @@ interface AccountManagement
     public function findByLogin(string $email): UserInterface;
 
     /**
-     * @param string $role
+     * @param string $name
+     *
+     * @throws RoleNotFoundException
      *
      * @return UserInterface[]
      */
-    public function findByRole(string $role): array;
+    public function findByRole(string $name): array;
 
     /**
      * @param string $email
@@ -64,17 +67,19 @@ interface AccountManagement
 
     /**
      * @param string $email
-     * @param string $role
+     * @param string $roleName
      *
+     * @throws RoleNotFoundException
      * @throws UserNotFoundException
      */
-    public function promoteTo(string $email, string $role);
+    public function promoteTo(string $email, string $roleName);
 
     /**
      * @param string $email
-     * @param string $role
+     * @param string $roleName
      *
+     * @throws RoleNotFoundException
      * @throws UserNotFoundException
      */
-    public function demoteFrom(string $email, string $role);
+    public function demoteFrom(string $email, string $roleName);
 }
