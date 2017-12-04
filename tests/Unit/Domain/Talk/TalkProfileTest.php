@@ -24,7 +24,7 @@ use OpenCFP\Domain\Talk\TalkProfile;
 /**
  * @covers \OpenCFP\Domain\Talk\TalkProfile
  */
-class TalkProfileTest extends \PHPUnit\Framework\TestCase
+final class TalkProfileTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

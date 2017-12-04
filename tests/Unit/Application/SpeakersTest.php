@@ -24,7 +24,7 @@ use OpenCFP\Domain\Services\IdentityProvider;
 /**
  * @covers \OpenCFP\Application\Speakers
  */
-class SpeakersTest extends \PHPUnit\Framework\TestCase
+final class SpeakersTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;
 

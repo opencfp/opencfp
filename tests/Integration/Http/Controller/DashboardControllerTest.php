@@ -23,7 +23,7 @@ use OpenCFP\Test\WebTestCase;
  * @group db
  * @coversNothing
  */
-class DashboardControllerTest extends WebTestCase
+final class DashboardControllerTest extends WebTestCase
 {
     /**
      * Test that the index page returns a list of talks associated

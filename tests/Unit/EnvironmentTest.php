@@ -18,7 +18,7 @@ use OpenCFP\Environment;
 /**
  * @covers \OpenCFP\Environment
  */
-class EnvironmentTest extends \PHPUnit\Framework\TestCase
+final class EnvironmentTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstants()
     {

@@ -19,7 +19,7 @@ use OpenCFP\Infrastructure\Auth\UserExistsException;
 /**
  * @covers \OpenCFP\Infrastructure\Auth\UserExistsException
  */
-class UserExistsExceptionTest extends \PHPUnit\Framework\TestCase
+final class UserExistsExceptionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 

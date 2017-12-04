@@ -23,7 +23,7 @@ use OpenCFP\Test\Helper\RefreshDatabase;
  * @group db
  * @coversNothing
  */
-class TalkTest extends BaseTestCase
+final class TalkTest extends BaseTestCase
 {
     use RefreshDatabase;
 

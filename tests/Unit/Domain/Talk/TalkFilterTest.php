@@ -23,7 +23,7 @@ use PHPUnit\Framework;
 /**
  * @covers \OpenCFP\Domain\Talk\TalkFilter
  */
-class TalkFilterTest extends Framework\TestCase
+final class TalkFilterTest extends Framework\TestCase
 {
     use MockeryPHPUnitIntegration;
 

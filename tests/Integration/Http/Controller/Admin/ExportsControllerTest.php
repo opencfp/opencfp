@@ -21,7 +21,7 @@ use OpenCFP\Test\WebTestCase;
  * @covers \OpenCFP\Http\Controller\Admin\ExportsController
  * @covers \OpenCFP\Http\Controller\BaseController
  */
-class ExportsControllerTest extends WebTestCase
+final class ExportsControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 

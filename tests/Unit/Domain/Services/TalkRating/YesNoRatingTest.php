@@ -22,7 +22,7 @@ use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 /**
  * @covers \OpenCFP\Domain\Services\TalkRating\YesNoRating
  */
-class YesNoRatingTest extends \PHPUnit\Framework\TestCase
+final class YesNoRatingTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;
 

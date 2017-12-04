@@ -23,7 +23,7 @@ use OpenCFP\Test\Helper\DataBaseInteraction;
 /**
  * @coversNothing
  */
-class TalkTest extends BaseTestCase
+final class TalkTest extends BaseTestCase
 {
     use DataBaseInteraction;
 

@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation;
 /**
  * @covers \OpenCFP\Http\Controller\PagesController
  */
-class PagesControllerTest extends WebTestCase
+final class PagesControllerTest extends WebTestCase
 {
     /**
      * @test

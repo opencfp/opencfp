@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit;
 
-use OpenCFP\ContainerAware;
+use Localheinz\Test\Util\Helper;
+use PHPUnit\Framework;
 
-final class ContainerAwareFake
+/**
+ * @coversNothing
+ */
+final class ProjectCodeTest extends Framework\TestCase
 {
-    use ContainerAware;
-
-    /**
-     * @param string $slug
-     *
-     * @return mixed
-     */
-    public function getService($slug)
+    use Helper;
+    
+    public function testTestClassesAreAbstractOrFinal()
     {
-        return $this->service($slug);
+        $this->assertClassesAreAbstractOrFinal(__DIR__ . '/..');
     }
 }

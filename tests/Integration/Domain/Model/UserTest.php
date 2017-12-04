@@ -25,7 +25,7 @@ use OpenCFP\Test\Helper\RefreshDatabase;
  * @group db
  * @coversNothing
  */
-class UserTest extends BaseTestCase
+final class UserTest extends BaseTestCase
 {
     use RefreshDatabase;
 

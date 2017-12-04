@@ -30,7 +30,7 @@ use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelAuthentication
  */
-class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
+final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
     use MockeryPHPUnitIntegration;

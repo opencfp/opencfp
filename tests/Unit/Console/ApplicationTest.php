@@ -25,7 +25,7 @@ use Symfony\Component\Console;
  * @group db
  * @covers \OpenCFP\Console\Application
  */
-class ApplicationTest extends \PHPUnit\Framework\TestCase
+final class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
     use MockeryPHPUnitIntegration;

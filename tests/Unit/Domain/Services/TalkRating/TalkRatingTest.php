@@ -24,7 +24,7 @@ use OpenCFP\Domain\Services\TalkRating\YesNoRating;
  *
  * @covers \OpenCFP\Domain\Services\TalkRating\TalkRating
  */
-class TalkRatingTest extends \PHPUnit\Framework\TestCase
+final class TalkRatingTest extends \PHPUnit\Framework\TestCase
 {
     public function testRateThrowsExceptionOnInvalidRating()
     {

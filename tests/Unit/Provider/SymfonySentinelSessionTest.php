@@ -20,7 +20,7 @@ use OpenCFP\Provider\SymfonySentinelSession;
 /**
  * @covers \OpenCFP\Provider\SymfonySentinelSession
  */
-class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
+final class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
     use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;

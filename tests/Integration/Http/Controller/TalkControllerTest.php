@@ -25,7 +25,7 @@ use OpenCFP\Test\WebTestCase;
  * @group db
  * @coversNothing
  */
-class TalkControllerTest extends WebTestCase
+final class TalkControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 

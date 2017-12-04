@@ -21,7 +21,7 @@ use OpenCFP\Test\WebTestCase;
  * @group db
  * @coversNothing
  */
-class ProfileControllerTest extends WebTestCase
+final class ProfileControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 

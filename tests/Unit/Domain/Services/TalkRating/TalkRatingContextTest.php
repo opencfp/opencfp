@@ -22,7 +22,7 @@ use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 /**
  * @covers \OpenCFP\Domain\Services\TalkRating\TalkRatingContext
  */
-class TalkRatingContextTest extends \PHPUnit\Framework\TestCase
+final class TalkRatingContextTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

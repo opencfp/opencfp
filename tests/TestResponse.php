@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @mixin Response
  */
-class TestResponse
+final class TestResponse
 {
     /**
      * @var Application
