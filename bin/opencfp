@@ -19,10 +19,12 @@ $environment = $input->getParameterOption(['--env'], \getenv('CFP_ENV') ?: 'deve
 $container = new ApplicationContainer($basePath, Environment::fromString($environment));
 
 $accountManagement = $container[Services\AccountManagement::class];
+$path              = $container['path'];
 
 $app = new Application($container);
 
 $app->addCommands([
+    new Command\ClearCacheCommand($path),
     new Command\UserCreateCommand($accountManagement),
     new Command\UserDemoteCommand($accountManagement),
     new Command\UserPromoteCommand($accountManagement),
