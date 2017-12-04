@@ -169,7 +169,7 @@ final class UserDemoteCommandTest extends Framework\TestCase
 
     public function testExecuteFailsIfDemoteFromThrowsGenericException()
     {
-        $faker = $this->getFaker();
+        $faker = $this->faker();
 
         $email    = $faker->email;
         $roleName = $faker->word;
