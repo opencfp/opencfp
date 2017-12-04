@@ -29,7 +29,7 @@ class TalkRatingContextTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider strategyProvider
      */
-    public function testGetTalkRatingStrategyReturnsCorrectInstance($input, $expectedClassName)
+    public function testGetTalkRatingStrategyReturnsCorrectInstance(string $input, string $expectedClassName)
     {
         $strategy = TalkRatingContext::getTalkStrategy($input, $this->authMock());
         $this->assertInstanceOf($expectedClassName, $strategy);
@@ -39,22 +39,28 @@ class TalkRatingContextTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'Input is empty string' => [
-                '', YesNoRating::class,
+                '',
+                YesNoRating::class,
             ],
             'Input is yesno' => [
-                'yesno', YesNoRating::class,
+                'yesno',
+                YesNoRating::class,
             ],
             'Input is onetoten' => [
-                'onetoten', OneToTenRating::class,
+                'onetoten',
+                OneToTenRating::class,
             ],
             'Casing of yesno doesnt matter' => [
-                'YeSNo', YesNoRating::class,
+                'YeSNo',
+                YesNoRating::class,
             ],
             'Casing of onetoten doesnt matter' => [
-                'OnEToTen', OneToTenRating::class,
+                'OnEToTen',
+                OneToTenRating::class,
             ],
             'Giberish defaults to YesNo' => [
-                'asdfgo87yhl', YesNoRating::class,
+                'asdfgo87yhl',
+                YesNoRating::class,
             ],
         ];
     }

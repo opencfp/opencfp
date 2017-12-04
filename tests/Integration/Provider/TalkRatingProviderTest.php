@@ -25,7 +25,7 @@ use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 /**
  * @covers \OpenCFP\Provider\TalkRatingProvider
  */
-class TalkRatingProviderTest extends \PHPUnit\Framework\TestCase
+final class TalkRatingProviderTest extends \PHPUnit\Framework\TestCase
 {
     use GeneratorTrait;
 
@@ -51,21 +51,25 @@ class TalkRatingProviderTest extends \PHPUnit\Framework\TestCase
     public function strategySettingsProvider(): array
     {
         return [
-
             'Input is yesno' => [
-                'yesno', YesNoRating::class,
+                'yesno',
+                YesNoRating::class,
             ],
             'Input is onetoten' => [
-                'onetoten', OneToTenRating::class,
+                'onetoten',
+                OneToTenRating::class,
             ],
             'Input is null' => [
-                null, YesNoRating::class,
+                null,
+                YesNoRating::class,
             ],
             'Input is empty string' => [
-                '', YesNoRating::class,
+                '',
+                YesNoRating::class,
             ],
             'Input is random giberish' => [
-                'asdfasdfhj098yh', YesNoRating::class,
+                'asdfasdfhj098yh',
+                YesNoRating::class,
             ],
         ];
     }

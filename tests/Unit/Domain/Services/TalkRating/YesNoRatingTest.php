@@ -29,7 +29,7 @@ class YesNoRatingTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider validRatingProvider
      */
-    public function testValidRatings($rating)
+    public function testValidRatings(int $rating)
     {
         $mockAuth = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
         $metaMock = Mockery::mock(TalkMeta::class);
@@ -42,7 +42,7 @@ class YesNoRatingTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider invalidRatingProvider
      */
-    public function testInvalidRatings($rating)
+    public function testInvalidRatings(int $rating)
     {
         $mockAuth = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
         $metaMock = Mockery::mock(TalkMeta::class);
@@ -69,7 +69,6 @@ class YesNoRatingTest extends \PHPUnit\Framework\TestCase
             [-1],
             [0],
             [1],
-            [-0],
         ];
     }
 

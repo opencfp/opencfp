@@ -22,14 +22,14 @@ use OpenCFP\Domain\Services\TalkRating\OneToTenRating;
 /**
  * @covers \OpenCFP\Domain\Services\TalkRating\OneToTenRating
  */
-class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
+final class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;
 
     /**
      * @dataProvider validRatingProvider
      */
-    public function testGoodRatingsAreSuccessful($rating)
+    public function testGoodRatingsAreSuccessful(int $rating)
     {
         $mockAuth    = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
         $metaMock    = Mockery::mock(TalkMeta::class);
@@ -40,7 +40,7 @@ class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider invalidRatingProvider
      */
-    public function testBadRatingsAreNotSuccessFul($rating)
+    public function testBadRatingsAreNotSuccessFul(int $rating)
     {
         $mockAuth    = Mockery::mock(Authentication::class)->shouldIgnoreMissing();
         $metaMock    = Mockery::mock(TalkMeta::class);
@@ -62,10 +62,15 @@ class OneToTenRatingTest extends \PHPUnit\Framework\TestCase
         return [
             [0],
             [1],
+            [2],
+            [3],
+            [4],
             [5],
-            [10],
+            [6],
+            [7],
+            [8],
             [9],
-            [-0],
+            [10],
         ];
     }
 
