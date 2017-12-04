@@ -20,15 +20,12 @@ use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\Helper\Faker\GeneratorTrait;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelIdentityProvider
  */
 class SentinelIdentityProviderTest extends BaseTestCase
 {
-    use GeneratorTrait;
-
     public function testIsFinal()
     {
         $reflection = new \ReflectionClass(SentinelIdentityProvider::class);
