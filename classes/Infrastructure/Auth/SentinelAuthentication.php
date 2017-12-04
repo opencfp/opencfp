@@ -38,14 +38,6 @@ final class SentinelAuthentication implements Authentication
         $this->accountManagement = $accountManagement;
     }
 
-    /**
-     * Given valid credentials, authenticate the user.
-     *
-     * @param string $username
-     * @param string $password
-     *
-     * @throws AuthenticationException
-     */
     public function authenticate($username, $password)
     {
         try {
@@ -62,11 +54,6 @@ final class SentinelAuthentication implements Authentication
         }
     }
 
-    /**
-     * Returns current authenticated User account.
-     *
-     * @throws NotAuthenticatedException
-     */
     public function user(): UserInterface
     {
         $user = $this->sentinel->getUser();
@@ -77,35 +64,21 @@ final class SentinelAuthentication implements Authentication
         throw new NotAuthenticatedException();
     }
 
-    /**
-     * Returns current authenticated User Id.
-     *
-     * @throws NotAuthenticatedException
-     */
     public function userId(): int
     {
         return $this->user()->getId();
     }
 
-    /**
-     * Determines whether or not the user is logged in.
-     */
     public function isAuthenticated(): bool
     {
         return $this->sentinel->check() !== false;
     }
 
-    /**
-     * Determine whether the user is a non-authenticated guest.
-     */
     public function guest(): bool
     {
         return !$this->sentinel->check();
     }
 
-    /**
-     * Destroys the user's active authenticated session.
-     */
     public function logout(): bool
     {
         return $this->sentinel->logout() !== false;
