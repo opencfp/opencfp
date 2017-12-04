@@ -48,10 +48,13 @@ class TalksController extends BaseController
         $pagerfanta->setCurrentPage($req->get('page'));
         $pagination = $pagerfanta->createView('/admin/talks?', $req->query->all());
 
+        /** @var TalkRatingStrategy $talkRatingStrategy */
+        $talkRatingStrategy = $this->service(TalkRatingStrategy::class);
+
         $templateData = [
             'pagination'   => $pagination,
             'talks'        => $pagerfanta->getFanta(),
-            'ratingSystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
+            'ratingSystem' => $talkRatingStrategy->getRatingName(),
             'page'         => $pagerfanta->getCurrentPage(),
             'current_page' => $req->getRequestUri(),
             'totalRecords' => \count($formattedTalks),
@@ -80,9 +83,12 @@ class TalksController extends BaseController
             return $this->app->redirect($this->url('admin_talks'));
         }
 
+        /** @var TalkRatingStrategy $talkRatingStrategy */
+        $talkRatingStrategy = $this->service(TalkRatingStrategy::class);
+
         return $this->render('admin/talks/view.twig', [
             'talk'         => $handler->getProfile(),
-            'ratingSystem' => $this->service(TalkRatingStrategy::class)->getRatingName(),
+            'ratingSystem' => $talkRatingStrategy->getRatingName(),
         ]);
     }
 

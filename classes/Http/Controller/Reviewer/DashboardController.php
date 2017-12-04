@@ -33,13 +33,16 @@ class DashboardController extends BaseController
         $recentTalks = Talk::recent()->get();
         $recentTalks = $talkFormatter->formatList($recentTalks, $userId);
 
+        /** @var TalkRatingStrategy $talkRatingStrategy */
+        $talkRatingStrategy = $this->service(TalkRatingStrategy::class);
+
         $templateData = [
             'speakerTotal'  => User::count(),
             'talkTotal'     => Talk::count(),
             'favoriteTotal' => Favorite::count(),
             'selectTotal'   => Talk::where('selected', 1)->count(),
             'talks'         => $recentTalks,
-            'ratingSystem'  => $this->service(TalkRatingStrategy::class)->getRatingName(),
+            'ratingSystem'  => $talkRatingStrategy->getRatingName(),
         ];
 
         return $this->render('reviewer/index.twig', $templateData);
