@@ -26,9 +26,7 @@ final class ValidationExceptionTest extends Framework\TestCase
 
     public function testIsException()
     {
-        $exception = new ValidationException();
-
-        $this->assertInstanceOf(\Exception::class, $exception);
+        $this->assertClassExtends(\Exception::class, ValidationException::class);
     }
 
     public function testWithErrorsReturnsException()

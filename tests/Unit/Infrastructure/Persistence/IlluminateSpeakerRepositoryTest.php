@@ -30,9 +30,7 @@ final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
 
     public function testImplementsSpeakerRepository()
     {
-        $reflection = new \ReflectionClass(IlluminateSpeakerRepository::class);
-
-        $this->assertTrue($reflection->implementsInterface(Speaker\SpeakerRepository::class));
+        $this->assertClassImplementsInterface(Speaker\SpeakerRepository::class, IlluminateSpeakerRepository::class);
     }
 
     public function testFindByIdThrowsEntityNotFoundExceptionIfUserNotFound()

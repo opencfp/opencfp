@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Provider;
 
+use Localheinz\Test\Util\Helper;
 use Mockery;
 use OpenCFP\Provider\SymfonySentinelSession;
 
@@ -21,12 +22,12 @@ use OpenCFP\Provider\SymfonySentinelSession;
  */
 class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
 {
+    use Helper;
     use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    public function testDefaults()
+    public function testImplementsSessionInterface()
     {
-        $session = new SymfonySentinelSession($this->getSessionMock());
-        $this->assertInstanceOf(\Cartalyst\Sentinel\Sessions\SessionInterface::class, $session);
+        $this->assertClassImplementsInterface(\Cartalyst\Sentinel\Sessions\SessionInterface::class, SymfonySentinelSession::class);
     }
 
     public function testPutSetsValue()

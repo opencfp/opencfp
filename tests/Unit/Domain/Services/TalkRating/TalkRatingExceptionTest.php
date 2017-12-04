@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Domain\Services\TalkRating;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use PHPUnit\Framework;
 
@@ -21,11 +22,11 @@ use PHPUnit\Framework;
  */
 final class TalkRatingExceptionTest extends Framework\TestCase
 {
+    use Helper;
+
     public function testIsRuntimeException()
     {
-        $exception = new TalkRatingException();
-
-        $this->assertInstanceOf(\RuntimeException::class, $exception);
+        $this->assertClassExtends(\RuntimeException::class, TalkRatingException::class);
     }
 
     public function testInvalidRatinhReturnsException()

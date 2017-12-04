@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Domain\Speaker;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Speaker\NotAllowedException;
 use PHPUnit\Framework;
 
@@ -21,11 +22,11 @@ use PHPUnit\Framework;
  */
 final class NotAllowedExceptionTest extends Framework\TestCase
 {
+    use Helper;
+
     public function testIsException()
     {
-        $exception = new NotAllowedException();
-
-        $this->assertInstanceOf(\Exception::class, $exception);
+        $this->assertClassExtends(\Exception::class, NotAllowedException::class);
     }
 
     public function testNotAllowedToViewReturnsException()

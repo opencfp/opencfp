@@ -37,15 +37,12 @@ class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(SentinelAccountManagement::class);
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(SentinelAccountManagement::class);
     }
 
     public function testInstanceOfAccountManagement()
     {
-        $sentinel = (new \Cartalyst\Sentinel\Native\Facades\Sentinel())->getSentinel();
-        $account  = new SentinelAccountManagement($sentinel);
-        $this->assertInstanceOf(AccountManagement::class, $account);
+        $this->assertClassImplementsInterface(AccountManagement::class, SentinelAccountManagement::class);
     }
 
     public function testFindByIdThrowsCorrectError()

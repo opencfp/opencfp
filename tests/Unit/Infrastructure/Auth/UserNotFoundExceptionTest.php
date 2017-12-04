@@ -25,8 +25,7 @@ class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(UserNotFoundException::class);
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(UserNotFoundException::class);
     }
 
     /**
@@ -34,8 +33,7 @@ class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
      */
     public function isInstanceOfRuntimeException()
     {
-        $exception = new UserNotFoundException();
-        $this->assertInstanceOf(\RuntimeException::class, $exception);
+        $this->assertClassExtends(\RuntimeException::class, UserNotFoundException::class);
     }
 
     public function testFromEmailReturnsException()

@@ -15,6 +15,7 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
+use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -31,20 +32,17 @@ use OpenCFP\Infrastructure\Auth\UserNotFoundException;
  */
 class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
 {
+    use Helper;
     use MockeryPHPUnitIntegration;
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(SentinelAuthentication::class);
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(SentinelAuthentication::class);
     }
 
     public function testIsInstanceOfAuthentication()
     {
-        $sentinel = Mockery::mock(Sentinel::class);
-        $account  = Mockery::mock(AccountManagement::class)->makePartial();
-        $auth     = new SentinelAuthentication($sentinel, $account);
-        $this->assertInstanceOf(Authentication::class, $auth);
+        $this->assertClassImplementsInterface(Authentication::class, SentinelAuthentication::class);
     }
 
     public function testAuthenticateWillThrowCorrectError()

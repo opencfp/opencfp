@@ -29,16 +29,12 @@ final class UserCreateCommandTest extends Framework\TestCase
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(UserCreateCommand::class);
-
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(UserCreateCommand::class);
     }
 
     public function testExtendsCommand()
     {
-        $command = new UserCreateCommand($this->createAccountManagementMock());
-
-        $this->assertInstanceOf(Console\Command\Command::class, $command);
+        $this->assertClassExtends(Console\Command\Command::class, UserCreateCommand::class);
     }
 
     public function testHasNameAndDescription()

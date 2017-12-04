@@ -25,10 +25,7 @@ class UserExistsExceptionTest extends \PHPUnit\Framework\TestCase
 
     public function testItIsTheCorrectTypeOfException()
     {
-        $exception = new UserExistsException();
-        $this->assertInstanceOf(\UnexpectedValueException::class, $exception);
-        $this->assertInstanceOf(\RuntimeException::class, $exception);
-        $this->assertSame(0, $exception->getCode());
+        $this->assertClassExtends(\UnexpectedValueException::class, UserExistsException::class);
     }
 
     public function testFromEmailReturnsException()

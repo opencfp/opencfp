@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
+use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\RequestValidator;
@@ -25,18 +26,17 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
  */
 class CsrfValidatorTest extends \PHPUnit\Framework\TestCase
 {
+    use Helper;
     use MockeryPHPUnitIntegration;
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(CsrfValidator::class);
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(CsrfValidator::class);
     }
 
     public function testIsInstanceOfRequestValidator()
     {
-        $csrf = new CsrfValidator(Mockery::mock(CsrfTokenManager::class));
-        $this->assertInstanceOf(RequestValidator::class, $csrf);
+        $this->assertClassImplementsInterface(RequestValidator::class, CsrfValidator::class);
     }
 
     public function testReturnsTrueWhenTokenMangerReturnsTrue()

@@ -39,16 +39,12 @@ final class ClearCacheCommandTest extends Framework\TestCase
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(ClearCacheCommand::class);
-
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(ClearCacheCommand::class);
     }
 
     public function testExtendsCommand()
     {
-        $command = new ClearCacheCommand($this->createPathMock());
-
-        $this->assertInstanceOf(Console\Command\Command::class, $command);
+        $this->assertClassExtends(Console\Command\Command::class, ClearCacheCommand::class);
     }
 
     public function testHasNameAndDescription()

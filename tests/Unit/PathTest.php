@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit;
 
+use Localheinz\Test\Util\Helper;
 use OpenCFP\Environment;
 use OpenCFP\Path;
 use OpenCFP\PathInterface;
@@ -22,18 +23,16 @@ use OpenCFP\PathInterface;
  */
 final class PathTest extends \PHPUnit\Framework\TestCase
 {
+    use Helper;
+
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(Path::class);
-
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(Path::class);
     }
 
     public function testImplementsPathInterface()
     {
-        $reflection = new \ReflectionClass(Path::class);
-
-        $this->assertTrue($reflection->implementsInterface(PathInterface::class));
+        $this->assertClassImplementsInterface(PathInterface::class, Path::class);
     }
 
     /**

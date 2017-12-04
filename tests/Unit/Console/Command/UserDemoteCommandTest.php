@@ -29,16 +29,12 @@ final class UserDemoteCommandTest extends Framework\TestCase
 
     public function testIsFinal()
     {
-        $reflection = new \ReflectionClass(UserDemoteCommand::class);
-
-        $this->assertTrue($reflection->isFinal());
+        $this->assertClassIsFinal(UserDemoteCommand::class);
     }
 
     public function testExtendsCommand()
     {
-        $command = new UserDemoteCommand($this->createAccountManagementMock());
-
-        $this->assertInstanceOf(Console\Command\Command::class, $command);
+        $this->assertClassExtends(Console\Command\Command::class, UserDemoteCommand::class);
     }
 
     public function testHasNameAndDescription()
