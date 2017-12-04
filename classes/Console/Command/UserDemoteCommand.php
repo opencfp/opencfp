@@ -90,6 +90,13 @@ EOF
             ));
 
             return 1;
+        } catch (\Exception $exception) {
+            $io->error(\sprintf(
+                'Could not demote account with email "%s".',
+                $email
+            ));
+
+            return 1;
         }
 
         $io->success(\sprintf(
