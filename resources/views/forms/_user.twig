@@ -43,7 +43,7 @@
 
             {% if site.online_conference == false %}
                 <label for="form-user-airport">Departing Airport Code</label>
-                <input id="form-user-airport" type="text" name="airport" placeholder="3 Characters" value="{{ airport | default('') }}">
+                <input id="form-user-airport" type="text" name="airport" maxlength="3" placeholder="3 Characters" value="{{ airport | default('') }}">
             {% endif %}
 
             <label for="form-user-notes">Additional Notes</label>
