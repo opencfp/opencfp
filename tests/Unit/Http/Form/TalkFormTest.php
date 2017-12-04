@@ -18,7 +18,7 @@ use Localheinz\Test\Util\Helper;
 /**
  * @covers \OpenCFP\Http\Form\TalkForm
  */
-class TalkFormTest extends \PHPUnit\Framework\TestCase
+final class TalkFormTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 

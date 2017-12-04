@@ -20,7 +20,7 @@ use OpenCFP\Environment;
 /**
  * @covers \OpenCFP\Provider\SentinelServiceProvider
  */
-class SentinelServiceProviderTest extends \PHPUnit\Framework\TestCase
+final class SentinelServiceProviderTest extends \PHPUnit\Framework\TestCase
 {
     public function testAllRepositoriesAreSet()
     {

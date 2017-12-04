@@ -21,7 +21,7 @@ use OpenCFP\Infrastructure\Auth\SentinelUser;
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelUser
  */
-class SentinelUserTest extends \PHPUnit\Framework\TestCase
+final class SentinelUserTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 

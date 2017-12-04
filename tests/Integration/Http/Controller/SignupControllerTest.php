@@ -20,7 +20,7 @@ use OpenCFP\Test\WebTestCase;
  * @group db
  * @coversNothing
  */
-class SignupControllerTest extends WebTestCase
+final class SignupControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 

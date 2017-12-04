@@ -21,7 +21,7 @@ use OpenCFP\Test\Helper\DataBaseInteraction;
 /**
  * @coversNothing
  */
-class UserTest extends BaseTestCase
+final class UserTest extends BaseTestCase
 {
     use DataBaseInteraction;
 

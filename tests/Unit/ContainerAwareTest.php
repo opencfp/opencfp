@@ -19,7 +19,7 @@ use OpenCFP\Application;
 /**
  * @covers \OpenCFP\ContainerAware
  */
-class ContainerAwareTest extends \PHPUnit\Framework\TestCase
+final class ContainerAwareTest extends \PHPUnit\Framework\TestCase
 {
     public function testAllowsToRetrieveService()
     {

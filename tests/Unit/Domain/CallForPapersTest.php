@@ -18,7 +18,7 @@ use OpenCFP\Domain\CallForPapers;
 /**
  * @covers \OpenCFP\Domain\CallForPapers
  */
-class CallForPapersTest extends \PHPUnit\Framework\TestCase
+final class CallForPapersTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

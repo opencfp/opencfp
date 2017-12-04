@@ -18,7 +18,7 @@ use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 /**
  * @covers \OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator
  */
-class PseudoRandomStringGeneratorTest extends \PHPUnit\Framework\TestCase
+final class PseudoRandomStringGeneratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var PseudoRandomStringGenerator

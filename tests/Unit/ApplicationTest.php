@@ -20,7 +20,7 @@ use OpenCFP\Environment;
  * @covers \OpenCFP\Application
  * @group db
  */
-class ApplicationTest extends \PHPUnit\Framework\TestCase
+final class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
     /** @var Application */
     private $sut;

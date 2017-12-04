@@ -20,7 +20,7 @@ use OpenCFP\Test\WebTestCase;
 /**
  * @coversNothing
  */
-class TalksControllerTest extends WebTestCase
+final class TalksControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 

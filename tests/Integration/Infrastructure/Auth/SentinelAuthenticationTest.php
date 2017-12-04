@@ -23,7 +23,7 @@ use OpenCFP\Test\Helper\DataBaseInteraction;
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelAuthentication
  */
-class SentinelAuthenticationTest extends BaseTestCase
+final class SentinelAuthenticationTest extends BaseTestCase
 {
     use DataBaseInteraction;
     /**

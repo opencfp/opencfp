@@ -19,7 +19,7 @@ use OpenCFP\Http\Form\SignupForm;
 /**
  * @covers \OpenCFP\Http\Form\SignupForm
  */
-class SignupFormTest extends \PHPUnit\Framework\TestCase
+final class SignupFormTest extends \PHPUnit\Framework\TestCase
 {
     private $purifier;
 

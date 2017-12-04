@@ -27,7 +27,7 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 /**
  * @coversNothing
  */
-class TalkHandlerTest extends BaseTestCase
+final class TalkHandlerTest extends BaseTestCase
 {
     use RefreshDatabase;
 

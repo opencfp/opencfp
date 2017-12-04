@@ -15,7 +15,7 @@ namespace OpenCFP\Test\Unit;
 
 use OpenCFP\ContainerAware;
 
-class ContainerAwareFake
+final class ContainerAwareFake
 {
     use ContainerAware;
 

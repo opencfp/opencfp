@@ -19,7 +19,7 @@ use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 /**
  * @covers \OpenCFP\Infrastructure\Auth\UserNotFoundException
  */
-class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
+final class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 

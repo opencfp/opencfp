@@ -20,7 +20,7 @@ use PHPUnit\Framework;
 /**
  * @covers \OpenCFP\Domain\Services\Pagination
  */
-class PaginationTest extends Framework\TestCase
+final class PaginationTest extends Framework\TestCase
 {
     /**
      * @var Pagination

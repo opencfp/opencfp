@@ -24,7 +24,7 @@ use OpenCFP\Test\BaseTestCase;
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelIdentityProvider
  */
-class SentinelIdentityProviderTest extends BaseTestCase
+final class SentinelIdentityProviderTest extends BaseTestCase
 {
     public function testIsFinal()
     {

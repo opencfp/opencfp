@@ -25,7 +25,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  *
  * @coversNothing
  */
-class MigrationsTest extends BaseTestCase
+final class MigrationsTest extends BaseTestCase
 {
     /**
      * @test

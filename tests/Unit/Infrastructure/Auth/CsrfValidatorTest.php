@@ -24,7 +24,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 /**
  * @covers \OpenCFP\Infrastructure\Auth\CsrfValidator
  */
-class CsrfValidatorTest extends \PHPUnit\Framework\TestCase
+final class CsrfValidatorTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
     use MockeryPHPUnitIntegration;

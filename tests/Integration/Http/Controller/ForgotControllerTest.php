@@ -23,7 +23,7 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
  * @group db
  * @coversNothing
  */
-class ForgotControllerTest extends \PHPUnit\Framework\TestCase
+final class ForgotControllerTest extends \PHPUnit\Framework\TestCase
 {
     protected $app;
 
