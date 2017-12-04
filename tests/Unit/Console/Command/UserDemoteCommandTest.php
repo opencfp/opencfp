@@ -126,7 +126,52 @@ final class UserDemoteCommandTest extends Framework\TestCase
         $this->assertContains($failureMessage, $commandTester->getDisplay());
     }
 
-    public function testExecuteSucceedsIfUserWasFound()
+    public function testExecuteFailsIfRoleWasNotFound()
+    {
+        $faker = $this->getFaker();
+
+        $email    = $faker->email;
+        $roleName = $faker->word;
+
+        $accountManagement = $this->createAccountManagementMock();
+
+        $accountManagement
+            ->expects($this->once())
+            ->method('demoteFrom')
+            ->with(
+                $this->identicalTo($email),
+                $this->identicalTo($roleName)
+            )
+            ->willThrowException(new Auth\RoleNotFoundException());
+
+        $command = new UserDemoteCommand($accountManagement);
+
+        $commandTester = new Console\Tester\CommandTester($command);
+
+        $commandTester->execute([
+            'email'     => $email,
+            'role-name' => $roleName,
+        ]);
+
+        $this->assertSame(1, $commandTester->getStatusCode());
+
+        $sectionMessage = \sprintf(
+            'Demoting account with email "%s" from "%s"',
+            $email,
+            $roleName
+        );
+
+        $this->assertContains($sectionMessage, $commandTester->getDisplay());
+
+        $failureMessage = \sprintf(
+            'Could not find role with name "%s".',
+            $roleName
+        );
+
+        $this->assertContains($failureMessage, $commandTester->getDisplay());
+    }
+
+    public function testExecuteSucceedsIfUserAndRoleWereFound()
     {
         $faker = $this->getFaker();
 

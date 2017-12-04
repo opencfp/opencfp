@@ -83,6 +83,13 @@ EOF
             ));
 
             return 1;
+        } catch (Auth\RoleNotFoundException $exception) {
+            $io->error(\sprintf(
+                'Could not find role with name "%s".',
+                $roleName
+            ));
+
+            return 1;
         }
 
         $io->success(\sprintf(
