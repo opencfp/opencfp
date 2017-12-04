@@ -71,13 +71,17 @@ final class ClearCacheCommand extends Command
     {
         $count = 0;
 
-        $filesAndDirectories = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator(
-                $path,
-                \RecursiveDirectoryIterator::SKIP_DOTS
-            ),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
+        try {
+            $filesAndDirectories = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator(
+                    $path,
+                    \RecursiveDirectoryIterator::SKIP_DOTS
+                ),
+                \RecursiveIteratorIterator::CHILD_FIRST
+            );
+        } catch (\UnexpectedValueException $e) {
+            return 0;
+        }
 
         foreach ($filesAndDirectories as $fileInfo) {
             if ($this->delete($fileInfo)) {
