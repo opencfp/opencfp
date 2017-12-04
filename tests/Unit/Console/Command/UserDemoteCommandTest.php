@@ -81,7 +81,7 @@ final class UserDemoteCommandTest extends Framework\TestCase
         $this->assertFalse($argument->isArray());
     }
 
-    public function testExecuteFailsIfUserDoesNotExist()
+    public function testExecuteFailsIfUserWasNotFound()
     {
         $faker = $this->getFaker();
 
@@ -126,7 +126,7 @@ final class UserDemoteCommandTest extends Framework\TestCase
         $this->assertContains($failureMessage, $commandTester->getDisplay());
     }
 
-    public function testExecuteSucceedsIfUserExists()
+    public function testExecuteSucceedsIfUserWasFound()
     {
         $faker = $this->getFaker();
 
