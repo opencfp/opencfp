@@ -13,14 +13,25 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Http\Controller\BaseController;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig_Environment;
 
 class ExportsController extends BaseController
 {
-    use ContainerAware;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    public function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, SessionInterface $session)
+    {
+        $this->session = $session;
+
+        parent::__construct($twig, $urlGenerator);
+    }
 
     public function anonymousTalksExportAction()
     {
@@ -109,10 +120,7 @@ class ExportsController extends BaseController
     private function csvReturn(array $contents, string $filename = 'data')
     {
         if (\count($contents) === 0) {
-            /** @var Session\Session $session */
-            $session = $this->service('session');
-
-            $session->set('flash', [
+            $this->session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'There were no talks that matched selected criteria.',

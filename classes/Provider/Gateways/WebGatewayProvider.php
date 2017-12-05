@@ -106,10 +106,7 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         };
 
         $app[Admin\ExportsController::class] = function ($app) {
-            $controller = new Admin\ExportsController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Admin\ExportsController($app['twig'], $app['url_generator'], $app['session']);
         };
 
         $app[Admin\SpeakersController::class] = function ($app) {
