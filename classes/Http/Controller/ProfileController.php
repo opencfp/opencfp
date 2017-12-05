@@ -100,6 +100,7 @@ class ProfileController extends BaseController
 
         if ($isValid) {
             $sanitizedData = $this->transformSanitizedData($form->getCleanData());
+
             if (isset($formData['speaker_photo'])) {
                 /** @var ProfileImageProcessor $profileImageProcessor */
                 $profileImageProcessor = $this->service('profile_image_processor');

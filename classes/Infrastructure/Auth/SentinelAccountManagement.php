@@ -44,6 +44,7 @@ final class SentinelAccountManagement implements AccountManagement
     public function findByLogin(string $email): UserInterface
     {
         $user = $this->sentinel->getUserRepository()->findByCredentials(['email' => $email]);
+
         if ($user instanceof SentinelUserInterface) {
             return new SentinelUser($user, $this->sentinel);
         }
@@ -74,6 +75,7 @@ final class SentinelAccountManagement implements AccountManagement
         $user = $this->sentinel
             ->getUserRepository()
             ->create(\array_merge(['email' => $email, 'password' => $password], $data));
+
         if ($user instanceof SentinelUserInterface) {
             return new SentinelUser($user, $this->sentinel);
         }

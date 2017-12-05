@@ -66,6 +66,7 @@ class TalkFilter
         if ($filter === null) {
             return $this->talk;
         }
+
         switch (\strtolower($filter)) {
             case 'selected':
                 return $this->talk->selected();

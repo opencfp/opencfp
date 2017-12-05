@@ -46,6 +46,7 @@ final class SentinelIdentityProvider implements IdentityProvider
     public function getCurrentUser(): User
     {
         $user = $this->sentinel->getUser();
+
         if (!$user instanceof SentinelUserInterface) {
             throw new NotAuthenticatedException();
         }

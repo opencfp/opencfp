@@ -50,6 +50,7 @@ class UserRolesMigration extends AbstractMigration
     private function doPromotions($roleName)
     {
         $role = Sentinel::findRoleByName($roleName);
+
         foreach ($this->getRoleIds($roleName) as $roleId) {
             $role->users()->attach($roleId);
         }
@@ -76,6 +77,7 @@ class UserRolesMigration extends AbstractMigration
         $users   = \Cartalyst\Sentinel\Users\EloquentUser::all();
         $users   = $users->whereNotIn('id', $roleIds);
         $role    = Sentinel::findRoleByName('Speaker');
+
         foreach ($users as $user) {
             $role->users()->attach($user->id);
         }

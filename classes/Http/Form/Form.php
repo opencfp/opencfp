@@ -91,6 +91,7 @@ abstract class Form
         }
 
         $data = [];
+
         foreach ($keys as $key) {
             if (isset($this->cleanData[$key])) {
                 $data[$key] = $this->cleanData[$key];

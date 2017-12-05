@@ -43,9 +43,11 @@ final class SentinelAuthentication implements Authentication
         try {
             $success = false;
             $user    = $this->accountManagement->findByLogin($username);
+
             if ($user->checkPassword($password)) {
                 $success = $this->sentinel->login($user->getUser());
             }
+
             if (!$success) {
                 throw AuthenticationException::loginFailure();
             }
@@ -57,6 +59,7 @@ final class SentinelAuthentication implements Authentication
     public function user(): UserInterface
     {
         $user = $this->sentinel->getUser();
+
         if ($user instanceof SentinelUserInterface) {
             return new SentinelUser($user, $this->sentinel);
         }
