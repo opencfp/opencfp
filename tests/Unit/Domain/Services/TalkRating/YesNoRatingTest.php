@@ -18,6 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
  * @covers \OpenCFP\Domain\Services\TalkRating\YesNoRating
@@ -31,8 +32,11 @@ final class YesNoRatingTest extends \PHPUnit\Framework\TestCase
      */
     public function testValidRatings($rating, $valid)
     {
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('getId')->andReturn(1);
+
         $mockAuth = Mockery::mock(Authentication::class);
-        $mockAuth->shouldReceive('userId');
+        $mockAuth->shouldReceive('user')->andReturn($user);
         $metaMock = Mockery::mock(TalkMeta::class);
         $yesno    = new YesNoRating($metaMock, $mockAuth);
         $this->assertSame($valid, $yesno->isValidRating($rating));

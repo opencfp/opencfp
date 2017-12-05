@@ -114,17 +114,6 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $auth->user();
     }
 
-    public function testUserIdReturnsId()
-    {
-        $user = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
-        $user->shouldReceive('getUserId')->andReturn(3);
-        $sentinel = Mockery::mock(Sentinel::class);
-        $sentinel->shouldReceive('getUser')->andReturn($user);
-        $account = Mockery::mock(AccountManagement::class);
-        $auth    = new SentinelAuthentication($sentinel, $account);
-        $this->assertSame(3, $auth->userId());
-    }
-
     public function testCheckReturnsBool()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);

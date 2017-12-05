@@ -31,7 +31,7 @@ abstract class TalkRating implements TalkRatingStrategy
 
     public function __construct(TalkMeta $meta, Authentication $auth)
     {
-        $this->adminId = $auth->userId();
+        $this->adminId = $auth->user()->getId();
         $this->meta    = $meta;
     }
 

@@ -21,6 +21,7 @@ use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\Talk\TalkProfile;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
@@ -45,8 +46,12 @@ final class TalkHandlerTest extends BaseTestCase
     protected function setUp()
     {
         parent::setUp();
+
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('getId')->andReturn(1);
+
         $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('userId')->andReturn(1);
+        $auth->shouldReceive('user')->andReturn($user);
         $this->authentication = $auth;
         $ratingSystem         = Mockery::mock(TalkRatingStrategy::class);
         $ratingSystem->shouldReceive('rate');

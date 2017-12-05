@@ -71,7 +71,7 @@ class ProfileController extends BaseController
         /** @var Authentication $authentication */
         $authentication = $this->service(Authentication::class);
 
-        $userId = $authentication->userId();
+        $userId = $authentication->user()->getId();
 
         /** @var Session\Session $session */
         $session = $this->service('session');

@@ -28,7 +28,7 @@ class DashboardController extends BaseController
         /** @var Authentication $authentication */
         $authentication = $this->service(Authentication::class);
 
-        $userId = $authentication->userId();
+        $userId = $authentication->user()->getId();
 
         $talkFormatter = new TalkFormatter();
 

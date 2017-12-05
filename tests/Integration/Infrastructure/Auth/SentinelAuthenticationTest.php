@@ -75,15 +75,6 @@ final class SentinelAuthenticationTest extends BaseTestCase
     /**
      * @test
      */
-    public function userIdWorks()
-    {
-        $this->sut->authenticate('test@example.com', 'secret');
-        $this->assertSame(1, $this->sut->userId());
-    }
-
-    /**
-     * @test
-     */
     public function checkWorks()
     {
         $this->assertFalse($this->sut->isAuthenticated());
