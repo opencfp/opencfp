@@ -139,6 +139,7 @@ class TalkHandler
                 ->where('talk_id', $this->talk->id)
                 ->where('admin_user_id', $this->userId)
                 ->first();
+
             if ($favorite instanceof Favorite) {
                 $favorite->delete();
             }

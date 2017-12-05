@@ -220,6 +220,7 @@ class SpeakersController extends BaseController
 
         try {
             $user = $accounts->findById($id);
+
             if ($user->hasAccess(\strtolower($role))) {
                 $session->set('flash', [
                     'type'  => 'error',

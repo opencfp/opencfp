@@ -57,6 +57,7 @@ class ResetPhotoPaths extends AbstractMigration
         // Crawl uploads directory.
         // If filename is not registered, flag it for removal.
         $iterator = new DirectoryIterator(__DIR__ . '/../web/uploads');
+
         foreach ($iterator as $file) {
             if ($file->isDot() || \in_array($file->getFilename(), ['dummyphoto.jpg'])) {
                 continue;

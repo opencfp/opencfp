@@ -98,6 +98,7 @@ class User extends Eloquent
                     throw new \Exception('Unable to delete talks of user');
                 }
             });
+
         if (!parent::delete()) {
             throw new \Exception('Unable to delete User');
         }
