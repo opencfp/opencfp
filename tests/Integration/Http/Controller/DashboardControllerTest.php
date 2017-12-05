@@ -52,13 +52,13 @@ final class DashboardControllerTest extends WebTestCase
         $talk->shouldReceive('type', 'category', 'created_at');
 
         // Create a test double for profile
-        $profile = m::mock(\stdClass::class);
-        $profile->shouldReceive('name')->andReturn('Test User');
-        $profile->shouldReceive('photo', 'company', 'twitter', 'url', 'airport', 'bio', 'info', 'transportation', 'hotel');
-        $profile->shouldReceive('talks')->andReturn([$talk]);
+        $profile = m::mock(\OpenCFP\Domain\Speaker\SpeakerProfile::class);
+        $profile->shouldReceive('getName')->andReturn('Test User');
+        $profile->shouldReceive('getPhoto', 'getCompany', 'getTwitter', 'getUrl', 'getAirport', 'getBio', 'getInfo', 'getTransportation', 'getHotel');
+        $profile->shouldReceive('getTalks')->andReturn([$talk]);
         $profile->shouldReceive('needsProfile')->andReturn(false);
 
-        $speakerService = m::mock(\stdClass::class);
+        $speakerService = m::mock(\OpenCFP\Application\Speakers::class);
         $speakerService->shouldReceive('findProfile')->andReturn($profile);
         $this->swap('application.speakers', $speakerService);
 
