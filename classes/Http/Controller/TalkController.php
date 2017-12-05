@@ -100,7 +100,7 @@ class TalkController extends BaseController
         /** @var Authentication $authentication */
         $authentication = $this->service(Authentication::class);
 
-        $userId = $authentication->userId();
+        $userId = $authentication->user()->getId();
 
         $talk = Talk::find($talkId);
 
@@ -365,7 +365,7 @@ class TalkController extends BaseController
         /** @var Authentication $authentication */
         $authentication = $this->service(Authentication::class);
 
-        $userId = $authentication->userId();
+        $userId = $authentication->user()->getId();
         $talk   = Talk::find($request->get('tid'), ['id', 'user_id']);
 
         if ((int) $talk->user_id !== $userId) {

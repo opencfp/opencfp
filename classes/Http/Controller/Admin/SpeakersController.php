@@ -177,7 +177,7 @@ class SpeakersController extends BaseController
         /** @var Session\Session $session */
         $session = $this->service('session');
 
-        if ($authentication->userId() == $id) {
+        if ($authentication->user()->getId() == $id) {
             $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',

@@ -18,6 +18,7 @@ use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\TalkRatingException;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
  * We Use the YesNoRating class to test the base class, since we know exactly what values are allowed
@@ -28,9 +29,12 @@ final class TalkRatingTest extends \PHPUnit\Framework\TestCase
 {
     public function testRateThrowsExceptionOnInvalidRating()
     {
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('getId')->andReturn(1);
+
         $mockAuth = Mockery::mock(Authentication::class);
         $metaMock = Mockery::mock(TalkMeta::class);
-        $mockAuth->shouldReceive('userId')->andReturn(1);
+        $mockAuth->shouldReceive('user')->andReturn($user);
 
         $sut = new YesNoRating($metaMock, $mockAuth);
 
@@ -42,8 +46,11 @@ final class TalkRatingTest extends \PHPUnit\Framework\TestCase
 
     public function testRate()
     {
+        $user = Mockery::mock(UserInterface::class);
+        $user->shouldReceive('getId')->andReturn(1);
+
         $mockAuth = Mockery::mock(Authentication::class);
-        $mockAuth->shouldReceive('userId')->andReturn(1);
+        $mockAuth->shouldReceive('user')->andReturn($user);
 
         $metaMock = Mockery::mock(TalkMeta::class)->makePartial();
         $metaMock->shouldReceive('firstOrCreate')->andReturnSelf();

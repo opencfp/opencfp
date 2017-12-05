@@ -41,7 +41,7 @@ class TalkHandler
         Authentication $authentication,
         TalkRatingStrategy $ratingStrategy
     ) {
-        $this->userId         = (int) $authentication->userId();
+        $this->userId         = $authentication->user()->getId();
         $this->ratingStrategy = $ratingStrategy;
     }
 

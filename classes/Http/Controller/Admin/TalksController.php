@@ -29,7 +29,7 @@ class TalksController extends BaseController
         /* @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
-        $adminUserId = $auth->userId();
+        $adminUserId = $auth->user()->getId();
         $options     = [
             'order_by' => $request->get('order_by'),
             'sort'     => $request->get('sort'),

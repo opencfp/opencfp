@@ -66,12 +66,7 @@ final class SentinelAuthentication implements Authentication
 
         throw new NotAuthenticatedException();
     }
-
-    public function userId(): int
-    {
-        return $this->user()->getId();
-    }
-
+    
     public function isAuthenticated(): bool
     {
         return $this->sentinel->check() !== false;
