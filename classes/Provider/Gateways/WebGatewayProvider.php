@@ -16,6 +16,8 @@ namespace OpenCFP\Provider\Gateways;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Talk\TalkFilter;
+use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Http\Controller\Admin;
 use OpenCFP\Http\Controller\DashboardController;
 use OpenCFP\Http\Controller\ForgotController;
@@ -120,10 +122,13 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         };
 
         $app[Admin\TalksController::class] = function ($app) {
-            $controller = new Admin\TalksController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Admin\TalksController(
+                $app[Authentication::class],
+                $app[TalkFilter::class],
+                $app[TalkHandler::class],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
 
         // Reviewer controllers
@@ -143,10 +148,13 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         };
 
         $app[Reviewer\TalksController::class] = function ($app) {
-            $controller = new Reviewer\TalksController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Reviewer\TalksController(
+                $app[Authentication::class],
+                $app[TalkFilter::class],
+                $app[TalkHandler::class],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
     }
 
