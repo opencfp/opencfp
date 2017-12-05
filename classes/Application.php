@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use OpenCFP\Infrastructure\Event\ExceptionListener;
 use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\CallForPapersProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
@@ -37,11 +38,7 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Twig_Environment;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Application extends SilexApplication
 {
@@ -196,38 +193,8 @@ class Application extends SilexApplication
 
     private function registerGlobalErrorHandler()
     {
-        $this->error(function (\Exception $e, Request $request, $code) {
-            if (\in_array('application/json', $request->getAcceptableContentTypes())) {
-                $headers = [];
-
-                if ($e instanceof HttpExceptionInterface) {
-                    $code = $e->getStatusCode();
-                    $headers = $e->getHeaders();
-                }
-
-                return new JsonResponse([
-                    'error' => $e->getMessage(),
-                ], $code, $headers);
-            }
-
-            /* @var Twig_Environment $twig */
-            $twig = $this['twig'];
-
-            $template = 'error/500.twig';
-
-            $templates = [
-                Response::HTTP_UNAUTHORIZED => 'error/401.twig',
-                Response::HTTP_FORBIDDEN    => 'error/403.twig',
-                Response::HTTP_NOT_FOUND    => 'error/404.twig',
-            ];
-
-            if (\array_key_exists($code, $templates)) {
-                $template = $templates[$code];
-            }
-
-            $message = $twig->render($template);
-
-            return new Response($message, $code);
-        });
+        /** @var EventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = $this['dispatcher'];
+        $eventDispatcher->addSubscriber(new ExceptionListener($this['twig']));
     }
 }
