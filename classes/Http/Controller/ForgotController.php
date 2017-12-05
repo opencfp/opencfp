@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\ResetEmailer;
 use OpenCFP\Http\Form\ForgotForm;
@@ -23,6 +24,8 @@ use Symfony\Component\HttpFoundation\Session;
 
 class ForgotController extends BaseController
 {
+    use ContainerAware;
+
     public function indexAction()
     {
         /** @var FormFactory $formFactory */

@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Session;
 
 class ExportsController extends BaseController
 {
+    use ContainerAware;
+
     public function anonymousTalksExportAction()
     {
         return $this->talksExportAction(false);

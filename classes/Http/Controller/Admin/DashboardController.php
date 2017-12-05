@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller\Admin;
 
 use Illuminate\Database\Eloquent\Collection;
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
@@ -23,6 +24,8 @@ use OpenCFP\Http\Controller\BaseController;
 
 class DashboardController extends BaseController
 {
+    use ContainerAware;
+
     public function indexAction()
     {
         /** @var Authentication $authentication */

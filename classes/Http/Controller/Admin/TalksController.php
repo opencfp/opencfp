@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller\Admin;
 
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Talk\TalkFilter;
@@ -24,6 +25,8 @@ use Symfony\Component\HttpFoundation\Session;
 
 class TalksController extends BaseController
 {
+    use ContainerAware;
+
     public function indexAction(Request $request)
     {
         /* @var Authentication $auth */
@@ -92,7 +95,7 @@ class TalksController extends BaseController
     public function rateAction(Request $request)
     {
         try {
-            $this->validate([
+            $this->validate($request, [
                 'rating' => 'required|integer',
             ]);
 

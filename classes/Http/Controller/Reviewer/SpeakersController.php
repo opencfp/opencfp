@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller\Reviewer;
 
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
@@ -22,6 +23,8 @@ use Symfony\Component\HttpFoundation\Session;
 
 class SpeakersController extends BaseController
 {
+    use ContainerAware;
+
     public function indexAction(Request $request)
     {
         $search   = $request->get('search');

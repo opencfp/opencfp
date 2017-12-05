@@ -13,18 +13,14 @@ declare(strict_types=1);
 
 namespace OpenCFP\Provider;
 
-use OpenCFP\Http\Controller\BaseController;
-
 class ControllerResolver extends \Silex\ControllerResolver
 {
     protected function instantiateController($class)
     {
-        $controller = parent::instantiateController($class);
-
-        if ($controller instanceof BaseController) {
-            $controller->setApplication($this->app);
+        if (isset($this->app[$class])) {
+            return $this->app[$class];
         }
 
-        return $controller;
+        return parent::instantiateController($class);
     }
 }

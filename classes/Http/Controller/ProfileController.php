@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\ProfileImageProcessor;
@@ -22,6 +23,8 @@ use Symfony\Component\HttpFoundation\Session;
 
 class ProfileController extends BaseController
 {
+    use ContainerAware;
+
     public function editAction(Request $request)
     {
         /** @var Authentication $authentication */

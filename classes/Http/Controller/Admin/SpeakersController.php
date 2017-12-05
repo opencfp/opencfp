@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller\Admin;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -27,6 +28,8 @@ use Symfony\Component\HttpFoundation\Session;
 
 class SpeakersController extends BaseController
 {
+    use ContainerAware;
+
     public function indexAction(Request $request)
     {
         $search = $request->get('search');

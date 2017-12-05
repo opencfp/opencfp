@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application\Speakers;
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 
 class DashboardController extends BaseController
 {
+    use ContainerAware;
+
     public function showSpeakerProfile()
     {
         /**
