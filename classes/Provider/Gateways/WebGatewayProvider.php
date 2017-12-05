@@ -13,8 +13,13 @@ declare(strict_types=1);
 
 namespace OpenCFP\Provider\Gateways;
 
+use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Domain\CallForPapers;
+use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Talk\TalkFilter;
+use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Http\Controller\Admin;
 use OpenCFP\Http\Controller\DashboardController;
 use OpenCFP\Http\Controller\ForgotController;
@@ -24,6 +29,9 @@ use OpenCFP\Http\Controller\Reviewer;
 use OpenCFP\Http\Controller\SecurityController;
 use OpenCFP\Http\Controller\SignupController;
 use OpenCFP\Http\Controller\TalkController;
+use OpenCFP\Http\Controller\TalkFormController;
+use OpenCFP\Http\Controller\TalkProcessingController;
+use OpenCFP\Http\View\TalkHelper;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
@@ -41,101 +49,133 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 {
     public function register(Container $app)
     {
+        // Controllers
         $app[DashboardController::class] = function ($app) {
-            $controller = new DashboardController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new DashboardController($app['application.speakers'], $app['twig'], $app['url_generator']);
         };
-
         $app[ForgotController::class] = function ($app) {
-            $controller = new ForgotController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new ForgotController(
+                $app['form.factory'],
+                $app[AccountManagement::class],
+                $app['reset_emailer'],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
-
         $app[PagesController::class] = function ($app) {
             return new PagesController($app['twig'], $app['url_generator']);
         };
-
         $app[ProfileController::class] = function ($app) {
-            $controller = new ProfileController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new ProfileController(
+                $app[Authentication::class],
+                $app['purifier'],
+                $app['profile_image_processor'],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
-
         $app[SecurityController::class] = function ($app) {
-            $controller = new SecurityController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new SecurityController(
+                $app[Authentication::class],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
-
         $app[SignupController::class] = function ($app) {
-            $controller = new SignupController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new SignupController(
+                $app[Authentication::class],
+                $app[AccountManagement::class],
+                $app[CallForPapers::class],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
-
+        $app[TalkFormController::class] = function ($app) {
+            return new TalkFormController(
+                $app[Authentication::class],
+                $app[TalkHelper::class],
+                $app[CallForPapers::class],
+                $app['twig'],
+                $app['url_generator']
+            );
+        };
+        $app[TalkProcessingController::class] = function ($app) {
+            return new TalkProcessingController(
+                $app[Authentication::class],
+                $app[TalkHelper::class],
+                $app[CallForPapers::class],
+                $app['purifier'],
+                $app['mailer'],
+                $app['twig'],
+                $app['url_generator'],
+                $app->config('application.email'),
+                $app->config('application.title'),
+                $app->config('application.enddate')
+            );
+        };
         $app[TalkController::class] = function ($app) {
-            $controller = new TalkController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new TalkController(
+                $app['application.speakers'],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
 
         // Admin controllers
         $app[Admin\DashboardController::class] = function ($app) {
-            $controller = new Admin\DashboardController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Admin\DashboardController(
+                $app[Authentication::class],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
-
         $app[Admin\ExportsController::class] = function ($app) {
-            $controller = new Admin\ExportsController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Admin\ExportsController($app['twig'], $app['url_generator'], $app['session']);
         };
-
         $app[Admin\SpeakersController::class] = function ($app) {
-            $controller = new Admin\SpeakersController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
+            $controller = new Admin\SpeakersController(
+                $app[Authentication::class],
+                $app[AccountManagement::class],
+                $app[AirportInformationDatabase::class],
+                $app[Capsule::class],
+                $app['twig'],
+                $app['url_generator'],
+                $app->config('application.airport'),
+                $app->config('application.arrival'),
+                $app->config('application.departure')
+            );
 
             return $controller;
         };
-
         $app[Admin\TalksController::class] = function ($app) {
-            $controller = new Admin\TalksController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Admin\TalksController(
+                $app[Authentication::class],
+                $app[TalkFilter::class],
+                $app[TalkHandler::class],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
 
-        // Reviewer controllers
+        // Reviewer
         $app[Reviewer\DashboardController::class] = function ($app) {
-            $controller = new Reviewer\DashboardController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Reviewer\DashboardController($app[Authentication::class], $app['twig'], $app['url_generator']);
         };
-
         $app[Reviewer\SpeakersController::class] = function ($app) {
-            $controller = new Reviewer\SpeakersController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Reviewer\SpeakersController(
+                $app['twig'],
+                $app['url_generator'],
+                $app->config('reviewer.users') ?: []
+            );
         };
-
         $app[Reviewer\TalksController::class] = function ($app) {
-            $controller = new Reviewer\TalksController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Reviewer\TalksController(
+                $app[Authentication::class],
+                $app[TalkFilter::class],
+                $app[TalkHandler::class],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
     }
 
@@ -198,15 +238,15 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             ->bind('dashboard');
 
         // Talks
-        $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')
+        $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkFormController::editAction')
             ->bind('talk_edit')->before($asSpeaker)->before($csrfChecker);
-        $web->get('/talk/create', 'OpenCFP\Http\Controller\TalkController::createAction')
+        $web->get('/talk/create', 'OpenCFP\Http\Controller\TalkFormController::createAction')
             ->bind('talk_new')->before($asSpeaker);
-        $web->post('/talk/create', 'OpenCFP\Http\Controller\TalkController::processCreateAction')
+        $web->post('/talk/create', 'OpenCFP\Http\Controller\TalkProcessingController::processCreateAction')
             ->bind('talk_create')->before($asSpeaker)->before($csrfChecker);
-        $web->post('/talk/update', 'OpenCFP\Http\Controller\TalkController::updateAction')
+        $web->post('/talk/update', 'OpenCFP\Http\Controller\TalkProcessingController::updateAction')
             ->bind('talk_update')->before($asSpeaker)->before($csrfChecker);
-        $web->post('/talk/delete', 'OpenCFP\Http\Controller\TalkController::deleteAction')
+        $web->post('/talk/delete', 'OpenCFP\Http\Controller\TalkFormController::deleteAction')
             ->bind('talk_delete')->before($asSpeaker)->before($csrfChecker);
         $web->get('/talk/{id}', 'OpenCFP\Http\Controller\TalkController::viewAction')
             ->bind('talk_view')->before($asSpeaker);

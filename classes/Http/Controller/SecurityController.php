@@ -13,15 +13,28 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
-use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Services\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig_Environment;
 
 class SecurityController extends BaseController
 {
-    use ContainerAware;
+    /**
+     * @var Authentication
+     */
+    private $authentication;
+
+    public function __construct(
+        Authentication $authentication,
+        Twig_Environment $twig,
+        UrlGeneratorInterface $urlGenerator
+    ) {
+        $this->authentication = $authentication;
+
+        parent::__construct($twig, $urlGenerator);
+    }
 
     public function indexAction()
     {
@@ -32,18 +45,12 @@ class SecurityController extends BaseController
 
     public function processAction(Request $request)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
         try {
-            $auth->authenticate($request->get('email'), $request->get('password'));
+            $this->authentication->authenticate($request->get('email'), $request->get('password'));
 
             return $this->redirectTo('dashboard');
         } catch (\Exception $e) {
-            /** @var Session\Session $session */
-            $session = $this->service('session');
-
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => $e->getMessage(),
@@ -60,10 +67,7 @@ class SecurityController extends BaseController
 
     public function outAction()
     {
-        /** @var Authentication $authentication */
-        $authentication = $this->service(Authentication::class);
-
-        $authentication->logout();
+        $this->authentication->logout();
 
         return $this->redirectTo('homepage');
     }

@@ -13,30 +13,52 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
-use OpenCFP\ContainerAware;
+use HTMLPurifier;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\ProfileImageProcessor;
 use OpenCFP\Http\Form\SignupForm;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig_Environment;
 
 class ProfileController extends BaseController
 {
-    use ContainerAware;
+    /**
+     * @var Authentication
+     */
+    private $authentication;
+
+    /**
+     * @var HTMLPurifier
+     */
+    private $purifier;
+
+    /**
+     * @var ProfileImageProcessor
+     */
+    private $profileImageProcessor;
+
+    public function __construct(
+        Authentication $authentication,
+        HTMLPurifier $purifier,
+        ProfileImageProcessor $profileImageProcessor,
+        Twig_Environment $twig,
+        UrlGeneratorInterface $urlGenerator
+    ) {
+        $this->authentication        = $authentication;
+        $this->purifier              = $purifier;
+        $this->profileImageProcessor = $profileImageProcessor;
+
+        parent::__construct($twig, $urlGenerator);
+    }
 
     public function editAction(Request $request)
     {
-        /** @var Authentication $authentication */
-        $authentication = $this->service(Authentication::class);
-
-        $user = $authentication->user();
+        $user = $this->authentication->user();
 
         if ((string) $user->getId() !== $request->get('id')) {
-            /** @var Session\Session $session */
-            $session = $this->service('session');
-
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => "You cannot edit someone else's profile",
@@ -71,16 +93,10 @@ class ProfileController extends BaseController
 
     public function processAction(Request $request)
     {
-        /** @var Authentication $authentication */
-        $authentication = $this->service(Authentication::class);
-
-        $userId = $authentication->user()->getId();
-
-        /** @var Session\Session $session */
-        $session = $this->service('session');
+        $userId = $this->authentication->user()->getId();
 
         if ((string) $userId !== $request->get('id')) {
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => "You cannot edit someone else's profile",
@@ -95,28 +111,21 @@ class ProfileController extends BaseController
             $formData['speaker_photo'] = $request->files->get('speaker_photo');
         }
 
-        /** @var \HTMLPurifier $htmlPurifier */
-        $htmlPurifier = $this->service('purifier');
-
-        $form    = new SignupForm($formData, $htmlPurifier);
+        $form    = new SignupForm($formData, $this->purifier);
         $isValid = $form->validateAll('update');
 
         if ($isValid) {
             $sanitizedData = $this->transformSanitizedData($form->getCleanData());
 
             if (isset($formData['speaker_photo'])) {
-                /** @var ProfileImageProcessor $profileImageProcessor */
-                $profileImageProcessor = $this->service('profile_image_processor');
-
-                $sanitizedData['photo_path'] = $profileImageProcessor->process($formData['speaker_photo']);
+                $sanitizedData['photo_path'] = $this->profileImageProcessor->process($formData['speaker_photo']);
             }
             unset($sanitizedData['speaker_photo']);
             User::find($userId)->update($sanitizedData);
 
             return $this->redirectTo('dashboard');
         }
-
-        $session->set('flash', [
+        $request->getSession()->set('flash', [
             'type'  => 'error',
             'short' => 'Error',
             'ext'   => \implode('<br>', $form->getErrorMessages()),
@@ -125,7 +134,7 @@ class ProfileController extends BaseController
         $formData['formAction'] = $this->url('user_update');
         $formData['buttonInfo'] = 'Update Profile';
         $formData['id']         = $userId;
-        $formData['flash']      = $session->get('flash');
+        $formData['flash']      = $request->getSession()->get('flash');
 
         return $this->render('user/edit.twig', $formData);
     }
@@ -137,10 +146,7 @@ class ProfileController extends BaseController
 
     public function passwordProcessAction(Request $request)
     {
-        /** @var Authentication $authentication */
-        $authentication = $this->service(Authentication::class);
-
-        $user = $authentication->user();
+        $user = $this->authentication->user();
 
         /**
          * Okay, the logic is kind of weird but we can use the SignupForm
@@ -150,18 +156,11 @@ class ProfileController extends BaseController
             'password'  => $request->get('password'),
             'password2' => $request->get('password_confirm'),
         ];
-
-        /** @var \HTMLPurifier $htmlPurifier */
-        $htmlPurifier = $this->service('purifier');
-
-        $form = new SignupForm($formData, $htmlPurifier);
+        $form = new SignupForm($formData, $this->purifier);
         $form->sanitize();
 
-        /** @var Session\Session $session */
-        $session = $this->service('session');
-
         if ($form->validatePasswords() === false) {
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => \implode('<br>', $form->getErrorMessages()),
@@ -174,7 +173,7 @@ class ProfileController extends BaseController
         $resetCode     = $user->getResetPasswordCode();
 
         if (!$user->attemptResetPassword($resetCode, $sanitizedData['password'])) {
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Unable to update your password in the database. Please try again.',
@@ -183,7 +182,7 @@ class ProfileController extends BaseController
             return $this->redirectTo('password_edit');
         }
 
-        $session->set('flash', [
+        $request->getSession()->set('flash', [
             'type'  => 'success',
             'short' => 'Success',
             'ext'   => 'Changed your password.',

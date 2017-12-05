@@ -14,25 +14,32 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller\Reviewer;
 
 use Illuminate\Support\Collection;
-use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Http\Controller\BaseController;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig_Environment;
 
 class DashboardController extends BaseController
 {
-    use ContainerAware;
+    /**
+     * @var Authentication
+     */
+    private $authentication;
+
+    public function __construct(Authentication $authentication, Twig_Environment $twig, UrlGeneratorInterface $urlGenerator)
+    {
+        $this->authentication = $authentication;
+
+        parent::__construct($twig, $urlGenerator);
+    }
 
     public function indexAction()
     {
-        /** @var Authentication $authentication */
-        $authentication = $this->service(Authentication::class);
-
-        $userId = $authentication->user()->getId();
-
+        $userId        = $this->authentication->user()->getId();
         $talkFormatter = new TalkFormatter();
 
         /** @var Collection $recentTalks */
