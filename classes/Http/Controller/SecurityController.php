@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Services\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,8 @@ use Symfony\Component\HttpFoundation\Session;
 
 class SecurityController extends BaseController
 {
+    use ContainerAware;
+
     public function indexAction()
     {
         return $this->render('security/login.twig', [

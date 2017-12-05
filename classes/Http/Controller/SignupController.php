@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
@@ -22,6 +23,8 @@ use Symfony\Component\HttpFoundation\Session;
 
 class SignupController extends BaseController
 {
+    use ContainerAware;
+
     public function indexAction()
     {
         /** @var Authentication $auth */
@@ -53,7 +56,7 @@ class SignupController extends BaseController
     public function processAction(Request $request)
     {
         try {
-            $this->validate([
+            $this->validate($request, [
                 'email'    => 'required|email',
                 'password' => 'required',
                 'coc'      => 'accepted',
@@ -87,7 +90,7 @@ class SignupController extends BaseController
                 'ext'   => $e->errors(),
             ]);
 
-            return $this->redirectBack();
+            return $this->redirectBack($request);
         } catch (\RuntimeException $e) {
             $this->app['session']->set('flash', [
                 'type'  => 'error',
@@ -95,7 +98,7 @@ class SignupController extends BaseController
                 'ext'   => 'A user already exists with that email address',
             ]);
 
-            return $this->redirectBack();
+            return $this->redirectBack($request);
         }
     }
 }

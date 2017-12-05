@@ -18,11 +18,9 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
-use OpenCFP\ContainerAware;
 use OpenCFP\Domain\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -30,7 +28,21 @@ use Twig_Environment;
 
 abstract class BaseController
 {
-    use ContainerAware;
+    /**
+     * @var Twig_Environment
+     */
+    protected $twig;
+
+    /**
+     * @var UrlGeneratorInterface
+     */
+    protected $urlGenerator;
+
+    public function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator)
+    {
+        $this->twig         = $twig;
+        $this->urlGenerator = $urlGenerator;
+    }
 
     /**
      * Generates a file for the user
@@ -62,10 +74,7 @@ abstract class BaseController
      */
     protected function url($route, $parameters = [])
     {
-        /** @var UrlGeneratorInterface $urlGenerator */
-        $urlGenerator = $this->service('url_generator');
-
-        return $urlGenerator->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
@@ -75,14 +84,11 @@ abstract class BaseController
      * @param array  $context
      * @param int    $status
      *
-     * @return mixed
+     * @return Response
      */
     protected function render($name, array $context = [], $status = Response::HTTP_OK)
     {
-        /* @var Twig_Environment $twig */
-        $twig = $this->service('twig');
-
-        return new Response($twig->render($name, $context), $status);
+        return new Response($this->twig->render($name, $context), $status);
     }
 
     /**
@@ -93,27 +99,20 @@ abstract class BaseController
      */
     protected function redirectTo($route, $status = Response::HTTP_FOUND)
     {
-        return $this->app->redirect($this->url($route), $status);
+        return new RedirectResponse($this->url($route), $status);
     }
 
     /**
      * @return RedirectResponse
      */
-    protected function redirectBack()
+    protected function redirectBack(Request $request)
     {
-        /** @var Request $request */
-        $request = $this->service('request_stack')->getCurrentRequest();
-
-        return $this->app->redirect($request->headers->get('referer'));
+        return new RedirectResponse($request->headers->get('referer'));
     }
 
-    protected function validate($rules = [], $messages = [], $customAttributes = [])
+    protected function validate(Request $request, $rules = [], $messages = [], $customAttributes = [])
     {
-        /** @var RequestStack $requestStack */
-        $requestStack = $this->service('request_stack');
-
-        $request = $requestStack->getCurrentRequest();
-        $data    = $request->query->all() + $request->request->all() + $request->files->all();
+        $data = $request->query->all() + $request->request->all() + $request->files->all();
 
         $validation = new Factory(
             new Translator(new FileLoader(new Filesystem(), __DIR__ . '/../../../resources/lang'), 'en'),

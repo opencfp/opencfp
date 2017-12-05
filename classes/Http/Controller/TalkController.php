@@ -15,6 +15,7 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application\NotAuthorizedException;
 use OpenCFP\Application\Speakers;
+use OpenCFP\ContainerAware;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
@@ -27,6 +28,8 @@ use Twig_Environment;
 
 class TalkController extends BaseController
 {
+    use ContainerAware;
+
     /**
      * @param $requestData
      *

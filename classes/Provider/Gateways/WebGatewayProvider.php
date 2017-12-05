@@ -15,6 +15,15 @@ namespace OpenCFP\Provider\Gateways;
 
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Http\Controller\Admin;
+use OpenCFP\Http\Controller\DashboardController;
+use OpenCFP\Http\Controller\ForgotController;
+use OpenCFP\Http\Controller\PagesController;
+use OpenCFP\Http\Controller\ProfileController;
+use OpenCFP\Http\Controller\Reviewer;
+use OpenCFP\Http\Controller\SecurityController;
+use OpenCFP\Http\Controller\SignupController;
+use OpenCFP\Http\Controller\TalkController;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
@@ -32,6 +41,102 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 {
     public function register(Container $app)
     {
+        $app[DashboardController::class] = function ($app) {
+            $controller = new DashboardController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[ForgotController::class] = function ($app) {
+            $controller = new ForgotController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[PagesController::class] = function ($app) {
+            return new PagesController($app['twig'], $app['url_generator']);
+        };
+
+        $app[ProfileController::class] = function ($app) {
+            $controller = new ProfileController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[SecurityController::class] = function ($app) {
+            $controller = new SecurityController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[SignupController::class] = function ($app) {
+            $controller = new SignupController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[TalkController::class] = function ($app) {
+            $controller = new TalkController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        // Admin controllers
+        $app[Admin\DashboardController::class] = function ($app) {
+            $controller = new Admin\DashboardController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[Admin\ExportsController::class] = function ($app) {
+            $controller = new Admin\ExportsController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[Admin\SpeakersController::class] = function ($app) {
+            $controller = new Admin\SpeakersController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[Admin\TalksController::class] = function ($app) {
+            $controller = new Admin\TalksController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        // Reviewer controllers
+        $app[Reviewer\DashboardController::class] = function ($app) {
+            $controller = new Reviewer\DashboardController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[Reviewer\SpeakersController::class] = function ($app) {
+            $controller = new Reviewer\SpeakersController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
+
+        $app[Reviewer\TalksController::class] = function ($app) {
+            $controller = new Reviewer\TalksController($app['twig'], $app['url_generator']);
+            $controller->setApplication($app);
+
+            return $controller;
+        };
     }
 
     public function boot(Application $app)
