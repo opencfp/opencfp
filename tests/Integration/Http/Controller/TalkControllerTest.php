@@ -56,7 +56,7 @@ final class TalkControllerTest extends WebTestCase
     public function ampersandsAcceptableCharacterForTalks()
     {
         // Create a test double for SwiftMailer
-        $swiftMailer = m::mock(\stdClass::class);
+        $swiftMailer = m::mock(\Swift_Mailer::class);
         $swiftMailer->shouldReceive('send')->andReturn(true);
         $this->swap('mailer', $swiftMailer);
 
