@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Provider\Gateways;
 
 use OpenCFP\Domain\CallForPapers;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\Admin;
 use OpenCFP\Http\Controller\DashboardController;
@@ -49,10 +50,13 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         };
 
         $app[ForgotController::class] = function ($app) {
-            $controller = new ForgotController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new ForgotController(
+                $app['form.factory'],
+                $app[AccountManagement::class],
+                $app['reset_emailer'],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
 
         $app[PagesController::class] = function ($app) {
