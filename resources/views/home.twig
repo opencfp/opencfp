@@ -1,7 +1,7 @@
 {% extends "layouts/default.twig" %}
 
 {% block header %}
-    <header id="hero" class="bg-cover p-24" style="background:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url({{ app.config.application.venue_image_path }}) no-repeat center -300px fixed;">
+    <header id="hero" class="bg-cover p-24" style="background:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url({{ app.config.application.venue_image_path }}) no-repeat center -300px / cover fixed;">
         <div class="container mx-auto flex">
             <div class="p-8 bg-brand text-white">
                 {% if cfp_open %}
