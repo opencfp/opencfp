@@ -214,10 +214,10 @@ class ForgotController extends BaseController
             return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
         }
 
-        $data       = $form->getData();
-        $userId     = $data['user_id'];
-        $resetCode  = $data['reset_code'];
-        $password   = $data['password'];
+        $data      = $form->getData();
+        $userId    = $data['user_id'];
+        $resetCode = $data['reset_code'];
+        $password  = $data['password'];
 
         if (empty($resetCode)) {
             throw new \Exception();

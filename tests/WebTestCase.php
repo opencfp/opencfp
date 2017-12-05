@@ -223,7 +223,7 @@ abstract class WebTestCase extends BaseTestCase
 
     public function passCsrfValidator(): self
     {
-        $csrf= Mockery::mock(RequestValidator::class);
+        $csrf = Mockery::mock(RequestValidator::class);
         $csrf->shouldReceive('isValid')->andReturn(true);
         $this->swap(CsrfValidator::class, $csrf);
 

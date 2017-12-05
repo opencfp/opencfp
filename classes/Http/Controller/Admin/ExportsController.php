@@ -54,9 +54,9 @@ class ExportsController extends BaseController
 
     private function talksExportAction(bool $attributed, $where = null)
     {
-        $talks         = Talk::orderBy('created_at', 'DESC');
-        $talks         = $where == null ? $talks : $talks->where($where);
-        $talks         = $talks->get()->toArray();
+        $talks = Talk::orderBy('created_at', 'DESC');
+        $talks = $where == null ? $talks : $talks->where($where);
+        $talks = $talks->get()->toArray();
 
         foreach ($talks as $talk => $info) {
             $talks[$talk]['created_at'] = $info['created_at'];

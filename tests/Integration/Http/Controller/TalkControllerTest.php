@@ -196,7 +196,7 @@ final class TalkControllerTest extends WebTestCase
      */
     public function notAllowedToDeleteSomeoneElseTalk()
     {
-        $this->asLoggedInSpeaker(self::$user->id +1)
+        $this->asLoggedInSpeaker(self::$user->id + 1)
             ->passCsrfValidator()
             ->post('/talk/delete', ['tid' => self::$talk->id])
             ->assertNotSee('ok')

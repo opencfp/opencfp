@@ -352,8 +352,8 @@ final class SpeakerProfileTest extends Framework\TestCase
     public function providerDoesNotNeedTransportation(): \Generator
     {
         $values = [
-            'int-zero'      => 0,
-            'null'          => null,
+            'int-zero' => 0,
+            'null'     => null,
         ];
 
         foreach ($values as $key => $value) {

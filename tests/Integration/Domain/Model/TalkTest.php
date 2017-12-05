@@ -145,7 +145,7 @@ final class TalkTest extends BaseTestCase
             'selected'    => 0,
         ]);
 
-        $talkTwo =Talk::create([
+        $talkTwo = Talk::create([
             'user_id'     => 7,
             'title'       => 'talks title NO 2',
             'description' => 'Long description',

@@ -26,8 +26,8 @@ class UserRolesMigration extends AbstractMigration
         $options       = $adapter->getOptions();
         $this->capsule = new Capsule();
         $this->capsule->addConnection([
-            'driver'    => 'mysql',
-            'database'  => $options['name'],
+            'driver'   => 'mysql',
+            'database' => $options['name'],
         ]);
         $this->capsule->getConnection()->setPdo($adapter->getConnection());
         $this->capsule->bootEloquent();

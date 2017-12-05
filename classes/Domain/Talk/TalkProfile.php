@@ -89,17 +89,17 @@ class TalkProfile
 
     public function isSponsor(): bool
     {
-        return $this->talk->sponsor ==1;
+        return $this->talk->sponsor == 1;
     }
 
     public function isSpeakerFavorite(): bool
     {
-        return $this->talk->favorite ==1;
+        return $this->talk->favorite == 1;
     }
 
     public function isSelected(): bool
     {
-        return $this->talk->selected ==1;
+        return $this->talk->selected == 1;
     }
 
     public function getComments(): Collection

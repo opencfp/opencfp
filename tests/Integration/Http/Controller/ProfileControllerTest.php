@@ -62,7 +62,7 @@ final class ProfileControllerTest extends WebTestCase
     public function notAbleToEditOtherPersonsProfile()
     {
         $this->asLoggedInSpeaker(1)
-            ->post('/profile/edit', ['id' =>2])
+            ->post('/profile/edit', ['id' => 2])
             ->assertNotSee('My Profile')
             ->assertRedirect();
     }

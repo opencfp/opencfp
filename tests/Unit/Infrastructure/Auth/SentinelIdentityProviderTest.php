@@ -63,7 +63,7 @@ final class SentinelIdentityProviderTest extends BaseTestCase
     {
         $id = $this->faker()->randomNumber();
 
-        $sentinelUser =  $this->getSentinelUserMock();
+        $sentinelUser = $this->getSentinelUserMock();
 
         $sentinelUser
             ->shouldReceive('getUserId')

@@ -167,7 +167,7 @@ final class TalksControllerTest extends WebTestCase
         $talk = self::$talks->first();
 
         $this->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/favorite', ['delete' =>1])
+            ->post('/admin/talks/' . $talk->id . '/favorite', ['delete' => 1])
             ->assertSee('1')
             ->assertSuccessful();
     }

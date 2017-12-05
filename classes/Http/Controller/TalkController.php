@@ -35,7 +35,7 @@ class TalkController extends BaseController
     private function getTalkForm($requestData): TalkForm
     {
         /** @var TalkHelper $helper */
-        $helper  = $this->service(TalkHelper::class);
+        $helper = $this->service(TalkHelper::class);
 
         $options = [
             'categories' => $helper->getTalkCategories(),
@@ -62,8 +62,8 @@ class TalkController extends BaseController
         $speakers = $this->service('application.speakers');
 
         try {
-            $talkId   = (int) $request->get('id');
-            $talk     = $speakers->getTalk($talkId);
+            $talkId = (int) $request->get('id');
+            $talk   = $speakers->getTalk($talkId);
         } catch (NotAuthorizedException $e) {
             return $this->redirectTo('dashboard');
         }
@@ -73,7 +73,7 @@ class TalkController extends BaseController
 
     public function editAction(Request $request)
     {
-        $talkId      = (int) $request->get('id');
+        $talkId = (int) $request->get('id');
 
         /** @var CallForPapers $callForPapers */
         $callForPapers = $this->service(CallForPapers::class);
@@ -216,7 +216,7 @@ class TalkController extends BaseController
 
         if ($form->validateAll()) {
             $sanitizedData            = $form->getCleanData();
-            $sanitizedData['user_id'] =  (int) $user->getId();
+            $sanitizedData['user_id'] = (int) $user->getId();
             $talk                     = Talk::create($sanitizedData);
 
             $session->set('flash', [
@@ -304,7 +304,7 @@ class TalkController extends BaseController
 
         if ($form->validateAll()) {
             $sanitizedData            = $form->getCleanData();
-            $sanitizedData['user_id'] =(int) $user->getId();
+            $sanitizedData['user_id'] = (int) $user->getId();
             
             if (Talk::find((int) $sanitizedData['id'])->update($sanitizedData)) {
                 $session->set('flash', [
@@ -368,7 +368,7 @@ class TalkController extends BaseController
         $userId = $authentication->userId();
         $talk   = Talk::find($request->get('tid'), ['id', 'user_id']);
 
-        if ((int) $talk->user_id !==  $userId) {
+        if ((int) $talk->user_id !== $userId) {
             return $this->app->json(['delete' => 'no']);
         }
 
@@ -403,7 +403,7 @@ class TalkController extends BaseController
 
         try {
             /** @var \Swift_Mailer $mailer */
-            $mailer  = $this->service('mailer');
+            $mailer = $this->service('mailer');
 
             $message = new Swift_Message();
 
