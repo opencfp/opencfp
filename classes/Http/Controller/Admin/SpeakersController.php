@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller\Admin;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use OpenCFP\ContainerAware;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -24,32 +23,82 @@ use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig_Environment;
 
 class SpeakersController extends BaseController
 {
-    use ContainerAware;
+    /**
+     * @var Authentication
+     */
+    private $authentication;
+
+    /**
+     * @var AccountManagement
+     */
+    private $accounts;
+
+    /**
+     * @var AirportInformationDatabase
+     */
+    private $airports;
+
+    /**
+     * @var Capsule
+     */
+    private $capsule;
+
+    /**
+     * @var int
+     */
+    private $applicationArrival;
+
+    /**
+     * @var int
+     */
+    private $applicationDeparture;
+
+    /**
+     * @var string
+     */
+    private $applicationAirport;
+
+    public function __construct(
+        Authentication $authentication,
+        AccountManagement $accounts,
+        AirportInformationDatabase $airports,
+        Capsule $capsule,
+        Twig_Environment $twig,
+        UrlGeneratorInterface $urlGenerator,
+        string $applicationAirport,
+        int $applicationArrival,
+        int $applicationDeparture
+    ) {
+        $this->authentication       = $authentication;
+        $this->accounts             = $accounts;
+        $this->airports             = $airports;
+        $this->capsule              = $capsule;
+        $this->applicationAirport   = $applicationAirport;
+        $this->applicationArrival   = $applicationArrival;
+        $this->applicationDeparture = $applicationDeparture;
+
+        parent::__construct($twig, $urlGenerator);
+    }
 
     public function indexAction(Request $request)
     {
         $search = $request->get('search');
 
-        /** @var AccountManagement $accounts */
-        $accounts = $this->service(AccountManagement::class);
-
-        $adminUsers      = $accounts->findByRole('Admin');
+        $adminUsers      = $this->accounts->findByRole('Admin');
         $adminUserIds    = \array_column($adminUsers, 'id');
-        $reviewerUsers   = $accounts->findByRole('Reviewer');
+        $reviewerUsers   = $this->accounts->findByRole('Reviewer');
         $reviewerUserIds = \array_column($reviewerUsers, 'id');
 
         $rawSpeakers = User::search($search)->get();
 
-        /** @var AirportInformationDatabase $airports */
-        $airports = $this->service(AirportInformationDatabase::class);
-
-        $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($airports, $adminUserIds, $reviewerUserIds) {
+        $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($adminUserIds, $reviewerUserIds) {
             try {
-                $airport = $airports->withCode($speaker['airport']);
+                $airport = $this->airports->withCode($speaker['airport']);
 
                 $speaker['airport'] = [
                     'code'    => $airport->code,
@@ -72,9 +121,9 @@ class SpeakersController extends BaseController
         $pagination = $pagerfanta->createView('/admin/speakers?');
 
         $templateData = [
-            'airport'    => $this->app->config('application.airport'),
-            'arrival'    => \date('Y-m-d', $this->app->config('application.arrival')),
-            'departure'  => \date('Y-m-d', $this->app->config('application.departure')),
+            'airport'    => $this->applicationAirport,
+            'arrival'    => \date('Y-m-d', $this->applicationArrival),
+            'departure'  => \date('Y-m-d', $this->applicationDeparture),
             'pagination' => $pagination,
             'speakers'   => $pagerfanta->getFanta(),
             'page'       => $pagerfanta->getCurrentPage(),
@@ -89,23 +138,17 @@ class SpeakersController extends BaseController
         $speakerDetails = User::find($request->get('id'));
 
         if (!$speakerDetails instanceof User) {
-            /** @var Session\Session $session */
-            $session = $this->service('session');
-
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Could not find requested speaker',
             ]);
 
-            return $this->app->redirect($this->url('admin_speakers'));
+            return $this->redirectTo('admin_speakers');
         }
 
-        /** @var AirportInformationDatabase $airports */
-        $airports = $this->service(AirportInformationDatabase::class);
-
         try {
-            $airport = $airports->withCode($speakerDetails->airport);
+            $airport = $this->airports->withCode($speakerDetails->airport);
 
             $speakerDetails->airport = [
                 'code'    => $airport->code,
@@ -120,9 +163,9 @@ class SpeakersController extends BaseController
 
         // Build and render the template
         $templateData = [
-            'airport'    => $this->app->config('application.airport'),
-            'arrival'    => \date('Y-m-d', $this->app->config('application.arrival')),
-            'departure'  => \date('Y-m-d', $this->app->config('application.departure')),
+            'airport'    => $this->applicationAirport,
+            'arrival'    => \date('Y-m-d', $this->applicationArrival),
+            'departure'  => \date('Y-m-d', $this->applicationDeparture),
             'speaker'    => new SpeakerProfile($speakerDetails),
             'talks'      => $talks,
             'photo_path' => '/uploads/',
@@ -134,10 +177,7 @@ class SpeakersController extends BaseController
 
     public function deleteAction(Request $request)
     {
-        /** @var Capsule $capsule */
-        $capsule = $this->service(Capsule::class);
-
-        $capsule->getConnection()->beginTransaction();
+        $this->capsule->getConnection()->beginTransaction();
 
         try {
             $user = User::findorFail($request->get('id'));
@@ -145,19 +185,16 @@ class SpeakersController extends BaseController
             $ext   = 'Successfully deleted the requested user';
             $type  = 'success';
             $short = 'Success';
-            $capsule->getConnection()->commit();
+            $this->capsule->getConnection()->commit();
         } catch (\Exception $e) {
-            $capsule->getConnection()->rollBack();
+            $this->capsule->getConnection()->rollBack();
             $ext   = 'Unable to delete the requested user';
             $type  = 'error';
             $short = 'Error';
         }
 
-        /** @var Session\Session $session */
-        $session = $this->service('session');
-
         // Set flash message
-        $session->set('flash', [
+        $request->getSession()->set('flash', [
             'type'  => $type,
             'short' => $short,
             'ext'   => $ext,
@@ -168,20 +205,11 @@ class SpeakersController extends BaseController
 
     public function demoteAction(Request $request)
     {
-        /** @var AccountManagement $accounts */
-        $accounts = $this->service(AccountManagement::class);
-
         $role = $request->get('role');
         $id   = (int) $request->get('id');
 
-        /** @var Authentication $authentication */
-        $authentication = $this->service(Authentication::class);
-
-        /** @var Session\Session $session */
-        $session = $this->service('session');
-
-        if ($authentication->user()->getId() == $id) {
-            $session->set('flash', [
+        if ($this->authentication->user()->getId() == $id) {
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Sorry, you cannot remove yourself as ' . $role . '.',
@@ -191,16 +219,16 @@ class SpeakersController extends BaseController
         }
 
         try {
-            $user = $accounts->findById($id);
-            $accounts->demoteFrom($user->getLogin(), $role);
+            $user = $this->accounts->findById($id);
+            $this->accounts->demoteFrom($user->getLogin(), $role);
 
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'success',
                 'short' => 'Success',
                 'ext'   => '',
             ]);
         } catch (\Exception $e) {
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'We were unable to remove the ' . $role . '. Please try again.',
@@ -212,20 +240,14 @@ class SpeakersController extends BaseController
 
     public function promoteAction(Request $request)
     {
-        /* @var AccountManagement $accounts */
-        $accounts = $this->service(AccountManagement::class);
-
         $role = $request->get('role');
         $id   = (int) $request->get('id');
 
-        /** @var Session\Session $session */
-        $session = $this->service('session');
-
         try {
-            $user = $accounts->findById($id);
+            $user = $this->accounts->findById($id);
 
             if ($user->hasAccess(\strtolower($role))) {
-                $session->set('flash', [
+                $request->getSession()->set('flash', [
                     'type'  => 'error',
                     'short' => 'Error',
                     'ext'   => 'User already is in the ' . $role . ' group.',
@@ -234,15 +256,15 @@ class SpeakersController extends BaseController
                 return $this->redirectTo('admin_speakers');
             }
 
-            $accounts->promoteTo($user->getLogin(), $role);
+            $this->accounts->promoteTo($user->getLogin(), $role);
 
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'success',
                 'short' => 'Success',
                 'ext'   => '',
             ]);
         } catch (\Exception $e) {
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'We were unable to promote the ' . $role . '. Please try again.',

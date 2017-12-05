@@ -13,17 +13,27 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller\Reviewer;
 
-use OpenCFP\ContainerAware;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig_Environment;
 
 class SpeakersController extends BaseController
 {
-    use ContainerAware;
+    /**
+     * @var array
+     */
+    private $reviewerUsers;
+
+    public function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, array $reviewerUsers)
+    {
+        $this->reviewerUsers = $reviewerUsers;
+
+        parent::__construct($twig, $urlGenerator);
+    }
 
     public function indexAction(Request $request)
     {
@@ -49,21 +59,18 @@ class SpeakersController extends BaseController
         $speakerDetails = User::where('id', $request->get('id'))->first();
 
         if (!$speakerDetails instanceof User) {
-            /** @var Session\Session $session */
-            $session = $this->service('session');
-
-            $session->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Could not find requested speaker',
             ]);
 
-            return $this->app->redirect($this->url('reviewer_speakers'));
+            return $this->redirectTo('reviewer_speakers');
         }
 
         $talks        = $speakerDetails->talks()->get()->toArray();
         $templateData = [
-            'speaker'    => new SpeakerProfile($speakerDetails, $this->app->config('reviewer.users') ?: []),
+            'speaker'    => new SpeakerProfile($speakerDetails, $this->reviewerUsers),
             'talks'      => $talks,
             'photo_path' => '/uploads/',
             'page'       => $request->get('page'),

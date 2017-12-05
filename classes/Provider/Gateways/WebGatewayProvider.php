@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace OpenCFP\Provider\Gateways;
 
+use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\Controller\Admin;
 use OpenCFP\Http\Controller\DashboardController;
@@ -113,10 +115,17 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         };
 
         $app[Admin\SpeakersController::class] = function ($app) {
-            $controller = new Admin\SpeakersController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Admin\SpeakersController(
+                $app[Authentication::class],
+                $app[AccountManagement::class],
+                $app[AirportInformationDatabase::class],
+                $app[Capsule::class],
+                $app['twig'],
+                $app['url_generator'],
+                $app->config('application.airport'),
+                $app->config('application.arrival'),
+                $app->config('application.departure')
+            );
         };
 
         $app[Admin\TalksController::class] = function ($app) {
@@ -136,10 +145,11 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         };
 
         $app[Reviewer\SpeakersController::class] = function ($app) {
-            $controller = new Reviewer\SpeakersController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Reviewer\SpeakersController(
+                $app['twig'],
+                $app['url_generator'],
+                $app->config('reviewer.users') ?: []
+            );
         };
 
         $app[Reviewer\TalksController::class] = function ($app) {
