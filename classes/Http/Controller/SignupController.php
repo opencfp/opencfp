@@ -13,35 +13,53 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
-use OpenCFP\ContainerAware;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig_Environment;
 
 class SignupController extends BaseController
 {
-    use ContainerAware;
+    /**
+     * @var Authentication
+     */
+    private $authentication;
 
-    public function indexAction()
+    /**
+     * @var AccountManagement
+     */
+    private $accounts;
+
+    /**
+     * @var CallForPapers
+     */
+    private $callForPapers;
+
+    public function __construct(
+        Authentication $authentication,
+        AccountManagement $accounts,
+        CallForPapers $callForPapers,
+        Twig_Environment $twig,
+        UrlGeneratorInterface $urlGenerator
+    ) {
+        $this->authentication = $authentication;
+        $this->accounts       = $accounts;
+        $this->callForPapers  = $callForPapers;
+
+        parent::__construct($twig, $urlGenerator);
+    }
+
+    public function indexAction(Request $request)
     {
-        /** @var Authentication $auth */
-        $auth = $this->service(Authentication::class);
-
-        if ($auth->isAuthenticated()) {
+        if ($this->authentication->isAuthenticated()) {
             return $this->redirectTo('dashboard');
         }
 
-        /** @var CallForPapers $cfp */
-        $cfp = $this->service(CallForPapers::class);
-
-        if (!$cfp->isOpen()) {
-            /** @var Session\Session $session */
-            $session = $this->service('session');
-
-            $session->set('flash', [
+        if (!$this->callForPapers->isOpen()) {
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Sorry, the call for papers has ended.',
@@ -62,29 +80,23 @@ class SignupController extends BaseController
                 'coc'      => 'accepted',
             ]);
 
-            /** @var AccountManagement $accounts */
-            $accounts = $this->service(AccountManagement::class);
-
-            $user = $accounts->create($request->get('email'), $request->get('password'), [
+            $this->accounts->create($request->get('email'), $request->get('password'), [
                 'activated' => 1,
             ]);
-            $accounts->activate($request->get('email'));
+            $this->accounts->activate($request->get('email'));
 
-            $this->app['session']->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'success',
                 'short' => 'Success',
                 'ext'   => "You've successfully created your account!",
             ]);
 
-            /** @var Authentication $authentication */
-            $authentication = $this->service(Authentication::class);
-
             // Automatically authenticate the newly created user.
-            $authentication->authenticate($request->get('email'), $request->get('password'));
+            $this->authentication->authenticate($request->get('email'), $request->get('password'));
 
             return $this->redirectTo('dashboard');
         } catch (ValidationException $e) {
-            $this->app['session']->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => $e->getMessage(),
                 'ext'   => $e->errors(),
@@ -92,7 +104,7 @@ class SignupController extends BaseController
 
             return $this->redirectBack($request);
         } catch (\RuntimeException $e) {
-            $this->app['session']->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'A user already exists with that email address',
