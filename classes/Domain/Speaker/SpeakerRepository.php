@@ -21,13 +21,13 @@ interface SpeakerRepository
     /**
      * Retrieves a speaker with associated talks.
      *
-     * @param string $speakerId
+     * @param int $speakerId
      *
      * @throws EntityNotFoundException
      *
      * @return User the speaker that matches given identifier
      */
-    public function findById($speakerId): User;
+    public function findById(int $speakerId): User;
 
     /**
      * Saves a speaker and their talks.

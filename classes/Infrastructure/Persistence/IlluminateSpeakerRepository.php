@@ -30,7 +30,7 @@ class IlluminateSpeakerRepository implements SpeakerRepository
         $this->userModel = $userModel;
     }
 
-    public function findById($speakerId): User
+    public function findById(int $speakerId): User
     {
         try {
             $speaker = $this->userModel->findOrFail($speakerId);
