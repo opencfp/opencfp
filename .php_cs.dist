@@ -13,7 +13,8 @@ TXT;
 
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
-    ->name('opencfp');
+    ->name('opencfp')
+    ->exclude('cache');
 
 return PhpCsFixer\Config::create()
     ->setUsingCache(true)
