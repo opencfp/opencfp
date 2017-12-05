@@ -43,10 +43,10 @@ class ResetEmailer
      */
     public function __construct(\Swift_Mailer $swiftMailer, \Twig_Template $template, $configEmail, $configTitle)
     {
-        $this->swiftMailer  = $swiftMailer;
-        $this->template     = $template;
-        $this->configEmail  = $configEmail;
-        $this->configTitle  = $configTitle;
+        $this->swiftMailer = $swiftMailer;
+        $this->template    = $template;
+        $this->configEmail = $configEmail;
+        $this->configTitle = $configTitle;
     }
 
     /**

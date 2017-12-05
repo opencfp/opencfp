@@ -42,7 +42,7 @@ final class TalkFormatterTest extends BaseTestCase
         $talk      = new Talk();
         $formatter = new TalkFormatter();
 
-        $format =$formatter->createdFormattedOutput($talk->first(), 1);
+        $format = $formatter->createdFormattedOutput($talk->first(), 1);
 
         $this->assertSame('One talk to rule them all', $format->getTitle());
         $this->assertSame('api', $format->getCategory());
@@ -59,7 +59,7 @@ final class TalkFormatterTest extends BaseTestCase
         $talk      = new Talk();
 
         // Now to see if the meta gets put in correctly
-        $secondFormat =$formatter->createdFormattedOutput($talk->first(), 2);
+        $secondFormat = $formatter->createdFormattedOutput($talk->first(), 2);
 
         $this->assertSame(1, $secondFormat->getRating());
         $this->assertTrue($secondFormat->isViewedByMe());

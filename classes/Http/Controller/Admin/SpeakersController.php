@@ -32,7 +32,7 @@ class SpeakersController extends BaseController
         $search = $request->get('search');
 
         /** @var AccountManagement $accounts */
-        $accounts        = $this->service(AccountManagement::class);
+        $accounts = $this->service(AccountManagement::class);
 
         $adminUsers      = $accounts->findByRole('Admin');
         $adminUserIds    = \array_column($adminUsers, 'id');
@@ -168,8 +168,8 @@ class SpeakersController extends BaseController
         /** @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
 
-        $role     = $request->get('role');
-        $id       = (int) $request->get('id');
+        $role = $request->get('role');
+        $id   = (int) $request->get('id');
 
         /** @var Authentication $authentication */
         $authentication = $this->service(Authentication::class);
@@ -212,8 +212,8 @@ class SpeakersController extends BaseController
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
 
-        $role     = $request->get('role');
-        $id       = (int) $request->get('id');
+        $role = $request->get('role');
+        $id   = (int) $request->get('id');
 
         /** @var Session\Session $session */
         $session = $this->service('session');

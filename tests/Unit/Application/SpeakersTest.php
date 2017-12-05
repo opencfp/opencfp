@@ -38,7 +38,7 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->identityProvider  = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
+        $this->identityProvider = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
 
         $this->sut = new Speakers($this->identityProvider);
     }
@@ -188,7 +188,7 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
-        $talk= m::mock(\stdClass::class);
+        $talk = m::mock(\stdClass::class);
         $talk->shouldReceive('find')->andReturn(
             new Talk([
                 'id'      => 1,

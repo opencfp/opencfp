@@ -48,18 +48,18 @@ class TalkHelper
 
         if ($categories === null) {
             $categories = [
-                'api'               => 'APIs (REST, SOAP, etc.)',
-                'continuousdelivery'=> 'Continuous Delivery',
-                'database'          => 'Database',
-                'development'       => 'Development',
-                'devops'            => 'Devops',
-                'framework'         => 'Framework',
-                'ibmi'              => 'IBMi',
-                'javascript'        => 'JavaScript',
-                'security'          => 'Security',
-                'testing'           => 'Testing',
-                'uiux'              => 'UI/UX',
-                'other'             => 'Other',
+                'api'                => 'APIs (REST, SOAP, etc.)',
+                'continuousdelivery' => 'Continuous Delivery',
+                'database'           => 'Database',
+                'development'        => 'Development',
+                'devops'             => 'Devops',
+                'framework'          => 'Framework',
+                'ibmi'               => 'IBMi',
+                'javascript'         => 'JavaScript',
+                'security'           => 'Security',
+                'testing'            => 'Testing',
+                'uiux'               => 'UI/UX',
+                'other'              => 'Other',
             ];
         }
 

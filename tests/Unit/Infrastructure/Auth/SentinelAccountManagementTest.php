@@ -229,9 +229,9 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
     {
         $faker = $this->faker();
 
-        $userId    = $faker->numberBetween(1);
-        $email     = $faker->word;
-        $roleName  = $faker->word;
+        $userId   = $faker->numberBetween(1);
+        $email    = $faker->word;
+        $roleName = $faker->word;
 
         $user = Mockery::mock(Users\UserInterface::class);
 
@@ -323,9 +323,9 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
     {
         $faker = $this->faker();
 
-        $userId    = $faker->numberBetween(1);
-        $email     = $faker->word;
-        $roleName  = $faker->word;
+        $userId   = $faker->numberBetween(1);
+        $email    = $faker->word;
+        $roleName = $faker->word;
 
         $user = Mockery::mock(Users\UserInterface::class);
 

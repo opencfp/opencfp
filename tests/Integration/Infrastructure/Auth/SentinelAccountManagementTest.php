@@ -96,7 +96,7 @@ final class SentinelAccountManagementTest extends BaseTestCase
             'last_name'  => 'Account',
         ]);
 
-        $user =$this->sut->findByLogin('test@example.com');
+        $user = $this->sut->findByLogin('test@example.com');
         $this->assertSame('test@example.com', $user->getLogin());
     }
 

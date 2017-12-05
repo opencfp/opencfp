@@ -53,15 +53,15 @@ class SignupForm extends Form
             $agreeCoc       = $this->validateAgreeCoc();
         }
 
-        $validEmail         = $this->validateEmail();
-        $validFirstName     = $this->validateFirstName();
-        $validLastName      = $this->validateLastName();
-        $validCompany       = $this->validateCompany();
-        $validTwitter       = $this->validateTwitter();
-        $validUrl           = $this->validateUrl();
-        $validSpeakerPhoto  = $this->validateSpeakerPhoto();
-        $validSpeakerInfo   = true;
-        $validSpeakerBio    = true;
+        $validEmail        = $this->validateEmail();
+        $validFirstName    = $this->validateFirstName();
+        $validLastName     = $this->validateLastName();
+        $validCompany      = $this->validateCompany();
+        $validTwitter      = $this->validateTwitter();
+        $validUrl          = $this->validateUrl();
+        $validSpeakerPhoto = $this->validateSpeakerPhoto();
+        $validSpeakerInfo  = true;
+        $validSpeakerBio   = true;
 
         if (!empty($this->taintedData['speaker_info'])) {
             $validSpeakerInfo = $this->validateSpeakerInfo();
@@ -72,17 +72,7 @@ class SignupForm extends Form
         }
 
         return
-            $validEmail         &&
-            $validPasswords     &&
-            $validFirstName     &&
-            $validLastName      &&
-            $validCompany       &&
-            $validTwitter       &&
-            $validUrl           &&
-            $validSpeakerInfo   &&
-            $validSpeakerBio    &&
-            $validSpeakerPhoto  &&
-            $agreeCoc;
+            $validEmail && $validPasswords && $validFirstName && $validLastName && $validCompany && $validTwitter && $validUrl && $validSpeakerInfo && $validSpeakerBio && $validSpeakerPhoto && $agreeCoc;
     }
 
     public function validateSpeakerPhoto(): bool
@@ -277,9 +267,9 @@ class SignupForm extends Form
             $this->cleanData['speaker_info'],
             FILTER_SANITIZE_STRING
         );
-        $validationResponse  = true;
-        $speakerInfo         = \strip_tags($speakerInfo);
-        $speakerInfo         = $this->purifier->purify($speakerInfo);
+        $validationResponse = true;
+        $speakerInfo        = \strip_tags($speakerInfo);
+        $speakerInfo        = $this->purifier->purify($speakerInfo);
 
         if (empty($speakerInfo)) {
             $this->addErrorMessage('You submitted speaker info but it was empty after sanitizing');

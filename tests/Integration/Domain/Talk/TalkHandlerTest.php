@@ -45,7 +45,7 @@ final class TalkHandlerTest extends BaseTestCase
     protected function setUp()
     {
         parent::setUp();
-        $auth     = Mockery::mock(Authentication::class);
+        $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('userId')->andReturn(1);
         $this->authentication = $auth;
         $ratingSystem         = Mockery::mock(TalkRatingStrategy::class);
@@ -152,8 +152,8 @@ final class TalkHandlerTest extends BaseTestCase
      */
     public function rateReturnsFalseOnError()
     {
-        $talk           = self::$talk;
-        $ratingSystem   = Mockery::mock(TalkRatingStrategy::class);
+        $talk         = self::$talk;
+        $ratingSystem = Mockery::mock(TalkRatingStrategy::class);
         $ratingSystem->shouldReceive('rate')->andThrow(TalkRatingException::class);
         $talkHandler = new TalkHandler($this->authentication, $ratingSystem);
         $talkHandler->with($talk);
@@ -167,7 +167,7 @@ final class TalkHandlerTest extends BaseTestCase
      */
     public function viewWillSetTheTalkToViewed()
     {
-        $talk        = $talk = Mockery::mock(Talk::class)->makePartial();
+        $talk = $talk = Mockery::mock(Talk::class)->makePartial();
         $talk->shouldReceive('getMetaFor')->andReturnSelf();
         $talk->shouldReceive('save')->andReturn(true);
         $talk->viewed = 0;
@@ -186,7 +186,7 @@ final class TalkHandlerTest extends BaseTestCase
      */
     public function viewedWillReturnFalseOnError()
     {
-        $talk        = $talk = Mockery::mock(Talk::class)->makePartial();
+        $talk = $talk = Mockery::mock(Talk::class)->makePartial();
         $talk->shouldReceive('getMetaFor')->andThrow(\Exception::class);
         $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
         $talkHandler->with($talk);

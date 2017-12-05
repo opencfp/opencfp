@@ -191,8 +191,8 @@ abstract class Form
      */
     protected function internalSanitize(array $taintedData): array
     {
-        $purifier  = $this->purifier;
-        $filtered  = \array_map(
+        $purifier = $this->purifier;
+        $filtered = \array_map(
             function ($field) use ($purifier) {
                 return $purifier->purify($field);
             },
