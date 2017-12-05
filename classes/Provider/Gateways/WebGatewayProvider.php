@@ -42,10 +42,11 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
     public function register(Container $app)
     {
         $app[DashboardController::class] = function ($app) {
-            $controller = new DashboardController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new DashboardController(
+                $app['application.speakers'],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
 
         $app[ForgotController::class] = function ($app) {
@@ -89,10 +90,11 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 
         // Admin controllers
         $app[Admin\DashboardController::class] = function ($app) {
-            $controller = new Admin\DashboardController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Admin\DashboardController(
+                $app[Authentication::class],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
 
         $app[Admin\ExportsController::class] = function ($app) {
@@ -118,10 +120,11 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 
         // Reviewer controllers
         $app[Reviewer\DashboardController::class] = function ($app) {
-            $controller = new Reviewer\DashboardController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new Reviewer\DashboardController(
+                $app[Authentication::class],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
 
         $app[Reviewer\SpeakersController::class] = function ($app) {

@@ -14,36 +14,32 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application\Speakers;
-use OpenCFP\ContainerAware;
-use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig_Environment;
 
 class DashboardController extends BaseController
 {
-    use ContainerAware;
+    /**
+     * @var Speakers
+     */
+    private $speakers;
+
+    public function __construct(
+        Speakers $speakers,
+        Twig_Environment $twig,
+        UrlGeneratorInterface $urlGenerator
+    ) {
+        $this->speakers = $speakers;
+
+        parent::__construct($twig, $urlGenerator);
+    }
 
     public function showSpeakerProfile()
     {
-        /**
-         * Local reference to speakers application service.
-         *
-         * This should be injected instead of using service location but there's currently a
-         * "conflict" between Controller as Services and our custom ControllerResolver that injects the Application
-         * container.
-         *
-         * @var Speakers $speakers
-         */
-        $speakers = $this->service('application.speakers');
-
         try {
-            $profile = $speakers->findProfile();
-
-            /** @var CallForPapers $cfp */
-            $cfp = $this->service(CallForPapers::class);
-
             return $this->render('dashboard.twig', [
-                'profile'  => $profile,
-                'cfp_open' => $cfp->isOpen(),
+                'profile' => $this->speakers->findProfile(),
             ]);
         } catch (NotAuthenticatedException $e) {
             return $this->redirectTo('login');
