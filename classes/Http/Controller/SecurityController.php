@@ -26,13 +26,13 @@ class SecurityController extends BaseController
         ]);
     }
 
-    public function processAction(Request $req)
+    public function processAction(Request $request)
     {
         /** @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
         try {
-            $auth->authenticate($req->get('email'), $req->get('password'));
+            $auth->authenticate($request->get('email'), $request->get('password'));
 
             return $this->redirectTo('dashboard');
         } catch (\Exception $e) {
@@ -43,7 +43,7 @@ class SecurityController extends BaseController
             ]);
 
             $templateData = [
-                'email' => $req->get('email'),
+                'email' => $request->get('email'),
                 'flash' => $this->app['session']->get('flash'),
             ];
 

@@ -31,12 +31,12 @@ class ForgotController extends BaseController
         return $this->render('security/forgot_password.twig', $data);
     }
 
-    public function sendResetAction(Request $req)
+    public function sendResetAction(Request $request)
     {
         $form = $this->service('form.factory')
             ->createBuilder(ForgotForm::class)
             ->getForm();
-        $form->handleRequest($req);
+        $form->handleRequest($request);
 
         if (!$form->isValid()) {
             $this->service('session')->set('flash', [
@@ -80,9 +80,9 @@ class ForgotController extends BaseController
         return $this->redirectTo('login');
     }
 
-    public function resetAction(Request $req)
+    public function resetAction(Request $request)
     {
-        if (empty($req->get('reset_code'))) {
+        if (empty($request->get('reset_code'))) {
             throw new \Exception();
         }
 
@@ -93,9 +93,9 @@ class ForgotController extends BaseController
             /** @var AccountManagement $accounts */
             $accounts = $this->service(AccountManagement::class);
 
-            $user = $accounts->findById($req->get('user_id'));
+            $user = $accounts->findById($request->get('user_id'));
 
-            if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
+            if (!$user->checkResetPasswordCode($request->get('reset_code'))) {
                 ++$error;
             }
         } catch (\RuntimeException $e) {
@@ -112,8 +112,8 @@ class ForgotController extends BaseController
         
         // Build password form and display it to the user
         $formOptions = [
-            'user_id'    => $req->get('user_id'),
-            'reset_code' => $req->get('reset_code'),
+            'user_id'    => $request->get('user_id'),
+            'reset_code' => $request->get('reset_code'),
         ];
         $form = $this->service('form.factory')->create(new ResetForm());
 
@@ -123,17 +123,17 @@ class ForgotController extends BaseController
         return $this->render('user/forgot_password.twig', $data);
     }
 
-    public function processResetAction(Request $req)
+    public function processResetAction(Request $request)
     {
-        $userId    = $req->get('user_id');
-        $resetCode = $req->get('reset_code');
+        $userId    = $request->get('user_id');
+        $resetCode = $request->get('reset_code');
 
         if (empty($resetCode)) {
             throw new \Exception();
         }
 
         $form = $this->service('form.factory')->createBuilder(ResetForm::class)->getForm();
-        $form->handleRequest($req);
+        $form->handleRequest($request);
         
         if (!$form->isValid()) {
             $form->get('user_id')->setData($userId);
@@ -149,12 +149,12 @@ class ForgotController extends BaseController
             /** @var AccountManagement $accounts */
             $accounts = $this->service(AccountManagement::class);
 
-            $user = $accounts->findById($req->get('user_id'));
+            $user = $accounts->findById($request->get('user_id'));
         } catch (\RuntimeException $e) {
             ++$error;
         }
 
-        if (!$user->checkResetPasswordCode($req->get('reset_code'))) {
+        if (!$user->checkResetPasswordCode($request->get('reset_code'))) {
             ++$error;
         }
 
@@ -169,10 +169,10 @@ class ForgotController extends BaseController
         return $this->redirectTo('forgot_password');
     }
 
-    public function updatePasswordAction(Request $req)
+    public function updatePasswordAction(Request $request)
     {
         $form = $this->service('form.factory')->createBuilder(ResetForm::class)->getForm();
-        $form->handleRequest($req);
+        $form->handleRequest($request);
         
         if (!$form->isValid()) {
             return $this->render('user/reset_password.twig', ['form' => $form->createView()]);

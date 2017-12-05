@@ -44,7 +44,7 @@ class SignupController extends BaseController
         return $this->render('security/signup.twig');
     }
 
-    public function processAction(Request $req)
+    public function processAction(Request $request)
     {
         try {
             $this->validate([
@@ -56,10 +56,10 @@ class SignupController extends BaseController
             /** @var AccountManagement $accounts */
             $accounts = $this->service(AccountManagement::class);
 
-            $user = $accounts->create($req->get('email'), $req->get('password'), [
+            $user = $accounts->create($request->get('email'), $request->get('password'), [
                 'activated' => 1,
             ]);
-            $accounts->activate($req->get('email'));
+            $accounts->activate($request->get('email'));
 
             $this->app['session']->set('flash', [
                 'type'  => 'success',
@@ -68,7 +68,7 @@ class SignupController extends BaseController
             ]);
 
             // Automatically authenticate the newly created user.
-            $this->service(Authentication::class)->authenticate($req->get('email'), $req->get('password'));
+            $this->service(Authentication::class)->authenticate($request->get('email'), $request->get('password'));
 
             return $this->redirectTo('dashboard');
         } catch (ValidationException $e) {

@@ -23,50 +23,50 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TalksController extends BaseController
 {
-    public function indexAction(Request $req)
+    public function indexAction(Request $request)
     {
         /* @var Authentication $auth */
         $auth = $this->service(Authentication::class);
 
         $adminUserId   = $auth->userId();
         $options       = [
-            'order_by' => $req->get('order_by'),
-            'sort'     => $req->get('sort'),
+            'order_by' => $request->get('order_by'),
+            'sort'     => $request->get('sort'),
         ];
 
         $formattedTalks = $this->service(TalkFilter::class)->getTalks(
             $adminUserId,
-            $req->get('filter'),
+            $request->get('filter'),
             $options
         );
 
         // Set up our page stuff
-        $perPage    = (int) $req->get('per_page') ?: 20;
+        $perPage    = (int) $request->get('per_page') ?: 20;
         $pagerfanta = new Pagination($formattedTalks, $perPage);
 
-        $pagerfanta->setCurrentPage($req->get('page'));
-        $pagination = $pagerfanta->createView('/admin/talks?', $req->query->all());
+        $pagerfanta->setCurrentPage($request->get('page'));
+        $pagination = $pagerfanta->createView('/admin/talks?', $request->query->all());
 
         $templateData = [
             'pagination'   => $pagination,
             'talks'        => $pagerfanta->getFanta(),
             'page'         => $pagerfanta->getCurrentPage(),
-            'current_page' => $req->getRequestUri(),
+            'current_page' => $request->getRequestUri(),
             'totalRecords' => \count($formattedTalks),
-            'filter'       => $req->get('filter'),
+            'filter'       => $request->get('filter'),
             'per_page'     => $perPage,
-            'sort'         => $req->get('sort'),
-            'order_by'     => $req->get('order_by'),
+            'sort'         => $request->get('sort'),
+            'order_by'     => $request->get('order_by'),
         ];
 
         return $this->render('admin/talks/index.twig', $templateData);
     }
 
-    public function viewAction(Request $req)
+    public function viewAction(Request $request)
     {
         /** @var TalkHandler $handler */
         $handler = $this->service(TalkHandler::class)
-            ->grabTalk((int) $req->get('id'));
+            ->grabTalk((int) $request->get('id'));
 
         if (!$handler->view()) {
             $this->service('session')->set('flash', [
@@ -81,7 +81,7 @@ class TalksController extends BaseController
         return $this->render('admin/talks/view.twig', ['talk' => $handler->getProfile()]);
     }
 
-    public function rateAction(Request $req)
+    public function rateAction(Request $request)
     {
         try {
             $this->validate([
@@ -89,8 +89,8 @@ class TalksController extends BaseController
             ]);
 
             return $this->service(TalkHandler::class)
-                ->grabTalk((int) $req->get('id'))
-                ->rate((int) $req->get('rating'));
+                ->grabTalk((int) $request->get('id'))
+                ->rate((int) $request->get('rating'));
         } catch (ValidationException $e) {
             return false;
         }
@@ -99,38 +99,38 @@ class TalksController extends BaseController
     /**
      * Set Favorited Talk [POST]
      *
-     * @param Request $req Request Object
+     * @param Request $request Request Object
      *
      * @return bool
      */
-    public function favoriteAction(Request $req)
+    public function favoriteAction(Request $request)
     {
         return $this->service(TalkHandler::class)
-            ->grabTalk((int) $req->get('id'))
-            ->setFavorite($req->get('delete') == null);
+            ->grabTalk((int) $request->get('id'))
+            ->setFavorite($request->get('delete') == null);
     }
 
     /**
      * Set Selected Talk [POST]
      *
-     * @param Request $req Request Object
+     * @param Request $request Request Object
      *
      * @return bool
      */
-    public function selectAction(Request $req)
+    public function selectAction(Request $request)
     {
         return $this->service(TalkHandler::class)
-            ->grabTalk((int) $req->get('id'))
-            ->select($req->get('delete') != true);
+            ->grabTalk((int) $request->get('id'))
+            ->select($request->get('delete') != true);
     }
 
-    public function commentCreateAction(Request $req)
+    public function commentCreateAction(Request $request)
     {
-        $talkId = (int) $req->get('id');
+        $talkId = (int) $request->get('id');
 
         $this->service(TalkHandler::class)
             ->grabTalk($talkId)
-            ->commentOn($req->get('comment'));
+            ->commentOn($request->get('comment'));
 
         $this->service('session')->set('flash', [
                 'type'  => 'success',

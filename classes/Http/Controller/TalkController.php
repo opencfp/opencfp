@@ -46,17 +46,17 @@ class TalkController extends BaseController
     /**
      * Controller action for viewing a specific talk
      *
-     * @param Request $req
+     * @param Request $request
      *
      * @return mixed
      */
-    public function viewAction(Request $req)
+    public function viewAction(Request $request)
     {
         /* @var Speakers $speakers */
         $speakers = $this->service('application.speakers');
 
         try {
-            $talkId   = (int) $req->get('id');
+            $talkId   = (int) $request->get('id');
             $talk     = $speakers->getTalk($talkId);
         } catch (NotAuthorizedException $e) {
             return $this->redirectTo('dashboard');
@@ -65,9 +65,9 @@ class TalkController extends BaseController
         return $this->render('talk/view.twig', \compact('talkId', 'talk'));
     }
 
-    public function editAction(Request $req)
+    public function editAction(Request $request)
     {
-        $talkId      = (int) $req->get('id');
+        $talkId      = (int) $request->get('id');
         // You can only edit talks while the CfP is open
         // This will redirect to "view" the talk in a read-only template
         if (!$this->service(CallForPapers::class)->isOpen()) {
@@ -116,7 +116,7 @@ class TalkController extends BaseController
         return $this->render('talk/edit.twig', $data);
     }
 
-    public function createAction(Request $req)
+    public function createAction(Request $request)
     {
         // You can only create talks while the CfP is open
         if (!$this->service(CallForPapers::class)->isOpen()) {
@@ -138,22 +138,22 @@ class TalkController extends BaseController
             'talkCategories' => $helper->getTalkCategories(),
             'talkTypes'      => $helper->getTalkTypes(),
             'talkLevels'     => $helper->getTalkLevels(),
-            'title'          => $req->get('title'),
-            'description'    => $req->get('description'),
-            'type'           => $req->get('type'),
-            'level'          => $req->get('level'),
-            'category'       => $req->get('category'),
-            'desired'        => $req->get('desired'),
-            'slides'         => $req->get('slides'),
-            'other'          => $req->get('other'),
-            'sponsor'        => $req->get('sponsor'),
+            'title'          => $request->get('title'),
+            'description'    => $request->get('description'),
+            'type'           => $request->get('type'),
+            'level'          => $request->get('level'),
+            'category'       => $request->get('category'),
+            'desired'        => $request->get('desired'),
+            'slides'         => $request->get('slides'),
+            'other'          => $request->get('other'),
+            'sponsor'        => $request->get('sponsor'),
             'buttonInfo'     => 'Submit my talk!',
         ];
 
         return $this->render('talk/create.twig', $data);
     }
 
-    public function processCreateAction(Request $req)
+    public function processCreateAction(Request $request)
     {
         // You can only create talks while the CfP is open
         if (!$this->service(CallForPapers::class)->isOpen()) {
@@ -171,16 +171,16 @@ class TalkController extends BaseController
         $user = $this->service(Authentication::class)->user();
 
         $requestData = [
-            'title'       => $req->get('title'),
-            'description' => $req->get('description'),
-            'type'        => $req->get('type'),
-            'level'       => $req->get('level'),
-            'category'    => $req->get('category'),
-            'desired'     => $req->get('desired'),
-            'slides'      => $req->get('slides'),
-            'other'       => $req->get('other'),
-            'sponsor'     => $req->get('sponsor'),
-            'user_id'     => $req->get('user_id'),
+            'title'       => $request->get('title'),
+            'description' => $request->get('description'),
+            'type'        => $request->get('type'),
+            'level'       => $request->get('level'),
+            'category'    => $request->get('category'),
+            'desired'     => $request->get('desired'),
+            'slides'      => $request->get('slides'),
+            'other'       => $request->get('other'),
+            'sponsor'     => $request->get('sponsor'),
+            'user_id'     => $request->get('user_id'),
         ];
 
         $form = $this->getTalkForm($requestData);
@@ -209,15 +209,15 @@ class TalkController extends BaseController
             'talkCategories' => $helper->getTalkCategories(),
             'talkTypes'      => $helper->getTalkTypes(),
             'talkLevels'     => $helper->getTalkLevels(),
-            'title'          => $req->get('title'),
-            'description'    => $req->get('description'),
-            'type'           => $req->get('type'),
-            'level'          => $req->get('level'),
-            'category'       => $req->get('category'),
-            'desired'        => $req->get('desired'),
-            'slides'         => $req->get('slides'),
-            'other'          => $req->get('other'),
-            'sponsor'        => $req->get('sponsor'),
+            'title'          => $request->get('title'),
+            'description'    => $request->get('description'),
+            'type'           => $request->get('type'),
+            'level'          => $request->get('level'),
+            'category'       => $request->get('category'),
+            'desired'        => $request->get('desired'),
+            'slides'         => $request->get('slides'),
+            'other'          => $request->get('other'),
+            'sponsor'        => $request->get('sponsor'),
             'buttonInfo'     => 'Submit my talk!',
         ];
 
@@ -231,7 +231,7 @@ class TalkController extends BaseController
         return $this->render('talk/create.twig', $data);
     }
 
-    public function updateAction(Request $req)
+    public function updateAction(Request $request)
     {
         if (!$this->service(CallForPapers::class)->isOpen()) {
             $this->service('session')->set(
@@ -242,23 +242,23 @@ class TalkController extends BaseController
                     'ext'   => 'You cannot edit talks once the call for papers has ended', ]
             );
 
-            return $this->app->redirect($this->url('talk_view', ['id' => $req->get('id')]));
+            return $this->app->redirect($this->url('talk_view', ['id' => $request->get('id')]));
         }
 
         $user = $this->service(Authentication::class)->user();
 
         $requestData = [
-            'id'          => $req->get('id'),
-            'title'       => $req->get('title'),
-            'description' => $req->get('description'),
-            'type'        => $req->get('type'),
-            'level'       => $req->get('level'),
-            'category'    => $req->get('category'),
-            'desired'     => $req->get('desired'),
-            'slides'      => $req->get('slides'),
-            'other'       => $req->get('other'),
-            'sponsor'     => $req->get('sponsor'),
-            'user_id'     => $req->get('user_id'),
+            'id'          => $request->get('id'),
+            'title'       => $request->get('title'),
+            'description' => $request->get('description'),
+            'type'        => $request->get('type'),
+            'level'       => $request->get('level'),
+            'category'    => $request->get('category'),
+            'desired'     => $request->get('desired'),
+            'slides'      => $request->get('slides'),
+            'other'       => $request->get('other'),
+            'sponsor'     => $request->get('sponsor'),
+            'user_id'     => $request->get('user_id'),
         ];
 
         $form = $this->getTalkForm($requestData);
@@ -289,16 +289,16 @@ class TalkController extends BaseController
             'talkCategories' => $helper->getTalkCategories(),
             'talkTypes'      => $helper->getTalkTypes(),
             'talkLevels'     => $helper->getTalkLevels(),
-            'id'             => $req->get('id'),
-            'title'          => $req->get('title'),
-            'description'    => $req->get('description'),
-            'type'           => $req->get('type'),
-            'level'          => $req->get('level'),
-            'category'       => $req->get('category'),
-            'desired'        => $req->get('desired'),
-            'slides'         => $req->get('slides'),
-            'other'          => $req->get('other'),
-            'sponsor'        => $req->get('sponsor'),
+            'id'             => $request->get('id'),
+            'title'          => $request->get('title'),
+            'description'    => $request->get('description'),
+            'type'           => $request->get('type'),
+            'level'          => $request->get('level'),
+            'category'       => $request->get('category'),
+            'desired'        => $request->get('desired'),
+            'slides'         => $request->get('slides'),
+            'other'          => $request->get('other'),
+            'sponsor'        => $request->get('sponsor'),
             'buttonInfo'     => 'Update my talk!',
         ];
 
@@ -313,7 +313,7 @@ class TalkController extends BaseController
         return $this->render('talk/edit.twig', $data);
     }
 
-    public function deleteAction(Request $req)
+    public function deleteAction(Request $request)
     {
         // You can only delete talks while the CfP is open
         if (!$this->service(CallForPapers::class)->isOpen()) {
@@ -321,7 +321,7 @@ class TalkController extends BaseController
         }
 
         $userId = $this->service(Authentication::class)->userId();
-        $talk   = Talk::find($req->get('tid'), ['id', 'user_id']);
+        $talk   = Talk::find($request->get('tid'), ['id', 'user_id']);
 
         if ((int) $talk->user_id !==  $userId) {
             return $this->app->json(['delete' => 'no']);

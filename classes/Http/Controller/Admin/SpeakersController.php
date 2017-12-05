@@ -26,9 +26,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SpeakersController extends BaseController
 {
-    public function indexAction(Request $req)
+    public function indexAction(Request $request)
     {
-        $search = $req->get('search');
+        $search = $request->get('search');
 
         /** @var AccountManagement $accounts */
         $accounts        = $this->service(AccountManagement::class);
@@ -61,7 +61,7 @@ class SpeakersController extends BaseController
 
         // Set up our page stuff
         $pagerfanta = new Pagination($rawSpeakers);
-        $pagerfanta->setCurrentPage($req->get('page'));
+        $pagerfanta->setCurrentPage($request->get('page'));
         $pagination = $pagerfanta->createView('/admin/speakers?');
 
         $templateData = [
@@ -77,9 +77,9 @@ class SpeakersController extends BaseController
         return $this->render('admin/speaker/index.twig', $templateData);
     }
 
-    public function viewAction(Request $req)
+    public function viewAction(Request $request)
     {
-        $speakerDetails = User::find($req->get('id'));
+        $speakerDetails = User::find($request->get('id'));
 
         if (!$speakerDetails instanceof User) {
             $this->service('session')->set('flash', [
@@ -115,21 +115,21 @@ class SpeakersController extends BaseController
             'speaker'    => new SpeakerProfile($speakerDetails),
             'talks'      => $talks,
             'photo_path' => '/uploads/',
-            'page'       => $req->get('page'),
+            'page'       => $request->get('page'),
         ];
 
         return $this->render('admin/speaker/view.twig', $templateData);
     }
 
-    public function deleteAction(Request $req)
+    public function deleteAction(Request $request)
     {
         /** @var Capsule $capsule */
         $capsule = $this->service(Capsule::class);
         $capsule->getConnection()->beginTransaction();
 
         try {
-            $user = User::findorFail($req->get('id'));
-            $user->delete($req->get('id'));
+            $user = User::findorFail($request->get('id'));
+            $user->delete($request->get('id'));
             $ext   = 'Successfully deleted the requested user';
             $type  = 'success';
             $short = 'Success';
@@ -151,12 +151,12 @@ class SpeakersController extends BaseController
         return $this->redirectTo('admin_speakers');
     }
 
-    public function demoteAction(Request $req)
+    public function demoteAction(Request $request)
     {
         /** @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
-        $role     = $req->get('role');
-        $id       = (int) $req->get('id');
+        $role     = $request->get('role');
+        $id       = (int) $request->get('id');
 
         if ($this->service(Authentication::class)->userId() == $id) {
             $this->service('session')->set('flash', [
@@ -188,12 +188,12 @@ class SpeakersController extends BaseController
         return $this->redirectTo('admin_speakers');
     }
 
-    public function promoteAction(Request $req)
+    public function promoteAction(Request $request)
     {
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
-        $role     = $req->get('role');
-        $id       = (int) $req->get('id');
+        $role     = $request->get('role');
+        $id       = (int) $request->get('id');
 
         try {
             $user = $accounts->findById($id);

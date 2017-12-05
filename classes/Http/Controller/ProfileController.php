@@ -20,11 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProfileController extends BaseController
 {
-    public function editAction(Request $req)
+    public function editAction(Request $request)
     {
         $user = $this->service(Authentication::class)->user();
 
-        if ((string) $user->getId() !== $req->get('id')) {
+        if ((string) $user->getId() !== $request->get('id')) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -58,11 +58,11 @@ class ProfileController extends BaseController
         return $this->render('user/edit.twig', $formData);
     }
 
-    public function processAction(Request $req)
+    public function processAction(Request $request)
     {
         $userId = $this->service(Authentication::class)->userId();
 
-        if ((string) $userId !== $req->get('id')) {
+        if ((string) $userId !== $request->get('id')) {
             $this->service('session')->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -72,10 +72,10 @@ class ProfileController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        $formData = $this->getFormData($req);
+        $formData = $this->getFormData($request);
 
-        if ($req->files->get('speaker_photo') != null) {
-            $formData['speaker_photo'] = $req->files->get('speaker_photo');
+        if ($request->files->get('speaker_photo') != null) {
+            $formData['speaker_photo'] = $request->files->get('speaker_photo');
         }
 
         $form    = new SignupForm($formData, $this->service('purifier'));
@@ -111,7 +111,7 @@ class ProfileController extends BaseController
         return $this->render('user/change_password.twig');
     }
 
-    public function passwordProcessAction(Request $req)
+    public function passwordProcessAction(Request $request)
     {
         $user = $this->service(Authentication::class)->user();
 
@@ -120,8 +120,8 @@ class ProfileController extends BaseController
          * validation code to make sure our password changes are good
          */
         $formData = [
-            'password'  => $req->get('password'),
-            'password2' => $req->get('password_confirm'),
+            'password'  => $request->get('password'),
+            'password2' => $request->get('password_confirm'),
         ];
         $form = new SignupForm($formData, $this->service('purifier'));
         $form->sanitize();
@@ -159,25 +159,25 @@ class ProfileController extends BaseController
     }
 
     /**
-     * @param Request $req
+     * @param Request $request
      *
      * @return array
      */
-    private function getFormData(Request $req): array
+    private function getFormData(Request $request): array
     {
         $formData = [
-            'email'          => $req->get('email'),
-            'user_id'        => $req->get('id'),
-            'first_name'     => $req->get('first_name'),
-            'last_name'      => $req->get('last_name'),
-            'company'        => $req->get('company'),
-            'twitter'        => $req->get('twitter'),
-            'url'            => $req->get('url'),
-            'airport'        => $req->get('airport'),
-            'transportation' => (int) $req->get('transportation'),
-            'hotel'          => (int) $req->get('hotel'),
-            'speaker_info'   => $req->get('speaker_info') ?: null,
-            'speaker_bio'    => $req->get('speaker_bio') ?: null,
+            'email'          => $request->get('email'),
+            'user_id'        => $request->get('id'),
+            'first_name'     => $request->get('first_name'),
+            'last_name'      => $request->get('last_name'),
+            'company'        => $request->get('company'),
+            'twitter'        => $request->get('twitter'),
+            'url'            => $request->get('url'),
+            'airport'        => $request->get('airport'),
+            'transportation' => (int) $request->get('transportation'),
+            'hotel'          => (int) $request->get('hotel'),
+            'speaker_info'   => $request->get('speaker_info') ?: null,
+            'speaker_bio'    => $request->get('speaker_bio') ?: null,
         ];
 
         return $formData;
