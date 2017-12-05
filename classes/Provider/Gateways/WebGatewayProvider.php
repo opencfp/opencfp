@@ -65,10 +65,13 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         };
 
         $app[ProfileController::class] = function ($app) {
-            $controller = new ProfileController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new ProfileController(
+                $app[Authentication::class],
+                $app['purifier'],
+                $app['profile_image_processor'],
+                $app['twig'],
+                $app['url_generator']
+            );
         };
 
         $app[SecurityController::class] = function ($app) {
