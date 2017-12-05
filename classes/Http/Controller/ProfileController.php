@@ -15,17 +15,25 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\ProfileImageProcessor;
 use OpenCFP\Http\Form\SignupForm;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session;
 
 class ProfileController extends BaseController
 {
     public function editAction(Request $request)
     {
-        $user = $this->service(Authentication::class)->user();
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        $user = $authentication->user();
 
         if ((string) $user->getId() !== $request->get('id')) {
-            $this->service('session')->set('flash', [
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => "You cannot edit someone else's profile",
@@ -60,10 +68,16 @@ class ProfileController extends BaseController
 
     public function processAction(Request $request)
     {
-        $userId = $this->service(Authentication::class)->userId();
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        $userId = $authentication->userId();
+
+        /** @var Session\Session $session */
+        $session = $this->service('session');
 
         if ((string) $userId !== $request->get('id')) {
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => "You cannot edit someone else's profile",
@@ -78,30 +92,36 @@ class ProfileController extends BaseController
             $formData['speaker_photo'] = $request->files->get('speaker_photo');
         }
 
-        $form    = new SignupForm($formData, $this->service('purifier'));
+        /** @var \HTMLPurifier $htmlPurifier */
+        $htmlPurifier = $this->service('purifier');
+
+        $form    = new SignupForm($formData, $htmlPurifier);
         $isValid = $form->validateAll('update');
 
         if ($isValid) {
             $sanitizedData = $this->transformSanitizedData($form->getCleanData());
             if (isset($formData['speaker_photo'])) {
-                $sanitizedData['photo_path'] = $this->service('profile_image_processor')
-                    ->process($formData['speaker_photo']);
+                /** @var ProfileImageProcessor $profileImageProcessor */
+                $profileImageProcessor = $this->service('profile_image_processor');
+
+                $sanitizedData['photo_path'] = $profileImageProcessor->process($formData['speaker_photo']);
             }
             unset($sanitizedData['speaker_photo']);
             User::find($userId)->update($sanitizedData);
 
             return $this->redirectTo('dashboard');
         }
-        $this->service('session')->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => \implode('<br>', $form->getErrorMessages()),
-            ]);
+
+        $session->set('flash', [
+            'type'  => 'error',
+            'short' => 'Error',
+            'ext'   => \implode('<br>', $form->getErrorMessages()),
+        ]);
 
         $formData['formAction'] = $this->url('user_update');
         $formData['buttonInfo'] = 'Update Profile';
         $formData['id']         = $userId;
-        $formData['flash']      = $this->service('session')->get('flash');
+        $formData['flash']      = $session->get('flash');
 
         return $this->render('user/edit.twig', $formData);
     }
@@ -113,7 +133,10 @@ class ProfileController extends BaseController
 
     public function passwordProcessAction(Request $request)
     {
-        $user = $this->service(Authentication::class)->user();
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        $user = $authentication->user();
 
         /**
          * Okay, the logic is kind of weird but we can use the SignupForm
@@ -123,11 +146,18 @@ class ProfileController extends BaseController
             'password'  => $request->get('password'),
             'password2' => $request->get('password_confirm'),
         ];
-        $form = new SignupForm($formData, $this->service('purifier'));
+
+        /** @var \HTMLPurifier $htmlPurifier */
+        $htmlPurifier = $this->service('purifier');
+
+        $form = new SignupForm($formData, $htmlPurifier);
         $form->sanitize();
 
+        /** @var Session\Session $session */
+        $session = $this->service('session');
+
         if ($form->validatePasswords() === false) {
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => \implode('<br>', $form->getErrorMessages()),
@@ -140,7 +170,7 @@ class ProfileController extends BaseController
         $resetCode     = $user->getResetPasswordCode();
 
         if (!$user->attemptResetPassword($resetCode, $sanitizedData['password'])) {
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Unable to update your password in the database. Please try again.',
@@ -149,7 +179,7 @@ class ProfileController extends BaseController
             return $this->redirectTo('password_edit');
         }
 
-        $this->service('session')->set('flash', [
+        $session->set('flash', [
             'type'  => 'success',
             'short' => 'Success',
             'ext'   => 'Changed your password.',

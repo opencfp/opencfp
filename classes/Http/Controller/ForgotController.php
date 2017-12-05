@@ -14,15 +14,22 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Domain\Services\ResetEmailer;
 use OpenCFP\Http\Form\ForgotForm;
 use OpenCFP\Http\Form\ResetForm;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session;
 
 class ForgotController extends BaseController
 {
     public function indexAction()
     {
-        $form = $this->service('form.factory')->createBuilder(ForgotForm::class)->getForm();
+        /** @var FormFactory $formFactory */
+        $formFactory = $this->service('form.factory');
+
+        $form = $formFactory->createBuilder(ForgotForm::class)->getForm();
+
         $data = [
             'form'         => $form->createView(),
             'current_page' => 'Forgot Password',
@@ -33,13 +40,20 @@ class ForgotController extends BaseController
 
     public function sendResetAction(Request $request)
     {
-        $form = $this->service('form.factory')
+        /** @var FormFactory $formFactory */
+        $formFactory = $this->service('form.factory');
+
+        $form = $formFactory
             ->createBuilder(ForgotForm::class)
             ->getForm();
+
         $form->handleRequest($request);
 
+        /** @var Session\Session $session */
+        $session = $this->service('session');
+
         if (!$form->isValid()) {
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Please enter a properly formatted email address',
@@ -57,16 +71,20 @@ class ForgotController extends BaseController
 
             $user = $accounts->findByLogin($data['email']);
         } catch (\RuntimeException $e) {
-            $this->service('session')->set('flash', $this->successfulSendFlashParameters($data['email']));
+            $session->set('flash', $this->successfulSendFlashParameters($data['email']));
 
             return $this->redirectTo('forgot_password');
         }
 
         // Create a reset code and email the URL to our user
-        $response = $this->service('reset_emailer')->send($user->getId(), $data['email'], $user->getResetPasswordCode());
+
+        /** @var ResetEmailer $resetEmailer */
+        $resetEmailer = $this->service('reset_emailer');
+
+        $response = $resetEmailer->send($user->getId(), $data['email'], $user->getResetPasswordCode());
 
         if ($response == false) {
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'We were unable to send your password reset request. Please try again',
@@ -75,7 +93,7 @@ class ForgotController extends BaseController
             return $this->redirectTo('forgot_password');
         }
 
-        $this->service('session')->set('flash', $this->successfulSendFlashParameters($data['email']));
+        $session->set('flash', $this->successfulSendFlashParameters($data['email']));
 
         return $this->redirectTo('login');
     }
@@ -103,7 +121,10 @@ class ForgotController extends BaseController
         }
 
         if ($error > 0) {
-            $this->service('session')->set('flash', [
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => $errorMessage,
@@ -115,7 +136,11 @@ class ForgotController extends BaseController
             'user_id'    => $request->get('user_id'),
             'reset_code' => $request->get('reset_code'),
         ];
-        $form = $this->service('form.factory')->create(new ResetForm());
+
+        /** @var FormFactory $formFactory */
+        $formFactory = $this->service('form.factory');
+
+        $form = $formFactory->create(new ResetForm());
 
         $data['form']  = $form->createView($formOptions);
         $data['flash'] = $this->app['session']->get('flash');
@@ -132,7 +157,11 @@ class ForgotController extends BaseController
             throw new \Exception();
         }
 
-        $form = $this->service('form.factory')->createBuilder(ResetForm::class)->getForm();
+        /** @var FormFactory $formFactory */
+        $formFactory = $this->service('form.factory');
+
+        $form = $formFactory->createBuilder(ResetForm::class)->getForm();
+
         $form->handleRequest($request);
         
         if (!$form->isValid()) {
@@ -159,7 +188,10 @@ class ForgotController extends BaseController
         }
 
         if ($error > 0) {
-            $this->service('session')->set('flash', [
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => $errorMessage,
@@ -171,7 +203,11 @@ class ForgotController extends BaseController
 
     public function updatePasswordAction(Request $request)
     {
-        $form = $this->service('form.factory')->createBuilder(ResetForm::class)->getForm();
+        /** @var FormFactory $formFactory */
+        $formFactory = $this->service('form.factory');
+
+        $form = $formFactory->createBuilder(ResetForm::class)->getForm();
+
         $form->handleRequest($request);
         
         if (!$form->isValid()) {
@@ -197,12 +233,15 @@ class ForgotController extends BaseController
             die();
         }
 
+        /** @var Session\Session $session */
+        $session = $this->service('session');
+
         /**
          * Can't let people replace their passwords with one they have
          * already
          */
         if ($user->checkPassword($password) === true) {
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Please select a different password than your current one.',
@@ -213,7 +252,7 @@ class ForgotController extends BaseController
 
         // Everything looks good, let's actually reset their password
         if ($user->attemptResetPassword($resetCode, $password)) {
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'success',
                 'short' => 'Success',
                 'ext'   => "You've successfully reset your password.",
@@ -223,7 +262,7 @@ class ForgotController extends BaseController
         }
 
         // user may have tried using the recovery twice
-        $this->service('session')->set('flash', [
+        $session->set('flash', [
             'type'  => 'error',
             'short' => 'Error',
             'ext'   => 'Password reset failed, please contact the administrator.',

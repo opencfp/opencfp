@@ -16,6 +16,7 @@ namespace OpenCFP\Http\Controller;
 use OpenCFP\Domain\Services\Authentication;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session;
 
 class SecurityController extends BaseController
 {
@@ -36,7 +37,10 @@ class SecurityController extends BaseController
 
             return $this->redirectTo('dashboard');
         } catch (\Exception $e) {
-            $this->service('session')->set('flash', [
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => $e->getMessage(),
@@ -53,7 +57,10 @@ class SecurityController extends BaseController
 
     public function outAction()
     {
-        $this->service(Authentication::class)->logout();
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        $authentication->logout();
 
         return $this->redirectTo('homepage');
     }

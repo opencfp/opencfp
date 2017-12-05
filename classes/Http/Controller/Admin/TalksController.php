@@ -20,6 +20,7 @@ use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\ValidationException;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session;
 
 class TalksController extends BaseController
 {
@@ -34,7 +35,10 @@ class TalksController extends BaseController
             'sort'     => $request->get('sort'),
         ];
 
-        $formattedTalks = $this->service(TalkFilter::class)->getTalks(
+        /** @var TalkFilter $talkFilter */
+        $talkFilter = $this->service(TalkFilter::class);
+
+        $formattedTalks = $talkFilter->getTalks(
             $adminUserId,
             $request->get('filter'),
             $options
@@ -65,11 +69,15 @@ class TalksController extends BaseController
     public function viewAction(Request $request)
     {
         /** @var TalkHandler $handler */
-        $handler = $this->service(TalkHandler::class)
-            ->grabTalk((int) $request->get('id'));
+        $handler = $this->service(TalkHandler::class);
+
+        $handler->grabTalk((int) $request->get('id'));
 
         if (!$handler->view()) {
-            $this->service('session')->set('flash', [
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Could not find requested talk',
@@ -88,7 +96,10 @@ class TalksController extends BaseController
                 'rating' => 'required|integer',
             ]);
 
-            return $this->service(TalkHandler::class)
+            /** @var TalkHandler $talkHandler */
+            $talkHandler = $this->service(TalkHandler::class);
+
+            return $talkHandler
                 ->grabTalk((int) $request->get('id'))
                 ->rate((int) $request->get('rating'));
         } catch (ValidationException $e) {
@@ -105,7 +116,10 @@ class TalksController extends BaseController
      */
     public function favoriteAction(Request $request)
     {
-        return $this->service(TalkHandler::class)
+        /** @var TalkHandler $talkHandler */
+        $talkHandler = $this->service(TalkHandler::class);
+
+        return $talkHandler
             ->grabTalk((int) $request->get('id'))
             ->setFavorite($request->get('delete') == null);
     }
@@ -119,7 +133,10 @@ class TalksController extends BaseController
      */
     public function selectAction(Request $request)
     {
-        return $this->service(TalkHandler::class)
+        /** @var TalkHandler $talkHandler */
+        $talkHandler = $this->service(TalkHandler::class);
+
+        return $talkHandler
             ->grabTalk((int) $request->get('id'))
             ->select($request->get('delete') != true);
     }
@@ -128,15 +145,21 @@ class TalksController extends BaseController
     {
         $talkId = (int) $request->get('id');
 
-        $this->service(TalkHandler::class)
+        /** @var TalkHandler $talkHandler */
+        $talkHandler = $this->service(TalkHandler::class);
+
+        $talkHandler
             ->grabTalk($talkId)
             ->commentOn($request->get('comment'));
 
-        $this->service('session')->set('flash', [
-                'type'  => 'success',
-                'short' => 'Success',
-                'ext'   => 'Comment Added!',
-            ]);
+        /** @var Session\Session $session */
+        $session = $this->service('session');
+
+        $session->set('flash', [
+            'type'  => 'success',
+            'short' => 'Success',
+            'ext'   => 'Comment Added!',
+        ]);
 
         return $this->app->redirect($this->url('admin_talk_view', ['id' => $talkId]));
     }

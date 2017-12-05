@@ -23,6 +23,7 @@ use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session;
 
 class SpeakersController extends BaseController
 {
@@ -32,6 +33,7 @@ class SpeakersController extends BaseController
 
         /** @var AccountManagement $accounts */
         $accounts        = $this->service(AccountManagement::class);
+
         $adminUsers      = $accounts->findByRole('Admin');
         $adminUserIds    = \array_column($adminUsers, 'id');
         $reviewerUsers   = $accounts->findByRole('Reviewer');
@@ -39,7 +41,9 @@ class SpeakersController extends BaseController
 
         $rawSpeakers = User::search($search)->get();
 
-        $airports    = $this->service(AirportInformationDatabase::class);
+        /** @var AirportInformationDatabase $airports */
+        $airports = $this->service(AirportInformationDatabase::class);
+
         $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($airports, $adminUserIds, $reviewerUserIds) {
             try {
                 $airport = $airports->withCode($speaker['airport']);
@@ -82,7 +86,10 @@ class SpeakersController extends BaseController
         $speakerDetails = User::find($request->get('id'));
 
         if (!$speakerDetails instanceof User) {
-            $this->service('session')->set('flash', [
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Could not find requested speaker',
@@ -91,6 +98,7 @@ class SpeakersController extends BaseController
             return $this->app->redirect($this->url('admin_speakers'));
         }
 
+        /** @var AirportInformationDatabase $airports */
         $airports = $this->service(AirportInformationDatabase::class);
 
         try {
@@ -125,6 +133,7 @@ class SpeakersController extends BaseController
     {
         /** @var Capsule $capsule */
         $capsule = $this->service(Capsule::class);
+
         $capsule->getConnection()->beginTransaction();
 
         try {
@@ -141,8 +150,11 @@ class SpeakersController extends BaseController
             $short = 'Error';
         }
 
+        /** @var Session\Session $session */
+        $session = $this->service('session');
+
         // Set flash message
-        $this->service('session')->set('flash', [
+        $session->set('flash', [
             'type'  => $type,
             'short' => $short,
             'ext'   => $ext,
@@ -155,11 +167,18 @@ class SpeakersController extends BaseController
     {
         /** @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
+
         $role     = $request->get('role');
         $id       = (int) $request->get('id');
 
-        if ($this->service(Authentication::class)->userId() == $id) {
-            $this->service('session')->set('flash', [
+        /** @var Authentication $authentication */
+        $authentication = $this->service(Authentication::class);
+
+        /** @var Session\Session $session */
+        $session = $this->service('session');
+
+        if ($authentication->userId() == $id) {
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Sorry, you cannot remove yourself as ' . $role . '.',
@@ -172,13 +191,13 @@ class SpeakersController extends BaseController
             $user = $accounts->findById($id);
             $accounts->demoteFrom($user->getLogin(), $role);
 
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'success',
                 'short' => 'Success',
                 'ext'   => '',
             ]);
         } catch (\Exception $e) {
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'We were unable to remove the ' . $role . '. Please try again.',
@@ -192,13 +211,17 @@ class SpeakersController extends BaseController
     {
         /* @var AccountManagement $accounts */
         $accounts = $this->service(AccountManagement::class);
+
         $role     = $request->get('role');
         $id       = (int) $request->get('id');
+
+        /** @var Session\Session $session */
+        $session = $this->service('session');
 
         try {
             $user = $accounts->findById($id);
             if ($user->hasAccess(\strtolower($role))) {
-                $this->service('session')->set('flash', [
+                $session->set('flash', [
                     'type'  => 'error',
                     'short' => 'Error',
                     'ext'   => 'User already is in the ' . $role . ' group.',
@@ -209,13 +232,13 @@ class SpeakersController extends BaseController
 
             $accounts->promoteTo($user->getLogin(), $role);
 
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'success',
                 'short' => 'Success',
                 'ext'   => '',
             ]);
         } catch (\Exception $e) {
-            $this->service('session')->set('flash', [
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'We were unable to promote the ' . $role . '. Please try again.',

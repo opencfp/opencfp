@@ -18,6 +18,7 @@ use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session;
 
 class SpeakersController extends BaseController
 {
@@ -45,7 +46,10 @@ class SpeakersController extends BaseController
         $speakerDetails = User::where('id', $request->get('id'))->first();
 
         if (!$speakerDetails instanceof User) {
-            $this->service('session')->set('flash', [
+            /** @var Session\Session $session */
+            $session = $this->service('session');
+
+            $session->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'Could not find requested speaker',
