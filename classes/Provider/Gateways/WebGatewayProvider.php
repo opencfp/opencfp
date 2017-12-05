@@ -27,6 +27,7 @@ use OpenCFP\Http\Controller\Reviewer;
 use OpenCFP\Http\Controller\SecurityController;
 use OpenCFP\Http\Controller\SignupController;
 use OpenCFP\Http\Controller\TalkController;
+use OpenCFP\Http\View\TalkHelper;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
@@ -95,10 +96,19 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         };
 
         $app[TalkController::class] = function ($app) {
-            $controller = new TalkController($app['twig'], $app['url_generator']);
-            $controller->setApplication($app);
-
-            return $controller;
+            return new TalkController(
+                $app[Authentication::class],
+                $app['application.speakers'],
+                $app[TalkHelper::class],
+                $app[CallForPapers::class],
+                $app['purifier'],
+                $app['mailer'],
+                $app['twig'],
+                $app['url_generator'],
+                $app->config('application.email'),
+                $app->config('application.title'),
+                $app->config('application.enddate')
+            );
         };
 
         // Admin controllers
