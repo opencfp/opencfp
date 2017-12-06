@@ -71,6 +71,6 @@ final class MigrationsTest extends BaseTestCase
 
     private function getCapsule(): Capsule
     {
-        return $this->app[Capsule::class];
+        return $this->container->get(Capsule::class);
     }
 }

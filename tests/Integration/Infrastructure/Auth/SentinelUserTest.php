@@ -86,7 +86,7 @@ final class SentinelUserTest extends BaseTestCase
     public function checkResetPasswordCodeWorks()
     {
         /** @var Capsule $capsule */
-        $capsule = $this->app[Capsule::class];
+        $capsule = $this->container->get(Capsule::class);
         $capsule->getConnection()->query()->from('reminders')->insert([
             'user_id' => self::$user->getId(),
             'code'    => 'secret.reset.code',
@@ -103,7 +103,7 @@ final class SentinelUserTest extends BaseTestCase
     public function getResetPassWordCodeWorks()
     {
         /** @var Capsule $capsule */
-        $capsule = $this->app[Capsule::class];
+        $capsule = $this->container->get(Capsule::class);
         $capsule->getConnection()->query()->from('reminders')->insert([
             'user_id' => self::$user->getId(),
             'code'    => 'secret.reset.code',
@@ -128,7 +128,7 @@ final class SentinelUserTest extends BaseTestCase
     public function attemptResetPasswordWorks()
     {
         /** @var Capsule $capsule */
-        $capsule = $this->app[Capsule::class];
+        $capsule = $this->container->get(Capsule::class);
         $capsule->getConnection()->query()->from('reminders')->insert([
             'user_id' => self::$user->getId(),
             'code'    => 'secret.reset.code',

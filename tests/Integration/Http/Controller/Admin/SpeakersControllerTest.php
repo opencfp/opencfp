@@ -99,7 +99,7 @@ final class SpeakersControllerTest extends WebTestCase
         $accounts = Mockery::mock(AccountManagement::class);
         $accounts->shouldReceive('findById')->andReturn($user);
         $this->swap(AccountManagement::class, $accounts);
-        $csrfToken = $this->app['csrf.token_manager']
+        $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('admin_speaker_promote')
             ->getValue();
         $this->asAdmin()
@@ -114,7 +114,7 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function promoteActionWorksCorrectly()
     {
-        $csrfToken = $this->app['csrf.token_manager']
+        $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('admin_speaker_promote')
             ->getValue();
         $this->asAdmin()
@@ -140,7 +140,7 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionFailsIfUserNotFound()
     {
-        $csrfToken = $this->app['csrf.token_manager']
+        $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
         $this->asAdmin()
@@ -156,7 +156,7 @@ final class SpeakersControllerTest extends WebTestCase
     public function demoteActionFailsIfDemotingSelf()
     {
         $user      = self::$users->last();
-        $csrfToken = $this->app['csrf.token_manager']
+        $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
         $this->asAdmin($user->id)
@@ -180,7 +180,7 @@ final class SpeakersControllerTest extends WebTestCase
         $accounts->shouldReceive('findById')->andReturn($user);
         $accounts->shouldReceive('demoteFrom');
         $this->swap(AccountManagement::class, $accounts);
-        $csrfToken = $this->app['csrf.token_manager']
+        $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
         $this->asAdmin(self::$users->first()->id)
