@@ -21,6 +21,7 @@ use OpenCFP\Domain\ValidationException;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -116,12 +117,14 @@ class TalksController extends BaseController
                 'rating' => 'required|integer',
             ]);
 
-            return $this->talkHandler
+            $content = (string) $this->talkHandler
                 ->grabTalk((int) $request->get('id'))
                 ->rate((int) $request->get('rating'));
         } catch (ValidationException $e) {
-            return false;
+            $content = '';
         }
+
+        return new Response($content);
     }
 
     /**
@@ -129,13 +132,15 @@ class TalksController extends BaseController
      *
      * @param Request $request Request Object
      *
-     * @return bool
+     * @return Response
      */
     public function favoriteAction(Request $request)
     {
-        return $this->talkHandler
+        $content = (string) $this->talkHandler
             ->grabTalk((int) $request->get('id'))
             ->setFavorite($request->get('delete') == null);
+
+        return new Response($content);
     }
 
     /**
@@ -143,13 +148,15 @@ class TalksController extends BaseController
      *
      * @param Request $request Request Object
      *
-     * @return bool
+     * @return Response
      */
     public function selectAction(Request $request)
     {
-        return $this->talkHandler
+        $content = (string) $this->talkHandler
             ->grabTalk((int) $request->get('id'))
             ->select($request->get('delete') != true);
+
+        return new Response($content);
     }
 
     public function commentCreateAction(Request $request)
