@@ -18,6 +18,7 @@ use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -52,7 +53,7 @@ class SignupController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         if ($this->authentication->isAuthenticated()) {
             return $this->redirectTo('dashboard');
@@ -71,7 +72,7 @@ class SignupController extends BaseController
         return $this->render('security/signup.twig');
     }
 
-    public function processAction(Request $request)
+    public function processAction(Request $request): Response
     {
         try {
             $this->validate($request, [

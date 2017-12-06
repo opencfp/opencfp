@@ -26,6 +26,7 @@ use Swift_Message;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -123,7 +124,7 @@ class TalkController extends BaseController
      *
      * @return mixed
      */
-    public function viewAction(Request $request)
+    public function viewAction(Request $request): Response
     {
         try {
             $talkId = (int) $request->get('id');
@@ -138,7 +139,7 @@ class TalkController extends BaseController
         ]);
     }
 
-    public function editAction(Request $request)
+    public function editAction(Request $request): Response
     {
         $talkId = (int) $request->get('id');
 
@@ -185,7 +186,7 @@ class TalkController extends BaseController
         ]);
     }
 
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         // You can only create talks while the CfP is open
         if (!$this->callForPapers->isOpen()) {
@@ -216,7 +217,7 @@ class TalkController extends BaseController
         ]);
     }
 
-    public function processCreateAction(Request $request)
+    public function processCreateAction(Request $request): Response
     {
         // You can only create talks while the CfP is open
         if (!$this->callForPapers->isOpen()) {
@@ -287,7 +288,7 @@ class TalkController extends BaseController
         ]);
     }
 
-    public function updateAction(Request $request)
+    public function updateAction(Request $request): Response
     {
         if (!$this->callForPapers->isOpen()) {
             $request->getSession()->set('flash', [
@@ -362,7 +363,7 @@ class TalkController extends BaseController
         ]);
     }
 
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): Response
     {
         // You can only delete talks while the CfP is open
         if (!$this->callForPapers->isOpen()) {
