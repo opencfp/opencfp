@@ -117,8 +117,6 @@ class TalksController extends BaseController
             $content = (string) $this->talkHandler
                 ->grabTalk((int) $request->get('id'))
                 ->rate((int) $request->get('rating'));
-
-            return $content;
         } catch (ValidationException $e) {
             $content = '';
         }
