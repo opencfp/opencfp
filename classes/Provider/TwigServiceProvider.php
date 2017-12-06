@@ -26,6 +26,7 @@ use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormRenderer;
 use Twig_Environment;
 use Twig_Extension_Debug;
 
@@ -75,6 +76,14 @@ class TwigServiceProvider implements ServiceProviderInterface, EventListenerProv
             );
 
             return $twig;
+        });
+
+        // Workaround for a Symfony 3.4 incompatibility.
+        // See https://github.com/silexphp/Silex/pull/1571
+        $c->extend('twig.runtimes', function (array $runtime) {
+            $runtime[FormRenderer::class] = 'twig.form.renderer';
+
+            return $runtime;
         });
     }
 
