@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit\Infrastructure\Event;
+namespace OpenCFP\Test\Integration\Infrastructure\Event;
 
 use Mockery;
 use OpenCFP\Domain\CallForPapers;

@@ -16,6 +16,7 @@ namespace OpenCFP\Test\Unit;
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain;
 use OpenCFP\Http;
+use OpenCFP\Infrastructure;
 use OpenCFP\Provider;
 use PHPUnit\Framework;
 
@@ -60,6 +61,10 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Form\ForgotForm::class,
                 Http\Form\ResetForm::class,
                 Http\View\TalkHelper::class,
+                Infrastructure\Event\AuthenticationListener::class,
+                Infrastructure\Event\ExceptionListener::class,
+                Infrastructure\Event\TwigGlobalsListener::class,
+                Infrastructure\Templating\TwigExtension::class,
                 Provider\ApplicationServiceProvider::class,
                 Provider\CallForPapersProvider::class,
                 Provider\ControllerResolver::class,

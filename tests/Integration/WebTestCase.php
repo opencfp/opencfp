@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test;
+namespace OpenCFP\Test\Integration;
 
 use Mockery;
 use OpenCFP\Domain\CallForPapers;
@@ -19,6 +19,8 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\RequestValidator;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\TestResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class WebTestCase extends BaseTestCase

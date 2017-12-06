@@ -11,9 +11,9 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit\Infrastructure\Event;
+namespace OpenCFP\Test\Integration\Infrastructure\Event;
 
-use OpenCFP\Test\WebTestCase;
+use OpenCFP\Test\Integration\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

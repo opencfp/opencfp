@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit\Infrastructure\Templating;
+namespace OpenCFP\Test\Integration\Infrastructure\Templating;
 
 use OpenCFP\Infrastructure\Templating\TwigExtension;
 use PHPUnit\Framework\TestCase;

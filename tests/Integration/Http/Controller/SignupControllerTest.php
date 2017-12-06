@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Controller;
 
 use OpenCFP\Test\Helper\RefreshDatabase;
-use OpenCFP\Test\WebTestCase;
+use OpenCFP\Test\Integration\WebTestCase;
 
 /**
  * @group db
