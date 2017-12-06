@@ -44,14 +44,12 @@ class SpeakersController extends BaseController
         $pagerfanta->setCurrentPage($request->get('page'));
         $pagination = $pagerfanta->createView('/reviewer/speakers?');
 
-        $templateData = [
+        return $this->render('reviewer/speaker/index.twig', [
             'pagination' => $pagination,
             'speakers'   => $pagerfanta->getFanta(),
             'page'       => $pagerfanta->getCurrentPage(),
             'search'     => $search ?: '',
-        ];
-
-        return $this->render('reviewer/speaker/index.twig', $templateData);
+        ]);
     }
 
     public function viewAction(Request $request)
@@ -68,14 +66,13 @@ class SpeakersController extends BaseController
             return $this->redirectTo('reviewer_speakers');
         }
 
-        $talks        = $speakerDetails->talks()->get()->toArray();
-        $templateData = [
+        $talks = $speakerDetails->talks()->get()->toArray();
+
+        return $this->render('reviewer/speaker/view.twig', [
             'speaker'    => new SpeakerProfile($speakerDetails, $this->reviewerUsers),
             'talks'      => $talks,
             'photo_path' => '/uploads/',
             'page'       => $request->get('page'),
-        ];
-
-        return $this->render('reviewer/speaker/view.twig', $templateData);
+        ]);
     }
 }

@@ -120,7 +120,7 @@ class SpeakersController extends BaseController
         $pagerfanta->setCurrentPage($request->get('page'));
         $pagination = $pagerfanta->createView('/admin/speakers?');
 
-        $templateData = [
+        return $this->render('admin/speaker/index.twig', [
             'airport'    => $this->applicationAirport,
             'arrival'    => \date('Y-m-d', $this->applicationArrival),
             'departure'  => \date('Y-m-d', $this->applicationDeparture),
@@ -128,9 +128,7 @@ class SpeakersController extends BaseController
             'speakers'   => $pagerfanta->getFanta(),
             'page'       => $pagerfanta->getCurrentPage(),
             'search'     => $search ?: '',
-        ];
-
-        return $this->render('admin/speaker/index.twig', $templateData);
+        ]);
     }
 
     public function viewAction(Request $request)
@@ -162,7 +160,7 @@ class SpeakersController extends BaseController
         $talks = $speakerDetails->talks()->get();
 
         // Build and render the template
-        $templateData = [
+        return $this->render('admin/speaker/view.twig', [
             'airport'    => $this->applicationAirport,
             'arrival'    => \date('Y-m-d', $this->applicationArrival),
             'departure'  => \date('Y-m-d', $this->applicationDeparture),
@@ -170,9 +168,7 @@ class SpeakersController extends BaseController
             'talks'      => $talks,
             'photo_path' => '/uploads/',
             'page'       => $request->get('page'),
-        ];
-
-        return $this->render('admin/speaker/view.twig', $templateData);
+        ]);
     }
 
     public function deleteAction(Request $request)
