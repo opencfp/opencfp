@@ -15,7 +15,7 @@ namespace OpenCFP\Test\Integration\Http\Controller\Reviewer;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Test\Helper\RefreshDatabase;
-use OpenCFP\Test\WebTestCase;
+use OpenCFP\Test\Integration\WebTestCase;
 
 /**
  * @coversNothing

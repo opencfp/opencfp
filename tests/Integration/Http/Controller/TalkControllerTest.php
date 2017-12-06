@@ -19,7 +19,7 @@ use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\Helper\RefreshDatabase;
-use OpenCFP\Test\WebTestCase;
+use OpenCFP\Test\Integration\WebTestCase;
 
 /**
  * @group db

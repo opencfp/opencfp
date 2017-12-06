@@ -16,7 +16,7 @@ namespace OpenCFP\Test\Integration\Http\Controller;
 use Mockery as m;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Infrastructure\Auth\UserInterface;
-use OpenCFP\Test\WebTestCase;
+use OpenCFP\Test\Integration\WebTestCase;
 
 /**
  * @group db

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Controller;
 
-use OpenCFP\Test\WebTestCase;
+use OpenCFP\Test\Integration\WebTestCase;
 use Symfony\Component\HttpFoundation;
 
 /**

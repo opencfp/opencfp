@@ -15,7 +15,7 @@ namespace OpenCFP\Test\Integration\Http\Controller\Admin;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Test\Helper\RefreshDatabase;
-use OpenCFP\Test\WebTestCase;
+use OpenCFP\Test\Integration\WebTestCase;
 
 /**
  * @covers \OpenCFP\Http\Controller\Admin\ExportsController
