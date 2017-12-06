@@ -79,10 +79,13 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $this->asReviewer()
-            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => $rating])
-            ->assertSee('1')
-            ->assertSuccessful();
+        $response = $this->asReviewer()->post('/reviewer/talks/' . $talk->id . '/rate', [
+            'rating' => $rating,
+        ]);
+
+        $response->assertSuccessful();
+        
+        $this->assertSame('1', $response->getContent());
     }
 
     public function providerValidRating(): array
@@ -107,10 +110,13 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $this->asReviewer()
-            ->post('/reviewer/talks/' . $talk->id . '/rate', ['rating' => $rating])
-            ->assertNotSee('1')
-            ->assertSuccessful();
+        $response = $this->asReviewer()->post('/reviewer/talks/' . $talk->id . '/rate', [
+            'rating' => $rating,
+        ]);
+
+        $response->assertSuccessful();
+
+        $this->assertSame('', $response->getContent());
     }
 
     public function providerInvalidRating(): array
