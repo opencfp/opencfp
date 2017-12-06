@@ -15,6 +15,8 @@ namespace OpenCFP\Test\Integration\Infrastructure\Event;
 
 use OpenCFP\Test\Integration\WebTestCase;
 
+use Symfony\Component\HttpFoundation;
+
 /**
  * @covers \OpenCFP\Infrastructure\Event\AuthenticationListener
  */
@@ -24,62 +26,82 @@ final class AuthenticationListenerTest extends WebTestCase
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);
     }
 
     public function testTalksRouteRequireLogin()
     {
         $response = $this->get('/talk/create');
 
-        $response->assertRedirect('dashboard');
+        $url = $this->container->get('url_generator')->generate('dashboard');
+
+        $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
     public function testTalksRouteWithLogin()
     {
-        $response = $this->asLoggedInSpeaker()->get('/talk/create');
+        $response = $this
+            ->asLoggedInSpeaker()
+            ->get('/talk/create');
 
-        $response->assertStatus(200);
+        $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);
     }
 
     public function testReviewerDashboardRequiresLogin()
     {
         $response = $this->get('/reviewer/');
 
-        $response->assertRedirect('dashboard');
+        $url = $this->container->get('url_generator')->generate('dashboard');
+
+        $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
     public function testReviewerDashboardRequiresReviewer()
     {
-        $response = $this->asLoggedInSpeaker()->get('/reviewer/');
+        $response = $this
+            ->asLoggedInSpeaker()
+            ->get('/reviewer/');
 
-        $response->assertRedirect('dashboard');
+        $url = $this->container->get('url_generator')->generate('dashboard');
+
+        $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
     public function testReviewerDashboardAsReviewer()
     {
-        $response = $this->asReviewer()->get('/reviewer/');
+        $response = $this
+            ->asReviewer()
+            ->get('/reviewer/');
 
-        $response->assertStatus(200);
+        $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);
     }
 
     public function testAdminDashboardRequiresLogin()
     {
         $response = $this->get('/admin/');
 
-        $response->assertRedirect('dashboard');
+        $url = $this->container->get('url_generator')->generate('dashboard');
+
+        $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
     public function testAdminDashboardRequiresAdmin()
     {
-        $response = $this->asLoggedInSpeaker()->get('/admin/');
+        $response = $this
+            ->asLoggedInSpeaker()
+            ->get('/admin/');
 
-        $response->assertRedirect('dashboard');
+        $url = $this->container->get('url_generator')->generate('dashboard');
+
+        $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
     public function testAdminDashboardAsAdmin()
     {
-        $response = $this->asAdmin()->get('/admin/');
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/');
 
-        $response->assertStatus(200);
+        $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);
     }
 }

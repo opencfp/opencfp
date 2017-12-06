@@ -64,10 +64,11 @@ final class DashboardControllerTest extends WebTestCase
 
         $this->callForPapersIsOpen();
 
-        $this->get('/dashboard')
-            ->assertSuccessful()
-            ->assertSee('Test Title')
-            ->assertSee('Test User');
+        $response = $this->get('/dashboard');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Test Title', $response);
+        $this->assertResponseBodyContains('Test User', $response);
     }
 
     /**
@@ -113,12 +114,13 @@ final class DashboardControllerTest extends WebTestCase
 
         $this->swap('application.speakers', $speakersDouble);
 
-        $this->callForPapersIsOpen()
-            ->isOnlineConference();
+        $response = $this
+            ->callForPapersIsOpen()
+            ->isOnlineConference()
+            ->get('/dashboard');
 
-        $this->get('/dashboard')
-            ->assertNotSee('Need Transportation')
-            ->assertNotSee('Need Hotel');
+        $this->assertResponseBodyNotContains('Need Transportation', $response);
+        $this->assertResponseBodyNotContains('Need Hotel', $response);
     }
 
     private function stubProfileWith(array $stubMethods = []): SpeakerProfile

@@ -37,12 +37,14 @@ final class TalksControllerTest extends WebTestCase
      */
     public function indexActionWorksNormally()
     {
-        $this->asReviewer()
-            ->get('/reviewer/talks')
-            ->assertSee('<h2 class="headline">Submitted Talks</h2>')
-            ->assertSee(self::$talks->first()->title)
-            ->assertNotSee('Recent Talks')
-            ->assertSuccessful();
+        $response = $this
+            ->asReviewer()
+            ->get('/reviewer/talks');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('<h2 class="headline">Submitted Talks</h2>', $response);
+        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
+        $this->assertResponseBodyNotContains('Recent Talks', $response);
     }
 
     /**
@@ -50,10 +52,12 @@ final class TalksControllerTest extends WebTestCase
      */
     public function viewActionWillRedirectWhenTalkNotFound()
     {
-        $this->asReviewer()
-            ->get('/reviewer/talks/255')
-            ->assertNotSee('title="I want to see this talk"')
-            ->assertRedirect();
+        $response = $this
+            ->asReviewer()
+            ->get('/reviewer/talks/255');
+
+        $this->assertResponseBodyNotContains('title="I want to see this talk"', $response);
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -62,11 +66,14 @@ final class TalksControllerTest extends WebTestCase
     public function viewActionWillShowTalk()
     {
         $talk = self::$talks->first();
-        $this->asReviewer()
-            ->get('/reviewer/talks/' . $talk->id)
-            ->assertSee($talk->title)
-            ->assertSee($talk->description)
-            ->assertSuccessful();
+
+        $response = $this
+            ->asReviewer()
+            ->get('/reviewer/talks/' . $talk->id);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains($talk->title, $response);
+        $this->assertResponseBodyContains($talk->description, $response);
     }
 
     /**
@@ -79,12 +86,14 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $response = $this->asReviewer()->post('/reviewer/talks/' . $talk->id . '/rate', [
-            'rating' => $rating,
-        ]);
+        $response = $this
+            ->asReviewer()
+            ->post('/reviewer/talks/' . $talk->id . '/rate', [
+                'rating' => $rating,
+            ]);
 
-        $response->assertSuccessful();
-        
+        $this->assertResponseIsSuccessful($response);
+
         $this->assertSame('1', $response->getContent());
     }
 
@@ -110,11 +119,13 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $response = $this->asReviewer()->post('/reviewer/talks/' . $talk->id . '/rate', [
-            'rating' => $rating,
-        ]);
+        $response = $this
+            ->asReviewer()
+            ->post('/reviewer/talks/' . $talk->id . '/rate', [
+                'rating' => $rating,
+            ]);
 
-        $response->assertSuccessful();
+        $this->assertResponseIsSuccessful($response);
 
         $this->assertSame('', $response->getContent());
     }

@@ -26,10 +26,11 @@ final class PagesControllerTest extends WebTestCase
      */
     public function showHomePageWorks()
     {
-        $this->get('/')
-            ->assertSuccessful()
-            ->assertNoFlashSet()
-            ->assertSee('Call For Papers Now Open!');
+        $response = $this->get('/');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Call For Papers Now Open!', $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -37,11 +38,13 @@ final class PagesControllerTest extends WebTestCase
      */
     public function showHomeWorksWhenCFPIsClosed()
     {
-        $this->callForPapersIsClosed()
-            ->get('/')
-            ->assertSuccessful()
-            ->assertNoFlashSet()
-            ->assertSee('Call for Papers has ended!');
+        $response = $this
+            ->callForPapersIsClosed()
+            ->get('/');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Call for Papers has ended!', $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -49,10 +52,11 @@ final class PagesControllerTest extends WebTestCase
      */
     public function showSpeakerPackageWorks()
     {
-        $this->get('/package')
-            ->assertSuccessful()
-            ->assertNoFlashSet()
-            ->assertSee('Speaker Information');
+        $response = $this->get('/package');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Speaker Information', $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -60,11 +64,13 @@ final class PagesControllerTest extends WebTestCase
      */
     public function showSpeakerPackageWorksWhenCFPIsClosed()
     {
-        $this->callForPapersIsClosed()
-            ->get('/package')
-            ->assertSuccessful()
-            ->assertNoFlashSet()
-            ->assertSee('Speaker Information');
+        $response = $this
+            ->callForPapersIsClosed()
+            ->get('/package');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Speaker Information', $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -72,10 +78,11 @@ final class PagesControllerTest extends WebTestCase
      */
     public function showTalkIdeasWorks()
     {
-        $this->get('/ideas')
-            ->assertSuccessful()
-            ->assertNoFlashSet()
-            ->assertSee('Talk Ideas');
+        $response = $this->get('/ideas');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Talk Ideas', $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -83,11 +90,13 @@ final class PagesControllerTest extends WebTestCase
      */
     public function showTalkIdeasWorksWhenCFPIsClosed()
     {
-        $this->callForPapersIsClosed()
-            ->get('/ideas')
-            ->assertSuccessful()
-            ->assertNoFlashSet()
-            ->assertSee('Talk Ideas');
+        $response = $this
+            ->callForPapersIsClosed()
+            ->get('/ideas');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Talk Ideas', $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -95,9 +104,10 @@ final class PagesControllerTest extends WebTestCase
      */
     public function aBadUrlGivesAnErrorPage()
     {
-        $this->get('/asdf/')
-            ->assertStatus(HttpFoundation\Response::HTTP_NOT_FOUND)
-            ->assertSee('Page Not Found!')
-            ->assertNoFlashSet();
+        $response = $this->get('/asdf/');
+
+        $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_NOT_FOUND, $response);
+        $this->assertResponseBodyContains('Page Not Found!', $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 }

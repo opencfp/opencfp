@@ -41,12 +41,15 @@ final class ExportsControllerTest extends WebTestCase
     public function anonymousTalksExportsContainsNoUserNames()
     {
         $user = self::$talks->first()->speaker()->first();
-        $this->asAdmin()
-            ->get('/admin/export/csv/anon')
-            ->assertNoFlashSet()
-            ->assertSee(self::$talks->first()->title)
-            ->assertNotSee($user->first_name)
-            ->assertSuccessful();
+
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/export/csv/anon');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
+        $this->assertResponseBodyNotContains($user->first_name, $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -54,11 +57,13 @@ final class ExportsControllerTest extends WebTestCase
      */
     public function attributedTalksWorks()
     {
-        $this->asAdmin()
-            ->get('/admin/export/csv')
-            ->assertNoFlashSet()
-            ->assertSee(self::$talks->first()->title)
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/export/csv');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -67,12 +72,15 @@ final class ExportsControllerTest extends WebTestCase
     public function emailExportWorks()
     {
         $user = self::$talks->first()->speaker()->first();
-        $this->asAdmin()
-            ->get('/admin/export/csv/emails')
-            ->assertNoFlashSet()
-            ->assertSee(self::$talks->first()->title)
-            ->assertSee($user->first_name)
-            ->assertSuccessful();
+
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/export/csv/emails');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
+        $this->assertResponseBodyContains($user->first_name, $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -81,12 +89,15 @@ final class ExportsControllerTest extends WebTestCase
     public function selectedExportWorks()
     {
         $user = self::$talks->first()->speaker()->first();
-        $this->asAdmin()
-            ->get('/admin/export/csv/selected')
-            ->assertNoFlashSet()
-            ->assertNotSee(self::$talks->first()->title)
-            ->assertNotSee($user->first_name)
-            ->assertSee(self::$selectedTalk->title);
+
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/export/csv/selected');
+
+        $this->assertResponseBodyContains(self::$selectedTalk->title, $response);
+        $this->assertResponseBodyNotContains(self::$talks->first()->title, $response);
+        $this->assertResponseBodyNotContains($user->first_name, $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
     /**
@@ -96,9 +107,11 @@ final class ExportsControllerTest extends WebTestCase
      */
     public function talksGetProperlyFormatted()
     {
-        $this->asAdmin()
-            ->get('/admin/export/csv/selected')
-            ->assertSee(",'=2+3")
-            ->assertNotSee(',=2+3');
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/export/csv/selected');
+
+        $this->assertResponseBodyContains(",'=2+3", $response);
+        $this->assertResponseBodyNotContains(',=2+3', $response);
     }
 }

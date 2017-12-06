@@ -37,9 +37,11 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function indexActionWorksWithNoSpeakers()
     {
-        $this->asReviewer()
-            ->get('/reviewer/speakers')
-            ->assertSuccessful();
+        $response = $this
+            ->asReviewer()
+            ->get('/reviewer/speakers');
+
+        $this->assertResponseIsSuccessful($response);
     }
 
     /**
@@ -48,10 +50,13 @@ final class SpeakersControllerTest extends WebTestCase
     public function indexActionDisplaysSpeakers()
     {
         $speaker = self::$users->first();
-        $this->asReviewer()
-            ->get('/reviewer/speakers')
-            ->assertSee($speaker->first_name)
-            ->assertSuccessful();
+
+        $response = $this
+            ->asReviewer()
+            ->get('/reviewer/speakers');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains($speaker->first_name, $response);
     }
 
     /**
@@ -59,10 +64,12 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function viewActionRedirectsWhenUserDoesntExist()
     {
-        $this->asReviewer()
-            ->get('/reviewer/speakers/255')
-            ->assertNotSee('Speaker Bio')
-            ->assertRedirect();
+        $response = $this
+            ->asReviewer()
+            ->get('/reviewer/speakers/255');
+
+        $this->assertResponseBodyNotContains('Speaker Bio', $response);
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -72,10 +79,12 @@ final class SpeakersControllerTest extends WebTestCase
     {
         $speaker = self::$users->first();
 
-        $this->asReviewer()
-            ->get('/reviewer/speakers/' . $speaker->id)
-            ->assertSee($speaker->first_name)
-            ->assertSee($speaker->bio)
-            ->assertSuccessful();
+        $response = $this
+            ->asReviewer()
+            ->get('/reviewer/speakers/' . $speaker->id);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains($speaker->first_name, $response);
+        $this->assertResponseBodyContains($speaker->bio, $response);
     }
 }
