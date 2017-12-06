@@ -1,0 +1,19 @@
+{% autoescape false %}
+current_page: {{ current_page }}
+cfp_open: {% if cfp_open %}Yes{% else %}No{% endif %}
+
+{% if user is defined %}
+user: {{ user.id }}
+{% endif %}
+{% if user_is_admin is defined %}
+user_is_admin: {% if user_is_admin %}Yes{% else %}No{% endif %}
+
+{% endif %}
+{% if user_is_reviewer is defined %}
+user_is_reviewer: {% if user_is_reviewer %}Yes{% else %}No{% endif %}
+
+{% endif %}
+{% if flash is defined %}
+flash: {{ flash }}
+{% endif %}
+{% endautoescape %}

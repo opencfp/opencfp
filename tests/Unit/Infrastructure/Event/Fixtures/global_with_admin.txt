@@ -1,0 +1,5 @@
+current_page: /foo
+cfp_open: Yes
+user: 42
+user_is_admin: Yes
+user_is_reviewer: No

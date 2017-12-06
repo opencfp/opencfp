@@ -1,0 +1,6 @@
+current_page: /foo
+cfp_open: Yes
+user: 43
+user_is_admin: No
+user_is_reviewer: Yes
+flash: You've got mail.
