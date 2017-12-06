@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit;
 
+use Localheinz\Classy;
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain;
 use OpenCFP\Http;
 use OpenCFP\Infrastructure;
 use OpenCFP\Provider;
 use PHPUnit\Framework;
+use Symfony\Component\HttpFoundation;
 
 /**
  * @coversNothing
@@ -82,6 +84,50 @@ final class ProjectCodeTest extends Framework\TestCase
                 Provider\YamlConfigDriver::class,
             ]
         );
+    }
+
+    public function testControllerActionsUseResponseReturnType()
+    {
+        $constructs = Classy\Constructs::fromDirectory(__DIR__ . '/../../classes/Http/Controller');
+
+        $actions = [];
+
+        foreach ($constructs as $construct) {
+            $reflection = new \ReflectionClass($construct->name());
+
+            if (!$reflection->isInstantiable()) {
+                continue;
+            }
+
+            $methods = \array_filter($reflection->getMethods(), function (\ReflectionMethod $method) {
+                if ($method->isAbstract() || $method->isConstructor() || !$method->isPublic() || $method->isStatic()) {
+                    return false;
+                }
+
+                $returnType = (string) $method->getReturnType();
+
+                return $returnType !== HttpFoundation\Response::class;
+            });
+
+            /** @var \ReflectionMethod[] $methods */
+            foreach ($methods as $method) {
+                $actions[] = \sprintf(
+                    '%s::%s',
+                    $method->getDeclaringClass()->getName(),
+                    $method->getName()
+                );
+            }
+        }
+
+        $actions = \array_unique($actions);
+
+        \sort($actions);
+
+        $this->assertEmpty($actions, \sprintf(
+            "Failed asserting that the controller actions\n\n%s\n\ndeclare \"%s\" as return type.",
+            ' - ' . \implode("\n - ", $actions),
+            HttpFoundation\Response::class
+        ));
     }
     
     public function testTestClassesAreAbstractOrFinal()
