@@ -17,8 +17,6 @@ use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Console\Application;
-use OpenCFP\Console\Command;
-use OpenCFP\Environment;
 use Symfony\Component\Console;
 
 /**
@@ -37,14 +35,14 @@ final class ApplicationTest extends \PHPUnit\Framework\TestCase
 
     public function testConstructorSetsName()
     {
-        $application = new Application(new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing()));
+        $application = new Application();
 
         $this->assertSame('OpenCFP', $application->getName());
     }
 
     public function testConstructorAddsInputOptionForEnvironment()
     {
-        $application = new Application(new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing()));
+        $application = new Application();
 
         $inputDefinition = $application->getDefinition();
 
@@ -57,18 +55,9 @@ final class ApplicationTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('The environment the command should run in', $option->getDescription());
     }
 
-    public function testConstructorSetsApplication()
-    {
-        $baseApp     = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
-        $application = new Application($baseApp);
-
-        $this->assertAttributeSame($baseApp, 'app', $application);
-    }
-
     public function testHasDefaultCommands()
     {
-        $appContainer = new \OpenCFP\Application(__DIR__ . '/../../..', Environment::testing());
-        $application  = new Application($appContainer);
+        $application = new Application();
 
         $expected = [
             Console\Command\HelpCommand::class,
