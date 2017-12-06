@@ -27,6 +27,7 @@ We accept contributions via Pull Requests on [Github](https://github.com/opencfp
 - **All test methods must have the `@test` annotation** -- We value descriptiveness in test method names
 - **All data providers must return array-of-args-arrays** -- The use of generators may let us not remember the number of arguments but too many arguments is a sign of potential code- and test-smells
 - **All data provider methods must be prefixed `provider`**
+- **All test method names should be `snake_case_test_methods`** 
 
 
 ## Running Tests
