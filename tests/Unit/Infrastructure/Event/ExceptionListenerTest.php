@@ -17,7 +17,7 @@ use OpenCFP\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Infrastructure\Event\ExceptionListener
  */
 final class ExceptionListenerTest extends WebTestCase
 {
