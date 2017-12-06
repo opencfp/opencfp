@@ -40,8 +40,6 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Twig_Environment;
-use Twig_SimpleFunction;
 
 class WebGatewayProvider implements BootableProviderInterface, ServiceProviderInterface
 {
@@ -185,29 +183,6 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
         $web = $app['controllers_factory'];
 
         $app->before(new RequestCleaner($app['purifier']));
-        $app->before(function (Request $request, Container $app) {
-            /* @var Twig_Environment $twig */
-            $twig = $app['twig'];
-
-            $twig->addGlobal('current_page', $request->getRequestUri());
-            $twig->addGlobal('cfp_open', $app[CallForPapers::class]->isOpen());
-
-            $twig->addFunction(new Twig_SimpleFunction('active', function ($route) use ($app, $request) {
-                return $app['url_generator']->generate($route) == $request->getRequestUri();
-            }));
-
-            // Authentication
-            if ($app[Authentication::class]->isAuthenticated()) {
-                $twig->addGlobal('user', $app[Authentication::class]->user());
-                $twig->addGlobal('user_is_admin', $app[Authentication::class]->user()->hasAccess('admin'));
-                $twig->addGlobal('user_is_reviewer', $app[Authentication::class]->user()->hasAccess('reviewer'));
-            }
-
-            if ($app['session']->has('flash')) {
-                $twig->addGlobal('flash', $app['session']->get('flash'));
-                $app['session']->set('flash', null);
-            }
-        }, Application::EARLY_EVENT);
 
         if ($app->config('application.secure_ssl')) {
             $app->requireHttps();

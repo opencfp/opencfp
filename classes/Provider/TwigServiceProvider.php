@@ -16,15 +16,20 @@ namespace OpenCFP\Provider;
 use Aptoma\Twig\Extension\MarkdownEngine;
 use Aptoma\Twig\Extension\MarkdownExtension;
 use OpenCFP\Application;
+use OpenCFP\Domain\CallForPapers;
+use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Http\View\TalkHelper;
+use OpenCFP\Infrastructure\Event\TwigGlobalsListener;
+use OpenCFP\Infrastructure\Templating\TwigExtension;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
 use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Twig_Environment;
 use Twig_Extension_Debug;
-use Twig_SimpleFunction;
 
-class TwigServiceProvider implements ServiceProviderInterface
+class TwigServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     protected $app;
 
@@ -51,13 +56,10 @@ class TwigServiceProvider implements ServiceProviderInterface
                 $twig->addExtension(new Twig_Extension_Debug());
             }
 
-            $twig->addFunction(new Twig_SimpleFunction('uploads', function ($path) {
-                return '/uploads/' . $path;
-            }));
-
-            $twig->addFunction(new Twig_SimpleFunction('assets', function ($path) {
-                return '/assets/' . $path;
-            }));
+            $twig->addExtension(new TwigExtension(
+                $app['request_stack'],
+                $app['url_generator']
+            ));
 
             $twig->addGlobal('site', $app->config('application'));
 
@@ -74,5 +76,15 @@ class TwigServiceProvider implements ServiceProviderInterface
 
             return $twig;
         });
+    }
+
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+    {
+        $dispatcher->addSubscriber(new TwigGlobalsListener(
+            $app[Authentication::class],
+            $app[CallForPapers::class],
+            $app['session'],
+            $app['twig']
+        ));
     }
 }
