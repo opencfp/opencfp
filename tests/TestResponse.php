@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test;
 
-use OpenCFP\Application;
 use PHPUnit\Framework\Assert;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,9 +27,9 @@ use Symfony\Component\HttpFoundation\Response;
 final class TestResponse
 {
     /**
-     * @var Application
+     * @var ContainerInterface
      */
-    private $app;
+    private $container;
 
     /**
      * The response we're decorating.
@@ -38,10 +38,10 @@ final class TestResponse
      */
     public $baseResponse;
 
-    public function __construct(Application $app, Response $response)
+    public function __construct(ContainerInterface $container, Response $response)
     {
         $this->baseResponse = $response;
-        $this->app          = $app;
+        $this->container    = $container;
     }
 
     public function assertSuccessful(): self
@@ -75,7 +75,7 @@ final class TestResponse
         );
 
         if ($route !== null) {
-            $expected = $this->app['url_generator']->generate($route, $parameters);
+            $expected = $this->container->get('url_generator')->generate($route, $parameters);
             Assert::assertEquals($expected, $this->headers->get('Location'));
         }
 
@@ -98,7 +98,7 @@ final class TestResponse
 
     public function assertFlashContains(string $flash): self
     {
-        $fullFlash = $this->app['session']->get('flash');
+        $fullFlash = $this->container->get('session')->get('flash');
         $fullFlash = \is_array($fullFlash) ? $fullFlash : [];
         Assert::assertContains($flash, $fullFlash);
 
@@ -107,7 +107,7 @@ final class TestResponse
 
     public function assertNoFlashSet(): self
     {
-        Assert::assertNull($this->app['session']->get('flash'));
+        Assert::assertNull($this->container->get('session')->get('flash'));
 
         return $this;
     }

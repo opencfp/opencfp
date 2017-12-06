@@ -156,7 +156,7 @@ final class TalkControllerTest extends WebTestCase
      */
     public function seeEditPageWhenAllowed()
     {
-        $csrfToken = $this->app['csrf.token_manager']
+        $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('edit_talk')
             ->getValue();
         $this->asLoggedInSpeaker(self::$user->id)
@@ -236,7 +236,7 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantProcessCreateTalkWithMissingData()
     {
-        $csrfToken = $this->app['csrf.token_manager']
+        $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
         $postData = [
@@ -288,7 +288,7 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantUpdateActionWithInvalidData()
     {
-        $csrfToken = $this->app['csrf.token_manager']
+        $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
         $postData = [

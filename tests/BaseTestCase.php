@@ -19,6 +19,8 @@ use OpenCFP\Application;
 use OpenCFP\Environment;
 use OpenCFP\Test\Helper\DataBaseInteraction;
 use OpenCFP\Test\Helper\RefreshDatabase;
+use Pimple\Psr11\Container;
+use Psr\Container\ContainerInterface;
 
 abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 {
@@ -29,6 +31,11 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
      * @var Application
      */
     protected $app;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     public static function setUpBeforeClass()
     {
@@ -47,7 +54,8 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
     {
         if ($this->app) {
             $this->app->flush();
-            $this->app = null;
+            $this->app       = null;
+            $this->container = null;
         }
     }
 
@@ -61,7 +69,8 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 
     public function refreshApplication()
     {
-        $this->app = $this->createApplication();
+        $this->app       = $this->createApplication();
+        $this->container = new Container($this->app);
     }
 
     /**

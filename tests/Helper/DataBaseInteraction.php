@@ -24,6 +24,6 @@ trait DataBaseInteraction
 
     protected function getCapsule(): Manager
     {
-        return $this->app[Manager::class];
+        return $this->container->get(Manager::class);
     }
 }

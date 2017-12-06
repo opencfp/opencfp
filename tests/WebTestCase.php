@@ -110,7 +110,7 @@ abstract class WebTestCase extends BaseTestCase
         $response = $this->app->handle($request);
         $this->app->terminate($request, $response);
 
-        return new TestResponse($this->app, $response);
+        return new TestResponse($this->container, $response);
     }
 
     public function get(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
@@ -138,7 +138,7 @@ abstract class WebTestCase extends BaseTestCase
         $cfp = Mockery::mock(CallForPapers::class);
         $cfp->shouldReceive('isOpen')->andReturn(true);
         $this->swap(CallForPapers::class, $cfp);
-        $this->app['twig']->addGlobal('cfp_open', true);
+        $this->container->get('twig')->addGlobal('cfp_open', true);
 
         return $this;
     }
@@ -148,17 +148,17 @@ abstract class WebTestCase extends BaseTestCase
         $cfp = Mockery::mock(CallForPapers::class);
         $cfp->shouldReceive('isOpen')->andReturn(false);
         $this->swap(CallForPapers::class, $cfp);
-        $this->app['twig']->addGlobal('cfp_open', false);
+        $this->container->get('twig')->addGlobal('cfp_open', false);
 
         return $this;
     }
 
     public function isOnlineConference(): self
     {
-        $config                                     = $this->app['config'];
+        $config                                     = $this->container->get('config');
         $config['application']['online_conference'] = true;
-        $this->app['config']                        = $config;
-        $this->app['twig']->addGlobal('site', $this->app->config('application'));
+        $this->swap('config', $config);
+        $this->container->get('twig')->addGlobal('site', $config['application']);
 
         return $this;
     }
