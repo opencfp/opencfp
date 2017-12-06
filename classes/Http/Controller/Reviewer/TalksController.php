@@ -20,6 +20,7 @@ use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\ValidationException;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -113,11 +114,15 @@ class TalksController extends BaseController
                 'rating' => 'required|integer',
             ]);
 
-            return $this->talkHandler
+            $content = (string) $this->talkHandler
                 ->grabTalk((int) $request->get('id'))
                 ->rate((int) $request->get('rating'));
+
+            return $content;
         } catch (ValidationException $e) {
-            return false;
+            $content = '';
         }
+
+        return new Response($content);
     }
 }
