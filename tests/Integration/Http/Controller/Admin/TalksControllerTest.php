@@ -185,51 +185,57 @@ final class TalksControllerTest extends WebTestCase
 
     /**
      * @test
+     * @dataProvider providerValidRating
+     *
+     * @param mixed $rating
      */
-    public function rateActionWorksCorrectly()
+    public function rateActionWorksCorrectly($rating)
     {
         $talk = self::$talks->first();
 
         $this->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => 1])
+            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => $rating])
             ->assertSee('1')
             ->assertSuccessful();
     }
 
-    /**
-     * @test
-     */
-    public function rateActionRetunsFalseOnWrongRate()
+    public function providerValidRating(): array
     {
-        $talk = self::$talks->first();
-
-        $this->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => 12])
-            ->assertNotSee('1')
-            ->assertSuccessful();
+        return [
+            'int' => [
+                1,
+            ],
+            'integerish' => [
+                '0',
+            ],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider providerInvalidRating
+     *
+     * @param mixed $rating
      */
-    public function rateActionWillReturnTrueOnGoodNumericRate()
+    public function rateActionReturnsFalseOnWrongRate($rating)
     {
         $talk = self::$talks->first();
+
         $this->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => '0'])
-            ->assertSee('1')
+            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => $rating])
+            ->assertNotSee('1')
             ->assertSuccessful();
     }
 
-    /**
-     * @test
-     */
-    public function rateActionWillReturnFalseOnNonIntInput()
+    public function providerInvalidRating(): array
     {
-        $talk = self::$talks->first();
-        $this->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/rate', ['rating' => 'blabla'])
-            ->assertNotSee('1')
-            ->assertSuccessful();
+        return [
+            'int-too-large' => [
+                12,
+            ],
+            'string' => [
+                'blabla',
+            ],
+        ];
     }
 }
