@@ -132,7 +132,10 @@ class TalkController extends BaseController
             return $this->redirectTo('dashboard');
         }
 
-        return $this->render('talk/view.twig', \compact('talkId', 'talk'));
+        return $this->render('talk/view.twig', [
+            'talkId' => $talkId,
+            'talk'   => $talk,
+        ]);
     }
 
     public function editAction(Request $request)

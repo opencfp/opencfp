@@ -69,7 +69,7 @@ class ProfileController extends BaseController
 
         $speakerData = User::find($user->getId())->toArray();
 
-        $formData = [
+        return $this->render('user/edit.twig', [
             'email'          => $user->getLogin(),
             'first_name'     => $speakerData['first_name'],
             'last_name'      => $speakerData['last_name'],
@@ -86,9 +86,7 @@ class ProfileController extends BaseController
             'id'             => $user->getId(),
             'formAction'     => $this->url('user_update'),
             'buttonInfo'     => 'Update Profile',
-        ];
-
-        return $this->render('user/edit.twig', $formData);
+        ]);
     }
 
     public function processAction(Request $request)
@@ -131,12 +129,12 @@ class ProfileController extends BaseController
             'ext'   => \implode('<br>', $form->getErrorMessages()),
         ]);
 
-        $formData['formAction'] = $this->url('user_update');
-        $formData['buttonInfo'] = 'Update Profile';
-        $formData['id']         = $userId;
-        $formData['flash']      = $request->getSession()->get('flash');
-
-        return $this->render('user/edit.twig', $formData);
+        return $this->render('user/edit.twig', \array_merge($formData, [
+            'formAction' => $this->url('user_update'),
+            'buttonInfo' => 'Update Profile',
+            'id'         => $userId,
+            'flash'      => $request->getSession()->get('flash'),
+        ]));
     }
 
     public function passwordAction()

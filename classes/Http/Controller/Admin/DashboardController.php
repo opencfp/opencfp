@@ -46,14 +46,12 @@ class DashboardController extends BaseController
         $recentTalks = Talk::recent()->get();
         $recentTalks = $talkFormatter->formatList($recentTalks, $userId);
 
-        $templateData = [
+        return $this->render('admin/index.twig', [
             'speakerTotal'  => User::count(),
             'talkTotal'     => Talk::count(),
             'favoriteTotal' => Favorite::count(),
             'selectTotal'   => Talk::where('selected', 1)->count(),
             'talks'         => $recentTalks,
-        ];
-
-        return $this->render('admin/index.twig', $templateData);
+        ]);
     }
 }

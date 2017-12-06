@@ -77,7 +77,7 @@ class TalksController extends BaseController
         $pagerfanta->setCurrentPage($request->get('page'));
         $pagination = $pagerfanta->createView('/admin/talks?', $request->query->all());
 
-        $templateData = [
+        return $this->render('admin/talks/index.twig', [
             'pagination'   => $pagination,
             'talks'        => $pagerfanta->getFanta(),
             'page'         => $pagerfanta->getCurrentPage(),
@@ -87,9 +87,7 @@ class TalksController extends BaseController
             'per_page'     => $perPage,
             'sort'         => $request->get('sort'),
             'order_by'     => $request->get('order_by'),
-        ];
-
-        return $this->render('admin/talks/index.twig', $templateData);
+        ]);
     }
 
     public function viewAction(Request $request)
@@ -107,7 +105,9 @@ class TalksController extends BaseController
             return $this->redirectTo('admin_talks');
         }
 
-        return $this->render('admin/talks/view.twig', ['talk' => $handler->getProfile()]);
+        return $this->render('admin/talks/view.twig', [
+            'talk' => $handler->getProfile(),
+        ]);
     }
 
     public function rateAction(Request $request)

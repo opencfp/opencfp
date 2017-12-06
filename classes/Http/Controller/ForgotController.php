@@ -56,12 +56,11 @@ class ForgotController extends BaseController
     public function indexAction()
     {
         $form = $this->formFactory->createBuilder(ForgotForm::class)->getForm();
-        $data = [
+
+        return $this->render('security/forgot_password.twig', [
             'form'         => $form->createView(),
             'current_page' => 'Forgot Password',
-        ];
-
-        return $this->render('security/forgot_password.twig', $data);
+        ]);
     }
 
     public function sendResetAction(Request $request)
@@ -145,10 +144,10 @@ class ForgotController extends BaseController
         ];
         $form = $this->formFactory->create(new ResetForm());
 
-        $data['form']  = $form->createView($formOptions);
-        $data['flash'] = $request->getSession()->get('flash');
-
-        return $this->render('user/forgot_password.twig', $data);
+        return $this->render('user/forgot_password.twig', [
+            'form'  => $form->createView($formOptions),
+            'flash' => $request->getSession()->get('flash'),
+        ]);
     }
 
     public function processResetAction(Request $request)
@@ -167,7 +166,9 @@ class ForgotController extends BaseController
             $form->get('user_id')->setData($userId);
             $form->get('reset_code')->setData($resetCode);
 
-            return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
+            return $this->render('user/reset_password.twig', [
+                'form' => $form->createView(),
+            ]);
         }
              
         $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
@@ -200,7 +201,9 @@ class ForgotController extends BaseController
         $form->handleRequest($request);
         
         if (!$form->isValid()) {
-            return $this->render('user/reset_password.twig', ['form' => $form->createView()]);
+            return $this->render('user/reset_password.twig', [
+                'form' => $form->createView(),
+            ]);
         }
 
         $data      = $form->getData();
