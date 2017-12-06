@@ -31,19 +31,20 @@ use OpenCFP\Http\Controller\SignupController;
 use OpenCFP\Http\Controller\TalkController;
 use OpenCFP\Http\View\TalkHelper;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
-use OpenCFP\Infrastructure\Auth\RoleAccess;
-use OpenCFP\Infrastructure\Auth\SpeakerAccess;
+use OpenCFP\Infrastructure\Event\AuthenticationListener;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 use Twig_SimpleFunction;
 
-class WebGatewayProvider implements BootableProviderInterface, ServiceProviderInterface
+class WebGatewayProvider implements BootableProviderInterface, ServiceProviderInterface, EventListenerProviderInterface
 {
     public function register(Container $app)
     {
@@ -213,10 +214,6 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             $app->requireHttps();
         }
 
-        $asSpeaker = function () use ($app) {
-            return SpeakerAccess::userHasAccess($app[Authentication::class]);
-        };
-
         $csrfChecker = function (Request $request) use ($app) {
             $checker = $app[CsrfValidator::class];
 
@@ -238,17 +235,17 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 
         // Talks
         $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')
-            ->bind('talk_edit')->before($asSpeaker)->before($csrfChecker);
+            ->bind('talk_edit')->before($csrfChecker);
         $web->get('/talk/create', 'OpenCFP\Http\Controller\TalkController::createAction')
-            ->bind('talk_new')->before($asSpeaker);
+            ->bind('talk_new');
         $web->post('/talk/create', 'OpenCFP\Http\Controller\TalkController::processCreateAction')
-            ->bind('talk_create')->before($asSpeaker)->before($csrfChecker);
+            ->bind('talk_create')->before($csrfChecker);
         $web->post('/talk/update', 'OpenCFP\Http\Controller\TalkController::updateAction')
-            ->bind('talk_update')->before($asSpeaker)->before($csrfChecker);
+            ->bind('talk_update')->before($csrfChecker);
         $web->post('/talk/delete', 'OpenCFP\Http\Controller\TalkController::deleteAction')
-            ->bind('talk_delete')->before($asSpeaker)->before($csrfChecker);
+            ->bind('talk_delete')->before($csrfChecker);
         $web->get('/talk/{id}', 'OpenCFP\Http\Controller\TalkController::viewAction')
-            ->bind('talk_view')->before($asSpeaker);
+            ->bind('talk_view');
 
         // Login/Logout
         $web->get('/login', 'OpenCFP\Http\Controller\SecurityController::indexAction')
@@ -268,15 +265,15 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 
         // Edit Profile/Account
         $web->get('/profile/edit/{id}', 'OpenCFP\Http\Controller\ProfileController::editAction')
-            ->bind('user_edit')->before($asSpeaker);
+            ->bind('user_edit');
         $web->post('/profile/edit', 'OpenCFP\Http\Controller\ProfileController::processAction')
-            ->bind('user_update')->before($asSpeaker);
+            ->bind('user_update');
 
         // Change/forgot Password
         $web->get('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordAction')
-            ->bind('password_edit')->before($asSpeaker);
+            ->bind('password_edit');
         $web->post('/profile/change_password', 'OpenCFP\Http\Controller\ProfileController::passwordProcessAction')
-            ->bind('password_change')->before($asSpeaker);
+            ->bind('password_change');
         $web->get('/forgot', 'OpenCFP\Http\Controller\ForgotController::indexAction')
             ->bind('forgot_password');
         $web->post('/forgot', 'OpenCFP\Http\Controller\ForgotController::sendResetAction')
@@ -292,9 +289,6 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 
         /** @var ControllerCollection $admin */
         $admin = $app['controllers_factory'];
-        $admin->before(function () use ($app) {
-            return RoleAccess::userHasAccess($app[Authentication::class], 'admin');
-        });
 
         // Admin Routes
         $admin->get('/', 'OpenCFP\Http\Controller\Admin\DashboardController::indexAction')
@@ -339,9 +333,6 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 
         /** @var ControllerCollection $reviewer */
         $reviewer = $app['controllers_factory'];
-        $reviewer->before(function () use ($app) {
-            return RoleAccess::userHasAccess($app[Authentication::class], 'reviewer');
-        });
 
         //Reviewer Routes
         $reviewer->get('/', 'OpenCFP\Http\Controller\Reviewer\DashboardController::indexAction')
@@ -369,5 +360,13 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
 
         $app->mount('/', $web);
         // @codingStandardsIgnoreEnd
+    }
+
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+    {
+        $dispatcher->addSubscriber(new AuthenticationListener(
+            $app[Authentication::class],
+            $app['url_generator']
+        ));
     }
 }

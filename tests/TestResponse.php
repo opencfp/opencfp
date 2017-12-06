@@ -17,7 +17,6 @@ use OpenCFP\Application;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Decorates a Symfony Response object and provides several
@@ -76,7 +75,7 @@ final class TestResponse
         );
 
         if ($route !== null) {
-            $expected = $this->app['url_generator']->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+            $expected = $this->app['url_generator']->generate($route, $parameters);
             Assert::assertEquals($expected, $this->headers->get('Location'));
         }
 
@@ -129,5 +128,10 @@ final class TestResponse
     public function __call($method, $args)
     {
         return $this->baseResponse->{$method}(...$args);
+    }
+
+    public function __get($name)
+    {
+        return $this->baseResponse->{$name};
     }
 }
