@@ -18,7 +18,7 @@ use HTMLPurifier_Config;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class HtmlPurifierServiceProvider implements ServiceProviderInterface
+final class HtmlPurifierServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}

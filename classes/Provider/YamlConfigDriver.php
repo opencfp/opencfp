@@ -15,7 +15,7 @@ namespace OpenCFP\Provider;
 
 use Symfony\Component\Yaml\Yaml;
 
-class YamlConfigDriver
+final class YamlConfigDriver
 {
     public function load($filename)
     {

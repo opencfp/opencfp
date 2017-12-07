@@ -19,7 +19,7 @@ use OpenCFP\Domain\Talk\TalkHandler;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class TalkHandlerProvider implements ServiceProviderInterface
+final class TalkHandlerProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {

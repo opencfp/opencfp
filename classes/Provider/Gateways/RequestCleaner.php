@@ -17,7 +17,7 @@ use HTMLPurifier;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class RequestCleaner
+final class RequestCleaner
 {
     /**
      * @var HTMLPurifier

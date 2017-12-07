@@ -19,7 +19,7 @@ use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class TalkRatingProvider implements ServiceProviderInterface
+final class TalkRatingProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {

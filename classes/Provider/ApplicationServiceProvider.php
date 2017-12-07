@@ -33,7 +33,7 @@ use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class ApplicationServiceProvider implements ServiceProviderInterface
+final class ApplicationServiceProvider implements ServiceProviderInterface
 {
     /**s
      * {@inheritdoc}

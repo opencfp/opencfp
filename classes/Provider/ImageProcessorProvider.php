@@ -17,7 +17,7 @@ use OpenCFP\Domain\Services\ProfileImageProcessor;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class ImageProcessorProvider implements ServiceProviderInterface
+final class ImageProcessorProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}
