@@ -88,7 +88,7 @@ class Application extends SilexApplication
 
         $this->register(new CallForPapersProvider());
         $this->register(new SentinelServiceProvider());
-        $this->register(new TwigServiceProvider($this));
+        $this->register(new TwigServiceProvider());
         $this->register(new HtmlPurifierServiceProvider());
         $this->register(new ImageProcessorProvider());
         $this->register(new ResetEmailerServiceProvider());

@@ -32,27 +32,20 @@ use Twig_Extension_Debug;
 
 class TwigServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
-    protected $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function register(Container $c)
+    public function register(Container $app)
     {
-        $c->register(new SilexTwigServiceProvider(), [
-            'twig.path'    => $this->app['path']->templatesPath(),
+        $app->register(new SilexTwigServiceProvider(), [
+            'twig.path'    => $app['path']->templatesPath(),
             'twig.options' => [
-                'debug' => !$this->app['env']->isProduction(),
-                'cache' => $this->app->config('cache.enabled') ? $this->app['path']->cacheTwigPath() : false,
+                'debug' => !$app['env']->isProduction(),
+                'cache' => $app->config('cache.enabled') ? $app['path']->cacheTwigPath() : false,
             ],
         ]);
 
-        $c->extend('twig', function (Twig_Environment $twig, Application $app) {
+        $app->extend('twig', function (Twig_Environment $twig, Application $app) {
             if (!$app['env']->isProduction()) {
                 $twig->addExtension(new Twig_Extension_Debug());
             }
@@ -72,7 +65,7 @@ class TwigServiceProvider implements ServiceProviderInterface, EventListenerProv
 
             $twig->addGlobal(
                 'talkHelper',
-                $this->app[TalkHelper::class]
+                $app[TalkHelper::class]
             );
 
             return $twig;
@@ -80,7 +73,7 @@ class TwigServiceProvider implements ServiceProviderInterface, EventListenerProv
 
         // Workaround for a Symfony 3.4 incompatibility.
         // See https://github.com/silexphp/Silex/pull/1571
-        $c->extend('twig.runtimes', function (array $runtime) {
+        $app->extend('twig.runtimes', function (array $runtime) {
             $runtime[FormRenderer::class] = 'twig.form.renderer';
 
             return $runtime;
