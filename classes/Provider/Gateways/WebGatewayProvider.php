@@ -235,8 +235,6 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             ->bind('user_new');
         $web->post('/signup', 'OpenCFP\Http\Controller\SignupController::processAction')
             ->bind('user_create');
-        $web->get('/signup/success', 'OpenCFP\Http\Controller\SignupController::successAction')
-            ->bind('user_success');
 
         // Edit Profile/Account
         $web->get('/profile/edit/{id}', 'OpenCFP\Http\Controller\ProfileController::editAction')
@@ -253,8 +251,6 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             ->bind('forgot_password');
         $web->post('/forgot', 'OpenCFP\Http\Controller\ForgotController::sendResetAction')
             ->bind('forgot_password_create');
-        $web->get('/forgot_success', 'OpenCFP\Http\Controller\ForgotController::successAction')
-            ->bind('forgot_password_success');
         $web->post('/reset', 'OpenCFP\Http\Controller\ForgotController::resetAction')
             ->bind('reset_password_create');
         $web->get('/reset/{user_id}/{reset_code}', 'OpenCFP\Http\Controller\ForgotController::processResetAction')
@@ -318,10 +314,6 @@ class WebGatewayProvider implements BootableProviderInterface, ServiceProviderIn
             ->bind('reviewer_talks');
         $reviewer->get('/talks/{id}', 'OpenCFP\Http\Controller\Reviewer\TalksController::viewAction')
             ->bind('reviewer_talk_view');
-        $reviewer->post('/talks/{id}/favorite', 'OpenCFP\Http\Controller\Reviewer\TalksController::favoriteAction')
-            ->bind('reviewer_talk_favorite');
-        $reviewer->post('/talks/{id}/comment', 'OpenCFP\Http\Controller\Reviewer\TalksController::commentCreateAction')
-            ->bind('reviewer_talk_comment_create');
         $reviewer->post('/talks/{id}/rate', 'OpenCFP\Http\Controller\Reviewer\TalksController::rateAction')
             ->bind('reviewer_talk_rate');
 
