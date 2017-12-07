@@ -14,22 +14,17 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Provider;
 
 use Cartalyst\Sentinel\Sentinel;
-use OpenCFP\Application;
-use OpenCFP\Environment;
+use OpenCFP\Test\BaseTestCase;
 
 /**
  * @covers \OpenCFP\Provider\SentinelServiceProvider
  */
-final class SentinelServiceProviderTest extends \PHPUnit\Framework\TestCase
+final class SentinelServiceProviderTest extends BaseTestCase
 {
     public function testAllRepositoriesAreSet()
     {
-        //The Reminder and Throttle repositories aren't set in the controller.
-        //This allows us to make sure they are properly set
-        $app                 = new Application(__DIR__ . '/../../..', Environment::testing());
-        $app['session.test'] = true;
         /** @var Sentinel $sentinel */
-        $sentinel = $app[Sentinel::class];
+        $sentinel = $this->container->get(Sentinel::class);
 
         $this->assertNotNull($sentinel->getUserRepository());
         $this->assertNotNull($sentinel->getActivationRepository());
