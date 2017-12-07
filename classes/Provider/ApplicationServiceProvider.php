@@ -29,11 +29,14 @@ use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelAuthentication;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
+use OpenCFP\Infrastructure\Event\DatabaseSetupListener;
 use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Silex\Api\EventListenerProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class ApplicationServiceProvider implements ServiceProviderInterface
+final class ApplicationServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     /**s
      * {@inheritdoc}
@@ -90,5 +93,10 @@ final class ApplicationServiceProvider implements ServiceProviderInterface
         $app['security.random'] = function () {
             return new PseudoRandomStringGenerator();
         };
+    }
+
+    public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
+    {
+        $dispatcher->addSubscriber(new DatabaseSetupListener($app[Capsule::class]));
     }
 }
