@@ -60,7 +60,7 @@ class SecurityController extends BaseController
                 'security/login.twig',
                 [
                     'email' => $request->get('email'),
-                    'flash' => $this->app['session']->get('flash'),
+                    'flash' => $request->getSession()->get('flash'),
                 ],
                 Response::HTTP_BAD_REQUEST
             );
