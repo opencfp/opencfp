@@ -11,13 +11,14 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Provider\Gateways;
+namespace OpenCFP\Infrastructure\Event;
 
 use HTMLPurifier;
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-final class RequestCleaner
+final class RequestCleanerListener implements EventSubscriberInterface
 {
     /**
      * @var HTMLPurifier
@@ -32,29 +33,37 @@ final class RequestCleaner
         $this->purifier = $purifier;
     }
 
-    public function __invoke(Request $request, Application $app)
+    public static function getSubscribedEvents()
     {
+        return [
+            KernelEvents::REQUEST => 'onKernelRequest',
+        ];
+    }
+
+    public function onKernelRequest(GetResponseEvent $event)
+    {
+        $request = $event->getRequest();
+
         $request->query->replace($this->clean($request->query->all()));
         $request->request->replace($this->clean($request->request->all()));
     }
 
-    /**
-     * @param array $data
-     */
-    private function clean(array $data)
+    private function clean(array $data): array
     {
         $sanitized = [];
 
         foreach ($data as $key => $value) {
             if (\is_array($value)) {
                 $sanitized[$key] = $this->clean($value);
-            } else {
-                $sanitized[$key] = \preg_replace(
-                    ['/&amp;/', '/&lt;\b/', '/\b&gt;/'],
-                    ['&', '<', '>'],
-                    $this->purifier->purify($value)
-                );
+
+                continue;
             }
+
+            $sanitized[$key] = \preg_replace(
+                ['/&amp;/', '/&lt;\b/', '/\b&gt;/'],
+                ['&', '<', '>'],
+                $this->purifier->purify($value)
+            );
         }
 
         return $sanitized;

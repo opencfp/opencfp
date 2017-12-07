@@ -33,6 +33,7 @@ use OpenCFP\Http\View\TalkHelper;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Event\AuthenticationListener;
 use OpenCFP\Infrastructure\Event\CsrfValidationListener;
+use OpenCFP\Infrastructure\Event\RequestCleanerListener;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
@@ -185,8 +186,6 @@ final class WebGatewayProvider implements
         /* @var $web ControllerCollection */
         $web = $app['controllers_factory'];
 
-        $app->before(new RequestCleaner($app['purifier']));
-
         if ($app->config('application.secure_ssl')) {
             $app->requireHttps();
         }
@@ -333,5 +332,6 @@ final class WebGatewayProvider implements
             $app[CsrfValidator::class],
             $app['url_generator']
         ));
+        $dispatcher->addSubscriber(new RequestCleanerListener($app['purifier']));
     }
 }
