@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Provider;
 
-class ControllerResolver extends \Silex\ControllerResolver
+final class ControllerResolver extends \Silex\ControllerResolver
 {
     protected function instantiateController($class)
     {

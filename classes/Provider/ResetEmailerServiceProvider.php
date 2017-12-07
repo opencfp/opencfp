@@ -18,7 +18,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Twig_Environment;
 
-class ResetEmailerServiceProvider implements ServiceProviderInterface
+final class ResetEmailerServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}

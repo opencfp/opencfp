@@ -17,7 +17,7 @@ use OpenCFP\Http\View\TalkHelper;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class TalkHelperProvider implements ServiceProviderInterface
+final class TalkHelperProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {

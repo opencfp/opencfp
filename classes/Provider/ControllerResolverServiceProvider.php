@@ -16,7 +16,7 @@ namespace OpenCFP\Provider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class ControllerResolverServiceProvider implements ServiceProviderInterface
+final class ControllerResolverServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}

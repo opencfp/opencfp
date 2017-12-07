@@ -30,7 +30,7 @@ use Symfony\Component\Form\FormRenderer;
 use Twig_Environment;
 use Twig_Extension_Debug;
 
-class TwigServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
+final class TwigServiceProvider implements ServiceProviderInterface, EventListenerProviderInterface
 {
     protected $app;
 

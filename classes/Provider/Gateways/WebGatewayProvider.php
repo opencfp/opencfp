@@ -42,7 +42,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class WebGatewayProvider implements BootableProviderInterface, ServiceProviderInterface, EventListenerProviderInterface
+final class WebGatewayProvider implements BootableProviderInterface, ServiceProviderInterface, EventListenerProviderInterface
 {
     public function register(Container $app)
     {

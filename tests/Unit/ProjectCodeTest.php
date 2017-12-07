@@ -134,4 +134,12 @@ final class ProjectCodeTest extends Framework\TestCase
     {
         $this->assertClassesAreAbstractOrFinal(__DIR__ . '/..');
     }
+
+    /**
+     * @test
+     */
+    public function providerClassesAreAbstractOrFinal()
+    {
+        $this->assertClassesAreAbstractOrFinal(__DIR__ . '/../../classes/Provider');
+    }
 }

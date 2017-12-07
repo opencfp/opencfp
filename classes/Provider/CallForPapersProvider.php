@@ -18,7 +18,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Application;
 
-class CallForPapersProvider implements ServiceProviderInterface
+final class CallForPapersProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}
