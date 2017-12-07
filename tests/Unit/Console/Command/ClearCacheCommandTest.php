@@ -15,7 +15,6 @@ namespace OpenCFP\Test\Unit\Console\Command;
 
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Console\Command\ClearCacheCommand;
-use OpenCFP\PathInterface;
 use org\bovigo\vfs;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
@@ -49,7 +48,7 @@ final class ClearCacheCommandTest extends Framework\TestCase
 
     public function testHasNameAndDescription()
     {
-        $command = new ClearCacheCommand($this->createPathMock());
+        $command = new ClearCacheCommand([]);
 
         $this->assertSame('cache:clear', $command->getName());
         $this->assertSame('Clears the caches', $command->getDescription());
@@ -57,28 +56,12 @@ final class ClearCacheCommandTest extends Framework\TestCase
 
     public function testExecuteRemovesFilesWithinCacheDirectories()
     {
-        $accessors = [
-            'cachePurifierPath',
-            'cacheTwigPath',
+        $directories = [
+            $this->createDirectoryWithFilesAndDirectories($this->root->url()),
+            $this->createDirectoryWithFilesAndDirectories($this->root->url()),
         ];
 
-        $directories = \array_combine(
-            $accessors,
-            \array_map(function () {
-                return $this->createDirectoryWithFilesAndDirectories($this->root->url());
-            }, $accessors)
-        );
-
-        $path = $this->createPathMock();
-
-        foreach ($directories as $accessor => $directory) {
-            $path
-                ->expects($this->once())
-                ->method($accessor)
-                ->willReturn($directory);
-        }
-
-        $command = new ClearCacheCommand($path);
+        $command = new ClearCacheCommand($directories);
 
         $commandTester = new Console\Tester\CommandTester($command);
 
@@ -102,14 +85,6 @@ final class ClearCacheCommandTest extends Framework\TestCase
 
             $this->assertCount(0, $filesAndDirectories);
         }
-    }
-
-    /**
-     * @return PathInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function createPathMock(): PathInterface
-    {
-        return $this->createMock(PathInterface::class);
     }
 
     private function createDirectoryWithFilesAndDirectories(string $rootDirectory, int $currentDepth = 0, $maxDepth = 3)

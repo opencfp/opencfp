@@ -18,6 +18,7 @@ use OpenCFP\Infrastructure\Event\ExceptionListener;
 use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\CallForPapersProvider;
 use OpenCFP\Provider\ControllerResolverServiceProvider;
+use OpenCFP\Provider\Gateways\ConsoleGatewayProvider;
 use OpenCFP\Provider\Gateways\WebGatewayProvider;
 use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
@@ -59,6 +60,7 @@ class Application extends SilexApplication
 
         // Register Gateways...
         $this->register(new WebGatewayProvider());
+        $this->register(new ConsoleGatewayProvider());
 
         // Services...
         $this->register(new SessionServiceProvider());

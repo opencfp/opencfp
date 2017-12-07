@@ -1,38 +1,24 @@
 #!/usr/bin/env php
 <?php
 
+namespace OpenCFP;
+
+use Symfony\Component\Console\Input\ArgvInput;
+
 \set_time_limit(0);
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
-use OpenCFP\Application as ApplicationContainer;
-use OpenCFP\Console\Application;
-use OpenCFP\Console\Command;
-use OpenCFP\Domain\Services;
-use OpenCFP\Environment;
-use OpenCFP\PathInterface;
-use Symfony\Component\Console\Input\ArgvInput;
 
 $basePath    = \realpath(\dirname(__DIR__));
 $input       = new ArgvInput();
 $environment = $input->getParameterOption(['--env'], \getenv('CFP_ENV') ?: 'development');
 
-$container = new ApplicationContainer($basePath, Environment::fromString($environment));
+$container = new Application($basePath, Environment::fromString($environment));
+$container->boot();
 
-/** @var Services\AccountManagement $accountManagement */
-$accountManagement = $container[Services\AccountManagement::class];
+/** @var Console\Application $app */
+$app = $container[Console\Application::class];
 
-/** @var PathInterface $path */
-$path = $container['path'];
-
-$app = new Application($container);
-
-$app->addCommands([
-    new Command\ClearCacheCommand($path),
-    new Command\UserCreateCommand($accountManagement),
-    new Command\UserDemoteCommand($accountManagement),
-    new Command\UserPromoteCommand($accountManagement),
-]);
 $status = $app->run($input);
 
 exit($status);
