@@ -32,6 +32,7 @@ use OpenCFP\Http\Controller\TalkController;
 use OpenCFP\Http\View\TalkHelper;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Event\AuthenticationListener;
+use OpenCFP\Infrastructure\Event\CsrfValidationListener;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
@@ -39,8 +40,6 @@ use Silex\Api\EventListenerProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 final class WebGatewayProvider implements
     BootableProviderInterface,
@@ -192,14 +191,6 @@ final class WebGatewayProvider implements
             $app->requireHttps();
         }
 
-        $csrfChecker = function (Request $request) use ($app) {
-            $checker = $app[CsrfValidator::class];
-
-            if (!$checker->isValid($request)) {
-                return new RedirectResponse('/dashboard');
-            }
-        };
-
         $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')
             ->bind('homepage');
         $web->get('/package', 'OpenCFP\Http\Controller\PagesController::showSpeakerPackage')
@@ -213,15 +204,15 @@ final class WebGatewayProvider implements
 
         // Talks
         $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')
-            ->bind('talk_edit')->before($csrfChecker);
+            ->bind('talk_edit')->value('_require_csrf_token', true);
         $web->get('/talk/create', 'OpenCFP\Http\Controller\TalkController::createAction')
             ->bind('talk_new');
         $web->post('/talk/create', 'OpenCFP\Http\Controller\TalkController::processCreateAction')
-            ->bind('talk_create')->before($csrfChecker);
+            ->bind('talk_create')->value('_require_csrf_token', true);
         $web->post('/talk/update', 'OpenCFP\Http\Controller\TalkController::updateAction')
-            ->bind('talk_update')->before($csrfChecker);
+            ->bind('talk_update')->value('_require_csrf_token', true);
         $web->post('/talk/delete', 'OpenCFP\Http\Controller\TalkController::deleteAction')
-            ->bind('talk_delete')->before($csrfChecker);
+            ->bind('talk_delete')->value('_require_csrf_token', true);
         $web->get('/talk/{id}', 'OpenCFP\Http\Controller\TalkController::viewAction')
             ->bind('talk_view');
 
@@ -288,11 +279,11 @@ final class WebGatewayProvider implements
         $admin->get('/speakers/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::viewAction')
             ->bind('admin_speaker_view');
         $admin->get('/speakers/{id}/promote', 'OpenCFP\Http\Controller\Admin\SpeakersController::promoteAction')
-            ->bind('admin_speaker_promote')->before($csrfChecker);
+            ->bind('admin_speaker_promote')->value('_require_csrf_token', true);
         $admin->get('/speakers/{id}/demote', 'OpenCFP\Http\Controller\Admin\SpeakersController::demoteAction')
-            ->bind('admin_speaker_demote')->before($csrfChecker);
+            ->bind('admin_speaker_demote')->value('_require_csrf_token', true);
         $admin->get('/speakers/delete/{id}', 'OpenCFP\Http\Controller\Admin\SpeakersController::deleteAction')
-            ->bind('admin_speaker_delete')->before($csrfChecker);
+            ->bind('admin_speaker_delete')->value('_require_csrf_token', true);
 
         // CSV Exports
         $admin->get('/export/csv', 'OpenCFP\Http\Controller\Admin\ExportsController::attributedTalksExportAction')
@@ -336,6 +327,10 @@ final class WebGatewayProvider implements
     {
         $dispatcher->addSubscriber(new AuthenticationListener(
             $app[Authentication::class],
+            $app['url_generator']
+        ));
+        $dispatcher->addSubscriber(new CsrfValidationListener(
+            $app[CsrfValidator::class],
             $app['url_generator']
         ));
     }

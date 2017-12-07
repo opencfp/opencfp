@@ -64,6 +64,7 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Form\ResetForm::class,
                 Http\View\TalkHelper::class,
                 Infrastructure\Event\AuthenticationListener::class,
+                Infrastructure\Event\CsrfValidationListener::class,
                 Infrastructure\Event\ExceptionListener::class,
                 Infrastructure\Event\TwigGlobalsListener::class,
                 Infrastructure\Templating\TwigExtension::class,
