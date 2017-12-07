@@ -20,21 +20,18 @@ class PagesController extends BaseController
 {
     public function showHomepage(): Response
     {
-        return $this->render('home.twig', $this->getContextWithTalksCount());
+        return $this->render('home.twig', [
+            'number_of_talks' => Talk::count(),
+        ]);
     }
 
     public function showSpeakerPackage(): Response
     {
-        return $this->render('package.twig', $this->getContextWithTalksCount());
+        return $this->render('package.twig');
     }
 
     public function showTalkIdeas(): Response
     {
-        return $this->render('ideas.twig', $this->getContextWithTalksCount());
-    }
-
-    private function getContextWithTalksCount()
-    {
-        return ['number_of_talks' => Talk::count()];
+        return $this->render('ideas.twig');
     }
 }
