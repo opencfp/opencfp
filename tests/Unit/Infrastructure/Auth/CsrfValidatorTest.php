@@ -29,17 +29,26 @@ final class CsrfValidatorTest extends \PHPUnit\Framework\TestCase
     use Helper;
     use MockeryPHPUnitIntegration;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(CsrfValidator::class);
     }
 
-    public function testIsInstanceOfRequestValidator()
+    /**
+     * @test
+     */
+    public function isInstanceOfRequestValidator()
     {
         $this->assertClassImplementsInterface(RequestValidator::class, CsrfValidator::class);
     }
 
-    public function testReturnsTrueWhenTokenMangerReturnsTrue()
+    /**
+     * @test
+     */
+    public function returnsTrueWhenTokenMangerReturnsTrue()
     {
         $manager = Mockery::mock(CsrfTokenManager::class);
         $manager->shouldReceive('isTokenValid')->andReturn(true);
@@ -51,7 +60,10 @@ final class CsrfValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($csrf->isValid($request));
     }
 
-    public function testReturnsFalseWhenTokenManagersReturnsFalse()
+    /**
+     * @test
+     */
+    public function returnsFalseWhenTokenManagersReturnsFalse()
     {
         $manager = Mockery::mock(CsrfTokenManager::class);
         $manager->shouldReceive('isTokenValid')->andReturn(false);

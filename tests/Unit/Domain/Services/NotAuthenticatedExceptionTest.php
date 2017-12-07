@@ -24,7 +24,10 @@ final class NotAuthenticatedExceptionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsException()
+    /**
+     * @test
+     */
+    public function isException()
     {
         $this->assertClassExtends(\Exception::class, NotAuthenticatedException::class);
     }

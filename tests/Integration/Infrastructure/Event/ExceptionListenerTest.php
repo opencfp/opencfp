@@ -21,7 +21,10 @@ use Symfony\Component\HttpFoundation;
  */
 final class ExceptionListenerTest extends WebTestCase
 {
-    public function testJsonOn404()
+    /**
+     * @test
+     */
+    public function jsonOn404()
     {
         $request = HttpFoundation\Request::create('/invalid/uri');
         $request->headers->set('Accept', 'application/json');
@@ -33,7 +36,10 @@ final class ExceptionListenerTest extends WebTestCase
         $this->assertResponseBodyJson('{"error": "No route found for \\"GET /invalid/uri\\""}', $response);
     }
 
-    public function testHtmlOn404()
+    /**
+     * @test
+     */
+    public function htmlOn404()
     {
         $response = $this->get('/invalid/uri');
 

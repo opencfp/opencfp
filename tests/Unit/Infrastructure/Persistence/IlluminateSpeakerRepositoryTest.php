@@ -28,12 +28,18 @@ final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testImplementsSpeakerRepository()
+    /**
+     * @test
+     */
+    public function implementsSpeakerRepository()
     {
         $this->assertClassImplementsInterface(Speaker\SpeakerRepository::class, IlluminateSpeakerRepository::class);
     }
 
-    public function testFindByIdThrowsEntityNotFoundExceptionIfUserNotFound()
+    /**
+     * @test
+     */
+    public function findByIdThrowsEntityNotFoundExceptionIfUserNotFound()
     {
         $id = $this->faker()->numberBetween(1);
 
@@ -54,7 +60,10 @@ final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
         $repository->findById($id);
     }
 
-    public function testFindByIdReturnsUserIfUserFound()
+    /**
+     * @test
+     */
+    public function findByIdReturnsUserIfUserFound()
     {
         $id = $this->faker()->numberBetween(1);
 
@@ -75,7 +84,10 @@ final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
         $this->assertSame($user, $repository->findById($id));
     }
 
-    public function testPersistSavesUser()
+    /**
+     * @test
+     */
+    public function persistSavesUser()
     {
         $user = $this->createUserMock([
             'save',

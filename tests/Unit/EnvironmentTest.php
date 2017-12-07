@@ -20,14 +20,20 @@ use OpenCFP\Environment;
  */
 final class EnvironmentTest extends \PHPUnit\Framework\TestCase
 {
-    public function testConstants()
+    /**
+     * @test
+     */
+    public function constants()
     {
         $this->assertSame('production', Environment::TYPE_PRODUCTION);
         $this->assertSame('development', Environment::TYPE_DEVELOPMENT);
         $this->assertSame('testing', Environment::TYPE_TESTING);
     }
     
-    public function testProductionReturnsEnvironment()
+    /**
+     * @test
+     */
+    public function productionReturnsEnvironment()
     {
         $environment = Environment::production();
         
@@ -38,7 +44,10 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(Environment::TYPE_PRODUCTION, (string) $environment);
     }
 
-    public function testDevelopmentReturnsEnvironment()
+    /**
+     * @test
+     */
+    public function developmentReturnsEnvironment()
     {
         $environment = Environment::development();
 
@@ -49,7 +58,10 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(Environment::TYPE_DEVELOPMENT, (string) $environment);
     }
 
-    public function testTestingReturnsEnvironment()
+    /**
+     * @test
+     */
+    public function testingReturnsEnvironment()
     {
         $environment = Environment::testing();
 
@@ -77,11 +89,12 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @test
      * @dataProvider providerEnvironment
      *
      * @param string $type
      */
-    public function testFromServerReturnsEnvironment(string $type)
+    public function fromServerReturnsEnvironment(string $type)
     {
         $environment = Environment::fromServer([
             'CFP_ENV' => $type,
@@ -143,7 +156,10 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
         Environment::fromString($type);
     }
 
-    public function testEqualsReturnsFalseIfTypeIsDifferent()
+    /**
+     * @test
+     */
+    public function equalsReturnsFalseIfTypeIsDifferent()
     {
         $one = Environment::fromString(Environment::TYPE_TESTING);
         $two = Environment::fromString(Environment::TYPE_DEVELOPMENT);
@@ -151,7 +167,10 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($one->equals($two));
     }
 
-    public function testEqualsReturnsTrueIfTypeIsSame()
+    /**
+     * @test
+     */
+    public function equalsReturnsTrueIfTypeIsSame()
     {
         $one = Environment::fromString(Environment::TYPE_TESTING);
         $two = Environment::fromString(Environment::TYPE_TESTING);

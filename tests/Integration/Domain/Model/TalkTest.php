@@ -33,7 +33,9 @@ final class TalkTest extends BaseTestCase
         self::setUpTalksForTests();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function recentReturnsAnArrayOfTalks()
     {
         $this->assertCount(3, Talk::recent()->get());

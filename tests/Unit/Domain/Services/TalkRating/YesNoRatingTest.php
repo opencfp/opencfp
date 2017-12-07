@@ -28,9 +28,10 @@ final class YesNoRatingTest extends \PHPUnit\Framework\TestCase
     use MockeryPHPUnitIntegration;
 
     /**
+     * @test
      * @dataProvider ratingProvider
      */
-    public function testValidRatings($rating, $valid)
+    public function validRatings($rating, $valid)
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('getId')->andReturn(1);

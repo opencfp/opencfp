@@ -37,17 +37,26 @@ final class ClearCacheCommandTest extends Framework\TestCase
         $this->root = vfs\vfsStream::setup('cache');
     }
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(ClearCacheCommand::class);
     }
 
-    public function testExtendsCommand()
+    /**
+     * @test
+     */
+    public function extendsCommand()
     {
         $this->assertClassExtends(Console\Command\Command::class, ClearCacheCommand::class);
     }
 
-    public function testHasNameAndDescription()
+    /**
+     * @test
+     */
+    public function hasNameAndDescription()
     {
         $command = new ClearCacheCommand($this->createPathMock());
 
@@ -55,7 +64,10 @@ final class ClearCacheCommandTest extends Framework\TestCase
         $this->assertSame('Clears the caches', $command->getDescription());
     }
 
-    public function testExecuteRemovesFilesWithinCacheDirectories()
+    /**
+     * @test
+     */
+    public function executeRemovesFilesWithinCacheDirectories()
     {
         $accessors = [
             'cachePurifierPath',

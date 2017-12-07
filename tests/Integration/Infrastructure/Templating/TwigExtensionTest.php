@@ -27,7 +27,10 @@ use Symfony\Component\Routing\RouteCollection;
  */
 final class TwigExtensionTest extends TestCase
 {
-    public function testExtension()
+    /**
+     * @test
+     */
+    public function extension()
     {
         $requestStack = new RequestStack();
         $requestStack->push(Request::create('/dashboard'));

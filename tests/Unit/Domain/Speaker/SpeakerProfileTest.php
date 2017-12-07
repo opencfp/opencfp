@@ -27,7 +27,10 @@ final class SpeakerProfileTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsAllowedToSeeReturnsFalseIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function isAllowedToSeeReturnsFalseIfPropertyIsHidden()
     {
         $property = $this->faker()->word;
 
@@ -43,7 +46,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertFalse($profile->isAllowedToSee($property));
     }
 
-    public function testIsAllowedToSeeReturnsTrueIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function isAllowedToSeeReturnsTrueIfPropertyIsNotHidden()
     {
         $property = $this->faker()->word;
 
@@ -52,7 +58,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertTrue($profile->isAllowedToSee($property));
     }
 
-    public function testNeedsProfileReturnsFalseIfUserHasMadeProfile()
+    /**
+     * @test
+     */
+    public function needsProfileReturnsFalseIfUserHasMadeProfile()
     {
         $hasMadeProfile = 1;
 
@@ -65,7 +74,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertFalse($profile->needsProfile());
     }
 
-    public function testNeedsProfileReturnsTrueIfUserHasNotMadeProfile()
+    /**
+     * @test
+     */
+    public function needsProfileReturnsTrueIfUserHasNotMadeProfile()
     {
         $hasMadeProfile = 0;
 
@@ -78,7 +90,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertTrue($profile->needsProfile());
     }
 
-    public function testGetTalksThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getTalksThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'talks',
@@ -93,7 +108,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getTalks();
     }
 
-    public function testGetTalksReturnsTalksIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getTalksReturnsTalksIfPropertyIsNotHidden()
     {
         $talks = [
             $this->createTalkMock(),
@@ -112,7 +130,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertSame($talks, $profile->getTalks());
     }
 
-    public function testGetNameThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getNameThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'name',
@@ -127,7 +148,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getName();
     }
 
-    public function testGetNameReturnsNameIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getNameReturnsNameIfPropertyIsNotHidden()
     {
         $faker = $this->faker();
 
@@ -150,7 +174,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertSame($name, $profile->getName());
     }
 
-    public function testGetEmailThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getEmailThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'email',
@@ -165,7 +192,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getEmail();
     }
 
-    public function testGetEmailReturnsEmailIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getEmailReturnsEmailIfPropertyIsNotHidden()
     {
         $email = $this->faker()->email;
 
@@ -178,7 +208,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertSame($email, $profile->getEmail());
     }
 
-    public function testGetCompanyThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getCompanyThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'company',
@@ -193,7 +226,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getCompany();
     }
 
-    public function testGetCompanyReturnsCompanyIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getCompanyReturnsCompanyIfPropertyIsNotHidden()
     {
         $company = $this->faker()->company;
 
@@ -206,7 +242,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertSame($company, $profile->getCompany());
     }
 
-    public function testGetTwitterThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getTwitterThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'twitter',
@@ -221,7 +260,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getTwitter();
     }
 
-    public function testGetTwitterReturnsTwitterIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getTwitterReturnsTwitterIfPropertyIsNotHidden()
     {
         $twitter = $this->faker()->userName;
 
@@ -234,7 +276,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertSame($twitter, $profile->getTwitter());
     }
 
-    public function testGetUrlThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getUrlThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'url',
@@ -249,7 +294,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getUrl();
     }
 
-    public function testGetUrlReturnsUrlIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getUrlReturnsUrlIfPropertyIsNotHidden()
     {
         $url = $this->faker()->url;
 
@@ -262,7 +310,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertSame($url, $profile->getUrl());
     }
 
-    public function testGetInfoThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getInfoThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'info',
@@ -277,7 +328,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getInfo();
     }
 
-    public function testGetInfoReturnsInfoIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getInfoReturnsInfoIfPropertyIsNotHidden()
     {
         $info = $this->faker()->text;
 
@@ -290,7 +344,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertSame($info, $profile->getInfo());
     }
 
-    public function testGetBioThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getBioThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'bio',
@@ -305,7 +362,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getBio();
     }
 
-    public function testGetBioReturnsBioIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getBioReturnsBioIfPropertyIsNotHidden()
     {
         $bio = $this->faker()->text;
 
@@ -318,7 +378,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertSame($bio, $profile->getBio());
     }
     
-    public function testGetTransportationThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getTransportationThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'transportation',
@@ -334,11 +397,12 @@ final class SpeakerProfileTest extends Framework\TestCase
     }
 
     /**
+     * @test
      * @dataProvider providerDoesNotNeedTransportation
      *
      * @param mixed $transportation
      */
-    public function testGetTransportationReturnsFalseIfPropertyIsNotHidden($transportation)
+    public function getTransportationReturnsFalseIfPropertyIsNotHidden($transportation)
     {
         $speaker = $this->createUserMock([
             'transportation' => $transportation,
@@ -363,7 +427,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         }
     }
 
-    public function testGetTransportationReturnsTrueIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getTransportationReturnsTrueIfPropertyIsNotHidden()
     {
         $transportation = 1;
 
@@ -376,7 +443,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertTrue($profile->getTransportation());
     }
 
-    public function testGetHotelThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getHotelThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'hotel',
@@ -391,7 +461,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getHotel();
     }
 
-    public function testGetHotelReturnsFalseIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getHotelReturnsFalseIfPropertyIsNotHidden()
     {
         $hotel = 0;
 
@@ -404,7 +477,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertFalse($profile->getHotel());
     }
 
-    public function testGetHotelReturnsTrueIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getHotelReturnsTrueIfPropertyIsNotHidden()
     {
         $hotel = 1;
 
@@ -417,7 +493,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertTrue($profile->getHotel());
     }
 
-    public function testGetAirportThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getAirportThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'airport',
@@ -432,7 +511,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getAirport();
     }
 
-    public function testGetAirportReturnsAirportIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getAirportReturnsAirportIfPropertyIsNotHidden()
     {
         $airport = $this->faker()->company;
 
@@ -445,7 +527,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $this->assertSame($airport, $profile->getAirport());
     }
 
-    public function testGetPhotoThrowsNotAllowedExceptionIfPropertyIsHidden()
+    /**
+     * @test
+     */
+    public function getPhotoThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'photo',
@@ -460,7 +545,10 @@ final class SpeakerProfileTest extends Framework\TestCase
         $profile->getPhoto();
     }
 
-    public function testGetPhotoReturnsPhotoIfPropertyIsNotHidden()
+    /**
+     * @test
+     */
+    public function getPhotoReturnsPhotoIfPropertyIsNotHidden()
     {
         $photo = $this->faker()->url;
 

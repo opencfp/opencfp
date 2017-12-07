@@ -27,7 +27,9 @@ final class ResetEmailerTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_sends_the_expected_email()
     {
         $userEmail = 'user@example.com';

@@ -23,7 +23,10 @@ final class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(UserNotFoundException::class);
     }
@@ -36,7 +39,10 @@ final class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
         $this->assertClassExtends(\RuntimeException::class, UserNotFoundException::class);
     }
 
-    public function testFromEmailReturnsException()
+    /**
+     * @test
+     */
+    public function fromEmailReturnsException()
     {
         $email = $this->faker()->email;
 
@@ -53,7 +59,10 @@ final class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(0, $exception->getCode());
     }
 
-    public function testFromIdReturnsException()
+    /**
+     * @test
+     */
+    public function fromIdReturnsException()
     {
         $id = $this->faker()->numberBetween(1);
 

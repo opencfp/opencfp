@@ -24,7 +24,10 @@ final class EntityNotFoundExceptionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsException()
+    /**
+     * @test
+     */
+    public function isException()
     {
         $this->assertClassExtends(\Exception::class, EntityNotFoundException::class);
     }

@@ -26,17 +26,26 @@ use OpenCFP\Test\BaseTestCase;
  */
 final class SentinelIdentityProviderTest extends BaseTestCase
 {
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(SentinelIdentityProvider::class);
     }
 
-    public function testImplementsIdentityProvider()
+    /**
+     * @test
+     */
+    public function implementsIdentityProvider()
     {
         $this->assertClassImplementsInterface(IdentityProvider::class, SentinelIdentityProvider::class);
     }
 
-    public function testGetCurrentUserThrowsNotAuthenticatedExceptionWhenNotAuthenticated()
+    /**
+     * @test
+     */
+    public function getCurrentUserThrowsNotAuthenticatedExceptionWhenNotAuthenticated()
     {
         $sentinel = $this->getSentinel();
 
@@ -59,7 +68,10 @@ final class SentinelIdentityProviderTest extends BaseTestCase
         $provider->getCurrentUser();
     }
 
-    public function testGetCurrentUserReturnsUserWhenAuthenticated()
+    /**
+     * @test
+     */
+    public function getCurrentUserReturnsUserWhenAuthenticated()
     {
         $id = $this->faker()->randomNumber();
 

@@ -38,7 +38,9 @@ final class CallForPapersTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_should_say_cfp_is_closed_after_end_date_has_passed()
     {
         $cfp = new CallForPapers(new \DateTimeImmutable('-1 day'));

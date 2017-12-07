@@ -24,12 +24,18 @@ final class TalkRatingExceptionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsRuntimeException()
+    /**
+     * @test
+     */
+    public function isRuntimeException()
     {
         $this->assertClassExtends(\RuntimeException::class, TalkRatingException::class);
     }
 
-    public function testInvalidRatinhReturnsException()
+    /**
+     * @test
+     */
+    public function invalidRatinhReturnsException()
     {
         $rating = 9001;
 

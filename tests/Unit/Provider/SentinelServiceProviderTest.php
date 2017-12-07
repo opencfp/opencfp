@@ -22,7 +22,10 @@ use OpenCFP\Environment;
  */
 final class SentinelServiceProviderTest extends \PHPUnit\Framework\TestCase
 {
-    public function testAllRepositoriesAreSet()
+    /**
+     * @test
+     */
+    public function allRepositoriesAreSet()
     {
         //The Reminder and Throttle repositories aren't set in the controller.
         //This allows us to make sure they are properly set
