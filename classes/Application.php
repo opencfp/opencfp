@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace OpenCFP;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Infrastructure\Event\ExceptionListener;
 use OpenCFP\Provider\ApplicationServiceProvider;
 use OpenCFP\Provider\CallForPapersProvider;
@@ -102,7 +101,6 @@ class Application extends SilexApplication
         // Application Services...
         $this->register(new ApplicationServiceProvider());
 
-        $this->setUpDataBaseConnection();
         $this->registerGlobalErrorHandler();
     }
 
@@ -185,12 +183,6 @@ class Application extends SilexApplication
         }
 
         return $cursor;
-    }
-
-    private function setUpDataBaseConnection()
-    {
-        $this[Capsule::class]->setAsGlobal();
-        $this[Capsule::class]->bootEloquent();
     }
 
     private function registerGlobalErrorHandler()
