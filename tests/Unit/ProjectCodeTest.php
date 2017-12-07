@@ -73,6 +73,7 @@ final class ProjectCodeTest extends Framework\TestCase
                 Provider\ControllerResolverServiceProvider::class,
                 Provider\Gateways\RequestCleaner::class,
                 Provider\Gateways\WebGatewayProvider::class,
+                Provider\Gateways\ConsoleGatewayProvider::class,
                 Provider\HtmlPurifierServiceProvider::class,
                 Provider\ImageProcessorProvider::class,
                 Provider\ResetEmailerServiceProvider::class,

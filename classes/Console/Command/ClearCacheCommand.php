@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace OpenCFP\Console\Command;
 
-use OpenCFP\PathInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,15 +21,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class ClearCacheCommand extends Command
 {
     /**
-     * @var PathInterface
+     * @var string[]
      */
-    private $path;
+    private $paths;
 
-    public function __construct(PathInterface $path)
+    public function __construct(array $paths)
     {
         parent::__construct('cache:clear');
 
-        $this->path = $path;
+        $this->paths = $paths;
     }
 
     protected function configure()
@@ -49,12 +48,7 @@ final class ClearCacheCommand extends Command
 
         $io->section('Clearing caches');
 
-        $paths = [
-            $this->path->cachePurifierPath(),
-            $this->path->cacheTwigPath(),
-        ];
-
-        \array_walk($paths, function ($path) use ($io) {
+        \array_walk($this->paths, function ($path) use ($io) {
             $count = $this->deleteFilesAndDirectoriesIn($path);
 
             $io->writeln(\sprintf(
