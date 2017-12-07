@@ -18,6 +18,7 @@ use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -35,7 +36,7 @@ class SpeakersController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $search   = $request->get('search');
         $speakers = User::search($search)->get()->toArray();
@@ -52,7 +53,7 @@ class SpeakersController extends BaseController
         ]);
     }
 
-    public function viewAction(Request $request)
+    public function viewAction(Request $request): Response
     {
         $speakerDetails = User::where('id', $request->get('id'))->first();
 

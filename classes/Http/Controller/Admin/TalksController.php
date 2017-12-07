@@ -56,7 +56,7 @@ class TalksController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $adminUserId = $this->authentication->user()->getId();
         $options     = [
@@ -90,7 +90,7 @@ class TalksController extends BaseController
         ]);
     }
 
-    public function viewAction(Request $request)
+    public function viewAction(Request $request): Response
     {
         $handler = $this->talkHandler
             ->grabTalk((int) $request->get('id'));
@@ -110,7 +110,7 @@ class TalksController extends BaseController
         ]);
     }
 
-    public function rateAction(Request $request)
+    public function rateAction(Request $request): Response
     {
         try {
             $this->validate($request, [
@@ -134,7 +134,7 @@ class TalksController extends BaseController
      *
      * @return Response
      */
-    public function favoriteAction(Request $request)
+    public function favoriteAction(Request $request): Response
     {
         $content = (string) $this->talkHandler
             ->grabTalk((int) $request->get('id'))
@@ -150,7 +150,7 @@ class TalksController extends BaseController
      *
      * @return Response
      */
-    public function selectAction(Request $request)
+    public function selectAction(Request $request): Response
     {
         $content = (string) $this->talkHandler
             ->grabTalk((int) $request->get('id'))
@@ -159,7 +159,7 @@ class TalksController extends BaseController
         return new Response($content);
     }
 
-    public function commentCreateAction(Request $request)
+    public function commentCreateAction(Request $request): Response
     {
         $talkId = (int) $request->get('id');
 

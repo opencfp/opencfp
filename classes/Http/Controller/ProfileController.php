@@ -19,6 +19,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\ProfileImageProcessor;
 use OpenCFP\Http\Form\SignupForm;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -53,7 +54,7 @@ class ProfileController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function editAction(Request $request)
+    public function editAction(Request $request): Response
     {
         $user = $this->authentication->user();
 
@@ -89,7 +90,7 @@ class ProfileController extends BaseController
         ]);
     }
 
-    public function processAction(Request $request)
+    public function processAction(Request $request): Response
     {
         $userId = $this->authentication->user()->getId();
 
@@ -137,12 +138,12 @@ class ProfileController extends BaseController
         ]));
     }
 
-    public function passwordAction()
+    public function passwordAction(): Response
     {
         return $this->render('user/change_password.twig');
     }
 
-    public function passwordProcessAction(Request $request)
+    public function passwordProcessAction(Request $request): Response
     {
         $user = $this->authentication->user();
 

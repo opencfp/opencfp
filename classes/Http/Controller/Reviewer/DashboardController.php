@@ -20,6 +20,7 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Talk\TalkFormatter;
 use OpenCFP\Http\Controller\BaseController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -37,7 +38,7 @@ class DashboardController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function indexAction()
+    public function indexAction(): Response
     {
         $userId        = $this->authentication->user()->getId();
         $talkFormatter = new TalkFormatter();

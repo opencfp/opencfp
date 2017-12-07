@@ -14,20 +14,21 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Domain\Model\Talk;
+use Symfony\Component\HttpFoundation\Response;
 
 class PagesController extends BaseController
 {
-    public function showHomepage()
+    public function showHomepage(): Response
     {
         return $this->render('home.twig', $this->getContextWithTalksCount());
     }
 
-    public function showSpeakerPackage()
+    public function showSpeakerPackage(): Response
     {
         return $this->render('package.twig', $this->getContextWithTalksCount());
     }
 
-    public function showTalkIdeas()
+    public function showTalkIdeas(): Response
     {
         return $this->render('ideas.twig', $this->getContextWithTalksCount());
     }

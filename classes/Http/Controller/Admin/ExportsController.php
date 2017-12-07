@@ -15,6 +15,7 @@ namespace OpenCFP\Http\Controller\Admin;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Http\Controller\BaseController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
@@ -33,22 +34,22 @@ class ExportsController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function anonymousTalksExportAction()
+    public function anonymousTalksExportAction(): Response
     {
         return $this->talksExportAction(false);
     }
 
-    public function attributedTalksExportAction()
+    public function attributedTalksExportAction(): Response
     {
         return $this->talksExportAction(true);
     }
 
-    public function selectedTalksExportAction()
+    public function selectedTalksExportAction(): Response
     {
         return $this->talksExportAction(true, ['selected' => 1]);
     }
 
-    public function emailExportAction()
+    public function emailExportAction(): Response
     {
         $talks     = Talk::all();
         $formatted = [];
@@ -66,7 +67,7 @@ class ExportsController extends BaseController
         return $this->csvReturn($formatted, 'emailExports');
     }
 
-    private function talksExportAction(bool $attributed, $where = null)
+    private function talksExportAction(bool $attributed, $where = null): Response
     {
         $talks = Talk::orderBy('created_at', 'DESC');
         $talks = $where == null ? $talks : $talks->where($where);

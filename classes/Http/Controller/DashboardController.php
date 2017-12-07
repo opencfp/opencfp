@@ -15,6 +15,7 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -35,7 +36,7 @@ class DashboardController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function showSpeakerProfile()
+    public function showSpeakerProfile(): Response
     {
         try {
             return $this->render('dashboard.twig', [

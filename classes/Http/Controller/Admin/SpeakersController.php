@@ -23,6 +23,7 @@ use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -85,7 +86,7 @@ class SpeakersController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $search = $request->get('search');
 
@@ -131,7 +132,7 @@ class SpeakersController extends BaseController
         ]);
     }
 
-    public function viewAction(Request $request)
+    public function viewAction(Request $request): Response
     {
         $speakerDetails = User::find($request->get('id'));
 
@@ -171,7 +172,7 @@ class SpeakersController extends BaseController
         ]);
     }
 
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): Response
     {
         $this->capsule->getConnection()->beginTransaction();
 
@@ -199,7 +200,7 @@ class SpeakersController extends BaseController
         return $this->redirectTo('admin_speakers');
     }
 
-    public function demoteAction(Request $request)
+    public function demoteAction(Request $request): Response
     {
         $role = $request->get('role');
         $id   = (int) $request->get('id');
@@ -234,7 +235,7 @@ class SpeakersController extends BaseController
         return $this->redirectTo('admin_speakers');
     }
 
-    public function promoteAction(Request $request)
+    public function promoteAction(Request $request): Response
     {
         $role = $request->get('role');
         $id   = (int) $request->get('id');

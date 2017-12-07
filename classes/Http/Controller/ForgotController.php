@@ -19,6 +19,7 @@ use OpenCFP\Http\Form\ForgotForm;
 use OpenCFP\Http\Form\ResetForm;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 
@@ -53,7 +54,7 @@ class ForgotController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function indexAction()
+    public function indexAction(): Response
     {
         $form = $this->formFactory->createBuilder(ForgotForm::class)->getForm();
 
@@ -63,7 +64,7 @@ class ForgotController extends BaseController
         ]);
     }
 
-    public function sendResetAction(Request $request)
+    public function sendResetAction(Request $request): Response
     {
         $form = $this->formFactory
             ->createBuilder(ForgotForm::class)
@@ -110,7 +111,7 @@ class ForgotController extends BaseController
         return $this->redirectTo('login');
     }
 
-    public function resetAction(Request $request)
+    public function resetAction(Request $request): Response
     {
         if (empty($request->get('reset_code'))) {
             throw new \Exception();
@@ -150,7 +151,7 @@ class ForgotController extends BaseController
         ]);
     }
 
-    public function processResetAction(Request $request)
+    public function processResetAction(Request $request): Response
     {
         $userId    = $request->get('user_id');
         $resetCode = $request->get('reset_code');
@@ -195,7 +196,7 @@ class ForgotController extends BaseController
         return $this->redirectTo('forgot_password');
     }
 
-    public function updatePasswordAction(Request $request)
+    public function updatePasswordAction(Request $request): Response
     {
         $form = $this->formFactory->createBuilder(ResetForm::class)->getForm();
         $form->handleRequest($request);
