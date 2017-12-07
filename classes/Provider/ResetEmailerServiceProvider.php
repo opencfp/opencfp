@@ -16,7 +16,6 @@ namespace OpenCFP\Provider;
 use OpenCFP\Domain\Services\ResetEmailer;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Twig_Environment;
 
 final class ResetEmailerServiceProvider implements ServiceProviderInterface
 {
@@ -26,12 +25,9 @@ final class ResetEmailerServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
         $app['reset_emailer'] = function ($app) {
-            /* @var Twig_Environment $twig */
-            $twig = $app['twig'];
-
             return new ResetEmailer(
                 $app['mailer'],
-                $twig->loadTemplate('emails/reset_password.twig'),
+                $app['twig'],
                 $app->config('application.email'),
                 $app->config('application.title')
             );

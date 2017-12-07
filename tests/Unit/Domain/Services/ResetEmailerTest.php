@@ -46,9 +46,14 @@ final class ResetEmailerTest extends \PHPUnit\Framework\TestCase
         /* @var Twig_Template $template */
         $template = Mockery::mock(Twig_Template::class)->shouldIgnoreMissing();
 
+        $twig = Mockery::mock(\Twig_Environment::class);
+        $twig->shouldReceive('loadTemplate')
+            ->withArgs(['emails/reset_password.twig'])
+            ->andReturn($template);
+
         $resetEmailer = new ResetEmailer(
             $swiftMailer,
-            $template,
+            $twig,
             'admin@example.com',
             'Reset'
         );

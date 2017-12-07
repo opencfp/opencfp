@@ -21,9 +21,9 @@ class ResetEmailer
     private $swiftMailer;
 
     /**
-     * @var \Twig_Template
+     * @var \Twig_Environment
      */
-    private $template;
+    private $twig;
 
     /**
      * @var string
@@ -36,15 +36,15 @@ class ResetEmailer
     private $configTitle;
 
     /**
-     * @param \Swift_Mailer  $swiftMailer
-     * @param \Twig_Template $template
-     * @param string         $configEmail
-     * @param string         $configTitle
+     * @param \Swift_Mailer     $swiftMailer
+     * @param \Twig_Environment $twig
+     * @param string            $configEmail
+     * @param string            $configTitle
      */
-    public function __construct(\Swift_Mailer $swiftMailer, \Twig_Template $template, $configEmail, $configTitle)
+    public function __construct(\Swift_Mailer $swiftMailer, \Twig_Environment $twig, $configEmail, $configTitle)
     {
         $this->swiftMailer = $swiftMailer;
-        $this->template    = $template;
+        $this->twig        = $twig;
         $this->configEmail = $configEmail;
         $this->configTitle = $configTitle;
     }
@@ -99,16 +99,19 @@ class ResetEmailer
     {
         $message = new \Swift_Message();
 
+        /** @var \Twig_Template $template */
+        $template = $this->twig->loadTemplate('emails/reset_password.twig');
+
         $message->setTo($email);
         $message->setFrom(
-            $this->template->renderBlock('from', $parameters),
-            $this->template->renderBlock('from_name', $parameters)
+            $template->renderBlock('from', $parameters),
+            $template->renderBlock('from_name', $parameters)
         );
 
-        $message->setSubject($this->template->renderBlock('subject', $parameters));
-        $message->setBody($this->template->renderBlock('body_text', $parameters));
+        $message->setSubject($template->renderBlock('subject', $parameters));
+        $message->setBody($template->renderBlock('body_text', $parameters));
         $message->addPart(
-            $this->template->renderBlock('body_html', $parameters),
+            $template->renderBlock('body_html', $parameters),
             'text/html'
         );
 
