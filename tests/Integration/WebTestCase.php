@@ -20,11 +20,14 @@ use OpenCFP\Domain\Services\RequestValidator;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
-use OpenCFP\Test\TestResponse;
+use OpenCFP\Test\Helper\ResponseHelper;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class WebTestCase extends BaseTestCase
 {
+    use ResponseHelper;
+
     /**
      * Additional headers for a request.
      *
@@ -97,7 +100,7 @@ abstract class WebTestCase extends BaseTestCase
         return $this;
     }
 
-    public function call(string $method, string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
+    public function call(string $method, string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         $request = Request::create(
             $uri,
@@ -112,25 +115,25 @@ abstract class WebTestCase extends BaseTestCase
         $response = $this->app->handle($request);
         $this->app->terminate($request, $response);
 
-        return new TestResponse($this->container, $response);
+        return $response;
     }
 
-    public function get(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
+    public function get(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         return $this->call('GET', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function post(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
+    public function post(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         return $this->call('POST', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function patch(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
+    public function patch(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         return $this->call('PATCH', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function delete(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): TestResponse
+    public function delete(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         return $this->call('DELETE', $uri, $parameters, $cookies, $files, $server, $content);
     }

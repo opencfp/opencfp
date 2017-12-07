@@ -60,22 +60,21 @@ final class TalkControllerTest extends WebTestCase
         $swiftMailer->shouldReceive('send')->andReturn(true);
         $this->swap('mailer', $swiftMailer);
 
-        // Get our request object to return expected data
-        $talkData = [
-            'title'       => 'Test Title With Ampersand',
-            'description' => 'The title should contain this & that',
-            'type'        => 'regular',
-            'level'       => 'entry',
-            'category'    => 'other',
-            'desired'     => 0,
-            'user_id'     => 1,
-        ];
-
-        $this->asLoggedInSpeaker(1)
+        $response = $this
+            ->asLoggedInSpeaker(1)
             ->callForPapersIsOpen()
             ->passCsrfValidator()
-            ->post('/talk/create', $talkData)
-            ->assertRedirect();
+            ->post('/talk/create', [
+                'title'       => 'Test Title With Ampersand',
+                'description' => 'The title should contain this & that',
+                'type'        => 'regular',
+                'level'       => 'entry',
+                'category'    => 'other',
+                'desired'     => 0,
+                'user_id'     => 1,
+            ]);
+
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -94,9 +93,11 @@ final class TalkControllerTest extends WebTestCase
          * is true means code is working as intended. Previously this fails
          * because the CFP incorrectly ended at 12:00am the day of, not 11:59pm.
          */
-        $this->asLoggedInSpeaker()
-            ->get('/talk/create')
-            ->assertSee('Create Your Talk');
+        $response = $this
+            ->asLoggedInSpeaker()
+            ->get('/talk/create');
+
+        $this->assertResponseBodyContains('Create Your Talk', $response);
     }
 
     /**
@@ -108,10 +109,12 @@ final class TalkControllerTest extends WebTestCase
         $speakers->shouldReceive('getTalk')->andReturn(self::$talk);
         $this->swap('application.speakers', $speakers);
 
-        $this->asLoggedInSpeaker((int) self::$user->id)
-            ->get('/talk/view' . self::$talk->id)
-            ->assertSee(self::$talk->title)
-            ->assertSuccessful();
+        $response = $this
+            ->asLoggedInSpeaker((int) self::$user->id)
+            ->get('/talk/view' . self::$talk->id);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains(self::$talk->title, $response);
     }
 
     /**
@@ -119,14 +122,16 @@ final class TalkControllerTest extends WebTestCase
      */
     public function canNotEditTalkAfterCfpIsClosed()
     {
-        $this->asLoggedInSpeaker(self::$user->id)
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id)
             ->callForPapersIsClosed()
             ->passCsrfValidator()
-            ->get('/talk/edit/' . self::$talk->id)
-            ->assertFlashContains('error')
-            ->assertFlashContains('You cannot edit talks once the call for papers has ended')
-            ->assertNotSee('Edit Your Talk')
-            ->assertRedirect();
+            ->get('/talk/edit/' . self::$talk->id);
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertResponseBodyNotContains('Edit Your Talk', $response);
+        $this->assertSessionHasFlashMessage('error', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('You cannot edit talks once the call for papers has ended', $this->container->get('session'));
     }
 
     /**
@@ -134,10 +139,12 @@ final class TalkControllerTest extends WebTestCase
      */
     public function getRedirectedToDashboardOnEditWhenNoTalkID()
     {
-        $this->asLoggedInSpeaker()
-            ->get('/talk/edit/a')
-            ->assertNotSee('Edit Your Talk')
-            ->assertRedirect();
+        $response = $this
+            ->asLoggedInSpeaker()
+            ->get('/talk/edit/a');
+
+        $this->assertResponseBodyNotContains('Edit Your Talk', $response);
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -145,10 +152,12 @@ final class TalkControllerTest extends WebTestCase
      */
     public function getRedirectedToDashboardWhenTalkIsNotYours()
     {
-        $this->asLoggedInSpeaker(self::$user->id + 1)
-            ->get('talk/edit/' . self::$talk->id)
-            ->assertNotSee('Edit Your Talk')
-            ->assertRedirect();
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id + 1)
+            ->get('talk/edit/' . self::$talk->id);
+
+        $this->assertResponseBodyNotContains('Edit Your Talk', $response);
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -159,11 +168,14 @@ final class TalkControllerTest extends WebTestCase
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('edit_talk')
             ->getValue();
-        $this->asLoggedInSpeaker(self::$user->id)
-            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . $csrfToken)
-            ->assertSee(self::$talk->title)
-            ->assertSee('Edit Your Talk')
-            ->assertSuccessful();
+
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id)
+            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . $csrfToken);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains(self::$talk->title, $response);
+        $this->assertResponseBodyContains('Edit Your Talk', $response);
     }
 
     /**
@@ -171,10 +183,12 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cannotEditTalkWithBadToken()
     {
-        $this->asLoggedInSpeaker(self::$user->id)
-            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . \uniqid())
-            ->assertRedirect()
-            ->assertTargetURLContains('/dashboard');
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id)
+            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . \uniqid());
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertRedirectResponseUrlContains('/dashboard', $response);
     }
 
     /**
@@ -182,13 +196,17 @@ final class TalkControllerTest extends WebTestCase
      */
     public function notAllowedToDeleteAfterCFPIsOver()
     {
-        $this->asLoggedInSpeaker(self::$user->id)
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id)
             ->callForPapersIsClosed()
             ->passCsrfValidator()
-            ->post('/talk/delete', ['tid' => self::$talk->id])
-            ->assertNotSee('ok')
-            ->assertSee('no')
-            ->assertSuccessful();
+            ->post('/talk/delete', [
+                'tid' => self::$talk->id,
+            ]);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyNotContains('ok', $response);
+        $this->assertResponseBodyContains('no', $response);
     }
 
     /**
@@ -196,12 +214,16 @@ final class TalkControllerTest extends WebTestCase
      */
     public function notAllowedToDeleteSomeoneElseTalk()
     {
-        $this->asLoggedInSpeaker(self::$user->id + 1)
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id + 1)
             ->passCsrfValidator()
-            ->post('/talk/delete', ['tid' => self::$talk->id])
-            ->assertNotSee('ok')
-            ->assertSee('no')
-            ->assertSuccessful();
+            ->post('/talk/delete', [
+                'tid' => self::$talk->id,
+            ]);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyNotContains('ok', $response);
+        $this->assertResponseBodyContains('no', $response);
     }
 
     /**
@@ -209,12 +231,14 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantCreateTalkAfterCFPIsClosed()
     {
-        $this->asLoggedInSpeaker()
+        $response = $this
+            ->asLoggedInSpeaker()
             ->callForPapersIsClosed()
-            ->get('/talk/create')
-            ->assertRedirect()
-            ->assertFlashContains('You cannot create talks once the call for papers has ended')
-            ->assertNotSee('Create Your Talk');
+            ->get('/talk/create');
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertResponseBodyNotContains('Create Your Talk', $response);
+        $this->assertSessionHasFlashMessage('You cannot create talks once the call for papers has ended', $this->container->get('session'));
     }
 
     /**
@@ -222,13 +246,15 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantProcessCreateTalkAfterCFPIsClosed()
     {
-        $this->asLoggedInSpeaker()
+        $response = $this
+            ->asLoggedInSpeaker()
             ->callForPapersIsClosed()
             ->passCsrfValidator()
-            ->post('/talk/create')
-            ->assertRedirect()
-            ->assertFlashContains('You cannot create talks once the call for papers has ended')
-            ->assertNotSee('Create Your Talk');
+            ->post('/talk/create');
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertResponseBodyNotContains('Create Your Talk', $response);
+        $this->assertSessionHasFlashMessage('You cannot create talks once the call for papers has ended', $this->container->get('session'));
     }
 
     /**
@@ -239,18 +265,20 @@ final class TalkControllerTest extends WebTestCase
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
-        $postData = [
-            'description' => 'Talk Description',
-            'token'       => $csrfToken,
-            'token_id'    => 'speaker_talk',
-        ];
-        $this->asLoggedInSpeaker()
+
+        $response = $this
+            ->asLoggedInSpeaker()
             ->callForPapersIsOpen()
             ->passCsrfValidator()
-            ->post('/talk/create', $postData)
-            ->assertSuccessful()
-            ->assertSee('Create Your Talk')
-            ->assertFlashContains('Error');
+            ->post('/talk/create', [
+                'description' => 'Talk Description',
+                'token'       => $csrfToken,
+                'token_id'    => 'speaker_talk',
+            ]);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Create Your Talk', $response);
+        $this->assertSessionHasFlashMessage('Error', $this->container->get('session'));
     }
 
     /**
@@ -258,16 +286,17 @@ final class TalkControllerTest extends WebTestCase
      */
     public function processCreateTalkFailsWithBadToken()
     {
-        $postData = [
-            'description' => 'Talk Description',
-            'token'       => \uniqid(),
-            'token_id'    => 'speaker_talk',
-        ];
-        $this->asLoggedInSpeaker()
+        $response = $this
+            ->asLoggedInSpeaker()
             ->callForPapersIsOpen()
-            ->post('/talk/create', $postData)
-            ->assertRedirect()
-            ->assertTargetURLContains('/dashboard');
+            ->post('/talk/create', [
+                'description' => 'Talk Description',
+                'token'       => \uniqid(),
+                'token_id'    => 'speaker_talk',
+            ]);
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertRedirectResponseUrlContains('/dashboard', $response);
     }
 
     /**
@@ -275,12 +304,16 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantUpdateActionAFterCFPIsClosed()
     {
-        $this->asLoggedInSpeaker()
+        $response = $this
+            ->asLoggedInSpeaker()
             ->callForPapersIsClosed()
             ->passCsrfValidator()
-            ->post('/talk/update', ['id' => 2])
-            ->assertFlashContains('Read Only')
-            ->assertRedirect();
+            ->post('/talk/update', [
+                'id' => 2,
+            ]);
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertSessionHasFlashMessage('Read Only', $this->container->get('session'));
     }
 
     /**
@@ -291,16 +324,18 @@ final class TalkControllerTest extends WebTestCase
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
-        $postData = [
-            'id'       => 2,
-            'token'    => $csrfToken,
-            'token_id' => 'speaker_talk',
-        ];
-        $this->asLoggedInSpeaker()
+
+        $response = $this
+            ->asLoggedInSpeaker()
             ->callForPapersIsOpen()
-            ->post('/talk/update', $postData)
-            ->assertFlashContains('Error')
-            ->assertSuccessful();
+            ->post('/talk/update', [
+                'id'       => 2,
+                'token'    => $csrfToken,
+                'token_id' => 'speaker_talk',
+            ]);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertSessionHasFlashMessage('Error', $this->container->get('session'));
     }
 
     /**
@@ -308,15 +343,16 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantUpdateActionWithBadToken()
     {
-        $postData = [
-            'id'       => 2,
-            'token'    => \uniqid(),
-            'token_id' => 'speaker_talk',
-        ];
-        $this->asLoggedInSpeaker()
+        $response = $this
+            ->asLoggedInSpeaker()
             ->callForPapersIsOpen()
-            ->post('/talk/update', $postData)
-            ->assertRedirect()
-            ->assertTargetURLContains('/dashboard');
+            ->post('/talk/update', [
+                'id'       => 2,
+                'token'    => \uniqid(),
+                'token_id' => 'speaker_talk',
+            ]);
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertRedirectResponseUrlContains('/dashboard', $response);
     }
 }

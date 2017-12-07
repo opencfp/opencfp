@@ -38,10 +38,12 @@ final class ProfileControllerTest extends WebTestCase
      */
     public function notAbleToSeeEditPageOfOtherPersonsProfile()
     {
-        $this->asLoggedInSpeaker(1)
-            ->get('/profile/edit/2')
-            ->assertNotSee('My Profile')
-            ->assertRedirect();
+        $response = $this
+            ->asLoggedInSpeaker(1)
+            ->get('/profile/edit/2');
+
+        $this->assertResponseBodyNotContains('My Profile', $response);
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -51,9 +53,11 @@ final class ProfileControllerTest extends WebTestCase
     {
         $id = self::$user->id;
 
-        $this->asLoggedInSpeaker($id)
-            ->get('/profile/edit/' . $id)
-            ->assertSuccessful();
+        $response = $this
+            ->asLoggedInSpeaker($id)
+            ->get('/profile/edit/' . $id);
+
+        $this->assertResponseIsSuccessful($response);
     }
 
     /**
@@ -61,10 +65,14 @@ final class ProfileControllerTest extends WebTestCase
      */
     public function notAbleToEditOtherPersonsProfile()
     {
-        $this->asLoggedInSpeaker(1)
-            ->post('/profile/edit', ['id' => 2])
-            ->assertNotSee('My Profile')
-            ->assertRedirect();
+        $response = $this
+            ->asLoggedInSpeaker(1)
+            ->post('/profile/edit', [
+                'id' => 2,
+            ]);
+
+        $this->assertResponseBodyNotContains('My Profile', $response);
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -72,11 +80,13 @@ final class ProfileControllerTest extends WebTestCase
      */
     public function canNotUpdateProfileWithInvalidData()
     {
-        $this->asLoggedInSpeaker()
-            ->post('/profile/edit', $this->putUserInRequest(false))
-            ->assertSee('My Profile')
-            ->assertSee('Invalid email address format')
-            ->assertSuccessful();
+        $response = $this
+            ->asLoggedInSpeaker()
+            ->post('/profile/edit', $this->putUserInRequest(false));
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('My Profile', $response);
+        $this->assertResponseBodyContains('Invalid email address format', $response);
     }
 
     /**
@@ -85,10 +95,13 @@ final class ProfileControllerTest extends WebTestCase
     public function redirectToDashboardOnSuccessfulUpdate()
     {
         $user = self::$user;
-        $this->asLoggedInSpeaker($user->id)
-            ->post('/profile/edit', $this->putUserInRequest(true, $user->id))
-            ->assertNotSee('My Profile')
-            ->assertRedirect();
+
+        $response = $this
+            ->asLoggedInSpeaker($user->id)
+            ->post('/profile/edit', $this->putUserInRequest(true, $user->id));
+
+        $this->assertResponseBodyNotContains('My Profile', $response);
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -96,10 +109,12 @@ final class ProfileControllerTest extends WebTestCase
      */
     public function displayChangePasswordWhenAllowed()
     {
-        $this->asLoggedInSpeaker()
-            ->get('/profile/change_password')
-            ->assertSee('Change Your Password')
-            ->assertSuccessful();
+        $response = $this
+            ->asLoggedInSpeaker()
+            ->get('/profile/change_password');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Change Your Password', $response);
     }
 
     /**

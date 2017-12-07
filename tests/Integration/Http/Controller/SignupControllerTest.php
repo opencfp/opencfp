@@ -29,9 +29,12 @@ final class SignupControllerTest extends WebTestCase
      */
     public function signupAfterEnddateShowsError()
     {
-        $this->callForPapersIsClosed()->get('/signup')
-            ->assertRedirect()
-            ->assertNotSee('Signup');
+        $response = $this
+            ->callForPapersIsClosed()
+            ->get('/signup');
+
+        $this->assertResponseBodyNotContains('Signup', $response);
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -39,9 +42,12 @@ final class SignupControllerTest extends WebTestCase
      */
     public function signupBeforeEnddateRendersSignupForm()
     {
-        $this->callForPapersIsOpen()->get('/signup')
-            ->assertSuccessful()
-            ->assertSee('Signup');
+        $response = $this
+            ->callForPapersIsOpen()
+            ->get('/signup');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Signup', $response);
     }
 
     /**
@@ -49,9 +55,12 @@ final class SignupControllerTest extends WebTestCase
      */
     public function signUpRedirectsWhenLoggedIn()
     {
-        $this->asAdmin()->get('/signup')
-            ->assertRedirect()
-            ->assertNotSee('Signup');
+        $response = $this
+            ->asAdmin()
+            ->get('/signup');
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertResponseBodyNotContains('Signup', $response);
     }
 
     /**
@@ -59,8 +68,7 @@ final class SignupControllerTest extends WebTestCase
      */
     public function signUpWorksCorrectly()
     {
-        // We need to set up our speaker information
-        $formData = [
+        $response = $this->post('/signup', [
             'first_name'     => 'Testy',
             'last_name'      => 'McTesterton',
             'email'          => 'test@opencfp.org',
@@ -76,11 +84,11 @@ final class SignupControllerTest extends WebTestCase
             'hotel'          => null,
             'buttonInfo'     => 'Create my speaker profile',
             'coc'            => 1,
-        ];
-        $this->post('/signup', $formData)
-            ->assertFlashContains("You've successfully created your account!")
-            ->assertRedirect()
-            ->assertTargetURLContains('dashboard');
+        ]);
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertRedirectResponseUrlContains('dashboard', $response);
+        $this->assertSessionHasFlashMessage("You've successfully created your account!", $this->container->get('session'));
     }
 
     /**
@@ -88,8 +96,7 @@ final class SignupControllerTest extends WebTestCase
      */
     public function signUpWithoutJoindInWorks()
     {
-        // We need to set up our speaker information
-        $formData = [
+        $response = $this->post('/signup', [
             'first_name'     => 'Testy',
             'last_name'      => 'McTesterton',
             'email'          => 'test@example.org',
@@ -105,10 +112,10 @@ final class SignupControllerTest extends WebTestCase
             'hotel'          => null,
             'buttonInfo'     => 'Create my speaker profile',
             'coc'            => 1,
-        ];
-        $this->post('/signup', $formData)
-            ->assertFlashContains("You've successfully created your account!")
-            ->assertRedirect()
-            ->assertTargetURLContains('dashboard');
+        ]);
+
+        $this->assertSessionHasFlashMessage("You've successfully created your account!", $this->container->get('session'));
+        $this->assertResponseIsRedirect($response);
+        $this->assertRedirectResponseUrlContains('dashboard', $response);
     }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Infrastructure\Event;
 
 use OpenCFP\Test\Integration\WebTestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation;
 
 /**
  * @covers \OpenCFP\Infrastructure\Event\ExceptionListener
@@ -23,21 +23,21 @@ final class ExceptionListenerTest extends WebTestCase
 {
     public function testJsonOn404()
     {
-        $request = Request::create('/invalid/uri');
+        $request = HttpFoundation\Request::create('/invalid/uri');
         $request->headers->set('Accept', 'application/json');
 
         $response = $this->app->handle($request);
 
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertJsonStringEqualsJsonString('{"error": "No route found for \\"GET /invalid/uri\\""}', $response->getContent());
+        $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_NOT_FOUND, $response);
+        $this->assertResponseHeader('application/json', 'Content-Type', $response);
+        $this->assertResponseBodyJson('{"error": "No route found for \\"GET /invalid/uri\\""}', $response);
     }
 
     public function testHtmlOn404()
     {
-        $testResponse = $this->get('/invalid/uri');
+        $response = $this->get('/invalid/uri');
 
-        $testResponse->assertStatus(404);
-        $testResponse->assertSee('Page Not Found!');
+        $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_NOT_FOUND, $response);
+        $this->assertResponseBodyContains('Page Not Found!', $response);
     }
 }

@@ -38,10 +38,12 @@ final class TalksControllerTest extends WebTestCase
      */
     public function indexPageDisplaysTalksCorrectly()
     {
-        $this->asAdmin()
-            ->get('/admin/talks')
-            ->assertSee(self::$talks->first()->title)
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/talks');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
     }
 
     /**
@@ -49,10 +51,12 @@ final class TalksControllerTest extends WebTestCase
      */
     public function indexPageWorkWithNoTalks()
     {
-        $this->asAdmin()
-            ->get('/admin/talks')
-            ->assertSee('Submitted Talks')
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/talks');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('Submitted Talks', $response);
     }
 
     /**
@@ -64,13 +68,14 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $this->asAdmin()
-            ->post(
-                '/admin/talks/' . $talk->id . '/comment',
-                ['comment' => 'Great Talk i rate 10/10']
-            )
-            ->assertNotSee('Server Error')
-            ->assertRedirect();
+        $response = $this
+            ->asAdmin()
+            ->post('/admin/talks/' . $talk->id . '/comment', [
+                'comment' => 'Great Talk i rate 10/10',
+            ]);
+        
+        $this->assertResponseBodyNotContains('Server Error', $response);
+        $this->assertResponseIsRedirect($response);
     }
 
     /**
@@ -80,9 +85,10 @@ final class TalksControllerTest extends WebTestCase
      */
     public function talkNotFoundRedirectsBackToTalksOverview()
     {
-        $this->get('/admin/talks/255')
-            ->assertRedirect()
-            ->assertNotSee('<strong>Submitted by:</strong>');
+        $response = $this->get('/admin/talks/255');
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertResponseBodyNotContains('<strong>Submitted by:</strong>', $response);
     }
 
     /**
@@ -92,9 +98,11 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $this->asAdmin()
-            ->get('/admin/talks/' . $talk->id)
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/talks/' . $talk->id);
+
+        $this->assertResponseIsSuccessful($response);
     }
 
     /**
@@ -103,10 +111,12 @@ final class TalksControllerTest extends WebTestCase
     public function previouslyViewedTalksDisplaysCorrectly()
     {
         $meta = factory(TalkMeta::class, 1)->create();
-        $this->asAdmin($meta->first()->admin_user_id);
 
-        $this->get('/admin/talks/' . $meta->first()->talk_id)
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin($meta->first()->admin_user_id)
+            ->get('/admin/talks/' . $meta->first()->talk_id);
+
+        $this->assertResponseIsSuccessful($response);
     }
 
     /**
@@ -116,10 +126,12 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $this->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/select')
-            ->assertSee('1')
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->post('/admin/talks/' . $talk->id . '/select');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('1', $response);
     }
 
     /**
@@ -129,10 +141,14 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $this->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/select', ['delete' => 1])
-            ->assertSee('1')
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->post('/admin/talks/' . $talk->id . '/select', [
+                'delete' => 1,
+            ]);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('1', $response);
     }
 
     /**
@@ -140,10 +156,12 @@ final class TalksControllerTest extends WebTestCase
      */
     public function selectActionReturnsFalseWhenTalkNotFound()
     {
-        $this->asAdmin()
-            ->post('/admin/talks/255/select')
-            ->assertNotSee('1')
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->post('/admin/talks/255/select');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyNotContains('1', $response);
     }
 
     /**
@@ -153,10 +171,12 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $this->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/favorite')
-            ->assertSee('1')
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->post('/admin/talks/' . $talk->id . '/favorite');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('1', $response);
     }
 
     /**
@@ -166,10 +186,14 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $this->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/favorite', ['delete' => 1])
-            ->assertSee('1')
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->post('/admin/talks/' . $talk->id . '/favorite', [
+                'delete' => 1,
+            ]);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains('1', $response);
     }
 
     /**
@@ -177,10 +201,15 @@ final class TalksControllerTest extends WebTestCase
      */
     public function favoriteActionDoesNotErrorWhenTryingToDeleteFavoriteThatDoesNoExist()
     {
-        $this->asAdmin()
-            ->post('/admin/talks/255/favorite', ['delete' => 1])
-            ->assertNotSee('1')
-            ->assertSuccessful();
+        $response = $this
+            ->asAdmin()
+            ->post('/admin/talks/255/favorite', [
+                'delete' => 1,
+            ]);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyNotContains('1', $response);
+        ;
     }
 
     /**
@@ -193,13 +222,14 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $response = $this->asAdmin()->post('/admin/talks/' . $talk->id . '/rate', [
-            'rating' => $rating,
-        ]);
+        $response = $this
+            ->asAdmin()
+            ->post('/admin/talks/' . $talk->id . '/rate', [
+                'rating' => $rating,
+            ]);
 
-        $response->assertSuccessful();
-
-        $this->assertSame('1', $response->getContent());
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodySame('1', $response);
     }
 
     public function providerValidRating(): array
@@ -224,13 +254,14 @@ final class TalksControllerTest extends WebTestCase
     {
         $talk = self::$talks->first();
 
-        $response = $this->asAdmin()->post('/admin/talks/' . $talk->id . '/rate', [
-            'rating' => $rating,
-        ]);
+        $response = $this
+            ->asAdmin()
+            ->post('/admin/talks/' . $talk->id . '/rate', [
+                'rating' => $rating,
+            ]);
 
-        $response->assertSuccessful();
-
-        $this->assertSame('', $response->getContent());
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyEmpty($response);
     }
 
     public function providerInvalidRating(): array

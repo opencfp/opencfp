@@ -37,10 +37,12 @@ final class DashboardControllerTest extends WebTestCase
      */
     public function indexDisplaysListOfTalks()
     {
-        $this->asAdmin()
-            ->get('/admin/')
-            ->assertSee(self::$talks->first()->title)
-            ->assertSuccessful()
-            ->assertNoFlashSet();
+        $response = $this
+            ->asAdmin()
+            ->get('/admin/');
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
+        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 }
