@@ -61,10 +61,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 
     public function createApplication(): Application
     {
-        $app                 = new Application(__DIR__ . '/..', Environment::testing());
-        $app['session.test'] = true;
-
-        return $app;
+        return new Application(__DIR__ . '/..', Environment::testing());
     }
 
     public function refreshApplication()

@@ -20,6 +20,7 @@ use OpenCFP\Domain\Services\RequestValidator;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\Helper\MockableAuthenticator;
 use OpenCFP\Test\Helper\ResponseHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -179,10 +180,9 @@ abstract class WebTestCase extends BaseTestCase
         $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
         $user->shouldReceive('getLogin')->andReturn('my@email.com');
 
-        $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('isAuthenticated')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-        $this->swap(Authentication::class, $auth);
+        /** @var MockableAuthenticator $authentication */
+        $authentication = $this->container->get(Authentication::class);
+        $authentication->overrideUser($user);
 
         return $this;
     }
@@ -196,12 +196,10 @@ abstract class WebTestCase extends BaseTestCase
         $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
         $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
-        $auth = Mockery::mock(Authentication::class);
 
-        $auth->shouldReceive('isAuthenticated')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-        $auth->shouldReceive('userId')->andReturn($id);
-        $this->swap(Authentication::class, $auth);
+        /** @var MockableAuthenticator $authentication */
+        $authentication = $this->container->get(Authentication::class);
+        $authentication->overrideUser($user);
 
         return $this;
     }
@@ -216,10 +214,9 @@ abstract class WebTestCase extends BaseTestCase
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(true);
         $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(true);
 
-        $auth = Mockery::mock(Authentication::class);
-        $auth->shouldReceive('isAuthenticated')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-        $this->swap(Authentication::class, $auth);
+        /** @var MockableAuthenticator $authentication */
+        $authentication = $this->container->get(Authentication::class);
+        $authentication->overrideUser($user);
 
         return $this;
     }

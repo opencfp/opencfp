@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Controller;
 
 use Mockery as m;
-use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
-use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\Integration\WebTestCase;
 
 /**
@@ -33,16 +31,7 @@ final class DashboardControllerTest extends WebTestCase
      */
     public function indexDisplaysUserAndTalks()
     {
-        $user = m::mock(UserInterface::class);
-        $user->shouldReceive('id')->andReturn(1);
-        $user->shouldReceive('getId')->andReturn(1);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
-        $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
-
-        $auth = m::mock(Authentication::class);
-        $auth->shouldReceive('isAuthenticated')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-        $this->swap(Authentication::class, $auth);
+        $this->asAdmin();
 
         // Create a test double for a talk in profile
         $talk = m::mock(\stdClass::class);
@@ -78,16 +67,7 @@ final class DashboardControllerTest extends WebTestCase
     {
         $faker = $this->faker();
 
-        $user = m::mock(UserInterface::class);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
-        $user->shouldReceive('getId')->andReturn(1);
-        $user->shouldReceive('id')->andReturn(1);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $auth = m::mock(Authentication::class);
-        $auth->shouldReceive('isAuthenticated')->andReturn(true);
-        $auth->shouldReceive('user')->andReturn($user);
-        $this->swap(Authentication::class, $auth);
-        $this->swap('user', $user);
+        $this->asLoggedInSpeaker();
 
         // Create a test double for SpeakerProfile
         // We  have benefit of being able to stub an application
