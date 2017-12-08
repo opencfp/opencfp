@@ -83,6 +83,7 @@ final class ProjectCodeTest extends Framework\TestCase
                 Provider\TalkHandlerProvider::class,
                 Provider\TalkHelperProvider::class,
                 Provider\TalkRatingProvider::class,
+                Provider\TestingServiceProvider::class,
                 Provider\TwigServiceProvider::class,
                 Provider\YamlConfigDriver::class,
             ]

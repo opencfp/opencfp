@@ -27,6 +27,7 @@ use OpenCFP\Provider\TalkFilterProvider;
 use OpenCFP\Provider\TalkHandlerProvider;
 use OpenCFP\Provider\TalkHelperProvider;
 use OpenCFP\Provider\TalkRatingProvider;
+use OpenCFP\Provider\TestingServiceProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use OpenCFP\Provider\YamlConfigDriver;
 use Silex\Application as SilexApplication;
@@ -62,7 +63,9 @@ class Application extends SilexApplication
         $this->register(new ConsoleGatewayProvider());
 
         // Services...
-        $this->register(new SessionServiceProvider());
+        $this->register(new SessionServiceProvider(), [
+            'session.test' => $environment->isTesting(),
+        ]);
         $this->register(new FormServiceProvider());
         $this->register(new CsrfServiceProvider());
         $this->register(new ControllerResolverServiceProvider());
@@ -100,6 +103,11 @@ class Application extends SilexApplication
 
         // Application Services...
         $this->register(new ApplicationServiceProvider());
+
+        // Testing
+        if ($environment->isTesting()) {
+            $this->register(new TestingServiceProvider());
+        }
 
         $this->registerGlobalErrorHandler();
     }
