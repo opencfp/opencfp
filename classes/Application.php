@@ -36,7 +36,6 @@ use Silex\Provider\FormServiceProvider;
 use Silex\Provider\LocaleServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\SessionServiceProvider;
-use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -78,16 +77,6 @@ class Application extends SilexApplication
             'monolog.level'   => \strtoupper(
                 $this->config('log.level') ?: 'debug'
             ),
-        ]);
-        $this->register(new SwiftmailerServiceProvider(), [
-            'swiftmailer.options' => [
-                'host'       => $this->config('mail.host'),
-                'port'       => $this->config('mail.port'),
-                'username'   => $this->config('mail.username'),
-                'password'   => $this->config('mail.password'),
-                'encryption' => $this->config('mail.encryption'),
-                'auth_mode'  => $this->config('mail.auth_mode'),
-            ],
         ]);
 
         $this->register(new CallForPapersProvider());
