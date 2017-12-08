@@ -59,7 +59,7 @@ class TwigGlobalsListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => ['onKernelRequest', 512],
+            KernelEvents::REQUEST => ['onKernelRequest', 256],
         ];
     }
 
