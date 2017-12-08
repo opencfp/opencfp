@@ -56,8 +56,8 @@ trait ResponseHelper
 
         $this->assertContains($needle, $haystack, \sprintf(
             'Failed asserting that the response body "%s" contains "%s".',
-            $needle,
-            $haystack
+            $haystack,
+            $needle
         ));
     }
 
@@ -67,8 +67,8 @@ trait ResponseHelper
 
         $this->assertNotContains($needle, $haystack, \sprintf(
             'Failed asserting that the response body "%s" does not contain "%s".',
-            $needle,
-            $haystack
+            $haystack,
+            $needle
         ));
     }
 
@@ -88,8 +88,8 @@ trait ResponseHelper
 
         $this->assertSame($expected, $actual, \sprintf(
             'Failed asserting that the response body "%s" is "%s".',
-            $expected,
-            $actual
+            $actual,
+            $expected
         ));
     }
 
