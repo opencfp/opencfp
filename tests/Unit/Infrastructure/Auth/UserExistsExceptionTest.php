@@ -23,12 +23,18 @@ final class UserExistsExceptionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 
-    public function testItIsTheCorrectTypeOfException()
+    /**
+     * @test
+     */
+    public function itIsTheCorrectTypeOfException()
     {
         $this->assertClassExtends(\UnexpectedValueException::class, UserExistsException::class);
     }
 
-    public function testFromEmailReturnsException()
+    /**
+     * @test
+     */
+    public function fromEmailReturnsException()
     {
         $email = $this->faker()->email;
 

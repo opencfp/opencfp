@@ -24,17 +24,26 @@ final class AuthenticationExceptionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(AuthenticationException::class);
     }
     
-    public function testIsRuntimeException()
+    /**
+     * @test
+     */
+    public function isRuntimeException()
     {
         $this->assertClassExtends(\RuntimeException::class, AuthenticationException::class);
     }
 
-    public function testLoginFailureHasCorrectMessage()
+    /**
+     * @test
+     */
+    public function loginFailureHasCorrectMessage()
     {
         $exception = AuthenticationException::loginFailure();
 
@@ -42,7 +51,10 @@ final class AuthenticationExceptionTest extends Framework\TestCase
         $this->assertSame(0, $exception->getCode());
     }
 
-    public function testLoginFailureReturnsAnAuthenticationException()
+    /**
+     * @test
+     */
+    public function loginFailureReturnsAnAuthenticationException()
     {
         $exception = AuthenticationException::loginFailure();
         $this->assertInstanceOf(AuthenticationException::class, $exception);

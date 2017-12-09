@@ -30,7 +30,9 @@ final class PseudoRandomStringGeneratorTest extends \PHPUnit\Framework\TestCase
         $this->sut = new PseudoRandomStringGenerator();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_should_generate_a_random_string_of_given_length()
     {
         $this->assertSame(10, \strlen($this->sut->generate(10)));

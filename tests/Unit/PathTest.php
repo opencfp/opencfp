@@ -25,12 +25,18 @@ final class PathTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(Path::class);
     }
 
-    public function testImplementsPathInterface()
+    /**
+     * @test
+     */
+    public function implementsPathInterface()
     {
         $this->assertClassImplementsInterface(PathInterface::class, Path::class);
     }

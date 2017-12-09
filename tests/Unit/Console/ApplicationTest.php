@@ -28,19 +28,28 @@ final class ApplicationTest extends \PHPUnit\Framework\TestCase
     use Helper;
     use MockeryPHPUnitIntegration;
 
-    public function testIsConsoleApplication()
+    /**
+     * @test
+     */
+    public function isConsoleApplication()
     {
         $this->assertClassExtends(Console\Application::class, Application::class);
     }
 
-    public function testConstructorSetsName()
+    /**
+     * @test
+     */
+    public function constructorSetsName()
     {
         $application = new Application();
 
         $this->assertSame('OpenCFP', $application->getName());
     }
 
-    public function testConstructorAddsInputOptionForEnvironment()
+    /**
+     * @test
+     */
+    public function constructorAddsInputOptionForEnvironment()
     {
         $application = new Application();
 
@@ -55,7 +64,10 @@ final class ApplicationTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('The environment the command should run in', $option->getDescription());
     }
 
-    public function testHasDefaultCommands()
+    /**
+     * @test
+     */
+    public function hasDefaultCommands()
     {
         $application = new Application();
 

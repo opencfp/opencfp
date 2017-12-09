@@ -21,7 +21,10 @@ use OpenCFP\Test\BaseTestCase;
  */
 final class SentinelServiceProviderTest extends BaseTestCase
 {
-    public function testAllRepositoriesAreSet()
+    /**
+     * @test
+     */
+    public function allRepositoriesAreSet()
     {
         /** @var Sentinel $sentinel */
         $sentinel = $this->container->get(Sentinel::class);

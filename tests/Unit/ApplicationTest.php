@@ -42,7 +42,9 @@ final class ApplicationTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($output);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_should_resolve_configuration_path_based_on_environment()
     {
         $this->sut = new Application(__DIR__ . '/../..', Environment::testing());

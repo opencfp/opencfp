@@ -29,7 +29,10 @@ final class ProjectCodeTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testProductionClassesHaveUnitTests()
+    /**
+     * @test
+     */
+    public function productionClassesHaveUnitTests()
     {
         $this->assertClassesHaveTests(
             __DIR__ . '/../../classes',
@@ -134,7 +137,10 @@ final class ProjectCodeTest extends Framework\TestCase
         ));
     }
     
-    public function testTestClassesAreAbstractOrFinal()
+    /**
+     * @test
+     */
+    public function testClassesAreAbstractOrFinal()
     {
         $this->assertClassesAreAbstractOrFinal(__DIR__ . '/..');
     }

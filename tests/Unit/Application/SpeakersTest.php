@@ -47,7 +47,9 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
     // Speaker Profiles & Such
     //
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_provides_the_right_speaker_profile_when_asked()
     {
         $speaker = $this->getSpeaker();
@@ -98,7 +100,9 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
         $this->sut->getTalk(1);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_retrieves_all_talks_for_authenticated_speaker()
     {
         $this->identityProvider->shouldReceive('getCurrentUser')

@@ -35,17 +35,26 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
     use Helper;
     use MockeryPHPUnitIntegration;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(SentinelAccountManagement::class);
     }
 
-    public function testInstanceOfAccountManagement()
+    /**
+     * @test
+     */
+    public function instanceOfAccountManagement()
     {
         $this->assertClassImplementsInterface(AccountManagement::class, SentinelAccountManagement::class);
     }
 
-    public function testFindByIdThrowsCorrectError()
+    /**
+     * @test
+     */
+    public function findByIdThrowsCorrectError()
     {
         $sentinel = Mockery::mock(Sentinel::class);
         $sentinel->shouldReceive('getUserRepository->findById')->andReturn(null);
@@ -54,7 +63,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $account->findById(3);
     }
 
-    public function testFindByIdReturnsSentinelUser()
+    /**
+     * @test
+     */
+    public function findByIdReturnsSentinelUser()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
         $sentinel = Mockery::mock(Sentinel::class);
@@ -63,7 +75,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SentinelUser::class, $account->findById(3));
     }
 
-    public function testFindByLoginThrowsCorrectError()
+    /**
+     * @test
+     */
+    public function findByLoginThrowsCorrectError()
     {
         $sentinel = Mockery::mock(Sentinel::class);
         $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn(null);
@@ -72,7 +87,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $account->findByLogin('mail@mail.mail');
     }
 
-    public function testFindByLoginReturnsSentinelUser()
+    /**
+     * @test
+     */
+    public function findByLoginReturnsSentinelUser()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
         $sentinel = Mockery::mock(Sentinel::class);
@@ -81,7 +99,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SentinelUser::class, $account->findByLogin('mail@mail.mail'));
     }
 
-    public function testFindByRoleThrowsRoleNotFoundExceptionIfRoleWasNotFound()
+    /**
+     * @test
+     */
+    public function findByRoleThrowsRoleNotFoundExceptionIfRoleWasNotFound()
     {
         $name = $this->faker()->word;
 
@@ -109,7 +130,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $accountManagement->findByRole($name);
     }
 
-    public function testFindByRoleReturnsArrayOfUsers()
+    /**
+     * @test
+     */
+    public function findByRoleReturnsArrayOfUsers()
     {
         $name = $this->faker()->word;
 
@@ -149,7 +173,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($users, $accounts->findByRole($name));
     }
 
-    public function testCreateThrowsCorrectErrorWhenUserAlreadyExists()
+    /**
+     * @test
+     */
+    public function createThrowsCorrectErrorWhenUserAlreadyExists()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);
@@ -159,7 +186,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $account->create('mail@mail.mail', 'pass');
     }
 
-    public function testCreateReturnsCorrectUserWhenCreatingOne()
+    /**
+     * @test
+     */
+    public function createReturnsCorrectUserWhenCreatingOne()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);
@@ -169,7 +199,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SentinelUser::class, $account->create('mail@mail.mail', 'pass'));
     }
 
-    public function testCreateDefaultsToThrowingError()
+    /**
+     * @test
+     */
+    public function createDefaultsToThrowingError()
     {
         $sentinel = Mockery::mock(Sentinel::class);
         $sentinel->shouldReceive('getUserRepository->findByCredentials')->andReturn(null);
@@ -179,7 +212,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $account->create('mail@mail.mail', 'pass');
     }
 
-    public function testActivateActivatesUser()
+    /**
+     * @test
+     */
+    public function activateActivatesUser()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);
@@ -191,7 +227,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         $account->activate('mail@mail');
     }
 
-    public function testPromoteToThrowsRoleNotFoundExceptionIfRoleWasNotFound()
+    /**
+     * @test
+     */
+    public function promoteToThrowsRoleNotFoundExceptionIfRoleWasNotFound()
     {
         $faker = $this->faker();
 
@@ -225,7 +264,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testPromoteToAttachesUserToUserCollection()
+    /**
+     * @test
+     */
+    public function promoteToAttachesUserToUserCollection()
     {
         $faker = $this->faker();
 
@@ -285,7 +327,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testDemoteFromThrowsRoleNotFoundExceptionIfRoleWasNotFound()
+    /**
+     * @test
+     */
+    public function demoteFromThrowsRoleNotFoundExceptionIfRoleWasNotFound()
     {
         $faker = $this->faker();
 
@@ -319,7 +364,10 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testDemoteFromDetachesUserFromUserCollection()
+    /**
+     * @test
+     */
+    public function demoteFromDetachesUserFromUserCollection()
     {
         $faker = $this->faker();
 

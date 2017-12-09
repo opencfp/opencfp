@@ -34,9 +34,10 @@ use Twig_Environment;
 final class TwigGlobalsListenerTest extends TestCase
 {
     /**
+     * @test
      * @dataProvider provideTestSetup
      */
-    public function testGlobals(Authentication $authentication, bool $isOpen, string $uri, string $flash = null, string $fixture)
+    public function globals(Authentication $authentication, bool $isOpen, string $uri, string $flash = null, string $fixture)
     {
         $twig    = new Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/Fixtures'));
         $session = new Session(new MockArraySessionStorage());

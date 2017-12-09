@@ -38,7 +38,9 @@ final class AirportTest extends BaseTestCase
         $this->airports = new Airport();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_queries_airports_table_by_code()
     {
         $airport = $this->airports->withCode('AAC');
@@ -59,7 +61,10 @@ final class AirportTest extends BaseTestCase
         $this->airports->withCode('foobarbaz');
     }
 
-    public function testItIsNotCaseSensitive()
+    /**
+     * @test
+     */
+    public function itIsNotCaseSensitive()
     {
         $airport = $this->airports->withCode('aac');
 
@@ -68,7 +73,10 @@ final class AirportTest extends BaseTestCase
         $this->assertSame('Egypt', $airport->country);
     }
 
-    public function testItThrowsTheCorrectError()
+    /**
+     * @test
+     */
+    public function itThrowsTheCorrectError()
     {
         $this->expectException(EntityNotFoundException::class);
         $this->expectExceptionMessage('not found');
