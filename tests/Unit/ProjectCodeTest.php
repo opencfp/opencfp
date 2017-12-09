@@ -92,6 +92,36 @@ final class ProjectCodeTest extends Framework\TestCase
 
     public function testControllerActionsUseResponseReturnType()
     {
+        $actionsWithoutReturnTypes = $this->methodNames(\array_filter($this->controllerActions(), function (\ReflectionMethod $method) {
+            $returnType = (string) $method->getReturnType();
+
+            return $returnType !== HttpFoundation\Response::class;
+        }));
+
+        $this->assertEmpty($actionsWithoutReturnTypes, \sprintf(
+            "Failed asserting that the controller actions\n\n%s\n\ndeclare \"%s\" as return type.",
+            ' - ' . \implode("\n - ", $actionsWithoutReturnTypes),
+            HttpFoundation\Response::class
+        ));
+    }
+
+    public function testControllerActionsUseActionSuffix()
+    {
+        $actionsWithoutSuffix = $this->methodNames(\array_filter($this->controllerActions(), function (\ReflectionMethod $method) {
+            return \preg_match('/Action$/', $method->getName()) === 0;
+        }));
+
+        $this->assertEmpty($actionsWithoutSuffix, \sprintf(
+            "Failed asserting that the controller actions\n\n%s\n\nuse  \"Action\" as suffix.",
+            ' - ' . \implode("\n - ", $actionsWithoutSuffix)
+        ));
+    }
+
+    /**
+     * @return \ReflectionMethod[]
+     */
+    private function controllerActions(): array
+    {
         $constructs = Classy\Constructs::fromDirectory(__DIR__ . '/../../classes/Http/Controller');
 
         $actions = [];
@@ -103,37 +133,38 @@ final class ProjectCodeTest extends Framework\TestCase
                 continue;
             }
 
-            $methods = \array_filter($reflection->getMethods(), function (\ReflectionMethod $method) {
+            foreach ($reflection->getMethods() as $method) {
                 if ($method->isAbstract() || $method->isConstructor() || !$method->isPublic() || $method->isStatic()) {
-                    return false;
+                    continue;
                 }
 
-                $returnType = (string) $method->getReturnType();
-
-                return $returnType !== HttpFoundation\Response::class;
-            });
-
-            /** @var \ReflectionMethod[] $methods */
-            foreach ($methods as $method) {
-                $actions[] = \sprintf(
-                    '%s::%s',
-                    $method->getDeclaringClass()->getName(),
-                    $method->getName()
-                );
+                $actions[] = $method;
             }
         }
 
-        $actions = \array_unique($actions);
-
-        \sort($actions);
-
-        $this->assertEmpty($actions, \sprintf(
-            "Failed asserting that the controller actions\n\n%s\n\ndeclare \"%s\" as return type.",
-            ' - ' . \implode("\n - ", $actions),
-            HttpFoundation\Response::class
-        ));
+        return $actions;
     }
-    
+
+    /**
+     * @param \ReflectionMethod[] $methods
+     *
+     * @return string[]
+     */
+    private function methodNames(array $methods): array
+    {
+        $methodNames = \array_map(function (\ReflectionMethod $method) {
+            return \sprintf(
+                '%s::%s',
+                $method->getDeclaringClass()->getName(),
+                $method->getName()
+            );
+        }, $methods);
+
+        \sort($methodNames);
+
+        return $methodNames;
+    }
+
     public function testTestClassesAreAbstractOrFinal()
     {
         $this->assertClassesAreAbstractOrFinal(__DIR__ . '/..');
