@@ -24,7 +24,7 @@ final class PagesControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function showHomePageWorks()
+    public function indexActionWorks()
     {
         $response = $this->get('/');
 
@@ -36,7 +36,7 @@ final class PagesControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function showHomeWorksWhenCFPIsClosed()
+    public function indexActionWorksWhenCFPIsClosed()
     {
         $response = $this
             ->callForPapersIsClosed()
@@ -50,7 +50,7 @@ final class PagesControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function showSpeakerPackageWorks()
+    public function speakerPackageActionWorks()
     {
         $response = $this->get('/package');
 
@@ -62,7 +62,7 @@ final class PagesControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function showSpeakerPackageWorksWhenCFPIsClosed()
+    public function speakerPackageActionWorksWhenCFPIsClosed()
     {
         $response = $this
             ->callForPapersIsClosed()
@@ -76,7 +76,7 @@ final class PagesControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function showTalkIdeasWorks()
+    public function talkIdeasActionWorks()
     {
         $response = $this->get('/ideas');
 
@@ -88,7 +88,7 @@ final class PagesControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function showTalkIdeasWorksWhenCFPIsClosed()
+    public function talkIdeasActionWorksWhenCFPIsClosed()
     {
         $response = $this
             ->callForPapersIsClosed()

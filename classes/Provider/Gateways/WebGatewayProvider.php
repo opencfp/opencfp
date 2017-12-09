@@ -190,15 +190,15 @@ final class WebGatewayProvider implements
             $app->requireHttps();
         }
 
-        $web->get('/', 'OpenCFP\Http\Controller\PagesController::showHomepage')
+        $web->get('/', 'OpenCFP\Http\Controller\PagesController::homepageAction')
             ->bind('homepage');
-        $web->get('/package', 'OpenCFP\Http\Controller\PagesController::showSpeakerPackage')
+        $web->get('/package', 'OpenCFP\Http\Controller\PagesController::speakerPackageAction')
             ->bind('speaker_package');
-        $web->get('/ideas', 'OpenCFP\Http\Controller\PagesController::showTalkIdeas')
+        $web->get('/ideas', 'OpenCFP\Http\Controller\PagesController::talkIdeasAction')
             ->bind('talk_ideas');
 
         // User Dashboard
-        $web->get('/dashboard', 'OpenCFP\Http\Controller\DashboardController::showSpeakerProfile')
+        $web->get('/dashboard', 'OpenCFP\Http\Controller\DashboardController::indexAction')
             ->bind('dashboard');
 
         // Talks

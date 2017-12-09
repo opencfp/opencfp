@@ -18,19 +18,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PagesController extends BaseController
 {
-    public function showHomepage(): Response
+    public function homepageAction(): Response
     {
         return $this->render('home.twig', [
             'number_of_talks' => Talk::count(),
         ]);
     }
 
-    public function showSpeakerPackage(): Response
+    public function speakerPackageAction(): Response
     {
         return $this->render('package.twig');
     }
 
-    public function showTalkIdeas(): Response
+    public function talkIdeasAction(): Response
     {
         return $this->render('ideas.twig');
     }
