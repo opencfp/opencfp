@@ -36,7 +36,7 @@ class DashboardController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function showSpeakerProfile(): Response
+    public function indexAction(): Response
     {
         try {
             return $this->render('dashboard.twig', [
