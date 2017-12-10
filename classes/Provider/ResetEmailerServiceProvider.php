@@ -16,6 +16,8 @@ namespace OpenCFP\Provider;
 use OpenCFP\Domain\Services\ResetEmailer;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Swift_Mailer;
+use Swift_SmtpTransport;
 
 final class ResetEmailerServiceProvider implements ServiceProviderInterface
 {
@@ -30,8 +32,13 @@ final class ResetEmailerServiceProvider implements ServiceProviderInterface
             'username' => $app->config('mail.username'),
             'password' => $app->config('mail.password'),
         ];
-        $app['reset_emailer'] = function ($app) use ($options) {
+        $transport = (new Swift_SmtpTransport($options['host'], $options['port']))
+            ->setUsername($options['username'])
+            ->setPassword($options['password']);
+        $swiftMailer          = new Swift_Mailer($transport);
+        $app['reset_emailer'] = function ($app) use ($options, $swiftMailer) {
             return new ResetEmailer(
+                $swiftMailer,
                 $app['twig'],
                 $app->config('application.email'),
                 $app->config('application.title'),

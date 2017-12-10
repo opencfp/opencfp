@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Domain\Services;
 
 use Swift_Mailer;
-use Swift_SmtpTransport;
 
 class ResetEmailer
 {
@@ -39,18 +38,15 @@ class ResetEmailer
     private $configTitle;
 
     /**
+     * @param Swift_Mailer      $swiftMailer
      * @param \Twig_Environment $twig
      * @param string            $configEmail
      * @param string            $configTitle
      * @param array             $options
      */
-    public function __construct(\Twig_Environment $twig, string $configEmail, string $configTitle, array $options)
+    public function __construct(Swift_Mailer $swiftMailer, \Twig_Environment $twig, string $configEmail, string $configTitle, array $options)
     {
-        $transport = (new Swift_SmtpTransport($options['host'], $options['port']))
-            ->setUsername($options['username'])
-            ->setPassword($options['password']);
-        $this->swiftMailer = new Swift_Mailer($transport);
-
+        $this->swiftMailer = $swiftMailer;
         $this->twig        = $twig;
         $this->configEmail = $configEmail;
         $this->configTitle = $configTitle;

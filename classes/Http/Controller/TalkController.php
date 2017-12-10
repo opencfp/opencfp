@@ -19,9 +19,9 @@ use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\ResetEmailer;
 use OpenCFP\Http\Form\TalkForm;
 use OpenCFP\Http\View\TalkHelper;
-use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -58,7 +58,7 @@ class TalkController extends BaseController
     private $purifier;
 
     /**
-     * @var Swift_Mailer
+     * @var ResetEmailer
      */
     private $mailer;
 
@@ -83,7 +83,7 @@ class TalkController extends BaseController
         TalkHelper $talkHelper,
         CallForPapers $callForPapers,
         HTMLPurifier $purifier,
-        Swift_Mailer $mailer,
+        ResetEmailer $mailer,
         Twig_Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         string $applicationEmail,
