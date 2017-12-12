@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 
 interface TalkFormat
 {
-    public function formatList(Collection $talkCollection, int $adminUserId, bool $userData = true): Collection;
+    public function formatList(Collection $talkCollection, int $adminUserId): Collection;
 
-    public function createdFormattedOutput($talk, int $adminUserId, bool $userData = true);
+    public function createdFormattedOutput($talk, int $adminUserId);
 }
