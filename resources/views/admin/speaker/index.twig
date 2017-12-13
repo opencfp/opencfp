@@ -25,14 +25,14 @@
                     <h2 class="-mt-2">
                         <a href="{{ url('admin_speaker_view', { id: speaker.id }) }}">{{ speaker.first_name }} {{ speaker.last_name }}</a>
                         {% if speaker.airport.code is defined %}
-                            <a href="https://www.google.com/flights/#search;f={{ speaker.airport.code|upper }};t={{ airport|upper }};d={{ arrival }};r={{ departure }}" class="ml-3 text-brand text-sm hover:underline" target="_blank"><i class="fa fa-plane mr-2"></i>Flight Cost</a>
+                            <a href="https://www.google.com/flights/#search;f={{ speaker.airport.code|upper }};t={{ airport|upper }};d={{ arrival }};r={{ departure }}" class="ml-3 text-brand text-sm hover:underline" target="_blank" rel="noopener noreferrer"><i class="fa fa-plane mr-2"></i>Flight Cost</a>
                         {% elseif speaker.airport%}
                             <span class="ml-3 text-brand text-sm"><i class="fa fa-plane mr-2"></i>{{ speaker.airport }}</span>
                         {% endif %}
                     </h2>
                     <div>
                         {% if speaker.company %}<span class="mr-3"><i class="fa fa-building"></i> {{ speaker.company }}</span>{% endif %}
-                        {% if speaker.twitter %}<span class="mr-3"><a class="hover:text-brand" target="_blank" href="https://twitter.com/{{ speaker.twitter }}"><i class="fa fa-twitter"></i> @{{ speaker.twitter }}</a></span>{% endif %}
+                        {% if speaker.twitter %}<span class="mr-3"><a class="hover:text-brand" target="_blank" href="https://twitter.com/{{ speaker.twitter }}" rel="noopener noreferrer"><i class="fa fa-twitter"></i> @{{ speaker.twitter }}</a></span>{% endif %}
                         {% if speaker.email %}<span class="mr-3"><i class="fa fa-envelope"></i> {{ speaker.email }}</span>{% endif %}
                     </div>
                 </div>
