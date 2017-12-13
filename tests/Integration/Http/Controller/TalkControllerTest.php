@@ -18,6 +18,7 @@ use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
+use OpenCFP\Domain\Services\TalkEmailer;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
@@ -39,12 +40,20 @@ final class TalkControllerTest extends WebTestCase
      */
     private static $talk;
 
+    protected function setUp()
+    {
+        parent::setUp();
+        $talkEmailer = m::mock(TalkEmailer::class);
+        $talkEmailer->shouldReceive('send')->andReturn(1);
+        $this->swap('talk_emailer', $talkEmailer);
+    }
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        $talk       = factory(Talk::class, 1)->create()->first();
-        self::$user = $talk->speaker->first();
-        self::$talk = $talk;
+        $talk        = factory(Talk::class, 1)->create()->first();
+        self::$user  = $talk->speaker->first();
+        self::$talk  = $talk;
     }
 
     /**

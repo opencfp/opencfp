@@ -106,7 +106,7 @@ final class WebGatewayProvider implements
                 $app[TalkHelper::class],
                 $app[CallForPapers::class],
                 $app['purifier'],
-                $app['reset_emailer'],
+                $app['talk_emailer'],
                 $app['twig'],
                 $app['url_generator'],
                 $app->config('application.email'),

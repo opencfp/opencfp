@@ -19,7 +19,7 @@ use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Domain\Services\ResetEmailer;
+use OpenCFP\Domain\Services\TalkEmailer;
 use OpenCFP\Http\Form\TalkForm;
 use OpenCFP\Http\View\TalkHelper;
 use Swift_Message;
@@ -58,7 +58,7 @@ class TalkController extends BaseController
     private $purifier;
 
     /**
-     * @var ResetEmailer
+     * @var TalkEmailer
      */
     private $mailer;
 
@@ -83,7 +83,7 @@ class TalkController extends BaseController
         TalkHelper $talkHelper,
         CallForPapers $callForPapers,
         HTMLPurifier $purifier,
-        ResetEmailer $mailer,
+        TalkEmailer $mailer,
         Twig_Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         string $applicationEmail,
