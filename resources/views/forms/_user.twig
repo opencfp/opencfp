@@ -39,7 +39,7 @@
         <div class="w-1/2 ml-4">
             <label for="form-user-bio">Speaker Bio</label>
             <textarea id="form-user-bio" name="speaker_bio" placeholder="Tell us about yourself ..." rows="5">{{ speaker_bio | default('') }}</textarea>
-            <p class="text-xs text-em mb-2 text-dark-soft">Speaker bio can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank" class="text-underline">markdown</a> to support links</p>
+            <p class="text-xs text-em mb-2 text-dark-soft">Speaker bio can be written using <a href="https://daringfireball.net/projects/markdown/basics" target="_blank" class="text-underline">markdown</a> to support links</p>
 
             {% if site.online_conference == false %}
                 <label for="form-user-airport">Departing Airport Code</label>
@@ -48,7 +48,7 @@
 
             <label for="form-user-notes">Additional Notes</label>
             <textarea id="form-user-notes" name="speaker_info" placeholder="Any other information you feel the organizers should be aware of ..." rows="5">{{ speaker_info | default('') }}</textarea>
-            <p class="text-xs text-em mb-2 text-dark-soft">Speaker notes can be written using <a href="http://daringfireball.net/projects/markdown/basics" target="_blank" class="text-underline">markdown</a> to support links</p>
+            <p class="text-xs text-em mb-2 text-dark-soft">Speaker notes can be written using <a href="https://daringfireball.net/projects/markdown/basics" target="_blank" class="text-underline">markdown</a> to support links</p>
 
             <label for="form-user-photo" class="btn btn-brand cursor-pointer inline-block"><i class="fa fa-upload"></i><span class="ml-2">Upload Photo</span></label>
             <input type="file" id="form-user-photo" name="speaker_photo" placeholder="Photo at least 300px wide by 300px high" accept="image/jpg, image/jpeg, image/png" class="hidden">
