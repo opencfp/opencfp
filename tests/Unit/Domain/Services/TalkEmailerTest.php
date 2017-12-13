@@ -35,7 +35,7 @@ final class TalkEmailerTest extends \PHPUnit\Framework\TestCase
 
         // Create a message
         $talkEmailer = new TalkEmailer($swiftMailer);
-        $response = $talkEmailer->send(new Swift_Message());
+        $response    = $talkEmailer->send(new Swift_Message());
 
         $this->assertNotFalse($response);
     }

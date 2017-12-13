@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Services;
 
-use Swift_Mailer;
-
 class ResetEmailer
 {
     /**
@@ -38,7 +36,7 @@ class ResetEmailer
     private $configTitle;
 
     /**
-     * @param \Swift_Mailer      $swiftMailer
+     * @param \Swift_Mailer     $swiftMailer
      * @param \Twig_Environment $twig
      * @param string            $configEmail
      * @param string            $configTitle

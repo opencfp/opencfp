@@ -1,14 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 /**
-* Copyright (c) 2013-2017 OpenCFP
-*
-* For the full copyright and license information, please view
-* the LICENSE file that was distributed with this source code.
-*
-* @see https://github.com/opencfp/opencfp
-*/
+ * Copyright (c) 2013-2017 OpenCFP
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/opencfp/opencfp
+ */
 
 namespace OpenCFP\Provider;
 
@@ -34,7 +35,7 @@ final class TalkEmailerServiceProvider implements ServiceProviderInterface
         $transport = (new Swift_SmtpTransport($options['host'], $options['port']))
             ->setUsername($options['username'])
             ->setPassword($options['password']);
-        $swiftMailer          = new Swift_Mailer($transport);
+        $swiftMailer         = new Swift_Mailer($transport);
         $app['talk_emailer'] = function ($app) use ($options, $swiftMailer) {
             return new TalkEmailer($swiftMailer);
         };
