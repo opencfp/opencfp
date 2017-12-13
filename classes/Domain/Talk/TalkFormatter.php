@@ -23,16 +23,14 @@ class TalkFormatter implements TalkFormat
      *
      * @param Collection $talkCollection Collection of Talks
      * @param int        $adminUserId
-     * @param bool       $userData
      *
      * @return Collection
      */
-    public function formatList(Collection $talkCollection, int $adminUserId, bool $userData = true): Collection
+    public function formatList(Collection $talkCollection, int $adminUserId): Collection
     {
-        return $talkCollection
-            ->map(function ($talk) use ($adminUserId, $userData) {
-                return new TalkProfile($talk, $adminUserId);
-            });
+        return $talkCollection->map(function ($talk) use ($adminUserId) {
+            return new TalkProfile($talk, $adminUserId);
+        });
     }
 
     /**
@@ -40,11 +38,10 @@ class TalkFormatter implements TalkFormat
      *
      * @param mixed $talk
      * @param int   $adminUserId
-     * @param bool  $userData    grab the speaker data or not
      *
      * @return TalkProfile
      */
-    public function createdFormattedOutput($talk, int $adminUserId, bool $userData = true)
+    public function createdFormattedOutput($talk, int $adminUserId)
     {
         return new TalkProfile($talk, $adminUserId);
     }
