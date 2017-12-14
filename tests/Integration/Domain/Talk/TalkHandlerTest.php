@@ -35,6 +35,7 @@ final class TalkHandlerTest extends BaseTestCase
     private static $talk;
 
     private $authentication;
+
     private $ratingSystem;
 
     public static function setUpBeforeClass()
