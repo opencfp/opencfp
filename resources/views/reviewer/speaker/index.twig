@@ -19,8 +19,7 @@
     {% for speaker in speakers %}
         <div class="flex justify-between items-center mb-8">
             <div class="flex">
-                {# //TODO: use twig uploads function function #}
-                <img class="w-10 h-10 mr-3 rounded-full" src="{{ speaker.photo_path ? '/uploads/' ~ speaker.photo_path : '/assets/img/dummyphoto.jpg' }}">
+                <img class="w-10 h-10 mr-3 rounded-full" src="{{ speaker.photo_path ? uploads(speaker.photo_path) : '/assets/img/dummyphoto.jpg' }}">
                 <div>
                     <h2 class="-mt-2">
                         <a href="{{ url('reviewer_speaker_view', { id: speaker.id }) }}">{{ speaker.first_name }} {{ speaker.last_name }}</a>

@@ -2,8 +2,7 @@
 {% block content %}
 
     <div class="flex mb-8">
-        {# //TODO: use twig uploads function function #}
-        <img class="w-16 h-16 mr-4 rounded-full" src="{{ speaker.photo ? '/uploads/' ~ speaker.photo : '/assets/img/dummyphoto.jpg' }}">
+        <img class="w-16 h-16 mr-4 rounded-full" src="{{ speaker.photo ? uploads(speaker.photo) : '/assets/img/dummyphoto.jpg' }}">
         <div>
             <h1 class="-mt-2">
                 {% if speaker.isAllowedToSee('name') %}{{ speaker.name }}{% else %}Unknown Speaker{% endif %}
