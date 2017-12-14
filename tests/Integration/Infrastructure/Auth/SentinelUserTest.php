@@ -20,9 +20,6 @@ use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\SentinelUser
- */
 final class SentinelUserTest extends BaseTestCase
 {
     use RefreshDatabase;

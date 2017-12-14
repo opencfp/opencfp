@@ -18,9 +18,6 @@ use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-/**
- * @coversNothing
- */
 final class TalksControllerTest extends WebTestCase
 {
     use RefreshDatabase;

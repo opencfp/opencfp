@@ -20,9 +20,6 @@ use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\SentinelAccountManagement
- */
 final class SentinelAccountManagementTest extends BaseTestCase
 {
     use DataBaseInteraction;

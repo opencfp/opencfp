@@ -17,9 +17,6 @@ use OpenCFP\Test\Integration\WebTestCase;
 
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Infrastructure\Event\AuthenticationListener
- */
 final class AuthenticationListenerTest extends WebTestCase
 {
     public function testNoLoginRequired()

@@ -16,10 +16,6 @@ namespace OpenCFP\Test\Integration\Http\Controller;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-/**
- * @group db
- * @coversNothing
- */
 final class SignupControllerTest extends WebTestCase
 {
     use RefreshDatabase;
