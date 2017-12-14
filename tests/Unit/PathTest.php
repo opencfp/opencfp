@@ -99,11 +99,10 @@ final class PathTest extends \PHPUnit\Framework\TestCase
     {
         $path = new Path('/home/folder/base', Environment::testing());
         $this->assertSame(
-            '/uploads',
+            '/uploads/',
             $path->downloadFromPath()
         );
     }
-
 
     /**
      * @test

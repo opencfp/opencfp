@@ -48,7 +48,7 @@ final class Path implements PathInterface
 
     public function downloadFromPath(): string
     {
-        return '/uploads';
+        return '/uploads/';
     }
 
     public function templatesPath(): string

@@ -52,7 +52,8 @@ final class TwigServiceProvider implements ServiceProviderInterface, EventListen
 
             $twig->addExtension(new TwigExtension(
                 $app['request_stack'],
-                $app['url_generator']
+                $app['url_generator'],
+                $app['path']
             ));
 
             $twig->addGlobal('site', $app->config('application'));

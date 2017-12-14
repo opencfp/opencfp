@@ -22,6 +22,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
+use OpenCFP\PathInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -64,6 +65,11 @@ class SpeakersController extends BaseController
      */
     private $applicationAirport;
 
+    /**
+     * @var PathInterface
+     */
+    private $path;
+
     public function __construct(
         Authentication $authentication,
         AccountManagement $accounts,
@@ -73,7 +79,8 @@ class SpeakersController extends BaseController
         UrlGeneratorInterface $urlGenerator,
         string $applicationAirport,
         int $applicationArrival,
-        int $applicationDeparture
+        int $applicationDeparture,
+        PathInterface $path
     ) {
         $this->authentication       = $authentication;
         $this->accounts             = $accounts;
@@ -82,6 +89,7 @@ class SpeakersController extends BaseController
         $this->applicationAirport   = $applicationAirport;
         $this->applicationArrival   = $applicationArrival;
         $this->applicationDeparture = $applicationDeparture;
+        $this->path                 = $path;
 
         parent::__construct($twig, $urlGenerator);
     }
@@ -167,8 +175,7 @@ class SpeakersController extends BaseController
             'departure'  => \date('Y-m-d', $this->applicationDeparture),
             'speaker'    => new SpeakerProfile($speakerDetails),
             'talks'      => $talks,
-            //TODO: use Path downloadFrom function function
-            'photo_path' => '/uploads/',
+            'photo_path' => $this->path->downloadFromPath(),
             'page'       => $request->get('page'),
         ]);
     }
