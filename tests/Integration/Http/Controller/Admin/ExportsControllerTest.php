@@ -46,7 +46,7 @@ final class ExportsControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyContains(self::$talks->first()->title, $response);
         $this->assertResponseBodyNotContains($user->first_name, $response);
-        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
+        $this->assertSessionHasNoFlashMessage($this->session());
     }
 
     /**
@@ -60,7 +60,7 @@ final class ExportsControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyContains(self::$talks->first()->title, $response);
-        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
+        $this->assertSessionHasNoFlashMessage($this->session());
     }
 
     /**
@@ -77,7 +77,7 @@ final class ExportsControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyContains(self::$talks->first()->title, $response);
         $this->assertResponseBodyContains($user->first_name, $response);
-        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
+        $this->assertSessionHasNoFlashMessage($this->session());
     }
 
     /**
@@ -94,7 +94,7 @@ final class ExportsControllerTest extends WebTestCase
         $this->assertResponseBodyContains(self::$selectedTalk->title, $response);
         $this->assertResponseBodyNotContains(self::$talks->first()->title, $response);
         $this->assertResponseBodyNotContains($user->first_name, $response);
-        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
+        $this->assertSessionHasNoFlashMessage($this->session());
     }
 
     /**

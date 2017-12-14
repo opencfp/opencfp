@@ -40,6 +40,6 @@ final class DashboardControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyContains(self::$talks->first()->title, $response);
-        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
+        $this->assertSessionHasNoFlashMessage($this->session());
     }
 }

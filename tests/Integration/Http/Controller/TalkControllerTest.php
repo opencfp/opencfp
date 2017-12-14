@@ -113,8 +113,8 @@ final class TalkControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertResponseBodyNotContains('Edit Your Talk', $response);
-        $this->assertSessionHasFlashMessage('error', $this->container->get('session'));
-        $this->assertSessionHasFlashMessage('You cannot edit talks once the call for papers has ended', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('error', $this->session());
+        $this->assertSessionHasFlashMessage('You cannot edit talks once the call for papers has ended', $this->session());
     }
 
     /**
@@ -231,7 +231,7 @@ final class TalkControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertResponseBodyNotContains('Create Your Talk', $response);
-        $this->assertSessionHasFlashMessage('You cannot create talks once the call for papers has ended', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('You cannot create talks once the call for papers has ended', $this->session());
     }
 
     /**
@@ -253,7 +253,7 @@ final class TalkControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertResponseBodyNotContains('Create Your Talk', $response);
-        $this->assertSessionHasFlashMessage('You cannot create talks once the call for papers has ended', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('You cannot create talks once the call for papers has ended', $this->session());
     }
 
     /**
@@ -276,7 +276,7 @@ final class TalkControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyContains('Create Your Talk', $response);
-        $this->assertSessionHasFlashMessage('Error', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('Error', $this->session());
     }
 
     /**
@@ -316,7 +316,7 @@ final class TalkControllerTest extends WebTestCase
             ]);
 
         $this->assertResponseIsRedirect($response);
-        $this->assertSessionHasFlashMessage('Read Only', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('Read Only', $this->session());
     }
 
     /**
@@ -338,7 +338,7 @@ final class TalkControllerTest extends WebTestCase
             ]);
 
         $this->assertResponseIsSuccessful($response);
-        $this->assertSessionHasFlashMessage('Error', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('Error', $this->session());
     }
 
     /**
