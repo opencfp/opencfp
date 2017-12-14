@@ -40,6 +40,8 @@ use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
+use Swift_Mailer;
+use Swift_SmtpTransport;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class WebGatewayProvider implements
@@ -49,6 +51,19 @@ final class WebGatewayProvider implements
 {
     public function register(Container $app)
     {
+        $app['mailer'] = function ($app) {
+            $options = [
+                'host'     => $app->config('mail.host'),
+                'port'     => $app->config('mail.port'),
+                'username' => $app->config('mail.username'),
+                'password' => $app->config('mail.password'),
+            ];
+            $transport = (new Swift_SmtpTransport($options['host'], $options['port']))
+                ->setUsername($options['username'])
+                ->setPassword($options['password']);
+            return new Swift_Mailer($transport);
+        };
+
         $app[DashboardController::class] = function ($app) {
             return new DashboardController(
                 $app['application.speakers'],
@@ -106,7 +121,7 @@ final class WebGatewayProvider implements
                 $app[TalkHelper::class],
                 $app[CallForPapers::class],
                 $app['purifier'],
-                $app['talk_emailer'],
+                $app['mailer'],
                 $app['twig'],
                 $app['url_generator'],
                 $app->config('application.email'),

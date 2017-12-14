@@ -18,9 +18,9 @@ use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\TalkEmailer;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
+use Swift_Mailer;
 
 /**
  * @group db
@@ -43,9 +43,9 @@ final class TalkControllerTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-        $talkEmailer = m::mock(TalkEmailer::class);
-        $talkEmailer->shouldReceive('send')->andReturn(1);
-        $this->swap('talk_emailer', $talkEmailer);
+        $mailer = m::mock(Swift_Mailer::class);
+        $mailer->shouldReceive('send')->andReturn(1);
+        $this->swap('mailer', $mailer);
     }
 
     public static function setUpBeforeClass()

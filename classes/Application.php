@@ -90,7 +90,6 @@ class Application extends SilexApplication
         $this->register(new TalkHelperProvider());
         $this->register(new TalkRatingProvider());
         $this->register(new TalkFilterProvider());
-        $this->register(new TalkEmailerServiceProvider());
 
         // Application Services...
         $this->register(new ApplicationServiceProvider());
