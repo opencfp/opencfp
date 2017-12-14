@@ -15,6 +15,7 @@ namespace OpenCFP\Test\Unit\Http\Form;
 
 use Mockery as m;
 use OpenCFP\Http\Form\SignupForm;
+use Symfony\Component\HttpFoundation;
 
 /**
  * @covers \OpenCFP\Http\Form\SignupForm
@@ -34,7 +35,7 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
     public function formRejectsValidationOnInvalidSpeakerPhoto()
     {
         // Mock speaker photo.
-        $photo = m::mock(\stdClass::class);
+        $photo = m::mock(HttpFoundation\File\UploadedFile::class);
         $photo->shouldReceive('isValid')->andReturn(false);
         $photo->shouldReceive('getErrorMessage')->andReturn('stubbed error message');
 
