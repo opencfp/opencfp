@@ -10,7 +10,7 @@ composer:
 	composer install
 
 coverage: composer
-	vendor/bin/phpunit --configuration tests/Unit/phpunit.xml.dist --coverage-text
+	vendor/bin/phpunit --testsuite unit --coverage-text
 
 cs: composer
 	vendor/bin/php-cs-fixer fix --verbose --diff
@@ -25,9 +25,9 @@ infection: composer database
 	vendor/bin/infection
 
 integration: composer database
-	vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist
+	vendor/bin/phpunit --testsuite integration
 
 test: integration unit
 
 unit: composer
-	vendor/bin/phpunit --configuration tests/Unit/phpunit.xml.dist
+	vendor/bin/phpunit --testsuite unit
