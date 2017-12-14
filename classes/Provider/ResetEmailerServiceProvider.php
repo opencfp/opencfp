@@ -35,8 +35,7 @@ final class ResetEmailerServiceProvider implements ServiceProviderInterface
                 $app['mailer'],
                 $app['twig'],
                 $app->config('application.email'),
-                $app->config('application.title'),
-                $options
+                $app->config('application.title')
             );
         };
     }

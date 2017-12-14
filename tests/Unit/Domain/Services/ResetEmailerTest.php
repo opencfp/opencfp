@@ -60,8 +60,7 @@ final class ResetEmailerTest extends \PHPUnit\Framework\TestCase
             $swiftMailer,
             $twig,
             'admin@example.com',
-            'Reset',
-            $options
+            'Reset'
         );
 
         $response = $resetEmailer->send(
