@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Integration\Http\Controller;
+namespace OpenCFP\Test\Integration\Http\Action;
 
 use Mockery as m;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
@@ -21,7 +21,7 @@ use OpenCFP\Test\Integration\WebTestCase;
  * @group db
  * @coversNothing
  */
-final class DashboardControllerTest extends WebTestCase
+final class DashboardActionTest extends WebTestCase
 {
     /**
      * Test that the index page returns a list of talks associated
