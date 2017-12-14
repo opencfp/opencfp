@@ -46,16 +46,6 @@ class ProfileController extends BaseController
      */
     private $path;
 
-    /**
-     * ProfileController constructor.
-     *
-     * @param Authentication        $authentication
-     * @param HTMLPurifier          $purifier
-     * @param ProfileImageProcessor $profileImageProcessor
-     * @param Twig_Environment      $twig
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param PathInterface         $path
-     */
     public function __construct(
         Authentication $authentication,
         HTMLPurifier $purifier,
