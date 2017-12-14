@@ -16,8 +16,6 @@ namespace OpenCFP\Provider;
 use OpenCFP\Domain\Services\ResetEmailer;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Swift_Mailer;
-use Swift_SmtpTransport;
 
 final class ResetEmailerServiceProvider implements ServiceProviderInterface
 {

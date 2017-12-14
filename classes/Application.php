@@ -23,7 +23,6 @@ use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\ResetEmailerServiceProvider;
 use OpenCFP\Provider\SentinelServiceProvider;
-use OpenCFP\Provider\TalkEmailerServiceProvider;
 use OpenCFP\Provider\TalkFilterProvider;
 use OpenCFP\Provider\TalkHandlerProvider;
 use OpenCFP\Provider\TalkHelperProvider;

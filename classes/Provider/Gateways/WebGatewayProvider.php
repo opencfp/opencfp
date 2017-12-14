@@ -61,6 +61,7 @@ final class WebGatewayProvider implements
             $transport = (new Swift_SmtpTransport($options['host'], $options['port']))
                 ->setUsername($options['username'])
                 ->setPassword($options['password']);
+
             return new Swift_Mailer($transport);
         };
 
