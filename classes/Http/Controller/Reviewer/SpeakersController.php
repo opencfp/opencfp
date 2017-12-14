@@ -78,10 +78,9 @@ class SpeakersController extends BaseController
         $talks = $speakerDetails->talks()->get()->toArray();
 
         return $this->render('reviewer/speaker/view.twig', [
-            'speaker'    => new SpeakerProfile($speakerDetails, $this->reviewerUsers),
-            'talks'      => $talks,
-            'photo_path' => $this->path->downloadFromPath(),
-            'page'       => $request->get('page'),
+            'speaker' => new SpeakerProfile($speakerDetails, $this->reviewerUsers),
+            'talks'   => $talks,
+            'page'    => $request->get('page'),
         ]);
     }
 }

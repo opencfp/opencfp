@@ -170,13 +170,12 @@ class SpeakersController extends BaseController
 
         // Build and render the template
         return $this->render('admin/speaker/view.twig', [
-            'airport'    => $this->applicationAirport,
-            'arrival'    => \date('Y-m-d', $this->applicationArrival),
-            'departure'  => \date('Y-m-d', $this->applicationDeparture),
-            'speaker'    => new SpeakerProfile($speakerDetails),
-            'talks'      => $talks,
-            'photo_path' => $this->path->downloadFromPath(),
-            'page'       => $request->get('page'),
+            'airport'   => $this->applicationAirport,
+            'arrival'   => \date('Y-m-d', $this->applicationArrival),
+            'departure' => \date('Y-m-d', $this->applicationDeparture),
+            'speaker'   => new SpeakerProfile($speakerDetails),
+            'talks'     => $talks,
+            'page'      => $request->get('page'),
         ]);
     }
 
