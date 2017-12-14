@@ -28,9 +28,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig_Environment;
 
-/**
- * @covers \OpenCFP\Infrastructure\Event\TwigGlobalsListener
- */
 final class TwigGlobalsListenerTest extends TestCase
 {
     /**

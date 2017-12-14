@@ -17,10 +17,6 @@ use Mockery as m;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Test\Integration\WebTestCase;
 
-/**
- * @group db
- * @coversNothing
- */
 final class DashboardControllerTest extends WebTestCase
 {
     /**

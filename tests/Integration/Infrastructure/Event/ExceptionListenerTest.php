@@ -16,9 +16,6 @@ namespace OpenCFP\Test\Integration\Infrastructure\Event;
 use OpenCFP\Test\Integration\WebTestCase;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Infrastructure\Event\ExceptionListener
- */
 final class ExceptionListenerTest extends WebTestCase
 {
     public function testJsonOn404()

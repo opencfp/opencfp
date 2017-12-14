@@ -18,10 +18,6 @@ use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
-/**
- * @group db
- * @coversNothing
- */
 final class AirportTest extends BaseTestCase
 {
     use RefreshDatabase;

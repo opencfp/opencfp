@@ -24,9 +24,6 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-/**
- * @covers \OpenCFP\Infrastructure\Templating\TwigExtension
- */
 final class TwigExtensionTest extends TestCase
 {
     public function testExtension()
