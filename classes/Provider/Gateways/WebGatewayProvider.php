@@ -77,7 +77,8 @@ final class WebGatewayProvider implements
                 $app['purifier'],
                 $app['profile_image_processor'],
                 $app['twig'],
-                $app['url_generator']
+                $app['url_generator'],
+                $app['path']
             );
         };
 
@@ -138,7 +139,8 @@ final class WebGatewayProvider implements
                 $app['url_generator'],
                 $app->config('application.airport'),
                 $app->config('application.arrival'),
-                $app->config('application.departure')
+                $app->config('application.departure'),
+                $app['path']
             );
         };
 
@@ -165,7 +167,8 @@ final class WebGatewayProvider implements
             return new Reviewer\SpeakersController(
                 $app['twig'],
                 $app['url_generator'],
-                $app->config('reviewer.users') ?: []
+                $app->config('reviewer.users') ?: [],
+                $app['path']
             );
         };
 

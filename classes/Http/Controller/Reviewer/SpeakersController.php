@@ -17,6 +17,7 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
+use OpenCFP\PathInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -29,9 +30,16 @@ class SpeakersController extends BaseController
      */
     private $reviewerUsers;
 
-    public function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, array $reviewerUsers)
-    {
+    private $path;
+
+    public function __construct(
+        Twig_Environment $twig,
+        UrlGeneratorInterface $urlGenerator,
+        array $reviewerUsers,
+        PathInterface $path
+    ) {
         $this->reviewerUsers = $reviewerUsers;
+        $this->path          = $path;
 
         parent::__construct($twig, $urlGenerator);
     }
@@ -70,10 +78,9 @@ class SpeakersController extends BaseController
         $talks = $speakerDetails->talks()->get()->toArray();
 
         return $this->render('reviewer/speaker/view.twig', [
-            'speaker'    => new SpeakerProfile($speakerDetails, $this->reviewerUsers),
-            'talks'      => $talks,
-            'photo_path' => '/uploads/',
-            'page'       => $request->get('page'),
+            'speaker' => new SpeakerProfile($speakerDetails, $this->reviewerUsers),
+            'talks'   => $talks,
+            'page'    => $request->get('page'),
         ]);
     }
 }

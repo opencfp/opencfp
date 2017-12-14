@@ -18,6 +18,7 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\ProfileImageProcessor;
 use OpenCFP\Http\Form\SignupForm;
+use OpenCFP\PathInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -40,16 +41,23 @@ class ProfileController extends BaseController
      */
     private $profileImageProcessor;
 
+    /**
+     * @var PathInterface
+     */
+    private $path;
+
     public function __construct(
         Authentication $authentication,
         HTMLPurifier $purifier,
         ProfileImageProcessor $profileImageProcessor,
         Twig_Environment $twig,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        PathInterface $path
     ) {
         $this->authentication        = $authentication;
         $this->purifier              = $purifier;
         $this->profileImageProcessor = $profileImageProcessor;
+        $this->path                  = $path;
 
         parent::__construct($twig, $urlGenerator);
     }
@@ -80,7 +88,7 @@ class ProfileController extends BaseController
             'speaker_info'   => $speakerData['info'],
             'speaker_bio'    => $speakerData['bio'],
             'speaker_photo'  => $speakerData['photo_path'],
-            'preview_photo'  => '/uploads/' . $speakerData['photo_path'],
+            'preview_photo'  => $this->path->downloadFromPath() . $speakerData['photo_path'],
             'airport'        => $speakerData['airport'],
             'transportation' => $speakerData['transportation'],
             'hotel'          => $speakerData['hotel'],

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Infrastructure\Templating;
 
+use OpenCFP\PathInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Extension;
@@ -30,17 +31,23 @@ class TwigExtension extends Twig_Extension
      */
     private $urlGenerator;
 
-    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator)
+    /**
+     * @var PathInterface
+     */
+    private $path;
+
+    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator, PathInterface $path)
     {
         $this->requestStack = $requestStack;
         $this->urlGenerator = $urlGenerator;
+        $this->path         = $path;
     }
 
     public function getFunctions()
     {
         return [
             new Twig_SimpleFunction('uploads', function ($path) {
-                return '/uploads/' . $path;
+                return $this->path->downloadFromPath() . $path;
             }),
             new Twig_SimpleFunction('assets', function ($path) {
                 return '/assets/' . $path;
