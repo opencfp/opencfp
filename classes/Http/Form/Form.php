@@ -15,11 +15,34 @@ namespace OpenCFP\Http\Form;
 
 abstract class Form
 {
+    /**
+     * @var array
+     */
     protected $options;
+
+    /**
+     * @var string[]
+     */
     protected $messages;
+
+    /**
+     * @var array
+     */
     protected $cleanData;
+
+    /**
+     * @var array
+     */
     protected $taintedData;
+
+    /**
+     * @var \HTMLPurifier
+     */
     protected $purifier;
+
+    /**
+     * @var string[]
+     */
     protected $fieldList = [];
 
     /**

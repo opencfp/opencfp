@@ -29,6 +29,9 @@ class TalkProfile
      */
     private $talk;
 
+    /**
+     * @var int
+     */
     private $userId;
 
     public function __construct(Talk $talk, int $userId = 0)
