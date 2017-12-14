@@ -59,12 +59,12 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public function createApplication(): Application
+    private function createApplication(): Application
     {
         return new Application(__DIR__ . '/..', Environment::testing());
     }
 
-    public function refreshApplication()
+    private function refreshApplication()
     {
         $this->app       = $this->createApplication();
         $this->container = new Container($this->app);
@@ -73,7 +73,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
     /**
      * Runs setUps from Traits that are needed before every test (as called from setUp)
      */
-    public function runBeforeTestTraits()
+    private function runBeforeTestTraits()
     {
         $uses = \array_flip(class_uses_recursive(static::class));
 
@@ -85,7 +85,7 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
     /**
      * Runs setups from Traits that are needed before the class is setup (as called from setUpBeforeClass)
      */
-    protected static function runBeforeClassTraits()
+    private static function runBeforeClassTraits()
     {
         $uses = \array_flip(class_uses_recursive(static::class));
 

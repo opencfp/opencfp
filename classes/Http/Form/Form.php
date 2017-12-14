@@ -15,25 +15,40 @@ namespace OpenCFP\Http\Form;
 
 abstract class Form
 {
-    protected $options;
-    protected $messages;
-    protected $cleanData;
-    protected $taintedData;
-    protected $purifier;
-    protected $fieldList = [];
+    /**
+     * @var array
+     */
+    private $options;
 
     /**
-     * @param $data array of form data
-     * @param \HTMLPurifier $purifier
-     * @param $options
+     * @var string[]
      */
-    public function __construct($data, \HTMLPurifier $purifier, array $options = [])
+    private $messages = [];
+
+    /**
+     * @var array
+     */
+    protected $cleanData = [];
+
+    /**
+     * @var array
+     */
+    protected $taintedData = [];
+
+    /**
+     * @var \HTMLPurifier
+     */
+    protected $purifier;
+
+    /**
+     * @var string[]
+     */
+    protected $fieldList = [];
+
+    public function __construct(array $data, \HTMLPurifier $purifier, array $options = [])
     {
-        $this->purifier    = $purifier;
-        $this->options     = $options;
-        $this->messages    = [];
-        $this->cleanData   = [];
-        $this->taintedData = [];
+        $this->purifier = $purifier;
+        $this->options  = $options;
 
         $this->populate($data);
     }
@@ -58,7 +73,7 @@ abstract class Form
     {
         // The $taintedData property might have been already set by
         // the populate() method.
-        $this->taintedData = \array_merge($this->taintedData, (array) $data);
+        $this->taintedData = \array_merge($this->taintedData, $data);
     }
 
     /**
@@ -109,7 +124,7 @@ abstract class Form
      *
      * @return null|mixed
      */
-    public function getTaintedField($name, $default = null)
+    public function getTaintedField(string $name, $default = null)
     {
         return $this->taintedData[$name] ?? $default;
     }
@@ -132,20 +147,24 @@ abstract class Form
      *
      * @return mixed The option value
      */
-    public function getOption($name, $default = null)
+    public function getOption(string $name, $default = null)
     {
         return $this->options[$name] ?? $default;
     }
 
     /**
      * Validates the form's submitted data.
+     *
+     * @param string $action
+     *
+     * @return bool
      */
-    abstract public function validateAll($action = 'create');
+    abstract public function validateAll(string $action = 'create'): bool;
 
     /**
      * Returns the list of error messages.
      *
-     * @return array
+     * @return string[]
      */
     public function getErrorMessages(): array
     {
@@ -192,14 +211,8 @@ abstract class Form
      */
     protected function internalSanitize(array $taintedData): array
     {
-        $purifier = $this->purifier;
-        $filtered = \array_map(
-            function ($field) use ($purifier) {
-                return $purifier->purify($field);
-            },
-            $taintedData
-        );
-
-        return $filtered;
+        return \array_map(function ($field) {
+            return $this->purifier->purify($field);
+        }, $taintedData);
     }
 }

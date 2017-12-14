@@ -20,12 +20,10 @@ use OpenCFP\Infrastructure\Auth\SentinelAuthentication;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\SentinelAuthentication
- */
 final class SentinelAuthenticationTest extends BaseTestCase
 {
     use DataBaseInteraction;
+
     /**
      * @var SentinelAuthentication
      */

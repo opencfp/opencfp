@@ -17,9 +17,6 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-/**
- * @coversNothing
- */
 final class SpeakersControllerTest extends WebTestCase
 {
     use RefreshDatabase;

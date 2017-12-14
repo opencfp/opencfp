@@ -52,7 +52,7 @@
             {% set user = comment.user.toArray %}
             <div class="flex text-sm mt-4">
                 <div>
-                    <img class="w-16 mr-4 rounded" src="{{ user.photo_path ? '/uploads/' ~ user.photo_path : '/assets/img/dummyphoto.jpg' }}">
+                    <img class="w-16 mr-4 rounded" src="{{ user.photo_path ? uploads(user.photo_path) : '/assets/img/dummyphoto.jpg' }}">
                 </div>
                 <div class="border border-grey rounded-sm w-full">
                     <div class="p-3 border-b border-grey bg-blue-lightest flex justify-between">

@@ -25,9 +25,6 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
-/**
- * @coversNothing
- */
 final class TalkHandlerTest extends BaseTestCase
 {
     use RefreshDatabase;
@@ -35,6 +32,7 @@ final class TalkHandlerTest extends BaseTestCase
     private static $talk;
 
     private $authentication;
+
     private $ratingSystem;
 
     public static function setUpBeforeClass()

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Form;
 
+use Symfony\Component\HttpFoundation;
+
 /**
  * Form object for our signup & profile pages, handles validation of form data
  */
@@ -35,44 +37,31 @@ class SignupForm extends Form
         'url',
     ];
 
-    /**
-     * Validate all methods by calling all our validation methods
-     *
-     * @param string $action
-     *
-     * @return bool
-     */
-    public function validateAll($action = 'create')
+    public function validateAll(string $action = 'create'): bool
     {
         $this->sanitize();
+
         $validPasswords = true;
         $agreeCoc       = true;
 
-        if ($action == 'create') {
+        if ($action === 'create') {
             $validPasswords = $this->validatePasswords();
             $agreeCoc       = $this->validateAgreeCoc();
         }
 
-        $validEmail        = $this->validateEmail();
-        $validFirstName    = $this->validateFirstName();
-        $validLastName     = $this->validateLastName();
-        $validCompany      = $this->validateCompany();
-        $validTwitter      = $this->validateTwitter();
-        $validUrl          = $this->validateUrl();
-        $validSpeakerPhoto = $this->validateSpeakerPhoto();
-        $validSpeakerInfo  = true;
-        $validSpeakerBio   = true;
+        $validSpeakerInfo = true;
 
         if (!empty($this->taintedData['speaker_info'])) {
             $validSpeakerInfo = $this->validateSpeakerInfo();
         }
 
+        $validSpeakerBio = true;
+
         if (!empty($this->taintedData['speaker_bio'])) {
             $validSpeakerBio = $this->validateSpeakerBio();
         }
 
-        return
-            $validEmail && $validPasswords && $validFirstName && $validLastName && $validCompany && $validTwitter && $validUrl && $validSpeakerInfo && $validSpeakerBio && $validSpeakerPhoto && $agreeCoc;
+        return $this->validateEmail() && $validPasswords && $this->validateFirstName() && $this->validateLastName() && $this->validateUrl() && $validSpeakerInfo && $validSpeakerBio && $this->validateSpeakerPhoto() && $agreeCoc;
     }
 
     public function validateSpeakerPhoto(): bool
@@ -88,22 +77,25 @@ class SignupForm extends Form
             return true;
         }
 
+        /** @var HttpFoundation\File\UploadedFile $speakerPhoto */
+        $speakerPhoto = $this->taintedData['speaker_photo'];
+
         // Check if the file was uploaded OK, display any error that may have occurred
-        if (!$this->taintedData['speaker_photo']->isValid()) {
-            $this->addErrorMessage($this->taintedData['speaker_photo']->getErrorMessage());
+        if (!$speakerPhoto->isValid()) {
+            $this->addErrorMessage($speakerPhoto->getErrorMessage());
 
             return false;
         }
 
         // Check if uploaded file is greater than 5MB
-        if ($this->taintedData['speaker_photo']->getClientSize() > (5 * 1048576)) {
+        if ($speakerPhoto->getClientSize() > (5 * 1048576)) {
             $this->addErrorMessage('Speaker photo can not be larger than 5MB');
 
             return false;
         }
 
         // Check if photo is in the mime-type white list
-        if (!\in_array($this->taintedData['speaker_photo']->getMimeType(), $allowedMimeTypes)) {
+        if (!\in_array($speakerPhoto->getMimeType(), $allowedMimeTypes)) {
             $this->addErrorMessage('Speaker photo must be a jpg or png');
 
             return false;
@@ -112,13 +104,6 @@ class SignupForm extends Form
         return true;
     }
 
-    /**
-     * Method that applies validation rules to email
-     *
-     * @return bool
-     *
-     * @internal param string $email
-     */
     public function validateEmail(): bool
     {
         if (!isset($this->taintedData['email']) || $this->taintedData['email'] == '') {
@@ -138,11 +123,6 @@ class SignupForm extends Form
         return true;
     }
 
-    /**
-     * Method that applies validation rules to user-submitted passwords
-     *
-     * @return bool|string
-     */
     public function validatePasswords(): bool
     {
         $passwd  = $this->cleanData['password'];
@@ -175,11 +155,6 @@ class SignupForm extends Form
         return true;
     }
 
-    /**
-     * Method that applies vaidation rules to user-submitted first names
-     *
-     * @return bool
-     */
     public function validateFirstName(): bool
     {
         $firstName          = $this->cleanData['first_name'];
@@ -203,11 +178,6 @@ class SignupForm extends Form
         return $validationResponse;
     }
 
-    /**
-     * Method that applies vaidation rules to user-submitted first names
-     *
-     * @return bool
-     */
     public function validateLastName(): bool
     {
         $lastName           = $this->cleanData['last_name'];
@@ -231,19 +201,7 @@ class SignupForm extends Form
         return $validationResponse;
     }
 
-    public function validateCompany(): bool
-    {
-        // $company = $this->_cleanData['company'];
-        return true;
-    }
-
-    public function validateTwitter(): bool
-    {
-        // $twitter = $this->_cleanData['twitter'];
-        return true;
-    }
-
-    public function validateUrl(): bool
+    private function validateUrl(): bool
     {
         if (\preg_match('/https:\/\/joind\.in\/user\/[a-zA-Z0-9]{1,25}/', $this->cleanData['url'])
             || !isset($this->cleanData['url'])
@@ -256,11 +214,6 @@ class SignupForm extends Form
         return false;
     }
 
-    /**
-     * Method that applies validation rules to user-submitted speaker info
-     *
-     * @return bool
-     */
     public function validateSpeakerInfo(): bool
     {
         $speakerInfo = \filter_var(
@@ -279,11 +232,6 @@ class SignupForm extends Form
         return $validationResponse;
     }
 
-    /**
-     * Method that applies validation rules to user-submitted speaker bio
-     *
-     * @return bool
-     */
     public function validateSpeakerBio(): bool
     {
         $speakerBio = \filter_var(
@@ -302,9 +250,6 @@ class SignupForm extends Form
         return $validationResponse;
     }
 
-    /**
-     * Santize all our fields that were submitted
-     */
     public function sanitize()
     {
         parent::sanitize();

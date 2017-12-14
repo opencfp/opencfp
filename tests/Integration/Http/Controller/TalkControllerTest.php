@@ -22,10 +22,6 @@ use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 use Swift_Mailer;
 
-/**
- * @group db
- * @coversNothing
- */
 final class TalkControllerTest extends WebTestCase
 {
     use RefreshDatabase;

@@ -50,6 +50,12 @@ return PhpCsFixer\Config::create()
             ],
         ],
         'cast_spaces' => true,
+        'class_attributes_separation' => [
+            'elements' => [
+                'method',
+                'property',
+            ],
+        ],
         'combine_consecutive_unsets' => true,
         'concat_space' => [
             'spacing' => 'one',
@@ -86,7 +92,6 @@ return PhpCsFixer\Config::create()
         'php_unit_expectation' => true,
         'php_unit_no_expectation_annotation' => true,
         'php_unit_strict' => true,
-        'php_unit_test_class_requires_covers' => true,
         'phpdoc_align' => true,
         'phpdoc_annotation_without_dot' => true,
         'phpdoc_indent' => true,

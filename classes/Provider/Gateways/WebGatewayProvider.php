@@ -20,8 +20,8 @@ use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkHandler;
+use OpenCFP\Http\Action;
 use OpenCFP\Http\Controller\Admin;
-use OpenCFP\Http\Controller\DashboardController;
 use OpenCFP\Http\Controller\ForgotController;
 use OpenCFP\Http\Controller\PagesController;
 use OpenCFP\Http\Controller\ProfileController;
@@ -65,8 +65,8 @@ final class WebGatewayProvider implements
             return new Swift_Mailer($transport);
         };
 
-        $app[DashboardController::class] = function ($app) {
-            return new DashboardController(
+        $app[Action\DashboardAction::class] = function ($app) {
+            return new Action\DashboardAction(
                 $app['application.speakers'],
                 $app['twig'],
                 $app['url_generator']
@@ -93,7 +93,8 @@ final class WebGatewayProvider implements
                 $app['purifier'],
                 $app['profile_image_processor'],
                 $app['twig'],
-                $app['url_generator']
+                $app['url_generator'],
+                $app['path']
             );
         };
 
@@ -154,7 +155,8 @@ final class WebGatewayProvider implements
                 $app['url_generator'],
                 $app->config('application.airport'),
                 $app->config('application.arrival'),
-                $app->config('application.departure')
+                $app->config('application.departure'),
+                $app['path']
             );
         };
 
@@ -181,7 +183,8 @@ final class WebGatewayProvider implements
             return new Reviewer\SpeakersController(
                 $app['twig'],
                 $app['url_generator'],
-                $app->config('reviewer.users') ?: []
+                $app->config('reviewer.users') ?: [],
+                $app['path']
             );
         };
 
@@ -214,8 +217,7 @@ final class WebGatewayProvider implements
             ->bind('talk_ideas');
 
         // User Dashboard
-        $web->get('/dashboard', 'OpenCFP\Http\Controller\DashboardController::indexAction')
-            ->bind('dashboard');
+        $web->get('/dashboard', Action\DashboardAction::class)->bind('dashboard');
 
         // Talks
         $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')

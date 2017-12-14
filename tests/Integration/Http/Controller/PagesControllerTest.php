@@ -16,9 +16,6 @@ namespace OpenCFP\Test\Integration\Http\Controller;
 use OpenCFP\Test\Integration\WebTestCase;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Http\Controller\PagesController
- */
 final class PagesControllerTest extends WebTestCase
 {
     /**

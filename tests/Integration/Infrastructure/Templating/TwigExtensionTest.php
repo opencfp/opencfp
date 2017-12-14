@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Infrastructure\Templating;
 
+use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Templating\TwigExtension;
+use OpenCFP\Path;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -22,15 +24,14 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-/**
- * @covers \OpenCFP\Infrastructure\Templating\TwigExtension
- */
 final class TwigExtensionTest extends TestCase
 {
     public function testExtension()
     {
         $requestStack = new RequestStack();
         $requestStack->push(Request::create('/dashboard'));
+
+        $path = new Path('', Environment::testing());
 
         $routes = new RouteCollection();
         $routes->add('admin', new Route('/admin'));
@@ -40,7 +41,8 @@ final class TwigExtensionTest extends TestCase
         $twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/Fixtures'));
         $twig->addExtension(new TwigExtension(
             $requestStack,
-            $urlGenerator
+            $urlGenerator,
+            $path
         ));
 
         $this->assertStringEqualsFile(__DIR__ . '/Fixtures/functions.txt', $twig->render('functions.txt.twig'));

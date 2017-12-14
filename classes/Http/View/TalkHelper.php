@@ -16,17 +16,17 @@ namespace OpenCFP\Http\View;
 class TalkHelper
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $categories;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $levels;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $types;
 

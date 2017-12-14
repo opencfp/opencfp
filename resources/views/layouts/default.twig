@@ -40,7 +40,10 @@
 
         <main class="container mx-auto mt-8 flex">
             <div class="flex-1 mr-16">{% block sidebar %}{% endblock %}</div>
-            <div class="flex-3 w-full">{% block content %}{% endblock %}</div>
+            <div class="flex-3 w-full">
+                {% include "_flash.twig" %}
+                {% block content %}{% endblock %}
+            </div>
         </main>
 
         {% block scripts %}

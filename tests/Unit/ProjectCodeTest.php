@@ -50,7 +50,6 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Controller\Admin\ExportsController::class,
                 Http\Controller\Admin\SpeakersController::class,
                 Http\Controller\Admin\TalksController::class,
-                Http\Controller\DashboardController::class,
                 Http\Controller\ForgotController::class,
                 Http\Controller\PagesController::class,
                 Http\Controller\ProfileController::class,
@@ -62,7 +61,6 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Controller\TalkController::class,
                 Http\Form\ForgotForm::class,
                 Http\Form\ResetForm::class,
-                Http\View\TalkHelper::class,
                 Infrastructure\Event\AuthenticationListener::class,
                 Infrastructure\Event\CsrfValidationListener::class,
                 Infrastructure\Event\DatabaseSetupListener::class,
@@ -172,10 +170,26 @@ final class ProjectCodeTest extends Framework\TestCase
     }
 
     /**
-     * @test
+     * @dataProvider providerProductionClassesAreAbstractOrFinal
+     *
+     * @param string $directory
      */
-    public function providerClassesAreAbstractOrFinal()
+    public function testProductionClassesAreAbstractOrFinal(string $directory)
     {
-        $this->assertClassesAreAbstractOrFinal(__DIR__ . '/../../classes/Provider');
+        $this->assertClassesAreAbstractOrFinal($directory);
+    }
+
+    public function providerProductionClassesAreAbstractOrFinal(): array
+    {
+        $directories = [
+            'http-actions' => __DIR__ . '/../../classes/Http/Action',
+            'providers'    => __DIR__ . '/../../classes/Provider',
+        ];
+
+        return \array_map(function (string $directory) {
+            return [
+              $directory,
+            ];
+        }, $directories);
     }
 }

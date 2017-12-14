@@ -113,7 +113,7 @@ class Application extends SilexApplication
 
     private function getConfigSlugs()
     {
-        return ['config', 'upload', 'templates', 'public', 'assets', 'cache.twig', 'cache.purifier'];
+        return ['config', 'uploadTo', 'downloadFrom', 'templates', 'public', 'assets', 'cache.twig', 'cache.purifier'];
     }
 
     /**

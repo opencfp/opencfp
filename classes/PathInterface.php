@@ -19,7 +19,9 @@ interface PathInterface
 
     public function configPath(): string;
 
-    public function uploadPath(): string;
+    public function uploadToPath(): string;
+
+    public function downloadFromPath(): string;
 
     public function templatesPath(): string;
 

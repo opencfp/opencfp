@@ -2,7 +2,7 @@
 {% block content %}
 
     <div class="flex mb-8">
-        <img class="w-16 h-16 mr-4 rounded-full" src="{{ speaker.photo ? '/uploads/' ~ speaker.photo : '/assets/img/dummyphoto.jpg' }}">
+        <img class="w-16 h-16 mr-4 rounded-full" src="{{ speaker.photo ? uploads(speaker.photo) : '/assets/img/dummyphoto.jpg' }}">
         <div>
             <h1 class="-mt-2">
                 {% if speaker.isAllowedToSee('name') %}{{ speaker.name }}{% else %}Unknown Speaker{% endif %}
@@ -10,7 +10,7 @@
 
             <div>
                 {% if speaker.isAllowedToSee('company') and speaker.company %}<span class="mr-3"><i class="fa fa-building"></i> {{ speaker.company }}</span>{% endif %}
-                {% if speaker.isAllowedToSee('twitter') and speaker.twitter %}<span class="mr-3"><a class="hover:text-brand" target="_blank" href="https://twitter.com/{{ speaker.twitter }}"><i class="fa fa-twitter"></i> @{{ speaker.twitter }}</a></span>{% endif %}
+                {% if speaker.isAllowedToSee('twitter') and speaker.twitter %}<span class="mr-3"><a class="hover:text-brand" target="_blank" href="https://twitter.com/{{ speaker.twitter }}" rel="noopener noreferrer"><i class="fa fa-twitter"></i> @{{ speaker.twitter }}</a></span>{% endif %}
                 {% if speaker.isAllowedToSee('email') and speaker.email %}<span class="mr-3"><i class="fa fa-envelope"></i> {{ speaker.email }}</span>{% endif %}
             </div>
         </div>

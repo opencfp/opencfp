@@ -41,9 +41,14 @@ final class Path implements PathInterface
         return $this->path . "/config/{$this->env}.yml";
     }
 
-    public function uploadPath(): string
+    public function uploadToPath(): string
     {
         return $this->path . '/web/uploads';
+    }
+
+    public function downloadFromPath(): string
+    {
+        return '/uploads/';
     }
 
     public function templatesPath(): string

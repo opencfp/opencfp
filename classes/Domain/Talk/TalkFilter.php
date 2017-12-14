@@ -33,6 +33,7 @@ class TalkFilter
      * @var Talk
      */
     private $talk;
+
     /**
      * @var TalkFormatter
      */

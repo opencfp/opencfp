@@ -21,10 +21,6 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
-/**
- * @group db
- * @coversNothing
- */
 final class UserTest extends BaseTestCase
 {
     use RefreshDatabase;

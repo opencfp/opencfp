@@ -45,11 +45,6 @@ class TalkForm extends Form
         parent::__construct($data, $purifier, $options);
     }
 
-    /**
-     * Santize all our fields that were submitted
-     *
-     * @return array
-     */
     public function sanitize()
     {
         parent::sanitize();
@@ -59,22 +54,11 @@ class TalkForm extends Form
         }
     }
 
-    /**
-     * Validate everything
-     *
-     * @return bool
-     */
-    public function validateAll($action = 'create')
+    public function validateAll(string $action = 'create'): bool
     {
-        return
-            $this->validateTitle() && $this->validateDescription() && $this->validateLevel() && $this->validateCategory() && $this->validateDesired() && $this->validateSlides() && $this->validateOther() && $this->validateSponsor();
+        return $this->validateTitle() && $this->validateDescription() && $this->validateLevel() && $this->validateCategory();
     }
 
-    /**
-     * Method that validates title data
-     *
-     * @return bool
-     */
     public function validateTitle(): bool
     {
         if (empty($this->taintedData['title'])) {
@@ -94,11 +78,6 @@ class TalkForm extends Form
         return true;
     }
 
-    /**
-     * Method that validates description data
-     *
-     * @return bool
-     */
     public function validateDescription(): bool
     {
         if (empty($this->cleanData['description'])) {
@@ -110,11 +89,6 @@ class TalkForm extends Form
         return true;
     }
 
-    /**
-     * Method that validates talk types
-     *
-     * @return bool
-     */
     public function validateType(): bool
     {
         $validTalkTypes = $this->getOption('types');
@@ -169,26 +143,6 @@ class TalkForm extends Form
             return false;
         }
 
-        return true;
-    }
-
-    public function validateDesired(): bool
-    {
-        return true;
-    }
-
-    public function validateSlides(): bool
-    {
-        return true;
-    }
-
-    public function validateOther(): bool
-    {
-        return true;
-    }
-
-    public function validateSponsor(): bool
-    {
         return true;
     }
 }

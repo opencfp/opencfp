@@ -17,15 +17,12 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-/**
- * @covers \OpenCFP\Http\Controller\Admin\ExportsController
- * @covers \OpenCFP\Http\Controller\BaseController
- */
 final class ExportsControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 
     private static $talks;
+
     private static $selectedTalk;
 
     public static function setUpBeforeClass()
