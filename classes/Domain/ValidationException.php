@@ -15,6 +15,9 @@ namespace OpenCFP\Domain;
 
 class ValidationException extends \Exception
 {
+    /**
+     * @var array
+     */
     private $errors;
 
     public static function withErrors(array $errors = []): self

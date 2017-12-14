@@ -18,6 +18,9 @@ use Pagerfanta\View\DefaultView;
 
 class Pagination
 {
+    /**
+     * @var Pagerfanta
+     */
     private $pagerFanta;
 
     public function __construct($talkList, int $perPage = 20)
