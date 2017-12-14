@@ -50,6 +50,12 @@ return PhpCsFixer\Config::create()
             ],
         ],
         'cast_spaces' => true,
+        'class_attributes_separation' => [
+            'elements' => [
+                'method',
+                'property',
+            ],
+        ],
         'combine_consecutive_unsets' => true,
         'concat_space' => [
             'spacing' => 'one',

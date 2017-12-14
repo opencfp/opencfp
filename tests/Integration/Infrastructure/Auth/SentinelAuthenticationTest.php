@@ -26,6 +26,7 @@ use OpenCFP\Test\Helper\DataBaseInteraction;
 final class SentinelAuthenticationTest extends BaseTestCase
 {
     use DataBaseInteraction;
+
     /**
      * @var SentinelAuthentication
      */

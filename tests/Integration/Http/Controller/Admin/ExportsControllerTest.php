@@ -26,6 +26,7 @@ final class ExportsControllerTest extends WebTestCase
     use RefreshDatabase;
 
     private static $talks;
+
     private static $selectedTalk;
 
     public static function setUpBeforeClass()
