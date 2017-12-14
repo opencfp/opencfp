@@ -24,7 +24,7 @@ use Symfony\Component\Routing;
 use Twig_Environment;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Http\Action\DashboardAction
  */
 final class DashboardActionTest extends Framework\TestCase
 {
