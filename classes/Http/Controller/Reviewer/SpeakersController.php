@@ -72,6 +72,7 @@ class SpeakersController extends BaseController
         return $this->render('reviewer/speaker/view.twig', [
             'speaker'    => new SpeakerProfile($speakerDetails, $this->reviewerUsers),
             'talks'      => $talks,
+            //TODO: use Path downloadFrom function function
             'photo_path' => '/uploads/',
             'page'       => $request->get('page'),
         ]);

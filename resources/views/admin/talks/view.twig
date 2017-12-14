@@ -52,6 +52,7 @@
             {% set user = comment.user.toArray %}
             <div class="flex text-sm mt-4">
                 <div>
+                    {# //TODO: use twig uploads function function #}
                     <img class="w-16 mr-4 rounded" src="{{ user.photo_path ? '/uploads/' ~ user.photo_path : '/assets/img/dummyphoto.jpg' }}">
                 </div>
                 <div class="border border-grey rounded-sm w-full">

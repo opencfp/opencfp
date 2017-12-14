@@ -167,6 +167,7 @@ class SpeakersController extends BaseController
             'departure'  => \date('Y-m-d', $this->applicationDeparture),
             'speaker'    => new SpeakerProfile($speakerDetails),
             'talks'      => $talks,
+            //TODO: use Path downloadFrom function function
             'photo_path' => '/uploads/',
             'page'       => $request->get('page'),
         ]);

@@ -40,6 +40,7 @@ class TwigExtension extends Twig_Extension
     {
         return [
             new Twig_SimpleFunction('uploads', function ($path) {
+                //TODO: use Path downloadFrom function function
                 return '/uploads/' . $path;
             }),
             new Twig_SimpleFunction('assets', function ($path) {

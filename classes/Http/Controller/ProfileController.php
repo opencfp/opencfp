@@ -80,6 +80,7 @@ class ProfileController extends BaseController
             'speaker_info'   => $speakerData['info'],
             'speaker_bio'    => $speakerData['bio'],
             'speaker_photo'  => $speakerData['photo_path'],
+            //TODO: use Path downloadFrom function function
             'preview_photo'  => '/uploads/' . $speakerData['photo_path'],
             'airport'        => $speakerData['airport'],
             'transportation' => $speakerData['transportation'],
