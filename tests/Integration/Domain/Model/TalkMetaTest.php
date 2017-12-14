@@ -20,9 +20,6 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
 
-/**
- * @coversNothing
- */
 final class TalkMetaTest extends BaseTestCase
 {
     use RefreshDatabase;

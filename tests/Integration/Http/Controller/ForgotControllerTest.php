@@ -18,10 +18,6 @@ use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\Integration\WebTestCase;
 
-/**
- * @group db
- * @covers \OpenCFP\Http\Controller\ForgotController
- */
 final class ForgotControllerTest extends WebTestCase
 {
     /**
