@@ -61,7 +61,6 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Controller\TalkController::class,
                 Http\Form\ForgotForm::class,
                 Http\Form\ResetForm::class,
-                Http\View\TalkHelper::class,
                 Infrastructure\Event\AuthenticationListener::class,
                 Infrastructure\Event\CsrfValidationListener::class,
                 Infrastructure\Event\DatabaseSetupListener::class,
