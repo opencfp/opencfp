@@ -34,7 +34,7 @@ class ResetForm extends AbstractType
             ->getForm();
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'reset';
     }
