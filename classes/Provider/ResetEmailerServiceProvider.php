@@ -32,13 +32,9 @@ final class ResetEmailerServiceProvider implements ServiceProviderInterface
             'username' => $app->config('mail.username'),
             'password' => $app->config('mail.password'),
         ];
-        $transport = (new Swift_SmtpTransport($options['host'], $options['port']))
-            ->setUsername($options['username'])
-            ->setPassword($options['password']);
-        $swiftMailer          = new Swift_Mailer($transport);
-        $app['reset_emailer'] = function ($app) use ($options, $swiftMailer) {
+        $app['reset_emailer'] = function ($app) use ($options) {
             return new ResetEmailer(
-                $swiftMailer,
+                $app['mailer'],
                 $app['twig'],
                 $app->config('application.email'),
                 $app->config('application.title'),
