@@ -83,14 +83,27 @@ final class PathTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function uploadPathReturnsUploadPath()
+    public function uploadToPathReturnsUploadPath()
     {
         $path = new Path('/home/folder/base', Environment::testing());
         $this->assertSame(
             '/home/folder/base/web/uploads',
-            $path->uploadPath()
+            $path->uploadToPath()
         );
     }
+
+    /**
+     * @test
+     */
+    public function downloadFromPathReturnsDownloadFromPath()
+    {
+        $path = new Path('/home/folder/base', Environment::testing());
+        $this->assertSame(
+            '/uploads',
+            $path->downloadFromPath()
+        );
+    }
+
 
     /**
      * @test
