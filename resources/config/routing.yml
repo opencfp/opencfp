@@ -140,7 +140,7 @@ talk_edit:
 talk_new:
   path: /talk/create
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\TalkController::createAction'
+  controller: OpenCFP\Http\Action\Talk\CreateAction
 
 talk_create:
   path: /talk/create
