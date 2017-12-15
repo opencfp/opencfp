@@ -38,7 +38,7 @@ final class HomePageActionTest extends AbstractActionTestCase
         $action   = new HomePageAction($twig, false);
         $response = $action();
         $this->assertInstanceOf(HttpFoundation\Response::class, $response);
-        $this->assertContains($content, $response->getContent());
+        $this->assertSame($content, $response->getContent());
         $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
     }
 }
