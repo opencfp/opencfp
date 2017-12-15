@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration;
 
+use Illuminate\Database\Capsule;
 use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -23,7 +24,6 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Auth\UserInterface;
-use OpenCFP\Test\Helper\DataBaseInteraction;
 use OpenCFP\Test\Helper\MockableAuthenticator;
 use OpenCFP\Test\Helper\MockableIdentityProvider;
 use OpenCFP\Test\Helper\RefreshDatabase;
@@ -73,7 +73,10 @@ abstract class WebTestCase extends \Silex\WebTestCase
         parent::setUp();
 
         $this->refreshContainer();
-        $this->runBeforeTestTraits();
+
+        if ($this instanceof RequiresDatabaseReset) {
+            $this->resetDatabase();
+        }
     }
 
     public function createApplication()
@@ -89,16 +92,12 @@ abstract class WebTestCase extends \Silex\WebTestCase
         $this->container = new Container($this->app);
     }
 
-    /**
-     * Runs setUps from Traits that are needed before every test (as called from setUp)
-     */
-    private function runBeforeTestTraits()
+    private function resetDatabase()
     {
-        $uses = \array_flip(class_uses_recursive(static::class));
+        /** @var Capsule\Manager $capsule */
+        $capsule = $this->container->get(Capsule\Manager::class);
 
-        if (isset($uses[DataBaseInteraction::class])) {
-            $this->resetDatabase();
-        }
+        $capsule->getConnection()->unprepared(\file_get_contents(__DIR__ . '/../dump.sql'));
     }
 
     /**
