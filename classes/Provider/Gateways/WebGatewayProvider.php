@@ -23,7 +23,6 @@ use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Http\Action;
 use OpenCFP\Http\Controller\Admin;
 use OpenCFP\Http\Controller\ForgotController;
-use OpenCFP\Http\Controller\PagesController;
 use OpenCFP\Http\Controller\ProfileController;
 use OpenCFP\Http\Controller\Reviewer;
 use OpenCFP\Http\Controller\SecurityController;
@@ -57,6 +56,21 @@ final class WebGatewayProvider implements
             );
         };
 
+        $app[Action\Page\HomePageAction::class] = function ($app) {
+            return new Action\Page\HomePageAction(
+                $app['twig'],
+                $app->config('application.show_submission_count')
+            );
+        };
+
+        $app[Action\Page\SpeakerPackageAction::class] = function ($app) {
+            return new Action\Page\SpeakerPackageAction($app['twig']);
+        };
+
+        $app[Action\Page\TalkIdeasAction::class] = function ($app) {
+            return new Action\Page\TalkIdeasAction($app['twig']);
+        };
+
         $app[ForgotController::class] = function ($app) {
             return new ForgotController(
                 $app['form.factory'],
@@ -65,10 +79,6 @@ final class WebGatewayProvider implements
                 $app['twig'],
                 $app['url_generator']
             );
-        };
-
-        $app[PagesController::class] = function ($app) {
-            return new PagesController($app['twig'], $app['url_generator']);
         };
 
         $app[ProfileController::class] = function ($app) {
@@ -201,11 +211,11 @@ final class WebGatewayProvider implements
             $app->requireHttps();
         }
 
-        $web->get('/', 'OpenCFP\Http\Controller\PagesController::homepageAction')
+        $web->get('/', Action\Page\HomePageAction::class)
             ->bind('homepage');
-        $web->get('/package', 'OpenCFP\Http\Controller\PagesController::speakerPackageAction')
+        $web->get('/package', Action\Page\SpeakerPackageAction::class)
             ->bind('speaker_package');
-        $web->get('/ideas', 'OpenCFP\Http\Controller\PagesController::talkIdeasAction')
+        $web->get('/ideas', Action\Page\TalkIdeasAction::class)
             ->bind('talk_ideas');
 
         // User Dashboard
