@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Controller\Admin;
 
-use Mockery;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
@@ -24,12 +22,12 @@ final class SpeakersControllerTest extends WebTestCase
 {
     use RefreshDatabase;
 
-    private static $users;
+    private $users;
 
-    public static function setUpBeforeClass()
+    public function setUp()
     {
-        parent::setUpBeforeClass();
-        self::$users = factory(User::class, 5)->create();
+        parent::setUp();
+        $this->users = factory(User::class, 5)->create();
     }
 
     /**
@@ -42,7 +40,7 @@ final class SpeakersControllerTest extends WebTestCase
             ->get('/admin/speakers');
 
         $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains(self::$users->first()->first_name, $response);
+        $this->assertResponseBodyContains($this->users->first()->first_name, $response);
         $this->assertSessionHasNoFlashMessage($this->container->get('session'));
     }
 
@@ -51,7 +49,7 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function viewActionDisplaysCorrectly()
     {
-        $user = self::$users->first();
+        $user = $this->users->first();
 
         $response = $this
             ->asAdmin()
@@ -107,18 +105,16 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function promoteActionFailsIfUserIsAlreadyRole()
     {
-        $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
-        $accounts = Mockery::mock(AccountManagement::class);
-        $accounts->shouldReceive('findById')->andReturn($user);
-        $this->swap(AccountManagement::class, $accounts);
+        $this->container->get(AccountManagement::class)
+            ->promoteTo($this->users->first()->email, 'admin');
+
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('admin_speaker_promote')
             ->getValue();
 
         $response = $this
             ->asAdmin()
-            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', [
+            ->get('/admin/speakers/' . $this->users->first()->id . '/promote', [
                 'role'     => 'Admin',
                 'token'    => $csrfToken,
                 'token_id' => 'admin_speaker_promote',
@@ -140,7 +136,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $response = $this
             ->asAdmin()
-            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', [
+            ->get('/admin/speakers/' . $this->users->first()->id . '/promote', [
                 'role'     => 'Admin',
                 'token'    => $csrfToken,
                 'token_id' => 'admin_speaker_promote',
@@ -158,7 +154,7 @@ final class SpeakersControllerTest extends WebTestCase
     {
         $response = $this
             ->asAdmin()
-            ->get('/admin/speakers/' . self::$users->first()->id . '/promote', [
+            ->get('/admin/speakers/' . $this->users->first()->id . '/promote', [
                 'role'     => 'Admin',
                 'token'    => \uniqid(),
                 'token_id' => 'admin_speaker_promote',
@@ -195,7 +191,7 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionFailsIfDemotingSelf()
     {
-        $user      = self::$users->last();
+        $user      = $this->users->last();
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
@@ -220,20 +216,16 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionWorksCorrectly()
     {
-        $user = Mockery::mock(UserInterface::class);
-        $user->shouldReceive('getLogin');
+        $this->container->get(AccountManagement::class)
+            ->promoteTo($this->users->first()->email, 'admin');
 
-        $accounts = Mockery::mock(AccountManagement::class);
-        $accounts->shouldReceive('findById')->andReturn($user);
-        $accounts->shouldReceive('demoteFrom');
-        $this->swap(AccountManagement::class, $accounts);
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 
         $response = $this
-            ->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', [
+            ->asAdmin($this->users->first()->id)
+            ->get('/admin/speakers/' . $this->users->last()->id . '/demote', [
                 'role'     => 'Admin',
                 'token'    => $csrfToken,
                 'token_id' => 'admin_speaker_demote',
@@ -250,8 +242,8 @@ final class SpeakersControllerTest extends WebTestCase
     public function demoteActionFailsWithBadToken()
     {
         $response = $this
-            ->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/' . self::$users->last()->id . '/demote', [
+            ->asAdmin($this->users->first()->id)
+            ->get('/admin/speakers/' . $this->users->last()->id . '/demote', [
                 'role'     => 'Admin',
                 'token'    => \uniqid(),
                 'token_id' => 'admin_speaker_demote',
@@ -267,8 +259,8 @@ final class SpeakersControllerTest extends WebTestCase
     public function deleteActionFailsWithBadToken()
     {
         $response = $this
-            ->asAdmin(self::$users->first()->id)
-            ->get('/admin/speakers/delete/' . self::$users->last()->id . '?token_id=admin_speaker_demote&token=' . \uniqid());
+            ->asAdmin($this->users->first()->id)
+            ->get('/admin/speakers/delete/' . $this->users->last()->id . '?token_id=admin_speaker_demote&token=' . \uniqid());
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('/dashboard', $response);
