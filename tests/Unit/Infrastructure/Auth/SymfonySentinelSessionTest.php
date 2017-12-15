@@ -11,14 +11,14 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit\Provider;
+namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Localheinz\Test\Util\Helper;
 use Mockery;
-use OpenCFP\Provider\SymfonySentinelSession;
+use OpenCFP\Infrastructure\Auth\SymfonySentinelSession;
 
 /**
- * @covers \OpenCFP\Provider\SymfonySentinelSession
+ * @covers \OpenCFP\Infrastructure\Auth\SymfonySentinelSession
  */
 final class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
 {
