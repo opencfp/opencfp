@@ -33,7 +33,6 @@
         "symfony/form": "^3.4",
         "symfony/intl": "^3.4",
         "symfony/lts": "^3.0",
-        "symfony/security": "^3.4",
         "symfony/security-csrf": "^3.4",
         "symfony/translation": "^3.4",
         "symfony/twig-bridge": "^3.4",
