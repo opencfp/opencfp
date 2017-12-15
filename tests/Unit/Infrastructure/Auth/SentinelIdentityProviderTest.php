@@ -14,18 +14,21 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
+use Localheinz\Test\Util\Helper;
 use Mockery as m;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
-use OpenCFP\Test\BaseTestCase;
+use PHPUnit\Framework;
 
 /**
  * @covers \OpenCFP\Infrastructure\Auth\SentinelIdentityProvider
  */
-final class SentinelIdentityProviderTest extends BaseTestCase
+final class SentinelIdentityProviderTest extends Framework\TestCase
 {
+    use Helper;
+    
     public function testIsFinal()
     {
         $this->assertClassIsFinal(SentinelIdentityProvider::class);
