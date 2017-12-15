@@ -16,9 +16,9 @@ namespace OpenCFP\Infrastructure\Auth;
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
 use OpenCFP\Domain\Model\User;
+use OpenCFP\Domain\Repository\UserRepository;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
-use OpenCFP\Domain\Speaker\SpeakerRepository;
 
 final class SentinelIdentityProvider implements IdentityProvider
 {
@@ -28,14 +28,14 @@ final class SentinelIdentityProvider implements IdentityProvider
     private $sentinel;
 
     /**
-     * @var SpeakerRepository
+     * @var UserRepository
      */
-    private $repo;
+    private $userRepository;
 
-    public function __construct(Sentinel $sentinel, SpeakerRepository $repo)
+    public function __construct(Sentinel $sentinel, UserRepository $userRepository)
     {
-        $this->sentinel = $sentinel;
-        $this->repo     = $repo;
+        $this->sentinel       = $sentinel;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -51,6 +51,6 @@ final class SentinelIdentityProvider implements IdentityProvider
             throw new NotAuthenticatedException();
         }
 
-        return $this->repo->findById($user->getUserId());
+        return $this->userRepository->findById($user->getUserId());
     }
 }

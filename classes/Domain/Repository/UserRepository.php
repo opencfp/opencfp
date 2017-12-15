@@ -11,28 +11,28 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Domain\Speaker;
+namespace OpenCFP\Domain\Repository;
 
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\User;
 
-interface SpeakerRepository
+interface UserRepository
 {
     /**
-     * Retrieves a speaker with associated talks.
+     * Retrieves a user with associated talks.
      *
-     * @param int $speakerId
+     * @param int $id
      *
      * @throws EntityNotFoundException
      *
      * @return User the speaker that matches given identifier
      */
-    public function findById(int $speakerId): User;
+    public function findById(int $id): User;
 
     /**
      * Saves a speaker and their talks.
      *
-     * @param User $speaker
+     * @param User $user
      */
-    public function persist(User $speaker);
+    public function persist(User $user);
 }
