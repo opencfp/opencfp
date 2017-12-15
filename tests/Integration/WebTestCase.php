@@ -139,20 +139,24 @@ abstract class WebTestCase extends BaseTestCase
 
     public function callForPapersIsOpen(): self
     {
-        $cfp = Mockery::mock(CallForPapers::class);
-        $cfp->shouldReceive('isOpen')->andReturn(true);
-        $this->swap(CallForPapers::class, $cfp);
-        $this->container->get('twig')->addGlobal('cfp_open', true);
+        $cfp    = $this->container->get(CallForPapers::class);
+        $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
+        $method->setAccessible(true);
+        $method->invoke($cfp, new \DateTimeImmutable('+1 week'));
+
+        $this->container->get('twig')->addGlobal('cfp_open', $cfp->isOpen());
 
         return $this;
     }
 
     public function callForPapersIsClosed(): self
     {
-        $cfp = Mockery::mock(CallForPapers::class);
-        $cfp->shouldReceive('isOpen')->andReturn(false);
-        $this->swap(CallForPapers::class, $cfp);
-        $this->container->get('twig')->addGlobal('cfp_open', false);
+        $cfp    = $this->container->get(CallForPapers::class);
+        $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
+        $method->setAccessible(true);
+        $method->invoke($cfp, new \DateTimeImmutable('-1 week'));
+
+        $this->container->get('twig')->addGlobal('cfp_open', $cfp->isOpen());
 
         return $this;
     }

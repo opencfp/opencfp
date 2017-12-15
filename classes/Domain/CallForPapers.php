@@ -28,10 +28,7 @@ class CallForPapers
 
     public function __construct(\DateTimeImmutable $end)
     {
-        if ($end->format('H:i:s') === '00:00:00') {
-            $end = $end->add(new \DateInterval('P1D'));
-        }
-        $this->endDate = $end;
+        $this->setEndDate($end);
     }
 
     /**
@@ -46,5 +43,14 @@ class CallForPapers
         }
 
         return $currentTime < $this->endDate;
+    }
+
+    private function setEndDate(\DateTimeImmutable $end)
+    {
+        if ($end->format('H:i:s') === '00:00:00') {
+            $end = $end->add(new \DateInterval('P1D'));
+        }
+
+        $this->endDate = $end;
     }
 }
