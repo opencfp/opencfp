@@ -21,8 +21,9 @@ use OpenCFP\Test\Helper\DataBaseInteraction;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use Pimple\Psr11\Container;
 use Psr\Container\ContainerInterface;
+use Silex\WebTestCase;
 
-abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
+abstract class BaseTestCase extends WebTestCase
 {
     use Helper;
     use MockeryPHPUnitIntegration;
@@ -44,29 +45,19 @@ abstract class BaseTestCase extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        if (!$this->app) {
-            $this->refreshApplication();
-        }
+        parent::setUp();
+
+        $this->refreshContainer();
         $this->runBeforeTestTraits();
     }
 
-    protected function tearDown()
-    {
-        if ($this->app) {
-            $this->app->flush();
-            $this->app       = null;
-            $this->container = null;
-        }
-    }
-
-    private function createApplication(): Application
+    public function createApplication()
     {
         return new Application(__DIR__ . '/..', Environment::testing());
     }
 
-    private function refreshApplication()
+    private function refreshContainer()
     {
-        $this->app       = $this->createApplication();
         $this->container = new Container($this->app);
     }
 

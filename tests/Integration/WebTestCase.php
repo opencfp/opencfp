@@ -20,7 +20,7 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\MockableAuthenticator;
 use OpenCFP\Test\Helper\ResponseHelper;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class WebTestCase extends BaseTestCase
@@ -56,65 +56,17 @@ abstract class WebTestCase extends BaseTestCase
         return $instance;
     }
 
-    /**
-     * Define additional headers to be sent with the request.
-     *
-     * @param array $headers
-     *
-     * @return $this
-     */
-    public function withHeaders(array $headers): self
-    {
-        $this->headers = \array_merge($this->headers, $headers);
-
-        return $this;
-    }
-
-    /**
-     * Add a header to be sent with the request.
-     *
-     * @param string $name
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function withHeader(string $name, string $value): self
-    {
-        $this->headers[$name] = $value;
-
-        return $this;
-    }
-
-    public function withNoHeaders()
-    {
-        $this->headers = [];
-
-        return $this;
-    }
-
-    public function withServerVariables(array $server): self
-    {
-        $this->server = $server;
-
-        return $this;
-    }
-
     public function call(string $method, string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
-        $request = Request::create(
-            $uri,
-            $method,
-            $parameters,
-            $cookies,
-            $files,
-            \array_replace($this->server, $server),
-            $content
-        );
+        $client = $this->createClient();
 
-        $response = $this->app->handle($request);
-        $this->app->terminate($request, $response);
+        foreach ($cookies as $key => $value) {
+            $client->getCookieJar()->set(new Cookie($key, $value));
+        }
 
-        return $response;
+        $client->request($method, $uri, $parameters, $files, $server, $content);
+
+        return $client->getResponse();
     }
 
     public function get(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
