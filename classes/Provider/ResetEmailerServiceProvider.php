@@ -24,13 +24,7 @@ final class ResetEmailerServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $options = [
-            'host'     => $app->config('mail.host'),
-            'port'     => $app->config('mail.port'),
-            'username' => $app->config('mail.username'),
-            'password' => $app->config('mail.password'),
-        ];
-        $app['reset_emailer'] = function ($app) use ($options) {
+        $app['reset_emailer'] = function ($app) {
             return new ResetEmailer(
                 $app['mailer'],
                 $app['twig'],

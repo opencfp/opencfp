@@ -52,15 +52,9 @@ final class WebGatewayProvider implements
     public function register(Container $app)
     {
         $app['mailer'] = function ($app) {
-            $options = [
-                'host'     => $app->config('mail.host'),
-                'port'     => $app->config('mail.port'),
-                'username' => $app->config('mail.username'),
-                'password' => $app->config('mail.password'),
-            ];
-            $transport = (new Swift_SmtpTransport($options['host'], $options['port']))
-                ->setUsername($options['username'])
-                ->setPassword($options['password']);
+            $transport = (new Swift_SmtpTransport($app->config('mail.host'), $app->config('mail.port')))
+                ->setUsername($app->config('mail.username'))
+                ->setPassword($app->config('mail.password'));
 
             return new Swift_Mailer($transport);
         };
