@@ -83,11 +83,16 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function promoteActionFailsOnUserNotFound()
     {
+        $csrfToken = $this->container->get('csrf.token_manager')
+            ->getToken('admin_speaker_promote')
+            ->getValue();
+
         $response = $this
             ->asAdmin()
-            ->passCsrfValidator()
             ->get('/admin/speakers/7679/promote', [
-                'role' => 'Admin',
+                'role'     => 'Admin',
+                'token'    => $csrfToken,
+                'token_id' => 'admin_speaker_promote',
             ]);
 
         $this->assertResponseIsRedirect($response);

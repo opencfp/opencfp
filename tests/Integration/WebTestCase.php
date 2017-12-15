@@ -16,8 +16,6 @@ namespace OpenCFP\Test\Integration;
 use Mockery;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Domain\Services\RequestValidator;
-use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\MockableAuthenticator;
@@ -217,15 +215,6 @@ abstract class WebTestCase extends BaseTestCase
         /** @var MockableAuthenticator $authentication */
         $authentication = $this->container->get(Authentication::class);
         $authentication->overrideUser($user);
-
-        return $this;
-    }
-
-    public function passCsrfValidator(): self
-    {
-        $csrf = Mockery::mock(RequestValidator::class);
-        $csrf->shouldReceive('isValid')->andReturn(true);
-        $this->swap(CsrfValidator::class, $csrf);
 
         return $this;
     }
