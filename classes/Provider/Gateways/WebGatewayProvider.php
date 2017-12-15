@@ -40,8 +40,6 @@ use Silex\Api\BootableProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
-use Swift_Mailer;
-use Swift_SmtpTransport;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class WebGatewayProvider implements
