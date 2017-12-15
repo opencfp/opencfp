@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
-use Mockery as m;
-use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Model;
+use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
@@ -28,15 +27,19 @@ final class ViewActionTest extends WebTestCase
      */
     public function willDisplayOwnTalk()
     {
-        /** @var Model\Talk $talk */
-        $talk = factory(Model\Talk::class, 1)->create()->first();
+        $accounts = $this->container->get(AccountManagement::class);
 
-        $user = $talk->speaker->first();
+        $user = $accounts->create('someone@example.com', 'some password');
+        $accounts->activate($user->getLogin());
 
-        $speakers = m::mock(Speakers::class);
-        $speakers->shouldReceive('getTalk')->andReturn($talk);
-
-        $this->swap('application.speakers', $speakers);
+        $talk = Model\Talk::create([
+            'title'       => 'Some Talk',
+            'description' => 'A good one!',
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'api',
+            'user_id'     => $user->getId(),
+        ]);
 
         $url = \sprintf(
             '/talk/%d',
@@ -44,7 +47,7 @@ final class ViewActionTest extends WebTestCase
         );
 
         $response = $this
-            ->asLoggedInSpeaker($user->id)
+            ->asLoggedInSpeaker($user->getId())
             ->get($url);
 
         $this->assertResponseIsSuccessful($response);
