@@ -100,6 +100,14 @@ final class WebGatewayProvider implements
             );
         };
 
+        $app[Action\Talk\ViewAction::class] = function ($app) {
+            return new Action\Talk\ViewAction(
+                $app['application.speakers'],
+                $app['twig'],
+                $app['url_generator']
+            );
+        };
+
         $app[TalkController::class] = function ($app) {
             return new TalkController(
                 $app[Authentication::class],
@@ -214,8 +222,7 @@ final class WebGatewayProvider implements
             ->bind('talk_update')->value('_require_csrf_token', true);
         $web->post('/talk/delete', 'OpenCFP\Http\Controller\TalkController::deleteAction')
             ->bind('talk_delete')->value('_require_csrf_token', true);
-        $web->get('/talk/{id}', 'OpenCFP\Http\Controller\TalkController::viewAction')
-            ->bind('talk_view');
+        $web->get('/talk/{id}', Action\Talk\ViewAction::class)->bind('talk_view');
 
         // Login/Logout
         $web->get('/login', 'OpenCFP\Http\Controller\SecurityController::indexAction')

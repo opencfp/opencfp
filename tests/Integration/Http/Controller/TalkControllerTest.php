@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Controller;
 
 use Mockery as m;
-use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
@@ -95,24 +94,7 @@ final class TalkControllerTest extends WebTestCase
 
         $this->assertResponseBodyContains('Create Your Talk', $response);
     }
-
-    /**
-     * @test
-     */
-    public function willDisplayOwnTalk()
-    {
-        $speakers = m::mock(Speakers::class);
-        $speakers->shouldReceive('getTalk')->andReturn(self::$talk);
-        $this->swap('application.speakers', $speakers);
-
-        $response = $this
-            ->asLoggedInSpeaker((int) self::$user->id)
-            ->get('/talk/view' . self::$talk->id);
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains(self::$talk->title, $response);
-    }
-
+    
     /**
      * @test
      */
