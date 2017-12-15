@@ -15,11 +15,13 @@ namespace OpenCFP\Test\Integration\Http\Controller;
 
 use Mockery as m;
 use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Test\Helper\DataBaseInteraction;
 use OpenCFP\Test\Integration\WebTestCase;
 
 final class ForgotControllerTest extends WebTestCase
 {
+    use DataBaseInteraction;
+
     /**
      * Test that index action displays a form that allows the user to reset
      * their password
@@ -50,11 +52,8 @@ final class ForgotControllerTest extends WebTestCase
      */
     public function sendResetDisplaysCorrectMessage()
     {
-        $accounts = m::mock(AccountManagement::class);
-        $accounts->shouldReceive('findByLogin')
-            ->withArgs(['someone@example.com'])
-            ->andReturn($this->createUser());
-        $this->swap(AccountManagement::class, $accounts);
+        $this->container->get(AccountManagement::class)
+            ->create('someone@example.com', 'some password');
 
         // Override our reset_emailer service
         $resetEmailer = m::mock(\OpenCFP\Domain\Services\ResetEmailer::class);
@@ -127,9 +126,8 @@ final class ForgotControllerTest extends WebTestCase
      */
     public function resetPasswordHandlesNotSendingResetEmailCorrectly()
     {
-        $accounts = m::mock(AccountManagement::class);
-        $accounts->shouldReceive('findByLogin')->andReturn($this->createUser());
-        $this->swap(AccountManagement::class, $accounts);
+        $this->container->get(AccountManagement::class)
+            ->create('someone@example.com', 'some password');
 
         // Override our reset_emailer service
         $resetEmailer = m::mock(\OpenCFP\Domain\Services\ResetEmailer::class);
@@ -152,14 +150,5 @@ final class ForgotControllerTest extends WebTestCase
             'We were unable to send your password reset request. Please try again',
             $client->getResponse()->getContent()
         );
-    }
-
-    private function createUser(): UserInterface
-    {
-        $user = m::mock(UserInterface::class);
-        $user->shouldReceive('getResetPasswordCode');
-        $user->shouldReceive('getId');
-
-        return $user;
     }
 }
