@@ -25,7 +25,8 @@ final class HomePageActionTest extends AbstractActionTestCase
     public function testItReturnsTheCorrectContentIfNoSubmissionCountNeedsToBeShown()
     {
         $content = $this->faker()->text();
-        $twig    = $this->createTwigMock();
+
+        $twig = $this->createTwigMock();
 
         $twig
             ->expects($this->once())
@@ -35,8 +36,14 @@ final class HomePageActionTest extends AbstractActionTestCase
                 $this->identicalTo(['number_of_talks' => ''])
             )
             ->willReturn($content);
-        $action   = new HomePageAction($twig, false);
+
+        $action = new HomePageAction(
+            $twig,
+            false
+        );
+
         $response = $action();
+
         $this->assertInstanceOf(HttpFoundation\Response::class, $response);
         $this->assertSame($content, $response->getContent());
         $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());

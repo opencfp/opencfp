@@ -25,17 +25,19 @@ final class TalkIdeasActionTest extends AbstractActionTestCase
     public function testItReturnsTheContentOfTheTwigInAResponseObject()
     {
         $content = $this->faker()->text();
-        $twig    = $this->createTwigMock();
+
+        $twig = $this->createTwigMock();
 
         $twig
             ->expects($this->once())
             ->method('render')
-            ->with(
-                $this->identicalTo('ideas.twig')
-            )
+            ->with($this->identicalTo('ideas.twig'))
             ->willReturn($content);
-        $action   = new TalkIdeasAction($twig);
+
+        $action = new TalkIdeasAction($twig);
+
         $response = $action();
+
         $this->assertInstanceOf(HttpFoundation\Response::class, $response);
         $this->assertSame($content, $response->getContent());
         $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
