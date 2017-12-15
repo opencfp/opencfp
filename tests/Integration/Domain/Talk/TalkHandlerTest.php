@@ -22,10 +22,10 @@ use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\Talk\TalkProfile;
 use OpenCFP\Infrastructure\Auth\UserInterface;
-use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalkHandlerTest extends BaseTestCase
+final class TalkHandlerTest extends WebTestCase
 {
     use RefreshDatabase;
 
@@ -105,7 +105,7 @@ final class TalkHandlerTest extends BaseTestCase
         $favorite = $talk->favorites()->get();
         $this->assertCount(1, $favorite);
         $this->assertSame(1, $favorite->first()->admin_user_id);
-        
+
         //Calling favorite again doesn't do anything
         $this->assertTrue($talkHandler->setFavorite());
         $favoriteAgain = $talk->favorites()->get();

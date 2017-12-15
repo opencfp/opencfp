@@ -17,10 +17,10 @@ use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalkFormatterTest extends BaseTestCase
+final class TalkFormatterTest extends WebTestCase
 {
     use RefreshDatabase;
 

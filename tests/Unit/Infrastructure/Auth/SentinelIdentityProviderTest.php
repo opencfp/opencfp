@@ -28,7 +28,7 @@ use PHPUnit\Framework;
 final class SentinelIdentityProviderTest extends Framework\TestCase
 {
     use Helper;
-    
+
     public function testIsFinal()
     {
         $this->assertClassIsFinal(SentinelIdentityProvider::class);

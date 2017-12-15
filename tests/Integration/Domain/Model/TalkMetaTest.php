@@ -17,10 +17,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalkMetaTest extends BaseTestCase
+final class TalkMetaTest extends WebTestCase
 {
     use RefreshDatabase;
 

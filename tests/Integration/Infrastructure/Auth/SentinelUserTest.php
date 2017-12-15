@@ -17,10 +17,10 @@ use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
-use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class SentinelUserTest extends BaseTestCase
+final class SentinelUserTest extends WebTestCase
 {
     use RefreshDatabase;
 

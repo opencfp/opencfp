@@ -17,10 +17,10 @@ use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
-use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class SentinelAccountManagementTest extends BaseTestCase
+final class SentinelAccountManagementTest extends WebTestCase
 {
     use DataBaseInteraction;
 
@@ -126,7 +126,7 @@ final class SentinelAccountManagementTest extends BaseTestCase
         $this->assertFalse($this->sentinel->getActivationRepository()->exists($user));
 
         $this->sut->activate('test@example.com');
-        
+
         //Check we completed activation
         $this->assertTrue($this->sentinel->getActivationRepository()->completed($user)->completed);
     }

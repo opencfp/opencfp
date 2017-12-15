@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use OpenCFP\Test\BaseTestCase;
 use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -25,7 +24,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  *
  * @coversNothing
  */
-final class MigrationsTest extends BaseTestCase
+final class MigrationsTest extends WebTestCase
 {
     /**
      * @test

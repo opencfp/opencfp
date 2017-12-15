@@ -17,10 +17,10 @@ use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use OpenCFP\Domain\Services\AuthenticationException;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelAuthentication;
-use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class SentinelAuthenticationTest extends BaseTestCase
+final class SentinelAuthenticationTest extends WebTestCase
 {
     use DataBaseInteraction;
 
