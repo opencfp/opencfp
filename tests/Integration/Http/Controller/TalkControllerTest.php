@@ -55,10 +55,12 @@ final class TalkControllerTest extends WebTestCase
         $swiftMailer->shouldReceive('send')->andReturn(true);
         $this->swap('mailer', $swiftMailer);
 
+        $csrfToken = $this->container->get('csrf.token_manager')
+            ->getToken('edit_talk');
+
         $response = $this
             ->asLoggedInSpeaker(1)
             ->callForPapersIsOpen()
-            ->passCsrfValidator()
             ->post('/talk/create', [
                 'title'       => 'Test Title With Ampersand',
                 'description' => 'The title should contain this & that',
@@ -67,6 +69,8 @@ final class TalkControllerTest extends WebTestCase
                 'category'    => 'other',
                 'desired'     => 0,
                 'user_id'     => 1,
+                'token'       => $csrfToken,
+                'token_id'    => 'speaker_talk',
             ]);
 
         $this->assertResponseIsRedirect($response);
@@ -100,11 +104,13 @@ final class TalkControllerTest extends WebTestCase
      */
     public function canNotEditTalkAfterCfpIsClosed()
     {
+        $csrfToken = $this->container->get('csrf.token_manager')
+            ->getToken('edit_talk');
+
         $response = $this
             ->asLoggedInSpeaker(self::$user->id)
             ->callForPapersIsClosed()
-            ->passCsrfValidator()
-            ->get('/talk/edit/' . self::$talk->id);
+            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . $csrfToken);
 
         $this->assertResponseIsRedirect($response);
         $this->assertResponseBodyNotContains('Edit Your Talk', $response);
@@ -174,12 +180,17 @@ final class TalkControllerTest extends WebTestCase
      */
     public function notAllowedToDeleteAfterCFPIsOver()
     {
+        $csrfToken = $this->container->get('csrf.token_manager')
+            ->getToken('delete_talk')
+            ->getValue();
+
         $response = $this
             ->asLoggedInSpeaker(self::$user->id)
             ->callForPapersIsClosed()
-            ->passCsrfValidator()
             ->post('/talk/delete', [
-                'tid' => self::$talk->id,
+                'tid'      => self::$talk->id,
+                'token'    => $csrfToken,
+                'token_id' => 'delete_talk',
             ]);
 
         $this->assertResponseIsSuccessful($response);
@@ -192,11 +203,16 @@ final class TalkControllerTest extends WebTestCase
      */
     public function notAllowedToDeleteSomeoneElseTalk()
     {
+        $csrfToken = $this->container->get('csrf.token_manager')
+            ->getToken('delete_talk')
+            ->getValue();
+
         $response = $this
             ->asLoggedInSpeaker(self::$user->id + 1)
-            ->passCsrfValidator()
             ->post('/talk/delete', [
-                'tid' => self::$talk->id,
+                'tid'      => self::$talk->id,
+                'token'    => $csrfToken,
+                'token_id' => 'delete_talk',
             ]);
 
         $this->assertResponseIsSuccessful($response);
@@ -224,11 +240,17 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantProcessCreateTalkAfterCFPIsClosed()
     {
+        $csrfToken = $this->container->get('csrf.token_manager')
+            ->getToken('speaker_talk')
+            ->getValue();
+
         $response = $this
             ->asLoggedInSpeaker()
             ->callForPapersIsClosed()
-            ->passCsrfValidator()
-            ->post('/talk/create');
+            ->post('/talk/create', [
+                'token'    => $csrfToken,
+                'token_id' => 'speaker_talk',
+            ]);
 
         $this->assertResponseIsRedirect($response);
         $this->assertResponseBodyNotContains('Create Your Talk', $response);
@@ -247,7 +269,6 @@ final class TalkControllerTest extends WebTestCase
         $response = $this
             ->asLoggedInSpeaker()
             ->callForPapersIsOpen()
-            ->passCsrfValidator()
             ->post('/talk/create', [
                 'description' => 'Talk Description',
                 'token'       => $csrfToken,
@@ -282,12 +303,17 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantUpdateActionAFterCFPIsClosed()
     {
+        $csrfToken = $this->container->get('csrf.token_manager')
+            ->getToken('speaker_talk')
+            ->getValue();
+
         $response = $this
             ->asLoggedInSpeaker()
             ->callForPapersIsClosed()
-            ->passCsrfValidator()
             ->post('/talk/update', [
-                'id' => 2,
+                'id'       => 2,
+                'token'    => $csrfToken,
+                'token_id' => 'speaker_talk',
             ]);
 
         $this->assertResponseIsRedirect($response);
