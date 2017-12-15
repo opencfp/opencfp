@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Controller;
 
-use Mockery as m;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
-use Swift_Mailer;
 
 final class TalkControllerTest extends WebTestCase
 {
@@ -34,14 +32,6 @@ final class TalkControllerTest extends WebTestCase
      * @var Talk
      */
     private static $talk;
-
-    protected function setUp()
-    {
-        parent::setUp();
-        $mailer = m::mock(Swift_Mailer::class);
-        $mailer->shouldReceive('send')->andReturn(1);
-        $this->swap('mailer', $mailer);
-    }
 
     public static function setUpBeforeClass()
     {
