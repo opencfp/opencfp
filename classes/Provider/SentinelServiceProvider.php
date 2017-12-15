@@ -24,6 +24,7 @@ use Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository;
 use Cartalyst\Sentinel\Users\IlluminateUserRepository;
 use Cartalyst\Sentinel\Users\UserRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
+use OpenCFP\Infrastructure\Auth\SymfonySentinelSession;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Provider;
+namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sessions\SessionInterface as SentinelSessionInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface as SymfonySessionInterface;
