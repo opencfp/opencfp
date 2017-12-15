@@ -13,12 +13,20 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Action;
 
-use Mockery as m;
-use OpenCFP\Domain\Speaker\SpeakerProfile;
+use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\User;
+use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\IdentityProvider;
+use OpenCFP\Test\Helper\MockableAuthenticator;
+use OpenCFP\Test\Helper\MockableIdentityProvider;
+use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
 final class DashboardActionTest extends WebTestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test that the index page returns a list of talks associated
      * with a specific user and information about that user as well
@@ -27,25 +35,35 @@ final class DashboardActionTest extends WebTestCase
      */
     public function indexDisplaysUserAndTalks()
     {
-        $this->asAdmin();
+        $accounts = $this->container->get(AccountManagement::class);
 
-        // Create a test double for a talk in profile
-        $talk = m::mock(\stdClass::class);
-        $talk->shouldReceive('title')->andReturn('Test Title');
-        $talk->shouldReceive('description')->andReturn('Awesome talk');
-        $talk->shouldReceive('id')->andReturn(1);
-        $talk->shouldReceive('type', 'category', 'created_at');
+        $user = $accounts->create('someone@example.com', 'some password', [
+            'first_name' => 'Test',
+            'last_name'  => 'User',
+        ]);
+        $accounts->activate($user->getLogin());
+        $accounts->promoteTo($user->getLogin(), 'admin');
 
-        // Create a test double for profile
-        $profile = m::mock(\OpenCFP\Domain\Speaker\SpeakerProfile::class);
-        $profile->shouldReceive('getName')->andReturn('Test User');
-        $profile->shouldReceive('getPhoto', 'getCompany', 'getTwitter', 'getUrl', 'getAirport', 'getBio', 'getInfo', 'getTransportation', 'getHotel');
-        $profile->shouldReceive('getTalks')->andReturn([$talk]);
-        $profile->shouldReceive('needsProfile')->andReturn(false);
+        Talk::create([
+            'title'       => 'Test Title',
+            'description' => 'A good one!',
+            'type'        => 'regular',
+            'level'       => 'entry',
+            'category'    => 'api',
+            'user_id'     => $user->getId(),
+        ]);
 
-        $speakerService = m::mock(\OpenCFP\Application\Speakers::class);
-        $speakerService->shouldReceive('findProfile')->andReturn($profile);
-        $this->swap('application.speakers', $speakerService);
+        /** @var MockableAuthenticator $authentication */
+        $authentication = $this->container->get(Authentication::class);
+        $authentication->overrideUser($user);
+
+        /** @var MockableIdentityProvider $identityProvider */
+        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider->overrideCurrentUser(new User([
+            'id'         => $user->getId(),
+            'first_name' => 'Test',
+            'last_name'  => 'User',
+        ]));
 
         $this->callForPapersIsOpen();
 
@@ -61,34 +79,25 @@ final class DashboardActionTest extends WebTestCase
      */
     public function it_hides_transportation_and_hotel_when_doing_an_online_conference()
     {
-        $faker = $this->faker();
+        $accounts = $this->container->get(AccountManagement::class);
 
-        $this->asLoggedInSpeaker();
-
-        // Create a test double for SpeakerProfile
-        // We  have benefit of being able to stub an application
-        // service for this.
-        $profile = $this->stubProfileWith([
-            'getTalks'          => [],
-            'getName'           => $faker->name,
-            'getEmail'          => $faker->companyEmail,
-            'getCompany'        => $faker->company,
-            'getTwitter'        => $faker->userName,
-            'getUrl'            => $faker->url,
-            'getInfo'           => $faker->text,
-            'getBio'            => $faker->text,
-            'getTransportation' => true,
-            'getHotel'          => true,
-            'getAirport'        => 'RDU',
-            'getPhoto'          => '',
+        $user = $accounts->create('another.one@example.com', 'some password', [
+            'first_name' => 'Test',
+            'last_name'  => 'User',
         ]);
+        $accounts->activate($user->getLogin());
 
-        $speakersDouble = m::mock(\OpenCFP\Application\Speakers::class)
-            ->shouldReceive('findProfile')
-            ->andReturn($profile)
-            ->getMock();
+        /** @var MockableAuthenticator $authentication */
+        $authentication = $this->container->get(Authentication::class);
+        $authentication->overrideUser($user);
 
-        $this->swap('application.speakers', $speakersDouble);
+        /** @var MockableIdentityProvider $identityProvider */
+        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider->overrideCurrentUser(new User([
+            'id'         => $user->getId(),
+            'first_name' => 'Test',
+            'last_name'  => 'User',
+        ]));
 
         $response = $this
             ->callForPapersIsOpen()
@@ -97,13 +106,5 @@ final class DashboardActionTest extends WebTestCase
 
         $this->assertResponseBodyNotContains('Need Transportation', $response);
         $this->assertResponseBodyNotContains('Need Hotel', $response);
-    }
-
-    private function stubProfileWith(array $stubMethods = []): SpeakerProfile
-    {
-        $speakerProfileDouble = m::mock(SpeakerProfile::class);
-        $speakerProfileDouble->shouldReceive($stubMethods);
-
-        return $speakerProfileDouble;
     }
 }

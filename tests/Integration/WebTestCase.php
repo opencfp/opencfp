@@ -15,10 +15,13 @@ namespace OpenCFP\Test\Integration;
 
 use Mockery;
 use OpenCFP\Domain\CallForPapers;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\MockableAuthenticator;
+use OpenCFP\Test\Helper\MockableIdentityProvider;
 use OpenCFP\Test\Helper\ResponseHelper;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Response;
@@ -138,6 +141,10 @@ abstract class WebTestCase extends BaseTestCase
         $authentication = $this->container->get(Authentication::class);
         $authentication->overrideUser($user);
 
+        /** @var MockableIdentityProvider $identityProvider */
+        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider->overrideCurrentUser(new User(['id' => $id]));
+
         return $this;
     }
 
@@ -155,6 +162,10 @@ abstract class WebTestCase extends BaseTestCase
         $authentication = $this->container->get(Authentication::class);
         $authentication->overrideUser($user);
 
+        /** @var MockableIdentityProvider $identityProvider */
+        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider->overrideCurrentUser(new User(['id' => $id]));
+
         return $this;
     }
 
@@ -171,6 +182,10 @@ abstract class WebTestCase extends BaseTestCase
         /** @var MockableAuthenticator $authentication */
         $authentication = $this->container->get(Authentication::class);
         $authentication->overrideUser($user);
+
+        /** @var MockableIdentityProvider $identityProvider */
+        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider->overrideCurrentUser(new User(['id' => $id]));
 
         return $this;
     }

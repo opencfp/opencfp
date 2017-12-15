@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace OpenCFP\Provider;
 
 use OpenCFP\Domain\Services\Authentication;
+use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Test\Helper\MockableAuthenticator;
+use OpenCFP\Test\Helper\MockableIdentityProvider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -24,6 +26,9 @@ final class TestingServiceProvider implements ServiceProviderInterface
     {
         $app->extend(Authentication::class, function (Authentication $authentication) {
             return new MockableAuthenticator($authentication);
+        });
+        $app->extend(IdentityProvider::class, function (IdentityProvider $identityProvider) {
+            return new MockableIdentityProvider($identityProvider);
         });
     }
 }
