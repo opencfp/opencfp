@@ -11,26 +11,35 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Http\Action\Pages;
+namespace OpenCFP\Http\Action\Page;
 
+use OpenCFP\Domain\Model\Talk;
 use Symfony\Component\HttpFoundation;
 use Twig_Environment;
 
-final class TalkIdeasAction
+final class HomePageAction
 {
     /**
      * @var Twig_Environment
      */
     private $twig;
 
-    public function __construct(Twig_Environment $twig)
+    /**
+     * @var bool
+     */
+    private $showSubmissionCount;
+
+    public function __construct(Twig_Environment $twig, bool $showSubmissionCount)
     {
-        $this->twig = $twig;
+        $this->twig                = $twig;
+        $this->showSubmissionCount = $showSubmissionCount;
     }
 
     public function __invoke(): HttpFoundation\Response
     {
-        $content = $this->twig->render('ideas.twig');
+        $content = $this->twig->render('home.twig', [
+            'number_of_talks' => $this->showSubmissionCount ? Talk::count() : '',
+        ]);
 
         return new HttpFoundation\Response($content);
     }

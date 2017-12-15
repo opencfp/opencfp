@@ -56,19 +56,19 @@ final class WebGatewayProvider implements
             );
         };
 
-        $app[Action\Pages\HomePageAction::class] = function ($app) {
-            return new Action\Pages\HomePageAction(
+        $app[Action\Page\HomePageAction::class] = function ($app) {
+            return new Action\Page\HomePageAction(
                 $app['twig'],
                 $app->config('application.show_submission_count')
             );
         };
 
-        $app[Action\Pages\SpeakerPackageAction::class] = function ($app) {
-            return new Action\Pages\SpeakerPackageAction($app['twig']);
+        $app[Action\Page\SpeakerPackageAction::class] = function ($app) {
+            return new Action\Page\SpeakerPackageAction($app['twig']);
         };
 
-        $app[Action\Pages\TalkIdeasAction::class] = function ($app) {
-            return new Action\Pages\TalkIdeasAction($app['twig']);
+        $app[Action\Page\TalkIdeasAction::class] = function ($app) {
+            return new Action\Page\TalkIdeasAction($app['twig']);
         };
 
         $app[ForgotController::class] = function ($app) {
@@ -211,11 +211,11 @@ final class WebGatewayProvider implements
             $app->requireHttps();
         }
 
-        $web->get('/', Action\Pages\HomePageAction::class)
+        $web->get('/', Action\Page\HomePageAction::class)
             ->bind('homepage');
-        $web->get('/package', Action\Pages\SpeakerPackageAction::class)
+        $web->get('/package', Action\Page\SpeakerPackageAction::class)
             ->bind('speaker_package');
-        $web->get('/ideas', Action\Pages\TalkIdeasAction::class)
+        $web->get('/ideas', Action\Page\TalkIdeasAction::class)
             ->bind('talk_ideas');
 
         // User Dashboard

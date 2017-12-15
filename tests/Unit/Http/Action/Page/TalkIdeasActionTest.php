@@ -11,16 +11,16 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit\Http\Action\Pages;
+namespace OpenCFP\Test\Unit\Http\Action\Page;
 
-use OpenCFP\Http\Action\Pages\SpeakerPackageAction;
+use OpenCFP\Http\Action\Page\TalkIdeasAction;
 use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
 use Symfony\Component\HttpFoundation;
 
 /**
- * @covers \OpenCFP\Http\Action\Pages\SpeakerPackageAction
+ * @covers \OpenCFP\Http\Action\Page\TalkIdeasAction
  */
-final class SpeakerPackageActionTest extends AbstractActionTestCase
+final class TalkIdeasActionTest extends AbstractActionTestCase
 {
     public function testItReturnsTheContentOfTheTwigInAResponseObject()
     {
@@ -31,10 +31,10 @@ final class SpeakerPackageActionTest extends AbstractActionTestCase
             ->expects($this->once())
             ->method('render')
             ->with(
-                $this->identicalTo('package.twig')
+                $this->identicalTo('ideas.twig')
             )
             ->willReturn($content);
-        $action   = new SpeakerPackageAction($twig);
+        $action   = new TalkIdeasAction($twig);
         $response = $action();
         $this->assertInstanceOf(HttpFoundation\Response::class, $response);
         $this->assertContains($content, $response->getContent());

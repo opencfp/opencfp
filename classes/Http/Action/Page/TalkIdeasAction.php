@@ -11,12 +11,12 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Http\Action\Pages;
+namespace OpenCFP\Http\Action\Page;
 
 use Symfony\Component\HttpFoundation;
 use Twig_Environment;
 
-final class SpeakerPackageAction
+final class TalkIdeasAction
 {
     /**
      * @var Twig_Environment
@@ -30,7 +30,7 @@ final class SpeakerPackageAction
 
     public function __invoke(): HttpFoundation\Response
     {
-        $content = $this->twig->render('package.twig');
+        $content = $this->twig->render('ideas.twig');
 
         return new HttpFoundation\Response($content);
     }

@@ -11,18 +11,18 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit\Http\Action\Pages;
+namespace OpenCFP\Test\Unit\Http\Action\Page;
 
-use OpenCFP\Http\Action\Pages\HomePageAction;
+use OpenCFP\Http\Action\Page\SpeakerPackageAction;
 use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
 use Symfony\Component\HttpFoundation;
 
 /**
- * @covers \OpenCFP\Http\Action\Pages\HomePageAction
+ * @covers \OpenCFP\Http\Action\Page\SpeakerPackageAction
  */
-final class HomePageActionTest extends AbstractActionTestCase
+final class SpeakerPackageActionTest extends AbstractActionTestCase
 {
-    public function testItReturnsTheCorrectContentIfNoSubmissionCountNeedsToBeShown()
+    public function testItReturnsTheContentOfTheTwigInAResponseObject()
     {
         $content = $this->faker()->text();
         $twig    = $this->createTwigMock();
@@ -31,11 +31,10 @@ final class HomePageActionTest extends AbstractActionTestCase
             ->expects($this->once())
             ->method('render')
             ->with(
-                $this->identicalTo('home.twig'),
-                $this->identicalTo(['number_of_talks' => ''])
+                $this->identicalTo('package.twig')
             )
             ->willReturn($content);
-        $action   = new HomePageAction($twig, false);
+        $action   = new SpeakerPackageAction($twig);
         $response = $action();
         $this->assertInstanceOf(HttpFoundation\Response::class, $response);
         $this->assertContains($content, $response->getContent());
