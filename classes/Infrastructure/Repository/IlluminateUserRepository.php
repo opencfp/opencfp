@@ -11,14 +11,14 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Infrastructure\Persistence;
+namespace OpenCFP\Infrastructure\Repository;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Speaker\SpeakerRepository;
+use OpenCFP\Domain\Repository\UserRepository;
 
-class IlluminateSpeakerRepository implements SpeakerRepository
+class IlluminateUserRepository implements UserRepository
 {
     /**
      * @var User
@@ -30,10 +30,10 @@ class IlluminateSpeakerRepository implements SpeakerRepository
         $this->userModel = $userModel;
     }
 
-    public function findById(int $speakerId): User
+    public function findById(int $id): User
     {
         try {
-            $speaker = $this->userModel->findOrFail($speakerId);
+            $speaker = $this->userModel->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             throw new EntityNotFoundException();
         }
@@ -41,8 +41,8 @@ class IlluminateSpeakerRepository implements SpeakerRepository
         return $speaker;
     }
 
-    public function persist(User $speaker)
+    public function persist(User $user)
     {
-        $speaker->save();
+        $user->save();
     }
 }

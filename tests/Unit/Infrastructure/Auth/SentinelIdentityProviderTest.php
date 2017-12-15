@@ -17,8 +17,8 @@ use Cartalyst\Sentinel\Sentinel;
 use Localheinz\Test\Util\Helper;
 use Mockery as m;
 use OpenCFP\Domain\Model\User;
+use OpenCFP\Domain\Repository\UserRepository;
 use OpenCFP\Domain\Services\IdentityProvider;
-use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
 use PHPUnit\Framework;
 
@@ -48,13 +48,13 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
             ->once()
             ->andReturnNull();
 
-        $speakerRepository = $this->getSpeakerRepositoryMock();
+        $userRepository = $this->createUserRepositoryMock();
 
-        $speakerRepository->shouldNotReceive(m::any());
+        $userRepository->shouldNotReceive(m::any());
 
         $provider = new SentinelIdentityProvider(
             $sentinel,
-            $speakerRepository
+            $userRepository
         );
 
         $this->expectException(\OpenCFP\Domain\Services\NotAuthenticatedException::class);
@@ -82,9 +82,9 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
 
         $user = $this->getUserMock();
 
-        $speakerRepository = $this->getSpeakerRepositoryMock();
+        $userRepository = $this->createUserRepositoryMock();
 
-        $speakerRepository
+        $userRepository
             ->shouldReceive('findById')
             ->once()
             ->with($id)
@@ -92,7 +92,7 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
 
         $provider = new SentinelIdentityProvider(
             $sentinel,
-            $speakerRepository
+            $userRepository
         );
 
         $this->assertSame($user, $provider->getCurrentUser());
@@ -119,11 +119,11 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
     }
 
     /**
-     * @return m\MockInterface|SpeakerRepository
+     * @return m\MockInterface|UserRepository
      */
-    private function getSpeakerRepositoryMock()
+    private function createUserRepositoryMock()
     {
-        return m::mock(SpeakerRepository::class);
+        return m::mock(UserRepository::class);
     }
 
     /**

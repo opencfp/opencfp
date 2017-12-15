@@ -19,18 +19,18 @@ use OpenCFP\Application;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Model\Airport;
 use OpenCFP\Domain\Model\User;
+use OpenCFP\Domain\Repository\UserRepository;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\IdentityProvider;
-use OpenCFP\Domain\Speaker\SpeakerRepository;
 use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelAuthentication;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
 use OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator;
 use OpenCFP\Infrastructure\Event\DatabaseSetupListener;
-use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
+use OpenCFP\Infrastructure\Repository\IlluminateUserRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
@@ -48,7 +48,7 @@ final class ApplicationServiceProvider implements ServiceProviderInterface, Even
         };
 
         $app[IdentityProvider::class] = function ($app) {
-            return new SentinelIdentityProvider($app[Sentinel::class], $app[SpeakerRepository::class]);
+            return new SentinelIdentityProvider($app[Sentinel::class], $app[UserRepository::class]);
         };
 
         $app[Authentication::class] = function ($app) {
@@ -59,8 +59,8 @@ final class ApplicationServiceProvider implements ServiceProviderInterface, Even
             return new CsrfValidator($app['csrf.token_manager']);
         };
 
-        $app[SpeakerRepository::class] = function () {
-            return new IlluminateSpeakerRepository(new User());
+        $app[UserRepository::class] = function () {
+            return new IlluminateUserRepository(new User());
         };
 
         $app[Capsule::class] = function ($app) {

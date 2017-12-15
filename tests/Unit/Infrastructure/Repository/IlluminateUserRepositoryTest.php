@@ -11,26 +11,26 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit\Infrastructure\Persistence;
+namespace OpenCFP\Test\Unit\Infrastructure\Repository;
 
 use Illuminate\Database\Eloquent;
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model;
-use OpenCFP\Domain\Speaker;
-use OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository;
+use OpenCFP\Domain\Repository\UserRepository;
+use OpenCFP\Infrastructure\Repository\IlluminateUserRepository;
 use PHPUnit\Framework;
 
 /**
- * @covers \OpenCFP\Infrastructure\Persistence\IlluminateSpeakerRepository
+ * @covers \OpenCFP\Infrastructure\Repository\IlluminateUserRepository
  */
-final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
+final class IlluminateUserRepositoryTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testImplementsSpeakerRepository()
+    public function testImplementsUserRepository()
     {
-        $this->assertClassImplementsInterface(Speaker\SpeakerRepository::class, IlluminateSpeakerRepository::class);
+        $this->assertClassImplementsInterface(UserRepository::class, IlluminateUserRepository::class);
     }
 
     public function testFindByIdThrowsEntityNotFoundExceptionIfUserNotFound()
@@ -47,7 +47,7 @@ final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
             ->with($this->identicalTo($id))
             ->willThrowException(new Eloquent\ModelNotFoundException());
 
-        $repository = new IlluminateSpeakerRepository($userModel);
+        $repository = new IlluminateUserRepository($userModel);
 
         $this->expectException(EntityNotFoundException::class);
 
@@ -70,7 +70,7 @@ final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
             ->with($this->identicalTo($id))
             ->willReturn($user);
 
-        $repository = new IlluminateSpeakerRepository($userModel);
+        $repository = new IlluminateUserRepository($userModel);
 
         $this->assertSame($user, $repository->findById($id));
     }
@@ -85,7 +85,7 @@ final class IlluminateSpeakerRepositoryTest extends Framework\TestCase
             ->expects($this->once())
             ->method('save');
 
-        $repository = new IlluminateSpeakerRepository($this->createUserMock());
+        $repository = new IlluminateUserRepository($this->createUserMock());
 
         $repository->persist($user);
     }
