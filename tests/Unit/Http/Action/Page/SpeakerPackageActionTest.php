@@ -25,7 +25,8 @@ final class SpeakerPackageActionTest extends AbstractActionTestCase
     public function testItReturnsTheContentOfTheTwigInAResponseObject()
     {
         $content = $this->faker()->text();
-        $twig    = $this->createTwigMock();
+
+        $twig = $this->createTwigMock();
 
         $twig
             ->expects($this->once())
@@ -34,10 +35,13 @@ final class SpeakerPackageActionTest extends AbstractActionTestCase
                 $this->identicalTo('package.twig')
             )
             ->willReturn($content);
-        $action   = new SpeakerPackageAction($twig);
+
+        $action = new SpeakerPackageAction($twig);
+
         $response = $action();
+
         $this->assertInstanceOf(HttpFoundation\Response::class, $response);
-        $this->assertContains($content, $response->getContent());
+        $this->assertSame($content, $response->getContent());
         $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
     }
 }
