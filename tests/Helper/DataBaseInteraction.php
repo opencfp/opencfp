@@ -17,12 +17,12 @@ use Illuminate\Database\Capsule\Manager;
 
 trait DataBaseInteraction
 {
-    protected function resetDatabase()
+    final protected function resetDatabase()
     {
         $this->getCapsule()->getConnection()->unprepared(\file_get_contents(__DIR__ . '/../dump.sql'));
     }
 
-    protected function getCapsule(): Manager
+    final protected function getCapsule(): Manager
     {
         return $this->container->get(Manager::class);
     }
