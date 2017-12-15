@@ -19,6 +19,7 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
+use Swift_Mailer;
 
 final class TalkControllerTest extends WebTestCase
 {
@@ -33,6 +34,14 @@ final class TalkControllerTest extends WebTestCase
      * @var Talk
      */
     private static $talk;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $mailer = m::mock(Swift_Mailer::class);
+        $mailer->shouldReceive('send')->andReturn(1);
+        $this->swap('mailer', $mailer);
+    }
 
     public static function setUpBeforeClass()
     {
@@ -50,14 +59,8 @@ final class TalkControllerTest extends WebTestCase
      */
     public function ampersandsAcceptableCharacterForTalks()
     {
-        // Create a test double for SwiftMailer
-        $swiftMailer = m::mock(\Swift_Mailer::class);
-        $swiftMailer->shouldReceive('send')->andReturn(true);
-        $this->swap('mailer', $swiftMailer);
-
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('edit_talk');
-
         $response = $this
             ->asLoggedInSpeaker(1)
             ->callForPapersIsOpen()

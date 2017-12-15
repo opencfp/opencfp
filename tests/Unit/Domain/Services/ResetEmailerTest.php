@@ -50,7 +50,6 @@ final class ResetEmailerTest extends \PHPUnit\Framework\TestCase
         $twig->shouldReceive('loadTemplate')
             ->withArgs(['emails/reset_password.twig'])
             ->andReturn($template);
-
         $resetEmailer = new ResetEmailer(
             $swiftMailer,
             $twig,

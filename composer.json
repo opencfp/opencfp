@@ -26,7 +26,7 @@
         "pimple/pimple": "3.*",
         "robmorgan/phinx": "*",
         "silex/silex": "2.*",
-        "swiftmailer/swiftmailer": "5.0",
+        "swiftmailer/swiftmailer": "^6.0",
         "symfony/config": "^3.4",
         "symfony/console": "^3.4",
         "symfony/css-selector": "^3.4",

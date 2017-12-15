@@ -23,6 +23,7 @@ use OpenCFP\Provider\HtmlPurifierServiceProvider;
 use OpenCFP\Provider\ImageProcessorProvider;
 use OpenCFP\Provider\ResetEmailerServiceProvider;
 use OpenCFP\Provider\SentinelServiceProvider;
+use OpenCFP\Provider\SwiftMailerServiceProvider;
 use OpenCFP\Provider\TalkFilterProvider;
 use OpenCFP\Provider\TalkHandlerProvider;
 use OpenCFP\Provider\TalkHelperProvider;
@@ -36,7 +37,6 @@ use Silex\Provider\FormServiceProvider;
 use Silex\Provider\LocaleServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\SessionServiceProvider;
-use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -79,16 +79,6 @@ class Application extends SilexApplication
                 $this->config('log.level') ?: 'debug'
             ),
         ]);
-        $this->register(new SwiftmailerServiceProvider(), [
-            'swiftmailer.options' => [
-                'host'       => $this->config('mail.host'),
-                'port'       => $this->config('mail.port'),
-                'username'   => $this->config('mail.username'),
-                'password'   => $this->config('mail.password'),
-                'encryption' => $this->config('mail.encryption'),
-                'auth_mode'  => $this->config('mail.auth_mode'),
-            ],
-        ]);
 
         $this->register(new CallForPapersProvider());
         $this->register(new SentinelServiceProvider());
@@ -96,6 +86,7 @@ class Application extends SilexApplication
         $this->register(new HtmlPurifierServiceProvider());
         $this->register(new ImageProcessorProvider());
         $this->register(new ResetEmailerServiceProvider());
+        $this->register(new SwiftMailerServiceProvider());
         $this->register(new TalkHandlerProvider());
         $this->register(new TalkHelperProvider());
         $this->register(new TalkRatingProvider());
