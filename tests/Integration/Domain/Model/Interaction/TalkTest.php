@@ -17,10 +17,10 @@ use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalkTest extends BaseTestCase
+final class TalkTest extends WebTestCase
 {
     use DataBaseInteraction;
 

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Provider;
 
 use Cartalyst\Sentinel\Sentinel;
-use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class SentinelServiceProviderTest extends BaseTestCase
+final class SentinelServiceProviderTest extends WebTestCase
 {
     public function testAllRepositoriesAreSet()
     {

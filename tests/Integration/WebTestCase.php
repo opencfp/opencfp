@@ -13,22 +13,41 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration;
 
+use Localheinz\Test\Util\Helper;
 use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use OpenCFP\Application;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\IdentityProvider;
+use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Auth\UserInterface;
-use OpenCFP\Test\BaseTestCase;
+use OpenCFP\Test\Helper\DataBaseInteraction;
 use OpenCFP\Test\Helper\MockableAuthenticator;
 use OpenCFP\Test\Helper\MockableIdentityProvider;
+use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Helper\ResponseHelper;
+use Pimple\Psr11\Container;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class WebTestCase extends BaseTestCase
+abstract class WebTestCase extends \Silex\WebTestCase
 {
+    use Helper;
+    use MockeryPHPUnitIntegration;
     use ResponseHelper;
+
+    /**
+     * @var Application
+     */
+    protected $app;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * Additional headers for a request.
@@ -43,6 +62,56 @@ abstract class WebTestCase extends BaseTestCase
      * @var array
      */
     protected $server = [];
+
+    public static function setUpBeforeClass()
+    {
+        self::runBeforeClassTraits();
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->refreshContainer();
+        $this->runBeforeTestTraits();
+    }
+
+    public function createApplication()
+    {
+        return new Application(
+            __DIR__ . '/../..',
+            Environment::testing()
+        );
+    }
+
+    private function refreshContainer()
+    {
+        $this->container = new Container($this->app);
+    }
+
+    /**
+     * Runs setUps from Traits that are needed before every test (as called from setUp)
+     */
+    private function runBeforeTestTraits()
+    {
+        $uses = \array_flip(class_uses_recursive(static::class));
+
+        if (isset($uses[DataBaseInteraction::class])) {
+            $this->resetDatabase();
+        }
+    }
+
+    /**
+     * Runs setups from Traits that are needed before the class is setup (as called from setUpBeforeClass)
+     */
+    private static function runBeforeClassTraits()
+    {
+        $uses = \array_flip(class_uses_recursive(static::class));
+
+        if (isset($uses[RefreshDatabase::class])) {
+            static::setUpDatabase();
+        }
+    }
 
     /**
      * Swap implementations of a service in the container.

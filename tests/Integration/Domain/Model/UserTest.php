@@ -18,10 +18,10 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class UserTest extends BaseTestCase
+final class UserTest extends WebTestCase
 {
     use RefreshDatabase;
 

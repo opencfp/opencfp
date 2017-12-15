@@ -15,10 +15,10 @@ namespace OpenCFP\Test\Integration\Domain\Model\Interaction;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\BaseTestCase;
 use OpenCFP\Test\Helper\DataBaseInteraction;
+use OpenCFP\Test\Integration\WebTestCase;
 
-final class UserTest extends BaseTestCase
+final class UserTest extends WebTestCase
 {
     use DataBaseInteraction;
 
