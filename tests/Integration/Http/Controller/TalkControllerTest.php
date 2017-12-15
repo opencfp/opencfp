@@ -98,7 +98,7 @@ final class TalkControllerTest extends WebTestCase
 
         $this->assertResponseBodyContains('Create Your Talk', $response);
     }
-    
+
     /**
      * @test
      */
@@ -173,51 +173,6 @@ final class TalkControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('/dashboard', $response);
-    }
-
-    /**
-     * @test
-     */
-    public function notAllowedToDeleteAfterCFPIsOver()
-    {
-        $csrfToken = $this->container->get('csrf.token_manager')
-            ->getToken('delete_talk')
-            ->getValue();
-
-        $response = $this
-            ->asLoggedInSpeaker(self::$user->id)
-            ->callForPapersIsClosed()
-            ->post('/talk/delete', [
-                'tid'      => self::$talk->id,
-                'token'    => $csrfToken,
-                'token_id' => 'delete_talk',
-            ]);
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyNotContains('ok', $response);
-        $this->assertResponseBodyContains('no', $response);
-    }
-
-    /**
-     * @test
-     */
-    public function notAllowedToDeleteSomeoneElseTalk()
-    {
-        $csrfToken = $this->container->get('csrf.token_manager')
-            ->getToken('delete_talk')
-            ->getValue();
-
-        $response = $this
-            ->asLoggedInSpeaker(self::$user->id + 1)
-            ->post('/talk/delete', [
-                'tid'      => self::$talk->id,
-                'token'    => $csrfToken,
-                'token_id' => 'delete_talk',
-            ]);
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyNotContains('ok', $response);
-        $this->assertResponseBodyContains('no', $response);
     }
 
     /**

@@ -22,7 +22,6 @@ use OpenCFP\Http\Form\TalkForm;
 use OpenCFP\Http\View\TalkHelper;
 use Swift_Mailer;
 use Swift_Message;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -299,7 +298,7 @@ class TalkController extends BaseController
         if ($form->validateAll()) {
             $sanitizedData            = $form->getCleanData();
             $sanitizedData['user_id'] = (int) $user->getId();
-            
+
             if (Talk::find((int) $sanitizedData['id'])->update($sanitizedData)) {
                 $request->getSession()->set('flash', [
                     'type'  => 'success',
@@ -338,25 +337,6 @@ class TalkController extends BaseController
             'buttonInfo'     => 'Update my talk!',
             'flash'          => $request->getSession()->get('flash'),
         ]);
-    }
-
-    public function deleteAction(Request $request): Response
-    {
-        // You can only delete talks while the CfP is open
-        if (!$this->callForPapers->isOpen()) {
-            return new JsonResponse(['delete' => 'no']);
-        }
-
-        $userId = $this->authentication->user()->getId();
-        $talk   = Talk::find($request->get('tid'), ['id', 'user_id']);
-
-        if ((int) $talk->user_id !== $userId) {
-            return new JsonResponse(['delete' => 'no']);
-        }
-
-        $talk->delete();
-
-        return new JsonResponse(['delete' => 'ok']);
     }
 
     /**
