@@ -1,0 +1,15 @@
+default:
+  suites:
+    default:
+      paths:
+        - %paths.base%/tests/Features
+      contexts:
+        - OpenCFP\Test\Features\Contexts\FeatureContext
+
+  extensions:
+    Behat\MinkExtension:
+        base_url: http://web
+        default_session: selenium2
+        browser_name: phantomjs
+        selenium2:
+          wd_host: "http://selenium:4444/wd/hub"
