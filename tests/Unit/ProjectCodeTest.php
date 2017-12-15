@@ -78,7 +78,6 @@ final class ProjectCodeTest extends Framework\TestCase
                 Provider\ResetEmailerServiceProvider::class,
                 Provider\SentinelServiceProvider::class,
                 Provider\SwiftMailerServiceProvider::class,
-                Provider\TalkEmailerServiceProvider::class,
                 Provider\TalkFilterProvider::class,
                 Provider\TalkHandlerProvider::class,
                 Provider\TalkHelperProvider::class,
