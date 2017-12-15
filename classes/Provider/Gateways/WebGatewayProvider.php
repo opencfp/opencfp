@@ -117,6 +117,16 @@ final class WebGatewayProvider implements
             );
         };
 
+        $app[Action\Talk\EditAction::class] = function ($app) {
+            return new Action\Talk\EditAction(
+                $app[Authentication::class],
+                $app[TalkHelper::class],
+                $app[CallForPapers::class],
+                $app['twig'],
+                $app['url_generator']
+            );
+        };
+
         $app[Action\Talk\ViewAction::class] = function ($app) {
             return new Action\Talk\ViewAction(
                 $app['application.speakers'],
@@ -229,7 +239,7 @@ final class WebGatewayProvider implements
         $web->get('/dashboard', Action\DashboardAction::class)->bind('dashboard');
 
         // Talks
-        $web->get('/talk/edit/{id}', 'OpenCFP\Http\Controller\TalkController::editAction')
+        $web->get('/talk/edit/{id}', Action\Talk\EditAction::class)
             ->bind('talk_edit')->value('_require_csrf_token', true);
         $web->get('/talk/create', 'OpenCFP\Http\Controller\TalkController::createAction')
             ->bind('talk_new');
