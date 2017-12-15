@@ -15,13 +15,11 @@ namespace OpenCFP\Test\Integration\Http\Controller;
 
 use Mockery as m;
 use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Test\Helper\DataBaseInteraction;
+use OpenCFP\Test\Integration\RequiresDatabaseReset;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class ForgotControllerTest extends WebTestCase
+final class ForgotControllerTest extends WebTestCase implements RequiresDatabaseReset
 {
-    use DataBaseInteraction;
-
     /**
      * Test that index action displays a form that allows the user to reset
      * their password

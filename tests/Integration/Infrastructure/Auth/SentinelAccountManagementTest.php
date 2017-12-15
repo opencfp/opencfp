@@ -17,13 +17,11 @@ use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
-use OpenCFP\Test\Helper\DataBaseInteraction;
+use OpenCFP\Test\Integration\RequiresDatabaseReset;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class SentinelAccountManagementTest extends WebTestCase
+final class SentinelAccountManagementTest extends WebTestCase implements RequiresDatabaseReset
 {
-    use DataBaseInteraction;
-
     /**
      * @var SentinelAccountManagement
      */
