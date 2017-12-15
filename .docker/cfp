@@ -1,0 +1,42 @@
+#!/bin/bash
+
+export USER && export UID
+
+usage() {
+  echo "Usage: ./cfp {build|up|down|shell|clean}"
+}
+
+build() {
+  docker-compose build workspace
+}
+
+shell() {
+  up
+  docker-compose exec workspace bash
+}
+
+up() {
+  docker-compose up -d 
+}
+
+ps() {
+  docker-compose ps
+}
+
+down() {
+  docker-compose stop
+}
+
+clean() {
+  docker-compose down
+}
+
+case $1 in
+  build) build;;
+  shell) shell;;
+  up) up;;
+  ps) ps;;
+  down) down;;
+  clean) clean;;
+  *) usage;;
+esac

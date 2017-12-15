@@ -1,0 +1,33 @@
+version: '2'
+services:
+  web:
+    image: nginx:stable
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./conf/default.conf:/etc/nginx/conf.d/default.conf
+      - ..:/usr/src/app
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: cfp
+
+  selenium:
+    image: nkovacs/selenium-standalone-phantomjs
+
+  workspace:
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
+      args:
+        - DEV_USER=$USER
+        - DEV_USER_ID=$UID
+    image: opencfp:dev
+    restart: always
+    volumes:
+      - ..:/usr/src/app
+      - $HOME:/home/$USER
