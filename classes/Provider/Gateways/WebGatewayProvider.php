@@ -51,14 +51,6 @@ final class WebGatewayProvider implements
 {
     public function register(Container $app)
     {
-        $app['mailer'] = function ($app) {
-            $transport = (new Swift_SmtpTransport($app->config('mail.host'), $app->config('mail.port')))
-                ->setUsername($app->config('mail.username'))
-                ->setPassword($app->config('mail.password'));
-
-            return new Swift_Mailer($transport);
-        };
-
         $app[Action\DashboardAction::class] = function ($app) {
             return new Action\DashboardAction(
                 $app['application.speakers'],
