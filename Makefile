@@ -20,6 +20,7 @@ database: composer
 	mysql -uroot -e "CREATE DATABASE cfp_test"
 	cp phinx.yml.dist phinx.yml
 	vendor/bin/phinx migrate -e testing
+	mysqldump -uroot cfp_test > tests/dump.sql
 
 infection: composer database
 	vendor/bin/infection

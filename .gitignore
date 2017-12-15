@@ -18,6 +18,7 @@ composer.phar
 deployment.properties
 deployment.xml
 /scripts
+/tests/dump.sql
 /web/uploads/*
 !/web/uploads/dummyphoto.jpg
 /web/.htaccess
