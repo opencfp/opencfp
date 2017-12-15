@@ -19,6 +19,9 @@ use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 use Twig_Environment;
 
+/**
+ * @covers \OpenCFP\Http\Action\Pages\SpeakerPackageAction
+ */
 final class SpeakerPackageActionTest extends Framework\TestCase
 {
     use Helper;

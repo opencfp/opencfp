@@ -19,6 +19,9 @@ use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 use Twig_Environment;
 
+/**
+ * @covers \OpenCFP\Http\Action\Pages\TalkIdeasAction
+ */
 final class TalkIdeasActionTest extends Framework\TestCase
 {
     use Helper;
