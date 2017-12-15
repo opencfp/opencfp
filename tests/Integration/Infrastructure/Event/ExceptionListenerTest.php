@@ -20,10 +20,7 @@ final class ExceptionListenerTest extends WebTestCase
 {
     public function testJsonOn404()
     {
-        $request = HttpFoundation\Request::create('/invalid/uri');
-        $request->headers->set('Accept', 'application/json');
-
-        $response = $this->app->handle($request);
+        $response = $this->get('/invalid/uri', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
 
         $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_NOT_FOUND, $response);
         $this->assertResponseHeader('application/json', 'Content-Type', $response);

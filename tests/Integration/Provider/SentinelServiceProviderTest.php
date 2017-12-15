@@ -11,14 +11,11 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit\Provider;
+namespace OpenCFP\Test\Integration\Provider;
 
 use Cartalyst\Sentinel\Sentinel;
 use OpenCFP\Test\BaseTestCase;
 
-/**
- * @covers \OpenCFP\Provider\SentinelServiceProvider
- */
 final class SentinelServiceProviderTest extends BaseTestCase
 {
     public function testAllRepositoriesAreSet()

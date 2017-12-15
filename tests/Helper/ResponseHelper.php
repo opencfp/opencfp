@@ -149,7 +149,10 @@ trait ResponseHelper
 
     final protected function assertSessionHasFlashMessage(string $message, HttpFoundation\Session\SessionInterface $session)
     {
-        $this->assertContains($message, $session->get('flash'), \sprintf(
+        $flash = $session->get('flash');
+
+        $this->assertNotNull($flash, 'Failed asserting that the session has flash messages.');
+        $this->assertContains($message, $flash, \sprintf(
             'Failed asserting that the session has a flash message "%s".',
             $message
         ));

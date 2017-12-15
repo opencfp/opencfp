@@ -17,12 +17,12 @@ use Illuminate\Database\Capsule\Manager;
 
 trait RefreshDatabase
 {
-    protected static function setUpDatabase()
+    final protected static function setUpDatabase()
     {
         self::createCapsule()->getConnection()->unprepared(\file_get_contents(__DIR__ . '/../dump.sql'));
     }
 
-    protected static function createCapsule(): Manager
+    final protected static function createCapsule(): Manager
     {
         $capsule = new Manager();
 
