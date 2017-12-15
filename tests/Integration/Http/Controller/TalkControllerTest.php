@@ -88,7 +88,13 @@ final class TalkControllerTest extends WebTestCase
         // Previously, this fails because it checked midnight
         // for the current date. `isCfpOpen` now uses 11:59pm current date.
         $now = new \DateTime();
-        $this->swap(CallForPapers::class, new CallForPapers(new \DateTimeImmutable($now->format('M. jS, Y'))));
+
+        $cfp    = $this->container->get(CallForPapers::class);
+        $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
+        $method->setAccessible(true);
+        $method->invoke($cfp, new \DateTimeImmutable($now->format('M. jS, Y')));
+
+        $this->container->get('twig')->addGlobal('cfp_open', $cfp->isOpen());
 
         /*
          * This should not have a flash message. The fact that this
