@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller;
 
 use HTMLPurifier;
-use OpenCFP\Application\NotAuthorizedException;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\Talk;
@@ -114,28 +113,6 @@ class TalkController extends BaseController
             'categories' => $this->talkHelper->getTalkCategories(),
             'levels'     => $this->talkHelper->getTalkLevels(),
             'types'      => $this->talkHelper->getTalkTypes(),
-        ]);
-    }
-
-    /**
-     * Controller action for viewing a specific talk
-     *
-     * @param Request $request
-     *
-     * @return mixed
-     */
-    public function viewAction(Request $request): Response
-    {
-        try {
-            $talkId = (int) $request->get('id');
-            $talk   = $this->speakers->getTalk($talkId);
-        } catch (NotAuthorizedException $e) {
-            return $this->redirectTo('dashboard');
-        }
-
-        return $this->render('talk/view.twig', [
-            'talkId' => $talkId,
-            'talk'   => $talk,
         ]);
     }
 
