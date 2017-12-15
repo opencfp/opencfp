@@ -56,10 +56,12 @@ final class DashboardActionTest extends AbstractActionTestCase
             $urlGenerator
         );
 
+        /** @var HttpFoundation\RedirectResponse $response */
         $response = $action();
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
+        $this->assertSame($url, $response->getTargetUrl());
     }
 
     public function testRendersDashboardIfUserIsAuthenticated()
