@@ -16,6 +16,7 @@ Current release: v1.4.1
  * [Screenshots](#screenshots)
  * [Contributing](#contributing)
  * [Requirements](#requirements)
+ * [Development Environment](#development-environment-beta)
  * [Installation](#installation)
    * [Cloning the Repository](#cloning-the-repository)
    * [Specify Environment](#specify-environment)
@@ -47,7 +48,6 @@ Current release: v1.4.1
 
 You can find screenshots of the application in our [wiki](https://github.com/opencfp/opencfp/wiki/Screenshots)
 
-
 ## [Contributing](#contributing)
 
 See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
@@ -58,6 +58,59 @@ See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php7.0-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
+
+## [Development Environment (beta)](#development-environment-beta)
+
+We maintain a development environment based on Docker. It is completely optional, but does a lot to help someone get started working on OpenCFP. If you have a development setup that works for you, that is completely fine! Our biggest goal is to make things easier. Additionally, Docker makes it easier for us to try different versions of PHP, MySQL, Postgresql, Nginx, Apache, etc.
+
+### Setting Up
+
+1. [Install Docker](https://docs.docker.com/engine/installation/) (Use latest Stable if you run into trouble. That's all we can support right now.)
+1. Go check out the instructions in the [.docker](.docker) directory.
+
+### Workflow
+
+We keep the Docker environment under `.docker`. This helps us keep all-things-Docker isolated to one space. 
+
+To begin working, change directories to the `.docker` space and run `./cfp`. You'll see something like the following:
+
+```bash
+$ ./cfp 
+Usage: ./cfp {build|up|down|shell|clean}
+```
+
+* `build` builds the `workspace` image, which is where our development shell runs from. The image builds from a [`Dockerfile`](.docker/Dockerfile) based on PHP 7.1. We also install Composer, NodeJS, yarn and a bunch of other dependencies.
+* `up` starts all services from the `docker-compose.yml` file.
+* `down` stops all services
+* `shell` calls `up` and then gets a `bash` shell in the `workspace` service.
+* `clean` stops all services and removes containers and the default network for the project.
+
+You will run `build` once to create the workspace image and every time after that, you can run `./cfp shell`. Once you have a shell, you'll need to continue following our instructions for [installation](#installation) if you haven't already.
+
+### Service DNS
+
+Every container in a Docker Compose project can address other containers via Docker DNS. This means that inside the `workspace` container, you can `ping` the database container by its service name, `db`:
+
+```bash
+$ ping db
+PING db (172.18.0.3): 56 data bytes
+64 bytes from 172.18.0.3: icmp_seq=0 ttl=64 time=0.179 ms
+64 bytes from 172.18.0.3: icmp_seq=1 ttl=64 time=0.113 ms
+```
+
+This means that in your config files for OpenCFP, you should use `db` as the hostname for the database server, rather than `localhost`. Or, in the case of our [Behat Configuration](behat.yml), we use a container running our headless browser:
+
+```bash
+  extensions:
+    Behat\MinkExtension:
+        base_url: http://web
+        default_session: selenium2
+        browser_name: phantomjs
+        selenium2:
+          wd_host: "http://selenium:4444/wd/hub"
+```
+
+Note the `wd_host` uses the `selenium` service name and that the `base_url` (used by Selenium from its container) uses `web` (the service name of our nginx-based container). It's odd at first, but you get the hang of it pretty quickly.
 
 ## [Installation](#installation)
 

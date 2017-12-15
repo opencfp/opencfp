@@ -1,28 +1,15 @@
 # Dockerized OpenCFP (beta)
 
-This repository is meant to be a Docker-based development environment for OpenCFP.
-
 ## Manual
 
 ```bash
-# Clone and change directories to OpenCFP app
-git clone git@github.com:opencfp/opencfp
-cd opencfp
-
-# Clone Docker configs to a directory called `.docker`
-git clone git@github.com:mdwheele/opencfp-docker .docker
-
-# Create a repo-specific ignore rule for `.docker`
-# We do this to not have to commit "/.docker" to the upstream
-# project's .gitignore file.
-echo ".docker" >> .git/info/exclude
-
 # You'll use the `cfp` shell to interact with the Docker 
 # environment
 ./cfp
 # > Usage: ./cfp {build|up|down|shell|clean}
 
 # On the first run, build the `workspace` image we'll work from.
+# It takes a little bit to build, but this is only done once.
 # The workspace is based on PHP 7.1 + PHP-FPM.
 # It installs things like Composer, NodeJS, npm, yarn, etc.
 ./cfp build

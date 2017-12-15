@@ -9,16 +9,6 @@ services:
       - ./conf/default.conf:/etc/nginx/conf.d/default.conf
       - ..:/usr/src/app
 
-  db:
-    image: mariadb
-    restart: always
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: cfp
-
-  selenium:
-    image: nkovacs/selenium-standalone-phantomjs
-
   workspace:
     build:
       context: ..
@@ -31,3 +21,14 @@ services:
     volumes:
       - ..:/usr/src/app
       - $HOME:/home/$USER
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: cfp
+
+  selenium:
+    image: nkovacs/selenium-standalone-phantomjs
+
