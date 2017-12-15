@@ -21,7 +21,7 @@ use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 
 /**
- * @coversNothing
+ * @covers \OpenCFP\Http\Action\DashboardAction
  */
 final class DashboardActionTest extends AbstractActionTestCase
 {
