@@ -17,9 +17,6 @@ application:
   show_contrib_banner: true
   venue_image_path: /assets/img/venue.jpg
 
-cache:
-  enabled: false
-
 database:
   host: 127.0.0.1
   database: cfp
