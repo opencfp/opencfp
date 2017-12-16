@@ -24,7 +24,7 @@ use OpenCFP\Infrastructure\Templating\TwigExtension;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
-use Silex\Provider\TwigServiceProvider as SilexTwigServiceProvider;
+use Silex\Provider;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormRenderer;
 use Twig_Environment;
@@ -37,7 +37,7 @@ final class TwigServiceProvider implements ServiceProviderInterface, EventListen
      */
     public function register(Container $app)
     {
-        $app->register(new SilexTwigServiceProvider(), [
+        $app->register(new Provider\TwigServiceProvider(), [
             'twig.path'    => $app['path']->templatesPath(),
             'twig.options' => [
                 'debug' => !$app['env']->isProduction(),

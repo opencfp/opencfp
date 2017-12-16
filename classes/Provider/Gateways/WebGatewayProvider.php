@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Provider\Gateways;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
@@ -159,7 +159,7 @@ final class WebGatewayProvider implements
                 $app[Authentication::class],
                 $app[AccountManagement::class],
                 $app[AirportInformationDatabase::class],
-                $app[Capsule::class],
+                $app[Capsule\Manager::class],
                 $app['twig'],
                 $app['url_generator'],
                 $app->config('application.airport'),

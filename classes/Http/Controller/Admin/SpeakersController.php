@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller\Admin;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
@@ -46,7 +46,7 @@ class SpeakersController extends BaseController
     private $airports;
 
     /**
-     * @var Capsule
+     * @var Capsule\Manager
      */
     private $capsule;
 
@@ -74,7 +74,7 @@ class SpeakersController extends BaseController
         Authentication $authentication,
         AccountManagement $accounts,
         AirportInformationDatabase $airports,
-        Capsule $capsule,
+        Capsule\Manager $capsule,
         Twig_Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         string $applicationAirport,

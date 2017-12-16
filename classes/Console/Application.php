@@ -13,18 +13,20 @@ declare(strict_types=1);
 
 namespace OpenCFP\Console;
 
-use Symfony\Component\Console\Application as ConsoleApplication;
-use Symfony\Component\Console\Command\HelpCommand;
-use Symfony\Component\Console\Command\ListCommand;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console;
 
-class Application extends ConsoleApplication
+class Application extends Console\Application
 {
     public function __construct()
     {
         parent::__construct('OpenCFP');
 
-        $this->getDefinition()->addOption(new InputOption('env', '', InputOption::VALUE_REQUIRED, 'The environment the command should run in'));
+        $this->getDefinition()->addOption(new Console\Input\InputOption(
+            'env',
+            '',
+            Console\Input\InputOption::VALUE_REQUIRED,
+            'The environment the command should run in'
+        ));
     }
 
     /**
@@ -33,8 +35,8 @@ class Application extends ConsoleApplication
     public function getDefaultCommands()
     {
         return [
-            new HelpCommand(),
-            new ListCommand(),
+            new Console\Command\HelpCommand(),
+            new Console\Command\ListCommand(),
         ];
     }
 }

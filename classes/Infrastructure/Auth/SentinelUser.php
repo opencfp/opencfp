@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
-use Cartalyst\Sentinel\Users\EloquentUser;
-use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
+use Cartalyst\Sentinel\Users;
 use Illuminate\Support\Collection;
 
 final class SentinelUser implements UserInterface
 {
     /**
-     * @var EloquentUser
+     * @var Users\EloquentUser
      */
     private $user;
 
@@ -30,7 +29,7 @@ final class SentinelUser implements UserInterface
      */
     private $sentinel;
 
-    public function __construct(SentinelUserInterface $user, Sentinel $sentinel)
+    public function __construct(Users\UserInterface $user, Sentinel $sentinel)
     {
         $this->user     = $user;
         $this->sentinel = $sentinel;
@@ -54,7 +53,7 @@ final class SentinelUser implements UserInterface
     public function hasAccess($permissions): bool
     {
         try {
-            /** @var Collection | SentinelUserInterface[] $users */
+            /** @var Collection | Users\UserInterface[] $users */
             $users = $this->sentinel->getRoleRepository()->findByName($permissions)->getUsers();
 
             return $users->contains(function ($user) {
@@ -109,7 +108,7 @@ final class SentinelUser implements UserInterface
     }
 
     /**
-     * @return EloquentUser|SentinelUserInterface
+     * @return Users\EloquentUser|Users\UserInterface
      */
     public function getUser()
     {
