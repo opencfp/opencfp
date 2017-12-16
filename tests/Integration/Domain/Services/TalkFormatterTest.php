@@ -33,37 +33,6 @@ final class TalkFormatterTest extends WebTestCase
     /**
      * @test
      */
-    public function createFormattedOutputWorksWithNoMeta()
-    {
-        $talk      = new Talk();
-        $formatter = new TalkFormatter();
-
-        $format = $formatter->createdFormattedOutput($talk->first(), 1);
-
-        $this->assertSame('One talk to rule them all', $format->getTitle());
-        $this->assertSame('api', $format->getCategory());
-        $this->assertSame(0, $format->getRating());
-        $this->assertFalse($format->isViewedByMe());
-    }
-
-    /**
-     * @test
-     */
-    public function createFormattedOutputWorksWithMeta()
-    {
-        $formatter = new TalkFormatter();
-        $talk      = new Talk();
-
-        // Now to see if the meta gets put in correctly
-        $secondFormat = $formatter->createdFormattedOutput($talk->first(), 2);
-
-        $this->assertSame(1, $secondFormat->getRating());
-        $this->assertTrue($secondFormat->isViewedByMe());
-    }
-
-    /**
-     * @test
-     */
     public function formatListReturnsAllTalksAsCollection()
     {
         $formatter = new TalkFormatter();

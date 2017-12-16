@@ -18,6 +18,4 @@ use Illuminate\Support\Collection;
 interface TalkFormat
 {
     public function formatList(Collection $talkCollection, int $adminUserId): Collection;
-
-    public function createdFormattedOutput($talk, int $adminUserId);
 }

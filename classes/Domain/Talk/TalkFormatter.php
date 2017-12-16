@@ -32,17 +32,4 @@ class TalkFormatter implements TalkFormat
             return new TalkProfile($talk, $adminUserId);
         });
     }
-
-    /**
-     * Iterates over DBAL objects and returns a formatted result set
-     *
-     * @param mixed $talk
-     * @param int   $adminUserId
-     *
-     * @return TalkProfile
-     */
-    public function createdFormattedOutput($talk, int $adminUserId)
-    {
-        return new TalkProfile($talk, $adminUserId);
-    }
 }
