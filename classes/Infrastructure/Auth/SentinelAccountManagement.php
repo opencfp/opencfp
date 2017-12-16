@@ -15,7 +15,7 @@ namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Roles;
 use Cartalyst\Sentinel\Sentinel;
-use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
+use Cartalyst\Sentinel\Users;
 use OpenCFP\Domain\Services\AccountManagement;
 
 final class SentinelAccountManagement implements AccountManagement
@@ -34,7 +34,7 @@ final class SentinelAccountManagement implements AccountManagement
     {
         $user = $this->sentinel->getUserRepository()->findById($userId);
 
-        if ($user instanceof SentinelUserInterface) {
+        if ($user instanceof Users\UserInterface) {
             return new SentinelUser($user, $this->sentinel);
         }
 
@@ -45,7 +45,7 @@ final class SentinelAccountManagement implements AccountManagement
     {
         $user = $this->sentinel->getUserRepository()->findByCredentials(['email' => $email]);
 
-        if ($user instanceof SentinelUserInterface) {
+        if ($user instanceof Users\UserInterface) {
             return new SentinelUser($user, $this->sentinel);
         }
 
@@ -68,7 +68,7 @@ final class SentinelAccountManagement implements AccountManagement
         if ($this->sentinel
                 ->getUserRepository()
                 ->findByCredentials(['email' => $email])
-            instanceof SentinelUserInterface
+            instanceof Users\UserInterface
         ) {
             throw UserExistsException::fromEmail($email);
         }
@@ -76,7 +76,7 @@ final class SentinelAccountManagement implements AccountManagement
             ->getUserRepository()
             ->create(\array_merge(['email' => $email, 'password' => $password], $data));
 
-        if ($user instanceof SentinelUserInterface) {
+        if ($user instanceof Users\UserInterface) {
             return new SentinelUser($user, $this->sentinel);
         }
 

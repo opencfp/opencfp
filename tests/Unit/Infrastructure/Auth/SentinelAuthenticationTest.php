@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
-use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
+use Cartalyst\Sentinel\Users;
 use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -82,7 +82,7 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
 
     public function testAuthenticateIsVoidWhenSuccessFull()
     {
-        $sentinelUser = Mockery::mock(SentinelUserInterface::class);
+        $sentinelUser = Mockery::mock(Users\UserInterface::class);
         $user         = Mockery::mock(UserInterface::class);
         $user->shouldReceive('checkPassword')->andReturn(true);
         $user->shouldReceive('getUser')->andReturn($sentinelUser);
@@ -96,7 +96,7 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
 
     public function testUserReturnsCorrectUser()
     {
-        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $user     = Mockery::mock(Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);
         $sentinel->shouldReceive('getUser')->andReturn($user);
         $account = Mockery::mock(AccountManagement::class);
@@ -116,7 +116,7 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
 
     public function testCheckReturnsBool()
     {
-        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $user     = Mockery::mock(Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);
         $account  = Mockery::mock(AccountManagement::class);
         $sentinel->shouldReceive('check')->andReturn($user);
@@ -135,7 +135,7 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
 
     public function testLogoutReturnsBool()
     {
-        $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        $user     = Mockery::mock(Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);
         $account  = Mockery::mock(AccountManagement::class);
         $sentinel->shouldReceive('logout')->andReturn($user);

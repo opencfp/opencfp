@@ -31,7 +31,6 @@ use OpenCFP\Provider\TalkRatingProvider;
 use OpenCFP\Provider\TestingServiceProvider;
 use OpenCFP\Provider\TwigServiceProvider;
 use OpenCFP\Provider\YamlConfigDriver;
-use Silex\Application as SilexApplication;
 use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\LocaleServiceProvider;
@@ -41,7 +40,7 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class Application extends SilexApplication
+class Application extends \Silex\Application
 {
     public function __construct(string $basePath, Environment $environment)
     {

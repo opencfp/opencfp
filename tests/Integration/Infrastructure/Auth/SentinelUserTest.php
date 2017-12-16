@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Test\Helper\RefreshDatabase;
@@ -83,7 +83,7 @@ final class SentinelUserTest extends WebTestCase
     public function checkResetPasswordCodeWorks()
     {
         /** @var Capsule $capsule */
-        $capsule = $this->container->get(Capsule::class);
+        $capsule = $this->container->get(Capsule\Manager::class);
         $capsule->getConnection()->query()->from('reminders')->insert([
             'user_id' => self::$user->getId(),
             'code'    => 'secret.reset.code',
@@ -100,7 +100,7 @@ final class SentinelUserTest extends WebTestCase
     public function getResetPassWordCodeWorks()
     {
         /** @var Capsule $capsule */
-        $capsule = $this->container->get(Capsule::class);
+        $capsule = $this->container->get(Capsule\Manager::class);
         $capsule->getConnection()->query()->from('reminders')->insert([
             'user_id' => self::$user->getId(),
             'code'    => 'secret.reset.code',
@@ -125,7 +125,7 @@ final class SentinelUserTest extends WebTestCase
     public function attemptResetPasswordWorks()
     {
         /** @var Capsule $capsule */
-        $capsule = $this->container->get(Capsule::class);
+        $capsule = $this->container->get(Capsule\Manager::class);
         $capsule->getConnection()->query()->from('reminders')->insert([
             'user_id' => self::$user->getId(),
             'code'    => 'secret.reset.code',

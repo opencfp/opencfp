@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Provider;
 
 use Cartalyst\Sentinel\Sentinel;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule;
 use OpenCFP\Application;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Model\Airport;
@@ -63,8 +63,8 @@ final class ApplicationServiceProvider implements ServiceProviderInterface, Even
             return new IlluminateUserRepository(new User());
         };
 
-        $app[Capsule::class] = function ($app) {
-            $capsule = new Capsule();
+        $app[Capsule\Manager::class] = function ($app) {
+            $capsule = new Capsule\Manager();
 
             $capsule->addConnection([
                 'driver'    => 'mysql',
@@ -97,6 +97,6 @@ final class ApplicationServiceProvider implements ServiceProviderInterface, Even
 
     public function subscribe(Container $app, EventDispatcherInterface $dispatcher)
     {
-        $dispatcher->addSubscriber(new DatabaseSetupListener($app[Capsule::class]));
+        $dispatcher->addSubscriber(new DatabaseSetupListener($app[Capsule\Manager::class]));
     }
 }

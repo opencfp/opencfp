@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule;
 use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -68,8 +68,8 @@ final class MigrationsTest extends WebTestCase
         ->unprepared('DROP DATABASE IF EXISTS`cfp_test`; CREATE DATABASE `cfp_test`; USE `cfp_test`;');
     }
 
-    private function getCapsule(): Capsule
+    private function getCapsule(): Capsule\Manager
     {
-        return $this->container->get(Capsule::class);
+        return $this->container->get(Capsule\Manager::class);
     }
 }

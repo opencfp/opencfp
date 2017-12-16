@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Application;
 
+use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery as m;
 use Mockery\MockInterface;
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Model\Talk;
@@ -38,7 +38,7 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->identityProvider = m::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
+        $this->identityProvider = Mockery::mock(\OpenCFP\Domain\Services\IdentityProvider::class);
 
         $this->sut = new Speakers($this->identityProvider);
     }
@@ -154,7 +154,7 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerWithNoTalks(): \stdClass
     {
         // Set up stub speaker.
-        $stub = m::mock(\stdClass::class);
+        $stub = Mockery::mock(\stdClass::class);
         $stub->shouldReceive('talks')->andReturnSelf();
         $stub->shouldReceive('find')->andReturnNull();
 
@@ -164,11 +164,11 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerFromMisbehavingRelation(): \stdClass
     {
         // Set up stub speaker.
-        $stub     = m::mock(\stdClass::class);
+        $stub     = Mockery::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
-        $talk = m::mock(\stdClass::class);
+        $talk = Mockery::mock(\stdClass::class);
         $talk->shouldReceive('find')->andReturn(
             new Talk([
                 'id'      => 1,
@@ -184,11 +184,11 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerWithOneTalk(): \stdClass
     {
         // Set up stub speaker.
-        $stub     = m::mock(\stdClass::class);
+        $stub     = Mockery::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.
-        $talk = m::mock(\stdClass::class);
+        $talk = Mockery::mock(\stdClass::class);
         $talk->shouldReceive('find')->andReturn(
             new Talk([
                 'id'      => 1,
@@ -204,7 +204,7 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
     private function getSpeakerWithManyTalks(): \stdClass
     {
         // Set up stub speaker.
-        $stub     = m::mock(\stdClass::class);
+        $stub     = Mockery::mock(\stdClass::class);
         $stub->id = self::SPEAKER_ID;
 
         // Set up talks.

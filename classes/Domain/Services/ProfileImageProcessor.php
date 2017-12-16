@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Services;
 
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\ImageManagerStatic;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -71,7 +71,7 @@ class ProfileImageProcessor
         try {
             $file->move($this->publishDir, $tempFilename);
 
-            $speakerPhoto = Image::make($this->publishDir . '/' . $tempFilename);
+            $speakerPhoto = ImageManagerStatic::make($this->publishDir . '/' . $tempFilename);
 
             if ($speakerPhoto->height() > $speakerPhoto->width()) {
                 $speakerPhoto->resize($this->size, null, function ($constraint) {

@@ -16,7 +16,7 @@ namespace OpenCFP\Test\Unit\Domain\Talk;
 use Illuminate\Database\Eloquent;
 use Illuminate\Support\Collection;
 use Localheinz\Test\Util\Helper;
-use Mockery as m;
+use Mockery;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
@@ -36,8 +36,8 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getSpeakerReturnsSpeakerProfile()
     {
-        $user          = m::mock(User::class);
-        $talk          = m::mock(Talk::class)->makePartial()->makePartial();
+        $user          = Mockery::mock(User::class);
+        $talk          = Mockery::mock(Talk::class)->makePartial()->makePartial();
         $talk->speaker = $user;
         $talkProfile   = new TalkProfile($talk);
         $speaker       = $talkProfile->getSpeaker();
@@ -49,7 +49,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getIdReturnsId()
     {
-        $talk        = m::mock(Talk::class)->makePartial();
+        $talk        = Mockery::mock(Talk::class)->makePartial();
         $talk->id    = 2;
         $talkProfile = new TalkProfile($talk);
         $this->assertSame($talk->id, $talkProfile->getId());
@@ -60,7 +60,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getTitleReturnsTitle()
     {
-        $talk        = m::mock(Talk::class)->makePartial();
+        $talk        = Mockery::mock(Talk::class)->makePartial();
         $talk->title = 'Title';
         $talkProfile = new TalkProfile($talk);
         $this->assertSame($talk->title, $talkProfile->getTitle());
@@ -71,7 +71,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getDescriptionReturnsDescription()
     {
-        $talk              = m::mock(Talk::class)->makePartial();
+        $talk              = Mockery::mock(Talk::class)->makePartial();
         $talk->description = 'Describe the talk';
         $talkProfile       = new TalkProfile($talk);
         $this->assertSame($talk->description, $talkProfile->getDescription());
@@ -82,7 +82,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getOtherReturnsOther()
     {
-        $talk        = m::mock(Talk::class)->makePartial();
+        $talk        = Mockery::mock(Talk::class)->makePartial();
         $talk->other = 'Other information';
         $talkProfile = new TalkProfile($talk);
         $this->assertSame($talk->other, $talkProfile->getOther());
@@ -93,7 +93,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getTypeReturnsType()
     {
-        $talk        = m::mock(Talk::class)->makePartial();
+        $talk        = Mockery::mock(Talk::class)->makePartial();
         $talk->type  = 'api';
         $talkProfile = new TalkProfile($talk);
         $this->assertSame($talk->type, $talkProfile->getType());
@@ -104,7 +104,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getLevelReturnsLevel()
     {
-        $talk        = m::mock(Talk::class)->makePartial();
+        $talk        = Mockery::mock(Talk::class)->makePartial();
         $talk->level = 'starter';
         $talkProfile = new TalkProfile($talk);
         $this->assertSame($talk->level, $talkProfile->getLevel());
@@ -115,7 +115,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getCategoryReturnsCategory()
     {
-        $talk           = m::mock(Talk::class)->makePartial();
+        $talk           = Mockery::mock(Talk::class)->makePartial();
         $talk->category = 'blep';
         $talkProfile    = new TalkProfile($talk);
         $this->assertSame($talk->category, $talkProfile->getCategory());
@@ -126,7 +126,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getSlidesReturnsSlides()
     {
-        $talk         = m::mock(Talk::class)->makePartial();
+        $talk         = Mockery::mock(Talk::class)->makePartial();
         $talk->slides = 'http://www.example.com/slides.png';
         $talkProfile  = new TalkProfile($talk);
         $this->assertSame($talk->slides, $talkProfile->getSlides());
@@ -137,7 +137,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function isDesiredReturnsBool()
     {
-        $talk          = m::mock(Talk::class)->makePartial();
+        $talk          = Mockery::mock(Talk::class)->makePartial();
         $talk->desired = 0;
         $talkProfile   = new TalkProfile($talk);
         $isDesired     = $talkProfile->isDesired();
@@ -149,7 +149,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function isSponsorReturnsBool()
     {
-        $talk          = m::mock(Talk::class)->makePartial();
+        $talk          = Mockery::mock(Talk::class)->makePartial();
         $talk->sponsor = 1;
         $talkProfile   = new TalkProfile($talk);
         $isSponsor     = $talkProfile->isSponsor();
@@ -161,7 +161,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function isSpeakerFavoriteReturnsBool()
     {
-        $talk              = m::mock(Talk::class)->makePartial();
+        $talk              = Mockery::mock(Talk::class)->makePartial();
         $talk->favorite    = 1;
         $talkProfile       = new TalkProfile($talk);
         $isSpeakerFavorite = $talkProfile->isSpeakerFavorite();
@@ -173,7 +173,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function isSelectedReturnsBool()
     {
-        $talk           = m::mock(Talk::class)->makePartial();
+        $talk           = Mockery::mock(Talk::class)->makePartial();
         $talk->selected = 0;
         $talkProfile    = new TalkProfile($talk);
         $isSelected     = $talkProfile->isSelected();
@@ -185,9 +185,9 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getCommentsReturnsComments()
     {
-        $many = m::mock(Eloquent\Relations\HasMany::class);
+        $many = Mockery::mock(Eloquent\Relations\HasMany::class);
         $many->shouldReceive('get')->andReturn(collect());
-        $talk = m::mock(Talk::class)->makePartial();
+        $talk = Mockery::mock(Talk::class)->makePartial();
         $talk->shouldReceive('comments')->andReturn($many);
         $talkProfile = new TalkProfile($talk);
         $comments    = $talkProfile->getComments();
@@ -200,7 +200,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
     {
         $userId = $this->faker()->numberBetween(1);
 
-        $talk = m::mock(Talk::class);
+        $talk = Mockery::mock(Talk::class);
 
         $talk
             ->shouldReceive('getMetaFor')
@@ -222,14 +222,14 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
     {
         $userId = $this->faker()->numberBetween(1);
 
-        $talkMeta = m::mock(TalkMeta::class);
+        $talkMeta = Mockery::mock(TalkMeta::class);
 
         $talkMeta
             ->shouldReceive('getAttribute')
             ->with('rating')
             ->andReturn(null);
 
-        $talk = m::mock(Talk::class);
+        $talk = Mockery::mock(Talk::class);
 
         $talk
             ->shouldReceive('getMetaFor')
@@ -254,14 +254,14 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
         $userId = $faker->numberBetween(1);
         $rating = $this->faker()->numberBetween(1);
 
-        $talkMeta = m::mock(TalkMeta::class);
+        $talkMeta = Mockery::mock(TalkMeta::class);
 
         $talkMeta
             ->shouldReceive('getAttribute')
             ->with('rating')
             ->andReturn((string) $rating);
 
-        $talk = m::mock(Talk::class);
+        $talk = Mockery::mock(Talk::class);
 
         $talk
             ->shouldReceive('getMetaFor')
@@ -283,7 +283,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
     {
         $userId = $this->faker()->numberBetween(1);
 
-        $talk = m::mock(Talk::class);
+        $talk = Mockery::mock(Talk::class);
 
         $talk
             ->shouldReceive('getMetaFor')
@@ -305,14 +305,14 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
     {
         $userId = $this->faker()->numberBetween(1);
 
-        $talkMeta = m::mock(TalkMeta::class);
+        $talkMeta = Mockery::mock(TalkMeta::class);
 
         $talkMeta
             ->shouldReceive('getAttribute')
             ->with('viewed')
             ->andReturn('0');
 
-        $talk = m::mock(Talk::class);
+        $talk = Mockery::mock(Talk::class);
 
         $talk
             ->shouldReceive('getMetaFor')
@@ -334,14 +334,14 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
     {
         $userId = $this->faker()->numberBetween(1);
 
-        $talkMeta = m::mock(TalkMeta::class);
+        $talkMeta = Mockery::mock(TalkMeta::class);
 
         $talkMeta
             ->shouldReceive('getAttribute')
             ->with('viewed')
             ->andReturn('1');
 
-        $talk = m::mock(Talk::class);
+        $talk = Mockery::mock(Talk::class);
 
         $talk
             ->shouldReceive('getMetaFor')
@@ -363,13 +363,13 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
     {
         $userId = $this->faker()->numberBetween(1);
 
-        $relation = m::mock(Eloquent\Relations\HasMany::class);
+        $relation = Mockery::mock(Eloquent\Relations\HasMany::class);
 
         $relation
             ->shouldReceive('get')
             ->andReturn(new Collection([]));
 
-        $talk = m::mock(Talk::class);
+        $talk = Mockery::mock(Talk::class);
 
         $talk
             ->shouldReceive('favorites')
@@ -393,14 +393,14 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
         $userId      = $faker->unique()->numberBetween(1);
         $adminUserId = $faker->unique()->numberBetween(1);
 
-        $favorite = m::mock(Favorite::class);
+        $favorite = Mockery::mock(Favorite::class);
 
         $favorite
             ->shouldReceive('getAttribute')
             ->with('admin_user_id')
             ->andReturn((string) $adminUserId);
 
-        $relation = m::mock(Eloquent\Relations\HasMany::class);
+        $relation = Mockery::mock(Eloquent\Relations\HasMany::class);
 
         $relation
             ->shouldReceive('get')
@@ -408,7 +408,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
                 $favorite,
             ]));
 
-        $talk = m::mock(Talk::class);
+        $talk = Mockery::mock(Talk::class);
 
         $talk
             ->shouldReceive('favorites')
@@ -432,21 +432,21 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
         $userId      = $faker->unique()->numberBetween(1);
         $adminUserId = $faker->unique()->numberBetween(1);
 
-        $favoriteOne = m::mock(Favorite::class);
+        $favoriteOne = Mockery::mock(Favorite::class);
 
         $favoriteOne
             ->shouldReceive('getAttribute')
             ->with('admin_user_id')
             ->andReturn((string) $adminUserId);
 
-        $favoriteTwo = m::mock(Favorite::class);
+        $favoriteTwo = Mockery::mock(Favorite::class);
 
         $favoriteTwo
             ->shouldReceive('getAttribute')
             ->with('admin_user_id')
             ->andReturn((string) $userId);
 
-        $relation = m::mock(Eloquent\Relations\HasMany::class);
+        $relation = Mockery::mock(Eloquent\Relations\HasMany::class);
 
         $relation
             ->shouldReceive('get')
@@ -455,7 +455,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
                 $favoriteTwo,
             ]));
 
-        $talk = m::mock(Talk::class);
+        $talk = Mockery::mock(Talk::class);
 
         $talk
             ->shouldReceive('favorites')

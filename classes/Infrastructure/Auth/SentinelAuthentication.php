@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
-use Cartalyst\Sentinel\Users\UserInterface as SentinelUserInterface;
+use Cartalyst\Sentinel\Users;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\AuthenticationException;
@@ -60,13 +60,13 @@ final class SentinelAuthentication implements Authentication
     {
         $user = $this->sentinel->getUser();
 
-        if ($user instanceof SentinelUserInterface) {
+        if ($user instanceof Users\UserInterface) {
             return new SentinelUser($user, $this->sentinel);
         }
 
         throw new NotAuthenticatedException();
     }
-    
+
     public function isAuthenticated(): bool
     {
         return $this->sentinel->check() !== false;

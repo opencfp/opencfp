@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Infrastructure\Event;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -21,11 +21,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class DatabaseSetupListener implements EventSubscriberInterface
 {
     /**
-     * @var Capsule
+     * @var Capsule\Manager
      */
     private $capsule;
 
-    public function __construct(Capsule $capsule)
+    public function __construct(Capsule\Manager $capsule)
     {
         $this->capsule = $capsule;
     }

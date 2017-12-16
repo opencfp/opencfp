@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace OpenCFP\Infrastructure\Auth;
 
-use Cartalyst\Sentinel\Sessions\SessionInterface as SentinelSessionInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface as SymfonySessionInterface;
+use Cartalyst\Sentinel\Sessions;
+use Symfony\Component\HttpFoundation;
 
-final class SymfonySentinelSession implements SentinelSessionInterface
+final class SymfonySentinelSession implements Sessions\SessionInterface
 {
     /**
-     * @var SymfonySessionInterface
+     * @var HttpFoundation\Session\SessionInterface
      */
     private $session;
 
@@ -28,7 +28,7 @@ final class SymfonySentinelSession implements SentinelSessionInterface
      */
     private $key;
 
-    public function __construct(SymfonySessionInterface $session, $key = null)
+    public function __construct(HttpFoundation\Session\SessionInterface $session, $key = null)
     {
         $this->session = $session;
         $this->key     = $key ?: 'cartalyst_sentinel';

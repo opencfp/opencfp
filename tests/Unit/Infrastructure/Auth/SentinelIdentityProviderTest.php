@@ -15,7 +15,7 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
 use Localheinz\Test\Util\Helper;
-use Mockery as m;
+use Mockery;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Repository\UserRepository;
 use OpenCFP\Domain\Services\IdentityProvider;
@@ -50,7 +50,7 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
 
         $userRepository = $this->createUserRepositoryMock();
 
-        $userRepository->shouldNotReceive(m::any());
+        $userRepository->shouldNotReceive(Mockery::any());
 
         $provider = new SentinelIdentityProvider(
             $sentinel,
@@ -107,7 +107,7 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
      */
     private function getSentinel()
     {
-        return m::mock(Sentinel::class);
+        return Mockery::mock(Sentinel::class);
     }
 
     /**
@@ -115,7 +115,7 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
      */
     private function getSentinelUserMock()
     {
-        return m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        return Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
     }
 
     /**
@@ -123,7 +123,7 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
      */
     private function createUserRepositoryMock()
     {
-        return m::mock(UserRepository::class);
+        return Mockery::mock(UserRepository::class);
     }
 
     /**
@@ -131,6 +131,6 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
      */
     private function getUserMock()
     {
-        return m::mock(User::class);
+        return Mockery::mock(User::class);
     }
 }
