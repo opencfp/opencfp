@@ -16,16 +16,16 @@ namespace OpenCFP\Infrastructure\Auth;
 use OpenCFP\Domain\Services\RequestValidator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 final class CsrfValidator implements RequestValidator
 {
     /**
-     * @var CsrfTokenManager
+     * @var CsrfTokenManagerInterface
      */
     private $manager;
 
-    public function __construct(CsrfTokenManager $manager)
+    public function __construct(CsrfTokenManagerInterface $manager)
     {
         $this->manager = $manager;
     }
