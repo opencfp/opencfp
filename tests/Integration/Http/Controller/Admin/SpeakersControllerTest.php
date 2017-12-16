@@ -41,7 +41,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyContains($this->users->first()->first_name, $response);
-        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
+        $this->assertSessionHasNoFlashMessage($this->session());
     }
 
     /**
@@ -57,7 +57,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyContains($user->first_name, $response);
-        $this->assertSessionHasNoFlashMessage($this->container->get('session'));
+        $this->assertSessionHasNoFlashMessage($this->session());
     }
 
     /**
@@ -73,7 +73,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('admin/speakers', $response);
-        $this->assertSessionHasFlashMessage('Error', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('Error', $this->session());
     }
 
     /**
@@ -95,7 +95,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('admin/speakers', $response);
-        $this->assertSessionHasFlashMessage('We were unable to promote the Admin. Please try again.', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('We were unable to promote the Admin. Please try again.', $this->session());
     }
 
     /**
@@ -122,7 +122,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('admin/speakers', $response);
-        $this->assertSessionHasFlashMessage('User already is in the Admin group.', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('User already is in the Admin group.', $this->session());
     }
 
     /**
@@ -144,7 +144,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('admin/speakers', $response);
-        $this->assertSessionHasFlashMessage('success', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('success', $this->session());
     }
 
     /**
@@ -183,7 +183,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('/admin/speakers', $response);
-        $this->assertSessionHasFlashMessage('We were unable to remove the Admin. Please try again.', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('We were unable to remove the Admin. Please try again.', $this->session());
     }
 
     /**
@@ -206,7 +206,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('/admin/speakers', $response);
-        $this->assertSessionHasFlashMessage('Sorry, you cannot remove yourself as Admin.', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('Sorry, you cannot remove yourself as Admin.', $this->session());
     }
 
     /**
@@ -233,7 +233,7 @@ final class SpeakersControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('/admin/speakers', $response);
-        $this->assertSessionHasFlashMessage('success', $this->container->get('session'));
+        $this->assertSessionHasFlashMessage('success', $this->session());
     }
 
     /**

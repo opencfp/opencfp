@@ -84,7 +84,7 @@ final class SignupControllerTest extends WebTestCase
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('dashboard', $response);
-        $this->assertSessionHasFlashMessage("You've successfully created your account!", $this->container->get('session'));
+        $this->assertSessionHasFlashMessage("You've successfully created your account!", $this->session());
     }
 
     /**
@@ -110,7 +110,7 @@ final class SignupControllerTest extends WebTestCase
             'coc'            => 1,
         ]);
 
-        $this->assertSessionHasFlashMessage("You've successfully created your account!", $this->container->get('session'));
+        $this->assertSessionHasFlashMessage("You've successfully created your account!", $this->session());
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('dashboard', $response);
     }

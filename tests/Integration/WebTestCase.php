@@ -32,6 +32,7 @@ use Pimple\Psr11\Container;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session;
 
 abstract class WebTestCase extends \Silex\WebTestCase
 {
@@ -240,5 +241,10 @@ abstract class WebTestCase extends \Silex\WebTestCase
         $identityProvider->overrideCurrentUser(new User(['id' => $id]));
 
         return $this;
+    }
+
+    final protected function session(): Session\SessionInterface
+    {
+        return $this->container->get('session');
     }
 }
