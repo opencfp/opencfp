@@ -112,21 +112,6 @@ abstract class WebTestCase extends \Silex\WebTestCase
         }
     }
 
-    /**
-     * Swap implementations of a service in the container.
-     *
-     * @param string $service
-     * @param object $instance
-     *
-     * @return object
-     */
-    protected function swap($service, $instance)
-    {
-        $this->app[$service] = $instance;
-
-        return $instance;
-    }
-
     public function call(string $method, string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         $client = $this->createClient();
@@ -188,7 +173,6 @@ abstract class WebTestCase extends \Silex\WebTestCase
     {
         $config                                     = $this->container->get('config');
         $config['application']['online_conference'] = true;
-        $this->swap('config', $config);
         $this->container->get('twig')->addGlobal('site', $config['application']);
 
         return $this;
