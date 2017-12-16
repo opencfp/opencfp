@@ -15,8 +15,8 @@ namespace OpenCFP\Domain\Talk;
 
 use Illuminate\Database\Eloquent;
 use Illuminate\Support\Collection;
-use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Speaker\SpeakerProfile;
+use OpenCFP\Domain\Model;
+use OpenCFP\Domain\Speaker;
 
 /**
  * This class is a read only version of a Talk, to be used in the views
@@ -26,7 +26,7 @@ use OpenCFP\Domain\Speaker\SpeakerProfile;
 class TalkProfile
 {
     /**
-     * @var Talk
+     * @var Model\Talk
      */
     private $talk;
 
@@ -35,15 +35,15 @@ class TalkProfile
      */
     private $userId;
 
-    public function __construct(Talk $talk, int $userId = 0)
+    public function __construct(Model\Talk $talk, int $userId = 0)
     {
         $this->talk   = $talk;
         $this->userId = $userId;
     }
 
-    public function getSpeaker(): SpeakerProfile
+    public function getSpeaker(): Speaker\SpeakerProfile
     {
-        return new SpeakerProfile($this->talk->speaker);
+        return new Speaker\SpeakerProfile($this->talk->speaker);
     }
 
     public function getId()
