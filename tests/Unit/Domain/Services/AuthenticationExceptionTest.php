@@ -17,9 +17,6 @@ use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Services\AuthenticationException;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Domain\Services\AuthenticationException
- */
 final class AuthenticationExceptionTest extends Framework\TestCase
 {
     use Helper;
@@ -28,7 +25,7 @@ final class AuthenticationExceptionTest extends Framework\TestCase
     {
         $this->assertClassIsFinal(AuthenticationException::class);
     }
-    
+
     public function testIsRuntimeException()
     {
         $this->assertClassExtends(\RuntimeException::class, AuthenticationException::class);

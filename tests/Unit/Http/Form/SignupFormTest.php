@@ -17,9 +17,6 @@ use Mockery as m;
 use OpenCFP\Http\Form\SignupForm;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Http\Form\SignupForm
- */
 final class SignupFormTest extends \PHPUnit\Framework\TestCase
 {
     private $purifier;

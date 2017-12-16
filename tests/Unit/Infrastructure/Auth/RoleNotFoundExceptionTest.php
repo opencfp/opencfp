@@ -16,9 +16,6 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Infrastructure\Auth\RoleNotFoundException;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\RoleNotFoundException
- */
 final class RoleNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

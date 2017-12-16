@@ -19,9 +19,6 @@ use org\bovigo\vfs;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
 
-/**
- * @covers \OpenCFP\Console\Command\ClearCacheCommand
- */
 final class ClearCacheCommandTest extends Framework\TestCase
 {
     use Helper;

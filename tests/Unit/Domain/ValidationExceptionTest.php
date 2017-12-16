@@ -17,9 +17,6 @@ use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\ValidationException;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Domain\ValidationException
- */
 final class ValidationExceptionTest extends Framework\TestCase
 {
     use Helper;

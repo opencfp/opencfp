@@ -16,10 +16,6 @@ namespace OpenCFP\Test\Unit;
 use OpenCFP\Application;
 use OpenCFP\Environment;
 
-/**
- * @covers \OpenCFP\Application
- * @group db
- */
 final class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
     /** @var Application */

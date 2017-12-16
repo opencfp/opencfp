@@ -15,9 +15,6 @@ namespace OpenCFP\Test\Unit\Domain;
 
 use OpenCFP\Domain\CallForPapers;
 
-/**
- * @covers \OpenCFP\Domain\CallForPapers
- */
 final class CallForPapersTest extends \PHPUnit\Framework\TestCase
 {
     /**

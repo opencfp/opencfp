@@ -17,9 +17,6 @@ use Localheinz\Test\Util\Helper;
 use Mockery;
 use OpenCFP\Infrastructure\Auth\SymfonySentinelSession;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\SymfonySentinelSession
- */
 final class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

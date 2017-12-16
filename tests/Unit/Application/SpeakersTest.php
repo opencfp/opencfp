@@ -21,9 +21,6 @@ use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\IdentityProvider;
 
-/**
- * @covers \OpenCFP\Application\Speakers
- */
 final class SpeakersTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;

@@ -19,10 +19,6 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Console\Application;
 use Symfony\Component\Console;
 
-/**
- * @group db
- * @covers \OpenCFP\Console\Application
- */
 final class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

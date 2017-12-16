@@ -17,9 +17,6 @@ use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\EntityNotFoundException;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Domain\EntityNotFoundException
- */
 final class EntityNotFoundExceptionTest extends Framework\TestCase
 {
     use Helper;

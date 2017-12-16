@@ -24,9 +24,6 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Talk\TalkProfile;
 
-/**
- * @covers \OpenCFP\Domain\Talk\TalkProfile
- */
 final class TalkProfileTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

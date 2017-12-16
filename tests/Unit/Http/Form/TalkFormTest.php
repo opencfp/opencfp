@@ -15,9 +15,6 @@ namespace OpenCFP\Test\Unit\Http\Form;
 
 use Localheinz\Test\Util\Helper;
 
-/**
- * @covers \OpenCFP\Http\Form\TalkForm
- */
 final class TalkFormTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

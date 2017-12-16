@@ -21,9 +21,6 @@ use OpenCFP\Infrastructure\Auth\CsrfValidator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\CsrfValidator
- */
 final class CsrfValidatorTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

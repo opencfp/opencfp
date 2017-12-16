@@ -17,9 +17,6 @@ use OpenCFP\Http\Action\Page\TalkIdeasAction;
 use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Http\Action\Page\TalkIdeasAction
- */
 final class TalkIdeasActionTest extends AbstractActionTestCase
 {
     public function testItReturnsTheContentOfTheTwigInAResponseObject()
