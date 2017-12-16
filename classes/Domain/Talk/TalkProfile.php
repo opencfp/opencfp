@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Talk;
 
+use Illuminate\Database\Eloquent;
 use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
@@ -113,23 +114,23 @@ class TalkProfile
     public function getRating(): int
     {
         try {
-            return (int) ($this->talk
-                ->getMetaFor($this->userId)
-                ->rating);
-        } catch (\Exception $e) {
+            $talkMeta = $this->talk->getMetaFor($this->userId);
+        } catch (Eloquent\ModelNotFoundException $exception) {
             return 0;
         }
+
+        return (int) $talkMeta->rating;
     }
 
     public function isViewedByMe(): bool
     {
         try {
-            return $this->talk
-                    ->getMetaFor($this->userId)
-                    ->viewed == 1;
-        } catch (\Exception $e) {
+            $talkMeta = $this->talk->getMetaFor($this->userId);
+        } catch (Eloquent\ModelNotFoundException $exception) {
             return false;
         }
+
+        return $talkMeta->viewed == 1;
     }
 
     public function isMyFavorite(): bool
