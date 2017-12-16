@@ -41,7 +41,7 @@ final class TwigServiceProvider implements ServiceProviderInterface, EventListen
             'twig.path'    => $app['path']->templatesPath(),
             'twig.options' => [
                 'debug' => !$app['env']->isProduction(),
-                'cache' => $app->config('cache.enabled') ? $app['path']->cacheTwigPath() : false,
+                'cache' => $app['path']->cacheTwigPath(),
             ],
         ]);
 

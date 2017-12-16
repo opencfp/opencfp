@@ -305,8 +305,8 @@ $ bin/opencfp user:create --first_name="Admin" --last_name="Name" --email="admin
 
 ### [Clear Caches](#clear-caches)
 
-OpenCFP uses Twig as a templating engine and HTML Purifier for input filtering. Both of these packages maintain a cache,
-if enabled. If you need to clear all application caches:
+OpenCFP uses Twig as a templating engine and HTML Purifier for input filtering. Both of these packages maintain a cache.
+If you need to clear all application caches:
 
 ```
 $ bin/opencfp cache:clear
@@ -383,4 +383,4 @@ The default phpunit.xml.dist file is in the root directory for the project.
 **I'm getting weird permissions-related errors to do with HTML Purifier.**
 
 You may need to edit directory permissions for some vendor packages such as HTML Purifier. Check the `/cache` directory's
-permissions first (if you have `cache.enabled` set to `true`).
+permissions first.
