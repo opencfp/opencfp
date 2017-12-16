@@ -1,0 +1,39 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  Cartalyst\Sentinel\Sentinel:
+    calls:
+      - [setReminderRepository, ['@Cartalyst\Sentinel\Reminders\ReminderRepositoryInterface']]
+      - [setThrottleRepository, ['@Cartalyst\Sentinel\Throttling\ThrottleRepositoryInterface']]
+
+  Cartalyst\Sentinel\Activations\ActivationRepositoryInterface:
+    class: Cartalyst\Sentinel\Activations\IlluminateActivationRepository
+
+  Cartalyst\Sentinel\Cookies\CookieInterface:
+    class: Cartalyst\Sentinel\Cookies\NullCookie
+
+  Cartalyst\Sentinel\Hashing\HasherInterface:
+    class: Cartalyst\Sentinel\Hashing\NativeHasher
+
+  Cartalyst\Sentinel\Persistences\PersistenceRepositoryInterface:
+    class: Cartalyst\Sentinel\Persistences\IlluminatePersistenceRepository
+
+  Cartalyst\Sentinel\Reminders\ReminderRepositoryInterface:
+    class: Cartalyst\Sentinel\Reminders\IlluminateReminderRepository
+
+  Cartalyst\Sentinel\Roles\RoleRepositoryInterface:
+    class: Cartalyst\Sentinel\Roles\IlluminateRoleRepository
+
+  Cartalyst\Sentinel\Sessions\SessionInterface:
+    alias: OpenCFP\Infrastructure\Auth\SymfonySentinelSession
+
+  Cartalyst\Sentinel\Throttling\ThrottleRepositoryInterface:
+    class: Cartalyst\Sentinel\Throttling\IlluminateThrottleRepository
+
+  Cartalyst\Sentinel\Users\UserRepositoryInterface:
+    class: Cartalyst\Sentinel\Users\IlluminateUserRepository
+
+  Illuminate\Contracts\Events\Dispatcher:
+    class: Illuminate\Events\Dispatcher

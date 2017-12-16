@@ -17,33 +17,29 @@ use Illuminate\Database\Capsule;
 use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use OpenCFP\Application;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Kernel;
 use OpenCFP\Test\Helper\MockableAuthenticator;
 use OpenCFP\Test\Helper\MockableIdentityProvider;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Helper\ResponseHelper;
-use Pimple\Psr11\Container;
-use Psr\Container\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session;
 
-abstract class WebTestCase extends \Silex\WebTestCase
+abstract class WebTestCase extends KernelTestCase
 {
     use Helper;
     use MockeryPHPUnitIntegration;
     use ResponseHelper;
-
-    /**
-     * @var Application
-     */
-    protected $app;
 
     /**
      * @var ContainerInterface
@@ -71,8 +67,6 @@ abstract class WebTestCase extends \Silex\WebTestCase
 
     protected function setUp()
     {
-        parent::setUp();
-
         $this->refreshContainer();
 
         if ($this instanceof RequiresDatabaseReset) {
@@ -80,17 +74,15 @@ abstract class WebTestCase extends \Silex\WebTestCase
         }
     }
 
-    public function createApplication()
+    protected static function getKernelClass()
     {
-        return new Application(
-            __DIR__ . '/../..',
-            Environment::testing()
-        );
+        return Kernel::class;
     }
 
     private function refreshContainer()
     {
-        $this->container = new Container($this->app);
+        self::bootKernel(['environment' => Environment::TYPE_TESTING, 'debug' => true]);
+        $this->container = self::$kernel->getContainer();
     }
 
     private function resetDatabase()
@@ -111,6 +103,11 @@ abstract class WebTestCase extends \Silex\WebTestCase
         if (isset($uses[RefreshDatabase::class])) {
             static::setUpDatabase();
         }
+    }
+
+    protected function createClient(): Client
+    {
+        return $this->container->get('test.client');
     }
 
     public function call(string $method, string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
@@ -172,9 +169,9 @@ abstract class WebTestCase extends \Silex\WebTestCase
 
     public function isOnlineConference(): self
     {
-        $config                                     = $this->container->get('config');
-        $config['application']['online_conference'] = true;
-        $this->container->get('twig')->addGlobal('site', $config['application']);
+        $config                      = $this->container->getParameter('config.application');
+        $config['online_conference'] = true;
+        $this->container->get('twig')->addGlobal('site', $config);
 
         return $this;
     }

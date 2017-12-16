@@ -1,0 +1,47 @@
+imports:
+  - { resource: services/*.yml }
+
+framework:
+  # We currently do not depend on this setting, yet it has to be present.
+  secret: opencfp
+  form: ~
+  csrf_protection: ~
+  session:
+    handler_id: session.handler.native_file
+  router:
+    resource: '%kernel.project_dir%/resources/config/routing.yml'
+
+wouterj_eloquent:
+  driver:   mysql
+  host:     '%database.host%'
+  database: '%database.database%'
+  username: '%database.user%'
+  password: '%database.password%'
+  charset:   utf8
+  collation: utf8_unicode_ci
+  prefix:    ~
+  eloquent: true
+
+twig:
+  default_path: '%kernel.project_dir%/resources/views'
+  debug: '%kernel.debug%'
+  globals:
+    app:
+      config: '%config.all%'
+    site:       '%config.application%'
+    talkHelper: '@OpenCFP\Http\View\TalkHelper'
+
+monolog:
+  handlers:
+    opencfp:
+      type: stream
+      path: '%kernel.logs_dir%/app.log'
+      level: '%log.level%'
+
+swiftmailer:
+  host:       '%mail.host%'
+  port:       '%mail.port%'
+  username:   '%mail.username%'
+  password:   '%mail.password%'
+  encryption: '%mail.encryption%'
+  auth_mode:  '%mail.auth_mode%'

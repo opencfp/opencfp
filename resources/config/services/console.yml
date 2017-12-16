@@ -1,0 +1,21 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OpenCFP\Console\Command\:
+    resource: '%kernel.project_dir%/classes/Console/Command/*'
+
+  OpenCFP\Console\Command\ClearCacheCommand:
+    arguments:
+      $paths: ['%kernel.cache_dir%']
+
+  OpenCFP\Console\Application:
+    public: true
+    autowire: false
+    calls:
+      - [setDispatcher, ['@event_dispatcher']]
+      - [add, ['@OpenCFP\Console\Command\ClearCacheCommand']]
+      - [add, ['@OpenCFP\Console\Command\UserCreateCommand']]
+      - [add, ['@OpenCFP\Console\Command\UserDemoteCommand']]
+      - [add, ['@OpenCFP\Console\Command\UserPromoteCommand']]

@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OpenCFP\Infrastructure\Templating\TwigExtension:
+    tags: [twig.extension]
+
+  Aptoma\Twig\Extension\MarkdownExtension:
+    tags: [twig.extension]
+
+  Aptoma\Twig\Extension\MarkdownEngineInterface:
+    class: Aptoma\Twig\Extension\MarkdownEngine\MichelfMarkdownEngine
+
+  Twig_Extensions_Extension_Text:
+    class: Twig_Extensions_Extension_Text
+    tags: [twig.extension]
