@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Domain\Talk;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent;
 use Illuminate\Support\Collection;
+use Localheinz\Test\Util\Helper;
 use Mockery as m;
+use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Domain\Talk\TalkProfile;
@@ -26,6 +29,8 @@ use OpenCFP\Domain\Talk\TalkProfile;
  */
 final class TalkProfileTest extends \PHPUnit\Framework\TestCase
 {
+    use Helper;
+
     /**
      * @test
      */
@@ -180,7 +185,7 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
      */
     public function getCommentsReturnsComments()
     {
-        $many = m::mock(HasMany::class);
+        $many = m::mock(Eloquent\Relations\HasMany::class);
         $many->shouldReceive('get')->andReturn(collect());
         $talk = m::mock(Talk::class)->makePartial();
         $talk->shouldReceive('comments')->andReturn($many);
@@ -191,33 +196,276 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(0, $comments);
     }
 
-    /**
-     * @test
-     */
-    public function getRatingReturnsZeroWhenNoRatingIsSetByUser()
+    public function testGetRatingReturnsZeroWhenTalkHasNoMeta()
     {
-        $talk        = m::mock(Talk::class)->makePartial();
-        $talkProfile = new TalkProfile($talk);
+        $userId = $this->faker()->numberBetween(1);
+
+        $talk = m::mock(Talk::class);
+
+        $talk
+            ->shouldReceive('getMetaFor')
+            ->with($userId)
+            ->andThrow(new Eloquent\ModelNotFoundException());
+
+        $talkProfile = new TalkProfile(
+            $talk,
+            $userId
+        );
+
         $this->assertSame(0, $talkProfile->getRating());
     }
 
     /**
      * @test
      */
-    public function isViewedReturnsFalseWhenNoMetaIsSetForUser()
+    public function getRatingReturnsZeroWhenTalkHasMetaButNoRating()
     {
-        $talk        = m::mock(Talk::class)->makePartial();
-        $talkProfile = new TalkProfile($talk);
+        $userId = $this->faker()->numberBetween(1);
+
+        $talkMeta = m::mock(TalkMeta::class);
+
+        $talkMeta
+            ->shouldReceive('getAttribute')
+            ->with('rating')
+            ->andReturn(null);
+
+        $talk = m::mock(Talk::class);
+
+        $talk
+            ->shouldReceive('getMetaFor')
+            ->with($userId)
+            ->andReturn($talkMeta);
+
+        $talkProfile = new TalkProfile(
+            $talk,
+            $userId
+        );
+
+        $this->assertSame(0, $talkProfile->getRating());
+    }
+
+    /**
+     * @test
+     */
+    public function getRatingReturnsRatingCastedToIntWhenTalkHasMeta()
+    {
+        $faker = $this->faker();
+
+        $userId = $faker->numberBetween(1);
+        $rating = $this->faker()->numberBetween(1);
+
+        $talkMeta = m::mock(TalkMeta::class);
+
+        $talkMeta
+            ->shouldReceive('getAttribute')
+            ->with('rating')
+            ->andReturn((string) $rating);
+
+        $talk = m::mock(Talk::class);
+
+        $talk
+            ->shouldReceive('getMetaFor')
+            ->with($userId)
+            ->andReturn($talkMeta);
+
+        $talkProfile = new TalkProfile(
+            $talk,
+            $userId
+        );
+
+        $this->assertSame($rating, $talkProfile->getRating());
+    }
+
+    /**
+     * @test
+     */
+    public function isViewedByMeReturnsFalseWhenTalkHasNoMeta()
+    {
+        $userId = $this->faker()->numberBetween(1);
+
+        $talk = m::mock(Talk::class);
+
+        $talk
+            ->shouldReceive('getMetaFor')
+            ->with($userId)
+            ->andThrow(new Eloquent\ModelNotFoundException());
+
+        $talkProfile = new TalkProfile(
+            $talk,
+            $userId
+        );
+
         $this->assertFalse($talkProfile->isViewedByMe());
     }
 
     /**
      * @test
      */
-    public function isMyFavoriteReturnsFalseWhenNoFavoriteSet()
+    public function isViewedByMeReturnsFalseWhenTalkHasMetaAndViewedIsZero()
     {
-        $talk        = m::mock(Talk::class)->makePartial();
-        $talkProfile = new TalkProfile($talk);
+        $userId = $this->faker()->numberBetween(1);
+
+        $talkMeta = m::mock(TalkMeta::class);
+
+        $talkMeta
+            ->shouldReceive('getAttribute')
+            ->with('viewed')
+            ->andReturn('0');
+
+        $talk = m::mock(Talk::class);
+
+        $talk
+            ->shouldReceive('getMetaFor')
+            ->with($userId)
+            ->andReturn($talkMeta);
+
+        $talkProfile = new TalkProfile(
+            $talk,
+            $userId
+        );
+
+        $this->assertFalse($talkProfile->isViewedByMe());
+    }
+
+    /**
+     * @test
+     */
+    public function isViewedByMeReturnsTrueWhenTalkHasMetaAndViewedIsOne()
+    {
+        $userId = $this->faker()->numberBetween(1);
+
+        $talkMeta = m::mock(TalkMeta::class);
+
+        $talkMeta
+            ->shouldReceive('getAttribute')
+            ->with('viewed')
+            ->andReturn('1');
+
+        $talk = m::mock(Talk::class);
+
+        $talk
+            ->shouldReceive('getMetaFor')
+            ->with($userId)
+            ->andReturn($talkMeta);
+
+        $talkProfile = new TalkProfile(
+            $talk,
+            $userId
+        );
+
+        $this->assertTrue($talkProfile->isViewedByMe());
+    }
+
+    /**
+     * @test
+     */
+    public function isMyFavoriteReturnsFalseWhenFavoritesAreEmpty()
+    {
+        $userId = $this->faker()->numberBetween(1);
+
+        $relation = m::mock(Eloquent\Relations\HasMany::class);
+
+        $relation
+            ->shouldReceive('get')
+            ->andReturn(new Collection([]));
+
+        $talk = m::mock(Talk::class);
+
+        $talk
+            ->shouldReceive('favorites')
+            ->andReturn($relation);
+
+        $talkProfile = new TalkProfile(
+            $talk,
+            $userId
+        );
+
         $this->assertFalse($talkProfile->isMyFavorite());
+    }
+
+    /**
+     * @test
+     */
+    public function isMyFavoriteReturnsFalseWhenThereIsNoFavoriteWhereAdminUserIdEqualsUserId()
+    {
+        $faker = $this->faker();
+
+        $userId      = $faker->unique()->numberBetween(1);
+        $adminUserId = $faker->unique()->numberBetween(1);
+
+        $favorite = m::mock(Favorite::class);
+
+        $favorite
+            ->shouldReceive('getAttribute')
+            ->with('admin_user_id')
+            ->andReturn((string) $adminUserId);
+
+        $relation = m::mock(Eloquent\Relations\HasMany::class);
+
+        $relation
+            ->shouldReceive('get')
+            ->andReturn(new Collection([
+                $favorite,
+            ]));
+
+        $talk = m::mock(Talk::class);
+
+        $talk
+            ->shouldReceive('favorites')
+            ->andReturn($relation);
+
+        $talkProfile = new TalkProfile(
+            $talk,
+            $userId
+        );
+
+        $this->assertFalse($talkProfile->isMyFavorite());
+    }
+
+    /**
+     * @test
+     */
+    public function isMyFavoriteReturnsTrueWhenThereIsAFavoriteWhereAdminUserIdEqualsUserId()
+    {
+        $faker = $this->faker();
+
+        $userId      = $faker->unique()->numberBetween(1);
+        $adminUserId = $faker->unique()->numberBetween(1);
+
+        $favoriteOne = m::mock(Favorite::class);
+
+        $favoriteOne
+            ->shouldReceive('getAttribute')
+            ->with('admin_user_id')
+            ->andReturn((string) $adminUserId);
+
+        $favoriteTwo = m::mock(Favorite::class);
+
+        $favoriteTwo
+            ->shouldReceive('getAttribute')
+            ->with('admin_user_id')
+            ->andReturn((string) $userId);
+
+        $relation = m::mock(Eloquent\Relations\HasMany::class);
+
+        $relation
+            ->shouldReceive('get')
+            ->andReturn(new Collection([
+                $favoriteOne,
+                $favoriteTwo,
+            ]));
+
+        $talk = m::mock(Talk::class);
+
+        $talk
+            ->shouldReceive('favorites')
+            ->andReturn($relation);
+
+        $talkProfile = new TalkProfile(
+            $talk,
+            $userId
+        );
+
+        $this->assertTrue($talkProfile->isMyFavorite());
     }
 }
