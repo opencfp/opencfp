@@ -7,37 +7,37 @@
 
     <div class="flex">
         <div class="mr-4 w-3/5">
-            <label for="form-talk-title" class="">Talk Title</label>
-            <input id="form-talk-title" type="text" name="title" class="" placeholder="Talk Title" value="{{ title }}" maxlength="100">
+            <label for="form-talk-title">Talk Title</label>
+            <input id="form-talk-title" type="text" name="title" placeholder="Talk Title" value="{{ title }}" maxlength="100">
 
-            <label for="form-talk-description" class="">Description/Abstract</label>
-            <textarea id="form-talk-description" name="description" class="" placeholder="Give a description of your talk (Abstract)" rows="10">{{ description }}</textarea>
+            <label for="form-talk-description">Description/Abstract</label>
+            <textarea id="form-talk-description" name="description" placeholder="Give a description of your talk (Abstract)" rows="10">{{ description }}</textarea>
             <p class="text-xs text-em mb-2 text-dark-soft">Speaker abstract can be written using <a href="https://daringfireball.net/projects/markdown/basics" target="_blank" rel="noopener noreferrer">markdown</a> to support links</p>
 
-            <label for="form-talk-other" class="">Additional Talk Information</label>
-            <textarea id="form-talk-other" name="other" class="" placeholder="Other Considerations, such as Joind.In, Lanyrd, local user group, etc." rows="10">{{ other }}</textarea>
+            <label for="form-talk-other" >Additional Talk Information</label>
+            <textarea id="form-talk-other" name="other" placeholder="Other Considerations, such as Joind.In, Lanyrd, local user group, etc." rows="10">{{ other }}</textarea>
             <p class="text-xs text-em mb-2 text-dark-soft">Talk additional information can be written using <a href="https://daringfireball.net/projects/markdown/basics" target="_blank" rel="noopener noreferrer">markdown</a> to support links</p>
         </div>
         <div class="w-2/5">
-            <label for="form-talk-slides" class="">Slides</label>
-            <input id="form-talk-slides" type="text" name="slides" class="" placeholder="Slides URL (if exists)" value="{{ slides }}">
+            <label for="form-talk-slides">Slides</label>
+            <input id="form-talk-slides" type="text" name="slides" placeholder="Slides URL (if exists)" value="{{ slides }}">
 
-            <label for="form-talk-type" class="">Talk Type</label>
-            <select id="form-talk-type" name="type" class="">
+            <label for="form-talk-type">Talk Type</label>
+            <select id="form-talk-type" name="type">
                 {% for typeKey, displayType in talkTypes %}
                     <option value="{{ typeKey }}" {% if type == typeKey %}selected {% endif %}>{{ displayType }}</option>
                 {% endfor %}
             </select>
 
-            <label for="form-talk-category" class="">Talk Category</label>
-            <select id="form-talk-category" name="category" class="">
+            <label for="form-talk-category">Talk Category</label>
+            <select id="form-talk-category" name="category">
                 {% for categoryKey, displayCategory in talkCategories %}
                     <option value="{{ categoryKey }}" {% if category == categoryKey %}selected {% endif %}>{{ displayCategory }}</option>
                 {% endfor %}
             </select>
 
-            <label for="form-talk-level" class="">Talk Level</label>
-            <select id="form-talk-level" name="level" class="">
+            <label for="form-talk-level">Talk Level</label>
+            <select id="form-talk-level" name="level">
                 {% for levelKey, displayLevel in talkLevels %}
                     <option value="{{ levelKey }}" {% if level == levelKey %}selected {% endif %}>{{ displayLevel }}</option>
                 {% endfor %}
