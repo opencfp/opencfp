@@ -38,21 +38,15 @@ final class ConsoleGatewayProvider implements ServiceProviderInterface
         };
 
         $app[UserCreateCommand::class] = function ($app) {
-            return new UserCreateCommand(
-                $app[AccountManagement::class]
-            );
+            return new UserCreateCommand($app[AccountManagement::class]);
         };
 
         $app[UserDemoteCommand::class] = function ($app) {
-            return new UserDemoteCommand(
-                $app[AccountManagement::class]
-            );
+            return new UserDemoteCommand($app[AccountManagement::class]);
         };
 
         $app[UserPromoteCommand::class] = function ($app) {
-            return new UserPromoteCommand(
-                $app[AccountManagement::class]
-            );
+            return new UserPromoteCommand($app[AccountManagement::class]);
         };
 
         $app[Application::class] = function ($app) {
