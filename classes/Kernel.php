@@ -19,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
+use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as SymfonyKernel;
@@ -46,6 +47,10 @@ final class Kernel extends SymfonyKernel
 
         if ($this->getEnvironment() !== Environment::TYPE_PRODUCTION) {
             $bundles[] = new DebugBundle();
+        }
+
+        if ($this->getEnvironment() === Environment::TYPE_DEVELOPMENT) {
+            $bundles[] = new WebProfilerBundle();
         }
 
         return $bundles;
