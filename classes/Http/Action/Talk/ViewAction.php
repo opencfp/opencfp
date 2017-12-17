@@ -15,9 +15,9 @@ namespace OpenCFP\Http\Action\Talk;
 
 use OpenCFP\Application\NotAuthorizedException;
 use OpenCFP\Application\Speakers;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
 
 final class ViewAction
 {
@@ -27,26 +27,22 @@ final class ViewAction
     private $speakers;
 
     /**
-     * @var Twig_Environment
-     */
-    private $twig;
-
-    /**
      * @var Routing\Generator\UrlGeneratorInterface
      */
     private $urlGenerator;
 
     public function __construct(
         Speakers $speakers,
-        Twig_Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->speakers     = $speakers;
-        $this->twig         = $twig;
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
+    /**
+     * @Template("talk/view.twig")
+     */
+    public function __invoke(HttpFoundation\Request $request)
     {
         $talkId = (int) $request->get('id');
 
@@ -58,11 +54,9 @@ final class ViewAction
             return new HttpFoundation\RedirectResponse($url);
         }
 
-        $content = $this->twig->render('talk/view.twig', [
+        return [
             'talkId' => $talkId,
             'talk'   => $talk,
-        ]);
-
-        return new HttpFoundation\Response($content);
+        ];
     }
 }

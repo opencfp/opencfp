@@ -14,31 +14,14 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Http\Action\Page;
 
 use OpenCFP\Http\Action\Page\SpeakerPackageAction;
-use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
-use Symfony\Component\HttpFoundation;
+use PHPUnit\Framework\TestCase;
 
-final class SpeakerPackageActionTest extends AbstractActionTestCase
+final class SpeakerPackageActionTest extends TestCase
 {
-    public function testItReturnsTheContentOfTheTwigInAResponseObject()
+    public function testAction()
     {
-        $content = $this->faker()->text();
+        $action = new SpeakerPackageAction();
 
-        $twig = $this->createTwigMock();
-
-        $twig
-            ->expects($this->once())
-            ->method('render')
-            ->with(
-                $this->identicalTo('package.twig')
-            )
-            ->willReturn($content);
-
-        $action = new SpeakerPackageAction($twig);
-
-        $response = $action();
-
-        $this->assertInstanceOf(HttpFoundation\Response::class, $response);
-        $this->assertSame($content, $response->getContent());
-        $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame([], $action());
     }
 }

@@ -14,29 +14,14 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Http\Action\Page;
 
 use OpenCFP\Http\Action\Page\TalkIdeasAction;
-use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
-use Symfony\Component\HttpFoundation;
+use PHPUnit\Framework\TestCase;
 
-final class TalkIdeasActionTest extends AbstractActionTestCase
+final class TalkIdeasActionTest extends TestCase
 {
-    public function testItReturnsTheContentOfTheTwigInAResponseObject()
+    public function testAction()
     {
-        $content = $this->faker()->text();
+        $action = new TalkIdeasAction();
 
-        $twig = $this->createTwigMock();
-
-        $twig
-            ->expects($this->once())
-            ->method('render')
-            ->with($this->identicalTo('ideas.twig'))
-            ->willReturn($content);
-
-        $action = new TalkIdeasAction($twig);
-
-        $response = $action();
-
-        $this->assertInstanceOf(HttpFoundation\Response::class, $response);
-        $this->assertSame($content, $response->getContent());
-        $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame([], $action());
     }
 }

@@ -46,12 +46,6 @@ final class ViewActionTest extends AbstractActionTestCase
             ->with($this->identicalTo($talkId))
             ->willThrowException(new NotAuthorizedException());
 
-        $twig = $this->createTwigMock();
-
-        $twig
-            ->expects($this->never())
-            ->method($this->anything());
-
         $urlGenerator = $this->createUrlGeneratorMock();
 
         $urlGenerator
@@ -62,7 +56,6 @@ final class ViewActionTest extends AbstractActionTestCase
 
         $action = new ViewAction(
             $speakers,
-            $twig,
             $urlGenerator
         );
 
@@ -78,8 +71,7 @@ final class ViewActionTest extends AbstractActionTestCase
     {
         $faker = $this->faker();
 
-        $talkId  = $faker->numberBetween(1);
-        $content = $faker->text();
+        $talkId = $faker->numberBetween(1);
 
         $request = $this->createRequestMock();
 
@@ -99,20 +91,6 @@ final class ViewActionTest extends AbstractActionTestCase
             ->with($this->identicalTo($talkId))
             ->willReturn($talk);
 
-        $twig = $this->createTwigMock();
-
-        $twig
-            ->expects($this->once())
-            ->method('render')
-            ->with(
-                $this->identicalTo('talk/view.twig'),
-                $this->identicalTo([
-                    'talkId' => $talkId,
-                    'talk'   => $talk,
-                ])
-            )
-            ->willReturn($content);
-
         $urlGenerator = $this->createUrlGeneratorMock();
 
         $urlGenerator
@@ -121,15 +99,15 @@ final class ViewActionTest extends AbstractActionTestCase
 
         $action = new ViewAction(
             $speakers,
-            $twig,
             $urlGenerator
         );
 
-        $response = $action($request);
+        $expected = [
+            'talkId' => $talkId,
+            'talk'   => $talk,
+        ];
 
-        $this->assertInstanceOf(HttpFoundation\Response::class, $response);
-        $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($content, $response->getContent());
+        $this->assertSame($expected, $action($request));
     }
 
     /**

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP;
 
 use OpenCFP\Infrastructure\DependencyInjection\TestingPass;
+use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\DebugBundle\DebugBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\MonologBundle\MonologBundle;
@@ -39,6 +40,7 @@ final class Kernel extends SymfonyKernel
     {
         $bundles = [
             new FrameworkBundle(),
+            new SensioFrameworkExtraBundle(),
             new MonologBundle(),
             new TwigBundle(),
             new SwiftmailerBundle(),

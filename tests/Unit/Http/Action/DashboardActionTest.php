@@ -33,12 +33,6 @@ final class DashboardActionTest extends AbstractActionTestCase
             ->method('findProfile')
             ->willThrowException(new Services\NotAuthenticatedException());
 
-        $twig = $this->createTwigMock();
-
-        $twig
-            ->expects($this->never())
-            ->method($this->anything());
-
         $urlGenerator = $this->createUrlGeneratorMock();
 
         $urlGenerator
@@ -49,7 +43,6 @@ final class DashboardActionTest extends AbstractActionTestCase
 
         $action = new DashboardAction(
             $speakers,
-            $twig,
             $urlGenerator
         );
 
@@ -63,8 +56,6 @@ final class DashboardActionTest extends AbstractActionTestCase
 
     public function testRendersDashboardIfUserIsAuthenticated()
     {
-        $content = $this->faker()->text();
-
         $speakerProfile = $this->createSpeakerProfileMock();
 
         $speakers = $this->createSpeakersMock();
@@ -74,19 +65,6 @@ final class DashboardActionTest extends AbstractActionTestCase
             ->method('findProfile')
             ->willReturn($speakerProfile);
 
-        $twig = $this->createTwigMock();
-
-        $twig
-            ->expects($this->once())
-            ->method('render')
-            ->with(
-                $this->identicalTo('dashboard.twig'),
-                $this->identicalTo([
-                    'profile' => $speakerProfile,
-                ])
-            )
-            ->willReturn($content);
-
         $urlGenerator = $this->createUrlGeneratorMock();
 
         $urlGenerator
@@ -95,15 +73,14 @@ final class DashboardActionTest extends AbstractActionTestCase
 
         $action = new DashboardAction(
             $speakers,
-            $twig,
             $urlGenerator
         );
 
-        $response = $action();
+        $expected = [
+            'profile' => $speakerProfile,
+        ];
 
-        $this->assertInstanceOf(HttpFoundation\Response::class, $response);
-        $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($content, $response->getContent());
+        $this->assertSame($expected, $action());
     }
 
     /**

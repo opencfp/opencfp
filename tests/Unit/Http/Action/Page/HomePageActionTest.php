@@ -14,35 +14,18 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Http\Action\Page;
 
 use OpenCFP\Http\Action\Page\HomePageAction;
-use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
-use Symfony\Component\HttpFoundation;
+use PHPUnit\Framework\TestCase;
 
-final class HomePageActionTest extends AbstractActionTestCase
+final class HomePageActionTest extends TestCase
 {
     public function testItReturnsTheCorrectContentIfNoSubmissionCountNeedsToBeShown()
     {
-        $content = $this->faker()->text();
+        $action = new HomePageAction(false);
 
-        $twig = $this->createTwigMock();
+        $expected = [
+            'number_of_talks' => '',
+        ];
 
-        $twig
-            ->expects($this->once())
-            ->method('render')
-            ->with(
-                $this->identicalTo('home.twig'),
-                $this->identicalTo(['number_of_talks' => ''])
-            )
-            ->willReturn($content);
-
-        $action = new HomePageAction(
-            $twig,
-            false
-        );
-
-        $response = $action();
-
-        $this->assertInstanceOf(HttpFoundation\Response::class, $response);
-        $this->assertSame($content, $response->getContent());
-        $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame($expected, $action());
     }
 }

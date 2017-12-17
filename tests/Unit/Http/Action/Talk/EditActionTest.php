@@ -78,12 +78,6 @@ final class EditActionTest extends AbstractActionTestCase
             ->method('isOpen')
             ->willReturn(false);
 
-        $twig = $this->createTwigMock();
-
-        $twig
-            ->expects($this->never())
-            ->method($this->anything());
-
         $urlGenerator = $this->createUrlGeneratorMock();
 
         $urlGenerator
@@ -101,7 +95,6 @@ final class EditActionTest extends AbstractActionTestCase
             $authentication,
             $talkHelper,
             $callForPapers,
-            $twig,
             $urlGenerator
         );
 
@@ -151,12 +144,6 @@ final class EditActionTest extends AbstractActionTestCase
             ->method('isOpen')
             ->willReturn(true);
 
-        $twig = $this->createTwigMock();
-
-        $twig
-            ->expects($this->never())
-            ->method($this->anything());
-
         $urlGenerator = $this->createUrlGeneratorMock();
 
         $urlGenerator
@@ -169,7 +156,6 @@ final class EditActionTest extends AbstractActionTestCase
             $authentication,
             $talkHelper,
             $callForPapers,
-            $twig,
             $urlGenerator
         );
 
