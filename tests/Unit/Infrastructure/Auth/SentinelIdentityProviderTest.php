@@ -15,7 +15,6 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 
 use Cartalyst\Sentinel\Sentinel;
 use Localheinz\Test\Util\Helper;
-use Mockery as m;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Repository\UserRepository;
 use OpenCFP\Domain\Services\IdentityProvider;
@@ -41,16 +40,18 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
 
     public function testGetCurrentUserThrowsNotAuthenticatedExceptionWhenNotAuthenticated()
     {
-        $sentinel = $this->getSentinel();
+        $sentinel = $this->createSentinelMock();
 
         $sentinel
-            ->shouldReceive('getUser')
-            ->once()
-            ->andReturnNull();
+            ->expects($this->once())
+            ->method('getUser')
+            ->willReturn(null);
 
         $userRepository = $this->createUserRepositoryMock();
 
-        $userRepository->shouldNotReceive(m::any());
+        $userRepository
+            ->expects($this->never())
+            ->method($this->anything());
 
         $provider = new SentinelIdentityProvider(
             $sentinel,
@@ -66,29 +67,29 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
     {
         $id = $this->faker()->randomNumber();
 
-        $sentinelUser = $this->getSentinelUserMock();
+        $sentinelUser = $this->createSentinelUserMock();
 
         $sentinelUser
-            ->shouldReceive('getUserId')
-            ->once()
-            ->andReturn($id);
+            ->expects($this->once())
+            ->method('getUserId')
+            ->willReturn($id);
 
-        $sentinel = $this->getSentinel();
+        $sentinel = $this->createSentinelMock();
 
         $sentinel
-            ->shouldReceive('getUser')
-            ->once()
-            ->andReturn($sentinelUser);
+            ->expects($this->once())
+            ->method('getUser')
+            ->willReturn($sentinelUser);
 
-        $user = $this->getUserMock();
+        $user = $this->createUserMock();
 
         $userRepository = $this->createUserRepositoryMock();
 
         $userRepository
-            ->shouldReceive('findById')
-            ->once()
-            ->with($id)
-            ->andReturn($user);
+            ->expects($this->once())
+            ->method('findById')
+            ->with($this->identicalTo($id))
+            ->willReturn($user);
 
         $provider = new SentinelIdentityProvider(
             $sentinel,
@@ -98,39 +99,35 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
         $this->assertSame($user, $provider->getCurrentUser());
     }
 
-    //
-    // Factory Methods
-    //
-
     /**
-     * @return m\MockInterface|Sentinel
+     * @return Framework\MockObject\MockObject|Sentinel
      */
-    private function getSentinel()
+    private function createSentinelMock(): Sentinel
     {
-        return m::mock(Sentinel::class);
+        return $this->createMock(Sentinel::class);
     }
 
     /**
-     * @return \Cartalyst\Sentinel\Users\UserInterface|m\MockInterface
+     * @return \Cartalyst\Sentinel\Users\UserInterface|Framework\MockObject\MockObject
      */
-    private function getSentinelUserMock()
+    private function createSentinelUserMock(): \Cartalyst\Sentinel\Users\UserInterface
     {
-        return m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
+        return $this->createMock(\Cartalyst\Sentinel\Users\UserInterface::class);
     }
 
     /**
-     * @return m\MockInterface|UserRepository
+     * @return Framework\MockObject\MockObject|UserRepository
      */
-    private function createUserRepositoryMock()
+    private function createUserRepositoryMock(): UserRepository
     {
-        return m::mock(UserRepository::class);
+        return $this->createMock(UserRepository::class);
     }
 
     /**
-     * @return m\MockInterface|User
+     * @return Framework\MockObject\MockObject|User
      */
-    private function getUserMock()
+    private function createUserMock(): User
     {
-        return m::mock(User::class);
+        return $this->createMock(User::class);
     }
 }
