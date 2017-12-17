@@ -9,15 +9,14 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$basePath    = \realpath(\dirname(__DIR__));
 $input       = new ArgvInput();
-$environment = $input->getParameterOption(['--env'], \getenv('CFP_ENV') ?: 'development');
+$environment = Environment::fromString($input->getParameterOption(['--env'], \getenv('CFP_ENV') ?: 'development'));
 
-$container = new Application($basePath, Environment::fromString($environment));
-$container->boot();
+$kernel = new Kernel((string) $environment, !$environment->isProduction());
+$kernel->boot();
 
 /** @var Console\Application $app */
-$app = $container[Console\Application::class];
+$app = $kernel->getContainer()->get(Console\Application::class);
 
 $status = $app->run($input);
 

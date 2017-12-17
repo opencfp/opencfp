@@ -18,7 +18,7 @@ use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain;
 use OpenCFP\Http;
 use OpenCFP\Infrastructure;
-use OpenCFP\Provider;
+use OpenCFP\Kernel;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 
@@ -60,31 +60,14 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Controller\TalkController::class,
                 Http\Form\ForgotForm::class,
                 Http\Form\ResetForm::class,
+                Infrastructure\DependencyInjection\TestingPass::class,
                 Infrastructure\Event\AuthenticationListener::class,
                 Infrastructure\Event\CsrfValidationListener::class,
-                Infrastructure\Event\DatabaseSetupListener::class,
                 Infrastructure\Event\ExceptionListener::class,
                 Infrastructure\Event\RequestCleanerListener::class,
                 Infrastructure\Event\TwigGlobalsListener::class,
                 Infrastructure\Templating\TwigExtension::class,
-                Provider\ApplicationServiceProvider::class,
-                Provider\CallForPapersProvider::class,
-                Provider\ControllerResolver::class,
-                Provider\ControllerResolverServiceProvider::class,
-                Provider\Gateways\WebGatewayProvider::class,
-                Provider\Gateways\ConsoleGatewayProvider::class,
-                Provider\HtmlPurifierServiceProvider::class,
-                Provider\ImageProcessorProvider::class,
-                Provider\ResetEmailerServiceProvider::class,
-                Provider\SentinelServiceProvider::class,
-                Provider\SwiftMailerServiceProvider::class,
-                Provider\TalkFilterProvider::class,
-                Provider\TalkHandlerProvider::class,
-                Provider\TalkHelperProvider::class,
-                Provider\TalkRatingProvider::class,
-                Provider\TestingServiceProvider::class,
-                Provider\TwigServiceProvider::class,
-                Provider\YamlConfigDriver::class,
+                Kernel::class,
             ]
         );
     }
@@ -183,7 +166,6 @@ final class ProjectCodeTest extends Framework\TestCase
     {
         $directories = [
             'http-actions' => __DIR__ . '/../../classes/Http/Action',
-            'providers'    => __DIR__ . '/../../classes/Provider',
         ];
 
         return \array_map(function (string $directory) {

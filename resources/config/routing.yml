@@ -1,0 +1,237 @@
+admin:
+  path: /admin/
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\DashboardController::indexAction'
+
+admin_talks:
+  path: /admin/talks
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\TalksController::indexAction'
+
+admin_talk_view:
+  path: '/admin/talks/{id}'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\TalksController::viewAction'
+
+admin_talk_favorite:
+  path: '/admin/talks/{id}/favorite'
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\Admin\TalksController::favoriteAction'
+
+admin_talk_select:
+  path: '/admin/talks/{id}/select'
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\Admin\TalksController::selectAction'
+
+admin_talk_comment_create:
+  path: '/admin/talks/{id}/comment'
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\Admin\TalksController::commentCreateAction'
+
+admin_talk_rate:
+  path: '/admin/talks/{id}/rate'
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\Admin\TalksController::rateAction'
+
+admin_speakers:
+  path: /admin/speakers
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\SpeakersController::indexAction'
+
+admin_speaker_view:
+  path: '/admin/speakers/{id}'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\SpeakersController::viewAction'
+
+admin_speaker_promote:
+  path: '/admin/speakers/{id}/promote'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\SpeakersController::promoteAction'
+  defaults: { _require_csrf_token: true }
+
+admin_speaker_demote:
+  path: '/admin/speakers/{id}/demote'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\SpeakersController::demoteAction'
+  defaults: { _require_csrf_token: true }
+
+admin_speaker_delete:
+  path: '/admin/speakers/delete/{id}'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\SpeakersController::deleteAction'
+  defaults: { _require_csrf_token: true }
+
+admin_export_csv:
+  path: /admin/export/csv
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\ExportsController::attributedTalksExportAction'
+
+admin_export_csv_anon:
+  path: /admin/export/csv/anon
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\ExportsController::anonymousTalksExportAction'
+
+admin_export_csv_selected:
+  path: /admin/export/csv/selected
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\ExportsController::selectedTalksExportAction'
+
+admin_export_csv_emails:
+  path: /admin/export/csv/emails
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction'
+
+reviewer:
+  path: /reviewer/
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Reviewer\DashboardController::indexAction'
+
+reviewer_talks:
+  path: /reviewer/talks
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Reviewer\TalksController::indexAction'
+
+reviewer_talk_view:
+  path: '/reviewer/talks/{id}'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Reviewer\TalksController::viewAction'
+
+reviewer_talk_rate:
+  path: '/reviewer/talks/{id}/rate'
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\Reviewer\TalksController::rateAction'
+
+reviewer_speakers:
+  path: /reviewer/speakers
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Reviewer\SpeakersController::indexAction'
+
+reviewer_speaker_view:
+  path: '/reviewer/speakers/{id}'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\Reviewer\SpeakersController::viewAction'
+
+homepage:
+  path: /
+  methods: [GET]
+  controller: OpenCFP\Http\Action\Page\HomePageAction
+
+speaker_package:
+  path: /package
+  methods: [GET]
+  controller: OpenCFP\Http\Action\Page\SpeakerPackageAction
+
+talk_ideas:
+  path: /ideas
+  methods: [GET]
+  controller: OpenCFP\Http\Action\Page\TalkIdeasAction
+
+dashboard:
+  path: /dashboard
+  methods: [GET]
+  controller: OpenCFP\Http\Action\DashboardAction
+
+talk_edit:
+  path: '/talk/edit/{id}'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\TalkController::editAction'
+  defaults: { _require_csrf_token: true }
+
+talk_new:
+  path: /talk/create
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\TalkController::createAction'
+
+talk_create:
+  path: /talk/create
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\TalkController::processCreateAction'
+  defaults: { _require_csrf_token: true }
+
+talk_update:
+  path: /talk/update
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\TalkController::updateAction'
+  defaults: { _require_csrf_token: true }
+
+talk_delete:
+  path: /talk/delete
+  methods: [POST]
+  controller: OpenCFP\Http\Action\Talk\DeleteAction
+  defaults: { _require_csrf_token: true }
+
+talk_view:
+  path: '/talk/{id}'
+  methods: [GET]
+  controller: OpenCFP\Http\Action\Talk\ViewAction
+
+login:
+  path: /login
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\SecurityController::indexAction'
+
+login_check:
+  path: /login
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\SecurityController::processAction'
+
+logout:
+  path: /logout
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\SecurityController::outAction'
+
+user_new:
+  path: /signup
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\SignupController::indexAction'
+
+user_create:
+  path: /signup
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\SignupController::processAction'
+
+user_edit:
+  path: '/profile/edit/{id}'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\ProfileController::editAction'
+
+user_update:
+  path: /profile/edit
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\ProfileController::processAction'
+
+password_edit:
+  path: /profile/change_password
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\ProfileController::passwordAction'
+
+password_change:
+  path: /profile/change_password
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\ProfileController::passwordProcessAction'
+
+forgot_password:
+  path: /forgot
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\ForgotController::indexAction'
+
+forgot_password_create:
+  path: /forgot
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\ForgotController::sendResetAction'
+
+reset_password_create:
+  path: /reset
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\ForgotController::resetAction'
+
+reset_password:
+  path: '/reset/{user_id}/{reset_code}'
+  methods: [GET]
+  controller: 'OpenCFP\Http\Controller\ForgotController::processResetAction'
+
+password_update:
+  path: /updatepassword
+  methods: [POST]
+  controller: 'OpenCFP\Http\Controller\ForgotController::updatePasswordAction'
+

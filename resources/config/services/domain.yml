@@ -1,0 +1,45 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OpenCFP\Domain\:
+    resource: '%kernel.project_dir%/classes/Domain/*'
+
+  OpenCFP\Domain\CallForPapers:
+    arguments:
+      $end: '@application.enddate'
+
+  OpenCFP\Domain\Repository\UserRepository:
+    alias: OpenCFP\Infrastructure\Repository\IlluminateUserRepository
+
+  OpenCFP\Domain\Services\AccountManagement:
+    public: true
+    alias: OpenCFP\Infrastructure\Auth\SentinelAccountManagement
+
+  OpenCFP\Domain\Services\Authentication:
+    alias: OpenCFP\Infrastructure\Auth\SentinelAuthentication
+
+  OpenCFP\Domain\Services\IdentityProvider:
+    public: true
+    alias: OpenCFP\Infrastructure\Auth\SentinelIdentityProvider
+
+  OpenCFP\Domain\Services\AirportInformationDatabase:
+    alias: OpenCFP\Domain\Model\Airport
+
+  OpenCFP\Domain\Services\ProfileImageProcessor:
+    bind:
+      $publishDir: '%kernel.project_dir%/web/uploads'
+
+  OpenCFP\Domain\Services\RandomStringGenerator:
+    alias: OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator
+
+  OpenCFP\Domain\Services\ResetEmailer:
+    bind:
+      $configEmail: '%application.email%'
+      $configTitle: '%application.title%'
+
+  application.enddate:
+    class: DateTimeImmutable
+    arguments:
+      - '%application.enddate%'

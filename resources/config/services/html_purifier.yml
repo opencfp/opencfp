@@ -1,0 +1,15 @@
+services:
+  _defaults:
+    public: false
+    autowire: false
+
+  HTMLPurifier:
+    class: HTMLPurifier
+    arguments: ['@purifier_config']
+
+  purifier_config:
+    class: HTMLPurifier_Config
+    factory: [HTMLPurifier_Config, createDefault]
+    calls:
+      - [set, [Cache.SerializerPermissions, 0755]]
+      - [set, [Cache.SerializerPath, '%kernel.cache_dir%/htmlpurifier']]

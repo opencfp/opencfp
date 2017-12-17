@@ -1,0 +1,40 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+
+  OpenCFP\Http\Controller\:
+    resource: '%kernel.project_dir%/classes/Http/Controller/*'
+    public: true
+    bind:
+      $applicationEmail: '%application.email%'
+      $applicationTitle: '%application.title%'
+      $applicationEndDate: '%application.enddate%'
+      $applicationAirport: '%application.airport%'
+      $applicationArrival: '%application.arrival%'
+      $applicationDeparture: '%application.departure%'
+      $reviewerUsers: '%reviewer.users%'
+
+  OpenCFP\Http\Action\:
+    resource: '%kernel.project_dir%/classes/Http/Action/*'
+    public: true
+    bind:
+      $showSubmissionCount: '%application.show_submission_count%'
+
+  OpenCFP\Http\View\TalkHelper:
+    arguments:
+      - '%talk.categories%'
+      - '%talk.levels%'
+      - '%talk.types%'
+
+  OpenCFP\PathInterface:
+    class: OpenCFP\Path
+    bind:
+      $path: '%kernel.project_dir%'
+
+  OpenCFP\Application\Speakers: ~
+
+  OpenCFP\Environment:
+    autowire: false
+    factory: [OpenCFP\Environment, fromString]
+    arguments: ['%kernel.environment%']

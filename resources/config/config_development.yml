@@ -1,0 +1,6 @@
+imports:
+  - { resource: config.yml }
+
+framework:
+  router:
+    resource: '%kernel.project_dir%/resources/config/routing_development.yml'
