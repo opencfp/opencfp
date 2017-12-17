@@ -4,31 +4,36 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf8fe6c0503235cfcf17d26ce1ca612e",
+    "content-hash": "6c0a08fd997527f8beafda77bda4f498",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
-            "version": "0.2.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aptoma/twig-markdown.git",
-                "reference": "2c0972ecdaf5c94a0dec01b7c9af7919f2c6498d"
+                "reference": "64a9c5c7418c08faf91c4410b34bdb65fb25c23d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aptoma/twig-markdown/zipball/2c0972ecdaf5c94a0dec01b7c9af7919f2c6498d",
-                "reference": "2c0972ecdaf5c94a0dec01b7c9af7919f2c6498d",
+                "url": "https://api.github.com/repos/aptoma/twig-markdown/zipball/64a9c5c7418c08faf91c4410b34bdb65fb25c23d",
+                "reference": "64a9c5c7418c08faf91c4410b34bdb65fb25c23d",
                 "shasum": ""
             },
             "require": {
-                "twig/twig": "~1"
+                "twig/twig": "~1.12"
             },
             "require-dev": {
-                "dflydev/markdown": "~1",
-                "michelf/php-markdown": "~1"
+                "codeclimate/php-test-reporter": "dev-master",
+                "erusev/parsedown": "^1.6",
+                "knplabs/github-api": "~1.2",
+                "league/commonmark": "~0.5",
+                "michelf/php-markdown": "~1",
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "~0.6"
             },
             "suggest": {
-                "dflydev/markdown": "Markdown engine based on the simple michelf/php-markdown engine.",
+                "knplabs/github-api": "Needed for using GitHub's Markdown engine provided through their API.",
                 "michelf/php-markdown": "Original Markdown engine with MarkdownExtra."
             },
             "type": "library",
@@ -43,14 +48,12 @@
             ],
             "authors": [
                 {
-                    "name": "Gunnar Lium",
-                    "email": "gunnar@aptoma.com",
-                    "homepage": "https://github.com/gunnarlium",
-                    "role": "Developer"
-                },
-                {
                     "name": "Joris Berthelot",
                     "email": "joris@berthelot.tel"
+                },
+                {
+                    "name": "Gunnar Lium",
+                    "email": "gunnar@aptoma.com"
                 }
             ],
             "description": "Twig extension to work with Markdown content",
@@ -58,7 +61,7 @@
                 "markdown",
                 "twig"
             ],
-            "time": "2013-09-26T15:14:08+00:00"
+            "time": "2015-10-23T20:27:08+00:00"
         },
         {
             "name": "cartalyst/sentinel",
