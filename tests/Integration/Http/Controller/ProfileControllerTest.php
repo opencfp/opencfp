@@ -101,19 +101,6 @@ final class ProfileControllerTest extends WebTestCase
     }
 
     /**
-     * @test
-     */
-    public function displayChangePasswordWhenAllowed()
-    {
-        $response = $this
-            ->asLoggedInSpeaker()
-            ->get('/profile/change_password');
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains('Change Your Password', $response);
-    }
-
-    /**
      * Helper function to fake a user in the request object.
      *
      * @param $isEmailValid bool whether or not to use a valid email address
