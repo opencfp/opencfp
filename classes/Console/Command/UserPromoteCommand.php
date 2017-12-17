@@ -70,7 +70,7 @@ EOF
             $email,
             $roleName
         ));
-        
+
         try {
             $this->accountManagement->promoteTo(
                 $email,

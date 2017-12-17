@@ -145,7 +145,7 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
             ->andReturn($roleRepository);
 
         $accounts = new SentinelAccountManagement($sentinel);
-        
+
         $this->assertSame($users, $accounts->findByRole($name));
     }
 

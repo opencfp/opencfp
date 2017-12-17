@@ -99,7 +99,7 @@ class ExportsController extends BaseController
         if (!\is_string($info)) {
             return $info;
         }
-        
+
         if ($this->startsWith($info, '=')
                 || $this->startsWith($info, '+')
                 || $this->startsWith($info, '-')

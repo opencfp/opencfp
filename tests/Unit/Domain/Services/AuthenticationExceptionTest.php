@@ -28,7 +28,7 @@ final class AuthenticationExceptionTest extends Framework\TestCase
     {
         $this->assertClassIsFinal(AuthenticationException::class);
     }
-    
+
     public function testIsRuntimeException()
     {
         $this->assertClassExtends(\RuntimeException::class, AuthenticationException::class);

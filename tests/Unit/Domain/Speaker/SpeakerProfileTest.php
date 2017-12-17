@@ -83,7 +83,7 @@ final class SpeakerProfileTest extends Framework\TestCase
         $hiddenProperties = [
             'talks',
         ];
-        
+
         $speaker = $this->createUserMock();
 
         $profile = new SpeakerProfile($speaker, $hiddenProperties);
@@ -117,7 +117,7 @@ final class SpeakerProfileTest extends Framework\TestCase
         $hiddenProperties = [
             'name',
         ];
-        
+
         $speaker = $this->createUserMock();
 
         $profile = new SpeakerProfile($speaker, $hiddenProperties);
@@ -155,7 +155,7 @@ final class SpeakerProfileTest extends Framework\TestCase
         $hiddenProperties = [
             'email',
         ];
-        
+
         $speaker = $this->createUserMock();
 
         $profile = new SpeakerProfile($speaker, $hiddenProperties);
@@ -183,7 +183,7 @@ final class SpeakerProfileTest extends Framework\TestCase
         $hiddenProperties = [
             'company',
         ];
-        
+
         $speaker = $this->createUserMock();
 
         $profile = new SpeakerProfile($speaker, $hiddenProperties);
@@ -211,7 +211,7 @@ final class SpeakerProfileTest extends Framework\TestCase
         $hiddenProperties = [
             'twitter',
         ];
-        
+
         $speaker = $this->createUserMock();
 
         $profile = new SpeakerProfile($speaker, $hiddenProperties);
@@ -239,7 +239,7 @@ final class SpeakerProfileTest extends Framework\TestCase
         $hiddenProperties = [
             'url',
         ];
-        
+
         $speaker = $this->createUserMock();
 
         $profile = new SpeakerProfile($speaker, $hiddenProperties);
@@ -267,7 +267,7 @@ final class SpeakerProfileTest extends Framework\TestCase
         $hiddenProperties = [
             'info',
         ];
-        
+
         $speaker = $this->createUserMock();
 
         $profile = new SpeakerProfile($speaker, $hiddenProperties);
@@ -295,7 +295,7 @@ final class SpeakerProfileTest extends Framework\TestCase
         $hiddenProperties = [
             'bio',
         ];
-        
+
         $speaker = $this->createUserMock();
 
         $profile = new SpeakerProfile($speaker, $hiddenProperties);
@@ -317,13 +317,13 @@ final class SpeakerProfileTest extends Framework\TestCase
 
         $this->assertSame($bio, $profile->getBio());
     }
-    
+
     public function testGetTransportationThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
             'transportation',
         ];
-        
+
         $speaker = $this->createUserMock();
 
         $profile = new SpeakerProfile($speaker, $hiddenProperties);

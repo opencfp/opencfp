@@ -22,7 +22,7 @@ class AddHotelAndTransportationCostFields extends AbstractMigration
         $table->addColumn('hotel', 'integer');
         $table->save();
     }
-    
+
     /**
      * Migrate Up.
      */
