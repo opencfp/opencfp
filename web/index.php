@@ -15,9 +15,14 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenCFP\Application;
 use OpenCFP\Environment;
+use Symfony\Component\Debug\Debug;
 
 $basePath    = \realpath(\dirname(__DIR__));
 $environment = Environment::fromServer($_SERVER);
+
+if (!$environment->isProduction()) {
+    Debug::enable();
+}
 
 $app = new Application($basePath, $environment);
 
