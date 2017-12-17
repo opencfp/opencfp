@@ -16,10 +16,11 @@ namespace OpenCFP\Test\Unit\Http\Action\Talk;
 use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services;
 use OpenCFP\Http\Action\Talk\DeleteAction;
+use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 
-final class DeleteActionTest extends Framework\TestCase
+final class DeleteActionTest extends AbstractActionTestCase
 {
     public function testRespondsWithNoIfCallForPapersIsClosed()
     {
@@ -69,13 +70,5 @@ final class DeleteActionTest extends Framework\TestCase
     private function createCallForPapersMock(): CallForPapers
     {
         return $this->createMock(CallForPapers::class);
-    }
-
-    /**
-     * @return Framework\MockObject\MockObject|HttpFoundation\Request
-     */
-    private function createRequestMock(): HttpFoundation\Request
-    {
-        return $this->createMock(HttpFoundation\Request::class);
     }
 }
