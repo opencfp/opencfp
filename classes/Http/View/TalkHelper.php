@@ -31,47 +31,26 @@ class TalkHelper
     private $types;
 
     /**
-     * @param $categories
-     * @param $levels
-     * @param $types
+     * @param string[] $categories
+     * @param string[] $levels
+     * @param string[] $types
      */
-    public function __construct($categories, $levels, $types)
+    public function __construct(array $categories, array $levels, array $types)
     {
         $this->categories = $categories;
         $this->levels     = $levels;
         $this->types      = $types;
     }
     
-    public function getTalkCategories()
+    /**
+     * @return string[]
+     */
+    public function getTalkCategories(): array
     {
-        $categories = $this->categories;
-
-        if ($categories === null) {
-            $categories = [
-                'api'                => 'APIs (REST, SOAP, etc.)',
-                'continuousdelivery' => 'Continuous Delivery',
-                'database'           => 'Database',
-                'development'        => 'Development',
-                'devops'             => 'Devops',
-                'framework'          => 'Framework',
-                'ibmi'               => 'IBMi',
-                'javascript'         => 'JavaScript',
-                'security'           => 'Security',
-                'testing'            => 'Testing',
-                'uiux'               => 'UI/UX',
-                'other'              => 'Other',
-            ];
-        }
-
-        return $categories;
+        return $this->categories;
     }
 
-    /**
-     * @param $category
-     *
-     * @return mixed
-     */
-    public function getCategoryDisplayName($category)
+    public function getCategoryDisplayName(string $category): string
     {
         if (isset($this->categories[$category])) {
             return $this->categories[$category];
@@ -80,26 +59,15 @@ class TalkHelper
         return $category;
     }
 
-    public function getTalkTypes()
+    /**
+     * @return string[]
+     */
+    public function getTalkTypes(): array
     {
-        $types = $this->types;
-
-        if ($types === null) {
-            $types = [
-                'regular'  => 'Regular',
-                'tutorial' => 'Tutorial',
-            ];
-        }
-
-        return $types;
+        return $this->types;
     }
 
-    /**
-     * @param $type
-     *
-     * @return mixed
-     */
-    public function getTypeDisplayName($type)
+    public function getTypeDisplayName(string $type): string
     {
         if (isset($this->types[$type])) {
             return $this->types[$type];
@@ -108,27 +76,15 @@ class TalkHelper
         return $type;
     }
 
-    public function getTalkLevels()
+    /**
+     * @return string[]
+     */
+    public function getTalkLevels(): array
     {
-        $levels = $this->levels;
-
-        if ($levels === null) {
-            $levels = [
-                'entry'    => 'Entry level',
-                'mid'      => 'Mid-level',
-                'advanced' => 'Advanced',
-            ];
-        }
-
-        return $levels;
+        return $this->levels;
     }
 
-    /**
-     * @param $level
-     *
-     * @return mixed
-     */
-    public function getLevelDisplayName($level)
+    public function getLevelDisplayName(string $level): string
     {
         if (isset($this->levels[$level])) {
             return $this->levels[$level];

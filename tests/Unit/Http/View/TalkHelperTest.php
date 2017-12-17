@@ -21,32 +21,6 @@ final class TalkHelperTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testGetTalkCategoriesReturnsDefaultCategoriesIfNoneHaveBeenInjected()
-    {
-        $helper = new TalkHelper(
-            null,
-            null,
-            null
-        );
-
-        $defaultCategories = [
-            'api'                => 'APIs (REST, SOAP, etc.)',
-            'continuousdelivery' => 'Continuous Delivery',
-            'database'           => 'Database',
-            'development'        => 'Development',
-            'devops'             => 'Devops',
-            'framework'          => 'Framework',
-            'ibmi'               => 'IBMi',
-            'javascript'         => 'JavaScript',
-            'security'           => 'Security',
-            'testing'            => 'Testing',
-            'uiux'               => 'UI/UX',
-            'other'              => 'Other',
-        ];
-
-        $this->assertSame($defaultCategories, $helper->getTalkCategories());
-    }
-
     public function testGetTalkCategoriesReturnsInjectedCategories()
     {
         $faker = $this->faker();
@@ -100,22 +74,6 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($categoryDisplayName, $helper->getCategoryDisplayName($category));
     }
 
-    public function testGetTalkTypesReturnsDefaultTypesIfNoneHaveBeenInjected()
-    {
-        $helper = new TalkHelper(
-            null,
-            null,
-            null
-        );
-
-        $defaultTypes = [
-            'regular'  => 'Regular',
-            'tutorial' => 'Tutorial',
-        ];
-
-        $this->assertSame($defaultTypes, $helper->getTalkTypes());
-    }
-
     public function testGetTalkTypesReturnsInjectedTypes()
     {
         $faker = $this->faker();
@@ -167,23 +125,6 @@ final class TalkHelperTest extends Framework\TestCase
         );
 
         $this->assertSame($typeDisplayName, $helper->getTypeDisplayName($type));
-    }
-
-    public function testGetTalkLevelsReturnsDefaultTypesIfNoneHaveBeenInjected()
-    {
-        $helper = new TalkHelper(
-            null,
-            null,
-            null
-        );
-
-        $defaultLevels = [
-            'entry'    => 'Entry level',
-            'mid'      => 'Mid-level',
-            'advanced' => 'Advanced',
-        ];
-
-        $this->assertSame($defaultLevels, $helper->getTalkLevels());
     }
 
     public function testGetTalkLevelsReturnsInjectedLevels()
