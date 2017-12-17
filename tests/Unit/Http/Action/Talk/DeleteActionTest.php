@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Http\Action\Talk;
 
 use OpenCFP\Domain\CallForPapers;
-use OpenCFP\Domain\Services;
 use OpenCFP\Http\Action\Talk\DeleteAction;
 use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
 use PHPUnit\Framework;
@@ -54,14 +53,6 @@ final class DeleteActionTest extends AbstractActionTestCase
         ]);
 
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-    }
-
-    /**
-     * @return Framework\MockObject\MockObject|Services\Authentication
-     */
-    private function createAuthenticationMock(): Services\Authentication
-    {
-        return $this->createMock(Services\Authentication::class);
     }
 
     /**

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Http\Action;
 
 use Localheinz\Test\Util\Helper;
+use OpenCFP\Domain\Services;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
@@ -45,5 +46,13 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     final protected function createRequestMock(): HttpFoundation\Request
     {
         return $this->createMock(HttpFoundation\Request::class);
+    }
+
+    /**
+     * @return Framework\MockObject\MockObject|Services\Authentication
+     */
+    final protected function createAuthenticationMock(): Services\Authentication
+    {
+        return $this->createMock(Services\Authentication::class);
     }
 }
