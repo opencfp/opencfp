@@ -20,31 +20,6 @@ use OpenCFP\Test\Integration\WebTestCase;
 final class ForgotControllerTest extends WebTestCase implements RequiresDatabaseReset
 {
     /**
-     * Test that index action displays a form that allows the user to reset
-     * their password
-     *
-     * @test
-     */
-    public function indexDisplaysCorrectForm()
-    {
-        $response = $this->get('/forgot');
-
-        // Get the form object and verify things look correct
-        $this->assertContains(
-            '<form id="forgot"',
-            $response->getContent()
-        );
-        $this->assertContains(
-            '<input type="hidden" id="forgot_form__token"',
-            $response->getContent()
-        );
-        $this->assertContains(
-            '<input type="email" id="forgot_form_email"',
-            $response->getContent()
-        );
-    }
-
-    /**
      * @test
      */
     public function sendResetDisplaysCorrectMessage()

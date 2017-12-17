@@ -219,7 +219,7 @@ password_change:
 forgot_password:
   path: /forgot
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\ForgotController::indexAction'
+  controller: OpenCFP\Http\Action\Forgot\IndexAction
 
 forgot_password_create:
   path: /forgot

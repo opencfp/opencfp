@@ -54,16 +54,6 @@ class ForgotController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function indexAction(): Response
-    {
-        $form = $this->formFactory->createBuilder(ForgotFormType::class)->getForm();
-
-        return $this->render('security/forgot_password.twig', [
-            'form'         => $form->createView(),
-            'current_page' => 'Forgot Password',
-        ]);
-    }
-
     public function sendResetAction(Request $request): Response
     {
         $form = $this->formFactory
