@@ -10,7 +10,7 @@
 
     <form method="post" action="{{ url('login_check') }}">
       <label class="text-sm text-white">Email</label>
-      <input type="email" name="email" value="{{ email | escape }}" class="w-full" placeholder="you@example.com">
+      <input type="email" name="email" value="{% if email %}{{ email | escape }}{% endif %}" class="w-full" placeholder="you@example.com">
       <label class="text-sm text-white">Password</label>
       <input type="password" name="password" class="w-full" placeholder="•••••••">
       <p class="text-right my-4"><a href="{{ url('forgot_password') }}" class="text-white text-sm">Forgot password?</a></p>

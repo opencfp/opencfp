@@ -172,7 +172,9 @@ talk_view:
 login:
   path: /login
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\SecurityController::indexAction'
+  controller: FrameworkBundle:Template:template
+  defaults:
+    template: security/login.twig
 
 login_check:
   path: /login
