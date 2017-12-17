@@ -183,7 +183,7 @@ logout:
 user_new:
   path: /signup
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\SignupController::indexAction'
+  controller: OpenCFP\Http\Action\Signup\IndexAction
 
 user_create:
   path: /signup

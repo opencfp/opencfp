@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
-use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\ValidationException;
@@ -34,42 +33,16 @@ class SignupController extends BaseController
      */
     private $accounts;
 
-    /**
-     * @var CallForPapers
-     */
-    private $callForPapers;
-
     public function __construct(
         Authentication $authentication,
         AccountManagement $accounts,
-        CallForPapers $callForPapers,
         Twig_Environment $twig,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->authentication = $authentication;
         $this->accounts       = $accounts;
-        $this->callForPapers  = $callForPapers;
 
         parent::__construct($twig, $urlGenerator);
-    }
-
-    public function indexAction(Request $request): Response
-    {
-        if ($this->authentication->isAuthenticated()) {
-            return $this->redirectTo('dashboard');
-        }
-
-        if (!$this->callForPapers->isOpen()) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'Sorry, the call for papers has ended.',
-            ]);
-
-            return $this->redirectTo('homepage');
-        }
-
-        return $this->render('security/signup.twig');
     }
 
     public function processAction(Request $request): Response
