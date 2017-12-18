@@ -134,7 +134,7 @@ dashboard:
 talk_edit:
   path: '/talk/edit/{id}'
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\TalkController::editAction'
+  controller: OpenCFP\Http\Action\Talk\EditAction
   defaults: { _require_csrf_token: true }
 
 talk_new:
