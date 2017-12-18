@@ -23,45 +23,6 @@ final class SignupControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function signupAfterEnddateShowsError()
-    {
-        $response = $this
-            ->callForPapersIsClosed()
-            ->get('/signup');
-
-        $this->assertResponseBodyNotContains('Signup', $response);
-        $this->assertResponseIsRedirect($response);
-    }
-
-    /**
-     * @test
-     */
-    public function signupBeforeEnddateRendersSignupForm()
-    {
-        $response = $this
-            ->callForPapersIsOpen()
-            ->get('/signup');
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains('Signup', $response);
-    }
-
-    /**
-     * @test
-     */
-    public function signUpRedirectsWhenLoggedIn()
-    {
-        $response = $this
-            ->asAdmin()
-            ->get('/signup');
-
-        $this->assertResponseIsRedirect($response);
-        $this->assertResponseBodyNotContains('Signup', $response);
-    }
-
-    /**
-     * @test
-     */
     public function signUpWorksCorrectly()
     {
         $response = $this->post('/signup', [
