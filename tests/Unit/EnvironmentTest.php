@@ -15,9 +15,6 @@ namespace OpenCFP\Test\Unit;
 
 use OpenCFP\Environment;
 
-/**
- * @covers \OpenCFP\Environment
- */
 final class EnvironmentTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstants()
@@ -26,11 +23,11 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('development', Environment::TYPE_DEVELOPMENT);
         $this->assertSame('testing', Environment::TYPE_TESTING);
     }
-    
+
     public function testProductionReturnsEnvironment()
     {
         $environment = Environment::production();
-        
+
         $this->assertInstanceOf(Environment::class, $environment);
         $this->assertTrue($environment->isProduction());
         $this->assertFalse($environment->isDevelopment());

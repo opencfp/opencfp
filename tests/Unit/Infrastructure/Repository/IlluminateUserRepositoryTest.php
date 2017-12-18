@@ -21,9 +21,6 @@ use OpenCFP\Domain\Repository\UserRepository;
 use OpenCFP\Infrastructure\Repository\IlluminateUserRepository;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Infrastructure\Repository\IlluminateUserRepository
- */
 final class IlluminateUserRepositoryTest extends Framework\TestCase
 {
     use Helper;

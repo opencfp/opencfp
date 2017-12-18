@@ -17,9 +17,6 @@ use OpenCFP\Domain\Services\Pagination;
 use Pagerfanta\Pagerfanta;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Domain\Services\Pagination
- */
 final class PaginationTest extends Framework\TestCase
 {
     /**

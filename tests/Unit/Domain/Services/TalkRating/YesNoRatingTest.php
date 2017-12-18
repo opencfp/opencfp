@@ -20,9 +20,6 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 
-/**
- * @covers \OpenCFP\Domain\Services\TalkRating\YesNoRating
- */
 final class YesNoRatingTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;

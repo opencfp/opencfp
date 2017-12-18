@@ -20,9 +20,6 @@ use OpenCFP\Http\Action\DashboardAction;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Http\Action\DashboardAction
- */
 final class DashboardActionTest extends AbstractActionTestCase
 {
     public function testRedirectsToLoginIfUserIsNotAuthenticated()

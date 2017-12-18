@@ -22,8 +22,6 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 
 /**
  * We Use the YesNoRating class to test the base class, since we know exactly what values are allowed
- *
- * @covers \OpenCFP\Domain\Services\TalkRating\TalkRating
  */
 final class TalkRatingTest extends \PHPUnit\Framework\TestCase
 {

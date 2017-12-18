@@ -18,9 +18,6 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Infrastructure\Auth\SpeakerAccess;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\SpeakerAccess
- */
 final class SpeakerAccessTest extends \PHPUnit\Framework\TestCase
 {
     public function testReturnsRedirectResponseIfCheckFailed()

@@ -21,9 +21,6 @@ use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Http\Action\Talk\ViewAction
- */
 final class ViewActionTest extends AbstractActionTestCase
 {
     public function testRedirectsToDashboardIfUserIsNotAuthorized()

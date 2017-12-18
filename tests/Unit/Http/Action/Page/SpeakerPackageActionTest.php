@@ -17,9 +17,6 @@ use OpenCFP\Http\Action\Page\SpeakerPackageAction;
 use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Http\Action\Page\SpeakerPackageAction
- */
 final class SpeakerPackageActionTest extends AbstractActionTestCase
 {
     public function testItReturnsTheContentOfTheTwigInAResponseObject()

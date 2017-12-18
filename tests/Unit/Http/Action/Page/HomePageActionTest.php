@@ -17,9 +17,6 @@ use OpenCFP\Http\Action\Page\HomePageAction;
 use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Http\Action\Page\HomePageAction
- */
 final class HomePageActionTest extends AbstractActionTestCase
 {
     public function testItReturnsTheCorrectContentIfNoSubmissionCountNeedsToBeShown()

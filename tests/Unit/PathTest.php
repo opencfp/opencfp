@@ -18,9 +18,6 @@ use OpenCFP\Environment;
 use OpenCFP\Path;
 use OpenCFP\PathInterface;
 
-/**
- * @covers \OpenCFP\Path
- */
 final class PathTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

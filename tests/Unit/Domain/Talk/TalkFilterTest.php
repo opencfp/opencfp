@@ -20,9 +20,6 @@ use OpenCFP\Domain\Talk\TalkFilter;
 use OpenCFP\Domain\Talk\TalkFormatter;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Domain\Talk\TalkFilter
- */
 final class TalkFilterTest extends Framework\TestCase
 {
     use MockeryPHPUnitIntegration;

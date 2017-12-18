@@ -17,9 +17,6 @@ use Localheinz\Test\Util\Helper;
 use OpenCFP\Application\NotAuthorizedException;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Application\NotAuthorizedException
- */
 final class NotAuthorizedExceptionTest extends Framework\TestCase
 {
     use Helper;

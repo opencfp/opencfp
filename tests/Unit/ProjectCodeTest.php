@@ -22,9 +22,6 @@ use OpenCFP\Kernel;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @coversNothing
- */
 final class ProjectCodeTest extends Framework\TestCase
 {
     use Helper;

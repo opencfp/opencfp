@@ -27,9 +27,6 @@ use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\SentinelAccountManagement
- */
 final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
@@ -145,7 +142,7 @@ final class SentinelAccountManagementTest extends \PHPUnit\Framework\TestCase
             ->andReturn($roleRepository);
 
         $accounts = new SentinelAccountManagement($sentinel);
-        
+
         $this->assertSame($users, $accounts->findByRole($name));
     }
 
