@@ -13,7 +13,7 @@ if [ "$CFP_ENV" = "" ]; then
 fi
 
 echo "==> Clearing cache..."
-bin/opencfp cache:clear
+bin/console cache:clear
 
 echo "==> Updating db..."
 # run all database migrations to ensure everything is up to date.
