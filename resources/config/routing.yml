@@ -203,7 +203,7 @@ user_update:
 password_edit:
   path: /profile/change_password
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\ProfileController::passwordAction'
+  controller: OpenCFP\Http\Action\Profile\PasswordAction
 
 password_change:
   path: /profile/change_password
