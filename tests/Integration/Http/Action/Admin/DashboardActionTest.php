@@ -11,35 +11,33 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Integration\Http\Controller\Admin;
+namespace OpenCFP\Test\Integration\Http\Action\Admin;
 
-use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use Illuminate\Database\Eloquent;
+use OpenCFP\Domain\Model;
+use OpenCFP\Test\Integration\RequiresDatabaseReset;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class DashboardControllerTest extends WebTestCase
+final class DashboardActionTest extends WebTestCase implements RequiresDatabaseReset
 {
-    use RefreshDatabase;
-
-    private static $talks;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        self::$talks = factory(Talk::class, 2)->create();
-    }
-
     /**
      * @test
      */
     public function indexDisplaysListOfTalks()
     {
+        /** @var Eloquent\Collection|Model\Talk[] $talks */
+        $talks = factory(Model\Talk::class, 2)->create();
+
         $response = $this
             ->asAdmin()
             ->get('/admin/');
 
         $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
+
+        foreach ($talks as $talk) {
+            $this->assertResponseBodyContains($talk->title, $response);
+        }
+
         $this->assertSessionHasNoFlashMessage($this->session());
     }
 }
