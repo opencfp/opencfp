@@ -84,7 +84,7 @@ admin_export_csv_emails:
 reviewer:
   path: /reviewer/
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\Reviewer\DashboardController::indexAction'
+  controller: OpenCFP\Http\Action\Reviewer\DashboardAction
 
 reviewer_talks:
   path: /reviewer/talks
