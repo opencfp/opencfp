@@ -15,35 +15,12 @@ namespace OpenCFP\Http\Controller\Reviewer;
 
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Pagination;
-use OpenCFP\Domain\Speaker\SpeakerProfile;
 use OpenCFP\Http\Controller\BaseController;
-use OpenCFP\PathInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Environment;
 
 class SpeakersController extends BaseController
 {
-    /**
-     * @var array
-     */
-    private $reviewerUsers;
-
-    private $path;
-
-    public function __construct(
-        Twig_Environment $twig,
-        UrlGeneratorInterface $urlGenerator,
-        array $reviewerUsers,
-        PathInterface $path
-    ) {
-        $this->reviewerUsers = $reviewerUsers;
-        $this->path          = $path;
-
-        parent::__construct($twig, $urlGenerator);
-    }
-
     public function indexAction(Request $request): Response
     {
         $search   = $request->get('search');
@@ -58,29 +35,6 @@ class SpeakersController extends BaseController
             'speakers'   => $pagerfanta->getFanta(),
             'page'       => $pagerfanta->getCurrentPage(),
             'search'     => $search ?: '',
-        ]);
-    }
-
-    public function viewAction(Request $request): Response
-    {
-        $speakerDetails = User::where('id', $request->get('id'))->first();
-
-        if (!$speakerDetails instanceof User) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'Could not find requested speaker',
-            ]);
-
-            return $this->redirectTo('reviewer_speakers');
-        }
-
-        $talks = $speakerDetails->talks()->get()->toArray();
-
-        return $this->render('reviewer/speaker/view.twig', [
-            'speaker' => new SpeakerProfile($speakerDetails, $this->reviewerUsers),
-            'talks'   => $talks,
-            'page'    => $request->get('page'),
         ]);
     }
 }
