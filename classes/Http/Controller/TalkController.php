@@ -115,53 +115,6 @@ class TalkController extends BaseController
         ]);
     }
 
-    public function editAction(Request $request): Response
-    {
-        $talkId = (int) $request->get('id');
-
-        // You can only edit talks while the CfP is open
-        // This will redirect to "view" the talk in a read-only template
-        if (!$this->callForPapers->isOpen()) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Read Only',
-                'ext'   => 'You cannot edit talks once the call for papers has ended',
-            ]);
-
-            return new RedirectResponse($this->url('talk_view', ['id' => $talkId]));
-        }
-
-        if (empty($talkId)) {
-            return $this->redirectTo('dashboard');
-        }
-
-        $userId = $this->authentication->user()->getId();
-
-        $talk = Talk::find($talkId);
-
-        if (!$talk instanceof Talk || (int) $talk['user_id'] !== $userId) {
-            return $this->redirectTo('dashboard');
-        }
-
-        return $this->render('talk/edit.twig', [
-            'formAction'     => $this->url('talk_update'),
-            'talkCategories' => $this->talkHelper->getTalkCategories(),
-            'talkTypes'      => $this->talkHelper->getTalkTypes(),
-            'talkLevels'     => $this->talkHelper->getTalkLevels(),
-            'id'             => $talkId,
-            'title'          => \html_entity_decode($talk['title']),
-            'description'    => \html_entity_decode($talk['description']),
-            'type'           => $talk['type'],
-            'level'          => $talk['level'],
-            'category'       => $talk['category'],
-            'desired'        => $talk['desired'],
-            'slides'         => $talk['slides'],
-            'other'          => $talk['other'],
-            'sponsor'        => $talk['sponsor'],
-            'buttonInfo'     => 'Update my talk!',
-        ]);
-    }
-
     public function createAction(Request $request): Response
     {
         // You can only create talks while the CfP is open
