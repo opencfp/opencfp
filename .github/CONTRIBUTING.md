@@ -12,6 +12,8 @@ We accept contributions via Pull Requests on [Github](https://github.com/opencfp
 
 - **Tests must be clear in meaning** - We value clarity in meaning / purposes behind tests. If there is excessive setup required for a test, it should be hidden behind an intention-revealing (and possibly re-usable) method.
 
+- **Tests doubles must use [Prophecy](https://phpunit.de/manual/current/en/test-doubles.html#test-doubles.prophecy)** - The project is migrating away from [Mockery](http://docs.mockery.io/en/latest/) to reduce dependencies 
+
 - **Document any change in behaviour** - Make sure the `README.md` and any other relevant documentation are kept up-to-date.
 
 - **Create feature branches** - Feature branches are critically important if you're going to be sending us more than one contribution. Don't send a PR from `master`!
