@@ -97,6 +97,8 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|Sentinel
      */
     private function createSentinelMock(): Sentinel
@@ -105,6 +107,8 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return \Cartalyst\Sentinel\Users\UserInterface|Framework\MockObject\MockObject
      */
     private function createSentinelUserMock(): \Cartalyst\Sentinel\Users\UserInterface
@@ -113,6 +117,8 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|UserRepository
      */
     private function createUserRepositoryMock(): UserRepository
@@ -121,6 +127,8 @@ final class SentinelIdentityProviderTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|User
      */
     private function createUserMock(): User

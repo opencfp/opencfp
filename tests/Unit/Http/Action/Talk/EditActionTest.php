@@ -168,6 +168,8 @@ final class EditActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|View\TalkHelper
      */
     private function createTalkHelperMock(): View\TalkHelper
@@ -176,6 +178,8 @@ final class EditActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return CallForPapers|Framework\MockObject\MockObject
      */
     private function createCallForPapersMock(): CallForPapers

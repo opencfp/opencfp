@@ -358,6 +358,8 @@ final class UserCreateCommandTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return \PHPUnit_Framework_MockObject_MockObject|Services\AccountManagement
      */
     private function createAccountManagementMock(): Services\AccountManagement
@@ -366,6 +368,8 @@ final class UserCreateCommandTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Auth\UserInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private function createUserMock(): Auth\UserInterface

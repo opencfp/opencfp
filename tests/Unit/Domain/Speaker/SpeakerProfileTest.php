@@ -471,6 +471,8 @@ final class SpeakerProfileTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @param array $properties
      *
      * @return Model\User|\PHPUnit_Framework_MockObject_MockObject
@@ -492,6 +494,8 @@ final class SpeakerProfileTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Model\Talk|\PHPUnit_Framework_MockObject_MockObject
      */
     private function createTalkMock(): Model\Talk

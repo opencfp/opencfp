@@ -88,6 +88,8 @@ final class IlluminateUserRepositoryTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @param string[] $methods
      *
      * @return Model\User|\PHPUnit_Framework_MockObject_MockObject

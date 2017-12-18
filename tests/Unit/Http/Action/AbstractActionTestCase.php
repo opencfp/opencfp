@@ -20,11 +20,16 @@ use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 use Twig_Environment;
 
+/**
+ * @deprecated
+ */
 abstract class AbstractActionTestCase extends Framework\TestCase
 {
     use Helper;
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|Twig_Environment
      */
     final protected function createTwigMock(): Twig_Environment
@@ -33,6 +38,8 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|HttpFoundation\Request
      */
     final protected function createRequestMock(): HttpFoundation\Request
@@ -41,6 +48,8 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|HttpFoundation\Session\SessionInterface
      */
     final protected function createSessionMock(): HttpFoundation\Session\SessionInterface
@@ -49,6 +58,8 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|Routing\Generator\UrlGeneratorInterface
      */
     final protected function createUrlGeneratorMock(): Routing\Generator\UrlGeneratorInterface
@@ -57,6 +68,8 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|Services\Authentication
      */
     final protected function createAuthenticationMock(): Services\Authentication
