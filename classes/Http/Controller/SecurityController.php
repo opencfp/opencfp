@@ -36,13 +36,6 @@ class SecurityController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function indexAction(): Response
-    {
-        return $this->render('security/login.twig', [
-            'email' => null,
-        ]);
-    }
-
     public function processAction(Request $request): Response
     {
         try {
