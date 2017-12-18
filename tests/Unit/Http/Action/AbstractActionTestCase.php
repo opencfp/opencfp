@@ -63,4 +63,12 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     {
         return $this->createMock(Services\Authentication::class);
     }
+
+    /**
+     * @return Framework\MockObject\MockObject|Services\Authentication
+     */
+    final protected function createAuthenticationMock(): Services\Authentication
+    {
+        return $this->createMock(Services\Authentication::class);
+    }
 }
