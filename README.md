@@ -246,7 +246,7 @@ OpenCFP comes bundled with a few command-line utilities to administer the system
 can be found by running the following in the project root:
 
 ```
-$ bin/opencfp
+$ bin/console
 ```
 
 ### [Admin Group Management](#admin-group-management)
@@ -256,13 +256,13 @@ Administrators are authorized to review speaker information in addition to speci
 Adding `speaker@opencfp.org` to the admin group:
 
 ```
-$ bin/opencfp user:promote --env=production speaker@opencfp.org admin
+$ bin/console user:promote --env=production speaker@opencfp.org admin
 ```
 
 Removing `speaker@opencfp.org` from the admin group:
 
 ```
-$ bin/opencfp user:demote --env=production speaker@opencfp.org admin
+$ bin/console user:demote --env=production speaker@opencfp.org admin
 ```
 
 ### [Reviewer Group Management](#reviewer-group-management)
@@ -271,13 +271,13 @@ Reviewers are authorized to see talks and give ratings to them.
 Adding `speaker@opencfp.org` to the reviewer group:
 
 ```
-$ bin/opencfp user:promote --env=production speaker@opencfp.org reviewer
+$ bin/console user:promote --env=production speaker@opencfp.org reviewer
 ```
 
 Removing `speaker@opencfp.org` from the reviewer group:
 
 ```
-$ bin/opencfp user:demote --env=production speaker@opencfp.org reviewer
+$ bin/console user:demote --env=production speaker@opencfp.org reviewer
 ```
 
 
@@ -288,19 +288,19 @@ Users are needed for you system, and sometimes you want to add users via command
 Adding a speaker:
 
 ```
-$ bin/opencfp user:create --first_name="Speaker" --last_name="Name" --email="speaker@opencfp.org" --password="somePassw0rd!"
+$ bin/console user:create --first_name="Speaker" --last_name="Name" --email="speaker@opencfp.org" --password="somePassw0rd!"
 ```
 
 Add an admin:
 
 ```
-$ bin/opencfp user:create --first_name="Admin" --last_name="Name" --email="admin@opencfp.org" --password="somePassw0rd!" --admin
+$ bin/console user:create --first_name="Admin" --last_name="Name" --email="admin@opencfp.org" --password="somePassw0rd!" --admin
 ```
 
 Add a reviewer:
 
 ```
-$ bin/opencfp user:create --first_name="Admin" --last_name="Name" --email="admin@opencfp.org" --password="somePassw0rd!" --reviewer
+$ bin/console user:create --first_name="Admin" --last_name="Name" --email="admin@opencfp.org" --password="somePassw0rd!" --reviewer
 ```
 
 ### [Clear Caches](#clear-caches)
@@ -309,7 +309,7 @@ OpenCFP uses Twig as a templating engine and HTML Purifier for input filtering. 
 If you need to clear all application caches:
 
 ```
-$ bin/opencfp cache:clear
+$ bin/console cache:clear
 ```
 
 ### [Scripts to Rule Them All](#scripts-rule-all)
@@ -348,7 +348,7 @@ $ script/test
 
 ## [Compiling Frontend Assets](#compiling-frontend-assets)
 
-OpenCFP ships with a pre-compiled CSS file. However, we now include the Sass / PostCSS used to compile front-end assets. You are free to modify these source files to change brand colors or modify your instance however you see fit. Remember, you can do **nothing** and take advantage of the pre-compiled CSS we ship. You only need these instructions if you want to customize or contribute to the look and feel of OpenCFP. Let's take a look at this new workflow for OpenCFP. 
+OpenCFP ships with a pre-compiled CSS file. However, we now include the Sass / PostCSS used to compile front-end assets. You are free to modify these source files to change brand colors or modify your instance however you see fit. Remember, you can do **nothing** and take advantage of the pre-compiled CSS we ship. You only need these instructions if you want to customize or contribute to the look and feel of OpenCFP. Let's take a look at this new workflow for OpenCFP.
 
 Install Node dependencies using `yarn`.
 
@@ -360,7 +360,7 @@ Now dependencies are installed and we're ready to compile assets. Check out the 
 
 The main `app.scss` file is at [`resources/assets/sass/app.scss`](resources/assets/sass/app.scss). We use [Laravel Mix](https://github.com/JeffreyWay/laravel-mix) to compile our Sass. Mix is configurable to run without Laravel, so we take advantage of that because it really makes dealing with Webpack a lot simpler. Our Mix configuration is at [`webpack.mix.js`](webpack.mix.js). In it, we run our `app.scss` through a Sass compilation step, we copy FontAwesome icons and finally run the compiled CSS through [Tailwind CSS](https://tailwindcss.com), a PostCSS plugin.
 
-TailwindCSS is a new utility-first CSS framework that uses CSS class composition to piece together interfaces. Check out [their documentation](https://tailwindcss.com/docs/what-is-tailwind/) for more information on how to use the framework. We use it extensively across OpenCFP and it saves a lot of time and keeps us from having to maintain *too much* CSS. If you take a look through our `app.scss`, you'll see a lot of calls to [`@apply`](https://tailwindcss.com/docs/functions-and-directives#apply). This is NOT a Sass construct. It's a TailwindCSS function used to mixin existing classes into our custom CSS. 
+TailwindCSS is a new utility-first CSS framework that uses CSS class composition to piece together interfaces. Check out [their documentation](https://tailwindcss.com/docs/what-is-tailwind/) for more information on how to use the framework. We use it extensively across OpenCFP and it saves a lot of time and keeps us from having to maintain *too much* CSS. If you take a look through our `app.scss`, you'll see a lot of calls to [`@apply`](https://tailwindcss.com/docs/functions-and-directives#apply). This is NOT a Sass construct. It's a TailwindCSS function used to mixin existing classes into our custom CSS.
 
 ## [Testing](#testing)
 

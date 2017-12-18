@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+use OpenCFP\Environment;
+use OpenCFP\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Debug\Debug;
+
+\set_time_limit(0);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$input       = new ArgvInput();
+$environment = Environment::fromString($input->getParameterOption(['--env'], \getenv('CFP_ENV') ?: 'development'));
+
+if (!$environment->isProduction()) {
+    Debug::enable();
+}
+
+$kernel      = new Kernel((string) $environment, !$environment->isProduction());
+$application = new Application($kernel);
+$application->run($input);
