@@ -56,6 +56,14 @@ final class DeleteActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @return Framework\MockObject\MockObject|Services\Authentication
+     */
+    private function createAuthenticationMock(): Services\Authentication
+    {
+        return $this->createMock(Services\Authentication::class);
+    }
+
+    /**
      * @return CallForPapers|Framework\MockObject\MockObject
      */
     private function createCallForPapersMock(): CallForPapers

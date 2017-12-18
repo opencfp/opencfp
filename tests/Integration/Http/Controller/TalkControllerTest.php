@@ -101,6 +101,82 @@ final class TalkControllerTest extends WebTestCase
     /**
      * @test
      */
+    public function canNotEditTalkAfterCfpIsClosed()
+    {
+        $csrfToken = $this->container->get('csrf.token_manager')
+            ->getToken('edit_talk');
+
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id)
+            ->callForPapersIsClosed()
+            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . $csrfToken);
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertResponseBodyNotContains('Edit Your Talk', $response);
+        $this->assertSessionHasFlashMessage('error', $this->session());
+        $this->assertSessionHasFlashMessage('You cannot edit talks once the call for papers has ended', $this->session());
+    }
+
+    /**
+     * @test
+     */
+    public function getRedirectedToDashboardOnEditWhenNoTalkID()
+    {
+        $response = $this
+            ->asLoggedInSpeaker()
+            ->get('/talk/edit/a');
+
+        $this->assertResponseBodyNotContains('Edit Your Talk', $response);
+        $this->assertResponseIsRedirect($response);
+    }
+
+    /**
+     * @test
+     */
+    public function getRedirectedToDashboardWhenTalkIsNotYours()
+    {
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id + 1)
+            ->get('talk/edit/' . self::$talk->id);
+
+        $this->assertResponseBodyNotContains('Edit Your Talk', $response);
+        $this->assertResponseIsRedirect($response);
+    }
+
+    /**
+     * @test
+     */
+    public function seeEditPageWhenAllowed()
+    {
+        $csrfToken = $this->container->get('csrf.token_manager')
+            ->getToken('edit_talk')
+            ->getValue();
+
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id)
+            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . $csrfToken);
+
+        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseBodyContains(self::$talk->title, $response);
+        $this->assertResponseBodyContains('Edit Your Talk', $response);
+    }
+
+    /**
+     * @test
+     */
+    public function cannotEditTalkWithBadToken()
+    {
+        $response = $this
+            ->asLoggedInSpeaker(self::$user->id)
+            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . \uniqid());
+
+        $this->assertResponseIsRedirect($response);
+        $this->assertRedirectResponseUrlContains('/dashboard', $response);
+    }
+
+    /**
+     * @test
+     */
     public function cantCreateTalkAfterCFPIsClosed()
     {
         $response = $this

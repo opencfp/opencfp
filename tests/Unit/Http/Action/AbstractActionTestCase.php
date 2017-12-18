@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Http\Action;
 
 use Localheinz\Test\Util\Helper;
-use OpenCFP\Domain\Services;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
@@ -33,22 +32,6 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     }
 
     /**
-     * @return Framework\MockObject\MockObject|HttpFoundation\Request
-     */
-    final protected function createRequestMock(): HttpFoundation\Request
-    {
-        return $this->createMock(HttpFoundation\Request::class);
-    }
-
-    /**
-     * @return Framework\MockObject\MockObject|HttpFoundation\Session\SessionInterface
-     */
-    final protected function createSessionMock(): HttpFoundation\Session\SessionInterface
-    {
-        return $this->createMock(HttpFoundation\Session\SessionInterface::class);
-    }
-
-    /**
      * @return Framework\MockObject\MockObject|Routing\Generator\UrlGeneratorInterface
      */
     final protected function createUrlGeneratorMock(): Routing\Generator\UrlGeneratorInterface
@@ -57,10 +40,10 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     }
 
     /**
-     * @return Framework\MockObject\MockObject|Services\Authentication
+     * @return Framework\MockObject\MockObject|HttpFoundation\Request
      */
-    final protected function createAuthenticationMock(): Services\Authentication
+    final protected function createRequestMock(): HttpFoundation\Request
     {
-        return $this->createMock(Services\Authentication::class);
+        return $this->createMock(HttpFoundation\Request::class);
     }
 }
