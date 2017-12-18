@@ -62,6 +62,8 @@ final class HtmlPurifierWarmerTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Filesystem\Filesystem|Framework\MockObject\MockObject
      */
     private function createFilesystemMock(): Filesystem\Filesystem

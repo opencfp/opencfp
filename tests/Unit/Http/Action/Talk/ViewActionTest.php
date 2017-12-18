@@ -111,6 +111,8 @@ final class ViewActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|Speakers
      */
     private function createSpeakersMock(): Speakers
@@ -119,6 +121,8 @@ final class ViewActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|Model\Talk
      */
     private function createTalkMock(): Model\Talk

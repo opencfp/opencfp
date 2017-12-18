@@ -84,6 +84,8 @@ final class DashboardActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|Speakers
      */
     private function createSpeakersMock(): Speakers
@@ -92,6 +94,8 @@ final class DashboardActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return Framework\MockObject\MockObject|Speaker\SpeakerProfile
      */
     private function createSpeakerProfileMock(): Speaker\SpeakerProfile

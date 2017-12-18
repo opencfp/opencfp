@@ -255,6 +255,8 @@ final class UserDemoteCommandTest extends Framework\TestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return \PHPUnit_Framework_MockObject_MockObject|Services\AccountManagement
      */
     private function createAccountManagementMock(): Services\AccountManagement

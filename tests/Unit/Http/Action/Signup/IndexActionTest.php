@@ -194,6 +194,8 @@ final class IndexActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return CallForPapers|Framework\MockObject\MockObject
      */
     private function createCallForPapersMock(): CallForPapers

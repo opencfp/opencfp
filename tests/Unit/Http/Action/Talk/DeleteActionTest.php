@@ -56,6 +56,8 @@ final class DeleteActionTest extends AbstractActionTestCase
     }
 
     /**
+     * @deprecated
+     *
      * @return CallForPapers|Framework\MockObject\MockObject
      */
     private function createCallForPapersMock(): CallForPapers
