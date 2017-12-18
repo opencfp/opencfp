@@ -18,9 +18,6 @@ use Localheinz\Test\Util\Helper;
 use Mockery as m;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\SentinelUser
- */
 final class SentinelUserTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

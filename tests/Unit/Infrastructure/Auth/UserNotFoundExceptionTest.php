@@ -16,9 +16,6 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\UserNotFoundException
- */
 final class UserNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

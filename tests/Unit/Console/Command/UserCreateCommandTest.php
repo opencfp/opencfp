@@ -20,9 +20,6 @@ use OpenCFP\Infrastructure\Auth;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
 
-/**
- * @covers \OpenCFP\Console\Command\UserCreateCommand
- */
 final class UserCreateCommandTest extends Framework\TestCase
 {
     use Helper;

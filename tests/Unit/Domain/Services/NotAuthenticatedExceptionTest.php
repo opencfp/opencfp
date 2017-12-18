@@ -17,9 +17,6 @@ use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Domain\Services\NotAuthenticatedException
- */
 final class NotAuthenticatedExceptionTest extends Framework\TestCase
 {
     use Helper;

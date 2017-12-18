@@ -27,9 +27,6 @@ use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\SentinelAuthentication
- */
 final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

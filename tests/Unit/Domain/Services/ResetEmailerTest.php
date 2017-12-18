@@ -20,9 +20,6 @@ use Swift_Mailer;
 use Swift_Message;
 use Twig_Template;
 
-/**
- * @covers \OpenCFP\Domain\Services\ResetEmailer
- */
 final class ResetEmailerTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;

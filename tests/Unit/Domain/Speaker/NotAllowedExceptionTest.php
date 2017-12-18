@@ -17,9 +17,6 @@ use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Speaker\NotAllowedException;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Domain\Speaker\NotAllowedException
- */
 final class NotAllowedExceptionTest extends Framework\TestCase
 {
     use Helper;

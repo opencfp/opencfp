@@ -21,9 +21,6 @@ use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Infrastructure\Auth\SentinelIdentityProvider;
 use PHPUnit\Framework;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\SentinelIdentityProvider
- */
 final class SentinelIdentityProviderTest extends Framework\TestCase
 {
     use Helper;

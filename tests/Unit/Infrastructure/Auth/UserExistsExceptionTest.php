@@ -16,9 +16,6 @@ namespace OpenCFP\Test\Unit\Infrastructure\Auth;
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Infrastructure\Auth\UserExistsException;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\UserExistsException
- */
 final class UserExistsExceptionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;

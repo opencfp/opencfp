@@ -20,9 +20,6 @@ use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Services\TalkRating\YesNoRating;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 
-/**
- * @covers \OpenCFP\Domain\Services\TalkRating\TalkRatingContext
- */
 final class TalkRatingContextTest extends \PHPUnit\Framework\TestCase
 {
     /**

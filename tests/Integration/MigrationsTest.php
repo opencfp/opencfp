@@ -21,8 +21,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 /**
  * This test makes sure our migrations work correctly.
  * There is no test for migrating 'down' all the way, since that is known to be broken
- *
- * @coversNothing
  */
 final class MigrationsTest extends WebTestCase
 {

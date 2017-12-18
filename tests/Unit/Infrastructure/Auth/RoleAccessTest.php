@@ -21,9 +21,6 @@ use OpenCFP\Infrastructure\Auth\RoleAccess;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-/**
- * @covers \OpenCFP\Infrastructure\Auth\RoleAccess
- */
 final class RoleAccessTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
