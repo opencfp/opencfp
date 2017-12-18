@@ -4,3 +4,7 @@ imports:
 framework:
   router:
     resource: '%kernel.project_dir%/resources/config/routing_development.yml'
+  profiler: ~
+
+web_profiler:
+  toolbar: true
