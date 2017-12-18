@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ForgotForm extends AbstractType
+class ForgotFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
