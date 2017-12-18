@@ -146,11 +146,6 @@ class ProfileController extends BaseController
         ]));
     }
 
-    public function passwordAction(): Response
-    {
-        return $this->render('user/change_password.twig');
-    }
-
     public function passwordProcessAction(Request $request): Response
     {
         $user = $this->authentication->user();

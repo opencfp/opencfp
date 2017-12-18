@@ -119,12 +119,16 @@ homepage:
 speaker_package:
   path: /package
   methods: [GET]
-  controller: OpenCFP\Http\Action\Page\SpeakerPackageAction
+  controller: FrameworkBundle:Template:template
+  defaults:
+    template: package.twig
 
 talk_ideas:
   path: /ideas
   methods: [GET]
-  controller: OpenCFP\Http\Action\Page\TalkIdeasAction
+  controller: FrameworkBundle:Template:template
+  defaults:
+    template: ideas.twig
 
 dashboard:
   path: /dashboard
@@ -203,7 +207,9 @@ user_update:
 password_edit:
   path: /profile/change_password
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\ProfileController::passwordAction'
+  controller: FrameworkBundle:Template:template
+  defaults:
+    template: user/change_password.twig
 
 password_change:
   path: /profile/change_password
