@@ -15,13 +15,10 @@ namespace OpenCFP\Test\Integration\Domain\Model;
 
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\Airport;
-use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
 final class AirportTest extends WebTestCase
 {
-    use RefreshDatabase;
-
     /**
      * @var Airport
      */
