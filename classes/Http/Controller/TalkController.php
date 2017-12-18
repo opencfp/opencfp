@@ -115,37 +115,6 @@ class TalkController extends BaseController
         ]);
     }
 
-    public function createAction(Request $request): Response
-    {
-        // You can only create talks while the CfP is open
-        if (!$this->callForPapers->isOpen()) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'You cannot create talks once the call for papers has ended',
-            ]);
-
-            return $this->redirectTo('dashboard');
-        }
-
-        return $this->render('talk/create.twig', [
-            'formAction'     => $this->url('talk_create'),
-            'talkCategories' => $this->talkHelper->getTalkCategories(),
-            'talkTypes'      => $this->talkHelper->getTalkTypes(),
-            'talkLevels'     => $this->talkHelper->getTalkLevels(),
-            'title'          => $request->get('title'),
-            'description'    => $request->get('description'),
-            'type'           => $request->get('type'),
-            'level'          => $request->get('level'),
-            'category'       => $request->get('category'),
-            'desired'        => $request->get('desired'),
-            'slides'         => $request->get('slides'),
-            'other'          => $request->get('other'),
-            'sponsor'        => $request->get('sponsor'),
-            'buttonInfo'     => 'Submit my talk!',
-        ]);
-    }
-
     public function processCreateAction(Request $request): Response
     {
         // You can only create talks while the CfP is open
