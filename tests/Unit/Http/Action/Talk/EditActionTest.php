@@ -20,9 +20,6 @@ use OpenCFP\Test\Unit\Http\Action\AbstractActionTestCase;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 
-/**
- * @covers \OpenCFP\Http\Action\Talk\EditAction
- */
 final class EditActionTest extends AbstractActionTestCase
 {
     public function testRedirectsToDashboardIfCallForPapersIsClosed()

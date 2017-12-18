@@ -63,6 +63,12 @@ return PhpCsFixer\Config::create()
         'declare_strict_types' => true,
         'function_to_constant' => true,
         'function_typehint_space' => true,
+        'general_phpdoc_annotation_remove' => [
+            'annotations' => [
+                'covers',
+                'coversNothing',
+            ],
+        ],
         'header_comment' => [
             'commentType' => 'PHPDoc',
             'header' => $header,
