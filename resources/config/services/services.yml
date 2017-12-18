@@ -21,6 +21,17 @@ services:
     bind:
       $showSubmissionCount: '%application.show_submission_count%'
 
+  OpenCFP\Http\Action\Forgot\IndexAction:
+    public: true
+    bind:
+      $resetForm: '@OpenCFP\Http\Form\ForgotForm'
+
+  OpenCFP\Http\Form\ForgotForm:
+    class: Symfony\Component\Form\FormInterface
+    factory: [OpenCFP\Http\Form\FormFactory, create]
+    bind:
+      $formType: OpenCFP\Http\Form\ForgotFormType
+
   OpenCFP\Http\View\TalkHelper:
     arguments:
       - '%talk.categories%'
