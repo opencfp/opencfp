@@ -15,7 +15,7 @@ namespace OpenCFP\Http\Controller;
 
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\ResetEmailer;
-use OpenCFP\Http\Form\ForgotForm;
+use OpenCFP\Http\Form\ForgotFormType;
 use OpenCFP\Http\Form\ResetForm;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +56,7 @@ class ForgotController extends BaseController
 
     public function indexAction(): Response
     {
-        $form = $this->formFactory->createBuilder(ForgotForm::class)->getForm();
+        $form = $this->formFactory->createBuilder(ForgotFormType::class)->getForm();
 
         return $this->render('security/forgot_password.twig', [
             'form'         => $form->createView(),
@@ -67,7 +67,7 @@ class ForgotController extends BaseController
     public function sendResetAction(Request $request): Response
     {
         $form = $this->formFactory
-            ->createBuilder(ForgotForm::class)
+            ->createBuilder(ForgotFormType::class)
             ->getForm();
 
         $form->handleRequest($request);
@@ -137,7 +137,7 @@ class ForgotController extends BaseController
                 'ext'   => $errorMessage,
             ]);
         }
-        
+
         // Build password form and display it to the user
         $formOptions = [
             'user_id'    => $request->get('user_id'),
@@ -162,7 +162,7 @@ class ForgotController extends BaseController
 
         $form = $this->formFactory->createBuilder(ResetForm::class)->getForm();
         $form->handleRequest($request);
-        
+
         if (!$form->isValid()) {
             $form->get('user_id')->setData($userId);
             $form->get('reset_code')->setData($resetCode);
@@ -171,7 +171,7 @@ class ForgotController extends BaseController
                 'form' => $form->createView(),
             ]);
         }
-             
+
         $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
         $error        = 0;
 
@@ -200,7 +200,7 @@ class ForgotController extends BaseController
     {
         $form = $this->formFactory->createBuilder(ResetForm::class)->getForm();
         $form->handleRequest($request);
-        
+
         if (!$form->isValid()) {
             return $this->render('user/reset_password.twig', [
                 'form' => $form->createView(),

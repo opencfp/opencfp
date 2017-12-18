@@ -55,7 +55,7 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Controller\SecurityController::class,
                 Http\Controller\SignupController::class,
                 Http\Controller\TalkController::class,
-                Http\Form\ForgotForm::class,
+                Http\Form\ForgotFormType::class,
                 Http\Form\ResetForm::class,
                 Infrastructure\DependencyInjection\TestingPass::class,
                 Infrastructure\Event\AuthenticationListener::class,
