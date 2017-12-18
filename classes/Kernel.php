@@ -21,6 +21,7 @@ use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
+use Symfony\Bundle\WebServerBundle\WebServerBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as SymfonyKernel;
@@ -45,6 +46,7 @@ final class Kernel extends SymfonyKernel
             new TwigBundle(),
             new SwiftmailerBundle(),
             new WouterJEloquentBundle(),
+            new WebServerBundle(),
         ];
 
         if ($this->getEnvironment() !== Environment::TYPE_PRODUCTION) {
