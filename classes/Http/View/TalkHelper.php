@@ -41,7 +41,7 @@ class TalkHelper
         $this->levels     = $levels;
         $this->types      = $types;
     }
-    
+
     public function getTalkCategories()
     {
         $categories = $this->categories;

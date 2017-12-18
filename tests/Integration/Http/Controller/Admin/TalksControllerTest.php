@@ -70,7 +70,7 @@ final class TalksControllerTest extends WebTestCase
             ->post('/admin/talks/' . $talk->id . '/comment', [
                 'comment' => 'Great Talk i rate 10/10',
             ]);
-        
+
         $this->assertResponseBodyNotContains('Server Error', $response);
         $this->assertResponseIsRedirect($response);
     }

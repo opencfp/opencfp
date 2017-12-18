@@ -20,7 +20,7 @@ class AddIdToSpeakerTable extends AbstractMigration
         //$this->execute('ALTER TABLE speakers DROP PRIMARY KEY');
         //$this->execute('ALTER TABLE speakers ADD COLUMN id INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST');
     }
-    
+
     /**
      * Migrate Up.
      */
