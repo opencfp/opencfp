@@ -43,7 +43,7 @@ final class ProjectCodeTest extends Framework\TestCase
                 Domain\Services\ProfileImageProcessor::class,
                 Domain\Talk\TalkFormatter::class,
                 Domain\Talk\TalkHandler::class,
-                Http\Controller\Admin\DashboardController::class,
+                Http\Action\Admin\DashboardAction::class,
                 Http\Controller\Admin\ExportsController::class,
                 Http\Controller\Admin\SpeakersController::class,
                 Http\Controller\Admin\TalksController::class,

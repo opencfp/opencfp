@@ -1,7 +1,7 @@
 admin:
   path: /admin/
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\Admin\DashboardController::indexAction'
+  controller: OpenCFP\Http\Action\Admin\DashboardAction
 
 admin_talks:
   path: /admin/talks
