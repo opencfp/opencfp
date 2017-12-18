@@ -14,33 +14,27 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Action\Page;
 
 use OpenCFP\Domain\Model\Talk;
-use Symfony\Component\HttpFoundation;
-use Twig_Environment;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 final class HomePageAction
 {
-    /**
-     * @var Twig_Environment
-     */
-    private $twig;
-
     /**
      * @var bool
      */
     private $showSubmissionCount;
 
-    public function __construct(Twig_Environment $twig, bool $showSubmissionCount)
+    public function __construct(bool $showSubmissionCount)
     {
-        $this->twig                = $twig;
         $this->showSubmissionCount = $showSubmissionCount;
     }
 
-    public function __invoke(): HttpFoundation\Response
+    /**
+     * @Template("home.twig")
+     */
+    public function __invoke(): array
     {
-        $content = $this->twig->render('home.twig', [
+        return [
             'number_of_talks' => $this->showSubmissionCount ? Talk::count() : '',
-        ]);
-
-        return new HttpFoundation\Response($content);
+        ];
     }
 }

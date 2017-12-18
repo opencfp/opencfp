@@ -13,25 +13,15 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Action\Page;
 
-use Symfony\Component\HttpFoundation;
-use Twig_Environment;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 final class TalkIdeasAction
 {
     /**
-     * @var Twig_Environment
+     * @Template("ideas.twig")
      */
-    private $twig;
-
-    public function __construct(Twig_Environment $twig)
+    public function __invoke(): array
     {
-        $this->twig = $twig;
-    }
-
-    public function __invoke(): HttpFoundation\Response
-    {
-        $content = $this->twig->render('ideas.twig');
-
-        return new HttpFoundation\Response($content);
+        return [];
     }
 }

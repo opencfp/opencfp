@@ -17,9 +17,9 @@ use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model;
 use OpenCFP\Domain\Services;
 use OpenCFP\Http\View;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
 
 final class EditAction
 {
@@ -39,11 +39,6 @@ final class EditAction
     private $callForPapers;
 
     /**
-     * @var Twig_Environment
-     */
-    private $twig;
-
-    /**
      * @var Routing\Generator\UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -52,17 +47,18 @@ final class EditAction
         Services\Authentication $authentication,
         View\TalkHelper $talkHelper,
         CallForPapers $callForPapers,
-        Twig_Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->authentication = $authentication;
         $this->talkHelper     = $talkHelper;
         $this->callForPapers  = $callForPapers;
-        $this->twig           = $twig;
         $this->urlGenerator   = $urlGenerator;
     }
 
-    public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
+    /**
+     * @Template("talk/edit.twig")
+     */
+    public function __invoke(HttpFoundation\Request $request)
     {
         $talkId = (int) $request->get('id');
 
@@ -96,7 +92,7 @@ final class EditAction
             return new HttpFoundation\RedirectResponse($url);
         }
 
-        $content = $this->twig->render('talk/edit.twig', [
+        return [
             'formAction'     => $this->urlGenerator->generate('talk_update'),
             'talkCategories' => $this->talkHelper->getTalkCategories(),
             'talkTypes'      => $this->talkHelper->getTalkTypes(),
@@ -112,8 +108,6 @@ final class EditAction
             'other'          => $talk['other'],
             'sponsor'        => $talk['sponsor'],
             'buttonInfo'     => 'Update my talk!',
-        ]);
-
-        return new HttpFoundation\Response($content);
+        ];
     }
 }

@@ -15,9 +15,9 @@ namespace OpenCFP\Http\Action;
 
 use OpenCFP\Application\Speakers;
 use OpenCFP\Domain\Services;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
 
 final class DashboardAction
 {
@@ -27,33 +27,27 @@ final class DashboardAction
     private $speakers;
 
     /**
-     * @var Twig_Environment
-     */
-    private $twig;
-
-    /**
      * @var Routing\Generator\UrlGeneratorInterface
      */
     private $urlGenerator;
 
     public function __construct(
         Speakers $speakers,
-        Twig_Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->speakers     = $speakers;
-        $this->twig         = $twig;
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function __invoke(): HttpFoundation\Response
+    /**
+     * @Template("dashboard.twig")
+     */
+    public function __invoke()
     {
         try {
-            $content = $this->twig->render('dashboard.twig', [
+            return [
                 'profile' => $this->speakers->findProfile(),
-            ]);
-
-            return new HttpFoundation\Response($content);
+            ];
         } catch (Services\NotAuthenticatedException $exception) {
             $url = $this->urlGenerator->generate('login');
 
