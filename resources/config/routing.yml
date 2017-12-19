@@ -199,7 +199,7 @@ user_create:
 user_edit:
   path: '/profile/edit/{id}'
   methods: [GET]
-  controller: OpenCFP\Http\Action\Profile\EditAction
+  controller: 'OpenCFP\Http\Controller\ProfileController::editAction'
 
 user_update:
   path: /profile/edit

@@ -18,6 +18,7 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\ProfileImageProcessor;
 use OpenCFP\Http\Form\SignupForm;
+use OpenCFP\PathInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -40,18 +41,61 @@ class ProfileController extends BaseController
      */
     private $profileImageProcessor;
 
+    /**
+     * @var PathInterface
+     */
+    private $path;
+
     public function __construct(
         Authentication $authentication,
         HTMLPurifier $purifier,
         ProfileImageProcessor $profileImageProcessor,
         Twig_Environment $twig,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        PathInterface $path
     ) {
         $this->authentication        = $authentication;
         $this->purifier              = $purifier;
         $this->profileImageProcessor = $profileImageProcessor;
+        $this->path                  = $path;
 
         parent::__construct($twig, $urlGenerator);
+    }
+
+    public function editAction(Request $request): Response
+    {
+        $user = $this->authentication->user();
+
+        if ((string) $user->getId() !== $request->get('id')) {
+            $request->getSession()->set('flash', [
+                'type'  => 'error',
+                'short' => 'Error',
+                'ext'   => "You cannot edit someone else's profile",
+            ]);
+
+            return $this->redirectTo('dashboard');
+        }
+
+        $speakerData = User::find($user->getId())->toArray();
+
+        return $this->render('user/edit.twig', [
+            'email'          => $user->getLogin(),
+            'first_name'     => $speakerData['first_name'],
+            'last_name'      => $speakerData['last_name'],
+            'company'        => $speakerData['company'],
+            'twitter'        => $speakerData['twitter'],
+            'url'            => $speakerData['url'],
+            'speaker_info'   => $speakerData['info'],
+            'speaker_bio'    => $speakerData['bio'],
+            'speaker_photo'  => $speakerData['photo_path'],
+            'preview_photo'  => $this->path->downloadFromPath() . $speakerData['photo_path'],
+            'airport'        => $speakerData['airport'],
+            'transportation' => $speakerData['transportation'],
+            'hotel'          => $speakerData['hotel'],
+            'id'             => $user->getId(),
+            'formAction'     => $this->url('user_update'),
+            'buttonInfo'     => 'Update Profile',
+        ]);
     }
 
     public function processAction(Request $request): Response

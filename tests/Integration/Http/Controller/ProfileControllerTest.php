@@ -32,6 +32,33 @@ final class ProfileControllerTest extends WebTestCase
     /**
      * @test
      */
+    public function notAbleToSeeEditPageOfOtherPersonsProfile()
+    {
+        $response = $this
+            ->asLoggedInSpeaker(1)
+            ->get('/profile/edit/2');
+
+        $this->assertResponseBodyNotContains('My Profile', $response);
+        $this->assertResponseIsRedirect($response);
+    }
+
+    /**
+     * @test
+     */
+    public function seeEditPageWhenAllowed()
+    {
+        $id = self::$user->id;
+
+        $response = $this
+            ->asLoggedInSpeaker($id)
+            ->get('/profile/edit/' . $id);
+
+        $this->assertResponseIsSuccessful($response);
+    }
+
+    /**
+     * @test
+     */
     public function notAbleToEditOtherPersonsProfile()
     {
         $response = $this
