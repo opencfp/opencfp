@@ -6,7 +6,7 @@ admin:
 admin_talks:
   path: /admin/talks
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\Admin\TalksController::indexAction'
+  controller: OpenCFP\Http\Action\Admin\Talk\IndexAction
 
 admin_talk_view:
   path: '/admin/talks/{id}'
