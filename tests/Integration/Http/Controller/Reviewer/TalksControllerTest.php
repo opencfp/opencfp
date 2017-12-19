@@ -32,21 +32,6 @@ final class TalksControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function indexActionWorksNormally()
-    {
-        $response = $this
-            ->asReviewer()
-            ->get('/reviewer/talks');
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains('<h2 class="headline">Submitted Talks</h2>', $response);
-        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
-        $this->assertResponseBodyNotContains('Recent Talks', $response);
-    }
-
-    /**
-     * @test
-     */
     public function viewActionWillRedirectWhenTalkNotFound()
     {
         $response = $this
