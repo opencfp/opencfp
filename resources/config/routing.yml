@@ -11,7 +11,7 @@ admin_talks:
 admin_talk_view:
   path: '/admin/talks/{id}'
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\Admin\TalksController::viewAction'
+  controller: OpenCFP\Http\Action\Admin\Talk\ViewAction
 
 admin_talk_favorite:
   path: '/admin/talks/{id}/favorite'
