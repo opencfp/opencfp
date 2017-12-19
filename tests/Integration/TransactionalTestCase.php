@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration;
 
-interface RequiresDatabaseReset
+interface TransactionalTestCase
 {
 }

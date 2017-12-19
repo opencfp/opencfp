@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration;
 
 use Illuminate\Database\Capsule;
+use Illuminate\Database\Connection;
 use Localheinz\Test\Util\Helper;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
@@ -69,9 +70,18 @@ abstract class WebTestCase extends KernelTestCase
     {
         $this->refreshContainer();
 
-        if ($this instanceof RequiresDatabaseReset) {
-            $this->resetDatabase();
+        if ($this instanceof TransactionalTestCase) {
+            $this->databaseConnection()->beginTransaction();
         }
+    }
+
+    protected function tearDown()
+    {
+        if ($this instanceof TransactionalTestCase) {
+            $this->databaseConnection()->rollBack();
+        }
+
+        parent::tearDown();
     }
 
     protected static function getKernelClass()
@@ -85,12 +95,12 @@ abstract class WebTestCase extends KernelTestCase
         $this->container = self::$kernel->getContainer();
     }
 
-    private function resetDatabase()
+    private function databaseConnection(): Connection
     {
         /** @var Capsule\Manager $capsule */
         $capsule = $this->container->get(Capsule\Manager::class);
 
-        $capsule->getConnection()->unprepared(\file_get_contents(__DIR__ . '/../dump.sql'));
+        return $capsule->getConnection();
     }
 
     /**

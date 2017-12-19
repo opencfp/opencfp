@@ -15,10 +15,10 @@ namespace OpenCFP\Test\Integration\Http\Action\Reviewer\Talk;
 
 use Cartalyst\Support\Collection;
 use OpenCFP\Domain\Model;
-use OpenCFP\Test\Integration\RequiresDatabaseReset;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class IndexActionTest extends WebTestCase implements RequiresDatabaseReset
+final class IndexActionTest extends WebTestCase implements TransactionalTestCase
 {
     /**
      * @test
