@@ -155,7 +155,7 @@ talk_create:
 talk_update:
   path: /talk/update
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\TalkController::updateAction'
+  controller: OpenCFP\Http\Action\Talk\UpdateAction
   defaults: { _require_csrf_token: true }
 
 talk_delete:
