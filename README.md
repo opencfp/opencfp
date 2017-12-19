@@ -117,10 +117,18 @@ To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/featur
 following command can be run:
 
 ```
-$ script/server
+$ bin/console server:start
 ```
 
 The server uses port `8000`. This is a quick way to get started doing development on OpenCFP itself.
+
+Details on how to use this console command can be found at Symfony's documentation for [using the built-in web server](http://symfony.com/doc/current/setup/built_in_web_server.html).
+
+To stop the server the following command can be run:
+
+```
+$ bin/console server:stop
+```
 
 ### [Specify Web Server Document Root](#specify-web-server-document-root)
 
@@ -329,13 +337,6 @@ This command will update all dependencies and run new migrations
 
 ```
 $ script/update
-```
-
-#### Start Development/Local Server
-This command will start a built-in php web server, using port `8000`.
-
-```
-$ script/server
 ```
 
 #### Run Tests
