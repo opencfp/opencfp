@@ -89,7 +89,7 @@ reviewer:
 reviewer_talks:
   path: /reviewer/talks
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\Reviewer\TalksController::indexAction'
+  controller: OpenCFP\Http\Action\Reviewer\Talk\IndexAction
 
 reviewer_talk_view:
   path: '/reviewer/talks/{id}'
