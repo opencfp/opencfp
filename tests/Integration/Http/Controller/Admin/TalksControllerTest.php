@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Controller\Admin;
 
 use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
@@ -47,47 +46,6 @@ final class TalksControllerTest extends WebTestCase
 
         $this->assertResponseBodyNotContains('Server Error', $response);
         $this->assertResponseIsRedirect($response);
-    }
-
-    /**
-     * Verify that not found talk redirects
-     *
-     * @test
-     */
-    public function talkNotFoundRedirectsBackToTalksOverview()
-    {
-        $response = $this->get('/admin/talks/255');
-
-        $this->assertResponseIsRedirect($response);
-        $this->assertResponseBodyNotContains('<strong>Submitted by:</strong>', $response);
-    }
-
-    /**
-     * @test
-     */
-    public function talkWithNoMetaDisplaysCorrectly()
-    {
-        $talk = self::$talks->first();
-
-        $response = $this
-            ->asAdmin()
-            ->get('/admin/talks/' . $talk->id);
-
-        $this->assertResponseIsSuccessful($response);
-    }
-
-    /**
-     * @test
-     */
-    public function previouslyViewedTalksDisplaysCorrectly()
-    {
-        $meta = factory(TalkMeta::class, 1)->create();
-
-        $response = $this
-            ->asAdmin($meta->first()->admin_user_id)
-            ->get('/admin/talks/' . $meta->first()->talk_id);
-
-        $this->assertResponseIsSuccessful($response);
     }
 
     /**
