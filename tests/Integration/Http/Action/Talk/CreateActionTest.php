@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
 use OpenCFP\Domain\CallForPapers;
-use OpenCFP\Test\Integration\RequiresDatabaseReset;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class CreateActionTest extends WebTestCase implements RequiresDatabaseReset
+final class CreateActionTest extends WebTestCase implements TransactionalTestCase
 {
     /**
      * @test

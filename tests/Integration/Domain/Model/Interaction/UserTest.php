@@ -15,10 +15,10 @@ namespace OpenCFP\Test\Integration\Domain\Model\Interaction;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\Integration\RequiresDatabaseReset;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class UserTest extends WebTestCase implements RequiresDatabaseReset
+final class UserTest extends WebTestCase implements TransactionalTestCase
 {
     /**
      * @test

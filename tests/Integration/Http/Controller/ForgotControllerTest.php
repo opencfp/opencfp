@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Controller;
 
 use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Test\Integration\RequiresDatabaseReset;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class ForgotControllerTest extends WebTestCase implements RequiresDatabaseReset
+final class ForgotControllerTest extends WebTestCase implements TransactionalTestCase
 {
     /**
      * @test
