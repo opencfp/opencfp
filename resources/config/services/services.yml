@@ -19,13 +19,11 @@ services:
     resource: '%kernel.project_dir%/classes/Http/Action/*'
     public: true
     bind:
+      $applicationEmail: '%application.email%'
+      $applicationEndDate: '%application.enddate%'
+      $applicationTitle: '%application.title%'
       $resetForm: '@OpenCFP\Http\Form\ForgotForm'
       $showSubmissionCount: '%application.show_submission_count%'
-
-  OpenCFP\Http\Action\Profile\EditAction:
-    public: true
-    class: OpenCFP\Http\Action\Profile\EditAction
-    factory: [OpenCFP\Http\Action\Profile\EditActionFactory, create]
 
   OpenCFP\Http\Form\ForgotForm:
     class: Symfony\Component\Form\FormInterface

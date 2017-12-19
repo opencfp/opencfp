@@ -31,32 +31,6 @@ final class TalksControllerTest extends WebTestCase
     }
 
     /**
-     * @test
-     */
-    public function indexPageDisplaysTalksCorrectly()
-    {
-        $response = $this
-            ->asAdmin()
-            ->get('/admin/talks');
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
-    }
-
-    /**
-     * @test
-     */
-    public function indexPageWorkWithNoTalks()
-    {
-        $response = $this
-            ->asAdmin()
-            ->get('/admin/talks');
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains('Submitted Talks', $response);
-    }
-
-    /**
      * A test to make sure that comments can be correctly tracked
      *
      * @test
