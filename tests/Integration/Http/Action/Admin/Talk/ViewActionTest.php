@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Action\Admin\Talk;
 
 use OpenCFP\Domain\Model;
-use OpenCFP\Test\Integration\RequiresDatabaseReset;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class ViewActionTest extends WebTestCase implements RequiresDatabaseReset
+final class ViewActionTest extends WebTestCase implements TransactionalTestCase
 {
     /**
      * Verify that not found talk redirects

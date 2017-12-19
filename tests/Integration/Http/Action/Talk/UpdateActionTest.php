@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
-use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Test\Integration\RequiresDatabaseReset;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class UpdateActionTest extends WebTestCase implements RequiresDatabaseReset
+final class UpdateActionTest extends WebTestCase implements TransactionalTestCase
 {
     /**
      * @test
