@@ -35,25 +35,6 @@ class TalksController extends BaseController
         parent::__construct($twig, $urlGenerator);
     }
 
-    public function viewAction(Request $request): Response
-    {
-        $this->talkHandler->grabTalk((int) $request->get('id'));
-
-        if (!$this->talkHandler->view()) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'Could not find requested talk',
-            ]);
-
-            return $this->redirectTo('reviewer_talks');
-        }
-
-        return $this->render('reviewer/talks/view.twig', [
-            'talk' => $this->talkHandler->getProfile(),
-        ]);
-    }
-
     public function rateAction(Request $request): Response
     {
         try {
