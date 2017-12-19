@@ -44,6 +44,7 @@ final class ProjectCodeTest extends Framework\TestCase
                 Domain\Talk\TalkFormatter::class,
                 Domain\Talk\TalkHandler::class,
                 Http\Action\Admin\DashboardAction::class,
+                Http\Action\Admin\Talk\IndexAction::class,
                 Http\Action\Reviewer\DashboardAction::class,
                 Http\Controller\Admin\ExportsController::class,
                 Http\Controller\Admin\SpeakersController::class,
