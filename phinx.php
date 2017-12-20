@@ -11,11 +11,12 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
+use OpenCFP\Environment;
 use OpenCFP\Kernel;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$kernel = new Kernel((string) \OpenCFP\Environment::fromServer($_SERVER), false);
+$kernel = new Kernel((string) Environment::fromServer($_SERVER), false);
 $kernel->boot();
 
 $container = $kernel->getContainer();
