@@ -13,7 +13,6 @@ services:
       $applicationAirport: '%application.airport%'
       $applicationArrival: '%application.arrival%'
       $applicationDeparture: '%application.departure%'
-      $reviewerUsers: '%reviewer.users%'
 
   OpenCFP\Http\Action\:
     resource: '%kernel.project_dir%/classes/Http/Action/*'
@@ -23,6 +22,7 @@ services:
       $applicationEndDate: '%application.enddate%'
       $applicationTitle: '%application.title%'
       $resetForm: '@OpenCFP\Http\Form\ForgotForm'
+      $reviewerUsers: '%reviewer.users%'
       $showSubmissionCount: '%application.show_submission_count%'
 
   OpenCFP\Http\Form\ForgotForm:

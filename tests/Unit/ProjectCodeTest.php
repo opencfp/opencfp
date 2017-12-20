@@ -46,6 +46,7 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Action\Admin\DashboardAction::class,
                 Http\Action\Admin\Talk\IndexAction::class,
                 Http\Action\Reviewer\DashboardAction::class,
+                Http\Action\Reviewer\Speaker\ViewAction::class,
                 Http\Action\Reviewer\Talk\IndexAction::class,
                 Http\Controller\Admin\ExportsController::class,
                 Http\Controller\Admin\SpeakersController::class,

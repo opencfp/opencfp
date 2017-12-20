@@ -109,7 +109,7 @@ reviewer_speakers:
 reviewer_speaker_view:
   path: '/reviewer/speakers/{id}'
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\Reviewer\SpeakersController::viewAction'
+  controller: OpenCFP\Http\Action\Reviewer\Speaker\ViewAction
 
 homepage:
   path: /

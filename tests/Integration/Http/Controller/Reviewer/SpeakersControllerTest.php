@@ -55,33 +55,4 @@ final class SpeakersControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyContains($speaker->first_name, $response);
     }
-
-    /**
-     * @test
-     */
-    public function viewActionRedirectsWhenUserDoesntExist()
-    {
-        $response = $this
-            ->asReviewer()
-            ->get('/reviewer/speakers/255');
-
-        $this->assertResponseBodyNotContains('Speaker Bio', $response);
-        $this->assertResponseIsRedirect($response);
-    }
-
-    /**
-     * @test
-     */
-    public function viewActionShowsSpeaker()
-    {
-        $speaker = self::$users->first();
-
-        $response = $this
-            ->asReviewer()
-            ->get('/reviewer/speakers/' . $speaker->id);
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains($speaker->first_name, $response);
-        $this->assertResponseBodyContains($speaker->bio, $response);
-    }
 }
