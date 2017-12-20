@@ -26,6 +26,7 @@ infection: composer database
 	vendor/bin/infection
 
 integration: composer database
+	if [ ! -f "config/testing.yml" ]; then cp config/testing.dist.yml config/testing.yml; fi
 	vendor/bin/phpunit --testsuite integration
 
 test: integration unit
