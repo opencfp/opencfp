@@ -94,7 +94,7 @@ reviewer_talks:
 reviewer_talk_view:
   path: '/reviewer/talks/{id}'
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\Reviewer\TalksController::viewAction'
+  controller: OpenCFP\Http\Action\Reviewer\Talk\ViewAction
 
 reviewer_talk_rate:
   path: '/reviewer/talks/{id}/rate'
