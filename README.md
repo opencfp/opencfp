@@ -197,7 +197,7 @@ schema to enter your own details into.
 For example, if you specified `SetEnv CFP_ENV production`:
 
 ```bash
-$ cp config/production.dist.yml config/production.yml
+$ cp config/production.yml.dist config/production.yml
 ```
 
 After making a local copy, edit `config/production.yml` and specify your own details. Here are some important options
