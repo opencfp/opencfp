@@ -67,7 +67,7 @@ jobs:
         - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
         - cp phinx.yml.dist phinx.yml
         - cp config/testing.dist.yml config/testing.yml
-        - vendor/bin/phinx migrate -e testing
+        - CFP_ENV=testing vendor/bin/phinx migrate
         - mysqldump -uroot $TRAVIS_DB > tests/dump.sql
         - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-before-script; fi
 

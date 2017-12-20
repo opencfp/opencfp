@@ -229,13 +229,14 @@ mail:
 
 ### [Run Migrations](#run-migrations)
 
-This project uses [Phinx](http://phinx.org) to handle migrations. Be sure to copy the `phinx.yml.dist` file that is in the
-root directory for the project to `phinx.yml` and edit it to match your own database settings.
+This project uses [Phinx](http://phinx.org) to handle migrations. Configuration for Phinx is loaded from `phinx.php`. 
+The `CFP_ENV` environment variable is used to select an environment to migrate and defaults to `development`. Be sure 
+to correctly configure the app using the `config/:environment.yml` files.
 
 To run migrations, make sure you are in the root directory for the project and run the following:
 
 ```
-$ vendor/bin/phinx migrate --environment=production
+$ CFP_ENV=production vendor/bin/phinx migrate
 ```
 
 Note: For updating previously installed instances only run migrations as needed.
