@@ -21,7 +21,7 @@ services:
       $applicationEmail: '%application.email%'
       $applicationEndDate: '%application.enddate%'
       $applicationTitle: '%application.title%'
-      $resetForm: '@OpenCFP\Http\Form\ForgotForm'
+      $forgotForm: '@OpenCFP\Http\Form\ForgotForm'
       $reviewerUsers: '%reviewer.users%'
       $showSubmissionCount: '%application.show_submission_count%'
 

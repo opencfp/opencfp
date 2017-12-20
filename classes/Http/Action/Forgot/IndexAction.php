@@ -22,11 +22,11 @@ final class IndexAction
     /**
      * @var Form\FormInterface
      */
-    private $resetForm;
+    private $forgotForm;
 
-    public function __construct(Form\FormInterface $resetForm)
+    public function __construct(Form\FormInterface $forgotForm)
     {
-        $this->resetForm = $resetForm;
+        $this->forgotForm = $forgotForm;
     }
 
     /**
@@ -35,7 +35,7 @@ final class IndexAction
     public function __invoke(): array
     {
         return [
-            'form'         => $this->resetForm->createView(),
+            'form'         => $this->forgotForm->createView(),
             'current_page' => 'Forgot Password',
         ];
     }
