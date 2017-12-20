@@ -371,8 +371,7 @@ your environment for testing:
 
 1. Create a testing database, and update the name and credentials in
    /config/testing.yml
-2. Copy the default `phinx.yml.dist` to `phinx.yml`
-3. The recommended way to run the tests is:
+2. The recommended way to run the tests is:
 
 ```
 $ script/test

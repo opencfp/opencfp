@@ -65,7 +65,6 @@ jobs:
         - source .travis/code-climate.sh
         - sh .travis/setup-mail.sh
         - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
-        - cp phinx.yml.dist phinx.yml
         - cp config/testing.dist.yml config/testing.yml
         - CFP_ENV=testing vendor/bin/phinx migrate
         - mysqldump -uroot $TRAVIS_DB > tests/dump.sql
