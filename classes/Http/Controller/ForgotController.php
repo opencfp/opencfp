@@ -16,7 +16,7 @@ namespace OpenCFP\Http\Controller;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\ResetEmailer;
 use OpenCFP\Http\Form\ForgotFormType;
-use OpenCFP\Http\Form\ResetForm;
+use OpenCFP\Http\Form\ResetFormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -133,7 +133,7 @@ class ForgotController extends BaseController
             'user_id'    => $request->get('user_id'),
             'reset_code' => $request->get('reset_code'),
         ];
-        $form = $this->formFactory->create(new ResetForm());
+        $form = $this->formFactory->create(new ResetFormType());
 
         return $this->render('user/forgot_password.twig', [
             'form'  => $form->createView($formOptions),
@@ -150,7 +150,7 @@ class ForgotController extends BaseController
             throw new \Exception();
         }
 
-        $form = $this->formFactory->createBuilder(ResetForm::class)->getForm();
+        $form = $this->formFactory->createBuilder(ResetFormType::class)->getForm();
         $form->handleRequest($request);
 
         if (!$form->isValid()) {
@@ -188,7 +188,7 @@ class ForgotController extends BaseController
 
     public function updatePasswordAction(Request $request): Response
     {
-        $form = $this->formFactory->createBuilder(ResetForm::class)->getForm();
+        $form = $this->formFactory->createBuilder(ResetFormType::class)->getForm();
         $form->handleRequest($request);
 
         if (!$form->isValid()) {
