@@ -16,8 +16,8 @@
     <php>
         <!-- https://github.com/symfony/console/blob/v3.3.12/Terminal.php#L24-L36 -->
         <env name="COLUMNS" value="120"/>
-        <server name="CFP_ENV" value="testing"/>
         <ini name="memory_limit" value="512M"/>
+        <server name="CFP_ENV" value="testing"/>
     </php>
     <filter>
         <whitelist>
