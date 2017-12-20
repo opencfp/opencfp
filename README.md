@@ -229,7 +229,7 @@ mail:
 
 ### [Run Migrations](#run-migrations)
 
-This project uses [Phinx](http://phinx.org) to handle migrations. Configuration for Phinx is loaded from `phinx.php`. 
+This project uses [Phinx](http://phinx.org) to handle migrations. Configuration for Phinx is loaded from [`phinx.php`](phinx.php). 
 The `CFP_ENV` environment variable is used to select an environment to migrate and defaults to `development`. Be sure 
 to correctly configure the app using the `config/:environment.yml` files.
 
