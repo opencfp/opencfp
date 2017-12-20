@@ -47,8 +47,8 @@ final class MigrationsTest extends WebTestCase
         $this->dropAndCreateDatabase();
 
         $inputArg = $target !== '' ?
-            ['phinx', 'migrate', '--environment=testing', '--target=' . $target] :
-            ['phinx', 'migrate', '--environment=testing'];
+            ['phinx', 'migrate', '--target=' . $target] :
+            ['phinx', 'migrate'];
 
         $input  = new ArgvInput($inputArg);
         $output = new BufferedOutput();
