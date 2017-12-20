@@ -15,6 +15,9 @@ namespace OpenCFP\Test\Helper;
 
 use Illuminate\Database\Capsule\Manager;
 
+/**
+ * @deprecated
+ */
 trait RefreshDatabase
 {
     final protected static function setUpDatabase()
