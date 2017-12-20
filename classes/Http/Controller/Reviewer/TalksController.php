@@ -46,7 +46,7 @@ class TalksController extends BaseController
                 'ext'   => 'Could not find requested talk',
             ]);
 
-            return $this->redirectTo('admin_talks');
+            return $this->redirectTo('reviewer_talks');
         }
 
         return $this->render('reviewer/talks/view.twig', [
