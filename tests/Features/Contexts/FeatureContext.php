@@ -21,7 +21,7 @@ use Phinx\Console\PhinxApplication;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-class FeatureContext extends MinkContext
+final class FeatureContext extends MinkContext
 {
     use KernelDictionary;
 
