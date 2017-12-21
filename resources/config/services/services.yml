@@ -22,6 +22,7 @@ services:
       $applicationEndDate: '%application.enddate%'
       $applicationTitle: '%application.title%'
       $forgotForm: '@OpenCFP\Http\Form\ForgotForm'
+      $resetForm: '@OpenCFP\Http\Form\ResetForm'
       $reviewerUsers: '%reviewer.users%'
       $showSubmissionCount: '%application.show_submission_count%'
 
@@ -30,6 +31,12 @@ services:
     factory: [OpenCFP\Http\Form\FormFactory, create]
     bind:
       $formType: OpenCFP\Http\Form\ForgotFormType
+
+  OpenCFP\Http\Form\ResetForm:
+    class: Symfony\Component\Form\FormInterface
+    factory: [OpenCFP\Http\Form\FormFactory, create]
+    bind:
+      $formType: OpenCFP\Http\Form\ResetFormType
 
   OpenCFP\Http\View\TalkHelper:
     arguments:

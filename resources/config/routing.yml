@@ -241,5 +241,5 @@ reset_password:
 password_update:
   path: /updatepassword
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\ForgotController::updatePasswordAction'
+  controller: OpenCFP\Http\Action\Forgot\UpdatePasswordAction
 

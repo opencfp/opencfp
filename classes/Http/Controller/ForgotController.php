@@ -186,68 +186,6 @@ class ForgotController extends BaseController
         return $this->redirectTo('forgot_password');
     }
 
-    public function updatePasswordAction(Request $request): Response
-    {
-        $form = $this->formFactory->createBuilder(ResetFormType::class)->getForm();
-        $form->handleRequest($request);
-
-        if (!$form->isValid()) {
-            return $this->render('user/reset_password.twig', [
-                'form' => $form->createView(),
-            ]);
-        }
-
-        $data      = $form->getData();
-        $userId    = $data['user_id'];
-        $resetCode = $data['reset_code'];
-        $password  = $data['password'];
-
-        if (empty($resetCode)) {
-            throw new \Exception();
-        }
-
-        try {
-            $user = $this->accounts->findById($userId);
-        } catch (\RuntimeException $e) {
-            echo $e;
-            die();
-        }
-
-        /**
-         * Can't let people replace their passwords with one they have
-         * already
-         */
-        if ($user->checkPassword($password) === true) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'Please select a different password than your current one.',
-            ]);
-
-            return $this->redirectTo('login');
-        }
-
-        // Everything looks good, let's actually reset their password
-        if ($user->attemptResetPassword($resetCode, $password)) {
-            $request->getSession()->set('flash', [
-                'type'  => 'success',
-                'short' => 'Success',
-                'ext'   => "You've successfully reset your password.",
-            ]);
-
-            return $this->redirectTo('login');
-        }
-
-        // user may have tried using the recovery twice
-        $request->getSession()->set('flash', [
-            'type'  => 'error',
-            'short' => 'Error',
-            'ext'   => 'Password reset failed, please contact the administrator.',
-        ]);
-
-        return $this->redirectTo('homepage');
-    }
-
     protected function successfulSendFlashParameters($email)
     {
         return [
