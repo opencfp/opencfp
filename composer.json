@@ -46,6 +46,11 @@
     },
     "require-dev": {
         "codedungeon/phpunit-result-printer": "^0.4.2",
+        "behat/behat": "^3.4",
+        "behat/mink-browserkit-driver": "^1.3",
+        "behat/mink-extension": "^2.3",
+        "behat/mink-selenium2-driver": "^1.3",
+        "behat/symfony2-extension": "^2.1",
         "friendsofphp/php-cs-fixer": "^2.9.0",
         "fzaninotto/faker": "^1.5.0",
         "infection/infection": "^0.7.0",
