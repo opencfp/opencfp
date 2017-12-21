@@ -236,7 +236,7 @@ reset_password_create:
 reset_password:
   path: '/reset/{user_id}/{reset_code}'
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\ForgotController::processResetAction'
+  controller: OpenCFP\Http\Action\Forgot\ResetProcessAction
 
 password_update:
   path: /updatepassword
