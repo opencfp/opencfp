@@ -1,4 +1,4 @@
-.PHONY: asset composer coverage cs database infection integration it test unit
+.PHONY: asset composer coverage cs database infection integration it test test-env unit
 
 it: cs test
 
