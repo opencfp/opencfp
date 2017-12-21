@@ -10,7 +10,7 @@ composer:
 	composer install
 
 coverage: composer
-	vendor/bin/phpunit --testsuite unit --coverage-text
+	if [ $(type) = "html" ]; then vendor/bin/phpunit --testsuite unit --coverage-html coverage; else vendor/bin/phpunit --testsuite unit --coverage-text; fi;
 
 cs: composer
 	vendor/bin/php-cs-fixer fix --verbose --diff
