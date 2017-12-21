@@ -63,7 +63,12 @@ abstract class WebTestCase extends KernelTestCase
 
     public static function setUpBeforeClass()
     {
-        self::runBeforeClassTraits();
+        self::runBeforeAndAfterClassTraits();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        self::runBeforeAndAfterClassTraits();
     }
 
     protected function setUp()
@@ -104,9 +109,9 @@ abstract class WebTestCase extends KernelTestCase
     }
 
     /**
-     * Runs setups from Traits that are needed before the class is setup (as called from setUpBeforeClass)
+     * @deprecated
      */
-    private static function runBeforeClassTraits()
+    private static function runBeforeAndAfterClassTraits()
     {
         $uses = \array_flip(class_uses_recursive(static::class));
 
