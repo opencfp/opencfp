@@ -11,29 +11,31 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Integration\Http\Controller;
+namespace OpenCFP\Test\Integration\Http\Action\Signup;
 
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class SignupControllerTest extends WebTestCase
+final class ProcessActionTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
     public function signUpWorksCorrectly()
     {
+        $faker = $this->faker();
+
+        $password = $faker->password;
+
         $response = $this->post('/signup', [
-            'first_name'     => 'Testy',
-            'last_name'      => 'McTesterton',
-            'email'          => 'test@opencfp.org',
+            'first_name'     => $faker->firstName,
+            'last_name'      => $faker->lastName,
+            'email'          => $faker->email,
             'company'        => null,
             'twitter'        => null,
             'url'            => 'https://joind.in/user/abc123',
-            'password'       => 'wutwut',
-            'password2'      => 'wutwut',
+            'password'       => $password,
+            'password2'      => $password,
             'airport'        => null,
             'speaker_info'   => null,
             'speaker_bio'    => null,
@@ -53,15 +55,19 @@ final class SignupControllerTest extends WebTestCase
      */
     public function signUpWithoutJoindInWorks()
     {
+        $faker = $this->faker();
+
+        $password = $faker->password;
+
         $response = $this->post('/signup', [
-            'first_name'     => 'Testy',
-            'last_name'      => 'McTesterton',
-            'email'          => 'test@example.org',
+            'first_name'     => $faker->firstName,
+            'last_name'      => $faker->lastName,
+            'email'          => $faker->email,
             'company'        => null,
             'twitter'        => null,
             'url'            => null,
-            'password'       => 'wutwut',
-            'password2'      => 'wutwut',
+            'password'       => $password,
+            'password2'      => $password,
             'airport'        => null,
             'speaker_info'   => null,
             'speaker_bio'    => null,
