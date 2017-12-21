@@ -65,9 +65,8 @@ jobs:
         - source .travis/code-climate.sh
         - sh .travis/setup-mail.sh
         - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
-        - cp phinx.yml.dist phinx.yml
         - cp config/testing.yml.dist config/testing.yml
-        - vendor/bin/phinx migrate -e testing
+        - CFP_ENV=testing vendor/bin/phinx migrate --environment testing
         - mysqldump -uroot $TRAVIS_DB > tests/dump.sql
         - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-before-script; fi
 

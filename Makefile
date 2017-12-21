@@ -18,8 +18,7 @@ cs: composer
 database: composer
 	mysql -uroot -e "DROP DATABASE IF EXISTS cfp_test"
 	mysql -uroot -e "CREATE DATABASE cfp_test"
-	if [ ! -f "phinx.yml" ]; then cp phinx.yml.dist phinx.yml; fi
-	vendor/bin/phinx migrate -e testing
+	CFP_ENV=testing vendor/bin/phinx migrate --environment testing
 	mysqldump -uroot cfp_test > tests/dump.sql
 
 infection: composer database

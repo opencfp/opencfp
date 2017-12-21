@@ -20,11 +20,6 @@ else
     exit 1
 fi
 
-if [ ! -f "phinx.yml" ]; then
-    echo "Missing phinx.yml, be sure to copy from phinx.yml.dist and update config"
-    exit 1
-fi
-
 if [ ! -f "config/$CFP_ENV.yml" ]; then
     echo "Missing config/$CFP_ENV.yml, be sure to copy from config/$CFP_ENV.yml.dist and update config"
     exit 1

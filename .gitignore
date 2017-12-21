@@ -22,7 +22,6 @@ deployment.xml
 /web/uploads/*
 !/web/uploads/dummyphoto.jpg
 /web/.htaccess
-phinx.yml
 /phpunit.xml
 infection-log.txt
 infection.json
