@@ -194,7 +194,7 @@ user_new:
 user_create:
   path: /signup
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\SignupController::processAction'
+  controller: OpenCFP\Http\Action\Signup\ProcessAction
 
 user_edit:
   path: '/profile/edit/{id}'
