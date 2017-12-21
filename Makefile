@@ -15,7 +15,7 @@ coverage: composer
 cs: composer
 	vendor/bin/php-cs-fixer fix --verbose --diff
 
-database: composer
+database: test-env composer
 	mysql -uroot -e "DROP DATABASE IF EXISTS cfp_test"
 	mysql -uroot -e "CREATE DATABASE cfp_test"
 	CFP_ENV=testing vendor/bin/phinx migrate --environment testing
@@ -24,11 +24,13 @@ database: composer
 infection: composer database
 	vendor/bin/infection
 
-integration: composer database
-	if [ ! -f "config/testing.yml" ]; then cp config/testing.yml.dist config/testing.yml; fi
+integration: test-env composer database
 	vendor/bin/phpunit --testsuite integration
 
 test: integration unit
+
+test-env:
+	if [ ! -f "config/testing.yml" ]; then cp config/testing.yml.dist config/testing.yml; fi
 
 unit: composer
 	vendor/bin/phpunit --testsuite unit
