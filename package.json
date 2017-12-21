@@ -16,6 +16,6 @@
     "normalize.css": "^7.0.0",
     "purgecss-webpack-plugin": "^0.13.0",
     "suitcss-base": "^4.0.0",
-    "tailwindcss": "^0.1.2"
+    "tailwindcss": "^0.4.0"
   }
 }
