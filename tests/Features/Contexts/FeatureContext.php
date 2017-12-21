@@ -33,7 +33,7 @@ class FeatureContext extends MinkContext
         $this->databaseConnection()->unprepared('DROP DATABASE IF EXISTS`cfp_test`; CREATE DATABASE `cfp_test`; USE `cfp_test`;');
         $phinx = new PhinxApplication();
         $phinx->setAutoExit(false);
-        $phinx->run(new StringInput("migrate -e testing"), new NullOutput());
+        $phinx->run(new StringInput('migrate -e testing'), new NullOutput());
     }
 
     /**
@@ -57,7 +57,6 @@ class FeatureContext extends MinkContext
      */
     public function iAmOnTheSignupPage()
     {
-        $this->visit("signup");
+        $this->visit('signup');
     }
-
 }
