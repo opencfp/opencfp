@@ -149,7 +149,7 @@ talk_new:
 talk_create:
   path: /talk/create
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\TalkController::processCreateAction'
+  controller: OpenCFP\Http\Action\Talk\CreateProcessAction
   defaults: { _require_csrf_token: true }
 
 talk_update:
