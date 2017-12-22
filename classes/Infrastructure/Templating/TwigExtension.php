@@ -50,7 +50,7 @@ class TwigExtension extends Twig_Extension
                 return $this->path->downloadFromPath() . $path;
             }),
             new Twig_SimpleFunction('assets', function ($path) {
-                return '/assets/' . $path;
+                return  $this->path->webAssetsPath() . $path;
             }),
 
             new Twig_SimpleFunction('active', function ($route) {
