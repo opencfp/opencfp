@@ -59,11 +59,4 @@ class SecurityController extends BaseController
             );
         }
     }
-
-    public function outAction(): Response
-    {
-        $this->authentication->logout();
-
-        return $this->redirectTo('homepage');
-    }
 }
