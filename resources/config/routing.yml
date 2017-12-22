@@ -179,7 +179,7 @@ login:
 login_check:
   path: /login
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\SecurityController::processAction'
+  controller: OpenCFP\Http\Action\Security\LogInAction
 
 logout:
   path: /logout
