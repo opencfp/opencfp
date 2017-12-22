@@ -27,7 +27,6 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Kernel;
 use OpenCFP\Test\Helper\MockAuthentication;
 use OpenCFP\Test\Helper\MockIdentityProvider;
-use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Helper\ResponseHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -60,16 +59,6 @@ abstract class WebTestCase extends KernelTestCase
      * @var array
      */
     protected $server = [];
-
-    public static function setUpBeforeClass()
-    {
-        self::runBeforeAndAfterClassTraits();
-    }
-
-    public static function tearDownAfterClass()
-    {
-        self::runBeforeAndAfterClassTraits();
-    }
 
     protected function setUp()
     {
@@ -106,18 +95,6 @@ abstract class WebTestCase extends KernelTestCase
         $capsule = $this->container->get(Capsule\Manager::class);
 
         return $capsule->getConnection();
-    }
-
-    /**
-     * @deprecated
-     */
-    private static function runBeforeAndAfterClassTraits()
-    {
-        $uses = \array_flip(class_uses_recursive(static::class));
-
-        if (isset($uses[RefreshDatabase::class])) {
-            static::setUpDatabase();
-        }
     }
 
     final protected function createClient(): Client
