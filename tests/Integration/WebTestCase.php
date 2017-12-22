@@ -84,7 +84,7 @@ abstract class WebTestCase extends KernelTestCase
         parent::tearDown();
     }
 
-    protected static function getKernelClass()
+    final protected static function getKernelClass()
     {
         return Kernel::class;
     }
@@ -115,12 +115,12 @@ abstract class WebTestCase extends KernelTestCase
         }
     }
 
-    protected function createClient(): Client
+    final protected function createClient(): Client
     {
         return $this->container->get('test.client');
     }
 
-    public function call(string $method, string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
+    final protected function call(string $method, string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         $client = $this->createClient();
 
@@ -133,27 +133,27 @@ abstract class WebTestCase extends KernelTestCase
         return $client->getResponse();
     }
 
-    public function get(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
+    final protected function get(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         return $this->call('GET', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function post(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
+    final protected function post(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         return $this->call('POST', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function patch(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
+    final protected function patch(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         return $this->call('PATCH', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function delete(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
+    final protected function delete(string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
         return $this->call('DELETE', $uri, $parameters, $cookies, $files, $server, $content);
     }
 
-    public function callForPapersIsOpen(): self
+    final protected function callForPapersIsOpen(): self
     {
         $cfp    = $this->container->get(CallForPapers::class);
         $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
@@ -165,7 +165,7 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    public function callForPapersIsClosed(): self
+    final protected function callForPapersIsClosed(): self
     {
         $cfp    = $this->container->get(CallForPapers::class);
         $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
@@ -177,7 +177,7 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    public function isOnlineConference(): self
+    final protected function isOnlineConference(): self
     {
         $config                      = $this->container->getParameter('config.application');
         $config['online_conference'] = true;
@@ -186,7 +186,7 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    public function asLoggedInSpeaker(int $id = 1): self
+    final protected function asLoggedInSpeaker(int $id = 1): self
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);
@@ -208,7 +208,7 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    public function asAdmin(int $id = 1): self
+    final protected function asAdmin(int $id = 1): self
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);
@@ -229,7 +229,7 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    public function asReviewer(int $id = 1): self
+    final protected function asReviewer(int $id = 1): self
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);
