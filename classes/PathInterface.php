@@ -17,21 +17,7 @@ interface PathInterface
 {
     public function basePath(): string;
 
-    public function configPath(): string;
-
-    public function uploadToPath(): string;
-
-    public function downloadFromPath(): string;
-
-    public function templatesPath(): string;
-
-    public function publicPath(): string;
+    public function uploadPath(): string;
 
     public function assetsPath(): string;
-
-    public function webAssetsPath(): string;
-
-    public function cacheTwigPath(): string;
-
-    public function cachePurifierPath(): string;
 }
