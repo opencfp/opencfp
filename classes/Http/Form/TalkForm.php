@@ -56,7 +56,14 @@ class TalkForm extends Form
 
     public function validateAll(string $action = 'create'): bool
     {
-        return $this->validateTitle() && $this->validateDescription() && $this->validateLevel() && $this->validateCategory();
+        $title       = $this->validateTitle();
+        $description = $this->validateDescription();
+        $level       = $this->validateLevel();
+        $category    = $this->validateCategory();
+        $slides      = $this->validateSlides();
+        $type        = $this->validateType();
+
+        return $title && $description && $level && $category && $slides && $type;
     }
 
     public function validateTitle(): bool
@@ -139,6 +146,21 @@ class TalkForm extends Form
 
         if (!isset($validCategories[$this->cleanData['category']])) {
             $this->addErrorMessage('You did not choose a valid talk category');
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public function validateSlides(): bool
+    {
+        if (!isset($this->cleanData['slides']) || empty($this->cleanData['slides'])) {
+            return true;
+        }
+
+        if (\strlen(($this->cleanData['slides'])) >= 255) {
+            $this->addErrorMessage('Your slides url has to be less than 255 characters long');
 
             return false;
         }

@@ -371,4 +371,39 @@ final class TalkFormTest extends \PHPUnit\Framework\TestCase
             [true, false],
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider slidesProvider
+     *
+     * @param $slides
+     * @param $expectedResponse
+     */
+    public function slidesValidatesCorrectly($slides, $expectedResponse)
+    {
+        $data = ['slides' => $slides];
+        $form = new \OpenCFP\Http\Form\TalkForm($data, $this->purifier);
+        $form->sanitize();
+
+        $this->assertSame(
+            $expectedResponse,
+            $form->validateSlides(),
+            \sprintf(
+                '%s::validateSlides() did not apply validation rules correctly',
+                \OpenCFP\Http\Form\TalkForm::class
+            )
+        );
+    }
+
+    public function slidesProvider(): array
+    {
+        return [
+            [null, true],
+            ['', true],
+            ['google.nl', true],
+            ['http://www.slides-longer-than-255-characters.com/01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345', false],
+            ['http://www.slides-longer-than-255-characters.com/0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234', true],
+
+        ];
+    }
 }
