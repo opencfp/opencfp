@@ -29,6 +29,8 @@ interface PathInterface
 
     public function assetsPath(): string;
 
+    public function webAssetsPath(): string;
+
     public function cacheTwigPath(): string;
 
     public function cachePurifierPath(): string;
