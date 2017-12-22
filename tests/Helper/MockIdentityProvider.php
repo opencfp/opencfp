@@ -16,7 +16,7 @@ namespace OpenCFP\Test\Helper;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\IdentityProvider;
 
-final class MockableIdentityProvider implements IdentityProvider
+final class MockIdentityProvider implements IdentityProvider
 {
     private $wrapped;
 

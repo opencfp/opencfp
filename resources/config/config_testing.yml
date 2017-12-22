@@ -5,13 +5,13 @@ services:
   _defaults:
     public: false
 
-  OpenCFP\Test\Helper\MockableAuthenticator:
+  OpenCFP\Test\Helper\MockAuthentication:
     decorates: OpenCFP\Domain\Services\Authentication
-    arguments: ['@OpenCFP\Test\Helper\MockableAuthenticator.inner']
+    arguments: ['@OpenCFP\Test\Helper\MockAuthentication.inner']
 
-  OpenCFP\Test\Helper\MockableIdentityProvider:
+  OpenCFP\Test\Helper\MockIdentityProvider:
     decorates: OpenCFP\Domain\Services\IdentityProvider
-    arguments: ['@OpenCFP\Test\Helper\MockableIdentityProvider.inner']
+    arguments: ['@OpenCFP\Test\Helper\MockIdentityProvider.inner']
 
   # Compatibility for integration tests that still expect the service IDs as Silex registers them.
   csrf.token_manager:
