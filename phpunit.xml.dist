@@ -12,6 +12,7 @@
     convertWarningsToExceptions="true"
     processIsolation="false"
     stopOnFailure="false"
+    printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer"
 >
     <php>
         <!-- https://github.com/symfony/console/blob/v3.3.12/Terminal.php#L24-L36 -->

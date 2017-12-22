@@ -45,6 +45,7 @@
         "wouterj/eloquent-bundle": "^1.0"
     },
     "require-dev": {
+        "codedungeon/phpunit-result-printer": "^0.4.2",
         "friendsofphp/php-cs-fixer": "^2.9.0",
         "fzaninotto/faker": "^1.5.0",
         "infection/infection": "^0.6.0",
