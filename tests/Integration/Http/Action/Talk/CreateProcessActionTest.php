@@ -11,47 +11,27 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Integration\Http\Controller;
+namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
-use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Domain\Model;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalkControllerTest extends WebTestCase
+final class CreateProcessActionTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
     /**
-     * @var User
-     */
-    private static $user;
-
-    /**
-     * @var Talk
-     */
-    private static $talk;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        $talk       = factory(Talk::class, 1)->create()->first();
-        self::$user = $talk->speaker->first();
-        self::$talk = $talk;
-    }
-
-    /**
-     * Verify that talks with ampersands and other characters in them can
-     * be created and then edited properly
-     *
      * @test
      */
     public function ampersandsAcceptableCharacterForTalks()
     {
+        /** @var Model\User $user */
+        $user = factory(Model\User::class)->create()->first();
+
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('edit_talk');
+
         $response = $this
-            ->asLoggedInSpeaker(1)
+            ->asLoggedInSpeaker($user->id)
             ->callForPapersIsOpen()
             ->post('/talk/create', [
                 'title'       => 'Test Title With Ampersand',
@@ -60,7 +40,7 @@ final class TalkControllerTest extends WebTestCase
                 'level'       => 'entry',
                 'category'    => 'other',
                 'desired'     => 0,
-                'user_id'     => 1,
+                'user_id'     => $user->id,
                 'token'       => $csrfToken,
                 'token_id'    => 'speaker_talk',
             ]);
@@ -73,12 +53,15 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantProcessCreateTalkAfterCFPIsClosed()
     {
+        /** @var Model\User $user */
+        $user = factory(Model\User::class)->create()->first();
+
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($user->id)
             ->callForPapersIsClosed()
             ->post('/talk/create', [
                 'token'    => $csrfToken,
@@ -95,12 +78,15 @@ final class TalkControllerTest extends WebTestCase
      */
     public function cantProcessCreateTalkWithMissingData()
     {
+        /** @var Model\User $user */
+        $user = factory(Model\User::class)->create()->first();
+
         $csrfToken = $this->container->get('csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($user->id)
             ->callForPapersIsOpen()
             ->post('/talk/create', [
                 'description' => 'Talk Description',

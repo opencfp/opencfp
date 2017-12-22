@@ -11,30 +11,29 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Http\Controller;
+namespace OpenCFP\Http\Action\Talk;
 
 use HTMLPurifier;
 use OpenCFP\Domain\CallForPapers;
-use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Http\Form\TalkForm;
-use OpenCFP\Http\View\TalkHelper;
+use OpenCFP\Domain\Model;
+use OpenCFP\Domain\Services;
+use OpenCFP\Http\Form;
+use OpenCFP\Http\View;
 use Swift_Mailer;
 use Swift_Message;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation;
+use Symfony\Component\Routing;
 use Twig_Environment;
 
-class TalkController extends BaseController
+final class CreateProcessAction
 {
     /**
-     * @var Authentication
+     * @var Services\Authentication
      */
     private $authentication;
 
     /**
-     * @var TalkHelper
+     * @var View\TalkHelper
      */
     private $talkHelper;
 
@@ -68,17 +67,27 @@ class TalkController extends BaseController
      */
     private $applicationEndDate;
 
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
+
+    /**
+     * @var Routing\Generator\UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
     public function __construct(
-        Authentication $authentication,
-        TalkHelper $talkHelper,
+        Services\Authentication $authentication,
+        View\TalkHelper $talkHelper,
         CallForPapers $callForPapers,
         HTMLPurifier $purifier,
         Swift_Mailer $mailer,
-        Twig_Environment $twig,
-        UrlGeneratorInterface $urlGenerator,
         string $applicationEmail,
         string $applicationTitle,
-        string $applicationEndDate
+        string $applicationEndDate,
+        Twig_Environment $twig,
+        Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->authentication     = $authentication;
         $this->talkHelper         = $talkHelper;
@@ -88,27 +97,12 @@ class TalkController extends BaseController
         $this->applicationEmail   = $applicationEmail;
         $this->applicationTitle   = $applicationTitle;
         $this->applicationEndDate = $applicationEndDate;
-
-        parent::__construct($twig, $urlGenerator);
+        $this->twig               = $twig;
+        $this->urlGenerator       = $urlGenerator;
     }
 
-    /**
-     * @param $requestData
-     *
-     * @return TalkForm
-     */
-    private function getTalkForm($requestData): TalkForm
+    public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
-        return new TalkForm($requestData, $this->purifier, [
-            'categories' => $this->talkHelper->getTalkCategories(),
-            'levels'     => $this->talkHelper->getTalkLevels(),
-            'types'      => $this->talkHelper->getTalkTypes(),
-        ]);
-    }
-
-    public function processCreateAction(Request $request): Response
-    {
-        // You can only create talks while the CfP is open
         if (!$this->callForPapers->isOpen()) {
             $request->getSession()->set('flash', [
                 'type'  => 'error',
@@ -116,12 +110,14 @@ class TalkController extends BaseController
                 'ext'   => 'You cannot create talks once the call for papers has ended',
             ]);
 
-            return $this->redirectTo('dashboard');
+            $url = $this->urlGenerator->generate('dashboard');
+
+            return new HttpFoundation\RedirectResponse($url);
         }
 
         $user = $this->authentication->user();
 
-        $form = $this->getTalkForm([
+        $form = $this->createTalkForm([
             'title'       => $request->get('title'),
             'description' => $request->get('description'),
             'type'        => $request->get('type'),
@@ -133,64 +129,76 @@ class TalkController extends BaseController
             'sponsor'     => $request->get('sponsor'),
             'user_id'     => $request->get('user_id'),
         ]);
+
         $form->sanitize();
 
-        if ($form->validateAll()) {
-            $sanitizedData            = $form->getCleanData();
-            $sanitizedData['user_id'] = (int) $user->getId();
-            $talk                     = Talk::create($sanitizedData);
-
+        if (!$form->validateAll()) {
             $request->getSession()->set('flash', [
-                'type'  => 'success',
-                'short' => 'Success',
-                'ext'   => 'Successfully saved talk.',
+                'type'  => 'error',
+                'short' => 'Error',
+                'ext'   => \implode('<br>', $form->getErrorMessages()),
             ]);
 
-            // send email to speaker showing submission
-            $this->sendSubmitEmail($user->getLogin(), (int) $talk->id);
+            $content = $this->twig->render('talk/create.twig', [
+                'formAction'     => $this->urlGenerator->generate('talk_create'),
+                'talkCategories' => $this->talkHelper->getTalkCategories(),
+                'talkTypes'      => $this->talkHelper->getTalkTypes(),
+                'talkLevels'     => $this->talkHelper->getTalkLevels(),
+                'title'          => $request->get('title'),
+                'description'    => $request->get('description'),
+                'type'           => $request->get('type'),
+                'level'          => $request->get('level'),
+                'category'       => $request->get('category'),
+                'desired'        => $request->get('desired'),
+                'slides'         => $request->get('slides'),
+                'other'          => $request->get('other'),
+                'sponsor'        => $request->get('sponsor'),
+                'buttonInfo'     => 'Submit my talk!',
+                'flash'          => $request->getSession()->get('flash'),
+            ]);
 
-            return $this->redirectTo('dashboard');
+            return new HttpFoundation\Response($content);
         }
 
+        $talk = Model\Talk::create(\array_merge($form->getCleanData(), [
+            'user_id' => $user->getId(),
+        ]));
+
         $request->getSession()->set('flash', [
-            'type'  => 'error',
-            'short' => 'Error',
-            'ext'   => \implode('<br>', $form->getErrorMessages()),
+            'type'  => 'success',
+            'short' => 'Success',
+            'ext'   => 'Successfully saved talk.',
         ]);
 
-        return $this->render('talk/create.twig', [
-            'formAction'     => $this->url('talk_create'),
-            'talkCategories' => $this->talkHelper->getTalkCategories(),
-            'talkTypes'      => $this->talkHelper->getTalkTypes(),
-            'talkLevels'     => $this->talkHelper->getTalkLevels(),
-            'title'          => $request->get('title'),
-            'description'    => $request->get('description'),
-            'type'           => $request->get('type'),
-            'level'          => $request->get('level'),
-            'category'       => $request->get('category'),
-            'desired'        => $request->get('desired'),
-            'slides'         => $request->get('slides'),
-            'other'          => $request->get('other'),
-            'sponsor'        => $request->get('sponsor'),
-            'buttonInfo'     => 'Submit my talk!',
-            'flash'          => $request->getSession()->get('flash'),
-        ]);
+        $this->sendSubmitEmail(
+            $user->getLogin(),
+            (int) $talk->id
+        );
+
+        $url = $this->urlGenerator->generate('dashboard');
+
+        return new HttpFoundation\RedirectResponse($url);
     }
 
-    /**
-     * Method that sends an email when a talk is created
-     *
-     * @param string $email
-     * @param int    $talkId
-     *
-     * @return mixed
-     */
-    protected function sendSubmitEmail(string $email, int $talkId)
+    private function createTalkForm(array $data): Form\TalkForm
     {
-        $talk = Talk::find($talkId, ['title']);
+        return new Form\TalkForm(
+            $data,
+            $this->purifier,
+            [
+                'categories' => $this->talkHelper->getTalkCategories(),
+                'levels'     => $this->talkHelper->getTalkLevels(),
+                'types'      => $this->talkHelper->getTalkTypes(),
+            ]
+        );
+    }
 
-        // Build our email that we will send
-        $template   = $this->twig->loadTemplate('emails/talk_submit.twig');
+    private function sendSubmitEmail(string $email, int $talkId)
+    {
+        $talk = Model\Talk::find($talkId, ['title']);
+
+        $template = $this->twig->loadTemplate('emails/talk_submit.twig');
+
         $parameters = [
             'email'   => $this->applicationEmail,
             'title'   => $this->applicationTitle,

@@ -7,9 +7,6 @@ services:
     resource: '%kernel.project_dir%/classes/Http/Controller/*'
     public: true
     bind:
-      $applicationEmail: '%application.email%'
-      $applicationTitle: '%application.title%'
-      $applicationEndDate: '%application.enddate%'
       $applicationAirport: '%application.airport%'
       $applicationArrival: '%application.arrival%'
       $applicationDeparture: '%application.departure%'
