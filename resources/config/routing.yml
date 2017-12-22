@@ -99,7 +99,7 @@ reviewer_talk_view:
 reviewer_talk_rate:
   path: '/reviewer/talks/{id}/rate'
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\Reviewer\TalksController::rateAction'
+  controller: OpenCFP\Http\Action\Reviewer\Talk\RateAction
 
 reviewer_speakers:
   path: /reviewer/speakers
