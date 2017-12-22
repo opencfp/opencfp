@@ -13,40 +13,36 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Controller\Admin;
 
+use Illuminate\Database\Eloquent;
 use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Domain\Model\User;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class ExportsControllerTest extends WebTestCase
+final class ExportsControllerTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    private static $talks;
-
-    private static $selectedTalk;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        self::$talks        = factory(Talk::class, 5)->create();
-        self::$selectedTalk = factory(Talk::class, 1)->create(['selected' => 1, 'slides' => '=2+3'])->first();
-    }
-
     /**
      * @test
      */
     public function anonymousTalksExportsContainsNoUserNames()
     {
-        $user = self::$talks->first()->speaker()->first();
+        /** @var User $admin */
+        $admin = factory(User::class)->create()->first();
+
+        /** @var Eloquent\Collection|Talk[] $talks */
+        $talks = factory(Talk::class, 3)->create();
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/admin/export/csv/anon');
 
         $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
-        $this->assertResponseBodyNotContains($user->first_name, $response);
         $this->assertSessionHasNoFlashMessage($this->session());
+
+        foreach ($talks as $talk) {
+            $this->assertResponseBodyContains($talk->title, $response);
+            $this->assertResponseBodyNotContains($talk->speaker()->first()->first_name, $response);
+        }
     }
 
     /**
@@ -54,13 +50,22 @@ final class ExportsControllerTest extends WebTestCase
      */
     public function attributedTalksWorks()
     {
+        /** @var User $admin */
+        $admin = factory(User::class)->create()->first();
+
+        /** @var Eloquent\Collection|Talk[] $talks */
+        $talks = factory(Talk::class, 2)->create();
+
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/admin/export/csv');
 
         $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
         $this->assertSessionHasNoFlashMessage($this->session());
+
+        foreach ($talks as $talk) {
+            $this->assertResponseBodyContains($talk->title, $response);
+        }
     }
 
     /**
@@ -68,16 +73,22 @@ final class ExportsControllerTest extends WebTestCase
      */
     public function emailExportWorks()
     {
-        $user = self::$talks->first()->speaker()->first();
+        /** @var User $admin */
+        $admin = factory(User::class)->create()->first();
+
+        /** @var Eloquent\Collection|Talk[] $talks */
+        $talks = factory(Talk::class, 2)->create();
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/admin/export/csv/emails');
 
         $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains(self::$talks->first()->title, $response);
-        $this->assertResponseBodyContains($user->first_name, $response);
         $this->assertSessionHasNoFlashMessage($this->session());
+
+        foreach ($talks as $talk) {
+            $this->assertResponseBodyContains($talk->title, $response);
+        }
     }
 
     /**
@@ -85,16 +96,29 @@ final class ExportsControllerTest extends WebTestCase
      */
     public function selectedExportWorks()
     {
-        $user = self::$talks->first()->speaker()->first();
+        /** @var User $admin */
+        $admin = factory(User::class)->create()->first();
+
+        /** @var Eloquent\Collection|Talk[] $talks */
+        $talks = factory(Talk::class, 2)->create(['selected' => 0]);
+
+        /** @var Eloquent\Collection|Talk[] $selectedTalks */
+        $selectedTalks = factory(Talk::class, 2)->create(['selected' => 1]);
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/admin/export/csv/selected');
 
-        $this->assertResponseBodyContains(self::$selectedTalk->title, $response);
-        $this->assertResponseBodyNotContains(self::$talks->first()->title, $response);
-        $this->assertResponseBodyNotContains($user->first_name, $response);
+        $this->assertResponseIsSuccessful($response);
         $this->assertSessionHasNoFlashMessage($this->session());
+
+        foreach ($talks as $talk) {
+            $this->assertResponseBodyNotContains($talk->title, $response);
+        }
+
+        foreach ($selectedTalks as $talk) {
+            $this->assertResponseBodyContains($talk->title, $response);
+        }
     }
 
     /**
@@ -104,8 +128,13 @@ final class ExportsControllerTest extends WebTestCase
      */
     public function talksGetProperlyFormatted()
     {
+        /** @var User $admin */
+        $admin = factory(User::class)->create()->first();
+
+        factory(Talk::class, 1)->create(['selected' => 1, 'slides' => '=2+3'])->first();
+
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/admin/export/csv/selected');
 
         $this->assertResponseBodyContains(",'=2+3", $response);

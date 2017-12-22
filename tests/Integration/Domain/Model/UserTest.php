@@ -13,37 +13,31 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Domain\Model;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class UserTest extends WebTestCase
+final class UserTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    /**
-     * @var User
-     */
-    private static $user;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        self::$user = self::makeKnownUsers();
-    }
-
     /**
      * @test
      */
     public function talksRelationWorks()
     {
-        $talk = self::$user->talks();
-        $this->assertInstanceOf(HasMany::class, $talk);
-        $this->assertInstanceOf(Talk::class, $talk->first());
+        /** @var User $speaker */
+        $speaker = factory(User::class, 1)->create()->first();
+
+        factory(Talk::class, 3)->create(['user_id' => $speaker->id]);
+
+        $talks = $speaker->talks();
+
+        $this->assertInstanceOf(HasMany::class, $talks);
+        $this->assertInstanceOf(Talk::class, $talks->first());
     }
 
     /**
@@ -51,9 +45,15 @@ final class UserTest extends WebTestCase
      */
     public function commentRelationWorks()
     {
-        $comment = self::$user->comments();
-        $this->assertInstanceOf(HasMany::class, $comment);
-        $this->assertInstanceOf(TalkComment::class, $comment->first());
+        /** @var User $user */
+        $user = factory(User::class, 1)->create()->first();
+
+        factory(TalkComment::class, 3)->create(['user_id' => $user->id]);
+
+        $comments = $user->comments();
+
+        $this->assertInstanceOf(HasMany::class, $comments);
+        $this->assertInstanceOf(TalkComment::class, $comments->first());
     }
 
     /**
@@ -61,9 +61,15 @@ final class UserTest extends WebTestCase
      */
     public function metaRelationWorks()
     {
-        $meta = self::$user->meta();
-        $this->assertInstanceOf(HasMany::class, $meta);
-        $this->assertInstanceOf(TalkMeta::class, $meta->first());
+        /** @var User $user */
+        $user = factory(User::class, 1)->create()->first();
+
+        factory(TalkMeta::class, 3)->create(['admin_user_id' => $user->id]);
+
+        $metas = $user->meta();
+
+        $this->assertInstanceOf(HasMany::class, $metas);
+        $this->assertInstanceOf(TalkMeta::class, $metas->first());
     }
 
     /**
@@ -71,9 +77,13 @@ final class UserTest extends WebTestCase
      */
     public function scopeSearchWillReturnAllWhenNoSearch()
     {
-        $this->assertCount(5, User::search()->get());
-        $this->assertCount(5, User::search('')->get());
-        $this->assertCount(5, User::search(null)->get());
+        $count = $this->faker()->numberBetween(3, 5);
+
+        factory(User::class, $count)->create();
+
+        $this->assertCount($count, User::search()->get());
+        $this->assertCount($count, User::search('')->get());
+        $this->assertCount($count, User::search(null)->get());
     }
 
     /**
@@ -81,9 +91,18 @@ final class UserTest extends WebTestCase
      */
     public function scopeSearchWorksWithNames()
     {
-        $this->assertCount(5, User::search()->get());
-        $this->assertCount(3, User::search('Vries')->get());
-        $this->assertCount(1, User::search('Hunter')->get());
+        $faker = $this->faker();
+
+        $firstName = $faker->firstName;
+        $lastName  = $faker->lastName;
+
+        factory(User::class, 1)->create(['first_name' => $firstName]);
+        factory(User::class, 1)->create(['last_name' => $firstName]);
+        factory(User::class, 1)->create(['last_name' => $lastName]);
+
+        $this->assertCount(3, User::search()->get());
+        $this->assertCount(2, User::search($firstName)->get());
+        $this->assertCount(1, User::search($lastName)->get());
     }
 
     /**
@@ -91,9 +110,14 @@ final class UserTest extends WebTestCase
      */
     public function getOtherTalksReturnsAllTalksByDefault()
     {
-        $talks = self::$user->getOtherTalks();
+        $count = $this->faker()->numberBetween(3, 5);
 
-        $this->assertCount(3, $talks);
+        /** @var User $speaker */
+        $speaker = factory(User::class, 1)->create()->first();
+
+        factory(Talk::class, $count)->create(['user_id' => $speaker->id]);
+
+        $this->assertCount($count, $speaker->getOtherTalks());
     }
 
     /**
@@ -101,9 +125,17 @@ final class UserTest extends WebTestCase
      */
     public function getOtherTalksReturnsOtherTalksCorrectly()
     {
-        $talks = self::$user->getOtherTalks(1);
+        $count = $this->faker()->numberBetween(3, 5);
 
-        $this->assertCount(2, $talks);
+        /** @var User $speaker */
+        $speaker = factory(User::class, 1)->create()->first();
+
+        /** @var Collection $talks */
+        $talks = factory(Talk::class, $count)->create(['user_id' => $speaker->id]);
+
+        $talk = $talks->random(1)->first();
+
+        $this->assertCount($count - 1, $speaker->getOtherTalks($talk->id));
     }
 
     /**
@@ -111,103 +143,9 @@ final class UserTest extends WebTestCase
      */
     public function getOtherTalksReturnsNothingWhenUserHasNoTalks()
     {
-        $user  = User::where('first_name', 'Vries')->get()->first();
-        $talks = $user->getOtherTalks();
+        /** @var User $speaker */
+        $speaker = factory(User::class, 1)->create()->first();
 
-        $this->assertCount(0, $talks);
-    }
-
-    private static function makeKnownUsers()
-    {
-        $userInfo = [
-            'password'         => \password_hash('secret', PASSWORD_BCRYPT),
-            'activated'        => 1,
-            'has_made_profile' => 1,
-        ];
-
-        $user = User::create(\array_merge([
-            'email'      => 'henk@example.com',
-            'first_name' => 'Henk',
-            'last_name'  => 'de Vries',
-        ], $userInfo));
-        self::giveUserThreeTalks($user);
-        self::giveUserRelations($user);
-
-        User::create(\array_merge([
-            'email'      => 'speaker@cfp.org',
-            'first_name' => 'Speaker',
-            'last_name'  => 'de Vries',
-        ], $userInfo));
-
-        User::create(\array_merge([
-            'email'      => 'Vries@cfp.org',
-            'first_name' => 'Vries',
-            'last_name'  => 'van Henk',
-        ], $userInfo));
-
-        User::create(\array_merge([
-            'email'      => 'd20@mail.com',
-            'first_name' => 'Arthur',
-            'last_name'  => 'Hunter',
-        ], $userInfo));
-
-        User::create(\array_merge([
-            'email'      => 'hunter@hunter.xx',
-            'first_name' => 'Gon',
-            'last_name'  => 'Freecss',
-        ], $userInfo));
-
-        return $user;
-    }
-
-    public static function giveUserThreeTalks(User $user)
-    {
-        $userId = $user->id;
-
-        Talk::create([
-            'user_id'     => $userId,
-            'title'       => 'talks title',
-            'description' => 'Long description',
-            'type'        => 'regular',
-            'level'       => 'entry',
-            'category'    => 'api',
-
-        ]);
-
-        Talk::create([
-            'user_id'     => $userId,
-            'title'       => 'talks title NO 2',
-            'description' => 'Long description',
-            'type'        => 'regular',
-            'level'       => 'entry',
-            'category'    => 'api',
-        ]);
-
-        Talk::create([
-            'user_id'     => $userId,
-            'title'       => 'talks title NO 3',
-            'description' => 'Long description',
-            'type'        => 'regular',
-            'level'       => 'entry',
-            'category'    => 'api',
-
-        ]);
-    }
-
-    public static function giveUserRelations(User $user)
-    {
-        $userId = $user->id;
-
-        TalkComment::create([
-            'user_id' => $userId,
-            'talk_id' => 893,
-            'message' => 'Oh hi Mark.',
-        ]);
-        TalkMeta::create([
-            'admin_user_id' => $userId,
-            'talk_id'       => 893,
-            'rating'        => 1,
-            'viewed'        => 0,
-        ]);
+        $this->assertCount(0, $speaker->getOtherTalks());
     }
 }

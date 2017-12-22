@@ -16,17 +16,16 @@ namespace OpenCFP\Test\Integration\Domain\Model;
 use OpenCFP\Domain\Model\Favorite;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalkTest extends WebTestCase
+final class TalkTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    public static function setUpBeforeClass()
+    protected function setUp()
     {
-        parent::setUpBeforeClass();
-        self::setUpTalksForTests();
+        parent::setUp();
+
+        $this->setUpTalksForTests();
     }
 
     /** @test */
@@ -129,7 +128,7 @@ final class TalkTest extends WebTestCase
         $this->assertCount(2, $topRated);
     }
 
-    protected static function setUpTalksForTests()
+    private function setUpTalksForTests()
     {
         $talk = Talk::create([
             'user_id'     => 7,
