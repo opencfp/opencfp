@@ -31,35 +31,6 @@ final class TalksControllerTest extends WebTestCase
 
     /**
      * @test
-     */
-    public function viewActionWillRedirectWhenTalkNotFound()
-    {
-        $response = $this
-            ->asReviewer()
-            ->get('/reviewer/talks/255');
-
-        $this->assertResponseBodyNotContains('title="I want to see this talk"', $response);
-        $this->assertResponseIsRedirect($response);
-    }
-
-    /**
-     * @test
-     */
-    public function viewActionWillShowTalk()
-    {
-        $talk = self::$talks->first();
-
-        $response = $this
-            ->asReviewer()
-            ->get('/reviewer/talks/' . $talk->id);
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains($talk->title, $response);
-        $this->assertResponseBodyContains($talk->description, $response);
-    }
-
-    /**
-     * @test
      * @dataProvider providerValidRating
      *
      * @param mixed $rating
