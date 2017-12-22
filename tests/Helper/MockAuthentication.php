@@ -17,7 +17,7 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\NotAuthenticatedException;
 use OpenCFP\Infrastructure\Auth\UserInterface;
 
-final class MockableAuthenticator implements Authentication
+final class MockAuthentication implements Authentication
 {
     /**
      * @var Authentication

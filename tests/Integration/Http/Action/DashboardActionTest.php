@@ -18,8 +18,8 @@ use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\IdentityProvider;
-use OpenCFP\Test\Helper\MockableAuthenticator;
-use OpenCFP\Test\Helper\MockableIdentityProvider;
+use OpenCFP\Test\Helper\MockAuthentication;
+use OpenCFP\Test\Helper\MockIdentityProvider;
 use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Integration\WebTestCase;
 
@@ -53,11 +53,11 @@ final class DashboardActionTest extends WebTestCase
             'user_id'     => $user->getId(),
         ]);
 
-        /** @var MockableAuthenticator $authentication */
+        /** @var MockAuthentication $authentication */
         $authentication = $this->container->get(Authentication::class);
         $authentication->overrideUser($user);
 
-        /** @var MockableIdentityProvider $identityProvider */
+        /** @var MockIdentityProvider $identityProvider */
         $identityProvider = $this->container->get(IdentityProvider::class);
         $identityProvider->overrideCurrentUser(new User([
             'id'         => $user->getId(),
@@ -87,11 +87,11 @@ final class DashboardActionTest extends WebTestCase
         ]);
         $accounts->activate($user->getLogin());
 
-        /** @var MockableAuthenticator $authentication */
+        /** @var MockAuthentication $authentication */
         $authentication = $this->container->get(Authentication::class);
         $authentication->overrideUser($user);
 
-        /** @var MockableIdentityProvider $identityProvider */
+        /** @var MockIdentityProvider $identityProvider */
         $identityProvider = $this->container->get(IdentityProvider::class);
         $identityProvider->overrideCurrentUser(new User([
             'id'         => $user->getId(),
