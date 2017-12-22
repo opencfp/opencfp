@@ -3,13 +3,13 @@
     <head>
         <title>{% block title %}{{ site.title }}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="/assets/css/app.css" rel="stylesheet" media="screen">
+        <link href="{{ assets('css/app.css') }}" rel="stylesheet" media="screen">
     </head>
     <body class="border-t-4 border-brand">
         <nav class="{% if not active('homepage') %}border-b border-white{% endif %}">
             <div class="container mx-auto flex justify-between">
                 <a class="font-serif flex items-center" href="{{ url('homepage') }}">
-                    <img class="w-10 mr-2" src="/assets/img/logo.svg" alt="OpenCFP">
+                    <img class="w-10 mr-2" src="{{ assets('img/logo.svg') }}" alt="OpenCFP">
                     <h1 class="font-normal m-0">Open<span class="text-brand font-bold">CFP</span></h1>
                 </a>
                 <div class="flex">
