@@ -25,11 +25,14 @@ final class IndexActionTest extends WebTestCase implements TransactionalTestCase
      */
     public function indexActionWorksNormally()
     {
+        /** @var Model\User $reviewer */
+        $reviewer = factory(Model\User::class)->create()->first();
+
         /** @var Collection|Model\Talk[] $talks */
         $talks = factory(Model\Talk::class, 3)->create();
 
         $response = $this
-            ->asReviewer()
+            ->asReviewer($reviewer->id)
             ->get('/reviewer/talks');
 
         $this->assertResponseIsSuccessful($response);

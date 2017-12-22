@@ -65,11 +65,11 @@ final class EditActionTest extends WebTestCase implements TransactionalTestCase
      */
     public function getRedirectedToDashboardWhenTalkIsNotYours()
     {
-        /** @var Talk $talk */
-        $talk = factory(Talk::class, 1)->create()->first();
-
         /** @var User $otherSpeaker */
         $otherSpeaker = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
 
         $response = $this
             ->asLoggedInSpeaker($otherSpeaker->id)
@@ -84,11 +84,11 @@ final class EditActionTest extends WebTestCase implements TransactionalTestCase
      */
     public function seeEditPageWhenAllowed()
     {
-        /** @var Talk $talk */
-        $talk = factory(Talk::class, 1)->create()->first();
-
         /** @var User $speaker */
-        $speaker = $talk->speaker->first();
+        $speaker = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create(['user_id' => $speaker->id])->first();
 
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('edit_talk')

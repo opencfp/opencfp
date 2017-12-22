@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
+use OpenCFP\Domain\Model;
 use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
@@ -23,12 +24,15 @@ final class UpdateActionTest extends WebTestCase implements TransactionalTestCas
      */
     public function cantUpdateActionAFterCFPIsClosed()
     {
+        /** @var Model\User $speaker */
+        $speaker = factory(Model\User::class)->create()->first();
+
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->callForPapersIsClosed()
             ->post('/talk/update', [
                 'id'       => 2,
@@ -45,12 +49,15 @@ final class UpdateActionTest extends WebTestCase implements TransactionalTestCas
      */
     public function cantUpdateActionWithInvalidData()
     {
+        /** @var Model\User $speaker */
+        $speaker = factory(Model\User::class)->create()->first();
+
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->callForPapersIsOpen()
             ->post('/talk/update', [
                 'id'       => 2,
@@ -67,8 +74,11 @@ final class UpdateActionTest extends WebTestCase implements TransactionalTestCas
      */
     public function cantUpdateActionWithBadToken()
     {
+        /** @var Model\User $speaker */
+        $speaker = factory(Model\User::class)->create()->first();
+
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->callForPapersIsOpen()
             ->post('/talk/update', [
                 'id'       => 2,

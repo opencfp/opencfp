@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Infrastructure\Event;
 
+use OpenCFP\Domain\Model;
 use OpenCFP\Test\Integration\WebTestCase;
 
 use Symfony\Component\HttpFoundation;
@@ -37,8 +38,11 @@ final class AuthenticationListenerTest extends WebTestCase
 
     public function testTalksRouteWithLogin()
     {
+        /** @var Model\User $speaker */
+        $speaker = factory(Model\User::class)->create()->first();
+
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->get('/talk/create');
 
         $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);
@@ -55,8 +59,11 @@ final class AuthenticationListenerTest extends WebTestCase
 
     public function testReviewerDashboardRequiresReviewer()
     {
+        /** @var Model\User $speaker */
+        $speaker = factory(Model\User::class)->create()->first();
+
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->get('/reviewer/');
 
         $url = $this->container->get('router')->generate('dashboard');
@@ -66,8 +73,11 @@ final class AuthenticationListenerTest extends WebTestCase
 
     public function testReviewerDashboardAsReviewer()
     {
+        /** @var Model\User $reviewer */
+        $reviewer = factory(Model\User::class)->create()->first();
+
         $response = $this
-            ->asReviewer()
+            ->asReviewer($reviewer->id)
             ->get('/reviewer/');
 
         $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);
@@ -84,8 +94,11 @@ final class AuthenticationListenerTest extends WebTestCase
 
     public function testAdminDashboardRequiresAdmin()
     {
+        /** @var Model\User $speaker */
+        $speaker = factory(Model\User::class)->create()->first();
+
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->get('/admin/');
 
         $url = $this->container->get('router')->generate('dashboard');
@@ -95,8 +108,11 @@ final class AuthenticationListenerTest extends WebTestCase
 
     public function testAdminDashboardAsAdmin()
     {
+        /** @var Model\User $admin */
+        $admin = factory(Model\User::class)->create()->first();
+
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/admin/');
 
         $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);

@@ -25,11 +25,14 @@ final class DashboardActionTest extends WebTestCase implements TransactionalTest
      */
     public function indexDisplaysListOfTalks()
     {
+        /** @var Model\User $admin */
+        $admin = factory(Model\User::class)->create()->first();
+
         /** @var Eloquent\Collection|Model\Talk[] $talks */
         $talks = factory(Model\Talk::class, 2)->create();
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/admin/');
 
         $this->assertResponseIsSuccessful($response);
