@@ -44,8 +44,8 @@ final class PromoteActionTest extends Framework\TestCase
                     'type'  => 'error',
                     'short' => 'Error',
                     'ext'   => \sprintf(
-                        'We were unable to promote the %s. Please try again.',
-                        $role
+                        'User with id "%s" could not be found.',
+                        $id
                     ),
                 ])
             )
@@ -113,7 +113,7 @@ final class PromoteActionTest extends Framework\TestCase
                     'type'  => 'error',
                     'short' => 'Error',
                     'ext'   => \sprintf(
-                        'User already is in the %s group.',
+                        'User already is in the "%s" group.',
                         $role
                     ),
                 ])
@@ -190,7 +190,7 @@ final class PromoteActionTest extends Framework\TestCase
                     'type'  => 'error',
                     'short' => 'Error',
                     'ext'   => \sprintf(
-                        'We were unable to promote the %s. Please try again.',
+                        'Role "%s" could not be found.',
                         $role
                     ),
                 ])

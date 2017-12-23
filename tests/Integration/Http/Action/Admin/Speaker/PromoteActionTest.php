@@ -25,6 +25,8 @@ final class PromoteActionTest extends WebTestCase implements TransactionalTestCa
      */
     public function promoteActionFailsOnUserNotFound()
     {
+        $id = $this->faker()->numberBetween(500);
+
         /** @var Model\User $admin */
         $admin = factory(Model\User::class, 1)->create()->first();
 
@@ -37,7 +39,7 @@ final class PromoteActionTest extends WebTestCase implements TransactionalTestCa
             ->get(
                 \sprintf(
                     '/admin/speakers/%s/promote',
-                    $this->faker()->numberBetween(500)
+                    $id
                 ),
                 [
                     'role'     => 'Admin',
@@ -48,7 +50,13 @@ final class PromoteActionTest extends WebTestCase implements TransactionalTestCa
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('admin/speakers', $response);
-        $this->assertSessionHasFlashMessage('We were unable to promote the Admin. Please try again.', $this->session());
+
+        $flashMessage = \sprintf(
+            'User with id "%s" could not be found.',
+            $id
+        );
+
+        $this->assertSessionHasFlashMessage($flashMessage, $this->session());
     }
 
     /**
@@ -90,7 +98,7 @@ final class PromoteActionTest extends WebTestCase implements TransactionalTestCa
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('admin/speakers', $response);
-        $this->assertSessionHasFlashMessage('User already is in the Admin group.', $this->session());
+        $this->assertSessionHasFlashMessage('User already is in the "Admin" group.', $this->session());
     }
 
     /**
