@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e5f8a0ee65a85e3806630db964cb273",
+    "content-hash": "5887bd3e147c4c6669e62fcfcd5950d3",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -5162,16 +5162,16 @@
         },
         {
             "name": "infection/infection",
-            "version": "0.6.2",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infection/infection.git",
-                "reference": "1db2197cd7e82e8b9dd34ca1ca4c7be263884ff7"
+                "reference": "6c237470a268196f82df70179d1a57d0e6cdfa57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infection/infection/zipball/1db2197cd7e82e8b9dd34ca1ca4c7be263884ff7",
-                "reference": "1db2197cd7e82e8b9dd34ca1ca4c7be263884ff7",
+                "url": "https://api.github.com/repos/infection/infection/zipball/6c237470a268196f82df70179d1a57d0e6cdfa57",
+                "reference": "6c237470a268196f82df70179d1a57d0e6cdfa57",
                 "shasum": ""
             },
             "require": {
@@ -5180,10 +5180,10 @@
                 "php": "^7.0",
                 "pimple/pimple": "^3.0",
                 "sebastian/diff": "^1.4|^2.0",
-                "symfony/console": "^3.2",
-                "symfony/finder": "^3.2",
-                "symfony/process": "^3.2",
-                "symfony/yaml": "^3.3"
+                "symfony/console": "^3.2 || ^4.0",
+                "symfony/finder": "^3.2 || ^4.0",
+                "symfony/process": "^3.2 || ^4.0",
+                "symfony/yaml": "^3.2 || ^4.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
@@ -5218,7 +5218,7 @@
                 "testing",
                 "unit testing"
             ],
-            "time": "2017-11-18T20:47:17+00:00"
+            "time": "2017-12-22T23:03:31+00:00"
         },
         {
             "name": "localheinz/classy",
