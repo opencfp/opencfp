@@ -46,7 +46,7 @@ admin_speaker_view:
 admin_speaker_promote:
   path: '/admin/speakers/{id}/promote'
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\Admin\SpeakersController::promoteAction'
+  controller: OpenCFP\Http\Action\Admin\Speaker\PromoteAction
   defaults: { _require_csrf_token: true }
 
 admin_speaker_demote:

@@ -233,40 +233,4 @@ class SpeakersController extends BaseController
 
         return $this->redirectTo('admin_speakers');
     }
-
-    public function promoteAction(Request $request): Response
-    {
-        $role = $request->get('role');
-        $id   = (int) $request->get('id');
-
-        try {
-            $user = $this->accounts->findById($id);
-
-            if ($user->hasAccess(\strtolower($role))) {
-                $request->getSession()->set('flash', [
-                    'type'  => 'error',
-                    'short' => 'Error',
-                    'ext'   => 'User already is in the ' . $role . ' group.',
-                ]);
-
-                return $this->redirectTo('admin_speakers');
-            }
-
-            $this->accounts->promoteTo($user->getLogin(), $role);
-
-            $request->getSession()->set('flash', [
-                'type'  => 'success',
-                'short' => 'Success',
-                'ext'   => '',
-            ]);
-        } catch (\Exception $e) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'We were unable to promote the ' . $role . '. Please try again.',
-            ]);
-        }
-
-        return $this->redirectTo('admin_speakers');
-    }
 }
