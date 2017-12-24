@@ -46,13 +46,6 @@ jobs:
 
       php: 7.0
 
-      addons:
-        apt:
-          sources:
-            - travis-ci/sqlite3
-          packages:
-            - sqlite3
-
       before_install:
         - source .travis/xdebug.sh
         - xdebug-disable
