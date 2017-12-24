@@ -104,7 +104,7 @@ reviewer_talk_rate:
 reviewer_speakers:
   path: /reviewer/speakers
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\Reviewer\SpeakersController::indexAction'
+  controller: OpenCFP\Http\Action\Reviewer\Speaker\IndexAction
 
 reviewer_speaker_view:
   path: '/reviewer/speakers/{id}'
