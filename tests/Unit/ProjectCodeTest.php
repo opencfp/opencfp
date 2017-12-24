@@ -56,8 +56,6 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Controller\ProfileController::class,
                 Http\Controller\Reviewer\SpeakersController::class,
                 Http\Controller\Reviewer\TalksController::class,
-                Http\Controller\SecurityController::class,
-                Http\Controller\TalkController::class,
                 Http\Form\ForgotFormType::class,
                 Http\Form\ResetFormType::class,
                 Infrastructure\DependencyInjection\TestingPass::class,
