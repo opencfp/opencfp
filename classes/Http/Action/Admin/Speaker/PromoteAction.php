@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Action\Admin\Speaker;
 
 use OpenCFP\Domain\Services;
+use OpenCFP\Infrastructure\Auth;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 
@@ -44,33 +45,61 @@ final class PromoteAction
 
         try {
             $user = $this->accountManagement->findById($id);
-
-            if ($user->hasAccess(\strtolower($role))) {
-                $request->getSession()->set('flash', [
-                    'type'  => 'error',
-                    'short' => 'Error',
-                    'ext'   => 'User already is in the ' . $role . ' group.',
-                ]);
-
-                $url = $this->urlGenerator->generate('admin_speakers');
-
-                return new HttpFoundation\RedirectResponse($url);
-            }
-
-            $this->accountManagement->promoteTo($user->getLogin(), $role);
-
-            $request->getSession()->set('flash', [
-                'type'  => 'success',
-                'short' => 'Success',
-                'ext'   => '',
-            ]);
-        } catch (\Exception $e) {
+        } catch (Auth\UserNotFoundException $exception) {
             $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
-                'ext'   => 'We were unable to promote the ' . $role . '. Please try again.',
+                'ext'   => \sprintf(
+                    'User with id "%s" could not be found.',
+                    $id
+                ),
             ]);
+
+            $url = $this->urlGenerator->generate('admin_speakers');
+
+            return new HttpFoundation\RedirectResponse($url);
         }
+
+        if ($user->hasAccess(\strtolower($role))) {
+            $request->getSession()->set('flash', [
+                'type'  => 'error',
+                'short' => 'Error',
+                'ext'   => \sprintf(
+                    'User already is in the "%s" group.',
+                    $role
+                ),
+            ]);
+
+            $url = $this->urlGenerator->generate('admin_speakers');
+
+            return new HttpFoundation\RedirectResponse($url);
+        }
+
+        try {
+            $this->accountManagement->promoteTo(
+                $user->getLogin(),
+                $role
+            );
+        } catch (Auth\RoleNotFoundException $exception) {
+            $request->getSession()->set('flash', [
+                'type'  => 'error',
+                'short' => 'Error',
+                'ext'   => \sprintf(
+                    'Role "%s" could not be found.',
+                    $role
+                ),
+            ]);
+
+            $url = $this->urlGenerator->generate('admin_speakers');
+
+            return new HttpFoundation\RedirectResponse($url);
+        }
+
+        $request->getSession()->set('flash', [
+            'type'  => 'success',
+            'short' => 'Success',
+            'ext'   => '',
+        ]);
 
         $url = $this->urlGenerator->generate('admin_speakers');
 
