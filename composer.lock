@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "881403ada3feb7f5544726b30e67e912",
+    "content-hash": "9587098a1c720f2c52c544a627af1b55",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -5266,16 +5266,16 @@
         },
         {
             "name": "localheinz/test-util",
-            "version": "0.5.0",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localheinz/test-util.git",
-                "reference": "6c74682f16490fc5b3627a8acf92a956ef4177b4"
+                "reference": "505be001d620a9f4d2de2a607597b1118b566289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localheinz/test-util/zipball/6c74682f16490fc5b3627a8acf92a956ef4177b4",
-                "reference": "6c74682f16490fc5b3627a8acf92a956ef4177b4",
+                "url": "https://api.github.com/repos/localheinz/test-util/zipball/505be001d620a9f4d2de2a607597b1118b566289",
+                "reference": "505be001d620a9f4d2de2a607597b1118b566289",
                 "shasum": ""
             },
             "require": {
@@ -5284,7 +5284,8 @@
                 "php": "^7.0"
             },
             "require-dev": {
-                "localheinz/php-cs-fixer-config": "~1.7.0",
+                "infection/infection": "~0.7.0",
+                "localheinz/php-cs-fixer-config": "~1.8.0",
                 "phpunit/phpunit": "^6.4.3"
             },
             "type": "library",
@@ -5310,7 +5311,7 @@
                 "phpunit",
                 "test"
             ],
-            "time": "2017-11-04T15:44:48+00:00"
+            "time": "2017-12-24T20:56:08+00:00"
         },
         {
             "name": "mikey179/vfsStream",
