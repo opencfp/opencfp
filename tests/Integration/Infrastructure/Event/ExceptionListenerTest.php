@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Infrastructure\Event;
 
+use OpenCFP\Environment;
 use OpenCFP\Test\Integration\WebTestCase;
 use Symfony\Component\HttpFoundation;
 
@@ -33,5 +34,12 @@ final class ExceptionListenerTest extends WebTestCase
 
         $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_NOT_FOUND, $response);
         $this->assertResponseBodyContains('Page Not Found!', $response);
+    }
+
+    protected function refreshContainer()
+    {
+        // Disable debug mode, so we see the rendered error page.
+        self::bootKernel(['environment' => Environment::TYPE_TESTING, 'debug' => false]);
+        $this->container = self::$kernel->getContainer();
     }
 }
