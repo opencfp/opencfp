@@ -81,7 +81,7 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionFailsIfUserNotFound()
     {
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 
@@ -104,7 +104,7 @@ final class SpeakersControllerTest extends WebTestCase
     public function demoteActionFailsIfDemotingSelf()
     {
         $user      = $this->users->last();
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 
@@ -131,7 +131,7 @@ final class SpeakersControllerTest extends WebTestCase
         $this->container->get(AccountManagement::class)
             ->promoteTo($this->users->first()->email, 'admin');
 
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 

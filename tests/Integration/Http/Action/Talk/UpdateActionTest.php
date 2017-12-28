@@ -23,7 +23,7 @@ final class UpdateActionTest extends WebTestCase implements TransactionalTestCas
      */
     public function cantUpdateActionAFterCFPIsClosed()
     {
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 
@@ -45,7 +45,7 @@ final class UpdateActionTest extends WebTestCase implements TransactionalTestCas
      */
     public function cantUpdateActionWithInvalidData()
     {
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 

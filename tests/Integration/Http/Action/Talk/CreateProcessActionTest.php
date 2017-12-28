@@ -27,7 +27,7 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
         /** @var Model\User $user */
         $user = factory(Model\User::class)->create()->first();
 
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('edit_talk');
 
         $response = $this
@@ -56,7 +56,7 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
         /** @var Model\User $user */
         $user = factory(Model\User::class)->create()->first();
 
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 
@@ -81,7 +81,7 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
         /** @var Model\User $user */
         $user = factory(Model\User::class)->create()->first();
 
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 

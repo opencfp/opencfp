@@ -45,7 +45,7 @@ final class EditActionTest extends WebTestCase
      */
     public function canNotEditTalkAfterCfpIsClosed()
     {
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('edit_talk');
 
         $response = $this
@@ -90,7 +90,7 @@ final class EditActionTest extends WebTestCase
      */
     public function seeEditPageWhenAllowed()
     {
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('edit_talk')
             ->getValue();
 

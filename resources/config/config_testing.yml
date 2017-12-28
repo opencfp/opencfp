@@ -13,15 +13,6 @@ services:
     decorates: OpenCFP\Domain\Services\IdentityProvider
     arguments: ['@OpenCFP\Test\Helper\MockIdentityProvider.inner']
 
-  # Compatibility for integration tests that still expect the service IDs as Silex registers them.
-  csrf.token_manager:
-    alias: security.csrf.token_manager
-    public: true
-
-  url_generator:
-    alias: router
-    public: true
-
 framework:
   session:
     storage_id: session.storage.mock_file
