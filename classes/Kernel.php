@@ -46,7 +46,6 @@ final class Kernel extends SymfonyKernel
             new TwigBundle(),
             new SwiftmailerBundle(),
             new WouterJEloquentBundle(),
-            new WebServerBundle(),
         ];
 
         if ($this->getEnvironment() !== Environment::TYPE_PRODUCTION) {
@@ -54,6 +53,7 @@ final class Kernel extends SymfonyKernel
         }
 
         if ($this->getEnvironment() === Environment::TYPE_DEVELOPMENT) {
+            $bundles[] = new WebServerBundle();
             $bundles[] = new WebProfilerBundle();
         }
 
