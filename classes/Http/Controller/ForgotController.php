@@ -141,51 +141,6 @@ class ForgotController extends BaseController
         ]);
     }
 
-    public function processResetAction(Request $request): Response
-    {
-        $userId    = $request->get('user_id');
-        $resetCode = $request->get('reset_code');
-
-        if (empty($resetCode)) {
-            throw new \Exception();
-        }
-
-        $form = $this->formFactory->createBuilder(ResetFormType::class)->getForm();
-        $form->handleRequest($request);
-
-        if (!$form->isValid()) {
-            $form->get('user_id')->setData($userId);
-            $form->get('reset_code')->setData($resetCode);
-
-            return $this->render('user/reset_password.twig', [
-                'form' => $form->createView(),
-            ]);
-        }
-
-        $errorMessage = 'The reset you have requested appears to be invalid, please try again.';
-        $error        = 0;
-
-        try {
-            $user = $this->accounts->findById($request->get('user_id'));
-        } catch (\RuntimeException $e) {
-            ++$error;
-        }
-
-        if (!$user->checkResetPasswordCode($request->get('reset_code'))) {
-            ++$error;
-        }
-
-        if ($error > 0) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => $errorMessage,
-            ]);
-        }
-
-        return $this->redirectTo('forgot_password');
-    }
-
     protected function successfulSendFlashParameters($email)
     {
         return [
