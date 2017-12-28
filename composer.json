@@ -10,7 +10,7 @@
     },
     "require": {
         "php": ">=7",
-        "aptoma/twig-markdown": "^2",
+        "aptoma/twig-markdown": "^3.0.0",
         "cartalyst/sentinel": "^2.0.17",
         "ezyang/htmlpurifier": "dev-master",
         "guzzlehttp/guzzle": "~6.2",
@@ -41,7 +41,7 @@
         "symfony/validator": "^3.4",
         "symfony/yaml": "^3.4",
         "twig/extensions": "^1.5",
-        "twig/twig": "1.*",
+        "twig/twig": "^2.4.4",
         "wouterj/eloquent-bundle": "^1.0"
     },
     "require-dev": {
