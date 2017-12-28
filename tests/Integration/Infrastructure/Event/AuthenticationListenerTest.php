@@ -30,7 +30,7 @@ final class AuthenticationListenerTest extends WebTestCase
     {
         $response = $this->get('/talk/create');
 
-        $url = $this->container->get('url_generator')->generate('dashboard');
+        $url = $this->container->get('router')->generate('dashboard');
 
         $this->assertRedirectResponseUrlEquals($url, $response);
     }
@@ -48,7 +48,7 @@ final class AuthenticationListenerTest extends WebTestCase
     {
         $response = $this->get('/reviewer/');
 
-        $url = $this->container->get('url_generator')->generate('dashboard');
+        $url = $this->container->get('router')->generate('dashboard');
 
         $this->assertRedirectResponseUrlEquals($url, $response);
     }
@@ -59,7 +59,7 @@ final class AuthenticationListenerTest extends WebTestCase
             ->asLoggedInSpeaker()
             ->get('/reviewer/');
 
-        $url = $this->container->get('url_generator')->generate('dashboard');
+        $url = $this->container->get('router')->generate('dashboard');
 
         $this->assertRedirectResponseUrlEquals($url, $response);
     }
@@ -77,7 +77,7 @@ final class AuthenticationListenerTest extends WebTestCase
     {
         $response = $this->get('/admin/');
 
-        $url = $this->container->get('url_generator')->generate('dashboard');
+        $url = $this->container->get('router')->generate('dashboard');
 
         $this->assertRedirectResponseUrlEquals($url, $response);
     }
@@ -88,7 +88,7 @@ final class AuthenticationListenerTest extends WebTestCase
             ->asLoggedInSpeaker()
             ->get('/admin/');
 
-        $url = $this->container->get('url_generator')->generate('dashboard');
+        $url = $this->container->get('router')->generate('dashboard');
 
         $this->assertRedirectResponseUrlEquals($url, $response);
     }

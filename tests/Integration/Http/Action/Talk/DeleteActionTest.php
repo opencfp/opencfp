@@ -45,7 +45,7 @@ final class DeleteActionTest extends WebTestCase
      */
     public function notAllowedToDeleteAfterCFPIsOver()
     {
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('delete_talk')
             ->getValue();
 
@@ -68,7 +68,7 @@ final class DeleteActionTest extends WebTestCase
      */
     public function notAllowedToDeleteSomeoneElseTalk()
     {
-        $csrfToken = $this->container->get('csrf.token_manager')
+        $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('delete_talk')
             ->getValue();
 
