@@ -113,7 +113,6 @@ final class Kernel extends SymfonyKernel
 
     private function bindConfiguration(ContainerBuilder $container, array $config)
     {
-        $container->setParameter('config.all', $config);
         $container->setParameter('config.application', $config['application']);
 
         foreach ($config as $groupName => $groupConfig) {
