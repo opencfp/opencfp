@@ -66,6 +66,11 @@ final class Path implements PathInterface
         return $this->path . '/web/assets';
     }
 
+    public function webAssetsPath(): string
+    {
+        return '/assets/';
+    }
+
     public function cacheTwigPath(): string
     {
         return $this->path . '/cache/twig';

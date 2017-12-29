@@ -140,6 +140,15 @@ final class PathTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function webAssetsPathReturnsCorrectPath()
+    {
+        $path = new Path('/home/folder/base', Environment::testing());
+        $this->assertSame('/assets/', $path->webAssetsPath());
+    }
+
+    /**
+     * @test
+     */
     public function cacheTwigPathReturnsCacheTwigPath()
     {
         $path = new Path('/home/folder/base', Environment::testing());
