@@ -94,7 +94,7 @@ abstract class WebTestCase extends KernelTestCase
         return Kernel::class;
     }
 
-    private function refreshContainer()
+    protected function refreshContainer()
     {
         self::bootKernel(['environment' => Environment::TYPE_TESTING, 'debug' => true]);
         $this->container = self::$kernel->getContainer();
