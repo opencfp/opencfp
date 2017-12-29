@@ -45,6 +45,7 @@ final class ProjectCodeTest extends Framework\TestCase
                 Domain\Talk\TalkHandler::class,
                 Http\Action\Admin\DashboardAction::class,
                 Http\Action\Admin\Talk\IndexAction::class,
+                Http\Action\Profile\ChangePasswordProcessAction::class,
                 Http\Action\Reviewer\DashboardAction::class,
                 Http\Action\Reviewer\Speaker\IndexAction::class,
                 Http\Action\Reviewer\Speaker\ViewAction::class,

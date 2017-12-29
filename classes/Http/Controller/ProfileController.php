@@ -146,53 +146,6 @@ class ProfileController extends BaseController
         ]));
     }
 
-    public function passwordProcessAction(Request $request): Response
-    {
-        $user = $this->authentication->user();
-
-        /**
-         * Okay, the logic is kind of weird but we can use the SignupForm
-         * validation code to make sure our password changes are good
-         */
-        $formData = [
-            'password'  => $request->get('password'),
-            'password2' => $request->get('password_confirm'),
-        ];
-        $form = new SignupForm($formData, $this->purifier);
-        $form->sanitize();
-
-        if ($form->validatePasswords() === false) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => \implode('<br>', $form->getErrorMessages()),
-            ]);
-
-            return $this->redirectTo('password_edit');
-        }
-
-        $sanitizedData = $form->getCleanData();
-        $resetCode     = $user->getResetPasswordCode();
-
-        if (!$user->attemptResetPassword($resetCode, $sanitizedData['password'])) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'Unable to update your password in the database. Please try again.',
-            ]);
-
-            return $this->redirectTo('password_edit');
-        }
-
-        $request->getSession()->set('flash', [
-            'type'  => 'success',
-            'short' => 'Success',
-            'ext'   => 'Changed your password.',
-        ]);
-
-        return $this->redirectTo('password_edit');
-    }
-
     /**
      * @param Request $request
      *
