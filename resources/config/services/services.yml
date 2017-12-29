@@ -46,6 +46,9 @@ services:
     bind:
       $path: '%kernel.project_dir%'
 
+  OpenCFP\WebPath:
+      class: OpenCFP\WebPath
+
   OpenCFP\Application\Speakers: ~
 
   OpenCFP\Environment:

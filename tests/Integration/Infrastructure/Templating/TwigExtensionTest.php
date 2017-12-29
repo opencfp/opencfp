@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Infrastructure\Templating;
 
-use OpenCFP\Environment;
 use OpenCFP\Infrastructure\Templating\TwigExtension;
-use OpenCFP\Path;
+use OpenCFP\WebPath;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -31,7 +30,7 @@ final class TwigExtensionTest extends TestCase
         $requestStack = new RequestStack();
         $requestStack->push(Request::create('/dashboard'));
 
-        $path = new Path('', Environment::testing());
+        $path = new WebPath();
 
         $routes = new RouteCollection();
         $routes->add('admin', new Route('/admin'));

@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit;
 
 use Localheinz\Test\Util\Helper;
-use OpenCFP\Path;
 use OpenCFP\PathInterface;
+use OpenCFP\WebPath;
 
-final class PathTest extends \PHPUnit\Framework\TestCase
+final class WebPathTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 
     public function testIsFinal()
     {
-        $this->assertClassIsFinal(Path::class);
+        $this->assertClassIsFinal(WebPath::class);
     }
 
     public function testImplementsPathInterface()
     {
-        $this->assertClassImplementsInterface(PathInterface::class, Path::class);
+        $this->assertClassImplementsInterface(PathInterface::class, WebPath::class);
     }
 
     /**
@@ -36,9 +36,9 @@ final class PathTest extends \PHPUnit\Framework\TestCase
      */
     public function uploadPathReturnsUploadPath()
     {
-        $path = new Path('/home/folder/base');
+        $path = new WebPath();
         $this->assertSame(
-            '/home/folder/base/web/uploads',
+            '/uploads/',
             $path->uploadPath()
         );
     }
@@ -48,9 +48,9 @@ final class PathTest extends \PHPUnit\Framework\TestCase
      */
     public function assetsPathReturnsAssetsPath()
     {
-        $path = new Path('/home/folder/base');
+        $path = new WebPath();
         $this->assertSame(
-            '/home/folder/base/web/assets',
+            '/assets/',
             $path->assetsPath()
         );
     }

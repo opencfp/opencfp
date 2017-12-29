@@ -13,30 +13,20 @@ declare(strict_types=1);
 
 namespace OpenCFP;
 
-final class Path implements PathInterface
+final class WebPath implements PathInterface
 {
-    /**
-     * @var string
-     */
-    private $path;
-
-    public function __construct(string $path)
-    {
-        $this->path = $path;
-    }
-
     public function basePath(): string
     {
-        return $this->path;
+        return '/';
     }
 
     public function uploadPath(): string
     {
-        return $this->path . '/web/uploads';
+        return '/uploads/';
     }
 
     public function assetsPath(): string
     {
-        return $this->path . '/web/assets';
+        return '/assets/';
     }
 }
