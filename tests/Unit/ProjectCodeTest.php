@@ -49,6 +49,7 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Action\Reviewer\DashboardAction::class,
                 Http\Action\Reviewer\Speaker\IndexAction::class,
                 Http\Action\Reviewer\Speaker\ViewAction::class,
+                Http\Action\Admin\Talk\RateAction::class,
                 Http\Action\Reviewer\Talk\IndexAction::class,
                 Http\Action\Reviewer\Talk\RateAction::class,
                 Http\Action\Signup\ProcessAction::class,

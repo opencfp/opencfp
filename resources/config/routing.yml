@@ -31,7 +31,7 @@ admin_talk_comment_create:
 admin_talk_rate:
   path: '/admin/talks/{id}/rate'
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\Admin\TalksController::rateAction'
+  controller: OpenCFP\Http\Action\Admin\Talk\RateAction
 
 admin_speakers:
   path: /admin/speakers
