@@ -69,7 +69,7 @@ jobs:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --testsuite unit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit --testsuite unit; fi
         - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-disable; fi
 
-      after_script:
+      after_success:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-after-script; fi
 
     - <<: *TEST
