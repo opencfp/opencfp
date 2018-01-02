@@ -17,44 +17,29 @@ use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Infrastructure\Auth\SentinelAccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class SentinelUserTest extends WebTestCase
+final class SentinelUserTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
     /**
      * @var SentinelUser
      */
-    private static $user;
+    private $user;
 
-    public static function setUpBeforeClass()
+    protected function setUp()
     {
-        parent::setUpBeforeClass();
+        parent::setUp();
+
         $account = new SentinelAccountManagement((new Sentinel())->getSentinel());
         $account->create('test@example.com', 'secret', [
             'first_name' => 'Test',
             'last_name'  => 'Account',
         ]);
-        self::$user = $account->findByLogin('test@example.com');
+
+        $this->user = $account->findByLogin('test@example.com');
+
         $account->promoteTo('test@example.com', 'Speaker');
-    }
-
-    /**
-     * @test
-     */
-    public function getIdWorks()
-    {
-        $this->assertSame(1, self::$user->getId());
-    }
-
-    /**
-     * @test
-     */
-    public function getLoginWorks()
-    {
-        $this->assertSame('test@example.com', self::$user->getLogin());
     }
 
     /**
@@ -62,11 +47,10 @@ final class SentinelUserTest extends WebTestCase
      */
     public function hasAccessWorks()
     {
-        $user = self::$user;
-        $this->assertFalse($user->hasAccess('Admin'));
-        $this->assertFalse($user->hasAccess('Reviewer'));
-        $this->assertTrue($user->hasAccess('Speaker'));
-        $this->assertFalse($user->hasAccess('NotExistingThing'));
+        $this->assertFalse($this->user->hasAccess('Admin'));
+        $this->assertFalse($this->user->hasAccess('Reviewer'));
+        $this->assertTrue($this->user->hasAccess('Speaker'));
+        $this->assertFalse($this->user->hasAccess('NotExistingThing'));
     }
 
     /**
@@ -74,7 +58,7 @@ final class SentinelUserTest extends WebTestCase
      */
     public function checkPasswordWorks()
     {
-        $this->assertTrue(self::$user->checkPassword('secret'));
+        $this->assertTrue($this->user->checkPassword('secret'));
     }
 
     /**
@@ -84,14 +68,14 @@ final class SentinelUserTest extends WebTestCase
     {
         /** @var Capsule $capsule */
         $capsule = $this->container->get(Capsule::class);
+
         $capsule->getConnection()->query()->from('reminders')->insert([
-            'user_id' => self::$user->getId(),
+            'user_id' => $this->user->getId(),
             'code'    => 'secret.reset.code',
         ]);
-        $this->assertFalse(self::$user->checkResetPasswordCode('wrong.code'));
-        $this->assertTrue(self::$user->checkResetPasswordCode('secret.reset.code'));
-        //reset after test.
-        $capsule->getConnection()->query()->from('reminders')->truncate();
+
+        $this->assertFalse($this->user->checkResetPasswordCode('wrong.code'));
+        $this->assertTrue($this->user->checkResetPasswordCode('secret.reset.code'));
     }
 
     /**
@@ -101,22 +85,25 @@ final class SentinelUserTest extends WebTestCase
     {
         /** @var Capsule $capsule */
         $capsule = $this->container->get(Capsule::class);
+
         $capsule->getConnection()->query()->from('reminders')->insert([
-            'user_id' => self::$user->getId(),
+            'user_id' => $this->user->getId(),
             'code'    => 'secret.reset.code',
         ]);
-        $this->assertTrue(self::$user->checkResetPasswordCode('secret.reset.code'));
 
-        // The function resets the password code when it requests it.
-        $code = self::$user->getResetPasswordCode();
+        $this->assertTrue($this->user->checkResetPasswordCode('secret.reset.code'));
+
+        $code = $this->user->getResetPasswordCode();
+
         $this->assertNotSame('secret.reset.code', $code);
+
         $databaseEntry = $capsule->getConnection()
             ->query()
             ->from('reminders')
-            ->where('user_id', self::$user->getId())
+            ->where('user_id', $this->user->getId())
             ->get()->last();
+
         $this->assertSame($databaseEntry->code, $code);
-        $capsule->getConnection()->query()->from('reminders')->truncate();
     }
 
     /**
@@ -126,15 +113,19 @@ final class SentinelUserTest extends WebTestCase
     {
         /** @var Capsule $capsule */
         $capsule = $this->container->get(Capsule::class);
+
         $capsule->getConnection()->query()->from('reminders')->insert([
-            'user_id' => self::$user->getId(),
+            'user_id' => $this->user->getId(),
             'code'    => 'secret.reset.code',
         ]);
 
-        $result = self::$user->attemptResetPassword('wrong code', 'newPass1');
+        $result = $this->user->attemptResetPassword('wrong code', 'newPass1');
+
         $this->assertFalse($result);
-        $secondTry = self::$user->attemptResetPassword('secret.reset.code', 'newPass2');
+
+        $secondTry = $this->user->attemptResetPassword('secret.reset.code', 'newPass2');
+
         $this->assertTrue($secondTry);
-        $this->assertTrue(self::$user->checkPassword('newPass2'));
+        $this->assertTrue($this->user->checkPassword('newPass2'));
     }
 }

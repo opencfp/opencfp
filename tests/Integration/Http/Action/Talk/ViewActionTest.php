@@ -15,13 +15,11 @@ namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
 use OpenCFP\Domain\Model;
 use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class ViewActionTest extends WebTestCase
+final class ViewActionTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

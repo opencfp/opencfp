@@ -22,24 +22,14 @@ use OpenCFP\Domain\Services\TalkRating\TalkRatingStrategy;
 use OpenCFP\Domain\Talk\TalkHandler;
 use OpenCFP\Domain\Talk\TalkProfile;
 use OpenCFP\Infrastructure\Auth\UserInterface;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalkHandlerTest extends WebTestCase
+final class TalkHandlerTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    private static $talk;
-
     private $authentication;
 
     private $ratingSystem;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        self::$talk = factory(Talk::class, 1)->create(['selected' => 0])->first();
-    }
 
     protected function setUp()
     {
@@ -61,7 +51,9 @@ final class TalkHandlerTest extends WebTestCase
      */
     public function commentOnSetsNewComment()
     {
-        $talk        = self::$talk;
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create(['selected' => 0])->first();
+
         $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
         $talkHandler->with($talk);
         $this->assertTrue($talkHandler->commentOn('Nice Talk!'));
@@ -77,7 +69,9 @@ final class TalkHandlerTest extends WebTestCase
      */
     public function selectSelectsTalk()
     {
-        $talk        = self::$talk;
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create(['selected' => 0])->first();
+
         $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
         $talkHandler->with($talk);
         $this->assertSame(0, $talk->selected);
@@ -94,7 +88,9 @@ final class TalkHandlerTest extends WebTestCase
      */
     public function favoriteCreatesAndDeletesFavorites()
     {
-        $talk        = self::$talk;
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create(['selected' => 0])->first();
+
         $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
         $talkHandler->with($talk);
 
@@ -142,7 +138,9 @@ final class TalkHandlerTest extends WebTestCase
      */
     public function rateReturnsTrueOnSuccess()
     {
-        $talk        = self::$talk;
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create(['selected' => 0])->first();
+
         $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
         $talkHandler->with($talk);
 
@@ -155,7 +153,9 @@ final class TalkHandlerTest extends WebTestCase
      */
     public function rateReturnsFalseOnError()
     {
-        $talk         = self::$talk;
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create(['selected' => 0])->first();
+
         $ratingSystem = Mockery::mock(TalkRatingStrategy::class);
         $ratingSystem->shouldReceive('rate')->andThrow(TalkRatingException::class);
         $talkHandler = new TalkHandler($this->authentication, $ratingSystem);
@@ -219,8 +219,11 @@ final class TalkHandlerTest extends WebTestCase
      */
     public function grabTalkSetsTalkWithId()
     {
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create(['selected' => 0])->first();
+
         $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
-        $this->assertInstanceOf(TalkHandler::class, $talkHandler->grabTalk((int) self::$talk->id));
+        $this->assertInstanceOf(TalkHandler::class, $talkHandler->grabTalk((int) $talk->id));
         $this->assertTrue($talkHandler->hasTalk());
     }
 
@@ -240,7 +243,9 @@ final class TalkHandlerTest extends WebTestCase
      */
     public function getProfileReturnsTalkProfile()
     {
-        $talk        = self::$talk;
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create(['selected' => 0])->first();
+
         $talkHandler = new TalkHandler($this->authentication, $this->ratingSystem);
         $talkHandler->with($talk);
         $profile = $talkHandler->getProfile();

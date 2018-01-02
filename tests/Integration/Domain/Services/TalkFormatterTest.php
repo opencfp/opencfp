@@ -17,17 +17,16 @@ use Illuminate\Support\Collection;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Talk\TalkFormatter;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalkFormatterTest extends WebTestCase
+final class TalkFormatterTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    public static function setUpBeforeClass()
+    protected function setUp()
     {
-        parent::setUpBeforeClass();
-        self::generateSomeTalks();
+        parent::setUp();
+
+        $this->generateSomeTalks();
     }
 
     /**
@@ -42,7 +41,7 @@ final class TalkFormatterTest extends WebTestCase
         $this->assertInstanceOf(Collection::class, $formatted);
     }
 
-    private static function generateSomeTalks()
+    private function generateSomeTalks()
     {
         $talk = new Talk();
 

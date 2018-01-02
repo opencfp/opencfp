@@ -13,35 +13,35 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Controller\Admin;
 
+use Illuminate\Database\Eloquent;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class SpeakersControllerTest extends WebTestCase
+final class SpeakersControllerTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    private $users;
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->users = factory(User::class, 5)->create();
-    }
-
     /**
      * @test
      */
     public function indexActionWorksCorrectly()
     {
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
+        /** @var Eloquent\Collection|User[] $speakers */
+        $speakers = factory(User::class, 3)->create();
+
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/admin/speakers');
 
         $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains($this->users->first()->first_name, $response);
         $this->assertSessionHasNoFlashMessage($this->session());
+
+        foreach ($speakers as $speaker) {
+            $this->assertResponseBodyContains($speaker->first_name, $response);
+        }
     }
 
     /**
@@ -49,14 +49,18 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function viewActionDisplaysCorrectly()
     {
-        $user = $this->users->first();
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
+        /** @var User $speaker */
+        $speaker = factory(User::class, 3)->create()->first();
 
         $response = $this
-            ->asAdmin()
-            ->get('/admin/speakers/' . $user->id);
+            ->asAdmin($admin->id)
+            ->get('/admin/speakers/' . $speaker->id);
 
         $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains($user->first_name, $response);
+        $this->assertResponseBodyContains($speaker->first_name, $response);
         $this->assertSessionHasNoFlashMessage($this->session());
     }
 
@@ -65,9 +69,12 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function viewActionRedirectsOnNonUser()
     {
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
         $response = $this
-            ->asAdmin()
-            ->get('/admin/speakers/7679');
+            ->asAdmin($admin->id)
+            ->get('/admin/speakers/' . $this->faker()->numberBetween(500));
 
         $this->assertResponseBodyNotContains('Other Information', $response);
 
@@ -81,17 +88,26 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionFailsIfUserNotFound()
     {
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 
         $response = $this
-            ->asAdmin()
-            ->get('/admin/speakers/7679/demote', [
-                'role'     => 'Admin',
-                'token'    => $csrfToken,
-                'token_id' => 'admin_speaker_demote',
-            ]);
+            ->asAdmin($admin->id)
+            ->get(
+                \sprintf(
+                    '/admin/speakers/%s/demote',
+                    $this->faker()->numberBetween(500)
+                ),
+                [
+                    'role'     => 'Admin',
+                    'token'    => $csrfToken,
+                    'token_id' => 'admin_speaker_demote',
+                ]
+            );
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('/admin/speakers', $response);
@@ -103,14 +119,16 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionFailsIfDemotingSelf()
     {
-        $user      = $this->users->last();
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 
         $response = $this
-            ->asAdmin($user->id)
-            ->get('/admin/speakers/' . $user->id . '/demote', [
+            ->asAdmin($admin->id)
+            ->get('/admin/speakers/' . $admin->id . '/demote', [
                 'role'     => 'Admin',
                 'token'    => $csrfToken,
                 'token_id' => 'admin_speaker_demote',
@@ -128,16 +146,24 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionWorksCorrectly()
     {
-        $this->container->get(AccountManagement::class)
-            ->promoteTo($this->users->first()->email, 'admin');
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
+        /** @var User $speaker */
+        $speaker = factory(User::class, 1)->create()->first();
+
+        $this->container->get(AccountManagement::class)->promoteTo(
+            $speaker->email,
+            'admin'
+        );
 
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 
         $response = $this
-            ->asAdmin($this->users->first()->id)
-            ->get('/admin/speakers/' . $this->users->last()->id . '/demote', [
+            ->asAdmin($admin->id)
+            ->get('/admin/speakers/' . $speaker->id . '/demote', [
                 'role'     => 'Admin',
                 'token'    => $csrfToken,
                 'token_id' => 'admin_speaker_demote',
@@ -153,9 +179,20 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function demoteActionFailsWithBadToken()
     {
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
+        /** @var User $speaker */
+        $speaker = factory(User::class, 1)->create()->first();
+
+        $this->container->get(AccountManagement::class)->promoteTo(
+            $speaker->email,
+            'admin'
+        );
+
         $response = $this
-            ->asAdmin($this->users->first()->id)
-            ->get('/admin/speakers/' . $this->users->last()->id . '/demote', [
+            ->asAdmin($admin->id)
+            ->get('/admin/speakers/' . $speaker->id . '/demote', [
                 'role'     => 'Admin',
                 'token'    => \uniqid(),
                 'token_id' => 'admin_speaker_demote',
@@ -170,9 +207,15 @@ final class SpeakersControllerTest extends WebTestCase
      */
     public function deleteActionFailsWithBadToken()
     {
+        /** @var User $user */
+        $user = factory(User::class, 1)->create()->first();
+
+        /** @var User $otherUser */
+        $otherUser = factory(User::class, 1)->create()->first();
+
         $response = $this
-            ->asAdmin($this->users->first()->id)
-            ->get('/admin/speakers/delete/' . $this->users->last()->id . '?token_id=admin_speaker_demote&token=' . \uniqid());
+            ->asAdmin($user->id)
+            ->get('/admin/speakers/delete/' . $otherUser->id . '?token_id=admin_speaker_demote&token=' . \uniqid());
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('/dashboard', $response);

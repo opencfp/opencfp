@@ -17,30 +17,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkMeta;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalkMetaTest extends WebTestCase
+final class TalkMetaTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    /**
-     * @var TalkMeta
-     */
-    private static $meta;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        self::$meta = factory(TalkMeta::class, 1)->create()->first();
-    }
-
     /**
      * @test
      */
     public function talkRelationWorks()
     {
-        $talk = self::$meta->talk();
+        /** @var TalkMeta $meta */
+        $meta = factory(TalkMeta::class, 1)->create()->first();
+
+        $talk = $meta->talk();
+
         $this->assertInstanceOf(BelongsTo::class, $talk);
         $this->assertInstanceOf(Talk::class, $talk->first());
     }
@@ -50,7 +41,11 @@ final class TalkMetaTest extends WebTestCase
      */
     public function userRelationWorks()
     {
-        $user = self::$meta->user();
+        /** @var TalkMeta $meta */
+        $meta = factory(TalkMeta::class, 1)->create()->first();
+
+        $user = $meta->user();
+
         $this->assertInstanceOf(BelongsTo::class, $user);
         $this->assertInstanceOf(User::class, $user->first());
     }
