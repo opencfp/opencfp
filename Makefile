@@ -22,7 +22,7 @@ database: test-env composer
 	mysqldump -uroot cfp_test > tests/dump.sql
 
 infection: composer database
-	vendor/bin/infection
+	vendor/bin/infection --test-framework-options="--printer PHPUnit\\\TextUI\\\ResultPrinter"
 
 integration: test-env composer database
 	vendor/bin/phpunit --testsuite integration
