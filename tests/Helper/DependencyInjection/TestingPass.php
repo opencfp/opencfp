@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Infrastructure\DependencyInjection;
+namespace OpenCFP\Test\Helper\DependencyInjection;
 
 use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;

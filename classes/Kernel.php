@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP;
 
-use OpenCFP\Infrastructure\DependencyInjection\TestingPass;
+use OpenCFP\Test\Helper\DependencyInjection\TestingPass;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\DebugBundle\DebugBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
