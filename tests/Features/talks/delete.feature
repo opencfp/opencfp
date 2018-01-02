@@ -1,4 +1,3 @@
-@javascript
 Feature: A Speaker deletes a talk
 
     Background:
