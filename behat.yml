@@ -19,5 +19,3 @@ default:
       sessions:
         default:
           symfony2: ~
-        javascript:
-          selenium2: ~
