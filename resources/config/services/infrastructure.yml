@@ -19,3 +19,24 @@ services:
       OpenCFP\Domain\Services\RequestValidator: '@OpenCFP\Infrastructure\Auth\CsrfValidator'
 
   OpenCFP\Infrastructure\Repository\IlluminateUserRepository: ~
+
+  OpenCFP\Infrastructure\Validation\RequestValidator: ~
+
+  Illuminate\Validation\Factory: ~
+
+  Illuminate\Filesystem\Filesystem: ~
+
+  Illuminate\Contracts\Container\Container:
+    class: Illuminate\Container\Container
+
+  Illuminate\Contracts\Translation\Translator:
+    class: Illuminate\Translation\Translator
+    autowire: false
+    arguments:
+      - '@translation_loader'
+      - 'en'
+
+  translation_loader:
+    class: Illuminate\Translation\FileLoader
+    arguments:
+      $path: '%kernel.project_dir%/resources/lang'

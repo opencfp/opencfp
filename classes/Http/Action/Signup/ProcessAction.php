@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Action\Signup;
 
-use Illuminate\Container\Container;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Translation;
-use Illuminate\Validation;
 use OpenCFP\Domain\Services;
 use OpenCFP\Domain\ValidationException;
+use OpenCFP\Infrastructure\Validation\RequestValidator;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 
@@ -39,20 +36,27 @@ final class ProcessAction
      */
     private $urlGenerator;
 
+    /**
+     * @var RequestValidator
+     */
+    private $requestValidator;
+
     public function __construct(
         Services\Authentication $authentication,
         Services\AccountManagement $accounts,
+        RequestValidator $requestValidator,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
-        $this->authentication = $authentication;
-        $this->accounts       = $accounts;
-        $this->urlGenerator   = $urlGenerator;
+        $this->authentication   = $authentication;
+        $this->accounts         = $accounts;
+        $this->requestValidator = $requestValidator;
+        $this->urlGenerator     = $urlGenerator;
     }
 
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         try {
-            $this->validate($request, [
+            $this->requestValidator->validate($request, [
                 'email'    => 'required|email',
                 'password' => 'required',
                 'coc'      => 'accepted',
@@ -99,42 +103,5 @@ final class ProcessAction
 
             return new HttpFoundation\RedirectResponse($request->headers->get('referer'));
         }
-    }
-
-    /**
-     * @param HttpFoundation\Request $request
-     * @param array                  $rules
-     * @param array                  $messages
-     * @param array                  $customAttributes
-     *
-     * @throws ValidationException
-     */
-    private function validate(HttpFoundation\Request $request, $rules = [], $messages = [], $customAttributes = [])
-    {
-        $data = $request->query->all() + $request->request->all() + $request->files->all();
-
-        $validation = new Validation\Factory(
-            new Translation\Translator(
-                new Translation\FileLoader(
-                    new Filesystem(),
-                    __DIR__ . '/../../../resources/lang'
-                ),
-                'en'
-            ),
-            new Container()
-        );
-
-        $validator = $validation->make(
-            $data,
-            $rules,
-            $messages,
-            $customAttributes
-        );
-
-        if ($validator->fails()) {
-            throw ValidationException::withErrors(array_flatten($validator->errors()->toArray()));
-        }
-
-        unset($validation, $validator);
     }
 }
