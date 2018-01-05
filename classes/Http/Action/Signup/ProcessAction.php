@@ -21,7 +21,6 @@ use OpenCFP\Domain\Services;
 use OpenCFP\Domain\ValidationException;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
 
 final class ProcessAction
 {
@@ -43,7 +42,6 @@ final class ProcessAction
     public function __construct(
         Services\Authentication $authentication,
         Services\AccountManagement $accounts,
-        Twig_Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->authentication = $authentication;
