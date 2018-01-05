@@ -20,7 +20,6 @@ use PHPUnit\Framework;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-
 use Twig_Environment;
 
 final class LogInActionTest extends Framework\TestCase

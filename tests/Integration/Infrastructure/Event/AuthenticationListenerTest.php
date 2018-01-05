@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Infrastructure\Event;
 
 use OpenCFP\Test\Integration\WebTestCase;
-
 use Symfony\Component\HttpFoundation;
 
 final class AuthenticationListenerTest extends WebTestCase

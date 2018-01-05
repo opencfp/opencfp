@@ -14,7 +14,6 @@ declare(strict_types=1);
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Database\Capsule\Manager as Capsule;
-
 use Phinx\Migration\AbstractMigration;
 
 /**

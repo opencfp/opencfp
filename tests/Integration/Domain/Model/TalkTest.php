@@ -148,7 +148,6 @@ final class TalkTest extends WebTestCase implements TransactionalTestCase
             'level'       => 'entry',
             'category'    => 'api',
             'selected'    => 1,
-
         ]);
 
         Talk::create([
