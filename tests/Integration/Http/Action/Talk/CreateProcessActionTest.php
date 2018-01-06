@@ -104,8 +104,11 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
      */
     public function processCreateTalkFailsWithBadToken()
     {
+        /** @var Model\User $speaker */
+        $speaker = factory(Model\User::class)->create()->first();
+
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->callForPapersIsOpen()
             ->post('/talk/create', [
                 'description' => 'Talk Description',

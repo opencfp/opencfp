@@ -168,7 +168,7 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    final protected function asLoggedInSpeaker(int $id = 1): self
+    final protected function asLoggedInSpeaker(int $id): self
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);
@@ -190,7 +190,7 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    final protected function asAdmin(int $id = 1): self
+    final protected function asAdmin(int $id): self
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);
@@ -211,7 +211,7 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    final protected function asReviewer(int $id = 1): self
+    final protected function asReviewer(int $id): self
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);

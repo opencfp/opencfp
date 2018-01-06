@@ -39,11 +39,14 @@ final class ViewActionTest extends WebTestCase implements TransactionalTestCase
      */
     public function talkWithNoMetaDisplaysCorrectly()
     {
+        /** @var Model\User $admin */
+        $admin = factory(Model\User::class)->create()->first();
+
         /** @var Model\Talk $talk */
         $talk = factory(Model\Talk::class)->create()->first();
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/admin/talks/' . $talk->id);
 
         $this->assertResponseIsSuccessful($response);
