@@ -1,0 +1,21 @@
+default:
+  suites:
+    default:
+      paths:
+        - %paths.base%/tests/Features
+      contexts:
+        - OpenCFP\Test\Features\Contexts\FeatureContext
+
+  extensions:
+    Behat\Symfony2Extension:
+      kernel:
+        bootstrap: vendor/autoload.php
+        class: OpenCFP\Kernel
+        env: testing
+
+    Behat\MinkExtension:
+      base_url: http://localhost
+      default_session: default
+      sessions:
+        default:
+          symfony2: ~
