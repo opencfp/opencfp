@@ -157,7 +157,7 @@ final class CreateProcessAction
                 'flash'          => $request->getSession()->get('flash'),
             ]);
 
-            return new HttpFoundation\Response($content);
+            return new HttpFoundation\Response($content, HttpFoundation\Response::HTTP_BAD_REQUEST);
         }
 
         $talk = Model\Talk::create(\array_merge($form->getCleanData(), [
@@ -177,7 +177,7 @@ final class CreateProcessAction
 
         $url = $this->urlGenerator->generate('dashboard');
 
-        return new HttpFoundation\RedirectResponse($url);
+        return new HttpFoundation\RedirectResponse($url, HttpFoundation\Response::HTTP_CREATED);
     }
 
     private function createTalkForm(array $data): Form\TalkForm
