@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -94,13 +93,5 @@ abstract class BaseController
     protected function redirectTo($route, $status = Response::HTTP_FOUND)
     {
         return new RedirectResponse($this->url($route), $status);
-    }
-
-    /**
-     * @return RedirectResponse
-     */
-    protected function redirectBack(Request $request)
-    {
-        return new RedirectResponse($request->headers->get('referer'));
     }
 }
