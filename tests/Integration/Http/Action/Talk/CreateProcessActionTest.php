@@ -16,6 +16,7 @@ namespace OpenCFP\Test\Integration\Http\Action\Talk;
 use OpenCFP\Domain\Model;
 use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 final class CreateProcessActionTest extends WebTestCase implements TransactionalTestCase
 {
@@ -28,7 +29,7 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
         $user = factory(Model\User::class)->create()->first();
 
         $csrfToken = $this->container->get('security.csrf.token_manager')
-            ->getToken('edit_talk');
+            ->getToken('speaker_talk');
 
         $response = $this
             ->asLoggedInSpeaker($user->id)
@@ -46,6 +47,8 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
             ]);
 
         $this->assertResponseIsRedirect($response);
+        $this->assertRedirectResponseUrlContains('dashboard', $response);
+        $this->assertResponseStatusCode(Response::HTTP_CREATED, $response);
     }
 
     /**
@@ -68,7 +71,7 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
                 'token_id' => 'speaker_talk',
             ]);
 
-        $this->assertResponseIsRedirect($response);
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $response);
         $this->assertResponseBodyNotContains('Create Your Talk', $response);
         $this->assertSessionHasFlashMessage('You cannot create talks once the call for papers has ended', $this->session());
     }
@@ -94,7 +97,7 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
                 'token_id'    => 'speaker_talk',
             ]);
 
-        $this->assertResponseIsSuccessful($response);
+        $this->assertResponseStatusCode(Response::HTTP_BAD_REQUEST, $response);
         $this->assertResponseBodyContains('Create Your Talk', $response);
         $this->assertSessionHasFlashMessage('Error', $this->session());
     }
@@ -116,7 +119,7 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
                 'token_id'    => 'speaker_talk',
             ]);
 
-        $this->assertResponseIsRedirect($response);
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $response);
         $this->assertRedirectResponseUrlContains('/dashboard', $response);
     }
 }
