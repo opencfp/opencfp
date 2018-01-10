@@ -46,7 +46,7 @@
     },
     "require-dev": {
         "codedungeon/phpunit-result-printer": "^0.4.2",
-        "friendsofphp/php-cs-fixer": "^2.9.0",
+        "friendsofphp/php-cs-fixer": "^2.10.0",
         "fzaninotto/faker": "^1.5.0",
         "infection/infection": "^0.7.0",
         "localheinz/test-util": "0.6.0",
