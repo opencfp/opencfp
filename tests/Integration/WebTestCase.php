@@ -174,9 +174,7 @@ abstract class WebTestCase extends KernelTestCase
         $user->shouldReceive('id')->andReturn($id);
         $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
-        $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
         $user->shouldReceive('getLogin')->andReturn('my@email.com');
 
         /** @var MockAuthentication $authentication */
@@ -196,9 +194,7 @@ abstract class WebTestCase extends KernelTestCase
         $user->shouldReceive('id')->andReturn($id);
         $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
-        $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
 
         /** @var MockAuthentication $authentication */
         $authentication = $this->container->get(Authentication::class);
@@ -217,9 +213,7 @@ abstract class WebTestCase extends KernelTestCase
         $user->shouldReceive('id')->andReturn($id);
         $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(true);
-        $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(true);
 
         /** @var MockAuthentication $authentication */
         $authentication = $this->container->get(Authentication::class);
