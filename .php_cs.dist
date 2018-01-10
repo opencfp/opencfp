@@ -74,9 +74,7 @@ return PhpCsFixer\Config::create()
             'header' => $header,
         ],
         'increment_style' => true,
-        'is_null' => [
-            'use_yoda_style' => false,
-        ],
+        'is_null' => true,
         'method_separation' => true,
         'native_function_invocation' => true,
         'new_with_braces' => true,
