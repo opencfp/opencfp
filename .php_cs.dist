@@ -74,17 +74,18 @@ return PhpCsFixer\Config::create()
             'header' => $header,
         ],
         'increment_style' => true,
-        'is_null' => [
-            'use_yoda_style' => false,
-        ],
+        'is_null' => true,
         'method_separation' => true,
+        'multiline_whitespace_before_semicolons' => [
+            'strategy' => 'no_multi_line',
+        ],
         'native_function_invocation' => true,
         'new_with_braces' => true,
         'no_alias_functions' => true,
         'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_phpdoc' => true,
-        'no_extra_consecutive_blank_lines' => [
+        'no_extra_blank_lines' => [
             'tokens' => [
                 'break',
                 'case',
@@ -101,7 +102,6 @@ return PhpCsFixer\Config::create()
             ],
         ],
         'no_multiline_whitespace_around_double_arrow' => true,
-        'no_multiline_whitespace_before_semicolons' => true,
         'no_singleline_whitespace_before_semicolons' => true,
         'no_superfluous_elseif' => true,
         'no_trailing_comma_in_singleline_array' => true,
