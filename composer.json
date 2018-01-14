@@ -1,5 +1,6 @@
 {
     "name": "opencfp/opencfp",
+    "description": "OpenCFP is a PHP-based conference talk submission system.",
     "license": "MIT",
     "config": {
         "preferred-install": "dist",
