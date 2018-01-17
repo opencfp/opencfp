@@ -86,7 +86,7 @@ final class UserCreateCommandTest extends Framework\TestCase
 
         $option = $inputDefinition->getOption('email');
 
-        $this->assertSame('e', $option->getShortcut());
+        $this->assertSame('m', $option->getShortcut());
         $this->assertSame('Email of the user to create', $option->getDescription());
         $this->assertTrue($option->isValueRequired());
         $this->assertNull($option->getDefault());
