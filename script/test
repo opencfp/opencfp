@@ -11,7 +11,7 @@ cd "$(dirname "$0")/.."
 script/bootstrap
 
 echo "==> Creating test db..."
-CFP_ENV=testing vendor/bin/phinx --configuration=phinx.yml migrate
+CFP_ENV=testing vendor/bin/phinx --configuration=phinx.php migrate
 
 if [ ! -f "phpunit.xml" ]; then
     cp phpunit.xml.dist phpunit.xml
