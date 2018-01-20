@@ -34,6 +34,8 @@ return [
             'name'    => $container->getParameter('database.database'),
             'user'    => $container->getParameter('database.user'),
             'pass'    => $container->getParameter('database.password'),
+            'charset' => 'utf8-mb4',
+            'collation' => 'utf8-mb4_unicode_ci',
         ],
     ],
 ];
