@@ -11,13 +11,13 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Integration\Http\Controller;
+namespace OpenCFP\Test\Integration\Http\Action\Profile;
 
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class ProfileControllerTest extends WebTestCase implements TransactionalTestCase
+final class ProcessActionTest extends WebTestCase implements TransactionalTestCase
 {
     /**
      * @test
@@ -81,21 +81,5 @@ final class ProfileControllerTest extends WebTestCase implements TransactionalTe
 
         $this->assertResponseBodyNotContains('My Profile', $response);
         $this->assertResponseIsRedirect($response);
-    }
-
-    /**
-     * @test
-     */
-    public function displayChangePasswordWhenAllowed()
-    {
-        /** @var User $speaker */
-        $speaker = factory(User::class, 1)->create()->first();
-
-        $response = $this
-            ->asLoggedInSpeaker($speaker->id)
-            ->get('/profile/change_password');
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains('Change Your Password', $response);
     }
 }
