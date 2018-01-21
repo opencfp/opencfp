@@ -22,40 +22,6 @@ final class ProfileControllerTest extends WebTestCase implements TransactionalTe
     /**
      * @test
      */
-    public function notAbleToSeeEditPageOfOtherPersonsProfile()
-    {
-        /** @var User $speaker */
-        $speaker = factory(User::class, 1)->create()->first();
-
-        /** @var User $user */
-        $otherSpeaker = factory(User::class, 1)->create()->first();
-
-        $response = $this
-            ->asLoggedInSpeaker($speaker->id)
-            ->get('/profile/edit/' . $otherSpeaker->id);
-
-        $this->assertResponseBodyNotContains('My Profile', $response);
-        $this->assertResponseIsRedirect($response);
-    }
-
-    /**
-     * @test
-     */
-    public function seeEditPageWhenAllowed()
-    {
-        /** @var User $speaker */
-        $speaker = factory(User::class, 1)->create()->first();
-
-        $response = $this
-            ->asLoggedInSpeaker($speaker->id)
-            ->get('/profile/edit/' . $speaker->id);
-
-        $this->assertResponseIsSuccessful($response);
-    }
-
-    /**
-     * @test
-     */
     public function notAbleToEditOtherPersonsProfile()
     {
         /** @var User $speaker */
