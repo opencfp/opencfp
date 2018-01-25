@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Infrastructure\Templating;
 
 use OpenCFP\PathInterface;
+use OpenCFP\WebPath;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Extension;
@@ -36,7 +37,7 @@ class TwigExtension extends Twig_Extension
      */
     private $path;
 
-    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator, PathInterface $path)
+    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator, WebPath $path)
     {
         $this->requestStack = $requestStack;
         $this->urlGenerator = $urlGenerator;
@@ -47,10 +48,10 @@ class TwigExtension extends Twig_Extension
     {
         return [
             new Twig_SimpleFunction('uploads', function ($path) {
-                return $this->path->downloadFromPath() . $path;
+                return $this->path->uploadPath() . $path;
             }),
             new Twig_SimpleFunction('assets', function ($path) {
-                return '/assets/' . $path;
+                return  $this->path->assetsPath() . $path;
             }),
 
             new Twig_SimpleFunction('active', function ($route) {

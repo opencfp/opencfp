@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -24,10 +24,13 @@ final class ViewActionTest extends WebTestCase implements TransactionalTestCase
      */
     public function viewActionWillRedirectWhenTalkNotFound()
     {
-        $id = $this->faker()->numberBetween(1);
+        /** @var Model\User $reviewer */
+        $reviewer = factory(Model\User::class)->create()->first();
+
+        $id = $this->faker()->numberBetween(100);
 
         $response = $this
-            ->asReviewer()
+            ->asReviewer($reviewer->id)
             ->get('/reviewer/talks/' . $id);
 
         $this->assertResponseBodyNotContains('title="I want to see this talk"', $response);
@@ -39,11 +42,14 @@ final class ViewActionTest extends WebTestCase implements TransactionalTestCase
      */
     public function viewActionWillShowTalk()
     {
+        /** @var Model\User $reviewer */
+        $reviewer = factory(Model\User::class)->create()->first();
+
         /** @var Model\Talk $talk */
         $talk = factory(Model\Talk::class)->create()->first();
 
         $response = $this
-            ->asReviewer()
+            ->asReviewer($reviewer->id)
             ->get('/reviewer/talks/' . $talk->id);
 
         $this->assertResponseIsSuccessful($response);

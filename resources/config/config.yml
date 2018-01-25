@@ -26,8 +26,6 @@ twig:
   default_path: '%kernel.project_dir%/resources/views'
   debug: '%kernel.debug%'
   globals:
-    app:
-      config: '%config.all%'
     site:       '%config.application%'
     talkHelper: '@OpenCFP\Http\View\TalkHelper'
 

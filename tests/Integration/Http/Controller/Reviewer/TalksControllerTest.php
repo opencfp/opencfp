@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -14,21 +14,12 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Controller\Reviewer;
 
 use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Domain\Model\User;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalksControllerTest extends WebTestCase
+final class TalksControllerTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    private static $talks;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        self::$talks = factory(Talk::class, 3)->create();
-    }
-
     /**
      * @test
      * @dataProvider providerValidRating
@@ -37,10 +28,14 @@ final class TalksControllerTest extends WebTestCase
      */
     public function rateActionWorksCorrectly($rating)
     {
-        $talk = self::$talks->first();
+        /** @var User $reviewer */
+        $reviewer = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
 
         $response = $this
-            ->asReviewer()
+            ->asReviewer($reviewer->id)
             ->post('/reviewer/talks/' . $talk->id . '/rate', [
                 'rating' => $rating,
             ]);
@@ -70,10 +65,14 @@ final class TalksControllerTest extends WebTestCase
      */
     public function rateActionReturnsFalseOnWrongRate($rating)
     {
-        $talk = self::$talks->first();
+        /** @var User $reviewer */
+        $reviewer = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
 
         $response = $this
-            ->asReviewer()
+            ->asReviewer($reviewer->id)
             ->post('/reviewer/talks/' . $talk->id . '/rate', [
                 'rating' => $rating,
             ]);

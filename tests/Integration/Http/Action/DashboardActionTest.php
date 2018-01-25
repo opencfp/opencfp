@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -20,13 +20,11 @@ use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\IdentityProvider;
 use OpenCFP\Test\Helper\MockAuthentication;
 use OpenCFP\Test\Helper\MockIdentityProvider;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class DashboardActionTest extends WebTestCase
+final class DashboardActionTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
     /**
      * Test that the index page returns a list of talks associated
      * with a specific user and information about that user as well

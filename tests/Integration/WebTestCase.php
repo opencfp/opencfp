@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -27,7 +27,6 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
 use OpenCFP\Kernel;
 use OpenCFP\Test\Helper\MockAuthentication;
 use OpenCFP\Test\Helper\MockIdentityProvider;
-use OpenCFP\Test\Helper\RefreshDatabase;
 use OpenCFP\Test\Helper\ResponseHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -61,16 +60,6 @@ abstract class WebTestCase extends KernelTestCase
      */
     protected $server = [];
 
-    public static function setUpBeforeClass()
-    {
-        self::runBeforeAndAfterClassTraits();
-    }
-
-    public static function tearDownAfterClass()
-    {
-        self::runBeforeAndAfterClassTraits();
-    }
-
     protected function setUp()
     {
         $this->refreshContainer();
@@ -94,7 +83,7 @@ abstract class WebTestCase extends KernelTestCase
         return Kernel::class;
     }
 
-    private function refreshContainer()
+    protected function refreshContainer()
     {
         self::bootKernel(['environment' => Environment::TYPE_TESTING, 'debug' => true]);
         $this->container = self::$kernel->getContainer();
@@ -106,18 +95,6 @@ abstract class WebTestCase extends KernelTestCase
         $capsule = $this->container->get(Capsule\Manager::class);
 
         return $capsule->getConnection();
-    }
-
-    /**
-     * @deprecated
-     */
-    private static function runBeforeAndAfterClassTraits()
-    {
-        $uses = \array_flip(class_uses_recursive(static::class));
-
-        if (isset($uses[RefreshDatabase::class])) {
-            static::setUpDatabase();
-        }
     }
 
     final protected function createClient(): Client
@@ -191,15 +168,13 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    final protected function asLoggedInSpeaker(int $id = 1): self
+    final protected function asLoggedInSpeaker(int $id): self
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);
         $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
-        $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
         $user->shouldReceive('getLogin')->andReturn('my@email.com');
 
         /** @var MockAuthentication $authentication */
@@ -213,15 +188,13 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    final protected function asAdmin(int $id = 1): self
+    final protected function asAdmin(int $id): self
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);
         $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(true);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(true);
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
-        $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(false);
 
         /** @var MockAuthentication $authentication */
         $authentication = $this->container->get(Authentication::class);
@@ -234,15 +207,13 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
-    final protected function asReviewer(int $id = 1): self
+    final protected function asReviewer(int $id): self
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('id')->andReturn($id);
         $user->shouldReceive('getId')->andReturn($id);
         $user->shouldReceive('hasAccess')->with('admin')->andReturn(false);
-        $user->shouldReceive('hasPermission')->with('admin')->andReturn(false);
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(true);
-        $user->shouldReceive('hasPermission')->with('reviewer')->andReturn(true);
 
         /** @var MockAuthentication $authentication */
         $authentication = $this->container->get(Authentication::class);

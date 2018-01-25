@@ -3,7 +3,7 @@
     <head>
         <title>{% block title %}{{ site.title }}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="/assets/css/app.css" rel="stylesheet" media="screen">
+        <link href="{{ assets('css/app.css') }}" rel="stylesheet" media="screen">
     </head>
     <body class="border-t-4 border-brand">
         <nav class="{% if not active('homepage') %}border-b border-white{% endif %}">
@@ -49,7 +49,7 @@
                     crossorigin="anonymous"></script>
         {% endblock %}
 
-        {% if app.config.application.show_contrib_banner %}
+        {% if site.show_contrib_banner %}
         {% include "_forkme.twig" %}
         {% endif %}
     </body>

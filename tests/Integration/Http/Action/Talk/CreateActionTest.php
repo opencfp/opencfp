@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
 use OpenCFP\Domain\CallForPapers;
+use OpenCFP\Domain\Model;
 use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
@@ -38,13 +39,16 @@ final class CreateActionTest extends WebTestCase implements TransactionalTestCas
 
         $this->container->get('twig')->addGlobal('cfp_open', $callForPapers->isOpen());
 
+        /** @var Model\User $speaker */
+        $speaker = factory(Model\User::class)->create()->first();
+
         /*
          * This should not have a flash message. The fact that this
          * is true means code is working as intended. Previously this fails
          * because the CFP incorrectly ended at 12:00am the day of, not 11:59pm.
          */
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->get('/talk/create');
 
         $this->assertResponseBodyContains('Create Your Talk', $response);
@@ -55,8 +59,11 @@ final class CreateActionTest extends WebTestCase implements TransactionalTestCas
      */
     public function cantCreateTalkAfterCFPIsClosed()
     {
+        /** @var Model\User $speaker */
+        $speaker = factory(Model\User::class)->create()->first();
+
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->callForPapersIsClosed()
             ->get('/talk/create');
 

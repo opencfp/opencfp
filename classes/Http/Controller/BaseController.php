@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,14 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Controller;
 
-use Illuminate\Container\Container;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Translation\FileLoader;
-use Illuminate\Translation\Translator;
-use Illuminate\Validation\Factory;
-use OpenCFP\Domain\ValidationException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -100,31 +93,5 @@ abstract class BaseController
     protected function redirectTo($route, $status = Response::HTTP_FOUND)
     {
         return new RedirectResponse($this->url($route), $status);
-    }
-
-    /**
-     * @return RedirectResponse
-     */
-    protected function redirectBack(Request $request)
-    {
-        return new RedirectResponse($request->headers->get('referer'));
-    }
-
-    protected function validate(Request $request, $rules = [], $messages = [], $customAttributes = [])
-    {
-        $data = $request->query->all() + $request->request->all() + $request->files->all();
-
-        $validation = new Factory(
-            new Translator(new FileLoader(new Filesystem(), __DIR__ . '/../../../resources/lang'), 'en'),
-            new Container()
-        );
-
-        $validator = $validation->make($data, $rules, $messages, $customAttributes);
-
-        if ($validator->fails()) {
-            throw ValidationException::withErrors(array_flatten($validator->errors()->toArray()));
-        }
-
-        unset($validation, $validator);
     }
 }

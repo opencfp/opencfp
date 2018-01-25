@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Http\Action\Signup;
 
+use OpenCFP\Domain\Model;
 use OpenCFP\Test\Integration\WebTestCase;
 
 final class IndexActionTest extends WebTestCase
@@ -48,8 +49,11 @@ final class IndexActionTest extends WebTestCase
      */
     public function signUpRedirectsWhenLoggedIn()
     {
+        /** @var Model\User $admin */
+        $admin = factory(Model\User::class)->create()->first();
+
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->get('/signup');
 
         $this->assertResponseIsRedirect($response);

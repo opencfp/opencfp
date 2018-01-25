@@ -1,10 +1,14 @@
-.PHONY: asset composer coverage cs database infection integration it test test-env unit
+.PHONY: asset cache composer coverage cs database infection integration it test test-env unit
 
 it: cs test
 
 asset:
 	yarn install
 	yarn run production
+
+cache:
+	bin/console cache:clear --env=development
+	bin/console cache:clear --env=testing
 
 composer:
 	composer install
@@ -22,9 +26,9 @@ database: test-env composer
 	mysqldump -uroot cfp_test > tests/dump.sql
 
 infection: composer database
-	vendor/bin/infection
+	vendor/bin/infection --test-framework-options="--printer PHPUnit\\\TextUI\\\ResultPrinter"
 
-integration: test-env composer database
+integration: test-env composer database cache
 	vendor/bin/phpunit --testsuite integration
 
 test: integration unit

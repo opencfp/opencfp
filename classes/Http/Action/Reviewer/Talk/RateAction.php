@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Action\Reviewer\Talk;
 
-use Illuminate\Container\Container;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Translation;
-use Illuminate\Validation;
 use OpenCFP\Domain\Talk;
 use OpenCFP\Domain\ValidationException;
+use OpenCFP\Infrastructure\Validation\RequestValidator;
 use Symfony\Component\HttpFoundation;
 
 final class RateAction
@@ -28,15 +25,21 @@ final class RateAction
      */
     private $talkHandler;
 
-    public function __construct(Talk\TalkHandler $talkHandler)
+    /**
+     * @var RequestValidator
+     */
+    private $requestValidator;
+
+    public function __construct(Talk\TalkHandler $talkHandler, RequestValidator $requestValidator)
     {
-        $this->talkHandler = $talkHandler;
+        $this->talkHandler      = $talkHandler;
+        $this->requestValidator = $requestValidator;
     }
 
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         try {
-            $this->validate($request, [
+            $this->requestValidator->validate($request, [
                 'rating' => 'required|integer',
             ]);
         } catch (ValidationException $exception) {
@@ -48,42 +51,5 @@ final class RateAction
             ->rate((int) $request->get('rating'));
 
         return new HttpFoundation\Response($content);
-    }
-
-    /**
-     * @param HttpFoundation\Request $request
-     * @param array                  $rules
-     * @param array                  $messages
-     * @param array                  $customAttributes
-     *
-     * @throws ValidationException
-     */
-    private function validate(HttpFoundation\Request $request, $rules = [], $messages = [], $customAttributes = [])
-    {
-        $data = $request->query->all() + $request->request->all() + $request->files->all();
-
-        $validation = new Validation\Factory(
-            new Translation\Translator(
-                new Translation\FileLoader(
-                    new Filesystem(),
-                    __DIR__ . '/../../../resources/lang'
-                ),
-                'en'
-            ),
-            new Container()
-        );
-
-        $validator = $validation->make(
-            $data,
-            $rules,
-            $messages,
-            $customAttributes
-        );
-
-        if ($validator->fails()) {
-            throw ValidationException::withErrors(array_flatten($validator->errors()->toArray()));
-        }
-
-        unset($validation, $validator);
     }
 }

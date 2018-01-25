@@ -1,5 +1,6 @@
 {
     "name": "opencfp/opencfp",
+    "description": "OpenCFP is a PHP-based conference talk submission system.",
     "license": "MIT",
     "config": {
         "preferred-install": "dist",
@@ -46,10 +47,10 @@
     },
     "require-dev": {
         "codedungeon/phpunit-result-printer": "^0.4.2",
-        "friendsofphp/php-cs-fixer": "^2.9.0",
+        "friendsofphp/php-cs-fixer": "^2.10.0",
         "fzaninotto/faker": "^1.5.0",
         "infection/infection": "^0.7.0",
-        "localheinz/test-util": "~0.5.0",
+        "localheinz/test-util": "0.6.0",
         "mikey179/vfsStream": "^1.6.5",
         "mockery/mockery": "^1.0.0",
         "phpunit/phpunit": "^6.5.1",

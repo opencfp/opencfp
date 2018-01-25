@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -86,7 +86,7 @@ final class UserCreateCommandTest extends Framework\TestCase
 
         $option = $inputDefinition->getOption('email');
 
-        $this->assertSame('e', $option->getShortcut());
+        $this->assertSame('m', $option->getShortcut());
         $this->assertSame('Email of the user to create', $option->getDescription());
         $this->assertTrue($option->isValueRequired());
         $this->assertNull($option->getDefault());

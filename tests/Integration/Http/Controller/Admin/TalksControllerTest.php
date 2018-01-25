@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -14,21 +14,12 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Http\Controller\Admin;
 
 use OpenCFP\Domain\Model\Talk;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Domain\Model\User;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class TalksControllerTest extends WebTestCase
+final class TalksControllerTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    private static $talks;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        self::$talks = factory(Talk::class, 3)->create();
-    }
-
     /**
      * A test to make sure that comments can be correctly tracked
      *
@@ -36,10 +27,14 @@ final class TalksControllerTest extends WebTestCase
      */
     public function talkIsCorrectlyCommentedOn()
     {
-        $talk = self::$talks->first();
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->post('/admin/talks/' . $talk->id . '/comment', [
                 'comment' => 'Great Talk i rate 10/10',
             ]);
@@ -53,10 +48,14 @@ final class TalksControllerTest extends WebTestCase
      */
     public function selectActionWorksCorrectly()
     {
-        $talk = self::$talks->first();
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->post('/admin/talks/' . $talk->id . '/select');
 
         $this->assertResponseIsSuccessful($response);
@@ -68,10 +67,14 @@ final class TalksControllerTest extends WebTestCase
      */
     public function selectActionDeletesCorrectly()
     {
-        $talk = self::$talks->first();
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->post('/admin/talks/' . $talk->id . '/select', [
                 'delete' => 1,
             ]);
@@ -85,9 +88,15 @@ final class TalksControllerTest extends WebTestCase
      */
     public function selectActionReturnsFalseWhenTalkNotFound()
     {
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
         $response = $this
-            ->asAdmin()
-            ->post('/admin/talks/255/select');
+            ->asAdmin($admin->id)
+            ->post(\sprintf(
+                '/admin/talks/%s/select',
+                $this->faker()->numberBetween(1)
+            ));
 
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyNotContains('1', $response);
@@ -98,10 +107,14 @@ final class TalksControllerTest extends WebTestCase
      */
     public function favoriteActionWorksCorrectly()
     {
-        $talk = self::$talks->first();
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->post('/admin/talks/' . $talk->id . '/favorite');
 
         $this->assertResponseIsSuccessful($response);
@@ -113,10 +126,14 @@ final class TalksControllerTest extends WebTestCase
      */
     public function favoriteActionDeletesCorrectly()
     {
-        $talk = self::$talks->first();
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
 
         $response = $this
-            ->asAdmin()
+            ->asAdmin($admin->id)
             ->post('/admin/talks/' . $talk->id . '/favorite', [
                 'delete' => 1,
             ]);
@@ -130,78 +147,22 @@ final class TalksControllerTest extends WebTestCase
      */
     public function favoriteActionDoesNotErrorWhenTryingToDeleteFavoriteThatDoesNoExist()
     {
+        /** @var User $admin */
+        $admin = factory(User::class, 1)->create()->first();
+
         $response = $this
-            ->asAdmin()
-            ->post('/admin/talks/255/favorite', [
+            ->asAdmin($admin->id)
+            ->post(
+                \sprintf(
+                    '/admin/talks/%s/favorite',
+                    $this->faker()->numberBetween(1)
+                ),
+                [
                 'delete' => 1,
-            ]);
+                ]
+            );
 
         $this->assertResponseIsSuccessful($response);
         $this->assertResponseBodyNotContains('1', $response);
-        ;
-    }
-
-    /**
-     * @test
-     * @dataProvider providerValidRating
-     *
-     * @param mixed $rating
-     */
-    public function rateActionWorksCorrectly($rating)
-    {
-        $talk = self::$talks->first();
-
-        $response = $this
-            ->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/rate', [
-                'rating' => $rating,
-            ]);
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodySame('1', $response);
-    }
-
-    public function providerValidRating(): array
-    {
-        return [
-            'int' => [
-                1,
-            ],
-            'integerish' => [
-                '0',
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider providerInvalidRating
-     *
-     * @param mixed $rating
-     */
-    public function rateActionReturnsFalseOnWrongRate($rating)
-    {
-        $talk = self::$talks->first();
-
-        $response = $this
-            ->asAdmin()
-            ->post('/admin/talks/' . $talk->id . '/rate', [
-                'rating' => $rating,
-            ]);
-
-        $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyEmpty($response);
-    }
-
-    public function providerInvalidRating(): array
-    {
-        return [
-            'int-too-large' => [
-                12,
-            ],
-            'string' => [
-                'blabla',
-            ],
-        ];
     }
 }

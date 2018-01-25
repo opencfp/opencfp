@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -15,45 +15,31 @@ namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class DeleteActionTest extends WebTestCase
+final class DeleteActionTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    /**
-     * @var User
-     */
-    private static $user;
-
-    /**
-     * @var Talk
-     */
-    private static $talk;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        $talk       = factory(Talk::class, 1)->create()->first();
-        self::$user = $talk->speaker->first();
-        self::$talk = $talk;
-    }
-
     /**
      * @test
      */
     public function notAllowedToDeleteAfterCFPIsOver()
     {
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        /** @var User $speaker */
+        $speaker = $talk->speaker()->first();
+
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('delete_talk')
             ->getValue();
 
         $response = $this
-            ->asLoggedInSpeaker(self::$user->id)
+            ->asLoggedInSpeaker($speaker->id)
             ->callForPapersIsClosed()
             ->post('/talk/delete', [
-                'tid'      => self::$talk->id,
+                'tid'      => $talk->id,
                 'token'    => $csrfToken,
                 'token_id' => 'delete_talk',
             ]);
@@ -68,14 +54,20 @@ final class DeleteActionTest extends WebTestCase
      */
     public function notAllowedToDeleteSomeoneElseTalk()
     {
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        /** @var User $otherSpeaker*/
+        $otherSpeaker = factory(User::class, 1)->create()->first();
+
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('delete_talk')
             ->getValue();
 
         $response = $this
-            ->asLoggedInSpeaker(self::$user->id + 1)
+            ->asLoggedInSpeaker($otherSpeaker->id)
             ->post('/talk/delete', [
-                'tid'      => self::$talk->id,
+                'tid'      => $talk->id,
                 'token'    => $csrfToken,
                 'token_id' => 'delete_talk',
             ]);

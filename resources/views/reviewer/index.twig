@@ -71,6 +71,6 @@
 {% endblock %}
 {% block scripts %}
     {{ parent() }}
-    <script src="/assets/js/admin/querystring.js"></script>
-    <script src="/assets/js/reviewer/talk.js"></script>
+    <script src="{{ assets('js/admin/querystring.js') }}"></script>
+    <script src="{{ assets('js/reviewer/talk.js') }}"></script>
 {% endblock %}

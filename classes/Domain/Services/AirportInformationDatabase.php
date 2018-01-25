@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Domain\Services;
 
+use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\Airport;
 
 interface AirportInformationDatabase
@@ -21,6 +22,8 @@ interface AirportInformationDatabase
      * @param string $code the IATA Airport Code to get information for
      *
      * @see https://en.wikipedia.org/wiki/International_Air_Transport_Association_airport_code
+     *
+     * @throws EntityNotFoundException
      *
      * @return Airport
      */

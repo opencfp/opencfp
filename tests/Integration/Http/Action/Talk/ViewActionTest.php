@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -15,13 +15,11 @@ namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
 use OpenCFP\Domain\Model;
 use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class ViewActionTest extends WebTestCase
+final class ViewActionTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

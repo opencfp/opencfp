@@ -2,7 +2,7 @@
 {% block content %}
     <div class="opencfp-signup">
         <a class="font-serif flex items-center justify-center mb-4" href="{{ url('homepage') }}">
-            <img class="w-10 mr-2" src="/assets/img/logo.svg" alt="OpenCFP">
+            <img class="w-10 mr-2" src="{{ assets('img/logo.svg') }}" alt="OpenCFP">
             <h1 class="font-normal text-white m-0">Open<span class="text-brand font-bold">CFP</span></h1>
         </a>
 
@@ -15,7 +15,7 @@
             <input type="password" name="password" placeholder="•••••••">
             <div class="text-sm my-4 flex items-center">
                 <input id="coc" class="mr-2" name="coc" type="checkbox">
-                <label for="coc" class="text-white">I agree to abide by the <a href="{{ app.config.application.coc_link }}" target="_blank" class="text-brand text-bold text-underline" rel="noopener noreferrer">Code of Conduct</a></label>
+                <label for="coc" class="text-white">I agree to abide by the <a href="{{ site.coc_link }}" target="_blank" class="text-brand text-bold text-underline" rel="noopener noreferrer">Code of Conduct</a></label>
             </div>
             <button type="submit" class="btn btn-brand w-full">Signup</button>
         </form>

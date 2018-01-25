@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP;
 
-use OpenCFP\Infrastructure\DependencyInjection\TestingPass;
+use OpenCFP\Test\Helper\DependencyInjection\TestingPass;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\DebugBundle\DebugBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -46,7 +46,6 @@ final class Kernel extends SymfonyKernel
             new TwigBundle(),
             new SwiftmailerBundle(),
             new WouterJEloquentBundle(),
-            new WebServerBundle(),
         ];
 
         if ($this->getEnvironment() !== Environment::TYPE_PRODUCTION) {
@@ -54,6 +53,7 @@ final class Kernel extends SymfonyKernel
         }
 
         if ($this->getEnvironment() === Environment::TYPE_DEVELOPMENT) {
+            $bundles[] = new WebServerBundle();
             $bundles[] = new WebProfilerBundle();
         }
 
@@ -113,7 +113,6 @@ final class Kernel extends SymfonyKernel
 
     private function bindConfiguration(ContainerBuilder $container, array $config)
     {
-        $container->setParameter('config.all', $config);
         $container->setParameter('config.application', $config['application']);
 
         foreach ($config as $groupName => $groupConfig) {

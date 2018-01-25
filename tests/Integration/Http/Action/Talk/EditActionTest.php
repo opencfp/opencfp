@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -15,43 +15,28 @@ namespace OpenCFP\Test\Integration\Http\Action\Talk;
 
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\User;
-use OpenCFP\Test\Helper\RefreshDatabase;
+use OpenCFP\Test\Integration\TransactionalTestCase;
 use OpenCFP\Test\Integration\WebTestCase;
 
-final class EditActionTest extends WebTestCase
+final class EditActionTest extends WebTestCase implements TransactionalTestCase
 {
-    use RefreshDatabase;
-
-    /**
-     * @var User
-     */
-    private static $user;
-
-    /**
-     * @var Talk
-     */
-    private static $talk;
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        $talk       = factory(Talk::class, 1)->create()->first();
-        self::$user = $talk->speaker->first();
-        self::$talk = $talk;
-    }
-
     /**
      * @test
      */
     public function canNotEditTalkAfterCfpIsClosed()
     {
-        $csrfToken = $this->container->get('security.csrf.token_manager')
-            ->getToken('edit_talk');
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        /** @var User $speaker */
+        $speaker = $talk->speaker()->first();
+
+        $csrfToken = $this->container->get('security.csrf.token_manager')->getToken('edit_talk');
 
         $response = $this
-            ->asLoggedInSpeaker(self::$user->id)
+            ->asLoggedInSpeaker($speaker->id)
             ->callForPapersIsClosed()
-            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . $csrfToken);
+            ->get('/talk/edit/' . $talk->id . '?token_id=edit_talk&token=' . $csrfToken);
 
         $this->assertResponseIsRedirect($response);
         $this->assertResponseBodyNotContains('Edit Your Talk', $response);
@@ -64,8 +49,11 @@ final class EditActionTest extends WebTestCase
      */
     public function getRedirectedToDashboardOnEditWhenNoTalkID()
     {
+        /** @var User $speaker*/
+        $speaker = factory(User::class, 1)->create()->first();
+
         $response = $this
-            ->asLoggedInSpeaker()
+            ->asLoggedInSpeaker($speaker->id)
             ->get('/talk/edit/a');
 
         $this->assertResponseBodyNotContains('Edit Your Talk', $response);
@@ -77,9 +65,15 @@ final class EditActionTest extends WebTestCase
      */
     public function getRedirectedToDashboardWhenTalkIsNotYours()
     {
+        /** @var User $otherSpeaker */
+        $otherSpeaker = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
+
         $response = $this
-            ->asLoggedInSpeaker(self::$user->id + 1)
-            ->get('talk/edit/' . self::$talk->id);
+            ->asLoggedInSpeaker($otherSpeaker->id)
+            ->get('talk/edit/' . $talk->id);
 
         $this->assertResponseBodyNotContains('Edit Your Talk', $response);
         $this->assertResponseIsRedirect($response);
@@ -90,16 +84,22 @@ final class EditActionTest extends WebTestCase
      */
     public function seeEditPageWhenAllowed()
     {
+        /** @var User $speaker */
+        $speaker = factory(User::class, 1)->create()->first();
+
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create(['user_id' => $speaker->id])->first();
+
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('edit_talk')
             ->getValue();
 
         $response = $this
-            ->asLoggedInSpeaker(self::$user->id)
-            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . $csrfToken);
+            ->asLoggedInSpeaker($speaker->id)
+            ->get('/talk/edit/' . $talk->id . '?token_id=edit_talk&token=' . $csrfToken);
 
         $this->assertResponseIsSuccessful($response);
-        $this->assertResponseBodyContains(self::$talk->title, $response);
+        $this->assertResponseBodyContains($talk->title, $response);
         $this->assertResponseBodyContains('Edit Your Talk', $response);
     }
 
@@ -108,9 +108,15 @@ final class EditActionTest extends WebTestCase
      */
     public function cannotEditTalkWithBadToken()
     {
+        /** @var Talk $talk */
+        $talk = factory(Talk::class, 1)->create()->first();
+
+        /** @var User $speaker */
+        $speaker = $talk->speaker->first();
+
         $response = $this
-            ->asLoggedInSpeaker(self::$user->id)
-            ->get('/talk/edit/' . self::$talk->id . '?token_id=edit_talk&token=' . \uniqid());
+            ->asLoggedInSpeaker($speaker->id)
+            ->get('/talk/edit/' . $talk->id . '?token_id=edit_talk&token=' . \uniqid());
 
         $this->assertResponseIsRedirect($response);
         $this->assertRedirectResponseUrlContains('/dashboard', $response);

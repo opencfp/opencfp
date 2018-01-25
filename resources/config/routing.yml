@@ -31,7 +31,7 @@ admin_talk_comment_create:
 admin_talk_rate:
   path: '/admin/talks/{id}/rate'
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\Admin\TalksController::rateAction'
+  controller: OpenCFP\Http\Action\Admin\Talk\RateAction
 
 admin_speakers:
   path: /admin/speakers
@@ -199,7 +199,7 @@ user_create:
 user_edit:
   path: '/profile/edit/{id}'
   methods: [GET]
-  controller: 'OpenCFP\Http\Controller\ProfileController::editAction'
+  controller: OpenCFP\Http\Action\Profile\EditAction
 
 user_update:
   path: /profile/edit
@@ -216,7 +216,7 @@ password_edit:
 password_change:
   path: /profile/change_password
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\ProfileController::passwordProcessAction'
+  controller: OpenCFP\Http\Action\Profile\ChangePasswordProcessAction
 
 forgot_password:
   path: /forgot

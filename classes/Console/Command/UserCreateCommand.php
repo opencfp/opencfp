@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -42,7 +42,7 @@ final class UserCreateCommand extends Command
             ->setDefinition([
                 new InputOption('first_name', 'f', InputOption::VALUE_REQUIRED, 'First Name of the user to create', null),
                 new InputOption('last_name', 'l', InputOption::VALUE_REQUIRED, 'Last Name of the user to create', null),
-                new InputOption('email', 'e', InputOption::VALUE_REQUIRED, 'Email of the user to create', null),
+                new InputOption('email', 'm', InputOption::VALUE_REQUIRED, 'Email of the user to create', null),
                 new InputOption('password', 'p', InputOption::VALUE_REQUIRED, 'Password of the user to create', null),
                 new InputOption('admin', 'a', InputOption::VALUE_NONE, 'Promote to administrator', null),
                 new InputOption('reviewer', 'r', InputOption::VALUE_NONE, 'Promote to reviewer', null),

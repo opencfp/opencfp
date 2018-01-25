@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -41,11 +41,6 @@ class ProfileController extends BaseController
      */
     private $profileImageProcessor;
 
-    /**
-     * @var PathInterface
-     */
-    private $path;
-
     public function __construct(
         Authentication $authentication,
         HTMLPurifier $purifier,
@@ -57,45 +52,8 @@ class ProfileController extends BaseController
         $this->authentication        = $authentication;
         $this->purifier              = $purifier;
         $this->profileImageProcessor = $profileImageProcessor;
-        $this->path                  = $path;
 
         parent::__construct($twig, $urlGenerator);
-    }
-
-    public function editAction(Request $request): Response
-    {
-        $user = $this->authentication->user();
-
-        if ((string) $user->getId() !== $request->get('id')) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => "You cannot edit someone else's profile",
-            ]);
-
-            return $this->redirectTo('dashboard');
-        }
-
-        $speakerData = User::find($user->getId())->toArray();
-
-        return $this->render('user/edit.twig', [
-            'email'          => $user->getLogin(),
-            'first_name'     => $speakerData['first_name'],
-            'last_name'      => $speakerData['last_name'],
-            'company'        => $speakerData['company'],
-            'twitter'        => $speakerData['twitter'],
-            'url'            => $speakerData['url'],
-            'speaker_info'   => $speakerData['info'],
-            'speaker_bio'    => $speakerData['bio'],
-            'speaker_photo'  => $speakerData['photo_path'],
-            'preview_photo'  => $this->path->downloadFromPath() . $speakerData['photo_path'],
-            'airport'        => $speakerData['airport'],
-            'transportation' => $speakerData['transportation'],
-            'hotel'          => $speakerData['hotel'],
-            'id'             => $user->getId(),
-            'formAction'     => $this->url('user_update'),
-            'buttonInfo'     => 'Update Profile',
-        ]);
     }
 
     public function processAction(Request $request): Response
@@ -144,53 +102,6 @@ class ProfileController extends BaseController
             'id'         => $userId,
             'flash'      => $request->getSession()->get('flash'),
         ]));
-    }
-
-    public function passwordProcessAction(Request $request): Response
-    {
-        $user = $this->authentication->user();
-
-        /**
-         * Okay, the logic is kind of weird but we can use the SignupForm
-         * validation code to make sure our password changes are good
-         */
-        $formData = [
-            'password'  => $request->get('password'),
-            'password2' => $request->get('password_confirm'),
-        ];
-        $form = new SignupForm($formData, $this->purifier);
-        $form->sanitize();
-
-        if ($form->validatePasswords() === false) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => \implode('<br>', $form->getErrorMessages()),
-            ]);
-
-            return $this->redirectTo('password_edit');
-        }
-
-        $sanitizedData = $form->getCleanData();
-        $resetCode     = $user->getResetPasswordCode();
-
-        if (!$user->attemptResetPassword($resetCode, $sanitizedData['password'])) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'Unable to update your password in the database. Please try again.',
-            ]);
-
-            return $this->redirectTo('password_edit');
-        }
-
-        $request->getSession()->set('flash', [
-            'type'  => 'success',
-            'short' => 'Success',
-            'ext'   => 'Changed your password.',
-        ]);
-
-        return $this->redirectTo('password_edit');
     }
 
     /**

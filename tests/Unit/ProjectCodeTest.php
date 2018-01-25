@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -45,9 +45,11 @@ final class ProjectCodeTest extends Framework\TestCase
                 Domain\Talk\TalkHandler::class,
                 Http\Action\Admin\DashboardAction::class,
                 Http\Action\Admin\Talk\IndexAction::class,
+                Http\Action\Profile\ChangePasswordProcessAction::class,
                 Http\Action\Reviewer\DashboardAction::class,
                 Http\Action\Reviewer\Speaker\IndexAction::class,
                 Http\Action\Reviewer\Speaker\ViewAction::class,
+                Http\Action\Admin\Talk\RateAction::class,
                 Http\Action\Reviewer\Talk\IndexAction::class,
                 Http\Action\Reviewer\Talk\RateAction::class,
                 Http\Action\Signup\ProcessAction::class,
@@ -58,7 +60,6 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Controller\ProfileController::class,
                 Http\Form\ForgotFormType::class,
                 Http\Form\ResetFormType::class,
-                Infrastructure\DependencyInjection\TestingPass::class,
                 Infrastructure\Event\AuthenticationListener::class,
                 Infrastructure\Event\CsrfValidationListener::class,
                 Infrastructure\Event\ExceptionListener::class,

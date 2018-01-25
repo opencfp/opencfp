@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2017 OpenCFP
+ * Copyright (c) 2013-2018 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -25,11 +25,14 @@ final class DashboardActionTest extends WebTestCase implements TransactionalTest
      */
     public function indexDisplaysListOfTalks()
     {
+        /** @var Model\User[] $reviewer */
+        $reviewer = factory(Model\User::class)->create()->first();
+
         /** @var Eloquent\Collection|Model\Talk[] $talks */
         $talks = factory(Model\Talk::class, 2)->create();
 
         $response = $this
-            ->asReviewer()
+            ->asReviewer($reviewer->id)
             ->get('/reviewer/');
 
         $this->assertResponseIsSuccessful($response);
