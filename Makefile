@@ -1,4 +1,4 @@
-.PHONY: asset cache composer coverage cs database infection integration it test test-env unit
+.PHONY: asset cache composer coverage cs database infection integration it stan test test-env unit
 
 it: cs test
 
@@ -30,6 +30,9 @@ infection: composer database
 
 integration: test-env composer database cache
 	vendor/bin/phpunit --testsuite integration
+
+stan: composer
+	vendor/bin/phpstan analyse --level=2 classes tests
 
 test: integration unit
 
