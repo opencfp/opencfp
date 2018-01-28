@@ -204,7 +204,7 @@ user_edit:
 user_update:
   path: /profile/edit
   methods: [POST]
-  controller: 'OpenCFP\Http\Controller\ProfileController::processAction'
+  controller: OpenCFP\Http\Action\Profile\ProcessAction
 
 password_edit:
   path: /profile/change_password
