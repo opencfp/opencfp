@@ -32,7 +32,7 @@ class Schema extends AbstractMigration
             ->addColumn('permissions', 'text')
             ->addColumn('created_at', 'datetime')
             ->addColumn('updated_at', 'datetime')
-            ->addIndex(['name'], ['name' => 'groups_name_unique', 'unique' => true])
+            ->addIndex(['name'], ['name' => 'groups_name_unique', 'unique' => true, 'limit' => 191])
             ->create();
 
         $this->execute("INSERT INTO groups (name, permissions, created_at, updated_at) VALUES ('Speakers', '{\"users\":1}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
@@ -73,7 +73,7 @@ class Schema extends AbstractMigration
             ->addColumn('last_login', 'datetime', ['null' => true])
             ->addColumn('created_at', 'datetime', ['null' => true])
             ->addColumn('updated_at', 'datetime', ['null' => true])
-            ->addIndex(['email'], ['name' => 'users_email_unique', 'unique' => true])
+            ->addIndex(['email'], ['name' => 'users_email_unique', 'unique' => true, 'limit' => 191])
             ->create();
     }
 
