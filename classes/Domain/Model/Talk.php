@@ -26,6 +26,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method Builder ratedPlusOneBy(int $userId)
  * @method Builder viewedBy(int $userId)
  * @method Builder favoritedBy(int $userId)
+ *
+ * This is needed for Prophecy to mock the method, because it can't find it otherwise
+ * @method count()
  */
 class Talk extends Eloquent
 {
