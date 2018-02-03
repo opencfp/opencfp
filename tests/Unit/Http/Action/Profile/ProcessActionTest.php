@@ -28,7 +28,10 @@ final class ProcessActionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testRedirectsToDashboardIfAuthenticatedUserRequestSomeoneElsesProfile()
+    /**
+     * @test
+     */
+    public function redirectsToDashboardIfAuthenticatedUserRequestSomeoneElsesProfile()
     {
         $faker = $this->faker();
 

@@ -18,7 +18,10 @@ use OpenCFP\Test\Integration\WebTestCase;
 
 final class SentinelServiceProviderTest extends WebTestCase
 {
-    public function testAllRepositoriesAreSet()
+    /**
+     * @test
+     */
+    public function allRepositoriesAreSet()
     {
         /** @var Sentinel $sentinel */
         $sentinel = $this->container->get(Sentinel::class);

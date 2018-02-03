@@ -26,7 +26,10 @@ final class RoleAccessTest extends \PHPUnit\Framework\TestCase
     use Helper;
     use MockeryPHPUnitIntegration;
 
-    public function testReturnsRedirectResponseIfCheckFailed()
+    /**
+     * @test
+     */
+    public function returnsRedirectResponseIfCheckFailed()
     {
         $role = $this->faker()->word;
 
@@ -36,7 +39,10 @@ final class RoleAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, $role));
     }
 
-    public function testReturnsRedirectResponseIfCheckSucceededButUserHasAccess()
+    /**
+     * @test
+     */
+    public function returnsRedirectResponseIfCheckSucceededButUserHasAccess()
     {
         $role = $this->faker()->word;
 
@@ -50,7 +56,10 @@ final class RoleAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(RedirectResponse::class, RoleAccess::userHasAccess($auth, $role));
     }
 
-    public function testReturnsNothingIfCheckSucceededAndUserHasAccess()
+    /**
+     * @test
+     */
+    public function returnsNothingIfCheckSucceededAndUserHasAccess()
     {
         $role = $this->faker()->word;
 

@@ -21,12 +21,18 @@ final class ValidationExceptionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsException()
+    /**
+     * @test
+     */
+    public function isException()
     {
         $this->assertClassExtends(\Exception::class, ValidationException::class);
     }
 
-    public function testWithErrorsReturnsException()
+    /**
+     * @test
+     */
+    public function withErrorsReturnsException()
     {
         $errors = $this->faker()->sentences;
 

@@ -22,7 +22,10 @@ use Symfony\Component\HttpFoundation;
 
 final class DashboardActionTest extends AbstractActionTestCase
 {
-    public function testRedirectsToLoginIfUserIsNotAuthenticated()
+    /**
+     * @test
+     */
+    public function redirectsToLoginIfUserIsNotAuthenticated()
     {
         $url = $this->faker()->slug();
 
@@ -54,7 +57,10 @@ final class DashboardActionTest extends AbstractActionTestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRendersDashboardIfUserIsAuthenticated()
+    /**
+     * @test
+     */
+    public function rendersDashboardIfUserIsAuthenticated()
     {
         $speakerProfile = $this->createSpeakerProfileMock();
 

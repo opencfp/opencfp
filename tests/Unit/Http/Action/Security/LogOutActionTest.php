@@ -25,7 +25,10 @@ final class LogOutActionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testLogsOutUserAndRedirectsToHomepage()
+    /**
+     * @test
+     */
+    public function logsOutUserAndRedirectsToHomepage()
     {
         $url = $this->faker()->url;
 

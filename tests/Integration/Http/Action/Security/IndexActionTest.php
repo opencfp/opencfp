@@ -17,7 +17,10 @@ use OpenCFP\Test\Integration\WebTestCase;
 
 final class IndexActionTest extends WebTestCase
 {
-    public function testIndexShowsLoginForm()
+    /**
+     * @test
+     */
+    public function indexShowsLoginForm()
     {
         $this->callForPapersIsOpen();
 

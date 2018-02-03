@@ -21,12 +21,18 @@ final class NotAllowedExceptionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsException()
+    /**
+     * @test
+     */
+    public function isException()
     {
         $this->assertClassExtends(\Exception::class, NotAllowedException::class);
     }
 
-    public function testNotAllowedToViewReturnsException()
+    /**
+     * @test
+     */
+    public function notAllowedToViewReturnsException()
     {
         $property = 'foo';
 
