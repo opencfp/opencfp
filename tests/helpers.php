@@ -10,7 +10,6 @@ declare(strict_types=1);
  *
  * @see https://github.com/opencfp/opencfp
  */
-
 use Illuminate\Database\Eloquent\Factory;
 
 if (!\function_exists('factory')) {
