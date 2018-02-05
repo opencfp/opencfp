@@ -10,7 +10,6 @@ declare(strict_types=1);
  *
  * @see https://github.com/opencfp/opencfp
  */
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenCFP\Environment;

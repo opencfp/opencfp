@@ -10,7 +10,6 @@ declare(strict_types=1);
  *
  * @see https://github.com/opencfp/opencfp
  */
-
 $factory->define(\OpenCFP\Domain\Model\User::class, function (\Faker\Generator $faker) {
     return [
         'email'          => $faker->unique()->safeEmail,
