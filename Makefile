@@ -1,4 +1,4 @@
-.PHONY: asset cache composer coverage cs database infection integration it stan test test-env unit
+.PHONY: asset cache coverage cs database infection integration it stan test test-env unit
 
 it: cs test
 
@@ -6,26 +6,23 @@ asset:
 	yarn install
 	yarn run production
 
-cache:
+cache: vendor
 	bin/console cache:clear --env=development
 	bin/console cache:clear --env=testing
 
-composer:
-	composer install
-
-coverage: composer
+coverage: vendor
 	if [ $(type) = "html" ]; then vendor/bin/phpunit --testsuite unit --coverage-html coverage; else vendor/bin/phpunit --testsuite unit --coverage-text; fi;
 
-cs: composer
+cs: vendor
 	vendor/bin/php-cs-fixer fix --verbose --diff
 
-database: test-env composer
+database: test-env vendor
 	mysql -uroot -e "DROP DATABASE IF EXISTS cfp_test"
 	mysql -uroot -e "CREATE DATABASE cfp_test"
 	CFP_ENV=testing vendor/bin/phinx migrate --environment testing
 	mysqldump -uroot cfp_test > tests/dump.sql
 
-infection: composer database
+infection: vendor database
 	vendor/bin/infection --test-framework-options="--printer PHPUnit\\\TextUI\\\ResultPrinter"
 
 integration: test-env composer database cache
@@ -39,5 +36,8 @@ test: integration unit
 test-env:
 	if [ ! -f "config/testing.yml" ]; then cp config/testing.yml.dist config/testing.yml; fi
 
-unit: composer
+unit: vendor
 	vendor/bin/phpunit --testsuite unit
+
+vendor: composer.json composer.lock
+	composer install
