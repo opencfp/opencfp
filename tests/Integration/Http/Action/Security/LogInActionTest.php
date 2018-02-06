@@ -20,7 +20,10 @@ use Symfony\Component\HttpFoundation;
 
 final class LogInActionTest extends WebTestCase implements TransactionalTestCase
 {
-    public function testRendersLoginFormIfAuthenticationFailed()
+    /**
+     * @test
+     */
+    public function rendersLoginFormIfAuthenticationFailed()
     {
         /** @var Model\User $user */
         $user = factory(Model\User::class)->create()->first();

@@ -28,7 +28,10 @@ final class UpdatePasswordActionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testRendersFormIfFormIsNotSubmitted()
+    /**
+     * @test
+     */
+    public function rendersFormIfFormIsNotSubmitted()
     {
         $content = $this->faker()->text;
 
@@ -78,7 +81,10 @@ final class UpdatePasswordActionTest extends Framework\TestCase
         $this->assertSame($content, $response->getContent());
     }
 
-    public function testRendersFormIfFormIsSubmittedButNotValid()
+    /**
+     * @test
+     */
+    public function rendersFormIfFormIsSubmittedButNotValid()
     {
         $content = $this->faker()->text;
 
@@ -137,8 +143,10 @@ final class UpdatePasswordActionTest extends Framework\TestCase
      * @dataProvider providerEmptyResetCode
      *
      * @param mixed $resetCode
+     *
+     * @test
      */
-    public function testThrowsExceptionIfResetCodeIsEmpty($resetCode)
+    public function throwsExceptionIfResetCodeIsEmpty($resetCode)
     {
         $faker = $this->faker();
 
@@ -202,7 +210,10 @@ final class UpdatePasswordActionTest extends Framework\TestCase
         }, $values);
     }
 
-    public function testRedirectsToLoginIfNewPasswordMatchesOldPassword()
+    /**
+     * @test
+     */
+    public function redirectsToLoginIfNewPasswordMatchesOldPassword()
     {
         $faker = $this->faker();
 
@@ -293,7 +304,10 @@ final class UpdatePasswordActionTest extends Framework\TestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRedirectsToHomepageIfAttemptToResetPasswordFailed()
+    /**
+     * @test
+     */
+    public function redirectsToHomepageIfAttemptToResetPasswordFailed()
     {
         $faker = $this->faker();
 
@@ -391,7 +405,10 @@ final class UpdatePasswordActionTest extends Framework\TestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRedirectsToLoginIfAttemptToResetPasswordSucceeded()
+    /**
+     * @test
+     */
+    public function redirectsToLoginIfAttemptToResetPasswordSucceeded()
     {
         $faker = $this->faker();
 

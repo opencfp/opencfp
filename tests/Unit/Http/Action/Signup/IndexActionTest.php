@@ -21,7 +21,10 @@ use Symfony\Component\HttpFoundation;
 
 final class IndexActionTest extends AbstractActionTestCase
 {
-    public function testRedirectsToDashboardIfSignedIn()
+    /**
+     * @test
+     */
+    public function redirectsToDashboardIfSignedIn()
     {
         $url = $this->faker()->url;
 
@@ -73,7 +76,10 @@ final class IndexActionTest extends AbstractActionTestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRedirectsToHomePageNotSignedInAndCallForPapersIsClosed()
+    /**
+     * @test
+     */
+    public function redirectsToHomePageNotSignedInAndCallForPapersIsClosed()
     {
         $url = $this->faker()->url;
 
@@ -141,7 +147,10 @@ final class IndexActionTest extends AbstractActionTestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRendersSignupWhenNotSignedInAndCallForPapersIsOpen()
+    /**
+     * @test
+     */
+    public function rendersSignupWhenNotSignedInAndCallForPapersIsOpen()
     {
         $content = $this->faker()->text;
 

@@ -32,8 +32,10 @@ final class ResetProcessActionTest extends Framework\TestCase
      * @dataProvider providerEmptyResetCode
      *
      * @param mixed $resetCode
+     *
+     * @test
      */
-    public function testThrowsExceptionIfResetCodeIsEmpty($resetCode)
+    public function throwsExceptionIfResetCodeIsEmpty($resetCode)
     {
         $userId = $this->faker()->numberBetween(1);
 
@@ -79,7 +81,10 @@ final class ResetProcessActionTest extends Framework\TestCase
         }, $values);
     }
 
-    public function testRendersFormIfFormIsNotSubmitted()
+    /**
+     * @test
+     */
+    public function rendersFormIfFormIsNotSubmitted()
     {
         $faker = $this->faker();
 
@@ -166,7 +171,10 @@ final class ResetProcessActionTest extends Framework\TestCase
         $this->assertSame($content, $response->getContent());
     }
 
-    public function testRendersFormIfFormIsSubmittedButNotValid()
+    /**
+     * @test
+     */
+    public function rendersFormIfFormIsSubmittedButNotValid()
     {
         $faker = $this->faker();
 
@@ -258,7 +266,10 @@ final class ResetProcessActionTest extends Framework\TestCase
         $this->assertSame($content, $response->getContent());
     }
 
-    public function testRedirectsToForgotPasswordIfUserWasNotFound()
+    /**
+     * @test
+     */
+    public function redirectsToForgotPasswordIfUserWasNotFound()
     {
         $faker = $this->faker();
 
@@ -342,7 +353,10 @@ final class ResetProcessActionTest extends Framework\TestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRedirectsToForgotPasswordIfResetCodeIsInvalid()
+    /**
+     * @test
+     */
+    public function redirectsToForgotPasswordIfResetCodeIsInvalid()
     {
         $faker = $this->faker();
 
@@ -433,7 +447,10 @@ final class ResetProcessActionTest extends Framework\TestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRedirectsToForgotPasswordIfResetCodeIsValid()
+    /**
+     * @test
+     */
+    public function redirectsToForgotPasswordIfResetCodeIsValid()
     {
         $faker = $this->faker();
 

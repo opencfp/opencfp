@@ -21,7 +21,10 @@ final class TalkHelperTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testGetTalkCategoriesReturnsDefaultCategoriesIfNoneHaveBeenInjected()
+    /**
+     * @test
+     */
+    public function getTalkCategoriesReturnsDefaultCategoriesIfNoneHaveBeenInjected()
     {
         $helper = new TalkHelper(
             null,
@@ -47,7 +50,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($defaultCategories, $helper->getTalkCategories());
     }
 
-    public function testGetTalkCategoriesReturnsInjectedCategories()
+    /**
+     * @test
+     */
+    public function getTalkCategoriesReturnsInjectedCategories()
     {
         $faker = $this->faker();
 
@@ -65,7 +71,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($categories, $helper->getTalkCategories());
     }
 
-    public function testGetCategoryDisplayNameReturnsCategoryIfNotMapped()
+    /**
+     * @test
+     */
+    public function getCategoryDisplayNameReturnsCategoryIfNotMapped()
     {
         $faker = $this->faker();
 
@@ -80,7 +89,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($category, $helper->getCategoryDisplayName($category));
     }
 
-    public function testGetCategoryDisplayNameReturnsCategoryDisplayNameIfMapped()
+    /**
+     * @test
+     */
+    public function getCategoryDisplayNameReturnsCategoryDisplayNameIfMapped()
     {
         $faker = $this->faker();
 
@@ -100,7 +112,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($categoryDisplayName, $helper->getCategoryDisplayName($category));
     }
 
-    public function testGetTalkTypesReturnsDefaultTypesIfNoneHaveBeenInjected()
+    /**
+     * @test
+     */
+    public function getTalkTypesReturnsDefaultTypesIfNoneHaveBeenInjected()
     {
         $helper = new TalkHelper(
             null,
@@ -116,7 +131,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($defaultTypes, $helper->getTalkTypes());
     }
 
-    public function testGetTalkTypesReturnsInjectedTypes()
+    /**
+     * @test
+     */
+    public function getTalkTypesReturnsInjectedTypes()
     {
         $faker = $this->faker();
 
@@ -134,7 +152,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($types, $helper->getTalkTypes());
     }
 
-    public function testGetTypeDisplayNameReturnsTypeIfNotMapped()
+    /**
+     * @test
+     */
+    public function getTypeDisplayNameReturnsTypeIfNotMapped()
     {
         $faker = $this->faker();
 
@@ -149,7 +170,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($type, $helper->getTypeDisplayName($type));
     }
 
-    public function testGetTypeDisplayNameReturnsTypeDisplayNameIfMapped()
+    /**
+     * @test
+     */
+    public function getTypeDisplayNameReturnsTypeDisplayNameIfMapped()
     {
         $faker = $this->faker();
 
@@ -169,7 +193,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($typeDisplayName, $helper->getTypeDisplayName($type));
     }
 
-    public function testGetTalkLevelsReturnsDefaultTypesIfNoneHaveBeenInjected()
+    /**
+     * @test
+     */
+    public function getTalkLevelsReturnsDefaultTypesIfNoneHaveBeenInjected()
     {
         $helper = new TalkHelper(
             null,
@@ -186,7 +213,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($defaultLevels, $helper->getTalkLevels());
     }
 
-    public function testGetTalkLevelsReturnsInjectedLevels()
+    /**
+     * @test
+     */
+    public function getTalkLevelsReturnsInjectedLevels()
     {
         $faker = $this->faker();
 
@@ -204,7 +234,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($levels, $helper->getTalkLevels());
     }
 
-    public function testGetLevelDisplayNameReturnsLevelIfNotMapped()
+    /**
+     * @test
+     */
+    public function getLevelDisplayNameReturnsLevelIfNotMapped()
     {
         $faker = $this->faker();
 
@@ -219,7 +252,10 @@ final class TalkHelperTest extends Framework\TestCase
         $this->assertSame($level, $helper->getLevelDisplayName($level));
     }
 
-    public function testGetLevelDisplayNameReturnsLevelDisplayNameIfMapped()
+    /**
+     * @test
+     */
+    public function getLevelDisplayNameReturnsLevelDisplayNameIfMapped()
     {
         $faker = $this->faker();
 

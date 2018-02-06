@@ -21,7 +21,10 @@ use Symfony\Component\HttpFoundation;
 
 final class DeleteActionTest extends AbstractActionTestCase
 {
-    public function testRespondsWithNoIfCallForPapersIsClosed()
+    /**
+     * @test
+     */
+    public function respondsWithNoIfCallForPapersIsClosed()
     {
         $request = $this->createRequestMock();
 

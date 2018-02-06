@@ -23,17 +23,26 @@ final class HtmlPurifierWarmerTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(HtmlPurifierWarmer::class);
     }
 
-    public function testImplementsCacheWarmerInterface()
+    /**
+     * @test
+     */
+    public function implementsCacheWarmerInterface()
     {
         $this->assertClassImplementsInterface(HttpKernel\CacheWarmer\CacheWarmerInterface::class, HtmlPurifierWarmer::class);
     }
 
-    public function testIsRequired()
+    /**
+     * @test
+     */
+    public function isRequired()
     {
         $filesystem = $this->createFilesystemMock();
 
@@ -42,7 +51,10 @@ final class HtmlPurifierWarmerTest extends Framework\TestCase
         $this->assertFalse($cacheWarmer->isOptional());
     }
 
-    public function testWarmUpCreatesCacheDirectory()
+    /**
+     * @test
+     */
+    public function warmUpCreatesCacheDirectory()
     {
         $cacheDirectory = $this->faker()->slug;
 

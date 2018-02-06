@@ -19,7 +19,10 @@ use OpenCFP\Test\Integration\WebTestCase;
 
 final class ChangePasswordProcessActionTest extends WebTestCase implements TransactionalTestCase
 {
-    public function testRedirectsToPasswordEditIfDataIsMissing()
+    /**
+     * @test
+     */
+    public function redirectsToPasswordEditIfDataIsMissing()
     {
         /** @var Model\User $user */
         $user = factory(Model\User::class)->create()->first();
@@ -33,7 +36,10 @@ final class ChangePasswordProcessActionTest extends WebTestCase implements Trans
         $this->assertSessionHasFlashMessage('Missing passwords', $this->session());
     }
 
-    public function testRedirectsToPasswordEditIfPasswordAndPasswordConfirmationAreEmptyStrings()
+    /**
+     * @test
+     */
+    public function redirectsToPasswordEditIfPasswordAndPasswordConfirmationAreEmptyStrings()
     {
         /** @var Model\User $user */
         $user = factory(Model\User::class)->create()->first();
@@ -50,7 +56,10 @@ final class ChangePasswordProcessActionTest extends WebTestCase implements Trans
         $this->assertSessionHasFlashMessage('Missing passwords', $this->session());
     }
 
-    public function testRedirectsToPasswordEditIfPasswordDoesNotEqualPasswordConfirmation()
+    /**
+     * @test
+     */
+    public function redirectsToPasswordEditIfPasswordDoesNotEqualPasswordConfirmation()
     {
         $faker = $this->faker();
 

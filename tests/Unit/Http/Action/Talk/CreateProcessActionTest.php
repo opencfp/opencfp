@@ -28,7 +28,10 @@ final class CreateProcessActionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testRedirectsToDashboardIfCallForPapersIsClosed()
+    /**
+     * @test
+     */
+    public function redirectsToDashboardIfCallForPapersIsClosed()
     {
         $faker = $this->faker();
 

@@ -18,7 +18,10 @@ use PHPUnit\Framework\TestCase;
 
 final class HomePageActionTest extends TestCase
 {
-    public function testItReturnsTheCorrectContentIfNoSubmissionCountNeedsToBeShown()
+    /**
+     * @test
+     */
+    public function itReturnsTheCorrectContentIfNoSubmissionCountNeedsToBeShown()
     {
         $action = new HomePageAction(false);
 

@@ -20,17 +20,26 @@ final class RoleNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(RoleNotFoundException::class);
     }
 
-    public function testIsRuntimeException()
+    /**
+     * @test
+     */
+    public function isRuntimeException()
     {
         $this->assertClassExtends(\RuntimeException::class, RoleNotFoundException::class);
     }
 
-    public function testFromNameReturnsException()
+    /**
+     * @test
+     */
+    public function fromNameReturnsException()
     {
         $name = $this->faker()->word;
 

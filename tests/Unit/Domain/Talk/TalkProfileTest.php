@@ -193,7 +193,10 @@ final class TalkProfileTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(0, $comments);
     }
 
-    public function testGetRatingReturnsZeroWhenTalkHasNoMeta()
+    /**
+     * @test
+     */
+    public function getRatingReturnsZeroWhenTalkHasNoMeta()
     {
         $userId = $this->faker()->numberBetween(1);
 

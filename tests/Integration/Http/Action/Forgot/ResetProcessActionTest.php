@@ -20,7 +20,10 @@ use Symfony\Component\HttpFoundation;
 
 final class ResetProcessActionTest extends WebTestCase implements TransactionalTestCase
 {
-    public function testRendersResetPasswordFormIfFormIsNotSubmitted()
+    /**
+     * @test
+     */
+    public function rendersResetPasswordFormIfFormIsNotSubmitted()
     {
         $resetCode = $this->faker()->sha256;
 

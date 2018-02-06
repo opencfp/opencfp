@@ -53,7 +53,10 @@ final class SentinelAccountManagementTest extends WebTestCase implements Transac
         $this->assertSame('Test Account', "{$user->getUser()->first_name} {$user->getUser()->last_name}");
     }
 
-    public function testCreatingDuplicateUserThrowsError()
+    /**
+     * @test
+     */
+    public function creatingDuplicateUserThrowsError()
     {
         $this->sut->create('test@example.com', 'secret', [
             'first_name' => 'Test',

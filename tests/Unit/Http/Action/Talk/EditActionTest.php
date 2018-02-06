@@ -22,7 +22,10 @@ use Symfony\Component\HttpFoundation;
 
 final class EditActionTest extends AbstractActionTestCase
 {
-    public function testRedirectsToDashboardIfCallForPapersIsClosed()
+    /**
+     * @test
+     */
+    public function redirectsToDashboardIfCallForPapersIsClosed()
     {
         $faker = $this->faker();
 
@@ -103,7 +106,10 @@ final class EditActionTest extends AbstractActionTestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRedirectsToDashboardIfCallForPapersIsOpenButTalkIdIsEmpty()
+    /**
+     * @test
+     */
+    public function redirectsToDashboardIfCallForPapersIsOpenButTalkIdIsEmpty()
     {
         $talkId = 0;
         $url    = $this->faker()->slug();

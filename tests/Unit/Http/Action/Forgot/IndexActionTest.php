@@ -19,7 +19,10 @@ use Symfony\Component\Form;
 
 final class IndexActionTest extends Framework\TestCase
 {
-    public function testRendersForgotPassword()
+    /**
+     * @test
+     */
+    public function rendersForgotPassword()
     {
         $resetFormView = $this->prophesize(Form\FormView::class);
 

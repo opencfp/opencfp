@@ -25,7 +25,10 @@ use OpenCFP\Infrastructure\Auth\UserInterface;
  */
 final class TalkRatingTest extends \PHPUnit\Framework\TestCase
 {
-    public function testRateThrowsExceptionOnInvalidRating()
+    /**
+     * @test
+     */
+    public function rateThrowsExceptionOnInvalidRating()
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('getId')->andReturn(1);
@@ -42,7 +45,10 @@ final class TalkRatingTest extends \PHPUnit\Framework\TestCase
         $sut->rate(7, 9001);
     }
 
-    public function testRate()
+    /**
+     * @test
+     */
+    public function rate()
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('getId')->andReturn(1);
