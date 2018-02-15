@@ -25,10 +25,10 @@ database: test-env vendor
 infection: vendor database
 	vendor/bin/infection --test-framework-options="--printer PHPUnit\\\TextUI\\\ResultPrinter"
 
-integration: test-env composer database cache
+integration: test-env vendor database cache
 	vendor/bin/phpunit --testsuite integration
 
-stan: composer
+stan: vendor
 	vendor/bin/phpstan analyse --level=2 classes tests
 
 test: integration unit
