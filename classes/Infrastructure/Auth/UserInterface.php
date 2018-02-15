@@ -30,7 +30,7 @@ interface UserInterface
     public function getLogin(): string;
 
     /**
-     * @param $permissions
+     * @param string $permissions
      *
      * @return mixed
      */
