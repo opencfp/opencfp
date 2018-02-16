@@ -42,11 +42,11 @@ class User extends Eloquent
      *
      * @return Collection|Talk[]
      */
-    public function getOtherTalks($talkId = 0): Collection
+    public function getOtherTalks(int $talkId = 0): Collection
     {
         $allTalks   = $this->talks;
         $otherTalks = $allTalks->filter(function ($talk) use ($talkId) {
-            if ((int) $talk['id'] == (int) $talkId) {
+            if ((int) $talk['id'] == $talkId) {
                 return false;
             }
 
