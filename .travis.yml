@@ -23,7 +23,7 @@ jobs:
 
       language: php
 
-      php: 7.0
+      php: 7.1
 
       before_install:
         - phpenv config-rm xdebug.ini
@@ -44,7 +44,7 @@ jobs:
 
       language: php
 
-      php: 7.0
+      php: 7.1
 
       before_install:
         - source .travis/xdebug.sh
@@ -74,14 +74,10 @@ jobs:
 
     - <<: *TEST
 
-      php: 7.1
+      php: 7.2
 
       env:
         - WITH_COVERAGE=true
-
-    - <<: *TEST
-
-      php: 7.2
 
     - stage: Asset
 
