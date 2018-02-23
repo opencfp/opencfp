@@ -1,0 +1,23 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: froscon-mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      MYSQL_DATABASE: cfp
+    networks:
+      - net6
+    ports:
+      - 3309:3306
+networks:
+  net6:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.60.0/24
