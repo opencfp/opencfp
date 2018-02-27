@@ -6,11 +6,11 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "platform": {
-            "php": "7.0.25"
+            "php": "7.1.3"
         }
     },
     "require": {
-        "php": ">=7",
+        "php": "^7.1",
         "aptoma/twig-markdown": "^3.0.0",
         "cartalyst/sentinel": "^2.0.17",
         "ezyang/htmlpurifier": "dev-master",
