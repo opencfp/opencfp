@@ -14,6 +14,8 @@
         "illuminate/support": "~5.5",
         "illuminate/validation": "^5.5",
         "intervention/image": "~2.3",
+        "knpuniversity/oauth2-client-bundle": "^1.18",
+        "league/oauth2-client": "^2.3",
         "michelf/php-markdown": "~1.7",
         "monolog/monolog": "~1.22",
         "pagerfanta/pagerfanta": "1.0.*@dev",

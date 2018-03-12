@@ -243,3 +243,13 @@ password_update:
   methods: [POST]
   controller: OpenCFP\Http\Action\Forgot\UpdatePasswordAction
 
+opencfp_login:
+  path: /opencfp
+  methods: [GET]
+  controller: OpenCFP\Http\Action\Opencfp\LoginAction
+
+opencfg_callback:
+  path: /opencfp_callback
+  methods: [GET]
+  controller: OpenCFP\Http\Action\Opencfp\CallbackAction
+

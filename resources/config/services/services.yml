@@ -18,10 +18,16 @@ services:
       $applicationEmail: '%application.email%'
       $applicationEndDate: '%application.enddate%'
       $applicationTitle: '%application.title%'
+      $authorizeUrl: '%opencfp.authorizeUrl%'
+      $clientId: '%opencfp.clientId%'
+      $clientSecret: '%opencfp.clientSecret%'
       $forgotForm: '@OpenCFP\Http\Form\ForgotForm'
+      $redirectUri: '%opencfp.redirectUri%'
       $resetForm: '@OpenCFP\Http\Form\ResetForm'
+      $resourceUri: '%opencfp.resourceUri%'
       $reviewerUsers: '%reviewer.users%'
       $showSubmissionCount: '%application.show_submission_count%'
+      $tokenUrl: '%opencfp.tokenUrl%'
 
   OpenCFP\Http\Form\ForgotForm:
     class: Symfony\Component\Form\FormInterface

@@ -38,7 +38,11 @@ final class SentinelAuthentication implements Authentication
         $this->accountManagement = $accountManagement;
     }
 
-    public function authenticate($username, $password)
+    /**
+     * @param $username
+     * @param $password
+     */
+    public function authenticate($username, $password) : void
     {
         try {
             $success = false;

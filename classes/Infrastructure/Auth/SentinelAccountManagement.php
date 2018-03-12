@@ -116,4 +116,9 @@ final class SentinelAccountManagement implements AccountManagement
             ->users()
             ->detach($this->findByLogin($email)->getId());
     }
+
+    public function oauthLogin($user)
+    {
+        return Sentinel::login($user);
+    }
 }
