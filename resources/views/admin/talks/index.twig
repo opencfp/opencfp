@@ -33,6 +33,7 @@
                 <div>
                     <label>Category:</label>
                     <select name="category" class="form-control">
+                        <option value="">None</option>
                         {% for categoryKey, displayCategory in talkCategories %}
                             <option value="{{ categoryKey }}" {% if category == categoryKey %}selected {% endif %}>{{ displayCategory }}</option>
                         {% endfor %}
@@ -41,17 +42,18 @@
                 <div>
                     <label>Type:</label>
                     <select name="type" class="form-control">
+                        <option value="">None</option>
                         {% for typeKey, displayType in talkTypes %}
                             <option value="{{ typeKey }}" {% if type == typeKey %}selected {% endif %}>{{ displayType }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="mt-2 ml-8 pagerfanta">
-                    {{ pagination|raw }}
-                </div>
             </div>
 
             <button type="submit" class="btn btn-brand mt-2 ml-4">Go</button>
+        </div>
+        <div class="mt-2 ml-8 pagerfanta">
+            {{ pagination|raw }}
         </div>
     </form>
 
