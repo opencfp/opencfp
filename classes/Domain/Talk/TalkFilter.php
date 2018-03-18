@@ -45,7 +45,7 @@ class TalkFilter
         $this->talk      = $talk;
     }
 
-    public function getTalks(int $adminUserId, $filter = null, $options = []): array
+    public function getTalks(int $adminUserId, $filter = null, $category = null, $type = null, $options = []): array
     {
         // Merge options with default options
         $options = $this->getSortOptions(
@@ -56,43 +56,61 @@ class TalkFilter
             ]
         );
 
-        $talks = $this->getFilteredTalks($adminUserId, $filter)
+        $talks = $this->getFilteredTalks($adminUserId, $filter, $category, $type)
             ->orderBy($options['order_by'], $options['sort'])->get();
 
         return $this->formatter->formatList($talks, $adminUserId)->toArray();
     }
 
-    public function getFilteredTalks(int $adminUserId, $filter = null)
+    public function getFilteredTalks(int $adminUserId, $filter = null, $category = null, $type = null)
     {
-        if ($filter === null) {
-            return $this->talk;
+        $talk = $this->talk;
+
+        if (!empty($filter)) {
+            $new_talk = $talk;
+            switch (\strtolower($filter)) {
+                case 'selected':
+                    $new_talk = $talk->selected();
+                break;
+
+                case 'notviewed':
+                    $new_talk = $talk->notViewedBy($adminUserId);
+                break;
+
+                case 'notrated':
+                    $new_talk = $talk->notRatedBy($adminUserId);
+                break;
+
+                case 'toprated':
+                    $new_talk = $talk->topRated();
+                break;
+
+                case 'plusone':
+                    $new_talk = $talk->ratedPlusOneBy($adminUserId);
+                break;
+
+                case 'viewed':
+                    $new_talk = $talk->viewedBy($adminUserId);
+                break;
+
+                case 'favorited':
+                    $new_talk = $talk->favoritedBy($adminUserId);
+                break;
+            }
+            $talk = $new_talk;
         }
 
-        switch (\strtolower($filter)) {
-            case 'selected':
-                return $this->talk->selected();
-
-            case 'notviewed':
-                return $this->talk->notViewedBy($adminUserId);
-
-            case 'notrated':
-                return $this->talk->notRatedBy($adminUserId);
-
-            case 'toprated':
-                return $this->talk->topRated();
-
-            case 'plusone':
-                return $this->talk->ratedPlusOneBy($adminUserId);
-
-            case 'viewed':
-                return $this->talk->viewedBy($adminUserId);
-
-            case 'favorited':
-                return $this->talk->favoritedBy($adminUserId);
-
-            default:
-                return $this->talk;
+        if (!empty($category)) {
+            $new_talk = $talk->category($category);
+            $talk = $new_talk;
         }
+
+        if (!empty($type)) {
+            $new_talk = $talk->type($type);
+            $talk = $new_talk;
+        }
+
+        return $talk;
     }
 
     /**

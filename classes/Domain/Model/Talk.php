@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @method Builder recent(int $limit=10)
  * @method Builder selected()
+ * @method Builder category()
+ * @method Builder type()
  * @method Builder notViewedBy(int $userId)
  * @method Builder notRatedBy(int $userId)
  * @method Builder topRated()
@@ -66,6 +68,18 @@ class Talk extends Eloquent
     {
         return $query
             ->where('selected', '=', 1);
+    }
+
+    public function scopeCategory(Builder $query, string $category): Builder
+    {
+        return $query
+            ->where('category', '=', $category);
+    }
+
+    public function scopeType(Builder $query, string $type): Builder
+    {
+        return $query
+            ->where('type', '=', $type);
     }
 
     public function scopeViewedBy(Builder $query, int $userId): Builder
