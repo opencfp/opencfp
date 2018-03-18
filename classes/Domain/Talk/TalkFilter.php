@@ -56,61 +56,51 @@ class TalkFilter
             ]
         );
 
-        $talks = $this->getFilteredTalks($adminUserId, $filter)
-		    ->getCategoryTalks($category)
-			->getTypeTalks($type)
+        $talks = $this->getFilteredTalks($adminUserId, $filter, $category, $type)
             ->orderBy($options['order_by'], $options['sort'])->get();
 
         return $this->formatter->formatList($talks, $adminUserId)->toArray();
     }
 
-    public function getCategoryTalks($category = null)
+    public function getFilteredTalks(int $adminUserId, $filter = null, $category = null, $type = null)
     {
-        if ($category === null) {
-            return $this->talk;
-        }
-		return $this->talk->category($category);
-	}
+		$talk = $this->talk;
 
-    public function getTypeTalks($type = null)
-    {
-        if ($type === null) {
-            return $this->talk;
-        }
-		return $this->talk->type($type);
-	}
+        if ($filter !== null) {
+			switch (\strtolower($filter)) {
+				case 'selected':
+					$talk = $this->talk->selected();
 
-    public function getFilteredTalks(int $adminUserId, $filter = null)
-    {
-        if ($filter === null) {
-            return $this->talk;
-        }
+				case 'notviewed':
+					$talk = $this->talk->notViewedBy($adminUserId);
 
-        switch (\strtolower($filter)) {
-            case 'selected':
-                return $this->talk->selected();
+				case 'notrated':
+					$talk = $this->talk->notRatedBy($adminUserId);
 
-            case 'notviewed':
-                return $this->talk->notViewedBy($adminUserId);
+				case 'toprated':
+					$talk = $this->talk->topRated();
 
-            case 'notrated':
-                return $this->talk->notRatedBy($adminUserId);
+				case 'plusone':
+					$talk = $this->talk->ratedPlusOneBy($adminUserId);
 
-            case 'toprated':
-                return $this->talk->topRated();
+				case 'viewed':
+					$talk = $this->talk->viewedBy($adminUserId);
 
-            case 'plusone':
-                return $this->talk->ratedPlusOneBy($adminUserId);
+				case 'favorited':
+					$talk = $this->talk->favoritedBy($adminUserId);
 
-            case 'viewed':
-                return $this->talk->viewedBy($adminUserId);
+				default:
+					$talk = $this->talk;
+			}
+		}
 
-            case 'favorited':
-                return $this->talk->favoritedBy($adminUserId);
+		if ($category !== null) {
+			$talk = $talk->category($category);
+		}
 
-            default:
-                return $this->talk;
-        }
+		if ($type !== null) {
+			$talk = $talk->type($type);
+		}
     }
 
     /**
