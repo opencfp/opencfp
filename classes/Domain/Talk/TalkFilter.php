@@ -64,7 +64,7 @@ class TalkFilter
         return $this->formatter->formatList($talks, $adminUserId)->toArray();
     }
 
-    public function getCategoryTalks(int $adminUserId, $category = null)
+    public function getCategoryTalks($category = null)
     {
         if ($category === null) {
             return $this->talk;
@@ -72,7 +72,7 @@ class TalkFilter
 		return $this->talk->category($category);
 	}
 
-    public function getTypeTalks(int $adminUserId, $type = null)
+    public function getTypeTalks($type = null)
     {
         if ($type === null) {
             return $this->talk;
