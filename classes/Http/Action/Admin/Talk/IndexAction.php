@@ -57,6 +57,8 @@ final class IndexAction
         $formattedTalks = $this->talkFilter->getTalks(
             $adminUserId,
             $request->get('filter'),
+            $request->get('category'),
+            $request->get('type'),
             $options
         );
 

@@ -30,6 +30,22 @@
                         <option value="selected"{% if filter|lower == 'selected' %} SELECTED{% endif %}>Selected Talks</option>
                     </select>
                 </div>
+                <div>
+                    <label>Category:</label>
+                    <select name="category" class="form-control">
+                        {% for categoryKey, displayCategory in talkCategories %}
+                            <option value="{{ categoryKey }}" {% if category == categoryKey %}selected {% endif %}>{{ displayCategory }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label>Type:</label>
+                    <select name="type" class="form-control">
+                        {% for typeKey, displayType in talkTypes %}
+                            <option value="{{ typeKey }}" {% if type == typeKey %}selected {% endif %}>{{ displayType }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="mt-2 ml-8 pagerfanta">
                     {{ pagination|raw }}
                 </div>

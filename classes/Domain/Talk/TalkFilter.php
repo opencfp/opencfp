@@ -45,7 +45,7 @@ class TalkFilter
         $this->talk      = $talk;
     }
 
-    public function getTalks(int $adminUserId, $filter = null, $options = []): array
+    public function getTalks(int $adminUserId, $filter = null, $category = null, $type = null, $options = []): array
     {
         // Merge options with default options
         $options = $this->getSortOptions(
@@ -57,10 +57,28 @@ class TalkFilter
         );
 
         $talks = $this->getFilteredTalks($adminUserId, $filter)
+		    ->getCategoryTalks($category)
+			->getTypeTalks($type)
             ->orderBy($options['order_by'], $options['sort'])->get();
 
         return $this->formatter->formatList($talks, $adminUserId)->toArray();
     }
+
+    public function getCategoryTalks(int $adminUserId, $category = null)
+    {
+        if ($category === null) {
+            return $this->talk;
+        }
+		return $this->talk->category($category);
+	}
+
+    public function getTypeTalks(int $adminUserId, $type = null)
+    {
+        if ($type === null) {
+            return $this->talk;
+        }
+		return $this->talk->type($type);
+	}
 
     public function getFilteredTalks(int $adminUserId, $filter = null)
     {
