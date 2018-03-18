@@ -64,43 +64,45 @@ class TalkFilter
 
     public function getFilteredTalks(int $adminUserId, $filter = null, $category = null, $type = null)
     {
-		$talk = $this->talk;
+        $talk = $this->talk;
 
         if ($filter !== null) {
-			switch (\strtolower($filter)) {
-				case 'selected':
-					$talk = $this->talk->selected();
+            switch (\strtolower($filter)) {
+                case 'selected':
+                    $talk = $this->talk->selected();
 
-				case 'notviewed':
-					$talk = $this->talk->notViewedBy($adminUserId);
+                case 'notviewed':
+                    $talk = $this->talk->notViewedBy($adminUserId);
 
-				case 'notrated':
-					$talk = $this->talk->notRatedBy($adminUserId);
+                case 'notrated':
+                    $talk = $this->talk->notRatedBy($adminUserId);
 
-				case 'toprated':
-					$talk = $this->talk->topRated();
+                case 'toprated':
+                    $talk = $this->talk->topRated();
 
-				case 'plusone':
-					$talk = $this->talk->ratedPlusOneBy($adminUserId);
+                case 'plusone':
+                    $talk = $this->talk->ratedPlusOneBy($adminUserId);
 
-				case 'viewed':
-					$talk = $this->talk->viewedBy($adminUserId);
+                case 'viewed':
+                    $talk = $this->talk->viewedBy($adminUserId);
 
-				case 'favorited':
-					$talk = $this->talk->favoritedBy($adminUserId);
+                case 'favorited':
+                    $talk = $this->talk->favoritedBy($adminUserId);
 
-				default:
-					$talk = $this->talk;
-			}
-		}
+                default:
+                    $talk = $this->talk;
+            }
+        }
 
-		if ($category !== null) {
-			$talk = $talk->category($category);
-		}
+        if ($category !== null) {
+            $talk = $talk->category($category);
+        }
 
-		if ($type !== null) {
-			$talk = $talk->type($type);
-		}
+        if ($type !== null) {
+            $talk = $talk->type($type);
+        }
+
+        return $talk;
     }
 
     /**
