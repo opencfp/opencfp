@@ -71,7 +71,6 @@ class ForgotController extends BaseController
 
             return $this->redirectTo('forgot_password');
         }
-
         // Check to make sure they actually exist in the system...
         $data = $form->getData();
 
@@ -82,11 +81,10 @@ class ForgotController extends BaseController
 
             return $this->redirectTo('forgot_password');
         }
-
         // Create a reset code and email the URL to our user
         $response = $this->resetEmailer->send($user->getId(), $data['email'], $user->getResetPasswordCode());
 
-        if ($response == false) {
+        if ($response === false) {
             $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',

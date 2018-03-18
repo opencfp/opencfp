@@ -26,7 +26,10 @@ final class ProjectCodeTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testProductionClassesHaveUnitTests()
+    /**
+     * @test
+     */
+    public function productionClassesHaveUnitTests()
     {
         $this->assertClassesHaveTests(
             __DIR__ . '/../../classes',
@@ -57,7 +60,6 @@ final class ProjectCodeTest extends Framework\TestCase
                 Http\Controller\Admin\SpeakersController::class,
                 Http\Controller\Admin\TalksController::class,
                 Http\Controller\ForgotController::class,
-                Http\Controller\ProfileController::class,
                 Http\Form\ForgotFormType::class,
                 Http\Form\ResetFormType::class,
                 Infrastructure\Event\AuthenticationListener::class,
@@ -71,7 +73,10 @@ final class ProjectCodeTest extends Framework\TestCase
         );
     }
 
-    public function testControllerActionsUseResponseReturnType()
+    /**
+     * @test
+     */
+    public function controllerActionsUseResponseReturnType()
     {
         $actionsWithoutReturnTypes = $this->methodNames(\array_filter($this->controllerActions(), function (\ReflectionMethod $method) {
             $returnType = (string) $method->getReturnType();
@@ -86,7 +91,10 @@ final class ProjectCodeTest extends Framework\TestCase
         ));
     }
 
-    public function testControllerActionsUseActionSuffix()
+    /**
+     * @test
+     */
+    public function controllerActionsUseActionSuffix()
     {
         $actionsWithoutSuffix = $this->methodNames(\array_filter($this->controllerActions(), function (\ReflectionMethod $method) {
             return \preg_match('/Action$/', $method->getName()) === 0;
@@ -146,7 +154,10 @@ final class ProjectCodeTest extends Framework\TestCase
         return $methodNames;
     }
 
-    public function testTestClassesAreAbstractOrFinal()
+    /**
+     * @test
+     */
+    public function classesAreAbstractOrFinal()
     {
         $this->assertClassesAreAbstractOrFinal(__DIR__ . '/..');
     }
@@ -155,8 +166,10 @@ final class ProjectCodeTest extends Framework\TestCase
      * @dataProvider providerProductionClassesAreAbstractOrFinal
      *
      * @param string $directory
+     *
+     * @test
      */
-    public function testProductionClassesAreAbstractOrFinal(string $directory)
+    public function productionClassesAreAbstractOrFinal(string $directory)
     {
         $this->assertClassesAreAbstractOrFinal($directory);
     }

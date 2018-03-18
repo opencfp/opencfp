@@ -74,7 +74,8 @@ final class UpdatePasswordAction
 
         $data = $this->resetForm->getData();
 
-        $userId    = $data['user_id'];
+        // We cast user_id to always be an integer to satisfy Sentinel findById() requirements
+        $userId    = (int) $data['user_id'];
         $resetCode = $data['reset_code'];
         $password  = $data['password'];
 

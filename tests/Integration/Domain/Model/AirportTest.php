@@ -52,7 +52,10 @@ final class AirportTest extends WebTestCase
         $this->airports->withCode('foobarbaz');
     }
 
-    public function testItIsNotCaseSensitive()
+    /**
+     * @test
+     */
+    public function itIsNotCaseSensitive()
     {
         $airport = $this->airports->withCode('aac');
 
@@ -61,7 +64,10 @@ final class AirportTest extends WebTestCase
         $this->assertSame('Egypt', $airport->country);
     }
 
-    public function testItThrowsTheCorrectError()
+    /**
+     * @test
+     */
+    public function itThrowsTheCorrectError()
     {
         $this->expectException(EntityNotFoundException::class);
         $this->expectExceptionMessage('not found');

@@ -24,17 +24,26 @@ final class UserCreateCommandTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(UserCreateCommand::class);
     }
 
-    public function testExtendsCommand()
+    /**
+     * @test
+     */
+    public function extendsCommand()
     {
         $this->assertClassExtends(Console\Command\Command::class, UserCreateCommand::class);
     }
 
-    public function testHasNameAndDescription()
+    /**
+     * @test
+     */
+    public function hasNameAndDescription()
     {
         $command = new UserCreateCommand($this->createAccountManagementMock());
 
@@ -42,7 +51,10 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertSame('Creates a new user', $command->getDescription());
     }
 
-    public function testHasFirstNameOption()
+    /**
+     * @test
+     */
+    public function hasFirstNameOption()
     {
         $command = new UserCreateCommand($this->createAccountManagementMock());
 
@@ -59,7 +71,10 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertFalse($option->isArray());
     }
 
-    public function testHasLastNameOption()
+    /**
+     * @test
+     */
+    public function hasLastNameOption()
     {
         $command = new UserCreateCommand($this->createAccountManagementMock());
 
@@ -76,7 +91,10 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertFalse($option->isArray());
     }
 
-    public function testHasEmailOption()
+    /**
+     * @test
+     */
+    public function hasEmailOption()
     {
         $command = new UserCreateCommand($this->createAccountManagementMock());
 
@@ -93,7 +111,10 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertFalse($option->isArray());
     }
 
-    public function testHasPasswordOption()
+    /**
+     * @test
+     */
+    public function hasPasswordOption()
     {
         $command = new UserCreateCommand($this->createAccountManagementMock());
 
@@ -110,7 +131,10 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertFalse($option->isArray());
     }
 
-    public function testHasAdminOption()
+    /**
+     * @test
+     */
+    public function hasAdminOption()
     {
         $command = new UserCreateCommand($this->createAccountManagementMock());
 
@@ -127,7 +151,10 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertFalse($option->isArray());
     }
 
-    public function testHasReviewerOption()
+    /**
+     * @test
+     */
+    public function hasReviewerOption()
     {
         $command = new UserCreateCommand($this->createAccountManagementMock());
 
@@ -144,7 +171,10 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertFalse($option->isArray());
     }
 
-    public function testExecuteFailsIfUserExists()
+    /**
+     * @test
+     */
+    public function executeFailsIfUserExists()
     {
         $faker = $this->faker();
 
@@ -191,7 +221,10 @@ final class UserCreateCommandTest extends Framework\TestCase
         $this->assertContains($message, $commandTester->getDisplay());
     }
 
-    public function testExecuteSucceedsIfUserDoesNotExist()
+    /**
+     * @test
+     */
+    public function executeSucceedsIfUserDoesNotExist()
     {
         $faker = $this->faker();
 
@@ -252,8 +285,10 @@ final class UserCreateCommandTest extends Framework\TestCase
      *
      * @param string[] $options
      * @param string[] $roles
+     *
+     * @test
      */
-    public function testExecuteSucceedsIfUserDoesNotExistAndPromotesUser(array $options, array $roles)
+    public function executeSucceedsIfUserDoesNotExistAndPromotesUser(array $options, array $roles)
     {
         $faker = $this->faker();
 

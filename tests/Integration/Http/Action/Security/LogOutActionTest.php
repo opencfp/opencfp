@@ -20,7 +20,10 @@ use OpenCFP\Test\Integration\WebTestCase;
 
 final class LogOutActionTest extends WebTestCase implements TransactionalTestCase
 {
-    public function testLogsOutUserAndRedirectsToHomepage()
+    /**
+     * @test
+     */
+    public function logsOutUserAndRedirectsToHomepage()
     {
         /** @var Model\User $user */
         $user = factory(Model\User::class)->create()->first();

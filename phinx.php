@@ -10,7 +10,6 @@ declare(strict_types=1);
  *
  * @see https://github.com/opencfp/opencfp
  */
-
 use OpenCFP\Environment;
 use OpenCFP\Kernel;
 
@@ -29,11 +28,13 @@ return [
         'default_migration_table' => 'phinxlog',
         'default_database'        => $kernel->getEnvironment(),
         $kernel->getEnvironment() => [
-            'adapter' => 'mysql',
-            'host'    => $container->getParameter('database.host'),
-            'name'    => $container->getParameter('database.database'),
-            'user'    => $container->getParameter('database.user'),
-            'pass'    => $container->getParameter('database.password'),
+            'adapter'   => 'mysql',
+            'host'      => $container->getParameter('database.host'),
+            'name'      => $container->getParameter('database.database'),
+            'user'      => $container->getParameter('database.user'),
+            'pass'      => $container->getParameter('database.password'),
+            'charset'   => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
         ],
     ],
 ];

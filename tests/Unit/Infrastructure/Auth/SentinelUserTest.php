@@ -22,17 +22,26 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
 {
     use Helper;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(SentinelUser::class);
     }
 
-    public function testWeHaveTheRightUser()
+    /**
+     * @test
+     */
+    public function weHaveTheRightUser()
     {
         $this->assertClassImplementsInterface(\OpenCFP\Infrastructure\Auth\UserInterface::class, SentinelUser::class);
     }
 
-    public function testGetIdWorks()
+    /**
+     * @test
+     */
+    public function getIdWorks()
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
         $innerUser->shouldReceive('getUserId')->andReturn(2);
@@ -40,7 +49,10 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(2, $sentinelUser->getId());
     }
 
-    public function testGetLoginWorks()
+    /**
+     * @test
+     */
+    public function getLoginWorks()
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
         $innerUser->shouldReceive('getUserLogin')->andReturn('test@example.com');
@@ -48,14 +60,20 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('test@example.com', $sentinelUser->getLogin());
     }
 
-    public function testGtUserWorks()
+    /**
+     * @test
+     */
+    public function gtUserWorks()
     {
         $user      = new SentinelUser(m::mock(\Cartalyst\Sentinel\Users\UserInterface::class), $this->getSentinel());
         $innerUser = $user->getUser();
         $this->assertInstanceOf(\Cartalyst\Sentinel\Users\UserInterface::class, $innerUser);
     }
 
-    public function testHasAccessReturnsFalseWhenUserDoesNotHaveAccess()
+    /**
+     * @test
+     */
+    public function hasAccessReturnsFalseWhenUserDoesNotHaveAccess()
     {
         $innerUser     = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
         $innerUser->id = 2;
@@ -64,7 +82,10 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($user->hasAccess('role'));
     }
 
-    public function testHasAccessReturnsTrueIfWeHaveAccess()
+    /**
+     * @test
+     */
+    public function hasAccessReturnsTrueIfWeHaveAccess()
     {
         $toReturn      = [(object) ['id' => 2], (object) ['id' => 3], (object) ['id' => 4]];
         $innerUser     = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
@@ -77,7 +98,10 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($user->hasAccess('role'));
     }
 
-    public function testHasAccessReturnsFalseWhenAnErrorOcuurs()
+    /**
+     * @test
+     */
+    public function hasAccessReturnsFalseWhenAnErrorOcuurs()
     {
         $sentinelMock = m::mock(Sentinel::class);
         $sentinelMock->shouldReceive('getRoleRepository')->andThrow(new \ErrorException());
@@ -86,7 +110,10 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($user->hasAccess('role'));
     }
 
-    public function testCheckMasswrodReturnsTrueWhenItMatches()
+    /**
+     * @test
+     */
+    public function checkMasswrodReturnsTrueWhenItMatches()
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class)->makePartial();
         $sentinel  = m::mock(Sentinel::class);
@@ -95,7 +122,10 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($user->checkPassword('hello'));
     }
 
-    public function testCheckResetPasswordCodeReturnsABool()
+    /**
+     * @test
+     */
+    public function checkResetPasswordCodeReturnsABool()
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel  = m::mock(Sentinel::class);
@@ -106,7 +136,10 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($user->checkResetPasswordCode('asdfasdf'));
     }
 
-    public function testCheckResetPasswordCodeReturnsFalseWhenItIsFalse()
+    /**
+     * @test
+     */
+    public function checkResetPasswordCodeReturnsFalseWhenItIsFalse()
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel  = m::mock(Sentinel::class);
@@ -117,7 +150,10 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($user->checkResetPasswordCode('asdfasdf'));
     }
 
-    public function testGetResetPasswordCodeReturnsCorrect()
+    /**
+     * @test
+     */
+    public function getResetPasswordCodeReturnsCorrect()
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel  = m::mock(Sentinel::class);
@@ -126,7 +162,10 @@ final class SentinelUserTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('blabla', $user->getResetPasswordCode());
     }
 
-    public function testAttemptResetPasswordReturnsCorrectBool()
+    /**
+     * @test
+     */
+    public function attemptResetPasswordReturnsCorrectBool()
     {
         $innerUser = m::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel  = m::mock(Sentinel::class);

@@ -65,7 +65,7 @@ class Talk extends Eloquent
     public function scopeSelected(Builder $query): Builder
     {
         return $query
-            ->where('selected', 1);
+            ->where('selected', '=', 1);
     }
 
     public function scopeViewedBy(Builder $query, int $userId): Builder
@@ -73,8 +73,8 @@ class Talk extends Eloquent
         return $query
             ->whereHas('meta', function (Builder $query) use ($userId) {
                 $query
-                    ->where('admin_user_id', $userId)
-                    ->where('viewed', 1);
+                    ->where('admin_user_id', '=', $userId)
+                    ->where('viewed', '=', 1);
             });
     }
 
@@ -82,7 +82,7 @@ class Talk extends Eloquent
     {
         return $query
             ->whereHas('favorites', function (Builder $query) use ($userId) {
-                $query->where('admin_user_id', $userId);
+                $query->where('admin_user_id', '=', $userId);
             });
     }
 
@@ -91,8 +91,8 @@ class Talk extends Eloquent
         return $query
             ->whereHas('meta', function (Builder $query) use ($userId) {
                 $query
-                   ->where('admin_user_id', $userId)
-                   ->where('rating', 1);
+                   ->where('admin_user_id', '=', $userId)
+                   ->where('rating', '=', 1);
             });
     }
 
@@ -101,7 +101,7 @@ class Talk extends Eloquent
         return $query
             ->whereDoesntHave('meta', function (Builder $query) use ($userId) {
                 $query
-                    ->where('admin_user_id', $userId)
+                    ->where('admin_user_id', '=', $userId)
                     ->where('rating', '!=', 0);
             });
     }
@@ -111,7 +111,7 @@ class Talk extends Eloquent
         return $query
             ->whereDoesntHave('meta', function (Builder $query) use ($userId) {
                 $query
-                    ->where('admin_user_id', $userId)
+                    ->where('admin_user_id', '=', $userId)
                     ->where('viewed', '!=', 0);
             });
     }

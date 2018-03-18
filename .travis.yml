@@ -23,7 +23,7 @@ jobs:
 
       language: php
 
-      php: 7.0
+      php: 7.1
 
       before_install:
         - phpenv config-rm xdebug.ini
@@ -33,6 +33,7 @@ jobs:
         - composer install
 
       script:
+        - composer normalize --dry-run
         - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
         - CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")
         - if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php_cs(\\.dist)?|composer\\.lock)$"; then IFS=$'\n' EXTRA_ARGS=('--path-mode=intersection' '--' ${CHANGED_FILES[@]}); fi
@@ -44,7 +45,7 @@ jobs:
 
       language: php
 
-      php: 7.0
+      php: 7.1
 
       before_install:
         - source .travis/xdebug.sh
@@ -74,14 +75,10 @@ jobs:
 
     - <<: *TEST
 
-      php: 7.1
+      php: 7.2
 
       env:
         - WITH_COVERAGE=true
-
-    - <<: *TEST
-
-      php: 7.2
 
     - stage: Asset
 

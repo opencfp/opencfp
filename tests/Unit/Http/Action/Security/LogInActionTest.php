@@ -26,7 +26,10 @@ final class LogInActionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testRendersLogInFormIfAuthenticationFailed()
+    /**
+     * @test
+     */
+    public function rendersLogInFormIfAuthenticationFailed()
     {
         $faker = $this->faker();
 
@@ -106,7 +109,10 @@ final class LogInActionTest extends Framework\TestCase
         $this->assertSame($content, $response->getContent());
     }
 
-    public function testRedirectsToDashboardIfAuthenticationSucceeded()
+    /**
+     * @test
+     */
+    public function redirectsToDashboardIfAuthenticationSucceeded()
     {
         $faker = $this->faker();
 

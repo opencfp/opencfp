@@ -10,7 +10,6 @@ declare(strict_types=1);
  *
  * @see https://github.com/opencfp/opencfp
  */
-
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Phinx\Migration\AbstractMigration;

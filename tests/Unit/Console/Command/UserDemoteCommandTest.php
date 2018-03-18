@@ -24,17 +24,26 @@ final class UserDemoteCommandTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(UserDemoteCommand::class);
     }
 
-    public function testExtendsCommand()
+    /**
+     * @test
+     */
+    public function extendsCommand()
     {
         $this->assertClassExtends(Console\Command\Command::class, UserDemoteCommand::class);
     }
 
-    public function testHasNameAndDescription()
+    /**
+     * @test
+     */
+    public function hasNameAndDescription()
     {
         $command = new UserDemoteCommand($this->createAccountManagementMock());
 
@@ -42,7 +51,10 @@ final class UserDemoteCommandTest extends Framework\TestCase
         $this->assertSame('Demote an existing user from a role', $command->getDescription());
     }
 
-    public function testHasEmailArgument()
+    /**
+     * @test
+     */
+    public function hasEmailArgument()
     {
         $command = new UserDemoteCommand($this->createAccountManagementMock());
 
@@ -58,7 +70,10 @@ final class UserDemoteCommandTest extends Framework\TestCase
         $this->assertFalse($argument->isArray());
     }
 
-    public function testHasRoleNameArgument()
+    /**
+     * @test
+     */
+    public function hasRoleNameArgument()
     {
         $command = new UserDemoteCommand($this->createAccountManagementMock());
 
@@ -74,7 +89,10 @@ final class UserDemoteCommandTest extends Framework\TestCase
         $this->assertFalse($argument->isArray());
     }
 
-    public function testExecuteFailsIfUserWasNotFound()
+    /**
+     * @test
+     */
+    public function executeFailsIfUserWasNotFound()
     {
         $faker = $this->faker();
 
@@ -119,7 +137,10 @@ final class UserDemoteCommandTest extends Framework\TestCase
         $this->assertContains($failureMessage, $commandTester->getDisplay());
     }
 
-    public function testExecuteFailsIfRoleWasNotFound()
+    /**
+     * @test
+     */
+    public function executeFailsIfRoleWasNotFound()
     {
         $faker = $this->faker();
 
@@ -164,7 +185,10 @@ final class UserDemoteCommandTest extends Framework\TestCase
         $this->assertContains($failureMessage, $commandTester->getDisplay());
     }
 
-    public function testExecuteFailsIfDemoteFromThrowsGenericException()
+    /**
+     * @test
+     */
+    public function executeFailsIfDemoteFromThrowsGenericException()
     {
         $faker = $this->faker();
 
@@ -209,7 +233,10 @@ final class UserDemoteCommandTest extends Framework\TestCase
         $this->assertContains($failureMessage, $commandTester->getDisplay());
     }
 
-    public function testExecuteSucceedsIfUserAndRoleWereFound()
+    /**
+     * @test
+     */
+    public function executeSucceedsIfUserAndRoleWereFound()
     {
         $faker = $this->faker();
 

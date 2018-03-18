@@ -11,23 +11,20 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Http\Controller;
+namespace OpenCFP\Http\Action\Profile;
 
 use HTMLPurifier;
-use OpenCFP\Domain\Model\User;
-use OpenCFP\Domain\Services\Authentication;
-use OpenCFP\Domain\Services\ProfileImageProcessor;
+use OpenCFP\Domain\Model;
+use OpenCFP\Domain\Services;
 use OpenCFP\Http\Form\SignupForm;
-use OpenCFP\PathInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation;
+use Symfony\Component\Routing;
 use Twig_Environment;
 
-class ProfileController extends BaseController
+final class ProcessAction
 {
     /**
-     * @var Authentication
+     * @var Services\Authentication
      */
     private $authentication;
 
@@ -37,26 +34,35 @@ class ProfileController extends BaseController
     private $purifier;
 
     /**
-     * @var ProfileImageProcessor
+     * @var Services\ProfileImageProcessor
      */
     private $profileImageProcessor;
 
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
+
+    /**
+     * @var Routing\Generator\UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
     public function __construct(
-        Authentication $authentication,
+        Services\Authentication $authentication,
         HTMLPurifier $purifier,
-        ProfileImageProcessor $profileImageProcessor,
+        Services\ProfileImageProcessor $profileImageProcessor,
         Twig_Environment $twig,
-        UrlGeneratorInterface $urlGenerator,
-        PathInterface $path
+        Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->authentication        = $authentication;
         $this->purifier              = $purifier;
         $this->profileImageProcessor = $profileImageProcessor;
-
-        parent::__construct($twig, $urlGenerator);
+        $this->twig                  = $twig;
+        $this->urlGenerator          = $urlGenerator;
     }
 
-    public function processAction(Request $request): Response
+    public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         $userId = $this->authentication->user()->getId();
 
@@ -67,7 +73,9 @@ class ProfileController extends BaseController
                 'ext'   => "You cannot edit someone else's profile",
             ]);
 
-            return $this->redirectTo('dashboard');
+            $url = $this->urlGenerator->generate('dashboard');
+
+            return new HttpFoundation\RedirectResponse($url);
         }
 
         $formData = $this->getFormData($request);
@@ -76,7 +84,11 @@ class ProfileController extends BaseController
             $formData['speaker_photo'] = $request->files->get('speaker_photo');
         }
 
-        $form    = new SignupForm($formData, $this->purifier);
+        $form = new SignupForm(
+            $formData,
+            $this->purifier
+        );
+
         $isValid = $form->validateAll('update');
 
         if ($isValid) {
@@ -85,33 +97,35 @@ class ProfileController extends BaseController
             if (isset($formData['speaker_photo'])) {
                 $sanitizedData['photo_path'] = $this->profileImageProcessor->process($formData['speaker_photo']);
             }
-            unset($sanitizedData['speaker_photo']);
-            User::find($userId)->update($sanitizedData);
 
-            return $this->redirectTo('dashboard');
+            unset($sanitizedData['speaker_photo']);
+
+            Model\User::find($userId)->update($sanitizedData);
+
+            $url = $this->urlGenerator->generate('dashboard');
+
+            return new HttpFoundation\RedirectResponse($url);
         }
+
         $request->getSession()->set('flash', [
             'type'  => 'error',
             'short' => 'Error',
             'ext'   => \implode('<br>', $form->getErrorMessages()),
         ]);
 
-        return $this->render('user/edit.twig', \array_merge($formData, [
-            'formAction' => $this->url('user_update'),
+        $content = $this->twig->render('user/edit.twig', \array_merge($formData, [
+            'formAction' => $this->urlGenerator->generate('user_update'),
             'buttonInfo' => 'Update Profile',
             'id'         => $userId,
             'flash'      => $request->getSession()->get('flash'),
         ]));
+
+        return new HttpFoundation\Response($content);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return array
-     */
-    private function getFormData(Request $request): array
+    private function getFormData(HttpFoundation\Request $request): array
     {
-        $formData = [
+        return [
             'email'          => $request->get('email'),
             'user_id'        => $request->get('id'),
             'first_name'     => $request->get('first_name'),
@@ -125,8 +139,6 @@ class ProfileController extends BaseController
             'speaker_info'   => $request->get('speaker_info') ?: null,
             'speaker_bio'    => $request->get('speaker_bio') ?: null,
         ];
-
-        return $formData;
     }
 
     /**
@@ -138,16 +150,22 @@ class ProfileController extends BaseController
      */
     private function transformSanitizedData(array $sanitizedData): array
     {
-        // Remove leading @ for twitter
-        $sanitizedData['twitter'] = \preg_replace('/^@/', '', $sanitizedData['twitter']);
+        $sanitizedData['twitter'] = \preg_replace(
+            '/^@/',
+            '',
+            $sanitizedData['twitter']
+        );
 
-        $sanitizedData['bio'] = $sanitizedData['speaker_bio'];
-        unset($sanitizedData['speaker_bio']);
-        $sanitizedData['info'] = $sanitizedData['speaker_info'];
-        unset($sanitizedData['speaker_info']);
-        $sanitizedData['id'] = $sanitizedData['user_id'];
-        unset($sanitizedData['user_id']);
+        $sanitizedData['bio']              = $sanitizedData['speaker_bio'];
+        $sanitizedData['info']             = $sanitizedData['speaker_info'];
+        $sanitizedData['id']               = $sanitizedData['user_id'];
         $sanitizedData['has_made_profile'] = 1;
+
+        unset(
+            $sanitizedData['speaker_bio'],
+            $sanitizedData['speaker_info'],
+            $sanitizedData['user_id']
+        );
 
         return $sanitizedData;
     }

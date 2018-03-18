@@ -26,7 +26,10 @@ final class PromoteActionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testRedirectsToAdminSpeakersIfUserNotFound()
+    /**
+     * @test
+     */
+    public function redirectsToAdminSpeakersIfUserNotFound()
     {
         $faker = $this->faker();
 
@@ -95,7 +98,10 @@ final class PromoteActionTest extends Framework\TestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRedirectsToAdminSpeakersIfUserAlreadyBelongsToRole()
+    /**
+     * @test
+     */
+    public function redirectsToAdminSpeakersIfUserAlreadyBelongsToRole()
     {
         $faker = $this->faker();
 
@@ -171,7 +177,10 @@ final class PromoteActionTest extends Framework\TestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRedirectsToAdminSpeakersIfRoleNotFound()
+    /**
+     * @test
+     */
+    public function redirectsToAdminSpeakersIfRoleNotFound()
     {
         $faker = $this->faker();
 
@@ -261,7 +270,10 @@ final class PromoteActionTest extends Framework\TestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRedirectsToAdminSpeakersIfPromotingToAdminSucceeded()
+    /**
+     * @test
+     */
+    public function redirectsToAdminSpeakersIfPromotingToAdminSucceeded()
     {
         $faker = $this->faker();
 

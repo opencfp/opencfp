@@ -20,7 +20,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class SpeakerAccessTest extends \PHPUnit\Framework\TestCase
 {
-    public function testReturnsRedirectResponseIfCheckFailed()
+    /**
+     * @test
+     */
+    public function returnsRedirectResponseIfCheckFailed()
     {
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('isAuthenticated')->andReturn(false);
@@ -28,7 +31,10 @@ final class SpeakerAccessTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(RedirectResponse::class, SpeakerAccess::userHasAccess($auth));
     }
 
-    public function testReturnsNothingIfCheckSucceeded()
+    /**
+     * @test
+     */
+    public function returnsNothingIfCheckSucceeded()
     {
         $auth = Mockery::mock(Authentication::class);
         $auth->shouldReceive('isAuthenticated')->andReturn(true);

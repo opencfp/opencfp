@@ -10,7 +10,6 @@ declare(strict_types=1);
  *
  * @see https://github.com/opencfp/opencfp
  */
-
 use Phinx\Migration\AbstractMigration;
 
 /**
@@ -81,7 +80,7 @@ class SentinelMigration extends AbstractMigration
             ->addColumn('permissions', 'text', ['null' => true])
             ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('updated_at', 'timestamp', ['null' => true])
-            ->addIndex(['slug'], ['name' => 'roles_slug_unique', 'unique' => true])
+            ->addIndex(['slug'], ['name' => 'roles_slug_unique', 'unique' => true, 'limit' => 191])
 
             ->create();
     }

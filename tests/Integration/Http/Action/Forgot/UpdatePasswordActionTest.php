@@ -17,7 +17,10 @@ use OpenCFP\Test\Integration\WebTestCase;
 
 final class UpdatePasswordActionTest extends WebTestCase
 {
-    public function testRendersResetPasswordFormIfFormIsInvalid()
+    /**
+     * @test
+     */
+    public function rendersResetPasswordFormIfFormIsInvalid()
     {
         $response = $this->post('/updatepassword');
 

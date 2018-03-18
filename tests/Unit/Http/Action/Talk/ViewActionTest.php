@@ -23,7 +23,10 @@ use Symfony\Component\HttpFoundation;
 
 final class ViewActionTest extends AbstractActionTestCase
 {
-    public function testRedirectsToDashboardIfUserIsNotAuthorized()
+    /**
+     * @test
+     */
+    public function redirectsToDashboardIfUserIsNotAuthorized()
     {
         $faker = $this->faker();
 
@@ -67,7 +70,10 @@ final class ViewActionTest extends AbstractActionTestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRendersDashboardIfUserIsAuthenticated()
+    /**
+     * @test
+     */
+    public function rendersDashboardIfUserIsAuthenticated()
     {
         $faker = $this->faker();
 

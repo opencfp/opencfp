@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Unit\Http\Action\Profile;
 
+use HTMLPurifier;
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Services;
-use OpenCFP\Http\Action\Profile\EditAction;
+use OpenCFP\Http\Action\Profile\ProcessAction;
 use OpenCFP\Infrastructure\Auth;
-use OpenCFP\PathInterface;
 use PHPUnit\Framework;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 use Twig_Environment;
 
-final class EditActionTest extends Framework\TestCase
+final class ProcessActionTest extends Framework\TestCase
 {
     use Helper;
 
@@ -86,9 +86,10 @@ final class EditActionTest extends Framework\TestCase
             ->shouldBeCalled()
             ->willReturn($url);
 
-        $action = new EditAction(
+        $action = new ProcessAction(
             $authentication->reveal(),
-            $this->prophesize(PathInterface::class)->reveal(),
+            $this->prophesize(HTMLPurifier::class)->reveal(),
+            $this->prophesize(Services\ProfileImageProcessor::class)->reveal(),
             $this->prophesize(Twig_Environment::class)->reveal(),
             $urlGenerator->reveal()
         );

@@ -32,17 +32,26 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
     use Helper;
     use MockeryPHPUnitIntegration;
 
-    public function testIsFinal()
+    /**
+     * @test
+     */
+    public function isFinal()
     {
         $this->assertClassIsFinal(SentinelAuthentication::class);
     }
 
-    public function testIsInstanceOfAuthentication()
+    /**
+     * @test
+     */
+    public function isInstanceOfAuthentication()
     {
         $this->assertClassImplementsInterface(Authentication::class, SentinelAuthentication::class);
     }
 
-    public function testAuthenticateWillThrowCorrectError()
+    /**
+     * @test
+     */
+    public function authenticateWillThrowCorrectError()
     {
         $sentinel = Mockery::mock(Sentinel::class);
         $account  = Mockery::mock(AccountManagement::class);
@@ -65,7 +74,10 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $auth->authenticate('mail', 'pass');
     }
 
-    public function testAuthenticateWillThrowErrorWhenWrongPassword()
+    /**
+     * @test
+     */
+    public function authenticateWillThrowErrorWhenWrongPassword()
     {
         $user = Mockery::mock(UserInterface::class);
         $user->shouldReceive('checkPassword')->andReturn(false);
@@ -77,7 +89,10 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $auth->authenticate('mail', 'pass');
     }
 
-    public function testAuthenticateIsVoidWhenSuccessFull()
+    /**
+     * @test
+     */
+    public function authenticateIsVoidWhenSuccessFull()
     {
         $sentinelUser = Mockery::mock(SentinelUserInterface::class);
         $user         = Mockery::mock(UserInterface::class);
@@ -91,7 +106,10 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $auth->authenticate('mail', 'pass');
     }
 
-    public function testUserReturnsCorrectUser()
+    /**
+     * @test
+     */
+    public function userReturnsCorrectUser()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);
@@ -101,7 +119,10 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SentinelUser::class, $auth->user());
     }
 
-    public function testUserThrowsCorrectErrorWhenNotFound()
+    /**
+     * @test
+     */
+    public function userThrowsCorrectErrorWhenNotFound()
     {
         $sentinel = Mockery::mock(Sentinel::class);
         $sentinel->shouldReceive('getUser')->andReturn(false);
@@ -111,7 +132,10 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $auth->user();
     }
 
-    public function testCheckReturnsBool()
+    /**
+     * @test
+     */
+    public function checkReturnsBool()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);
@@ -121,7 +145,10 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($auth->isAuthenticated());
     }
 
-    public function testCheckReturnsFalseWhenNotLoggedIn()
+    /**
+     * @test
+     */
+    public function checkReturnsFalseWhenNotLoggedIn()
     {
         $sentinel = Mockery::mock(Sentinel::class);
         $account  = Mockery::mock(AccountManagement::class);
@@ -130,7 +157,10 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($auth->isAuthenticated());
     }
 
-    public function testLogoutReturnsBool()
+    /**
+     * @test
+     */
+    public function logoutReturnsBool()
     {
         $user     = Mockery::mock(\Cartalyst\Sentinel\Users\UserInterface::class);
         $sentinel = Mockery::mock(Sentinel::class);

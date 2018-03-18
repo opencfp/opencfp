@@ -26,7 +26,10 @@ final class ViewActionTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testRedirectsToDashboardIfTalkCannotBeViewed()
+    /**
+     * @test
+     */
+    public function redirectsToDashboardIfTalkCannotBeViewed()
     {
         $faker = $this->faker();
 
@@ -90,7 +93,10 @@ final class ViewActionTest extends Framework\TestCase
         $this->assertSame($url, $response->getTargetUrl());
     }
 
-    public function testRendersTalkIfTalkCanBeViewed()
+    /**
+     * @test
+     */
+    public function rendersTalkIfTalkCanBeViewed()
     {
         $faker = $this->faker();
 

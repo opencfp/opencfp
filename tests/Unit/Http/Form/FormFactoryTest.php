@@ -23,7 +23,10 @@ final class FormFactoryTest extends Framework\TestCase
 {
     use Helper;
 
-    public function testCreateCreatesForm()
+    /**
+     * @test
+     */
+    public function createCreatesForm()
     {
         $formType = $this->faker()->word;
 

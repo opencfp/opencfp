@@ -19,14 +19,20 @@ use Symfony\Component\HttpFoundation;
 
 final class AuthenticationListenerTest extends WebTestCase
 {
-    public function testNoLoginRequired()
+    /**
+     * @test
+     */
+    public function noLoginRequired()
     {
         $response = $this->get('/');
 
         $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);
     }
 
-    public function testTalksRouteRequireLogin()
+    /**
+     * @test
+     */
+    public function talksRouteRequireLogin()
     {
         $response = $this->get('/talk/create');
 
@@ -35,7 +41,10 @@ final class AuthenticationListenerTest extends WebTestCase
         $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
-    public function testTalksRouteWithLogin()
+    /**
+     * @test
+     */
+    public function talksRouteWithLogin()
     {
         /** @var Model\User $speaker */
         $speaker = factory(Model\User::class)->create()->first();
@@ -47,7 +56,10 @@ final class AuthenticationListenerTest extends WebTestCase
         $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);
     }
 
-    public function testReviewerDashboardRequiresLogin()
+    /**
+     * @test
+     */
+    public function reviewerDashboardRequiresLogin()
     {
         $response = $this->get('/reviewer/');
 
@@ -56,7 +68,10 @@ final class AuthenticationListenerTest extends WebTestCase
         $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
-    public function testReviewerDashboardRequiresReviewer()
+    /**
+     * @test
+     */
+    public function reviewerDashboardRequiresReviewer()
     {
         /** @var Model\User $speaker */
         $speaker = factory(Model\User::class)->create()->first();
@@ -70,7 +85,10 @@ final class AuthenticationListenerTest extends WebTestCase
         $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
-    public function testReviewerDashboardAsReviewer()
+    /**
+     * @test
+     */
+    public function reviewerDashboardAsReviewer()
     {
         /** @var Model\User $reviewer */
         $reviewer = factory(Model\User::class)->create()->first();
@@ -82,7 +100,10 @@ final class AuthenticationListenerTest extends WebTestCase
         $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_OK, $response);
     }
 
-    public function testAdminDashboardRequiresLogin()
+    /**
+     * @test
+     */
+    public function adminDashboardRequiresLogin()
     {
         $response = $this->get('/admin/');
 
@@ -91,7 +112,10 @@ final class AuthenticationListenerTest extends WebTestCase
         $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
-    public function testAdminDashboardRequiresAdmin()
+    /**
+     * @test
+     */
+    public function adminDashboardRequiresAdmin()
     {
         /** @var Model\User $speaker */
         $speaker = factory(Model\User::class)->create()->first();
@@ -105,7 +129,10 @@ final class AuthenticationListenerTest extends WebTestCase
         $this->assertRedirectResponseUrlEquals($url, $response);
     }
 
-    public function testAdminDashboardAsAdmin()
+    /**
+     * @test
+     */
+    public function adminDashboardAsAdmin()
     {
         /** @var Model\User $admin */
         $admin = factory(Model\User::class)->create()->first();

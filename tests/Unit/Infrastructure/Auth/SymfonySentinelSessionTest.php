@@ -22,12 +22,18 @@ final class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
     use Helper;
     use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    public function testImplementsSessionInterface()
+    /**
+     * @test
+     */
+    public function implementsSessionInterface()
     {
         $this->assertClassImplementsInterface(\Cartalyst\Sentinel\Sessions\SessionInterface::class, SymfonySentinelSession::class);
     }
 
-    public function testPutSetsValue()
+    /**
+     * @test
+     */
+    public function putSetsValue()
     {
         $key   = 'foo';
         $value = 'bar';
@@ -50,7 +56,10 @@ final class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
         $sentinelSession->put($value);
     }
 
-    public function testGetReturnsValue()
+    /**
+     * @test
+     */
+    public function getReturnsValue()
     {
         $key   = 'foo';
         $value = 'bar';
@@ -71,7 +80,10 @@ final class SymfonySentinelSessionTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($value, $sentinelSession->get());
     }
 
-    public function testForgetRemovesKey()
+    /**
+     * @test
+     */
+    public function forgetRemovesKey()
     {
         $key = 'foo';
 
