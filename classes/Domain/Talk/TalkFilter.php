@@ -67,47 +67,44 @@ class TalkFilter
         $talk = $this->talk;
 
         if (!empty($filter)) {
-            $new_talk = $talk;
             switch (\strtolower($filter)) {
                 case 'selected':
-                    $new_talk = $talk->selected();
-                break;
+                    $talk = $talk->selected();
 
+                    break;
                 case 'notviewed':
-                    $new_talk = $talk->notViewedBy($adminUserId);
-                break;
+                    $talk = $talk->notViewedBy($adminUserId);
 
+                    break;
                 case 'notrated':
-                    $new_talk = $talk->notRatedBy($adminUserId);
-                break;
+                    $talk = $talk->notRatedBy($adminUserId);
 
+                    break;
                 case 'toprated':
-                    $new_talk = $talk->topRated();
-                break;
+                    $talk = $talk->topRated();
 
+                    break;
                 case 'plusone':
-                    $new_talk = $talk->ratedPlusOneBy($adminUserId);
-                break;
+                    $talk = $talk->ratedPlusOneBy($adminUserId);
 
+                    break;
                 case 'viewed':
-                    $new_talk = $talk->viewedBy($adminUserId);
-                break;
+                    $talk = $talk->viewedBy($adminUserId);
 
+                    break;
                 case 'favorited':
-                    $new_talk = $talk->favoritedBy($adminUserId);
-                break;
+                    $talk = $talk->favoritedBy($adminUserId);
+
+                    break;
             }
-            $talk = $new_talk;
         }
 
         if (!empty($category)) {
-            $new_talk = $talk->category($category);
-            $talk = $new_talk;
+            $talk = $talk->category($category);
         }
 
         if (!empty($type)) {
-            $new_talk = $talk->type($type);
-            $talk = $new_talk;
+            $talk = $talk->type($type);
         }
 
         return $talk;
