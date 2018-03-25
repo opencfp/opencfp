@@ -83,18 +83,18 @@ final class IndexAction
                 '/admin/talks?',
                 $request->query->all()
             ),
-            'talks'        => $pagination->getFanta(),
-            'page'         => $pagination->getCurrentPage(),
-            'current_page' => $request->getRequestUri(),
-            'totalRecords' => \count($formattedTalks),
-            'filter'       => $request->get('filter'),
-            'category'     => $request->get('category'),
-            'type'         => $request->get('type'),
+            'talks'          => $pagination->getFanta(),
+            'page'           => $pagination->getCurrentPage(),
+            'current_page'   => $request->getRequestUri(),
+            'totalRecords'   => \count($formattedTalks),
+            'filter'         => $request->get('filter'),
+            'category'       => $request->get('category'),
+            'type'           => $request->get('type'),
             'talkCategories' => $this->talkHelper->getTalkCategories(),
             'talkTypes'      => $this->talkHelper->getTalkTypes(),
-            'per_page'     => $perPage,
-            'sort'         => $request->get('sort'),
-            'order_by'     => $request->get('order_by'),
+            'per_page'       => $perPage,
+            'sort'           => $request->get('sort'),
+            'order_by'       => $request->get('order_by'),
         ];
     }
 }
