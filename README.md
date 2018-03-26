@@ -5,7 +5,7 @@ OpenCFP is a PHP-based conference talk submission system.
 ---
 [![Build Status](https://travis-ci.org/opencfp/opencfp.svg?branch=master)](https://travis-ci.org/opencfp/opencfp)
 
-Current release: v1.5.2
+![GitHub release](https://img.shields.io/github/release/opencfp/opencfp.svg)
 
 ## README Contents
 
