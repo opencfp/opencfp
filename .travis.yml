@@ -4,7 +4,6 @@ sudo: false
 env:
   global:
     - TRAVIS_DB=cfp_test
-    - CC_TEST_REPORTER_ID=9deb249b01a414d979959cfd05a4c351b19a5959858653b20276454d4189edc3
 
 # cache composer downloads so installing is quicker
 cache:
@@ -62,16 +61,12 @@ jobs:
         - cp config/testing.yml.dist config/testing.yml
         - CFP_ENV=testing vendor/bin/phinx migrate --environment testing
         - mysqldump -uroot $TRAVIS_DB > tests/dump.sql
-        - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-before-script; fi
 
       script:
         - vendor/bin/phpunit --testsuite integration
         - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-enable; fi
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --testsuite unit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit --testsuite unit; fi
         - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-disable; fi
-
-      after_success:
-        - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-after-script; fi
 
     - <<: *TEST
 
