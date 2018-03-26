@@ -55,7 +55,6 @@ jobs:
         - composer install
 
       before_script:
-        - source .travis/code-climate.sh
         - sh .travis/setup-mail.sh
         - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
         - cp config/testing.yml.dist config/testing.yml
