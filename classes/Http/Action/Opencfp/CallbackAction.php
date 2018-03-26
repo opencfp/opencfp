@@ -14,10 +14,14 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Action\Opencfp;
 
 use Cartalyst\Sentinel\Sentinel;
+use GuzzleHttp\Client;
+use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Services\AccountManagement;
+use OpenCFP\Infrastructure\Auth\SentinelUser;
+use OpenCFP\Infrastructure\Auth\UserInterface;
+use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use GuzzleHttp\Client;
 
 final class CallbackAction
 {
@@ -55,26 +59,38 @@ final class CallbackAction
         string $resourceUri,
         string $tokenUrl
     ) {
-        $this->sentinel       = $sentinel;
-        $this->accounts       = $accounts;
-        $this->urlGenerator   = $urlGenerator;
-        $this->clientId = $clientId;
+        $this->sentinel     = $sentinel;
+        $this->accounts     = $accounts;
+        $this->urlGenerator = $urlGenerator;
+        $this->clientId     = $clientId;
         $this->clientSecret = $clientSecret;
-        $this->redirectUri = $redirectUri;
-        $this->resourceUri = $resourceUri;
-        $this->tokenUrl = $tokenUrl;
+        $this->redirectUri  = $redirectUri;
+        $this->resourceUri  = $resourceUri;
+        $this->tokenUrl     = $tokenUrl;
     }
 
+    /**
+     * @param HttpFoundation\Request $request
+     *
+     * @throws \OpenCFP\Infrastructure\Auth\UserExistsException
+     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
+     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
+     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @throws \OpenCFP\Infrastructure\Auth\UserNotFoundException
+     * @throws \InvalidArgumentException
+     *
+     * @return HttpFoundation\Response
+     */
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
-        $http = new Client;
+        $http     = new Client();
         $response = $http->post($this->tokenUrl, [
             'form_params' => [
-                'grant_type' => 'authorization_code',
-                'client_id' => $this->clientId,
+                'grant_type'    => 'authorization_code',
+                'client_id'     => $this->clientId,
                 'client_secret' => $this->clientSecret,
-                'redirect_uri' => $this->redirectUri,
-                'code' => $request->get('code')
+                'redirect_uri'  => $this->redirectUri,
+                'code'          => $request->get('code'),
                 ],
             ]);
 
@@ -85,21 +101,34 @@ final class CallbackAction
          * manually log them in
          * redirect them to their dashboard
          */
-        $details = json_decode((string) $response->getBody(), true);
+        $details       = \json_decode((string) $response->getBody(), true);
         $user_response = $http->get($this->resourceUri, [
             'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $details['access_token']
-            ]
+                'Accept'        => 'application/json',
+                'Authorization' => 'Bearer ' . $details['access_token'],
+            ],
         ]);
-        $opencfp_central_user_details = json_decode((string) $user_response->getBody(), true);
-        $opencfp_central_user = $this->accounts->findByLogin($opencfp_central_user_details['email']);
+        $user_details = \json_decode((string) $user_response->getBody(), true);
 
-        if (!$opencfp_central_user) {
-            die('Create an account!');
+        try {
+            /** @var SentinelUser $user */
+            $user = $this->accounts->findByLogin($user_details['email']);
+
+            if ($user !== null) {
+                $this->sentinel->login($user->getUser());
+            }
+        } catch (UserNotFoundException $e) {
+            $this->accounts->create(
+                $user_details['email'],
+                \uniqid('opencfp', true),
+                ['activated' => 1]
+            );
+            $this->accounts->activate($user_details['email']);
+            $user = $this->accounts->findByLogin($user_details['email']);
+            $user->save();
         }
 
-        $this->sentinel->login($opencfp_central_user->getUser());
+        $this->sentinel->login($user->getUser());
         $url = $this->urlGenerator->generate('dashboard');
 
         return new HttpFoundation\RedirectResponse($url);

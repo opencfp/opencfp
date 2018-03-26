@@ -17,7 +17,9 @@
       <button type="submit" class="btn btn-brand w-full">Login</button>
     </form>
     <br>
+    {% if clientSecret != 'opencfpcentral' %}
     <a href="{{  url('opencfp_login') }}"><button class="btn btn-brand w-full">Use My OpenCFP Central Account</button></a>
+    {%  endif  %}
     <p class="text-light text-center text-sm my-4">New user? <a href="{{ url('user_new') }}" class="text-brand text-bold">Signup Now</a></p>
   </div>
 {% endblock %}

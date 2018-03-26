@@ -16,7 +16,6 @@ namespace OpenCFP\Http\Action\Opencfp;
 use OpenCFP\Domain\Services;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
 
 final class LoginAction
 {
@@ -39,6 +38,15 @@ final class LoginAction
      */
     private $urlGenerator;
 
+    /**
+     * LoginAction constructor.
+     *
+     * @param Services\Authentication                 $authentication
+     * @param Routing\Generator\UrlGeneratorInterface $urlGenerator
+     * @param int                                     $clientId
+     * @param string                                  $redirectUri
+     * @param string                                  $authorizeUrl
+     */
     public function __construct(
         Services\Authentication $authentication,
         Routing\Generator\UrlGeneratorInterface $urlGenerator,
@@ -48,11 +56,18 @@ final class LoginAction
     ) {
         $this->authentication = $authentication;
         $this->urlGenerator   = $urlGenerator;
-        $this->clientId = $clientId;
-        $this->redirectUri = $redirectUri;
-        $this->authorizeUrl = $authorizeUrl;
+        $this->clientId       = $clientId;
+        $this->redirectUri    = $redirectUri;
+        $this->authorizeUrl   = $authorizeUrl;
     }
 
+    /**
+     * @param HttpFoundation\Request $request
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return HttpFoundation\Response
+     */
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         if ($this->authentication->isAuthenticated()) {
@@ -61,13 +76,13 @@ final class LoginAction
             return new HttpFoundation\RedirectResponse($url);
         }
 
-        $query = http_build_query([
-            'client_id' => $this->clientId,
-            'redirect_uri' => $this->redirectUri,
+        $query = \http_build_query([
+            'client_id'     => $this->clientId,
+            'redirect_uri'  => $this->redirectUri,
             'response_type' => 'code',
-            'scope' => '',
+            'scope'         => '',
         ]);
 
-        return new HttpFoundation\RedirectResponse($this->authorizeUrl. $query);
+        return new HttpFoundation\RedirectResponse($this->authorizeUrl . $query);
     }
 }

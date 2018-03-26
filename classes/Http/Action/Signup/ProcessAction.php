@@ -41,6 +41,13 @@ final class ProcessAction
      */
     private $requestValidator;
 
+    /**
+     * ProcessAction constructor.
+     * @param Services\Authentication $authentication
+     * @param Services\AccountManagement $accounts
+     * @param RequestValidator $requestValidator
+     * @param Routing\Generator\UrlGeneratorInterface $urlGenerator
+     */
     public function __construct(
         Services\Authentication $authentication,
         Services\AccountManagement $accounts,
@@ -53,6 +60,14 @@ final class ProcessAction
         $this->urlGenerator     = $urlGenerator;
     }
 
+    /**
+     * @param HttpFoundation\Request $request
+     * @return HttpFoundation\Response
+     * @throws \InvalidArgumentException
+     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
+     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
+     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
+     */
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         try {

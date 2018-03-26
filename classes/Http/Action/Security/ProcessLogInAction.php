@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 use Twig_Environment;
 
-final class LogInAction
+final class ProcessLogInAction
 {
     /**
      * @var Services\Authentication
