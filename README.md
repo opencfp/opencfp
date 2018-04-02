@@ -118,6 +118,7 @@ $ bin/console server:start
 ```
 
 The server uses port `8000`. This is a quick way to get started doing development on OpenCFP itself.
+Important note: The command `server:start` is only available when the application environment (`CFP_ENV`) is set to `development`.
 
 Details on how to use this console command can be found at Symfony's documentation for [using the built-in web server](http://symfony.com/doc/current/setup/built_in_web_server.html).
 
