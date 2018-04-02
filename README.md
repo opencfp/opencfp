@@ -14,6 +14,7 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Contributing](#contributing)
  * [Requirements](#requirements)
  * [Installation](#installation)
+   * [Grab Latest Release](#grab-latest-release)
    * [Cloning the Repository](#cloning-the-repository)
    * [Specify Environment](#specify-environment)
    * [Installing Composer Dependencies](#installing-composer-dependencies)
@@ -58,11 +59,11 @@ See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 ## [Installation](#installation)
 
-### [Grab Latest Release](#cloning-the-repository)
+### [Grab Latest Release](#grab-latest-release)
 
 It is recommended for you to always install the latest marked release. Go to `https://github.com/opencfp/opencfp/releases` to download it.
 
-### Cloning the Repository
+### [Cloning the Repository](#cloning-the-repository)
 
 Clone this project into your working directory. We recommend always running the `master` branch as it was frequent contributions.
 
