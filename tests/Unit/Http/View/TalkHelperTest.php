@@ -41,6 +41,7 @@ final class TalkHelperTest extends Framework\TestCase
             'framework'          => 'Framework',
             'ibmi'               => 'IBMi',
             'javascript'         => 'JavaScript',
+            'personal'           => 'Personal Skills',
             'security'           => 'Security',
             'testing'            => 'Testing',
             'uiux'               => 'UI/UX',
