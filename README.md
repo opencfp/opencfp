@@ -242,7 +242,10 @@ Note: For updating previously installed instances only run migrations as needed.
 
 ### [Final Touches](#final-touches)
 
- * The web server must be able to write to the `/web/uploads` directory in order to
+ * The web server must be able to write to the directories:
+    * `/web/uploads`
+    * `/cache/:environment` (e.g. `/cache/production`)
+    * `/log`
  * You may need to alter the `memory_limit` of the web server to allow image processing of head-shots. This is largely
    dictated by the size of the images people upload. Typically 512M works.
  * Customize templates and `/web/assets/css/site.css` to your heart's content.
