@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.5.4 - 2018-04-09
+
+### Added
+
+- Support for phly/keep-a-changelog to help with creating releases
+- 'Personal Skills' is now a talk category
+
+### Changed  
+
+- Updated documentation about when dev server is available
+- Updated documentation about permissions for cache and log folders
+
 ## 1.5.3 - 2018-03-27
 
 ### Added
