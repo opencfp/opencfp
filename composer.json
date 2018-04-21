@@ -64,7 +64,7 @@
     },
     "autoload": {
         "psr-4": {
-            "OpenCFP\\": "classes/"
+            "OpenCFP\\": "src/"
         }
     },
     "autoload-dev": {
