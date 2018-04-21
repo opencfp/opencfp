@@ -286,6 +286,57 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Test that the Joind.in URL is being validated correctly
+     *
+     * @test
+     *
+     * @param string $url
+     * @param bool   $expectedResponse
+     * @dataProvider urlProvider
+     */
+    public function urlIsValidatedCorrectly($url, $expectedResponse)
+    {
+        $data['url'] = $url;
+        $form        = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
+        $form->sanitize();
+
+        $this->assertSame(
+            $expectedResponse,
+            $form->validateUrl(),
+            'Did not validate URL as expected'
+        );
+    }
+
+    /**
+     * Data provider for urlIsValidatedCorrectly
+     *
+     * @return array
+     */
+    public function urlProvider(): array
+    {
+        $validBaseUrl = 'https://joind.in/user/';
+        $longUrl      = '';
+
+        for ($x = 1; $x <= 256; ++$x) {
+            $longUrl .= 'X';
+        }
+
+        return [
+            [$validBaseUrl . 'abc123', true],
+            [$validBaseUrl, false],
+            [null, true],
+            [false, true],
+            ['', true],
+            ['http://example.net', false],
+            ['http://joind.in/user/abc123', false],
+            [$validBaseUrl . 'do re mi', false],
+            [$validBaseUrl . '_FirstLast', true],
+            [$validBaseUrl . 'first-last', true],
+            [$validBaseUrl . $longUrl, false],
+        ];
+    }
+
+    /**
      * Test that verifies that our wrapper method for validating all
      * fields works correctly
      *
