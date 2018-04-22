@@ -29,7 +29,7 @@ integration: test-env vendor database cache
 	vendor/bin/phpunit --testsuite integration
 
 stan: vendor
-	vendor/bin/phpstan analyse --level=2 classes tests
+	vendor/bin/phpstan analyse --level=2 src tests
 
 test: integration unit
 

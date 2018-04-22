@@ -2,7 +2,7 @@
     "timeout": 60,
     "source": {
         "directories": [
-            "classes"
+            "src"
         ]
     },
     "logs": {

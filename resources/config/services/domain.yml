@@ -4,7 +4,7 @@ services:
     autowire: true
 
   OpenCFP\Domain\:
-    resource: '%kernel.project_dir%/classes/Domain/*'
+    resource: '%kernel.project_dir%/src/Domain/*'
 
   OpenCFP\Domain\CallForPapers:
     arguments:
