@@ -391,7 +391,8 @@ permissions first.
 
 ## [Build Docker Image](#build-docker-image)
 
-You can build your own docker image by executing:
+Please remember to edit the file `config/docker.yml.dist` to match your environment, then you can build your own 
+docker image by executing:
 
 ```
 $ ./.docker/build latest
