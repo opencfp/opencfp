@@ -1,0 +1,70 @@
+application:
+  title: OpenCFP
+  url: http://cfp.dev
+  email: contact@openconf.com
+  eventurl: http://myenvent.com
+  event_location: Miami, FL
+  enddate: Oct. 14th, 2100
+  show_submission_count: false
+  airport: MIA
+  arrival: 2018-10-26
+  departure: 2018-10-31
+  secure_ssl: true
+  online_conference: false
+  date_format: d/m/Y
+  date_timezone: "UTC"
+  coc_link: http://confcodeofconduct.com/
+  show_contrib_banner: true
+  venue_image_path: /assets/img/venue.jpg
+
+database:
+  host: database
+  database: cfp
+  dsn: mysql:dbname=cfp;host=database
+  user: root
+  password: root
+
+log:
+  level: error
+
+mail:
+  host: ~
+  port: ~
+  username: ~
+  password: ~
+  encryption: ~
+  auth_mode: ~
+
+talk:
+  categories:
+    api: APIs (REST, SOAP, etc.)
+    continuousdelivery: Continuous Delivery
+    database: Database
+    development: Development
+    devops: Devops
+    framework: Framework
+    ibmi: IBMi
+    javascript: JavaScript
+    personal: Personal Skills
+    security: Security
+    testing: Testing
+    uiux: UI/UX
+    other: Other
+  levels:
+    entry: Entry level
+    mid: Mid-level
+    advanced: Advanced
+  types:
+    regular: Regular (50 mins)
+    tutorial: Tutorial (3 hrs)
+
+security:
+  firewalls:
+    secured_area:
+      form_forgot:
+        csrf_parameter: _csrf_security_token
+        csrf_token_id: forgot_password
+
+reviewer:
+  users:
+    -
