@@ -391,6 +391,23 @@ permissions first.
 
 ## [Build Docker Image](#build-docker-image)
 
+### What is Docker
+
+Quoting [OpenSource](https://opensource.com/resources/what-docker):
+
+"[Docker](https://www.docker.com) is a tool designed to make it easier to create, deploy, and run applications by using containers. 
+Containers allow a developer to package up an application with all of the parts it needs, such as libraries and 
+other dependencies, and ship it all out as one package. By doing so, thanks to the container, 
+the developer can rest assured that the application will run on any other Linux machine regardless of any customized 
+settings that machine might have that could differ from the machine used for writing and testing the code."
+
+### Requirements
+
+1. You will need to download and install [Docker](https://www.docker.com/get-docker) locally.
+2. You will need to download and install [docker-compose](https://docs.docker.com/compose/install/) too.
+
+### Build & Run the image
+
 Please remember to edit the file `config/docker.yml.dist` to match your environment, then you can build your own 
 docker image by executing:
 
@@ -398,13 +415,37 @@ docker image by executing:
 $ ./.docker/build latest
 ```
 
-And the result will be an image called `opencfp/opencfp:latest`
+And the result will be an image called `opencfp/opencfp:latest`.
 
-Or if you like you can run
+Or if you like you can run [docker-compose](https://docs.docker.com/compose/install/) command which will build the 
+image and run the containers automatically for you:
 
 ```
 $  docker-compose -f docker-compose.yml.dist up --build -d
 ```
 
-You can always modify the file `docker-compose.yml.dist` and have your own setup.
+So now if you head over to `http://localhost` you will be greeted with a running version of OpenCFP. 
+
+### Run PHP commands within the Container
+
+To run any command in the app container you can use the docker-compose 
+[exec](https://docs.docker.com/compose/reference/exec/) command, for example to run the `setup` script you run:
+
+```
+$ docker-compose -f docker-compose.yml.dist exec app ./script/setup
+```
+
+### Running the image directly
+
+You can run the image (after you build it) and link it to an already running database container using the docker 
+[run](https://docs.docker.com/engine/reference/commandline/run/) command like:
+
+```
+docker run -e CFP_ENV=production -e CFP_DB_HOST=database -e CFP_DB_PASS=root --name cfp --link database:database -p 80:80 -d opencfp/opencfp:latest
+```
+
+Where `database` is the name of the running database container. 
+
+
+_PS_: You can always modify the file `docker-compose.yml.dist` and have your own setup.
 
