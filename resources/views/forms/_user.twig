@@ -53,8 +53,8 @@
             <label for="form-user-photo" class="btn btn-brand cursor-pointer inline-block"><i class="fa fa-upload"></i><span class="ml-2">Upload Photo</span></label>
             <input type="file" id="form-user-photo" name="speaker_photo" placeholder="Photo at least 300px wide by 300px high" accept="image/jpg, image/jpeg, image/png" class="hidden">
             <p class="text-xs text-em mb-2 text-dark-soft">Photo should be square, and must be at least 300px wide by 300px high. JPG and PNG are the only accepted formats.</p>
-            {% if preview_photo is defined and preview_photo is not empty %}
-                <img src="{{ preview_photo }}" class="rounded-pill">
+            {% if speaker_photo is defined and speaker_photo is not empty %}
+                <img src="{{ uploads(speaker_photo) }}" class="rounded-pill">
             {% endif %}
 
             {% if coc_link is defined and coc_link is not empty %}
