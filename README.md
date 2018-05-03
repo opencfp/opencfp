@@ -165,7 +165,7 @@ server{
 
 		fastcgi_param CFP_ENV production;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_pass unix:/var/run/php71-fpm.sock;
 		fastcgi_read_timeout 150;
 		fastcgi_index index.php;
 		fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -387,3 +387,23 @@ The default phpunit.xml.dist file is in the root directory for the project.
 
 You may need to edit directory permissions for some vendor packages such as HTML Purifier. Check the `/cache` directory's
 permissions first.
+
+
+## [Build Docker Image](#build-docker-image)
+
+You can build your own docker image by executing:
+
+```
+$ ./.docker/build latest
+```
+
+And the result will be an image called `opencfp/opencfp:latest`
+
+Or if you like you can run
+
+```
+$  docker-compose -f docker-compose.yml.dist up --build -d
+```
+
+You can always modify the file `docker-compose.yml.dist` and have your own setup.
+
