@@ -32,6 +32,7 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Compiling Frontend Assets](#compiling-frontend-assets)
  * [Testing](#testing)
  * [Troubleshooting](#troubleshooting)
+ * [Build Docker Image](#build-docker-image)
 
 
 ## [Features](#features)
