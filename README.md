@@ -22,6 +22,7 @@ OpenCFP is a PHP-based conference talk submission system.
    * [Create a Database](#create-a-database)
    * [Configure Environment](#configure-environment)
    * [Run Migrations](#run-migrations)
+   * [Using Vagrant](#using-vagrant)
    * [Final Touches](#final-touches)
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
@@ -240,6 +241,40 @@ $ CFP_ENV=production vendor/bin/phinx migrate
 ```
 
 Note: For updating previously installed instances only run migrations as needed.
+
+### [Using Vagrant](#using-vagrant)
+
+After running `$ script/setup` from the project root run `php vendor/bin/homestead make`. This will create a `Homestead.yaml` based on settings from `Homestead.yaml.example`. Do not version control `Homestead.yaml`
+
+Run `vagrant up`
+Add `192.168.10.10 opencfp.test` to your operating system's hosts file (/etc/hosts)
+Point your browser to `http://opencfp.test`
+
+Edit your `config/development.yml` to use Homestead's database & mail settings:
+
+```
+database:
+  host: 127.0.0.1
+  database: cfp
+  dsn: mysql:dbname=cfp;host=127.0.0.1
+  user: homestead
+  password: secret
+
+log:
+  level: debug
+
+mail:
+  host: localhost
+  port: 1025
+  username: ~
+  password: ~
+  encryption: ~
+  auth_mode: ~
+```
+
+Mailhog (local mail catching) can be viewed at http://opencfp.test:8025
+
+For more usage information please see the [Laravel Homestead Docs](http://laravel.com/docs/homestead)
 
 ### [Final Touches](#final-touches)
 
