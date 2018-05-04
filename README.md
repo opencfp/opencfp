@@ -448,5 +448,14 @@ docker run -e CFP_ENV=production -e CFP_DB_HOST=database -e CFP_DB_PASS=root --n
 Where `database` is the name of the running database container. 
 
 
+### Access MySQL container
+
+To access MySQL you can use the following information:
+
+- *Host*: 127.0.0.1
+- *User*: root
+- *Password*: root (or the one you specified in docker-compose) 
+ 
+
 _PS_: You can always modify the file `docker-compose.yml.dist` and have your own setup.
 
