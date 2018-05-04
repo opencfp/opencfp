@@ -14,7 +14,6 @@ export IMAGE_NAME=opencfp/opencfp:$TAG && \
              --file ./.docker/Dockerfile \
              --build-arg VCS_REF=$COMMIT_HASH \
              --build-arg DOCKER_REPO=$DOCKER_REPO \
-             --build-arg VERSION=$BITBUCKET_BUILD_NUMBER \
              --build-arg IMAGE_NAME=$IMAGE_NAME \
              --squash --force-rm --compress --rm \
              -t $IMAGE_NAME .

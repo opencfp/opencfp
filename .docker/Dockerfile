@@ -1,4 +1,4 @@
-FROM zaherg/php-and-nginx-xdebug:latest
+FROM zaherg/php-and-nginx:latest
 
 ARG BUILD_DATE
 ARG DOCKER_REPO
@@ -7,7 +7,7 @@ ARG IMAGE_NAME
 ARG VERSION
 
 LABEL Maintainer="Zaher Ghaibeh <z@zah.me>" \
-      Description="This is the docker image for OpenCFP." \
+      Description="This is the docker image for OpenCFP, a PHP-based conference talk submission system." \
       org.label-schema.name=$IMAGE_NAME \
       org.label-schema.description="This is the docker image for OpenCFP, a PHP-based conference talk submission system." \
       org.label-schema.build-date=$BUILD_DATE \
@@ -20,7 +20,6 @@ LABEL Maintainer="Zaher Ghaibeh <z@zah.me>" \
 ENV CFP_ENV ${CFP_ENV:-development}
 ENV CFP_DB_HOST ${CFP_DB_HOST:-"127.0.0.1"}
 ENV CFP_DB_PASS ${CFP_DB_PASS:-root}
-ENV PHP_XDEBUG_DEFAULT_ENABLE ${PHP_XDEBUG_DEFAULT_ENABLE:-0}
 
 COPY ./ /var/www
 
@@ -29,10 +28,11 @@ RUN set -ex \
     && sed -i "s/\/web\/html/\/var\/www\/web/" /etc/nginx/nginx.conf && \
     sed -i "s/localhost/_/" /etc/nginx/nginx.conf && \
     sed -i "s/#user  nobody;/user  www-data;/" /etc/nginx/nginx.conf && \
+    sed -i "s/#gzip  on;/gzip  on;/" /etc/nginx/nginx.conf && \
     touch /usr/local/etc/php/php.ini && \
     echo "cgi.fix_pathinfo=0" >> /usr/local/etc/php/php.ini  && \
-    echo "upload_max_filesize = 30M" >> /usr/local/etc/php/php.ini && \
-    echo "post_max_size = 30M" >> /usr/local/etc/php/php.ini && \
+    echo "upload_max_filesize = 120M" >> /usr/local/etc/php/php.ini && \
+    echo "post_max_size = 120M" >> /usr/local/etc/php/php.ini && \
     echo "memory_limit = 512M" >> /usr/local/etc/php/php.ini && \
     echo 'variables_order = "EGPCS"' >> /usr/local/etc/php/php.ini && \
     sed -i -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" /usr/local/etc/php-fpm.d/www.conf && \
@@ -41,7 +41,7 @@ RUN set -ex \
     sed -i -e "s/pm.min_spare_servers = 1/pm.min_spare_servers = 2/g" /usr/local/etc/php-fpm.d/www.conf && \
     sed -i -e "s/pm.max_spare_servers = 3/pm.max_spare_servers = 4/g" /usr/local/etc/php-fpm.d/www.conf && \
     sed -i -e "s/pm.max_requests = 500/pm.max_requests = 200/g" /usr/local/etc/php-fpm.d/www.conf && \
-    mkdir /var/www/cache && \
+    mkdir -p /var/www/cache && \
     mkdir -p /var/www/cache/testing/sessions /var/www/cache/production/sessions /var/www/cache/development/sessions \
             /var/www/cache/testing/twig /var/www/cache/production/twig /var/www/cache/development/twig && \
     chgrp -R www-data /var/lib/nginx /var/www/web/uploads /var/www/cache /var/www/log && \
