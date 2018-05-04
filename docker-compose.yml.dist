@@ -26,7 +26,11 @@ services:
       - "3306:3306"
     networks:
       - backend
-
+    volumes:
+      - database:/var/lib/mysql
 
 networks:
   backend:
+
+volumes:
+  database:
