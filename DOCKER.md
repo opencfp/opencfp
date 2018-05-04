@@ -8,7 +8,7 @@ OpenCFP is a PHP-based conference talk submission system.
 Now that we have [Docker](https://docker.com) image that we can build, it is easy for us to setup a docker 
 development environment, you need to follow the following steps:
 
-*  You need to create a new `docker-compose.yml` file from our `docker-compos.yml.dist` file.
+* You need to create a new `docker-compose.yml` file from our `docker-compos.yml.dist` file.
 
 * Modify the `app.environment` section to look like the following:
 
@@ -46,7 +46,7 @@ the container, you can remove this line and create your own `.yml` file.
 ```
 
 The last part, is the important one, as the scripts was written in `bash` mean while the docker image depends on `alpine`
-to make sure it has a small size (about *270MB* in total), so we needs to copy over the docker specific files to the
+to make sure it has a small size (about **270MB** in total), so we needs to copy over the docker specific files to the
 container, and replace the one on the container.
 
 ```

@@ -452,9 +452,9 @@ Where `database` is the name of the running database container.
 
 To access MySQL you can use the following information:
 
-- *Host*: 127.0.0.1
-- *User*: root
-- *Password*: root (or the one you specified in docker-compose) 
+- **Host**: 127.0.0.1
+- **User**: root
+- **Password**: root (or the one you specified in docker-compose) 
  
 
 _PS_: You can always modify the file `docker-compose.yml.dist` and have your own setup.
