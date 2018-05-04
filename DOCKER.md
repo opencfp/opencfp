@@ -46,7 +46,7 @@ the container, you can remove this line and create your own `.yml` file.
 ```
 
 The last part, is the important one, as the scripts was written in `bash` mean while the docker image depends on `alpine`
-to make sure it has a small size (about *300 Mb* in total), so we needs to copy over the docker specific files to the
+to make sure it has a small size (about *270MB* in total), so we needs to copy over the docker specific files to the
 container, and replace the one on the container.
 
 ```
