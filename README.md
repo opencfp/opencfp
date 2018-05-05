@@ -12,13 +12,13 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Features](#features)
  * [Screenshots](#screenshots)
  * [Contributing](#contributing)
- * [Requirements](#requirements)
+ * [Minimum Requirements](#requirements)
  * [Installation](#installation)
    * [Grab Latest Release](#grab-latest-release)
    * [Cloning the Repository](#cloning-the-repository)
    * [Specify Environment](#specify-environment)
    * [Installing Composer Dependencies](#installing-composer-dependencies)
-   * [PHP Built-in Web Server](#php-built-in-web-server)
+   * [Specify Web Server Document Root](#specify-web-server-document-root)
    * [Create a Database](#create-a-database)
    * [Configure Environment](#configure-environment)
    * [Run Migrations](#run-migrations)
@@ -52,7 +52,7 @@ You can find screenshots of the application in our [wiki](https://github.com/ope
 
 See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
-## [Requirements](#requirements)
+## [Minimum Requirements](#requirements)
 
  * PHP 7.1+
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
@@ -111,31 +111,11 @@ From the project directory, run the following command. You may need to download 
 $ script/setup
 ```
 
-### [PHP Built-in Web Server](#php-built-in-web-server)
-
-To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/features.commandline.webserver.php) the
-following command can be run:
-
-```
-$ bin/console server:start
-```
-
-The server uses port `8000`. This is a quick way to get started doing development on OpenCFP itself.
-Important note: The command `server:start` is only available when the application environment (`CFP_ENV`) is set to `development`.
-
-Details on how to use this console command can be found at Symfony's documentation for [using the built-in web server](http://symfony.com/doc/current/setup/built_in_web_server.html).
-
-To stop the server the following command can be run:
-
-```
-$ bin/console server:stop
-```
-
 ### [Specify Web Server Document Root](#specify-web-server-document-root)
 
 Set up your desired webserver to point to the `/web` directory.
 
-Apache 2+ Example:
+[Apache 2+](https://httpd.apache.org/) Example:
 
 ```
 <VirtualHost *:80>
@@ -149,7 +129,7 @@ Apache 2+ Example:
 nginx Example:
 
 ```
-server{
+server {
 	server_name cfp.sitename.com;
 	root /var/www/opencfp/web;
 	listen 80;
@@ -176,6 +156,21 @@ server{
 
 }
 ```
+
+You can use the included `opencfp-nginx.conf.dist` file and modify it as needed.
+
+[Caddy](https://caddyserver.com) example:
+
+```
+localhost:8080
+root /var/www/opencfp/web
+fastcgi / 127.0.0.1:9000 php 
+rewrite / {path} {path}/ /index.php/{path} 
+log access.log
+errors error.log
+```
+
+You can use the included `Caddyfile.dist` file and modify it as needed.
 
 The application does not currently work properly if you use PHP's built-in
 server.
