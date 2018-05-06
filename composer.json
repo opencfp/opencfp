@@ -81,6 +81,6 @@
         "update": "./script/update",
         "test":"./script/test",
         "make":"make",
-        "fix" : "php vendor/bin/php-cs-fixer fix --using-cache=no"
+        "fix" : "php vendor/bin/php-cs-fixer fix --config=.php_cs.dist --using-cache=no"
     }
 }
