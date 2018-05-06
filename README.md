@@ -108,16 +108,20 @@ Again, just use your preferred environment in place of `production` if required.
 From the project directory, run the following command. You may need to download `composer.phar` first from http://getcomposer.org
 
 ```bash
-$ php composer.phar run setup
+$ php composer.phar run setup-env
 ```
 
 If you have composer installed globally you can run:
 
 ```bash
-$ composer run setup
+$ composer run setup-env
 ```
 
+Or you can run
 
+```bash
+$ ./script/setup
+```
 ### [Specify Web Server Document Root](#specify-web-server-document-root)
 
 Set up your desired webserver to point to the `/web` directory.
@@ -246,7 +250,8 @@ Note: For updating previously installed instances only run migrations as needed.
 
 ### [Using Vagrant](#using-vagrant)
 
-After running `$ composer run setup` from the project root run `php vendor/bin/homestead make`. This will create a `Homestead.yaml` based on settings from `Homestead.yaml.example`. Do not version control `Homestead.yaml`
+After running `$ composer run setup-env` (or `$ ./script/setup`) from the project root run `php vendor/bin/homestead make`. 
+This will create a `Homestead.yaml` based on settings from `Homestead.yaml.example`. Do not version control `Homestead.yaml`
 
 Run `vagrant up`
 Add `192.168.10.10 opencfp.test` to your operating system's hosts file (/etc/hosts)
@@ -330,8 +335,13 @@ So now if you head over to `http://localhost` you will be greeted with a running
 To run any command in the app container you can use the docker-compose 
 [exec](https://docs.docker.com/compose/reference/exec/) command, for example to run the `setup` script you run:
 
+```bash
+$ docker-compose -f docker-compose.yml.dist exec app composer run setup-env
 ```
-$ docker-compose -f docker-compose.yml.dist exec app composer run setup
+OR
+
+```bash
+$ docker-compose -f docker-compose.yml.dist exec app ./script/setup
 ```
 
 #### Running the image directly
@@ -441,14 +451,14 @@ for an easy to follow convention for common tasks when developing applications.
 This command will install all dependencies, run database migrations, and alert you of any missing configs.
 
 ```
-$ composer run setup
+$ composer run setup-env
 ```
 
 #### Update Application
 This command will update all dependencies and run new migrations
 
 ```
-$ composer run update
+$ composer run update-env
 ```
 
 #### Run Tests

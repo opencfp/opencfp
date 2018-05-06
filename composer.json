@@ -77,10 +77,10 @@
         ]
     },
     "scripts": {
-        "setup": "./script/setup",
-        "update": "./script/update",
-        "test":"./script/test",
-        "make":"make",
-        "fix" : "php vendor/bin/php-cs-fixer fix --config=.php_cs.dist --using-cache=no"
+        "fix": "php vendor/bin/php-cs-fixer fix --config=.php_cs.dist --using-cache=no",
+        "make": "make",
+        "setup-env": "./script/setup",
+        "test": "./script/test",
+        "update-env": "./script/update"
     }
 }
