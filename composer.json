@@ -75,5 +75,11 @@
         "files": [
             "tests/helpers.php"
         ]
+    },
+    "scripts": {
+        "setup": "./script/setup",
+        "update": "./script/update",
+        "test":"./script/test",
+        "fix" : "php vendor/bin/php-cs-fixer fix --using-cache=no"
     }
 }
