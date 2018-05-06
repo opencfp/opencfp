@@ -108,8 +108,15 @@ Again, just use your preferred environment in place of `production` if required.
 From the project directory, run the following command. You may need to download `composer.phar` first from http://getcomposer.org
 
 ```bash
-$ script/setup
+$ php composer.phar run setup
 ```
+
+If you have composer installed globally you can run:
+
+```bash
+$ composer run setup
+```
+
 
 ### [Specify Web Server Document Root](#specify-web-server-document-root)
 
@@ -239,7 +246,7 @@ Note: For updating previously installed instances only run migrations as needed.
 
 ### [Using Vagrant](#using-vagrant)
 
-After running `$ script/setup` from the project root run `php vendor/bin/homestead make`. This will create a `Homestead.yaml` based on settings from `Homestead.yaml.example`. Do not version control `Homestead.yaml`
+After running `$ composer run setup` from the project root run `php vendor/bin/homestead make`. This will create a `Homestead.yaml` based on settings from `Homestead.yaml.example`. Do not version control `Homestead.yaml`
 
 Run `vagrant up`
 Add `192.168.10.10 opencfp.test` to your operating system's hosts file (/etc/hosts)
@@ -363,14 +370,14 @@ for an easy to follow convention for common tasks when developing applications.
 This command will install all dependencies, run database migrations, and alert you of any missing configs.
 
 ```
-$ script/setup
+$ composer run setup
 ```
 
 #### Update Application
 This command will update all dependencies and run new migrations
 
 ```
-$ script/update
+$ composer run update
 ```
 
 #### Run Tests
@@ -378,7 +385,7 @@ This command will run the PHPUnit test suite using distributed phpunit config, `
 no phpunit.xml is found in the root.
 
 ```
-$ script/test
+$ composer run test
 ```
 
 ## [Compiling Frontend Assets](#compiling-frontend-assets)
@@ -407,7 +414,7 @@ your environment for testing:
 2. The recommended way to run the tests is:
 
 ```
-$ script/test
+$ composer run test
 ```
 
 The default phpunit.xml.dist file is in the root directory for the project.

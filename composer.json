@@ -80,6 +80,7 @@
         "setup": "./script/setup",
         "update": "./script/update",
         "test":"./script/test",
+        "make":"make",
         "fix" : "php vendor/bin/php-cs-fixer fix --using-cache=no"
     }
 }
