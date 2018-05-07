@@ -24,6 +24,7 @@ OpenCFP is a PHP-based conference talk submission system.
    * [Run Migrations](#run-migrations)
    * [Using Vagrant](#using-vagrant)
    * [Final Touches](#final-touches)
+   * [Building Docker Image](#build-docker-image)
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
    * [Reviewer Group Management](#reviewer-group-management)
@@ -33,7 +34,6 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Compiling Frontend Assets](#compiling-frontend-assets)
  * [Testing](#testing)
  * [Troubleshooting](#troubleshooting)
- * [Build Docker Image](#build-docker-image)
 
 
 ## [Features](#features)
@@ -108,9 +108,20 @@ Again, just use your preferred environment in place of `production` if required.
 From the project directory, run the following command. You may need to download `composer.phar` first from http://getcomposer.org
 
 ```bash
-$ script/setup
+$ php composer.phar run setup-env
 ```
 
+If you have composer installed globally you can run:
+
+```bash
+$ composer run setup-env
+```
+
+Or you can run
+
+```bash
+$ ./script/setup
+```
 ### [Specify Web Server Document Root](#specify-web-server-document-root)
 
 Set up your desired webserver to point to the `/web` directory.
@@ -239,7 +250,8 @@ Note: For updating previously installed instances only run migrations as needed.
 
 ### [Using Vagrant](#using-vagrant)
 
-After running `$ script/setup` from the project root run `php vendor/bin/homestead make`. This will create a `Homestead.yaml` based on settings from `Homestead.yaml.example`. Do not version control `Homestead.yaml`
+After running `$ composer run setup-env` (or `$ ./script/setup`) from the project root run `php vendor/bin/homestead make`. 
+This will create a `Homestead.yaml` based on settings from `Homestead.yaml.example`. Do not version control `Homestead.yaml`
 
 Run `vagrant up`
 Add `192.168.10.10 opencfp.test` to your operating system's hosts file (/etc/hosts)
@@ -280,6 +292,82 @@ For more usage information please see the [Laravel Homestead Docs](http://larave
  * You may need to alter the `memory_limit` of the web server to allow image processing of head-shots. This is largely
    dictated by the size of the images people upload. Typically 512M works.
  * Customize templates and `/web/assets/css/site.css` to your heart's content.
+
+### [Building Docker Image](#building-docker-image)
+
+#### What is Docker
+
+Quoting [OpenSource](https://opensource.com/resources/what-docker):
+
+"[Docker](https://www.docker.com) is a tool designed to make it easier to create, deploy, and run applications by using containers. 
+Containers allow a developer to package up an application with all of the parts it needs, such as libraries and 
+other dependencies, and ship it all out as one package. By doing so, thanks to the container, 
+the developer can rest assured that the application will run on any other Linux machine regardless of any customized 
+settings that machine might have that could differ from the machine used for writing and testing the code."
+
+#### Requirements
+
+1. You will need to download and install [Docker](https://www.docker.com/get-docker) locally.
+2. You will need to download and install [docker-compose](https://docs.docker.com/compose/install/) too.
+
+#### Build & Run the image
+
+Please remember to edit the file `config/docker.yml.dist` to match your environment, then you can build your own 
+docker image by executing:
+
+```
+$ ./.docker/build latest
+```
+
+And the result will be an image called `opencfp/opencfp:latest`.
+
+Or if you like you can run [docker-compose](https://docs.docker.com/compose/install/) command which will build the 
+image and run the containers automatically for you:
+
+```
+$  docker-compose -f docker-compose.yml.dist up --build -d
+```
+
+So now if you head over to `http://localhost` you will be greeted with a running version of OpenCFP. 
+
+#### Run PHP commands within the Container
+
+To run any command in the app container you can use the docker-compose 
+[exec](https://docs.docker.com/compose/reference/exec/) command, for example to run the `setup` script you run:
+
+```bash
+$ docker-compose -f docker-compose.yml.dist exec app composer run setup-env
+```
+OR
+
+```bash
+$ docker-compose -f docker-compose.yml.dist exec app ./script/setup
+```
+
+#### Running the image directly
+
+You can run the image (after you build it) and link it to an already running database container using the docker 
+[run](https://docs.docker.com/engine/reference/commandline/run/) command like:
+
+```
+docker run -e CFP_ENV=production -e CFP_DB_HOST=database -e CFP_DB_PASS=root --name cfp --link database:database -p 80:80 -d opencfp/opencfp:latest
+```
+
+Where `database` is the name of the running database container. 
+
+
+#### Access MySQL container
+
+To access MySQL you can use the following information:
+
+- **Host**: 127.0.0.1
+- **User**: root
+- **Password**: root (or the one you specified in docker-compose) 
+ 
+
+For using docker in your development environment check [DOCKER.md](DOCKER.md) file. 
+
+_PS_: You can always modify the file `docker-compose.yml.dist` and have your own setup.
 
 
 ## [Command-line Utilities](#command-line-utilities)
@@ -363,14 +451,14 @@ for an easy to follow convention for common tasks when developing applications.
 This command will install all dependencies, run database migrations, and alert you of any missing configs.
 
 ```
-$ script/setup
+$ composer run setup-env
 ```
 
 #### Update Application
 This command will update all dependencies and run new migrations
 
 ```
-$ script/update
+$ composer run update-env
 ```
 
 #### Run Tests
@@ -378,7 +466,7 @@ This command will run the PHPUnit test suite using distributed phpunit config, `
 no phpunit.xml is found in the root.
 
 ```
-$ script/test
+$ composer run test
 ```
 
 ## [Compiling Frontend Assets](#compiling-frontend-assets)
@@ -407,7 +495,7 @@ your environment for testing:
 2. The recommended way to run the tests is:
 
 ```
-$ script/test
+$ composer run test
 ```
 
 The default phpunit.xml.dist file is in the root directory for the project.
@@ -418,74 +506,4 @@ The default phpunit.xml.dist file is in the root directory for the project.
 
 You may need to edit directory permissions for some vendor packages such as HTML Purifier. Check the `/cache` directory's
 permissions first.
-
-
-## [Build Docker Image](#build-docker-image)
-
-### What is Docker
-
-Quoting [OpenSource](https://opensource.com/resources/what-docker):
-
-"[Docker](https://www.docker.com) is a tool designed to make it easier to create, deploy, and run applications by using containers. 
-Containers allow a developer to package up an application with all of the parts it needs, such as libraries and 
-other dependencies, and ship it all out as one package. By doing so, thanks to the container, 
-the developer can rest assured that the application will run on any other Linux machine regardless of any customized 
-settings that machine might have that could differ from the machine used for writing and testing the code."
-
-### Requirements
-
-1. You will need to download and install [Docker](https://www.docker.com/get-docker) locally.
-2. You will need to download and install [docker-compose](https://docs.docker.com/compose/install/) too.
-
-### Build & Run the image
-
-Please remember to edit the file `config/docker.yml.dist` to match your environment, then you can build your own 
-docker image by executing:
-
-```
-$ ./.docker/build latest
-```
-
-And the result will be an image called `opencfp/opencfp:latest`.
-
-Or if you like you can run [docker-compose](https://docs.docker.com/compose/install/) command which will build the 
-image and run the containers automatically for you:
-
-```
-$  docker-compose -f docker-compose.yml.dist up --build -d
-```
-
-So now if you head over to `http://localhost` you will be greeted with a running version of OpenCFP. 
-
-### Run PHP commands within the Container
-
-To run any command in the app container you can use the docker-compose 
-[exec](https://docs.docker.com/compose/reference/exec/) command, for example to run the `setup` script you run:
-
-```
-$ docker-compose -f docker-compose.yml.dist exec app ./script/setup
-```
-
-### Running the image directly
-
-You can run the image (after you build it) and link it to an already running database container using the docker 
-[run](https://docs.docker.com/engine/reference/commandline/run/) command like:
-
-```
-docker run -e CFP_ENV=production -e CFP_DB_HOST=database -e CFP_DB_PASS=root --name cfp --link database:database -p 80:80 -d opencfp/opencfp:latest
-```
-
-Where `database` is the name of the running database container. 
-
-
-### Access MySQL container
-
-To access MySQL you can use the following information:
-
-- **Host**: 127.0.0.1
-- **User**: root
-- **Password**: root (or the one you specified in docker-compose) 
- 
-
-_PS_: You can always modify the file `docker-compose.yml.dist` and have your own setup.
 

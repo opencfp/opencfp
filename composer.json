@@ -75,5 +75,12 @@
         "files": [
             "tests/helpers.php"
         ]
+    },
+    "scripts": {
+        "fix": "php vendor/bin/php-cs-fixer fix --config=.php_cs.dist --using-cache=no",
+        "make": "make",
+        "setup-env": "./script/setup",
+        "test": "./script/test",
+        "update-env": "./script/update"
     }
 }
