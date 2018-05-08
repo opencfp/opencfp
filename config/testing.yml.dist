@@ -20,8 +20,8 @@ database:
   host: mysql
   database: cfp_test
   dsn: mysql:dbname=cfp_test;host=mysql
-  user: gitlab
-  password: gilab
+  user: ROOT
+  password: null
 
 log:
   level: debug

@@ -69,5 +69,5 @@ services:
 variables:
   MYSQL_DATABASE: cfp_test
   MYSQL_ROOT_PASSWORD: ROOT
-  MYSQL_PASSOWRD: gitlab
+  MYSQL_PASSWORD: gitlab
   MYSQL_USER: gitlab
