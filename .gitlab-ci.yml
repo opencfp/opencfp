@@ -26,7 +26,7 @@ test-php:
     - curl -LO https://deployer.org/deployer.phar
     - echo "prepare build"
     - php composer.phar validate --no-check-publish
-    - php composer.phar install --env=${CFP_ENV}
+    - php composer.phar install
     - source .travis/code-climate.sh
     - sh .travis/setup-mail.sh
     - cp config/testing.yml.dist config/testing.yml
