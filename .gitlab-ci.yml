@@ -29,7 +29,7 @@ stages:
   - test
   - deploy
 
-prepare:
+start-build:
   stage: build
   script:
     - echo "prepare build"
@@ -48,9 +48,11 @@ php-tests:
   script:
     - echo "Run tests"
     - vendor/bin/phpunit --testsuite integration
+  on_stop: js-tests
 
 js-tests:
   stage: test
+  when: manual
   script:
     - yarn run production
 
@@ -61,16 +63,18 @@ before-deployment:
     - php bin/console cache:clear --env=${CFP_ENV}
     - php bin/console cache:warmup -env=${CFP_ENV}
     - yarn install
+  on_stop: to-production
 
 to-production:
   stage: deploy
+  with: manual
   script:
     - echo "Deploy to the first available production server"
     - dep deployment.ini
 
 services:
   - mysql:5.7
-  - nodejs:8.8
+  - nodejs:9.11.1
   - yarn:latest
 
 variables:
