@@ -20,8 +20,8 @@ database:
   host: mysql
   database: cfp_test
   dsn: mysql:dbname=cfp_test;host=mysql
-  user: ROOT
-  password: null
+  user: root
+  password: ROOT
 
 log:
   level: debug
