@@ -31,7 +31,7 @@ stages:
 
 prepare:
   stage: build
-  scripts:
+  script:
     - echo "prepare build"
     - source .travis/xdebug.sh
     - xdebug-disable
@@ -45,18 +45,18 @@ prepare:
 
 php-tests:
   stage: test
-  scripts:
+  script:
     - echo "Run tests"
     - vendor/bin/phpunit --testsuite integration
 
 js-tests:
   stage: test
-  scripts:
+  script:
     - yarn run production
 
 before-deployment:
   stage: deploy
-  scripts:
+  script:
     - composer install --no-dev --optimize-autoloader
     - php bin/console cache:clear --env=${CFP_ENV}
     - php bin/console cache:warmup -env=${CFP_ENV}
@@ -64,7 +64,7 @@ before-deployment:
 
 to-production:
   stage: deploy
-  scripts:
+  script:
     - echo "Deploy to the first available production server"
     - dep deployment.ini
 
