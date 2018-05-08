@@ -1,0 +1,80 @@
+# This file is a template, and might need editing before it works on your project.
+# Select image from https://hub.docker.com/_/php/
+image: php:7.1.1
+
+# Select what we should cache between builds
+cache:
+  paths:
+  - vendor/
+  - $HOME/.composer/cache
+
+before_script:
+- apt-get update -yqq
+- apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
+# Install PHP extensions
+- docker-php-ext-install mbstring mcrypt pdo_pgsql curl json intl gd xml zip bz2 opcache
+# Install & enable Xdebug for code coverage reports
+- pecl install xdebug
+- docker-php-ext-enable xdebug
+# Install and run Composer
+- curl -sS https://getcomposer.org/installer | php
+- php composer.phar install
+# Install deployer
+- curl -LO https://deployer.org/deployer.phar
+- mv deployer.phar /usr/local/bin/dep
+- chmod +x /usr/local/bin/dep
+
+stages:
+  - build
+  - test
+  - deploy
+
+prepare:
+  stage: build
+  scripts:
+    - echo "prepare build"
+    - source .travis/xdebug.sh
+    - xdebug-disable
+    - composer validate --no-check-publish
+    - composer install
+    - source .travis/code-climate.sh
+    - sh .travis/setup-mail.sh
+    - cp config/testing.yml.dist config/testing.yml
+    - CFP_ENV=testing vendor/bin/phinx migrate --environment testing
+    - mysqldump -uROOT cfp_test > tests/dump.sql
+
+php-tests:
+  stage: test
+  scripts:
+    - echo "Run tests"
+    - vendor/bin/phpunit --testsuite integration
+
+js-tests:
+  stage: test
+    scripts:
+      - yarn run production
+
+before-deployment:
+  stage: deploy
+  scripts:
+    - composer install --no-dev --optimize-autoloader
+    - php bin/console cache:clear --env=${CFP_ENV}
+    - php bin/console cache:warmup -env=${CFP_ENV}
+    - yarn install
+
+to-production:
+  stage: deploy
+  scripts:
+    - echo "Deploy to the first available production server"
+    - dep deployment.ini
+
+services:
+  - mysql:5.7
+  - nodejs:8.8
+  - yarn:latest
+
+variables:
+  MYSQL_DATABASE: cfp_test
+  MYSQL_ROOT_PASSWORD: ROOT
+  MYSQL_PASSOWRD: gitlab
+  MYSQL_USER: gitlab
