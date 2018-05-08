@@ -28,7 +28,7 @@ build-repository:
   script:
     - echo "prepare build"
     - php composer.phar validate --no-check-publish
-    - php composer.phar
+    - php composer.phar install
     - source .travis/code-climate.sh
     - sh .travis/setup-mail.sh
     - cp config/testing.yml.dist config/testing.yml
