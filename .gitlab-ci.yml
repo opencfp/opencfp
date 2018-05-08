@@ -15,7 +15,6 @@ before_script:
 - docker-php-ext-install mbstring mcrypt pdo_pgsql curl json intl gd xml zip bz2 opcache
 # Install and run Composer
 - curl -sS https://getcomposer.org/installer | php
-- php composer.phar install
 # Install deployer
 - curl -LO https://deployer.org/deployer.phar
 - mv deployer.phar /usr/local/bin/dep
@@ -30,8 +29,8 @@ build-repository:
   stage: build
   script:
     - echo "prepare build"
-    - composer validate --no-check-publish
-    - composer install
+    - php composer.phar validate --no-check-publish
+    - php composer.phar
     - source .travis/code-climate.sh
     - sh .travis/setup-mail.sh
     - cp config/testing.yml.dist config/testing.yml
@@ -53,7 +52,7 @@ test-js:
 prepare-deployment:
   stage: production
   script:
-    - composer install --no-dev --optimize-autoloader
+    - php composer.phar --no-dev --optimize-autoloader
     - php bin/console cache:clear --env=${CFP_ENV}
     - php bin/console cache:warmup -env=${CFP_ENV}
     - npm install
