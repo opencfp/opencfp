@@ -46,7 +46,6 @@ to-production:
   stage: production
   only: ['master']
   before_script:
-  before_script:
     - apt-get install -yqq zlib1g-dev gnupg build-essential libssl-dev git
     - docker-php-ext-install zip
     # Install and run Composer
@@ -64,6 +63,7 @@ to-production:
 
 services:
   - mysql:5.7
+  - node:9.11.1
 
 variables:
   MYSQL_DATABASE: cfp_test
