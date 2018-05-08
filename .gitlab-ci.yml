@@ -55,15 +55,7 @@ to-production:
     # Install and run Composer
     - curl -sS https://getcomposer.org/installer | php
     # Install deployer
-    - curl -LO https://deployer.org/deployer.phar
-    - echo "prepare build"
-    - php composer.phar validate --no-check-publish
-    - php composer.phar install
-    - source .travis/code-climate.sh
-    - sh .travis/setup-mail.sh
-    - cp config/testing.yml.dist config/testing.yml
-    - export CFP_ENV=testing
-    - php vendor/bin/phinx migrate --environment testing
+    - curl -LO https://deployer.org/deployer.phar | php
     - php composer.phar --no-dev --optimize-autoloader
     - php bin/console cache:clear --env=${CFP_ENV}
     - php bin/console cache:warmup -env=${CFP_ENV}
