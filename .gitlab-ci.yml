@@ -27,9 +27,9 @@ before_script:
 stages:
   - build
   - test
-  - deploy
+  - production
 
-start-build:
+build-repository:
   stage: build
   script:
     - echo "prepare build"
@@ -43,31 +43,28 @@ start-build:
     - CFP_ENV=testing vendor/bin/phinx migrate --environment testing
     - mysqldump -uROOT cfp_test > tests/dump.sql
 
-php-tests:
+test-php:
   stage: test
   script:
     - echo "Run tests"
     - vendor/bin/phpunit --testsuite integration
-  on_stop: js-tests
 
-js-tests:
+test-js:
   stage: test
-  when: manual
   script:
     - yarn run production
 
-before-deployment:
-  stage: deploy
+prepare-deployment:
+  stage: production
   script:
     - composer install --no-dev --optimize-autoloader
     - php bin/console cache:clear --env=${CFP_ENV}
     - php bin/console cache:warmup -env=${CFP_ENV}
     - yarn install
-  on_stop: to-production
 
 to-production:
-  stage: deploy
-  with: manual
+  stage: production
+  when: manual
   script:
     - echo "Deploy to the first available production server"
     - dep deployment.ini
