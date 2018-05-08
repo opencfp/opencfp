@@ -46,6 +46,7 @@ to-production:
   stage: production
   only: ['master']
   before_script:
+    - apt-get update -yqq
     - apt-get install -yqq zlib1g-dev gnupg build-essential libssl-dev git
     - docker-php-ext-install zip
     # Install and run Composer
