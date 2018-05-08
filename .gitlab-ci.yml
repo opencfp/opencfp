@@ -17,44 +17,40 @@ before_script:
 - curl -sS https://getcomposer.org/installer | php
 # Install deployer
 - curl -LO https://deployer.org/deployer.phar
+- echo "prepare build"
+- php composer.phar validate --no-check-publish
+- php composer.phar install
+- source .travis/code-climate.sh
+- sh .travis/setup-mail.sh
+- cp config/testing.yml.dist config/testing.yml
+- export CFP_ENV=testing vendor/bin/phinx migrate --environment testing
 
 stages:
-  - build
   - test
   - production
 
-build-repository:
-  stage: build
-  script:
-    - echo "prepare build"
-    - php composer.phar validate --no-check-publish
-    - php composer.phar install
-    - source .travis/code-climate.sh
-    - sh .travis/setup-mail.sh
-    - cp config/testing.yml.dist config/testing.yml
-    - CFP_ENV=testing vendor/bin/phinx migrate --environment testing
 test-php:
   stage: test
   script:
-    - echo "Run tests"
+    - echo "Run PHP tests"
     - vendor/bin/phpunit --testsuite integration
 
 test-js:
+  image: node:9.11.1
   stage: test
   script:
+    - echo "Run frontend tests"
     - npm install
     - npm run production
 
-prepare-deployment:
+to-production:
   stage: production
-  script:
+  only: ['master']
+  before_script:
     - php composer.phar --no-dev --optimize-autoloader
     - php bin/console cache:clear --env=${CFP_ENV}
     - php bin/console cache:warmup -env=${CFP_ENV}
     - npm install
-
-to-production:
-  stage: production
   when: manual
   script:
     - echo "Deploy to the first available production server"
@@ -62,7 +58,6 @@ to-production:
 
 services:
   - mysql:5.7
-  - node:9.11.1
 
 variables:
   MYSQL_DATABASE: cfp_test
