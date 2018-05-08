@@ -103,5 +103,7 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'coc' => 'code of conduct',
+    ],
 ];

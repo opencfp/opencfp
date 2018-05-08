@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+# script/test: Run test suite for application. Optionally pass in a path to an
+#              individual test file to run a single test.
+
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+script/bootstrap
+
+echo "==> Creating test db..."
+export CFP_ENV=testing && php vendor/bin/phinx --configuration=phinx.php migrate
+
+if [ ! -f "phpunit.xml" ]; then
+    cp phpunit.xml.dist phpunit.xml
+fi
+
+echo "==> Running tests..."
+php vendor/bin/phpunit

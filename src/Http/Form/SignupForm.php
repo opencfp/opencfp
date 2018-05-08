@@ -201,9 +201,9 @@ class SignupForm extends Form
         return $validationResponse;
     }
 
-    private function validateUrl(): bool
+    public function validateUrl(): bool
     {
-        if (\preg_match('/https:\/\/joind\.in\/user\/[a-zA-Z0-9]{1,25}/', $this->cleanData['url'])
+        if (\preg_match('/^https:\/\/joind\.in\/user\/[a-zA-Z0-9\-_]{1,100}$/', $this->cleanData['url'])
             || !isset($this->cleanData['url'])
             || $this->cleanData['url'] == ''
         ) {

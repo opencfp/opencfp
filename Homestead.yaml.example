@@ -1,0 +1,19 @@
+ip: 192.168.10.10
+memory: 2048
+cpus: 1
+provider: virtualbox
+authorize: ~/.ssh/id_rsa.pub
+keys:
+    - ~/.ssh/id_rsa
+folders:
+    -
+        map: /path/to/opencfp
+        to: /home/vagrant/opencfp
+sites:
+    -
+        map: opencfp.test
+        to: /home/vagrant/opencfp/web
+databases:
+    - cfp
+name: opencfp
+hostname: opencfp

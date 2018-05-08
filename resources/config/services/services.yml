@@ -4,7 +4,7 @@ services:
     autowire: true
 
   OpenCFP\Http\Controller\:
-    resource: '%kernel.project_dir%/classes/Http/Controller/*'
+    resource: '%kernel.project_dir%/src/Http/Controller/*'
     public: true
     bind:
       $applicationAirport: '%application.airport%'
@@ -12,7 +12,7 @@ services:
       $applicationDeparture: '%application.departure%'
 
   OpenCFP\Http\Action\:
-    resource: '%kernel.project_dir%/classes/Http/Action/*'
+    resource: '%kernel.project_dir%/src/Http/Action/*'
     public: true
     bind:
       $applicationEmail: '%application.email%'
