@@ -33,8 +33,6 @@ build-repository:
     - sh .travis/setup-mail.sh
     - cp config/testing.yml.dist config/testing.yml
     - CFP_ENV=testing vendor/bin/phinx migrate --environment testing
-    - mysqldump -uROOT cfp_test > tests/dump.sql
-
 test-php:
   stage: test
   script:
