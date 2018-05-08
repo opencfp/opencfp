@@ -71,7 +71,7 @@ to-production:
 
 services:
   - mysql:5.7
-  - nodejs:9.11.1
+  - node:9.11.1
   - yarn:latest
 
 variables:
