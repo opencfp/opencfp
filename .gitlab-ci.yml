@@ -29,7 +29,8 @@ test-php:
     - source .travis/code-climate.sh
     - sh .travis/setup-mail.sh
     - cp config/testing.yml.dist config/testing.yml
-    - export CFP_ENV=testing vendor/bin/phinx migrate --environment testing
+    - export CFP_ENV=testing
+    - php vendor/bin/phinx migrate --environment testing
   script:
     - echo "Run PHP tests"
     - vendor/bin/phpunit --testsuite integration
