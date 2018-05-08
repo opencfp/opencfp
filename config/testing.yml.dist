@@ -17,9 +17,9 @@ application:
   venue_image_path: /assets/img/venue.jpg
 
 database:
-  host: 127.0.0.1
+  host: mysql
   database: cfp_test
-  dsn: mysql:dbname=cfp_test;host=127.0.0.1
+  dsn: mysql:dbname=cfp_test;host=mysql
   user: gitlab
   password: gilab
 
