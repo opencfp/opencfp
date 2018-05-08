@@ -1,0 +1,66 @@
+# This file is a template, and might need editing before it works on your project.
+# Select image from https://hub.docker.com/_/php/
+image: php:7.1.1
+
+# Select what we should cache between builds
+cache:
+  paths:
+  - vendor/
+  - $HOME/.composer/cache
+
+stages:
+  - test
+  - production
+
+test-php:
+  stage: test
+  before_script:
+    - apt-get update -yqq
+    - apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
+    # Install PHP extensions
+    - docker-php-ext-install mbstring mcrypt pdo_mysql curl json intl gd xml zip bz2 opcache
+    # Install and run Composer
+    - curl -sS https://getcomposer.org/installer | php
+    # Install deployer
+    - curl -LO https://deployer.org/deployer.phar
+    - echo "prepare build"
+    - php composer.phar validate --no-check-publish
+    - php composer.phar install
+    - source .travis/code-climate.sh
+    - sh .travis/setup-mail.sh
+    - cp config/testing.yml.dist config/testing.yml
+    - export CFP_ENV=testing
+    - php vendor/bin/phinx migrate --environment testing
+  script:
+    - echo "Run PHP tests"
+    - vendor/bin/phpunit --testsuite integration
+
+test-js:
+  image: node:9.11.1
+  stage: test
+  script:
+    - echo "Run frontend tests"
+    - npm install
+    - npm run production
+
+to-production:
+  stage: production
+  only: ['master']
+  before_script:
+    - php composer.phar --no-dev --optimize-autoloader
+    - php bin/console cache:clear --env=${CFP_ENV}
+    - php bin/console cache:warmup -env=${CFP_ENV}
+    - npm install
+  when: manual
+  script:
+    - echo "Deploy to the first available production server"
+    - php deployer.phar deployment.ini
+
+services:
+  - mysql:5.7
+
+variables:
+  MYSQL_DATABASE: cfp_test
+  MYSQL_ROOT_PASSWORD: ROOT
+  MYSQL_PASSWORD: gitlab
+  MYSQL_USER: gitlab
