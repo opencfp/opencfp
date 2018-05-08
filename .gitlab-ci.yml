@@ -52,7 +52,8 @@ test-php:
 test-js:
   stage: test
   script:
-    - yarn run production
+    - npm install
+    - npm run production
 
 prepare-deployment:
   stage: production
@@ -60,7 +61,7 @@ prepare-deployment:
     - composer install --no-dev --optimize-autoloader
     - php bin/console cache:clear --env=${CFP_ENV}
     - php bin/console cache:warmup -env=${CFP_ENV}
-    - yarn install
+    - npm install
 
 to-production:
   stage: production
@@ -72,7 +73,6 @@ to-production:
 services:
   - mysql:5.7
   - node:9.11.1
-  - yarn:latest
 
 variables:
   MYSQL_DATABASE: cfp_test
