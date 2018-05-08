@@ -51,8 +51,8 @@ php-tests:
 
 js-tests:
   stage: test
-    scripts:
-      - yarn run production
+  scripts:
+    - yarn run production
 
 before-deployment:
   stage: deploy
