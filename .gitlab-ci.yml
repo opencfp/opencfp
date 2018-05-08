@@ -47,6 +47,23 @@ to-production:
   stage: production
   only: ['master']
   before_script:
+  before_script:
+    #- apt-get update -yqq
+    #- apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
+    # Install PHP extensions
+    #- docker-php-ext-install mbstring mcrypt pdo_mysql curl json intl gd xml zip bz2 opcache
+    # Install and run Composer
+    - curl -sS https://getcomposer.org/installer | php
+    # Install deployer
+    - curl -LO https://deployer.org/deployer.phar
+    - echo "prepare build"
+    - php composer.phar validate --no-check-publish
+    - php composer.phar install
+    - source .travis/code-climate.sh
+    - sh .travis/setup-mail.sh
+    - cp config/testing.yml.dist config/testing.yml
+    - export CFP_ENV=testing
+    - php vendor/bin/phinx migrate --environment testing
     - php composer.phar --no-dev --optimize-autoloader
     - php bin/console cache:clear --env=${CFP_ENV}
     - php bin/console cache:warmup -env=${CFP_ENV}
