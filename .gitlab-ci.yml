@@ -47,6 +47,8 @@ to-production:
   only: ['master']
   before_script:
   before_script:
+    - apt-get install -yqq zlib1g-dev gnupg build-essential libssl-dev git
+    - docker-php-ext-install zip
     # Install and run Composer
     - curl -sS https://getcomposer.org/installer | php
     # Install deployer
