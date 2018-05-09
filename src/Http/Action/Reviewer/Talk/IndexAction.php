@@ -15,6 +15,7 @@ namespace OpenCFP\Http\Action\Reviewer\Talk;
 
 use OpenCFP\Domain\Services;
 use OpenCFP\Domain\Talk;
+use OpenCFP\Http\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation;
 
@@ -26,13 +27,19 @@ final class IndexAction
     private $authentication;
 
     /**
+     * @var View\TalkHelper
+     */
+    private $talkHelper;
+
+    /**
      * @var Talk\TalkFilter
      */
     private $talkFilter;
 
-    public function __construct(Services\Authentication $authentication, Talk\TalkFilter $talkFilter)
+    public function __construct(Services\Authentication $authentication, View\TalkHelper $talkHelper, Talk\TalkFilter $talkFilter)
     {
         $this->authentication = $authentication;
+        $this->talkHelper     = $talkHelper;
         $this->talkFilter     = $talkFilter;
     }
 
@@ -57,6 +64,8 @@ final class IndexAction
         $formattedTalks = $this->talkFilter->getTalks(
             $reviewerId,
             $request->get('filter'),
+            $request->get('category'),
+            $request->get('type'),
             $options
         );
 
@@ -74,14 +83,18 @@ final class IndexAction
                 '/reviewer/talks?',
                 $request->query->all()
             ),
-            'talks'        => $pagination->getFanta(),
-            'page'         => $pagination->getCurrentPage(),
-            'current_page' => $request->getRequestUri(),
-            'totalRecords' => \count($formattedTalks),
-            'filter'       => $request->get('filter'),
-            'per_page'     => $perPage,
-            'sort'         => $request->get('sort'),
-            'order_by'     => $request->get('order_by'),
+            'talks'          => $pagination->getFanta(),
+            'page'           => $pagination->getCurrentPage(),
+            'current_page'   => $request->getRequestUri(),
+            'totalRecords'   => \count($formattedTalks),
+            'filter'         => $request->get('filter'),
+            'category'       => $request->get('category'),
+            'type'           => $request->get('type'),
+            'talkCategories' => $this->talkHelper->getTalkCategories(),
+            'talkTypes'      => $this->talkHelper->getTalkTypes(),
+            'per_page'       => $perPage,
+            'sort'           => $request->get('sort'),
+            'order_by'       => $request->get('order_by'),
         ];
     }
 }

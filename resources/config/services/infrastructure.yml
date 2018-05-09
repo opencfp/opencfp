@@ -4,16 +4,16 @@ services:
     autowire: true
 
   OpenCFP\Infrastructure\Auth\:
-    resource: '%kernel.project_dir%/classes/Infrastructure/Auth/*'
+    resource: '%kernel.project_dir%/src/Infrastructure/Auth/*'
 
   OpenCFP\Infrastructure\CacheWarmer\:
-    resource: '%kernel.project_dir%/classes/Infrastructure/CacheWarmer/*'
+    resource: '%kernel.project_dir%/src/Infrastructure/CacheWarmer/*'
     tags: [kernel.cache_warmer]
 
   OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator: ~
 
   OpenCFP\Infrastructure\Event\:
-    resource: '%kernel.project_dir%/classes/Infrastructure/Event/*'
+    resource: '%kernel.project_dir%/src/Infrastructure/Event/*'
     tags: [kernel.event_subscriber]
     bind:
       OpenCFP\Domain\Services\RequestValidator: '@OpenCFP\Infrastructure\Auth\CsrfValidator'

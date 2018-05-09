@@ -42,6 +42,9 @@ class TalkHelper
         $this->types      = $types;
     }
 
+    /**
+     * @return null|array|string[]
+     */
     public function getTalkCategories()
     {
         $categories = $this->categories;
@@ -56,6 +59,7 @@ class TalkHelper
                 'framework'          => 'Framework',
                 'ibmi'               => 'IBMi',
                 'javascript'         => 'JavaScript',
+                'personal'           => 'Personal Skills',
                 'security'           => 'Security',
                 'testing'            => 'Testing',
                 'uiux'               => 'UI/UX',
@@ -80,7 +84,10 @@ class TalkHelper
         return $category;
     }
 
-    public function getTalkTypes()
+    /**
+     * @return null|array|string[]
+     */
+    public function getTalkTypes(): ?array
     {
         $types = $this->types;
 
@@ -108,7 +115,10 @@ class TalkHelper
         return $type;
     }
 
-    public function getTalkLevels()
+    /**
+     * @return null|array|string[]
+     */
+    public function getTalkLevels(): ?array
     {
         $levels = $this->levels;
 

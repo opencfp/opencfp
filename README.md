@@ -4,27 +4,27 @@ OpenCFP is a PHP-based conference talk submission system.
 
 ---
 [![Build Status](https://travis-ci.org/opencfp/opencfp.svg?branch=master)](https://travis-ci.org/opencfp/opencfp)
-[![Code Climate](https://codeclimate.com/github/opencfp/opencfp/badges/gpa.svg)](https://codeclimate.com/github/opencfp/opencfp)
-[![Test Coverage](https://codeclimate.com/github/opencfp/opencfp/badges/coverage.svg)](https://codeclimate.com/github/opencfp/opencfp)
-[![Issue Count](https://codeclimate.com/github/opencfp/opencfp/badges/issue_count.svg)](https://codeclimate.com/github/opencfp/opencfp)
 
-Current release: v1.5
+[![GitHub release](https://img.shields.io/github/release/opencfp/opencfp.svg)](https://github.com/opencfp/opencfp/releases/latest)
 
 ## README Contents
 
  * [Features](#features)
  * [Screenshots](#screenshots)
  * [Contributing](#contributing)
- * [Requirements](#requirements)
+ * [Minimum Requirements](#requirements)
  * [Installation](#installation)
+   * [Grab Latest Release](#grab-latest-release)
    * [Cloning the Repository](#cloning-the-repository)
    * [Specify Environment](#specify-environment)
    * [Installing Composer Dependencies](#installing-composer-dependencies)
-   * [PHP Built-in Web Server](#php-built-in-web-server)
+   * [Specify Web Server Document Root](#specify-web-server-document-root)
    * [Create a Database](#create-a-database)
    * [Configure Environment](#configure-environment)
    * [Run Migrations](#run-migrations)
+   * [Using Vagrant](#using-vagrant)
    * [Final Touches](#final-touches)
+   * [Building Docker Image](#build-docker-image)
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
    * [Reviewer Group Management](#reviewer-group-management)
@@ -52,20 +52,20 @@ You can find screenshots of the application in our [wiki](https://github.com/ope
 
 See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
-## [Requirements](#requirements)
+## [Minimum Requirements](#requirements)
 
- * PHP 7.0+
+ * PHP 7.1+
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php7.0-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
 
 ## [Installation](#installation)
 
-### [Grab Latest Release](#cloning-the-repository)
+### [Grab Latest Release](#grab-latest-release)
 
 It is recommended for you to always install the latest marked release. Go to `https://github.com/opencfp/opencfp/releases` to download it.
 
-### Cloning the Repository
+### [Cloning the Repository](#cloning-the-repository)
 
 Clone this project into your working directory. We recommend always running the `master` branch as it was frequent contributions.
 
@@ -108,33 +108,25 @@ Again, just use your preferred environment in place of `production` if required.
 From the project directory, run the following command. You may need to download `composer.phar` first from http://getcomposer.org
 
 ```bash
-$ script/setup
+$ php composer.phar run setup-env
 ```
 
-### [PHP Built-in Web Server](#php-built-in-web-server)
+If you have composer installed globally you can run:
 
-To run OpenCFP using [PHP's built-in web server](http://php.net/manual/en/features.commandline.webserver.php) the
-following command can be run:
-
-```
-$ bin/console server:start
+```bash
+$ composer run setup-env
 ```
 
-The server uses port `8000`. This is a quick way to get started doing development on OpenCFP itself.
+Or you can run
 
-Details on how to use this console command can be found at Symfony's documentation for [using the built-in web server](http://symfony.com/doc/current/setup/built_in_web_server.html).
-
-To stop the server the following command can be run:
-
+```bash
+$ ./script/setup
 ```
-$ bin/console server:stop
-```
-
 ### [Specify Web Server Document Root](#specify-web-server-document-root)
 
 Set up your desired webserver to point to the `/web` directory.
 
-Apache 2+ Example:
+[Apache 2+](https://httpd.apache.org/) Example:
 
 ```
 <VirtualHost *:80>
@@ -148,7 +140,7 @@ Apache 2+ Example:
 nginx Example:
 
 ```
-server{
+server {
 	server_name cfp.sitename.com;
 	root /var/www/opencfp/web;
 	listen 80;
@@ -166,7 +158,7 @@ server{
 
 		fastcgi_param CFP_ENV production;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
-		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_pass unix:/var/run/php71-fpm.sock;
 		fastcgi_read_timeout 150;
 		fastcgi_index index.php;
 		fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -175,6 +167,21 @@ server{
 
 }
 ```
+
+You can use the included `opencfp-nginx.conf.dist` file and modify it as needed.
+
+[Caddy](https://caddyserver.com) example:
+
+```
+localhost:8080
+root /var/www/opencfp/web
+fastcgi / 127.0.0.1:9000 php 
+rewrite / {path} {path}/ /index.php/{path} 
+log access.log
+errors error.log
+```
+
+You can use the included `Caddyfile.dist` file and modify it as needed.
 
 The application does not currently work properly if you use PHP's built-in
 server.
@@ -241,12 +248,126 @@ $ CFP_ENV=production vendor/bin/phinx migrate
 
 Note: For updating previously installed instances only run migrations as needed.
 
+### [Using Vagrant](#using-vagrant)
+
+After running `$ composer run setup-env` (or `$ ./script/setup`) from the project root run `php vendor/bin/homestead make`. 
+This will create a `Homestead.yaml` based on settings from `Homestead.yaml.example`. Do not version control `Homestead.yaml`
+
+Run `vagrant up`
+Add `192.168.10.10 opencfp.test` to your operating system's hosts file (/etc/hosts)
+Point your browser to `http://opencfp.test`
+
+Edit your `config/development.yml` to use Homestead's database & mail settings:
+
+```
+database:
+  host: 127.0.0.1
+  database: cfp
+  dsn: mysql:dbname=cfp;host=127.0.0.1
+  user: homestead
+  password: secret
+
+log:
+  level: debug
+
+mail:
+  host: localhost
+  port: 1025
+  username: ~
+  password: ~
+  encryption: ~
+  auth_mode: ~
+```
+
+Mailhog (local mail catching) can be viewed at http://opencfp.test:8025
+
+For more usage information please see the [Laravel Homestead Docs](http://laravel.com/docs/homestead)
+
 ### [Final Touches](#final-touches)
 
- * The web server must be able to write to the `/web/uploads` directory in order to
+ * The web server must be able to write to the directories:
+    * `/web/uploads`
+    * `/cache/:environment` (e.g. `/cache/production`)
+    * `/log`
  * You may need to alter the `memory_limit` of the web server to allow image processing of head-shots. This is largely
    dictated by the size of the images people upload. Typically 512M works.
  * Customize templates and `/web/assets/css/site.css` to your heart's content.
+
+### [Building Docker Image](#building-docker-image)
+
+#### What is Docker
+
+Quoting [OpenSource](https://opensource.com/resources/what-docker):
+
+"[Docker](https://www.docker.com) is a tool designed to make it easier to create, deploy, and run applications by using containers. 
+Containers allow a developer to package up an application with all of the parts it needs, such as libraries and 
+other dependencies, and ship it all out as one package. By doing so, thanks to the container, 
+the developer can rest assured that the application will run on any other Linux machine regardless of any customized 
+settings that machine might have that could differ from the machine used for writing and testing the code."
+
+#### Requirements
+
+1. You will need to download and install [Docker](https://www.docker.com/get-docker) locally.
+2. You will need to download and install [docker-compose](https://docs.docker.com/compose/install/) too.
+
+#### Build & Run the image
+
+Please remember to edit the file `config/docker.yml.dist` to match your environment, then you can build your own 
+docker image by executing:
+
+```
+$ ./.docker/build latest
+```
+
+And the result will be an image called `opencfp/opencfp:latest`.
+
+Or if you like you can run [docker-compose](https://docs.docker.com/compose/install/) command which will build the 
+image and run the containers automatically for you:
+
+```
+$  docker-compose -f docker-compose.yml.dist up --build -d
+```
+
+So now if you head over to `http://localhost` you will be greeted with a running version of OpenCFP. 
+
+#### Run PHP commands within the Container
+
+To run any command in the app container you can use the docker-compose 
+[exec](https://docs.docker.com/compose/reference/exec/) command, for example to run the `setup` script you run:
+
+```bash
+$ docker-compose -f docker-compose.yml.dist exec app composer run setup-env
+```
+OR
+
+```bash
+$ docker-compose -f docker-compose.yml.dist exec app ./script/setup
+```
+
+#### Running the image directly
+
+You can run the image (after you build it) and link it to an already running database container using the docker 
+[run](https://docs.docker.com/engine/reference/commandline/run/) command like:
+
+```
+docker run -e CFP_ENV=production -e CFP_DB_HOST=database -e CFP_DB_PASS=root --name cfp --link database:database -p 80:80 -d opencfp/opencfp:latest
+```
+
+Where `database` is the name of the running database container. 
+
+
+#### Access MySQL container
+
+To access MySQL you can use the following information:
+
+- **Host**: 127.0.0.1
+- **User**: root
+- **Password**: root (or the one you specified in docker-compose) 
+ 
+
+For using docker in your development environment check [DOCKER.md](DOCKER.md) file. 
+
+_PS_: You can always modify the file `docker-compose.yml.dist` and have your own setup.
 
 
 ## [Command-line Utilities](#command-line-utilities)
@@ -330,14 +451,14 @@ for an easy to follow convention for common tasks when developing applications.
 This command will install all dependencies, run database migrations, and alert you of any missing configs.
 
 ```
-$ script/setup
+$ composer run setup-env
 ```
 
 #### Update Application
 This command will update all dependencies and run new migrations
 
 ```
-$ script/update
+$ composer run update-env
 ```
 
 #### Run Tests
@@ -345,7 +466,7 @@ This command will run the PHPUnit test suite using distributed phpunit config, `
 no phpunit.xml is found in the root.
 
 ```
-$ script/test
+$ composer run test
 ```
 
 ## [Compiling Frontend Assets](#compiling-frontend-assets)
@@ -374,7 +495,7 @@ your environment for testing:
 2. The recommended way to run the tests is:
 
 ```
-$ script/test
+$ composer run test
 ```
 
 The default phpunit.xml.dist file is in the root directory for the project.
@@ -385,3 +506,4 @@ The default phpunit.xml.dist file is in the root directory for the project.
 
 You may need to edit directory permissions for some vendor packages such as HTML Purifier. Check the `/cache` directory's
 permissions first.
+

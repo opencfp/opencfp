@@ -4,7 +4,6 @@ sudo: false
 env:
   global:
     - TRAVIS_DB=cfp_test
-    - CC_TEST_REPORTER_ID=9deb249b01a414d979959cfd05a4c351b19a5959858653b20276454d4189edc3
 
 # cache composer downloads so installing is quicker
 cache:
@@ -20,77 +19,69 @@ stages:
 jobs:
   include:
     - stage: Style
-
       language: php
-
-      php: 7.0
-
+      php: 7.1
       before_install:
         - phpenv config-rm xdebug.ini
         - composer validate --no-check-publish
-
       install:
         - composer install
-
       script:
+        - composer normalize --dry-run
         - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
         - CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")
         - if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php_cs(\\.dist)?|composer\\.lock)$"; then IFS=$'\n' EXTRA_ARGS=('--path-mode=intersection' '--' ${CHANGED_FILES[@]}); fi
         - vendor/bin/php-cs-fixer fix --config=.php_cs.dist --dry-run --diff -v --using-cache=no "${EXTRA_ARGS[@]}"
 
     - &TEST
-
       stage: Test
-
       language: php
-
-      php: 7.0
-
+      php: 7.1
       before_install:
         - source .travis/xdebug.sh
         - xdebug-disable
         - composer validate --no-check-publish
-
       install:
         - composer install
-
       before_script:
-        - source .travis/code-climate.sh
         - sh .travis/setup-mail.sh
         - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
         - cp config/testing.yml.dist config/testing.yml
         - CFP_ENV=testing vendor/bin/phinx migrate --environment testing
         - mysqldump -uroot $TRAVIS_DB > tests/dump.sql
-        - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-before-script; fi
-
       script:
         - vendor/bin/phpunit --testsuite integration
         - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-enable; fi
         - if [[ "$WITH_COVERAGE" == "true" ]]; then vendor/bin/phpunit --testsuite unit --coverage-clover build/logs/clover.xml; else vendor/bin/phpunit --testsuite unit; fi
         - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-disable; fi
 
-      after_success:
-        - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-after-script; fi
-
     - <<: *TEST
-
-      php: 7.1
-
+      php: 7.2
       env:
         - WITH_COVERAGE=true
 
-    - <<: *TEST
-
-      php: 7.2
-
     - stage: Asset
-
       language: node_js
-
       node_js: 8.8.1
-
       install:
         - yarn install
-
       script:
         - yarn run production
+    - stage: deploy
+      if: branch = master
+      script:
+       - apt-get update -yqq
+       - apt-get install -yqq zlib1g-dev gnupg build-essential libssl-dev git
+       - docker-php-ext-install zip
+       - cp config/production.yml.dist config/production.yml
+       # Install and run Composer
+       - curl -sS https://getcomposer.org/installer | php
+       - php composer.phar install --no-dev --optimize-autoloader
+       - php bin/console cache:clear --env=${CFP_ENV}
+       - php bin/console cache:warmup -env=${CFP_ENV}
+       - npm install
+       # Install deployer
+       - curl -LO https://deployer.org/deployer.phar | php
+    script:
+      - echo "Deploy to the first available production server"
+      - php deployer.phar ./deployment.ini

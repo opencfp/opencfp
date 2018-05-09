@@ -4,6 +4,6 @@ services:
     autowire: true
 
   OpenCFP\Console\Command\:
-    resource: '%kernel.project_dir%/classes/Console/Command/*'
+    resource: '%kernel.project_dir%/src/Console/Command/*'
     tags:
       - { name: console.command }

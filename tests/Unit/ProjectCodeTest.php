@@ -32,7 +32,7 @@ final class ProjectCodeTest extends Framework\TestCase
     public function productionClassesHaveUnitTests()
     {
         $this->assertClassesHaveTests(
-            __DIR__ . '/../../classes',
+            __DIR__ . '/../../src',
             'OpenCFP\\',
             'OpenCFP\\Test\\Unit\\',
             [
@@ -111,7 +111,7 @@ final class ProjectCodeTest extends Framework\TestCase
      */
     private function controllerActions(): array
     {
-        $constructs = Classy\Constructs::fromDirectory(__DIR__ . '/../../classes/Http/Controller');
+        $constructs = Classy\Constructs::fromDirectory(__DIR__ . '/../../src/Http/Controller');
 
         $actions = [];
 
@@ -177,7 +177,7 @@ final class ProjectCodeTest extends Framework\TestCase
     public function providerProductionClassesAreAbstractOrFinal(): array
     {
         $directories = [
-            'http-actions' => __DIR__ . '/../../classes/Http/Action',
+            'http-actions' => __DIR__ . '/../../src/Http/Action',
         ];
 
         return \array_map(function (string $directory) {

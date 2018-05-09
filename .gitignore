@@ -25,4 +25,5 @@ deployment.xml
 /phpunit.xml
 infection-log.txt
 infection.json
-log/
+docker-compose.yml
+log/dump.sql

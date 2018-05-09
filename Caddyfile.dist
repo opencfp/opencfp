@@ -1,0 +1,7 @@
+localhost:8080
+root /var/www/opencfp/web
+fastcgi / 127.0.0.1:9000 php
+rewrite / {path} {path}/ /index.php/{path}
+log access.log
+errors error.log
+
