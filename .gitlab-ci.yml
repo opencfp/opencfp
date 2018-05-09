@@ -1,6 +1,6 @@
 # This file is a template, and might need editing before it works on your project.
 # Select image from https://hub.docker.com/_/php/
-image:  tetraweb/php:7.1
+image: tetraweb/php:7.1
 
 # Select what we should cache between builds
 cache:
@@ -20,6 +20,7 @@ test-php:
     #- apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
     # Install PHP extensions
     #- docker-php-ext-install mbstring mcrypt pdo_mysql curl json intl gd xml zip bz2 opcache
+    - docker-php-ext-enable mbstring mcrypt pdo_mysql curl json intl gd xml zip bz2 opcache
     # Install and run Composer
     - curl -sS https://getcomposer.org/installer | php
     # Install deployer
@@ -35,7 +36,7 @@ test-php:
     - vendor/bin/phpunit --testsuite integration
 
 test-js:
-  image: node:9.11.1
+  #image: node:9.11.1
   stage: test
   script:
     - echo "Run frontend tests"
@@ -49,6 +50,7 @@ to-production:
     #- apt-get update -yqq
     #- apt-get install -yqq zlib1g-dev gnupg build-essential libssl-dev git
     #- docker-php-ext-install zip
+    - docker-php-ext-enable mbstring mcrypt pdo_mysql curl json intl gd xml zip bz2 opcache
     - cp config/production.yml.dist config/production.yml
     # Install and run Composer
     - curl -sS https://getcomposer.org/installer | php
@@ -58,7 +60,6 @@ to-production:
     - npm install
     # Install deployer
     - curl -LO https://deployer.org/deployer.phar | php
-  when: manual
   script:
     - echo "Deploy to the first available production server"
     - php deployer.phar deployment.ini
