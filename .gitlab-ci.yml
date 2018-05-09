@@ -49,6 +49,7 @@ to-production:
     - apt-get update -yqq
     - apt-get install -yqq zlib1g-dev gnupg build-essential libssl-dev git
     - docker-php-ext-install zip
+    - cp config/production.yml.dist config/production.yml
     # Install and run Composer
     - curl -sS https://getcomposer.org/installer | php
     # Install deployer
