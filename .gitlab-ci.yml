@@ -1,6 +1,6 @@
 # This file is a template, and might need editing before it works on your project.
 # Select image from https://hub.docker.com/_/php/
-image: php:7.1.1
+image:  tetraweb/php:7.1
 
 # Select what we should cache between builds
 cache:
@@ -15,11 +15,11 @@ stages:
 test-php:
   stage: test
   before_script:
-    - export CFP_ENV=testing
-    - apt-get update -yqq
-    - apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
+    #- export CFP_ENV=testing
+    #- apt-get update -yqq
+    #- apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
     # Install PHP extensions
-    - docker-php-ext-install mbstring mcrypt pdo_mysql curl json intl gd xml zip bz2 opcache
+    #- docker-php-ext-install mbstring mcrypt pdo_mysql curl json intl gd xml zip bz2 opcache
     # Install and run Composer
     - curl -sS https://getcomposer.org/installer | php
     # Install deployer
@@ -46,9 +46,9 @@ to-production:
   stage: production
   only: ['master']
   before_script:
-    - apt-get update -yqq
-    - apt-get install -yqq zlib1g-dev gnupg build-essential libssl-dev git
-    - docker-php-ext-install zip
+    #- apt-get update -yqq
+    #- apt-get install -yqq zlib1g-dev gnupg build-essential libssl-dev git
+    #- docker-php-ext-install zip
     - cp config/production.yml.dist config/production.yml
     # Install and run Composer
     - curl -sS https://getcomposer.org/installer | php
