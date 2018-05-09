@@ -48,8 +48,8 @@ test-js:
 
 to-production:
   services:
-    - node: 9
-    - php: 7.1
+    - node:9
+    - php:7.1
   stage: production
   only: ['master']
   before_script:
@@ -68,6 +68,11 @@ to-production:
   script:
     - echo "Deploy to the first available production server"
     - php deployer.phar ./deployment.ini
+
+services:
+  - node:9
+  - php:7.1
+  - mysql:5.7
 
 variables:
   MYSQL_DATABASE: cfp_test
