@@ -62,7 +62,8 @@ to-production:
     - curl -LO https://deployer.org/deployer.phar | php
   script:
     - echo "Deploy to the first available production server"
-    - php deployer.phar deployment.ini
+    - ls -lisa
+    - php deployer.phar ./deployment.ini
 
 services:
   - mysql:5.7
