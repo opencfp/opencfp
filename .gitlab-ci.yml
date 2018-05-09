@@ -52,12 +52,12 @@ to-production:
     - cp config/production.yml.dist config/production.yml
     # Install and run Composer
     - curl -sS https://getcomposer.org/installer | php
-    # Install deployer
-    - curl -LO https://deployer.org/deployer.phar | php
     - php composer.phar install --no-dev --optimize-autoloader
     - php bin/console cache:clear --env=${CFP_ENV}
     - php bin/console cache:warmup -env=${CFP_ENV}
     - npm install
+    # Install deployer
+    - curl -LO https://deployer.org/deployer.phar | php
   when: manual
   script:
     - echo "Deploy to the first available production server"
