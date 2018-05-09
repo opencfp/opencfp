@@ -64,9 +64,8 @@ to-production:
     - echo "Deploy to the first available production server"
     - php deployer.phar deployment.ini
 
-#services:
-#  - mysql:5.7
-#  - node:9
+services:
+  - mysql:5.7
 
 variables:
   MYSQL_DATABASE: cfp_test
