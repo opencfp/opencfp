@@ -64,8 +64,8 @@ to-production:
     - php deployer.phar deployment.ini
 
 services:
-  - mysql:5.7
-  - node:9.11.1
+  - mysql: 5.7
+  - node: 9
 
 variables:
   MYSQL_DATABASE: cfp_test
