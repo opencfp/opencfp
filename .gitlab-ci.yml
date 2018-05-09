@@ -15,7 +15,7 @@ stages:
 test-php:
   stage: test
   before_script:
-    #- export CFP_ENV=testing
+    - export CFP_ENV=testing
     #- apt-get update -yqq
     #- apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
     # Install PHP extensions
@@ -63,9 +63,9 @@ to-production:
     - echo "Deploy to the first available production server"
     - php deployer.phar deployment.ini
 
-services:
-  - mysql:5.7
-  - node:9
+#services:
+#  - mysql:5.7
+#  - node:9
 
 variables:
   MYSQL_DATABASE: cfp_test
