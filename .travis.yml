@@ -85,5 +85,3 @@ jobs:
     script:
       - echo "Deploy to the first available production server"
       - php deployer.phar ./deployment.ini
-
-
