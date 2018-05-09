@@ -22,18 +22,6 @@
 
             <label for="form-user-url">joind.in</label>
             <input id="form-user-url" type="text" name="url" placeholder="https://joind.in/user/" value="{{ url | default('') }}">
-
-            {% if site.online_conference  == false %}
-                <h3 class="text-base text-dark-soft mt-4">Travel Assistance</h3>
-                <div>
-                    <input id="form-transportation" name="transportation" type="checkbox" value="1" {% if transportation == '1' %}checked{% endif %}>
-                    <label for="form-transportation" class="text-base text-normal text-dark">I need help with flight cost</label>
-                </div>
-                <div>
-                    <input id="form-hotel" name="hotel" type="checkbox" value="1" {% if hotel == '1' %}checked{% endif %}>
-                    <label for="form-hotel" class="text-base text-normal text-dark">I need help with hotel cost</label>
-                </div>
-            {% endif %}
         </div>
 
         <div class="w-1/2 ml-4">

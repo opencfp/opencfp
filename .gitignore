@@ -26,4 +26,4 @@ deployment.xml
 infection-log.txt
 infection.json
 docker-compose.yml
-Homestead.yaml
+log/dump.sql

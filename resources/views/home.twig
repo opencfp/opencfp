@@ -26,16 +26,26 @@
         </div>
     </header>
 
-    <div class="container mx-auto">
-        <div class="flex justify-between items-center px-4 py-6">
-            {% if site.event_location is defined and site.date_format is defined %}
-                <p>{{ site.title }} is from <span class="text-bold">{{ site.arrival|date(site.date_format, false) }}</span> to <span class="text-bold">{{ site.departure|date(site.date_format, false) }}</span> in {{ site.event_location }}</p>
-            {%  else %}
-                <p>For More Information About The Conference</p>
-            {% endif %}
-            <a href="{{ site.eventurl }}" class="btn btn-brand-o">Visit Conference Site</a>
-        </div>
+    <div class="container mx-auto px-4 py-4">
+        {% if site.event_location is defined and site.date_format is defined %}
+            <h2>{{ site.title }} is from <span
+                        class="text-bold">{{ site.arrival|date(site.date_format, false) }}</span>
+                to <span class="text-bold">{{ site.departure|date(site.date_format, false) }}</span>
+                at {{ site.event_location }}
+            </h2>
+        {% else %}
+            <p>For More Information About The Conference</p>
+        {% endif %}
+        <h4>
+            <i class="fa fa-twitter text-twitter"></i>
+            FOLLOW
+            <a href="https://twitter.com/FrOSConPHPTrack" target="_blank" title="FrOSCon PHP Track at Twitter">
+                <span class="text-twitter">@FROSCONPHPTRACK</span>
+            </a>
+            FOR RECENT UPDATES
+        </h4>
     </div>
+
 {% endblock %}
 {% block content %}
     {% include "_marketing.twig" %}
