@@ -1,57 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>{% block title %}{{ site.title }}{% endblock %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="{{ assets('css/app.css') }}" rel="stylesheet" media="screen">
-    </head>
-    <body class="border-t-4 border-brand">
-        <nav class="{% if not active('homepage') %}border-b border-white{% endif %}">
-            <div class="container mx-auto flex justify-between">
-                <a class="font-serif flex items-center" href="{{ url('homepage') }}">
-                    <img class="w-10 mr-2" src="{{ assets('img/logo.svg') }}" alt="OpenCFP">
-                    <h1 class="font-normal m-0">Open<span class="text-brand font-bold">CFP</span></h1>
-                </a>
-                <div class="flex">
-                    <a href="{{ url('homepage') }}" class="mr-8 py-6 {% if active('homepage') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Home</a>
-                    <a href="{{ url('speaker_package') }}" class="mr-8 py-6 {% if active('speaker_package') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Speaker Package</a>
-                    <a href="{{ url('talk_ideas') }}" class="mr-8 py-6 {% if active('talk_ideas') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Talk Ideas</a>
-                    {% if user is defined and user is not empty %}
-                        <a href="{{ url('dashboard') }}" class="mr-8 py-6 {% if active('dashboard') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Dashboard</a>
-                        {% if user_is_admin %}
-                            <a href="{{ url('admin') }}" class="mr-8 py-6 {% if active('admin') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Admin</a>
-                        {% endif %}
-                        {% if user_is_reviewer is defined and user_is_reviewer %}
-                            <a href="{{ url('reviewer') }}" class="mr-8 py-6 {% if active('reviewer') %}border-b-4 border-brand{% else %}text-soft{% endif %}">Reviewer</a>
-                        {% endif %}
-                        <a href="{{ url('logout') }}" class="py-6 text-soft">Logout</a>
-                    {% else %}
-                        <a href="{{ url('login') }}" class="mr-8 py-6 text-soft hover:text-dark">Login</a>
-                        <a href="{{ url('user_new') }}" class="py-6 text-soft @text-dark">Signup</a>
-                    {% endif %}
-                </div>
-            </div>
-        </nav>
+<head>
+    <title>{% block title %}{{ site.title }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        {% block header %}
-        {% endblock %}
+    <meta name="description" content="PHP Track auf der FrOSCon 2018">
+    <meta name="keywords" content="Conference, Developer, PHP, FrOSCon, Germany, 2018">
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="geo.placename" content="Hochschule Bonn-Rhein-Sieg"/>
+    <meta name="geo.position" content="50.78007;7.182515"/>
+    <meta name="ICBM" content="50.78007; 7.182515"/>
+    <meta name="twitter:site" content="@FrOSConPHPTrack">
+    <meta name="twitter:creator" content="@FrOSConPHPTrack">
+    <script type="application/ld+json">{% spaceless %}
+{
+  "@context" : "http://schema.org",
+  "@type": "Person",
+  "name": "PHP Track auf der FrOSCon 2018",
+  "image": "https://cfp.froscon-php-track.de/assets/img/socialcard.png",
+  "url": "https://cfp.froscon-php-track.de",
+  "sameAs" : [
+      "https://twitter.com/FrOSConPHPTrack",
+      "https://froscon-php-track.de",
+    ]
+  }
+}{% endspaceless %}</script>
+    <meta property="article:author" content="http://froscon-php-track.deg"/>
+    <meta property="article:publisher" content="http://froscon-php-track.de"/>
 
-        <main class="container mx-auto mt-8 flex">
-            <div class="flex-1 mr-16">{% block sidebar %}{% endblock %}</div>
-            <div class="flex-3 w-full">
-                {% include "_flash.twig" %}
-                {% block content %}{% endblock %}
-            </div>
-        </main>
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/assets/favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/assets/favicons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 
-        {% block scripts %}
-            <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-                    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-                    crossorigin="anonymous"></script>
-        {% endblock %}
+    <meta name="referrer" content="origin"/>
 
-        {% if site.show_contrib_banner %}
-        {% include "_forkme.twig" %}
-        {% endif %}
-    </body>
+    <meta property="og:site_name" content="{{ site.title }}"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="{{ site.title }}"/>
+    <meta property="og:description" content="PHP Track auf der FrOSCon 2018"/>
+    <meta property="og:url" content="https://cfp.froscon-php-track.de"/>
+    <meta property="og:image" content="/assets/img/socialcard.png"/>
+    <meta property="article:published_time" content="{{ 'now'|date('c') }}"/>
+    <meta property="article:modified_time" content="{{ 'now'|date('c') }}"/>
+    {% for tag in page.getTags %}
+        <meta property="article:tag" content="{{ tag }}"/>
+    {% endfor %}
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="{{ site.title }}"/>
+    <meta name="twitter:description" content="PHP Track auf der FrOSCon 2018"/>
+    <meta name="twitter:url" content="https://twitter.com/FrOSConPHPTrack"/>
+    <meta name="twitter:image:src" content="https://cfp.froscon-php-track.de/assets/img/socialcard.png"/>
+
+    <meta name="generator" content="OpenCFP"/>
+
+    <link href="{{ assets('css/app.css') }}" rel="stylesheet" media="screen">
+</head>
+<body class="border-t-4 border-brand">
+<nav class="{% if not active('homepage') %}border-b border-white{% endif %}">
+    <div class="container mx-auto flex justify-between">
+        <a class="font-serif flex items-center" href="{{ url('homepage') }}">
+            <img class="w-1/3 px-4 py-2" style="width: 100px" src="{{ assets('img/nerdish_by_nature.png') }}" alt="FrOSCon PHP Track">
+            <h1 class="sr-only">FrOSCon PHP Track 2018</h1>
+        </a>
+        <div class="flex">
+            <a href="{{ url('homepage') }}"
+               class="uppercase mr-4 py-6 {% if active('homepage') %}text-default{% else %}text-soft{% endif %}">Home</a>
+            <a href="{{ url('speaker_package') }}"
+               class="uppercase mr-4 py-6 {% if active('speaker_package') %}text-default{% else %}text-soft{% endif %}">Packages</a>
+            <a href="{{ url('talk_ideas') }}"
+               class="uppercase mr-4 py-6 {% if active('talk_ideas') %}text-default{% else %}text-soft{% endif %}">Ideas</a>
+            {% if user is defined and user is not empty %}
+                <a href="{{ url('dashboard') }}"
+                   class="uppercase mr-4 py-6 {% if active('dashboard') %}text-default{% else %}text-soft{% endif %}">Dashboard</a>
+                {% if user_is_admin %}
+                    <a href="{{ url('admin') }}"
+                       class="uppercase mr-4 py-6 {% if active('admin') %}text-default{% else %}text-soft{% endif %}">Admin</a>
+                {% endif %}
+                {% if user_is_reviewer is defined and user_is_reviewer %}
+                    <a href="{{ url('reviewer') }}"
+                       class="uppercase mr-4 py-6 {% if active('reviewer') %}text-default{% else %}text-soft{% endif %}">Reviewer</a>
+                {% endif %}
+                <a href="{{ url('logout') }}" class="uppercase py-6 text-soft">Logout</a>
+            {% else %}
+                <a href="{{ url('login') }}" class="uppercase mr-4 py-6 text-soft hover:text-dark">Login</a>
+                <a href="{{ url('user_new') }}" class="uppercase py-6 text-soft @text-dark">Signup</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+{% block header %}
+{% endblock %}
+
+<main class="container mx-auto mt-8 flex">
+    <div class="flex-1 mr-16">{% block sidebar %}{% endblock %}</div>
+    <div class="flex-3 w-full">
+        {% include "_flash.twig" %}
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+{% endblock %}
+
+<hr class="mt-8">
+
+<footer class="container mx-auto flex justify-between items-center">
+    <div class="text-sm text-soft">
+        <i class="fa fa-twitter text-twitter"></i>
+        <a href="https://twitter.com/FrOSConPHPTrack" target="_blank" title="FrOSCon PHP Track at Twitter">
+            <span class="text-twitter">@FrOSConPHPTrack</span>
+        </a>
+    </div>
+    <div class="text-sm text-soft">
+        Questions? Reach out to us:
+        <a href="mailto:cfp@froscon-php-track.de?subject=CFP" target="_blank">
+            <span class="text-phpugdd">cfp[at]froscon-php-track.de</span>
+        </a>
+    </div>
+</footer>
+
+</body>
 </html>

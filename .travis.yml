@@ -19,18 +19,13 @@ stages:
 jobs:
   include:
     - stage: Style
-
       language: php
-
       php: 7.1
-
       before_install:
         - phpenv config-rm xdebug.ini
         - composer validate --no-check-publish
-
       install:
         - composer install
-
       script:
         - composer normalize --dry-run
         - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
@@ -39,28 +34,21 @@ jobs:
         - vendor/bin/php-cs-fixer fix --config=.php_cs.dist --dry-run --diff -v --using-cache=no "${EXTRA_ARGS[@]}"
 
     - &TEST
-
       stage: Test
-
       language: php
-
       php: 7.1
-
       before_install:
         - source .travis/xdebug.sh
         - xdebug-disable
         - composer validate --no-check-publish
-
       install:
         - composer install
-
       before_script:
         - sh .travis/setup-mail.sh
         - mysql -e "CREATE DATABASE $TRAVIS_DB" -uroot
         - cp config/testing.yml.dist config/testing.yml
         - CFP_ENV=testing vendor/bin/phinx migrate --environment testing
         - mysqldump -uroot $TRAVIS_DB > tests/dump.sql
-
       script:
         - vendor/bin/phpunit --testsuite integration
         - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-enable; fi
@@ -68,20 +56,32 @@ jobs:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then xdebug-disable; fi
 
     - <<: *TEST
-
       php: 7.2
-
       env:
         - WITH_COVERAGE=true
 
     - stage: Asset
-
       language: node_js
-
       node_js: 8.8.1
-
       install:
         - yarn install
-
       script:
         - yarn run production
+    - stage: deploy
+      if: branch = master
+      script:
+       - apt-get update -yqq
+       - apt-get install -yqq zlib1g-dev gnupg build-essential libssl-dev git
+       - docker-php-ext-install zip
+       - cp config/production.yml.dist config/production.yml
+       # Install and run Composer
+       - curl -sS https://getcomposer.org/installer | php
+       - php composer.phar install --no-dev --optimize-autoloader
+       - php bin/console cache:clear --env=${CFP_ENV}
+       - php bin/console cache:warmup -env=${CFP_ENV}
+       - npm install
+       # Install deployer
+       - curl -LO https://deployer.org/deployer.phar | php
+    script:
+      - echo "Deploy to the first available production server"
+      - php deployer.phar ./deployment.ini

@@ -1,11 +1,11 @@
-# [![OpenCFP Banner](docs/img/banner.png)](https://github.com/opencfp/opencfp)
+# FrOSCon PHP Trac with OpenCfP
 
 OpenCFP is a PHP-based conference talk submission system.
 
 ---
-[![Build Status](https://travis-ci.org/opencfp/opencfp.svg?branch=master)](https://travis-ci.org/opencfp/opencfp)
+[![Build Status](https://travis-ci.org/electricmaxxx/opencfp.svg?branch=master)](https://travis-ci.org/electricmaxxx/opencfp)
 
-[![GitHub release](https://img.shields.io/github/release/opencfp/opencfp.svg)](https://github.com/opencfp/opencfp/releases/latest)
+[![GitHub release](https://img.shields.io/github/release/electricmaxxx/opencfp.svg)](https://github.com/electricmaxxx/opencfp/releases/latest)
 
 ## README Contents
 
@@ -45,7 +45,7 @@ OpenCFP is a PHP-based conference talk submission system.
 
 ## [Screenshots](#screenshots)
 
-You can find screenshots of the application in our [wiki](https://github.com/opencfp/opencfp/wiki/Screenshots)
+You can find screenshots of the application in our [wiki](https://github.com/electricmaxxx/opencfp/wiki/Screenshots)
 
 
 ## [Contributing](#contributing)
@@ -63,7 +63,7 @@ See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 ### [Grab Latest Release](#grab-latest-release)
 
-It is recommended for you to always install the latest marked release. Go to `https://github.com/opencfp/opencfp/releases` to download it.
+It is recommended for you to always install the latest marked release. Go to `https://github.com/electricmaxxx/opencfp/releases` to download it.
 
 ### [Cloning the Repository](#cloning-the-repository)
 
@@ -72,7 +72,7 @@ Clone this project into your working directory. We recommend always running the 
 Example:
 
 ```
-$ git clone git@github.com:opencfp/opencfp.git
+$ git clone git@github.com:electricmaxxx/opencfp.git
 Cloning into 'opencfp'...
 remote: Counting objects: 4794, done.
 remote: Total 4794 (delta 0), reused 0 (delta 0)
@@ -319,7 +319,7 @@ docker image by executing:
 $ ./.docker/build latest
 ```
 
-And the result will be an image called `opencfp/opencfp:latest`.
+And the result will be an image called `electricmaxxx/opencfp:latest`.
 
 Or if you like you can run [docker-compose](https://docs.docker.com/compose/install/) command which will build the 
 image and run the containers automatically for you:
@@ -350,7 +350,7 @@ You can run the image (after you build it) and link it to an already running dat
 [run](https://docs.docker.com/engine/reference/commandline/run/) command like:
 
 ```
-docker run -e CFP_ENV=production -e CFP_DB_HOST=database -e CFP_DB_PASS=root --name cfp --link database:database -p 80:80 -d opencfp/opencfp:latest
+docker run -e CFP_ENV=production -e CFP_DB_HOST=database -e CFP_DB_PASS=root --name cfp --link database:database -p 80:80 -d electricmaxxx/opencfp:latest
 ```
 
 Where `database` is the name of the running database container. 
