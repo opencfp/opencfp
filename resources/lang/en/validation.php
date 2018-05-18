@@ -104,7 +104,7 @@ return [
     */
 
     'attributes' => [
-        'coc' => 'code of conduct',
-        'privacy' => 'privacy policy'
+        'coc'     => 'code of conduct',
+        'privacy' => 'privacy policy',
     ],
 ];
