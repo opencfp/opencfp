@@ -43,6 +43,7 @@ final class ProcessActionTest extends WebTestCase implements TransactionalTestCa
             'hotel'          => null,
             'buttonInfo'     => 'Create my speaker profile',
             'coc'            => 1,
+            'privacy'        => 1,
         ]);
 
         $this->assertResponseIsRedirect($response);
@@ -75,6 +76,7 @@ final class ProcessActionTest extends WebTestCase implements TransactionalTestCa
             'hotel'          => null,
             'buttonInfo'     => 'Create my speaker profile',
             'coc'            => 1,
+            'privacy'        => 1,
         ]);
 
         $this->assertSessionHasFlashMessage("You've successfully created your account!", $this->session());

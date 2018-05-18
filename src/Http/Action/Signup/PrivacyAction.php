@@ -13,66 +13,23 @@ declare(strict_types=1);
 
 namespace OpenCFP\Http\Action\Signup;
 
-use OpenCFP\Domain\CallForPapers;
-use OpenCFP\Domain\Services;
 use Symfony\Component\HttpFoundation;
-use Symfony\Component\Routing;
 use Twig_Environment;
 
 final class PrivacyAction
 {
     /**
-     * @var Services\Authentication
-     */
-    private $authentication;
-
-    /**
-     * @var CallForPapers
-     */
-    private $callForPapers;
-
-    /**
      * @var Twig_Environment
      */
     private $twig;
 
-    /**
-     * @var Routing\Generator\UrlGeneratorInterface
-     */
-    private $urlGenerator;
-
-    public function __construct(
-        Services\Authentication $authentication,
-        CallForPapers $callForPapers,
-        Twig_Environment $twig,
-        Routing\Generator\UrlGeneratorInterface $urlGenerator
-    ) {
-        $this->authentication = $authentication;
-        $this->callForPapers  = $callForPapers;
-        $this->twig           = $twig;
-        $this->urlGenerator   = $urlGenerator;
+    public function __construct(Twig_Environment $twig)
+    {
+        $this->twig = $twig;
     }
 
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
-        if ($this->authentication->isAuthenticated()) {
-            $url = $this->urlGenerator->generate('dashboard');
-
-            return new HttpFoundation\RedirectResponse($url);
-        }
-
-        if (!$this->callForPapers->isOpen()) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'Sorry, the call for papers has ended.',
-            ]);
-
-            $url = $this->urlGenerator->generate('homepage');
-
-            return new HttpFoundation\RedirectResponse($url);
-        }
-
         $content = $this->twig->render('user/privacy.twig');
 
         return new HttpFoundation\Response($content);
