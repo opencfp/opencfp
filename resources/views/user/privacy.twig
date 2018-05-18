@@ -1,0 +1,27 @@
+{% extends "layouts/splash.twig" %}
+{% block content %}
+    <div class="opencfp-signup">
+        <a class="font-serif flex items-center justify-center mb-4" href="{{ url('homepage') }}">
+            <img class="w-10 mr-2" src="{{ assets('img/logo.svg') }}" alt="OpenCFP">
+            <h1 class="font-normal text-white m-0">Open<span class="text-brand font-bold">CFP</span></h1>
+        </a>
+        <h1>Privacy Policy</h1>
+        <p>
+            This OpenCFP installation will collect personal information from you for the purpose of managing talk submissions
+            for a conference. The lead developer for the OpenCFP project recommends that conference organizers delete
+            all records from the database being used with this installation within 15 months of accepting submissions for
+            the event associated with this OpenCFP installation.
+        </p>
+        <p>
+            In future releases tools will be provided to allow OpenCFP installations to more easily comply with the European
+            General Data Protection Regulation that comes into effect on May 25, 2018. These tools will be designed to
+            permanently remove all data associated with a single user from the database system that this OpenCFP installation
+            uses.
+        </p>
+        <p>
+            This OpenCFP installation currently does not provide a mechanism to allow users to explicitly give
+            permission for the information they have submitted to be shared with third parties or to be used
+            for purposes other than managing conference speakers and conference sessions.
+        </p>
+    </div>
+{% endblock %}

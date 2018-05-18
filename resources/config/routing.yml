@@ -243,3 +243,8 @@ password_update:
   methods: [POST]
   controller: OpenCFP\Http\Action\Forgot\UpdatePasswordAction
 
+privacy:
+   path: /privacy
+   methods: [GET]
+   controller: OpenCFP\Http\Action\Signup\PrivacyAction
+

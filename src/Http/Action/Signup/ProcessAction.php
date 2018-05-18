@@ -60,6 +60,7 @@ final class ProcessAction
                 'email'    => 'required|email',
                 'password' => 'required',
                 'coc'      => 'accepted',
+                'privacy'  => 'accepted'
             ]);
 
             $this->accounts->create(

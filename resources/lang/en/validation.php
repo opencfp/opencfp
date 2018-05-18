@@ -105,5 +105,6 @@ return [
 
     'attributes' => [
         'coc' => 'code of conduct',
+        'privacy' => 'privacy policy'
     ],
 ];

@@ -13,6 +13,7 @@ OpenCFP is a PHP-based conference talk submission system.
  * [Screenshots](#screenshots)
  * [Contributing](#contributing)
  * [Minimum Requirements](#requirements)
+ * [Privacy Restrictions](#privacy)
  * [Installation](#installation)
    * [Grab Latest Release](#grab-latest-release)
    * [Cloning the Repository](#cloning-the-repository)
@@ -58,6 +59,23 @@ See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php7.0-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
+
+## [Privacy Restrictions](#privacy)
+
+We request that anyone who installs OpenCFP to not share any of the 
+personal information that is collected from users with any third
+parties without explicit permission from users and to also be aware of the existence of the European
+Union's [General Data Protection Regulation](https://en.wikipedia.org/wiki/General_Data_Protection_Regulation)
+as it could potentially impact your ability to accept submissions
+from anyone residing within the European Union.
+
+Tools to make it easier to comply with the GDPR are in the process
+of being created.
+
+We recommend that you delete any data stored in a database associated
+with an OpenCFP instance within 15 months of accepting submissions from
+users.
+
 
 ## [Installation](#installation)
 
