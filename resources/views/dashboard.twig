@@ -55,6 +55,7 @@ function deleteTalk(tid) {
         <div>
             <a class="btn btn-white-o mr-2" href="{{ url('password_edit') }}">Change Password</a>
             <a class="btn btn-white-o mr-2" href="{{ url('user_edit', { id: user.id }) }}">Edit Profile</a>
+            <a class="btn btn-white-o mr-2" href="{{ url('user_delete') }}">Delete Profile</a>
             {% if profile.talks is not empty %}<a class="btn btn-white mr-4" href="{{ url('talk_new') }}">Submit a talk</a>{% endif %}
         </div>
     </div>

@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Copyright (c) 2013-2018 OpenCFP
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/opencfp/opencfp
+ */
+
+namespace OpenCFP\Test\Integration\Http\Action\Profile;
+
+use OpenCFP\Domain\Model\Talk;
+use OpenCFP\Domain\Model\User;
+use OpenCFP\Test\Integration\TransactionalTestCase;
+use OpenCFP\Test\Integration\WebTestCase;
+
+final class ProcessDeleteActionTest extends WebTestCase implements TransactionalTestCase
+{
+    /**
+     * @test
+     */
+    public function cannotDeleteAUserWhoIsNotLoggedIn()
+    {
+        $response = $this->post('/profile/delete');
+        $this->assertResponseIsRedirect($response);
+        $this->assertResponseBodyContains('Redirecting to /dashboard', $response);
+    }
+
+    /**
+     * @test
+     */
+    public function deletedUserHasNoRecords()
+    {
+        $speaker = factory(User::class, 1)->create()->first();
+        factory(Talk::class, 1)->create()->first();
+
+        $response = $this
+            ->asLoggedInSpeaker($speaker->id)
+            ->post('/profile/delete');
+        $this->assertResponseIsRedirect($response);
+        $this->assertResponseBodyContains('Redirecting to /', $response);
+    }
+}
