@@ -13,13 +13,24 @@
             <input type="email" name="email" placeholder="you@example.com">
             <label class="text-white text-sm">Password</label>
             <input type="password" name="password" placeholder="•••••••">
-            <div class="text-sm my-4 flex items-center">
-                <input id="coc" class="mr-2" name="coc" type="checkbox">
-                <label for="coc" class="text-white">I agree to abide by the <a href="{{ site.coc_link }}" target="_blank" class="text-brand text-bold text-underline" rel="noopener noreferrer">Code of Conduct</a></label>
-                <input id="privacy" class="mr-2" name="privacy" type="checkbox">
-                <label for="privacy" class="text-white">I have read and understand the <a href="{{ url('privacy') }}" target="_blank" class="text-brand text-bold text-underline" rel="noopener noreferrer">Privacy Policy</a></label>
-            </div>
+            <ul class="list-reset">
+                <li>
+                    <label for="coc" class="text-white">
+                        <input id="coc" class="mr-2" name="coc" type="checkbox"> I agree to abide by the <a href="{{ site.coc_link }}" target="_blank" class="text-brand text-bold text-underline" rel="noopener noreferrer">Code of Conduct</a>
+                    </label>
+                </li>
+                <li>
+                    <label for="privacy" class="text-white">
+                        <input id="privacy" class="mr-2" name="privacy" type="checkbox">
+                        I have read and understand the <a href="{{ url('privacy') }}" target="_blank" class="text-brand text-bold text-underline" rel="noopener noreferrer">Privacy Policy</a>
+                    </label>
+                </li>
+            </ul>
             <button type="submit" class="btn btn-brand w-full">Signup</button>
         </form>
+
+        <p class="text-light text-center text-sm my-4">
+            Already signed up? <a href="{{ url('login') }}" class="text-brand text-bold">Login now</a>
+        </p>
     </div>
 {% endblock %}
