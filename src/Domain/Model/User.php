@@ -114,15 +114,21 @@ class User extends Eloquent
                 }
             });
 
-        $this->persistences()->get()->each(function ($item) {
+        $this->persistences()->get()->each(function (Persistence $item) {
             if (!$item->delete()) {
                 throw new \Exception('Unable to delete persistence records of user');
             }
         });
 
-        $this->reminders()->get()->each(function ($item) {
+        $this->reminders()->get()->each(function (Reminder $item) {
             if (!$item->delete()) {
                 throw new \Exception('Unable to delete reminder records of user');
+            }
+        });
+
+        $this->throttle()->get()->each(function (Throttle $item) {
+            if (!$item->delete()) {
+                throw new \Exception('Unable to delete throttle records of user');
             }
         });
 

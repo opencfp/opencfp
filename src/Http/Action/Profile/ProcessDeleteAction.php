@@ -48,16 +48,26 @@ final class ProcessDeleteAction
             return new HttpFoundation\RedirectResponse($url);
         }
 
-        $user->delete();
-        $this->authentication->logout();
-        $url = $this->urlGenerator->generate('homepage');
+        try {
+            $user->delete();
+            $this->authentication->logout();
+            $url = $this->urlGenerator->generate('homepage');
 
-        // Set flash message acknowledging that your account has been deleted
-        $request->getSession()->set('flash', [
-            'type'  => 'success',
-            'short' => 'Account Deleted',
-            'ext'   => 'Your OpenCFP account here has been deleted',
-        ]);
+            // Set flash message acknowledging that your account has been deleted
+            $request->getSession()->set('flash', [
+                'type'  => 'success',
+                'short' => 'Account Deleted',
+                'ext'   => 'Your OpenCFP account here has been deleted',
+            ]);
+        } catch (\Exception $e) {
+            // Set flash message acknowledging that your account has been deleted
+            $request->getSession()->set('flash', [
+                'type'  => 'error',
+                'short' => 'Account Not Deleted',
+                'ext'   => 'Your OpenCFP account could not be deleted. Please try again',
+            ]);
+            $url = $this->urlGenerator->generate('user_delete');
+        }
 
         return new HttpFoundation\RedirectResponse($url);
     }

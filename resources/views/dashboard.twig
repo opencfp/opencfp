@@ -30,7 +30,7 @@ function deleteTalk(tid) {
         <a href="{{ url('user_edit', { id: user.id }) }}" class="btn btn-brand">Fill out your profile</a>
         <br><br>
         <p class="text-soft mb-8">Click below to delete your account without going any further</p>
-        <a href="{{ url('user_delete') }}" class="btn btn-brand">Delete your account</a>
+        <a class="btn btn-brand" href="{{ url('user_delete') }}" >Delete your account</a>
     </div>
     {% else %}
     <div class="bg-brand p-8 text-white flex items-center justify-between">

@@ -27,8 +27,7 @@ class Throttle extends Eloquent
     public function setUpdatedAt($value)
     {
         /**
-         * This is the dirty way to tell Illuminate that we don't have an updated at field
-         * while still having a created_at field.
+         * This is the dirty way to tell Illuminate that we don't have an updated_at field
          */
     }
 
