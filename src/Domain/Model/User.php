@@ -34,6 +34,21 @@ class User extends Eloquent
         return $this->hasMany(TalkMeta::class, 'admin_user_id');
     }
 
+    public function persistences(): HasMany
+    {
+        return $this->hasMany(Persistence::class, 'user_id');
+    }
+
+    public function reminders(): HasMany
+    {
+        return $this->hasMany(Reminder::class);
+    }
+
+    public function throttle(): HasMany
+    {
+        return $this->hasMany(Throttle::class);
+    }
+
     /**
      * Gets all the 'other' talks for a speaker, except the one given.
      * If called with no parameters returns all talks of that user.
@@ -98,6 +113,24 @@ class User extends Eloquent
                     throw new \Exception('Unable to delete talks of user');
                 }
             });
+
+        $this->persistences()->get()->each(function (Persistence $item) {
+            if (!$item->delete()) {
+                throw new \Exception('Unable to delete persistence records of user');
+            }
+        });
+
+        $this->reminders()->get()->each(function (Reminder $item) {
+            if (!$item->delete()) {
+                throw new \Exception('Unable to delete reminder records of user');
+            }
+        });
+
+        $this->throttle()->get()->each(function (Throttle $item) {
+            if (!$item->delete()) {
+                throw new \Exception('Unable to delete throttle records of user');
+            }
+        });
 
         if (!parent::delete()) {
             throw new \Exception('Unable to delete User');

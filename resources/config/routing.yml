@@ -206,6 +206,16 @@ user_update:
   methods: [POST]
   controller: OpenCFP\Http\Action\Profile\ProcessAction
 
+user_delete:
+  path: /profile/delete
+  methods: [GET]
+  controller: OpenCFP\Http\Action\Profile\DeleteAction
+
+user_delete_process:
+  path: /profile/delete
+  methods: [POST]
+  controller: OpenCFP\Http\Action\Profile\ProcessDeleteAction
+
 password_edit:
   path: /profile/change_password
   methods: [GET]

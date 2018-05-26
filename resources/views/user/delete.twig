@@ -1,0 +1,19 @@
+{% extends "layouts/default.twig" %}
+
+{% block scripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+            <h2 class="headline">Delete My Profile</h2>
+            <p>
+                By clicking on the button below all data associated with your account<br>
+                will be deleted from this OpenCFP install and then you will be logged out.
+            </p>
+            {% include "_flash.twig" %}
+            <form method="post" action="{{ url('user_delete_process') }}">
+                <button type="submit" class="btn btn-brand mt-2 ml-4">Delete My Profile</button>
+            </form>
+    </div>
+{% endblock %}
