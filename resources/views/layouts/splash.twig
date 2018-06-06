@@ -13,6 +13,8 @@
         {% block scripts %}
         {% endblock %}
 
-        {% include "_forkme.twig" %}
+        {% if site.show_contrib_banner %}
+            {% include "_forkme.twig" %}
+        {% endif %}
     </body>
 </html>
