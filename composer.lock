@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c4ad12c55beef4efbb4ed29f0e11fcd",
+    "content-hash": "6bbe6f194a1eac45bf08e9596e173720",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -5999,32 +5999,32 @@
         },
         {
             "name": "localheinz/composer-normalize",
-            "version": "0.6.0",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localheinz/composer-normalize.git",
-                "reference": "fde9587ec80b9619939fb21102ea9321eefd6efc"
+                "reference": "5dd2a43de32fa45d982326d271a12b0b1ea5e6be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localheinz/composer-normalize/zipball/fde9587ec80b9619939fb21102ea9321eefd6efc",
-                "reference": "fde9587ec80b9619939fb21102ea9321eefd6efc",
+                "url": "https://api.github.com/repos/localheinz/composer-normalize/zipball/5dd2a43de32fa45d982326d271a12b0b1ea5e6be",
+                "reference": "5dd2a43de32fa45d982326d271a12b0b1ea5e6be",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.1.0",
-                "localheinz/json-normalizer": "0.5.2",
+                "localheinz/json-normalizer": "0.6.0",
                 "php": "^7.1",
                 "sebastian/diff": "^2.0.1 || ^3.0.0"
             },
             "require-dev": {
                 "composer/composer": "^1.1.0",
-                "infection/infection": "~0.7.1",
-                "localheinz/php-cs-fixer-config": "~1.11.0",
+                "infection/infection": "^0.8.1",
+                "localheinz/php-cs-fixer-config": "~1.13.1",
                 "localheinz/test-util": "0.6.1",
                 "mikey179/vfsstream": "^1.6.5",
                 "phpstan/phpstan": "~0.9.2",
-                "phpunit/phpunit": "^7.0.1"
+                "phpunit/phpunit": "^7.1.1"
             },
             "type": "composer-plugin",
             "extra": {
@@ -6053,34 +6053,34 @@
                 "normalizer",
                 "plugin"
             ],
-            "time": "2018-02-18T21:06:15+00:00"
+            "time": "2018-04-24T13:26:04+00:00"
         },
         {
             "name": "localheinz/json-normalizer",
-            "version": "0.5.2",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localheinz/json-normalizer.git",
-                "reference": "0bcf04557255c318325fc959a8f36bd51356b6f0"
+                "reference": "f280f0b8125c7c26b2f8047fa84bfe14de785d84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localheinz/json-normalizer/zipball/0bcf04557255c318325fc959a8f36bd51356b6f0",
-                "reference": "0bcf04557255c318325fc959a8f36bd51356b6f0",
+                "url": "https://api.github.com/repos/localheinz/json-normalizer/zipball/f280f0b8125c7c26b2f8047fa84bfe14de785d84",
+                "reference": "f280f0b8125c7c26b2f8047fa84bfe14de785d84",
                 "shasum": ""
             },
             "require": {
                 "justinrainbow/json-schema": "^4.0.0 || ^5.0.0",
-                "localheinz/json-printer": "^1.0.0",
+                "localheinz/json-printer": "^2.0.0",
                 "php": "^7.1"
             },
             "require-dev": {
-                "infection/infection": "~0.7.1",
-                "localheinz/php-cs-fixer-config": "~1.11.0",
+                "infection/infection": "~0.8.1",
+                "localheinz/php-cs-fixer-config": "~1.13.1",
                 "localheinz/test-util": "0.6.1",
                 "phpbench/phpbench": "~0.14.0",
                 "phpspec/prophecy": "^1.7.1",
-                "phpunit/phpunit": "^7.0.0"
+                "phpunit/phpunit": "^7.1.1"
             },
             "type": "library",
             "autoload": {
@@ -6104,31 +6104,31 @@
                 "json",
                 "normalizer"
             ],
-            "time": "2018-02-15T14:13:23+00:00"
+            "time": "2018-04-07T08:03:24+00:00"
         },
         {
             "name": "localheinz/json-printer",
-            "version": "1.1.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localheinz/json-printer.git",
-                "reference": "49459a160c551b5504d1edcbb10692039071d08a"
+                "reference": "1a350fd94544df716d1c75ef107d34057f80ac7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localheinz/json-printer/zipball/49459a160c551b5504d1edcbb10692039071d08a",
-                "reference": "49459a160c551b5504d1edcbb10692039071d08a",
+                "url": "https://api.github.com/repos/localheinz/json-printer/zipball/1a350fd94544df716d1c75ef107d34057f80ac7a",
+                "reference": "1a350fd94544df716d1c75ef107d34057f80ac7a",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.0"
             },
             "require-dev": {
-                "infection/infection": "~0.7.0",
-                "localheinz/php-cs-fixer-config": "~1.9.0",
+                "infection/infection": "~0.8.1",
+                "localheinz/php-cs-fixer-config": "~1.13.1",
                 "localheinz/test-util": "0.6.1",
                 "phpbench/phpbench": "~0.14.0",
-                "phpunit/phpunit": "^6.5.5"
+                "phpunit/phpunit": "^6.5.7"
             },
             "type": "library",
             "autoload": {
@@ -6153,7 +6153,7 @@
                 "json",
                 "printer"
             ],
-            "time": "2018-01-27T21:05:05+00:00"
+            "time": "2018-04-06T22:10:47+00:00"
         },
         {
             "name": "localheinz/test-util",
