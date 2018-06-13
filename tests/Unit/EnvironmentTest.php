@@ -104,6 +104,17 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
+     */
+    public function fromServerDefaultsToProduction()
+    {
+        $environment = Environment::fromServer([]);
+
+        $this->assertInstanceOf(Environment::class, $environment);
+        $this->assertTrue($environment->isProduction());
+    }
+
+    /**
+     * @test
      * @dataProvider providerEnvironment
      *
      * @param string $type
