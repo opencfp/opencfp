@@ -112,7 +112,7 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Environment::class, $environment);
         $this->assertTrue($environment->isDevelopment());
     }
-    
+
     /**
      * @test
      * @dataProvider providerEnvironment
