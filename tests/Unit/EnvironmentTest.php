@@ -105,12 +105,12 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function fromServerDefaultsToDevelopment()
+    public function fromServerDefaultsToProduction()
     {
         $environment = Environment::fromServer([]);
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertTrue($environment->isDevelopment());
+        $this->assertTrue($environment->isProduction());
     }
 
     /**
