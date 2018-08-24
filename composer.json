@@ -38,6 +38,11 @@
         "twig/twig": "^2.4.4",
         "wouterj/eloquent-bundle": "^1.0"
     },
+    "replace": {
+        "paragonie/random_compat": "*",
+        "symfony/polyfill-php56": "*",
+        "symfony/polyfill-php70": "*"
+    },
     "require-dev": {
         "codedungeon/phpunit-result-printer": "^0.4.2",
         "friendsofphp/php-cs-fixer": "^2.10.2",
