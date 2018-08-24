@@ -25,7 +25,7 @@ OpenCFP is a PHP-based conference talk submission system.
    * [Run Migrations](#run-migrations)
    * [Using Vagrant](#using-vagrant)
    * [Final Touches](#final-touches)
-   * [Building Docker Image](#build-docker-image)
+   * [Building Docker Image](#building-docker-image)
  * [Command-line Utilities](#command-line-utilities)
    * [Admin Group Management](#admin-group-management)
    * [Reviewer Group Management](#reviewer-group-management)
