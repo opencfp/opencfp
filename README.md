@@ -59,6 +59,7 @@ See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php7.0-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
+ * Either the GD image library or the Imagick PHP extension for the [Intervention image library](http://image.intervention.io/getting_started/installation))
 
 ## [Privacy Restrictions](#privacy)
 
