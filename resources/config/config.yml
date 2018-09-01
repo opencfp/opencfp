@@ -22,6 +22,17 @@ wouterj_eloquent:
   prefix:    ~
   eloquent: true
 
+oneup_flysystem:
+  adapters:
+    uploads:
+      local:
+        directory: "%kernel.root_dir%/web/uploads"
+
+  filesystems:
+    uploads:
+      adapter: uploads
+      alias: upload_filesystem
+
 twig:
   default_path: '%kernel.project_dir%/resources/views'
   debug: '%kernel.debug%'

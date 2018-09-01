@@ -30,6 +30,7 @@ services:
   OpenCFP\Domain\Services\ProfileImageProcessor:
     bind:
       $publishDir: '%kernel.project_dir%/web/uploads'
+      League\Flysystem\FilesystemInterface: '@upload_filesystem'
 
   OpenCFP\Domain\Services\RandomStringGenerator:
     alias: OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator
