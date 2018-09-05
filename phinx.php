@@ -15,7 +15,7 @@ use OpenCFP\Kernel;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$kernel = new Kernel((string) Environment::fromServer($_SERVER), false);
+$kernel = new Kernel((string) Environment::fromServer(\getenv()), false);
 $kernel->boot();
 
 $container = $kernel->getContainer();

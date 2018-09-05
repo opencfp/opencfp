@@ -19,6 +19,7 @@
         <env name="COLUMNS" value="120"/>
         <ini name="memory_limit" value="768M"/>
         <server name="CFP_ENV" value="testing"/>
+        <env name="CFP_ENV" value="testing"/>
     </php>
     <filter>
         <whitelist>
