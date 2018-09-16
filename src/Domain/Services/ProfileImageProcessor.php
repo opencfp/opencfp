@@ -95,7 +95,7 @@ class ProfileImageProcessor
 
             $speakerPhoto->crop($this->size, $this->size);
             $photoData = $speakerPhoto->encode($extension);
-            $this->filesystem->write($this->publishDir . '/' . $publishFilename, $photoData);
+            $this->filesystem->write($publishFilename, $photoData);
 
             return $publishFilename;
         } finally {

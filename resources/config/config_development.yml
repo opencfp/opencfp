@@ -8,3 +8,14 @@ framework:
 
 web_profiler:
   toolbar: true
+
+oneup_flysystem:
+  adapters:
+    uploads:
+      local:
+        directory: "%kernel.root_dir%/../web/uploads"
+
+  filesystems:
+    uploads:
+      adapter: uploads
+      alias: upload_filesystem
