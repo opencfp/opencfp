@@ -18,5 +18,15 @@ framework:
     storage_id: session.storage.mock_file
   test: ~
 
+oneup_flysystem:
+  adapters:
+    uploads:
+      memory: ~
+
+  filesystems:
+    uploads:
+      adapter: uploads
+      alias: upload_filesystem
+
 swiftmailer:
   disable_delivery: true
