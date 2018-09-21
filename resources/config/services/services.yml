@@ -23,6 +23,28 @@ services:
       $reviewerUsers: '%reviewer.users%'
       $showSubmissionCount: '%application.show_submission_count%'
 
+  OpenCFP\Http\Action\Security\CentralAction:
+    public: true
+    bind:
+      $clientId: '%opencfpcentral.clientId%'
+      $redirectUri: '%opencfpcentral.redirectUri%'
+      $authorizeUrl: '%opencfpcentral.authorizeUrl%'
+      $sso: '%opencfpcentral.sso%'
+
+  OpenCFP\Http\Action\Security\RedirectAction:
+    public: true
+    bind:
+      $clientId: '%opencfpcentral.clientId%'
+      $clientSecret: '%opencfpcentral.clientSecret%'
+      $redirectUri: '%opencfpcentral.redirectUri%'
+      $resourceUri: '%opencfpcentral.resourceUri%'
+      $tokenUrl: '%opencfpcentral.tokenUrl%'
+
+  OpenCFP\Http\Action\Security\ShowLogInAction:
+    public: true
+    bind:
+      $sso: '%opencfpcentral.sso%'
+
   OpenCFP\Http\Form\ForgotForm:
     class: Symfony\Component\Form\FormInterface
     factory: [OpenCFP\Http\Form\FormFactory, create]

@@ -68,3 +68,12 @@ security:
 reviewer:
   users:
     -
+
+opencfpcentral:
+  sso: off
+  clientId:
+  clientSecret:
+  authorizeUrl: http://localhost/oauth/authorize?
+  redirectUri: http://localhost/redirect
+  resourceUri: https://www.opencfpcentral.com/api/user
+  tokenUrl: https://www.opencfpcentral.com/oauth/token
