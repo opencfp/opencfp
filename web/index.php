@@ -27,7 +27,7 @@ if (!$environment->isProduction()) {
 $kernel  = new Kernel((string) $environment, !$environment->isProduction());
 $request = Request::createFromGlobals();
 
-if (\getenv('TRUST_PROXIES')) {
+if (\getenv('TRUST_PROXIES') ? \filter_var(\getenv('TRUST_PROXIES'), FILTER_VALIDATE_BOOLEAN) : false) {
     Request::setTrustedProxies(
         // trust *all* requests
         ['127.0.0.1', $request->server->get('REMOTE_ADDR')],
