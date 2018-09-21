@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 use Twig_Environment;
 
-final class LogInAction
+final class ShowLogInAction
 {
     /**
      * @var Services\Authentication
@@ -41,15 +41,25 @@ final class LogInAction
     public function __construct(
         Services\Authentication $authentication,
         Twig_Environment $twig,
-        Routing\Generator\UrlGeneratorInterface $urlGenerator
+        Routing\Generator\UrlGeneratorInterface $urlGenerator,
+        string $sso
     ) {
         $this->authentication = $authentication;
         $this->twig           = $twig;
         $this->urlGenerator   = $urlGenerator;
+        $this->sso            = $sso;
     }
 
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
+        $content = $this->twig->render('security/login.twig', [
+            'sso' => $this->sso
+        ]);
+        return new HttpFoundation\Response(
+            $content
+        );
+
+        /*
         try {
             $this->authentication->authenticate(
                 $request->get('email'),
@@ -76,5 +86,6 @@ final class LogInAction
         $url = $this->urlGenerator->generate('dashboard');
 
         return new HttpFoundation\RedirectResponse($url);
+        */
     }
 }
