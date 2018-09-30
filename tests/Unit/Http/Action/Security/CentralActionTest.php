@@ -1,0 +1,92 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Copyright (c) 2013-2018 OpenCFP
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/opencfp/opencfp
+ */
+
+namespace OpenCFP\Test\Unit\Http\Action\Security;
+
+use OpenCFP\Domain\Services;
+use OpenCFP\Http\Action\Security\CentralAction;
+use PHPUnit\Framework;
+use Symfony\Component\HttpFoundation;
+use Symfony\Component\Routing;
+
+final class CentralActionTest extends Framework\TestCase
+{
+    /**
+     * @test
+     */
+    public function redirectToDashboardIfAuthenticated()
+    {
+        $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
+        $urlGenerator
+            ->generate('dashboard')
+            ->willReturn('/dashboard');
+
+        $clientId     = 1;
+        $redirectUri  = '/redirect';
+        $authorizeUrl = '/authorize/';
+        $sso          = 'enabled';
+
+        $centralAction = new CentralAction(
+            $this->createAuthenticationDouble(true),
+            $urlGenerator->reveal(),
+            $clientId,
+            $redirectUri,
+            $authorizeUrl,
+            $sso
+        );
+        $request  = $this->prophesize(HttpFoundation\Request::class);
+        $response = $centralAction($request->reveal());
+
+        $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
+        $needle = 'Redirecting to /dashboard';
+        $this->assertContains($needle, $response->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function redirectToCentralIfNotAuthenticated(): void
+    {
+        $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
+
+        $clientId     = 1;
+        $redirectUri  = '/redirect';
+        $authorizeUrl = '/authorize/';
+        $sso          = 'enabled';
+
+        $centralAction = new CentralAction(
+            $this->createAuthenticationDouble(false),
+            $urlGenerator->reveal(),
+            $clientId,
+            $redirectUri,
+            $authorizeUrl,
+            $sso
+        );
+        $request  = $this->prophesize(HttpFoundation\Request::class);
+        $response = $centralAction($request->reveal());
+
+        $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
+        $needle = "Redirecting to {$authorizeUrl}client_id={$clientId}&amp;redirect_uri=%2Fredirect";
+        $this->assertContains($needle, $response->getContent());
+    }
+
+    private function createAuthenticationDouble(bool $isAuthenticated)
+    {
+        $authentication = $this->prophesize(Services\Authentication::class);
+        $authentication
+            ->isAuthenticated()
+            ->willReturn($isAuthenticated);
+
+        return $authentication->reveal();
+    }
+}

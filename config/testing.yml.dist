@@ -34,7 +34,7 @@ mail:
   encryption: ~
   auth_mode: ~
 
-opencfp:
+opencfpcentral:
   sso: false
   clientId:
   clientSecret:

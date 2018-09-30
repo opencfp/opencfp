@@ -88,6 +88,7 @@ final class CentralAction
             'response_type' => 'code',
             'scope'         => '',
         ]);
+
         return new HttpFoundation\RedirectResponse($this->authorizeUrl . $query);
     }
 }

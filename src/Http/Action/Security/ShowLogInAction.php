@@ -52,40 +52,22 @@ final class ShowLogInAction
 
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
-        $content = $this->twig->render('security/login.twig', [
-            'sso' => $this->sso
-        ]);
-        return new HttpFoundation\Response(
-            $content
-        );
-
-        /*
+        /**
+         * If we're already logged in, redirect the user to the dashboard
+         * Otherwise show the login page
+         */
         try {
             $this->authentication->authenticate(
                 $request->get('email'),
                 $request->get('password')
             );
+            $url = $this->urlGenerator->generate('dashboard');
+
+            return new HttpFoundation\RedirectResponse($url);
         } catch (Services\AuthenticationException $exception) {
-            $flash = [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => $exception->getMessage(),
-            ];
-            $request->getSession()->set('flash', $flash);
-            $content = $this->twig->render('security/login.twig', [
-                'email' => $request->get('email'),
-                'flash' => $flash,
-            ]);
+            $content = $this->twig->render('security/login.twig', ['sso' => $this->sso]);
 
-            return new HttpFoundation\Response(
-                $content,
-                HttpFoundation\Response::HTTP_BAD_REQUEST
-            );
+            return new HttpFoundation\Response($content);
         }
-
-        $url = $this->urlGenerator->generate('dashboard');
-
-        return new HttpFoundation\RedirectResponse($url);
-        */
     }
 }
