@@ -332,6 +332,8 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
             [$validBaseUrl . 'do re mi', false],
             [$validBaseUrl . '_FirstLast', true],
             [$validBaseUrl . 'first-last', true],
+            [$validBaseUrl . 'firstname.last', true],
+            [$validBaseUrl . '._name_.', true],
             [$validBaseUrl . $longUrl, false],
         ];
     }
