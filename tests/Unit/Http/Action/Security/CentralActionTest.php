@@ -24,7 +24,7 @@ final class CentralActionTest extends Framework\TestCase
     /**
      * @test
      */
-    public function redirectToDashboardIfAuthenticated()
+    public function redirectToDashboardIfAuthenticated(): void
     {
         $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
         $urlGenerator
@@ -34,15 +34,13 @@ final class CentralActionTest extends Framework\TestCase
         $clientId     = 1;
         $redirectUri  = '/redirect';
         $authorizeUrl = '/authorize/';
-        $sso          = 'enabled';
 
         $centralAction = new CentralAction(
             $this->createAuthenticationDouble(true),
             $urlGenerator->reveal(),
             $clientId,
             $redirectUri,
-            $authorizeUrl,
-            $sso
+            $authorizeUrl
         );
         $request  = $this->prophesize(HttpFoundation\Request::class);
         $response = $centralAction($request->reveal());
@@ -62,15 +60,13 @@ final class CentralActionTest extends Framework\TestCase
         $clientId     = 1;
         $redirectUri  = '/redirect';
         $authorizeUrl = '/authorize/';
-        $sso          = 'enabled';
 
         $centralAction = new CentralAction(
             $this->createAuthenticationDouble(false),
             $urlGenerator->reveal(),
             $clientId,
             $redirectUri,
-            $authorizeUrl,
-            $sso
+            $authorizeUrl
         );
         $request  = $this->prophesize(HttpFoundation\Request::class);
         $response = $centralAction($request->reveal());

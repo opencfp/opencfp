@@ -49,22 +49,19 @@ final class CentralAction
      * @param int                                     $clientId
      * @param string                                  $redirectUri
      * @param string                                  $authorizeUrl
-     * @param string                                  $sso
      */
     public function __construct(
         Services\Authentication $authentication,
         Routing\Generator\UrlGeneratorInterface $urlGenerator,
         int $clientId,
         string $redirectUri,
-        string $authorizeUrl,
-        string $sso
+        string $authorizeUrl
     ) {
         $this->authentication = $authentication;
         $this->urlGenerator   = $urlGenerator;
         $this->clientId       = $clientId;
         $this->redirectUri    = $redirectUri;
         $this->authorizeUrl   = $authorizeUrl;
-        $this->sso            = $sso;
     }
 
     /**

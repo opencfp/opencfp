@@ -32,7 +32,6 @@ services:
       $clientId: '%opencfpcentral.clientId%'
       $redirectUri: '%opencfpcentral.redirectUri%'
       $authorizeUrl: '%opencfpcentral.authorizeUrl%'
-      $sso: '%opencfpcentral.sso%'
 
   OpenCFP\Http\Action\Security\RedirectAction:
     public: true

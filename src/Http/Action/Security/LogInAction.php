@@ -30,9 +30,6 @@ final class LogInAction
      */
     private $twig;
 
-    /** @var string */
-    private $sso;
-
     /**
      * @var Routing\Generator\UrlGeneratorInterface
      */
