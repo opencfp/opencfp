@@ -47,9 +47,19 @@ function deleteTalk(tid) {
                 {% if profile.company %}
                     <p>{{ profile.company }}</p>
                 {% endif %}
+
                 {% if profile.twitter %}
                     <a class="text-white text-xs" href="https://twitter.com/{{ profile.twitter }}" title="{{ profile.name }} on Twitter"><i class="fa fa-twitter"></i> @{{ profile.twitter }}</a>
                 {% endif %}
+
+                {% if profile.getJoindInUsername() %}
+                    | <a class="text-white text-xs"
+                       href="https://joind.in/user/{{ profile.getJoindInUsername() }}"
+                       title="Follow {{ profile.getJoindInUsername() }} on joind.in">
+                       <i class="fa fa-commenting-o"></i> https://joind.in/user/{{ profile.getJoindInUsername() }}
+                   </a>
+                {% endif %}
+
                 {% if profile.url %}
                     | <a class="text-white text-xs" href="{{ profile.url }}">{{ profile.url }}</a>
                 {% endif %}

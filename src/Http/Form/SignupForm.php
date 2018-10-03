@@ -34,6 +34,7 @@ class SignupForm extends Form
         'hotel',
         'speaker_photo',
         'agree_coc',
+        'joindin_username',
         'url',
     ];
 
@@ -61,7 +62,7 @@ class SignupForm extends Form
             $validSpeakerBio = $this->validateSpeakerBio();
         }
 
-        return $this->validateEmail() && $validPasswords && $this->validateFirstName() && $this->validateLastName() && $this->validateUrl() && $validSpeakerInfo && $validSpeakerBio && $this->validateSpeakerPhoto() && $agreeCoc;
+        return $this->validateEmail() && $validPasswords && $this->validateFirstName() && $this->validateLastName() && $this->validateUrl() && $validSpeakerInfo && $validSpeakerBio && $this->validateSpeakerPhoto() && $agreeCoc && $this->validateJoindInUsername();
     }
 
     public function validateSpeakerPhoto(): bool
@@ -201,15 +202,29 @@ class SignupForm extends Form
         return $validationResponse;
     }
 
+    public function validateJoindInUsername(): bool
+    {
+        if (!isset($this->cleanData['joindin_username'])
+            || $this->cleanData['joindin_username'] == ''
+            || \preg_match('/^[a-zA-Z0-9\-_\.]{1,100}$/', $this->cleanData['joindin_username'])
+        ) {
+            return true;
+        }
+
+        $this->addErrorMessage('Please enter a valid joind.in username.');
+
+        return false;
+    }
+
     public function validateUrl(): bool
     {
-        if (\preg_match('/^https:\/\/joind\.in\/user\/[a-zA-Z0-9\-_\.]{1,100}$/', $this->cleanData['url'])
+        if (\filter_var($this->cleanData['url'], FILTER_VALIDATE_URL) !== false
             || !isset($this->cleanData['url'])
             || $this->cleanData['url'] == ''
         ) {
             return true;
         }
-        $this->addErrorMessage('You did not enter a valid joind.in URL');
+        $this->addErrorMessage('Please enter a valid URL.');
 
         return false;
     }

@@ -126,18 +126,19 @@ final class ProcessAction
     private function getFormData(HttpFoundation\Request $request): array
     {
         return [
-            'email'          => $request->get('email'),
-            'user_id'        => $request->get('id'),
-            'first_name'     => $request->get('first_name'),
-            'last_name'      => $request->get('last_name'),
-            'company'        => $request->get('company'),
-            'twitter'        => $request->get('twitter'),
-            'url'            => $request->get('url'),
-            'airport'        => $request->get('airport'),
-            'transportation' => (int) $request->get('transportation'),
-            'hotel'          => (int) $request->get('hotel'),
-            'speaker_info'   => $request->get('speaker_info') ?: null,
-            'speaker_bio'    => $request->get('speaker_bio') ?: null,
+            'email'            => $request->get('email'),
+            'user_id'          => $request->get('id'),
+            'first_name'       => $request->get('first_name'),
+            'last_name'        => $request->get('last_name'),
+            'company'          => $request->get('company'),
+            'twitter'          => $request->get('twitter'),
+            'joindin_username' => $request->get('joindin_username'),
+            'url'              => $request->get('url'),
+            'airport'          => $request->get('airport'),
+            'transportation'   => (int) $request->get('transportation'),
+            'hotel'            => (int) $request->get('hotel'),
+            'speaker_info'     => $request->get('speaker_info') ?: null,
+            'speaker_bio'      => $request->get('speaker_bio') ?: null,
         ];
     }
 
