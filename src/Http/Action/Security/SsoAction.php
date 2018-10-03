@@ -17,7 +17,7 @@ use OpenCFP\Domain\Services;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 
-final class CentralAction
+final class SsoAction
 {
     /**
      * @var Services\Authentication

@@ -20,14 +20,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Services;
-use OpenCFP\Http\Action\Security\RedirectAction;
+use OpenCFP\Http\Action\Security\SsoRedirectAction;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 use PHPUnit\Framework;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 
-final class RedirectActionTest extends Framework\TestCase
+final class SsoRedirectActionTest extends Framework\TestCase
 {
     use Helper;
 
@@ -74,7 +74,7 @@ final class RedirectActionTest extends Framework\TestCase
             ->getSession()
             ->willReturn($session->reveal());
 
-        $redirectAction = new RedirectAction(
+        $redirectAction = new SsoRedirectAction(
             $sentinel->reveal(),
             $accounts->reveal(),
             $urlGenerator->reveal(),
@@ -119,7 +119,7 @@ final class RedirectActionTest extends Framework\TestCase
         $httpClient = $this->createHttpClientDouble($email);
 
         $request        = $this->prophesize(HttpFoundation\Request::class);
-        $redirectAction = new RedirectAction(
+        $redirectAction = new SsoRedirectAction(
             $sentinel->reveal(),
             $accounts->reveal(),
             $urlGenerator->reveal(),
@@ -172,7 +172,7 @@ final class RedirectActionTest extends Framework\TestCase
         $httpClient = $this->createHttpClientDouble($email);
 
         $request        = $this->prophesize(HttpFoundation\Request::class);
-        $redirectAction = new RedirectAction(
+        $redirectAction = new SsoRedirectAction(
             $sentinel->reveal(),
             $accounts,
             $urlGenerator->reveal(),

@@ -26,14 +26,14 @@ services:
       $reviewerUsers: '%reviewer.users%'
       $showSubmissionCount: '%application.show_submission_count%'
 
-  OpenCFP\Http\Action\Security\CentralAction:
+  OpenCFP\Http\Action\Security\SsoAction:
     public: true
     bind:
       $clientId: '%opencfpcentral.clientId%'
       $redirectUri: '%opencfpcentral.redirectUri%'
       $authorizeUrl: '%opencfpcentral.authorizeUrl%'
 
-  OpenCFP\Http\Action\Security\RedirectAction:
+  OpenCFP\Http\Action\Security\SsoRedirectAction:
     public: true
     bind:
       $clientId: '%opencfpcentral.clientId%'

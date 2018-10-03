@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Unit\Http\Action\Security;
 
 use OpenCFP\Domain\Services;
-use OpenCFP\Http\Action\Security\CentralAction;
+use OpenCFP\Http\Action\Security\SsoAction;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 
-final class CentralActionTest extends Framework\TestCase
+final class SsoActionTest extends Framework\TestCase
 {
     /**
      * @test
@@ -35,7 +35,7 @@ final class CentralActionTest extends Framework\TestCase
         $redirectUri  = '/redirect';
         $authorizeUrl = '/authorize/';
 
-        $centralAction = new CentralAction(
+        $centralAction = new SsoAction(
             $this->createAuthenticationDouble(true),
             $urlGenerator->reveal(),
             $clientId,
@@ -61,7 +61,7 @@ final class CentralActionTest extends Framework\TestCase
         $redirectUri  = '/redirect';
         $authorizeUrl = '/authorize/';
 
-        $centralAction = new CentralAction(
+        $centralAction = new SsoAction(
             $this->createAuthenticationDouble(false),
             $urlGenerator->reveal(),
             $clientId,

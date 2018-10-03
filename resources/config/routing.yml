@@ -257,13 +257,13 @@ privacy:
    methods: [GET]
    controller: OpenCFP\Http\Action\Signup\PrivacyAction
 
-central:
-  path: /central
+sso:
+  path: /sso
   methods: [GET]
   controller: OpenCFP\Http\Action\Security\CentralAction
 
-redirect:
-  path: /redirect
+sso_redirect:
+  path: /sso/redirect
   methods: [GET]
   controller: OpenCFP\Http\Action\Security\RedirectAction
 

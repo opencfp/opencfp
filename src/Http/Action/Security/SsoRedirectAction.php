@@ -21,7 +21,7 @@ use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 
-final class RedirectAction
+final class SsoRedirectAction
 {
     /** @var AccountManagement */
     private $accounts;
@@ -51,7 +51,7 @@ final class RedirectAction
     private $httpClient;
 
     /**
-     * RedirectAction constructor.
+     * SsoRedirectAction constructor.
      *
      * @param Sentinel                                $sentinel
      * @param AccountManagement                       $accounts
