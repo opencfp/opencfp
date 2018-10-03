@@ -71,8 +71,8 @@ reviewer:
 
 opencfpcentral:
   sso: off
-  clientId:
-  clientSecret:
+  clientId: 0
+  clientSecret: 0
   authorizeUrl: http://localhost/oauth/authorize?
   redirectUri: http://localhost/redirect
   resourceUri: https://www.opencfpcentral.com/api/user
