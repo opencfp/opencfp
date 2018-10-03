@@ -40,4 +40,6 @@ unit: vendor
 	vendor/bin/phpunit --testsuite unit
 
 vendor: composer.json composer.lock
+	composer validate
+	composer normalize
 	composer install
