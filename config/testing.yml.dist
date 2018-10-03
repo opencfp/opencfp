@@ -38,7 +38,7 @@ opencfpcentral:
   sso: off
   clientId: 0
   clientSecret: 0
-  authorizeUrl: http://localhost/oauth/authorize?
+  authorizeUrl: https://www.opencfpcentral.com/oauth/authorize?
   redirectUri: http://localhost/redirect
   resourceUri: https://www.opencfpcentral.com/api/user
   tokenUrl: https://www.opencfpcentral.com/oauth/token
