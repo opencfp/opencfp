@@ -276,6 +276,40 @@ final class SpeakerProfileTest extends Framework\TestCase
     /**
      * @test
      */
+    public function getJoindInUsernameThrowsNotAllowedExceptionIfPropertyIsHidden()
+    {
+        $hiddenProperties = [
+            'joindin_username',
+        ];
+
+        $speaker = $this->createUserMock();
+
+        $profile = new SpeakerProfile($speaker, $hiddenProperties);
+
+        $this->expectException(NotAllowedException::class);
+
+        $profile->getJoindInUsername();
+    }
+
+    /**
+     * @test
+     */
+    public function getJoindInUsernameReturnsJoindInUsernameIfPropertyIsNotHidden()
+    {
+        $joindin_username = $this->faker()->userName;
+
+        $speaker = $this->createUserMock([
+            'joindin_username' => $joindin_username,
+        ]);
+
+        $profile = new SpeakerProfile($speaker);
+
+        $this->assertSame($joindin_username, $profile->getJoindInUsername());
+    }
+
+    /**
+     * @test
+     */
     public function getTwitterUrlThrowsNotAllowedExceptionIfPropertyIsHidden(): void
     {
         $hiddenProperties = [
