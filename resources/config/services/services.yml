@@ -3,6 +3,9 @@ services:
     public: false
     autowire: true
 
+  http_client:
+    class: GuzzleHttp\Client
+
   OpenCFP\Http\Controller\:
     resource: '%kernel.project_dir%/src/Http/Controller/*'
     public: true
@@ -36,7 +39,7 @@ services:
     bind:
       $clientId: '%opencfpcentral.clientId%'
       $clientSecret: '%opencfpcentral.clientSecret%'
-      $httpClient: GuzzleHttp\Client
+      $httpClient: '@http_client'
       $redirectUri: '%opencfpcentral.redirectUri%'
       $resourceUri: '%opencfpcentral.resourceUri%'
       $tokenUrl: '%opencfpcentral.tokenUrl%'
