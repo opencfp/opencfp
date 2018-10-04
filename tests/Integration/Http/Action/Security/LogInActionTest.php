@@ -70,10 +70,8 @@ final class LogInActionTest extends WebTestCase implements TransactionalTestCase
                 'password' => $this->faker()->password,
             ]);
 
-        $this->assertResponseStatusCode(HttpFoundation\Response::HTTP_FOUND, $response);
-        $this->assertResponseBodyContains($randomEmail, $response);
-        $this->assertResponseBodyContains('Email', $response);
-        $this->assertResponseBodyContains('Password', $response);
-        $this->assertResponseBodyContains('Signup', $response);
+        $this->assertResponseIsRedirect($response);
+        $this->assertRedirectResponseUrlEquals('/signup', $response);
+        $this->assertSessionHasFlashMessage('User does not exist in the system; you can sign up below!', $this->session());
     }
 }
