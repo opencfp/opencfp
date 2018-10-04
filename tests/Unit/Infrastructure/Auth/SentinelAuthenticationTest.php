@@ -51,13 +51,13 @@ final class SentinelAuthenticationTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function authenticateWillThrowCorrectError()
+    public function authenticateWillThrowCorrectErrorForMissingAccount()
     {
         $sentinel = Mockery::mock(Sentinel::class);
         $account  = Mockery::mock(AccountManagement::class);
         $account->shouldReceive('findByLogin')->andThrow(new UserNotFoundException());
         $auth = new SentinelAuthentication($sentinel, $account);
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(UserNotFoundException::class);
         $auth->authenticate('mail', 'pass');
     }
 
