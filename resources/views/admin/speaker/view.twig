@@ -15,6 +15,15 @@
             <div>
                 {% if speaker.company %}<span class="mr-3"><i class="fa fa-building"></i> {{ speaker.company }}</span>{% endif %}
                 {% if speaker.twitter %}<span class="mr-3"><a class="hover:text-brand" target="_blank" href="https://twitter.com/{{ speaker.twitter }}" rel="noopener noreferrer"><i class="fa fa-twitter"></i> @{{ speaker.twitter }}</a></span>{% endif %}
+                {% if speaker.getJoindInUsername() %}
+                    <span class="mr-3">
+                        <a class="hover:text-brand" target="_blank"
+                           href="https://joind.in/user/{{ speaker.getJoindInUsername() }}"
+                           rel="noopener noreferrer">
+                            <i class="fa fa-commenting-o"></i> {{ speaker.getJoindInUsername() }}
+                        </a>
+                    </span>
+                {% endif %}
                 {% if speaker.email %}<span class="mr-3"><i class="fa fa-envelope"></i> {{ speaker.email }}</span>{% endif %}
             </div>
         </div>
