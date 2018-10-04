@@ -129,25 +129,25 @@ final class SsoRedirectAction
          */
         $details = \json_decode((string) $response->getBody(), true);
 
-        $user_response = $this->httpClient->get($this->resourceUri, [
+        $userResponse = $this->httpClient->get($this->resourceUri, [
             'headers' => [
                 'Accept'        => 'application/json',
                 'Authorization' => 'Bearer ' . $details['access_token'],
             ],
         ]);
-        $user_details = \json_decode((string) $user_response->getBody(), true);
+        $userDetails = \json_decode((string) $userResponse->getBody(), true);
 
         try {
             /** @var SentinelUser $user */
-            $user = $this->accounts->findByLogin($user_details['email']);
+            $user = $this->accounts->findByLogin($userDetails['email']);
         } catch (UserNotFoundException $e) {
             $this->accounts->create(
-                $user_details['email'],
+                $userDetails['email'],
                 \uniqid('opencfp', true),
                 ['activated' => 1]
             );
-            $this->accounts->activate($user_details['email']);
-            $user = $this->accounts->findByLogin($user_details['email']);
+            $this->accounts->activate($userDetails['email']);
+            $user = $this->accounts->findByLogin($userDetails['email']);
         }
 
         $this->sentinel->login($user->getUser());
