@@ -38,18 +38,6 @@ final class SsoAction
      */
     private $urlGenerator;
 
-    /** @var string */
-    private $sso;
-
-    /**
-     * LoginAction constructor.
-     *
-     * @param Services\Authentication                 $authentication
-     * @param Routing\Generator\UrlGeneratorInterface $urlGenerator
-     * @param int                                     $clientId
-     * @param string                                  $redirectUri
-     * @param string                                  $authorizeUrl
-     */
     public function __construct(
         Services\Authentication $authentication,
         Routing\Generator\UrlGeneratorInterface $urlGenerator,

@@ -50,19 +50,6 @@ final class SsoRedirectAction
     /** @var Client */
     private $httpClient;
 
-    /**
-     * SsoRedirectAction constructor.
-     *
-     * @param Sentinel                                $sentinel
-     * @param AccountManagement                       $accounts
-     * @param Routing\Generator\UrlGeneratorInterface $urlGenerator
-     * @param int                                     $clientId
-     * @param string                                  $clientSecret
-     * @param string                                  $redirectUri
-     * @param string                                  $resourceUri
-     * @param string                                  $tokenUrl
-     * @param Client                                  $httpClient
-     */
     public function __construct(
         Sentinel $sentinel,
         AccountManagement $accounts,
@@ -85,18 +72,6 @@ final class SsoRedirectAction
         $this->httpClient   = $httpClient;
     }
 
-    /**
-     * @param HttpFoundation\Request $request
-     *
-     * @throws \OpenCFP\Infrastructure\Auth\UserExistsException
-     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
-     * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
-     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
-     * @throws \OpenCFP\Infrastructure\Auth\UserNotFoundException
-     * @throws \InvalidArgumentException
-     *
-     * @return HttpFoundation\Response
-     */
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         try {
@@ -110,14 +85,7 @@ final class SsoRedirectAction
                 ],
             ]);
         } catch (\Exception $e) {
-            $request->getSession()->set('flash', [
-                'type'  => 'error',
-                'short' => 'Error',
-                'ext'   => 'We were unable to authenticate with OpenCFP Central. Please try again',
-            ]);
-            $url = $this->urlGenerator->generate('login');
-
-            return new HttpFoundation\RedirectResponse($url);
+            return $this->redirectToLogin($request);
         }
 
         /**
@@ -129,6 +97,10 @@ final class SsoRedirectAction
          */
         $details = \json_decode((string) $response->getBody(), true);
 
+        if (\json_last_error() !== JSON_ERROR_NONE) {
+            return $this->redirectToLogin($request);
+        }
+
         $userResponse = $this->httpClient->get($this->resourceUri, [
             'headers' => [
                 'Accept'        => 'application/json',
@@ -136,6 +108,10 @@ final class SsoRedirectAction
             ],
         ]);
         $userDetails = \json_decode((string) $userResponse->getBody(), true);
+
+        if (\json_last_error() !== JSON_ERROR_NONE) {
+            $this->redirectToLogin($request);
+        }
 
         try {
             /** @var SentinelUser $user */
@@ -152,6 +128,18 @@ final class SsoRedirectAction
 
         $this->sentinel->login($user->getUser());
         $url = $this->urlGenerator->generate('dashboard');
+
+        return new HttpFoundation\RedirectResponse($url);
+    }
+
+    private function redirectToLogin(HttpFoundation\Request $request): HttpFoundation\Response
+    {
+        $request->getSession()->set('flash', [
+            'type'  => 'error',
+            'short' => 'Error',
+            'ext'   => 'We were unable to authenticate with OpenCFP Central. Please try again',
+        ]);
+        $url = $this->urlGenerator->generate('login');
 
         return new HttpFoundation\RedirectResponse($url);
     }

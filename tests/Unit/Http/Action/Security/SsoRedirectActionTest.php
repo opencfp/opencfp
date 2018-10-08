@@ -31,22 +31,26 @@ final class SsoRedirectActionTest extends Framework\TestCase
 {
     use Helper;
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->clientId     = 1;
+        $this->clientSecret = 'secret';
+        $this->redirectUri  = '/redirect';
+        $this->resourceUrl  = '/resource';
+        $this->tokenUrl     = '/tokenUrl';
+
+        $this->sentinel     = $this->prophesize(\Cartalyst\Sentinel\Sentinel::class);
+        $this->accounts     = $this->prophesize(Services\AccountManagement::class);
+        $this->urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
+    }
+
     /**
      * @test
      */
     public function redirectsToLoginWhenUnableToAuthenticateToOpenCFPCentral(): void
     {
-        $clientId     = 1;
-        $clientSecret = 'secret';
-        $redirectUri  = '/redirect';
-        $resourceUrl  = '/resource';
-        $tokenUrl     = '/tokenUrl';
-
-        $sentinel = $this->prophesize(\Cartalyst\Sentinel\Sentinel::class);
-        $accounts = $this->prophesize(Services\AccountManagement::class);
-
-        $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
-        $urlGenerator
+        $this->urlGenerator
             ->generate('login')
             ->willReturn('/login');
 
@@ -75,19 +79,19 @@ final class SsoRedirectActionTest extends Framework\TestCase
             ->willReturn($session->reveal());
 
         $redirectAction = new SsoRedirectAction(
-            $sentinel->reveal(),
-            $accounts->reveal(),
-            $urlGenerator->reveal(),
-            $clientId,
-            $clientSecret,
-            $redirectUri,
-            $resourceUrl,
-            $tokenUrl,
+            $this->sentinel->reveal(),
+            $this->accounts->reveal(),
+            $this->urlGenerator->reveal(),
+            $this->clientId,
+            $this->clientSecret,
+            $this->redirectUri,
+            $this->resourceUrl,
+            $this->tokenUrl,
             $httpClient
         );
 
         $response = $redirectAction($request->reveal());
-        $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
+        $this->assertContains('Redirecting to /login', $response->getContent());
     }
 
     /**
@@ -95,24 +99,15 @@ final class SsoRedirectActionTest extends Framework\TestCase
      */
     public function useExistingUser(): void
     {
-        $clientId     = 1;
-        $clientSecret = 'secret';
-        $redirectUri  = '/redirect';
-        $resourceUrl  = '/resource';
-        $tokenUrl     = '/tokenUrl';
-        $email        = $this->faker()->email;
-
-        $sentinel = $this->prophesize(\Cartalyst\Sentinel\Sentinel::class);
-
-        $user = $this->createUserDouble();
+        $user  = $this->createUserDouble();
+        $email = $this->faker()->email;
 
         $accounts = $this->prophesize(Services\AccountManagement::class);
         $accounts
             ->findByLogin($email)
             ->willReturn($user);
 
-        $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
-        $urlGenerator
+        $this->urlGenerator
             ->generate('dashboard')
             ->willReturn('/dashboard');
 
@@ -120,19 +115,19 @@ final class SsoRedirectActionTest extends Framework\TestCase
 
         $request        = $this->prophesize(HttpFoundation\Request::class);
         $redirectAction = new SsoRedirectAction(
-            $sentinel->reveal(),
+            $this->sentinel->reveal(),
             $accounts->reveal(),
-            $urlGenerator->reveal(),
-            $clientId,
-            $clientSecret,
-            $redirectUri,
-            $resourceUrl,
-            $tokenUrl,
+            $this->urlGenerator->reveal(),
+            $this->clientId,
+            $this->clientSecret,
+            $this->redirectUri,
+            $this->resourceUrl,
+            $this->tokenUrl,
             $httpClient
         );
 
         $response = $redirectAction($request->reveal());
-        $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
+        $this->assertContains('Redirecting to /dashboard', $response->getContent());
     }
 
     /**
@@ -140,15 +135,6 @@ final class SsoRedirectActionTest extends Framework\TestCase
      */
     public function createUserIfOneDoesNotExist()
     {
-        $clientId     = 1;
-        $clientSecret = 'secret';
-        $redirectUri  = '/redirect';
-        $resourceUrl  = '/resource';
-        $tokenUrl     = '/tokenUrl';
-        $email        = $this->faker()->email;
-
-        $sentinel = $this->prophesize(\Cartalyst\Sentinel\Sentinel::class);
-
         $user = $this->createUserDouble();
 
         // Mockery better handles the sequence of calls we need for the test
@@ -164,28 +150,132 @@ final class SsoRedirectActionTest extends Framework\TestCase
         $accounts->shouldReceive('create');
         $accounts->shouldReceive('activate');
 
-        $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
-        $urlGenerator
+        $this->urlGenerator
             ->generate('dashboard')
             ->willReturn('/dashboard');
 
-        $httpClient = $this->createHttpClientDouble($email);
+        $httpClient = $this->createHttpClientDouble($this->faker()->email);
 
         $request        = $this->prophesize(HttpFoundation\Request::class);
         $redirectAction = new SsoRedirectAction(
-            $sentinel->reveal(),
+            $this->sentinel->reveal(),
             $accounts,
-            $urlGenerator->reveal(),
-            $clientId,
-            $clientSecret,
-            $redirectUri,
-            $resourceUrl,
-            $tokenUrl,
+            $this->urlGenerator->reveal(),
+            $this->clientId,
+            $this->clientSecret,
+            $this->redirectUri,
+            $this->resourceUrl,
+            $this->tokenUrl,
             $httpClient
         );
 
         $response = $redirectAction($request->reveal());
-        $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
+        $this->assertContains('Redirecting to /dashboard', $response->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function redirectsIfPostReceivesInvalidJsonReceived(): void
+    {
+        $this->urlGenerator
+            ->generate('login')
+            ->willReturn('/login');
+
+        $postResponse = new class() {
+            public function getBody()
+            {
+                return 'THISISNOTVALIDJSON';
+            }
+        };
+
+        $httpClient = $this->prophesize(Client::class);
+        $httpClient
+            ->post()
+            ->willReturn($postResponse);
+
+        $request = $this->prophesize(HttpFoundation\Request::class);
+        $session = new class() {
+            public function set()
+            {
+                return null;
+            }
+        };
+        $request
+            ->getSession()
+            ->shouldBeCalled()
+            ->willReturn($session);
+
+        $redirectAction = new SsoRedirectAction(
+            $this->sentinel->reveal(),
+            $this->accounts->reveal(),
+            $this->urlGenerator->reveal(),
+            $this->clientId,
+            $this->clientSecret,
+            $this->redirectUri,
+            $this->resourceUrl,
+            $this->tokenUrl,
+            $httpClient->reveal()
+        );
+
+        $response = $redirectAction($request->reveal());
+        $this->assertContains('Redirecting to /login', $response->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function redirectIfCentralAuthAttemptReturnsInvalidJson()
+    {
+        $this->urlGenerator
+            ->generate('login')
+            ->willReturn('/login');
+        $postResponse = new class() {
+            public function getBody(): string
+            {
+                return '{"access_token": "test_token"}';
+            }
+        };
+        $userResponse = new class() {
+            public function get(): string
+            {
+                return 'THISISNOTVALIDJSON';
+            }
+        };
+
+        $httpClient = $this->prophesize(Client::class);
+        $httpClient
+            ->post()
+            ->willReturn($postResponse);
+        $httpClient
+            ->get()
+            ->willReturn($userResponse);
+
+        $request = $this->prophesize(HttpFoundation\Request::class);
+        $session = new class() {
+            public function set()
+            {
+                return null;
+            }
+        };
+        $request
+            ->getSession()
+            ->willReturn($session);
+
+        $redirectAction = new SsoRedirectAction(
+            $this->sentinel->reveal(),
+            $this->accounts->reveal(),
+            $this->urlGenerator->reveal(),
+            $this->clientId,
+            $this->clientSecret,
+            $this->redirectUri,
+            $this->resourceUrl,
+            $this->tokenUrl,
+            $httpClient->reveal()
+        );
+
+        $response = $redirectAction($request->reveal());
+        $this->assertContains('Redirecting to /login', $response->getContent());
     }
 
     private function createUserDouble(): \Mockery\MockInterface

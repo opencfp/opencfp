@@ -21,32 +21,34 @@ use Symfony\Component\Routing;
 
 final class SsoActionTest extends Framework\TestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
+        $this->request      = $this->prophesize(HttpFoundation\Request::class);
+        $this->clientId     = 1;
+        $this->redirectUri  = '/redirect';
+        $this->authorizeUrl = '/authorize/';
+    }
+
     /**
      * @test
      */
     public function redirectToDashboardIfAuthenticated(): void
     {
-        $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
-        $urlGenerator
+        $this->urlGenerator
             ->generate('dashboard')
             ->willReturn('/dashboard');
 
-        $clientId     = 1;
-        $redirectUri  = '/redirect';
-        $authorizeUrl = '/authorize/';
-
         $centralAction = new SsoAction(
             $this->createAuthenticationDouble(true),
-            $urlGenerator->reveal(),
-            $clientId,
-            $redirectUri,
-            $authorizeUrl
+            $this->urlGenerator->reveal(),
+            $this->clientId,
+            $this->redirectUri,
+            $this->authorizeUrl
         );
-        $request  = $this->prophesize(HttpFoundation\Request::class);
-        $response = $centralAction($request->reveal());
-
-        $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
-        $needle = 'Redirecting to /dashboard';
+        $response = $centralAction($this->request->reveal());
+        $needle   = 'Redirecting to /dashboard';
         $this->assertContains($needle, $response->getContent());
     }
 
@@ -55,24 +57,17 @@ final class SsoActionTest extends Framework\TestCase
      */
     public function redirectToCentralIfNotAuthenticated(): void
     {
-        $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
-
-        $clientId     = 1;
-        $redirectUri  = '/redirect';
-        $authorizeUrl = '/authorize/';
-
         $centralAction = new SsoAction(
             $this->createAuthenticationDouble(false),
-            $urlGenerator->reveal(),
-            $clientId,
-            $redirectUri,
-            $authorizeUrl
+            $this->urlGenerator->reveal(),
+            $this->clientId,
+            $this->redirectUri,
+            $this->authorizeUrl
         );
-        $request  = $this->prophesize(HttpFoundation\Request::class);
-        $response = $centralAction($request->reveal());
+        $response = $centralAction($this->request->reveal());
 
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
-        $needle = "Redirecting to {$authorizeUrl}client_id={$clientId}&amp;redirect_uri=%2Fredirect";
+        $needle = "Redirecting to {$this->authorizeUrl}client_id={$this->clientId}&amp;redirect_uri=%2Fredirect";
         $this->assertContains($needle, $response->getContent());
     }
 
