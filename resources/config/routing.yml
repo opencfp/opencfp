@@ -260,10 +260,10 @@ privacy:
 sso:
   path: /sso
   methods: [GET]
-  controller: OpenCFP\Http\Action\Security\CentralAction
+  controller: OpenCFP\Http\Action\Security\SsoAction
 
 sso_redirect:
   path: /sso/redirect
   methods: [GET]
-  controller: OpenCFP\Http\Action\Security\RedirectAction
+  controller: OpenCFP\Http\Action\Security\SsoRedirectAction
 
