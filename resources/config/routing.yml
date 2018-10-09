@@ -172,9 +172,8 @@ talk_view:
 login:
   path: /login
   methods: [GET]
-  controller: FrameworkBundle:Template:template
-  defaults:
-    template: security/login.twig
+  controller: OpenCFP\Http\Action\Security\ShowLogInAction
+
 
 login_check:
   path: /login
@@ -257,4 +256,14 @@ privacy:
    path: /privacy
    methods: [GET]
    controller: OpenCFP\Http\Action\Signup\PrivacyAction
+
+sso:
+  path: /sso
+  methods: [GET]
+  controller: OpenCFP\Http\Action\Security\SsoAction
+
+sso_redirect:
+  path: /sso/redirect
+  methods: [GET]
+  controller: OpenCFP\Http\Action\Security\SsoRedirectAction
 

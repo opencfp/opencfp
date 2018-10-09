@@ -97,9 +97,7 @@ final class LogInAction
                 'short' => 'Error',
                 'ext'   => $exception->getMessage(),
             ];
-
             $request->getSession()->set('flash', $flash);
-
             $content = $this->twig->render('security/login.twig', [
                 'email' => $request->get('email'),
                 'flash' => $flash,

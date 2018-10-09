@@ -3,6 +3,9 @@ services:
     public: false
     autowire: true
 
+  http_client:
+    class: GuzzleHttp\Client
+
   OpenCFP\Http\Controller\:
     resource: '%kernel.project_dir%/src/Http/Controller/*'
     public: true
@@ -22,6 +25,28 @@ services:
       $resetForm: '@OpenCFP\Http\Form\ResetForm'
       $reviewerUsers: '%reviewer.users%'
       $showSubmissionCount: '%application.show_submission_count%'
+
+  OpenCFP\Http\Action\Security\SsoAction:
+    public: true
+    bind:
+      $clientId: '%opencfpcentral.clientId%'
+      $redirectUri: '%opencfpcentral.redirectUri%'
+      $authorizeUrl: '%opencfpcentral.authorizeUrl%'
+
+  OpenCFP\Http\Action\Security\SsoRedirectAction:
+    public: true
+    bind:
+      $clientId: '%opencfpcentral.clientId%'
+      $clientSecret: '%opencfpcentral.clientSecret%'
+      $httpClient: '@http_client'
+      $redirectUri: '%opencfpcentral.redirectUri%'
+      $resourceUri: '%opencfpcentral.resourceUri%'
+      $tokenUrl: '%opencfpcentral.tokenUrl%'
+
+  OpenCFP\Http\Action\Security\ShowLogInAction:
+    public: true
+    bind:
+      $sso: '%opencfpcentral.sso%'
 
   OpenCFP\Http\Form\ForgotForm:
     class: Symfony\Component\Form\FormInterface
