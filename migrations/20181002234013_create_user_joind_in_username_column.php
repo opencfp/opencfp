@@ -40,14 +40,14 @@ class CreateUserJoindInUsernameColumn extends AbstractMigration
             ->update();
 
         // Go through each record in user, strip out (https://joind.in/user/) and copy to joindin_username
-        $joindin_regex = '/^https:\/\/joind\.in\/user\/(.{1,100})$/';
+        $joindInRegex = '/^https:\/\/joind\.in\/user\/(.{1,100})$/';
 
         $users = EloquentUser::all();
 
         foreach ($users as $user) {
-            if (\preg_match($joindin_regex, $user->url, $matches) === 1) {
+            if (\preg_match($joindInRegex, $user->url, $matches) === 1) {
                 $user->joindin_username = $matches[1];
-                $user->url              = '';
+                $user->url              = null;
                 $user->save();
             }
         }
@@ -61,8 +61,8 @@ class CreateUserJoindInUsernameColumn extends AbstractMigration
         foreach ($users as $user) {
             $user->url = $user->joindin_username
                                         ? 'https://joind.in/user/' . $user->joindin_username
-                                        : '';
-            $user->joindin_username = '';
+                                        : null;
+            $user->joindin_username = null;
             $user->save();
         }
         // Drop the joindin_username column
