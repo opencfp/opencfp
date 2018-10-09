@@ -125,6 +125,24 @@ class SpeakerProfile
     /**
      * @throws NotAllowedException
      *
+     * @return string
+     */
+    public function getTwitterUrl(): string
+    {
+        $this->assertAllowedToSee('twitter');
+
+        $twitter = $this->speaker->twitter;
+
+        if ($twitter === null || \trim($twitter) === '') {
+            return '';
+        }
+
+        return 'https:://twitter.com/' . $twitter;
+    }
+
+    /**
+     * @throws NotAllowedException
+     *
      * @return null|string
      */
     public function getJoindInUsername()

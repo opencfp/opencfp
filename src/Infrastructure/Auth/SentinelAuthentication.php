@@ -51,6 +51,8 @@ final class SentinelAuthentication implements Authentication
             if (!$success) {
                 throw AuthenticationException::loginFailure();
             }
+        } catch (UserNotFoundException $e) {
+            throw $e;
         } catch (\Throwable $e) {
             throw AuthenticationException::loginFailure();
         }
