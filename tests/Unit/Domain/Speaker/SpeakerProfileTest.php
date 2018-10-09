@@ -276,6 +276,71 @@ final class SpeakerProfileTest extends Framework\TestCase
     /**
      * @test
      */
+    public function getTwitterUrlThrowsNotAllowedExceptionIfPropertyIsHidden(): void
+    {
+        $hiddenProperties = [
+            'twitter',
+        ];
+
+        $speaker = $this->createUserMock();
+
+        $profile = new SpeakerProfile($speaker, $hiddenProperties);
+
+        $this->expectException(NotAllowedException::class);
+
+        $profile->getTwitterUrl();
+    }
+
+    /**
+     * @test
+     * @dataProvider providerEmptyValue
+     *
+     * @param null|string $value
+     */
+    public function getTwitterUrlReturnsEmptyStringWhenTwitterPropertyIsNotHiddenButEmpty($value): void
+    {
+        $speaker = $this->createUserMock([
+            'twitter' => $value,
+        ]);
+
+        $profile = new SpeakerProfile($speaker);
+
+        $this->assertSame('', $profile->getTwitterUrl());
+    }
+
+    public function providerEmptyValue(): array
+    {
+        $values = [
+            'null'         => null,
+            'string-empty' => '',
+            'string-blank' => '  ',
+        ];
+
+        return \array_map(function ($value) {
+            return [
+                $value,
+            ];
+        }, $values);
+    }
+
+    public function getTwitterUrlReturnsTwitterUrlWhenTwitterPropertyIsNeitherHiddenNorEmpty(): void
+    {
+        $value = $this->faker()->userName;
+
+        $speaker = $this->createUserMock([
+            'twitter' => $value,
+        ]);
+
+        $profile = new SpeakerProfile($speaker);
+
+        $expected = 'https://twitter.com/' . $value;
+
+        $this->assertSame($expected, $profile->getTwitterUrl());
+    }
+
+    /**
+     * @test
+     */
     public function getUrlThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [
