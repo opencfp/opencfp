@@ -361,15 +361,15 @@ final class SpeakerProfileTest extends Framework\TestCase
      */
     public function getJoindInUsernameReturnsJoindInUsernameIfPropertyIsNotHidden()
     {
-        $joindin_username = $this->faker()->userName;
+        $joindinUsername = $this->faker()->userName;
 
         $speaker = $this->createUserMock([
-            'joindin_username' => $joindin_username,
+            'joindin_username' => $joindinUsername,
         ]);
 
         $profile = new SpeakerProfile($speaker);
 
-        $this->assertSame($joindin_username, $profile->getJoindInUsername());
+        $this->assertSame($joindinUsername, $profile->getJoindInUsername());
     }
 
     /**

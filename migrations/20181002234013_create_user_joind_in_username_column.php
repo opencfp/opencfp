@@ -18,7 +18,7 @@ class CreateUserJoindInUsernameColumn extends AbstractMigration
     /** @var Capsule $capsule */
     public $capsule;
 
-    public function bootEloquent()
+    public function bootEloquent(): void
     {
         $adapter       = $this->getAdapter()->getAdapter();
         $options       = $adapter->getOptions();
@@ -32,7 +32,7 @@ class CreateUserJoindInUsernameColumn extends AbstractMigration
         $this->capsule->setAsGlobal();
     }
 
-    public function up()
+    public function up(): void
     {
         // Create joindin_username
         $this->table('users')
@@ -53,7 +53,7 @@ class CreateUserJoindInUsernameColumn extends AbstractMigration
         }
     }
 
-    public function down()
+    public function down(): void
     {
         // Go through each record in user, update `url` to move the joindin_username to there
         $users = EloquentUser::all();

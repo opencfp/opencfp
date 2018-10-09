@@ -286,8 +286,6 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test that the joind.in username is being validated correctly
-     *
      * @test
      *
      * @param string $joindin_username
@@ -308,19 +306,8 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * Data provider for joindInUsernameIsValidatedCorrectly
-     *
-     * @return array
-     */
     public function joindInUsernameProvider(): array
     {
-        $longUsername = '';
-
-        for ($x = 1; $x <= 256; ++$x) {
-            $longUsername .= 'X';
-        }
-
         return [
             [null, true],
             [false, true],
@@ -332,13 +319,12 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
             ['first@last', false],
             ['first#last', false],
             ['first.last', true],
-            [$longUsername, false],
+            [\str_repeat('X', 100), true],
+            [\str_repeat('X', 101), false],
         ];
     }
 
     /**
-     * Test that the URL is being validated correctly
-     *
      * @test
      *
      * @param string $url
@@ -358,11 +344,6 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * Data provider for urlIsValidatedCorrectly
-     *
-     * @return array
-     */
     public function urlProvider(): array
     {
         return [
