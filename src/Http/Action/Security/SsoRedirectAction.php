@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Action\Security;
 
 use Cartalyst\Sentinel\Sentinel;
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
@@ -47,7 +47,7 @@ final class SsoRedirectAction
     /** @var string */
     private $tokenUrl;
 
-    /** @var Client */
+    /** @var ClientInterface */
     private $httpClient;
 
     public function __construct(
@@ -59,7 +59,7 @@ final class SsoRedirectAction
         string $redirectUri,
         string $resourceUri,
         string $tokenUrl,
-        Client $httpClient
+        ClientInterface $httpClient
     ) {
         $this->sentinel     = $sentinel;
         $this->accounts     = $accounts;
