@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "93e63c80037f4fa3d9d565c824920894",
+    "content-hash": "832fa1f5dee52a9419d97ef93a891a32",
     "packages": [
         {
             "name": "aptoma/twig-markdown",
@@ -6110,32 +6110,34 @@
         },
         {
             "name": "localheinz/composer-normalize",
-            "version": "0.8.0",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localheinz/composer-normalize.git",
-                "reference": "5dd2a43de32fa45d982326d271a12b0b1ea5e6be"
+                "reference": "cd7c78c32ca8352e842f4cd8423e7091af27e87f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localheinz/composer-normalize/zipball/5dd2a43de32fa45d982326d271a12b0b1ea5e6be",
-                "reference": "5dd2a43de32fa45d982326d271a12b0b1ea5e6be",
+                "url": "https://api.github.com/repos/localheinz/composer-normalize/zipball/cd7c78c32ca8352e842f4cd8423e7091af27e87f",
+                "reference": "cd7c78c32ca8352e842f4cd8423e7091af27e87f",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.1.0",
                 "localheinz/json-normalizer": "0.6.0",
                 "php": "^7.1",
-                "sebastian/diff": "^2.0.1 || ^3.0.0"
+                "sebastian/diff": "^2.0.1 || ^3.0.0",
+                "symfony/console": "^2.5.0 || ^3.0.0 || ^4.0.0"
             },
             "require-dev": {
                 "composer/composer": "^1.1.0",
                 "infection/infection": "^0.8.1",
-                "localheinz/php-cs-fixer-config": "~1.13.1",
+                "localheinz/php-cs-fixer-config": "~1.15.0",
                 "localheinz/test-util": "0.6.1",
                 "mikey179/vfsstream": "^1.6.5",
                 "phpstan/phpstan": "~0.9.2",
-                "phpunit/phpunit": "^7.1.1"
+                "phpstan/phpstan-strict-rules": "^0.9.0",
+                "phpunit/phpunit": "^6.5.7 || ^7.1.5"
             },
             "type": "composer-plugin",
             "extra": {
@@ -6164,7 +6166,7 @@
                 "normalizer",
                 "plugin"
             ],
-            "time": "2018-04-24T13:26:04+00:00"
+            "time": "2018-10-10T12:39:27+00:00"
         },
         {
             "name": "localheinz/json-normalizer",
@@ -6219,16 +6221,16 @@
         },
         {
             "name": "localheinz/json-printer",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/localheinz/json-printer.git",
-                "reference": "1a350fd94544df716d1c75ef107d34057f80ac7a"
+                "reference": "86f942599c8f9f922de4e21c2b9b6564c895cb0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/localheinz/json-printer/zipball/1a350fd94544df716d1c75ef107d34057f80ac7a",
-                "reference": "1a350fd94544df716d1c75ef107d34057f80ac7a",
+                "url": "https://api.github.com/repos/localheinz/json-printer/zipball/86f942599c8f9f922de4e21c2b9b6564c895cb0c",
+                "reference": "86f942599c8f9f922de4e21c2b9b6564c895cb0c",
                 "shasum": ""
             },
             "require": {
@@ -6236,7 +6238,7 @@
             },
             "require-dev": {
                 "infection/infection": "~0.8.1",
-                "localheinz/php-cs-fixer-config": "~1.13.1",
+                "localheinz/php-cs-fixer-config": "~1.14.0",
                 "localheinz/test-util": "0.6.1",
                 "phpbench/phpbench": "~0.14.0",
                 "phpunit/phpunit": "^6.5.7"
@@ -6264,7 +6266,7 @@
                 "json",
                 "printer"
             ],
-            "time": "2018-04-06T22:10:47+00:00"
+            "time": "2018-08-11T23:54:50+00:00"
         },
         {
             "name": "localheinz/test-util",
