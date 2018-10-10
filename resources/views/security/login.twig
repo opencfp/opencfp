@@ -13,10 +13,13 @@
       <input id="email" type="email" name="email" value="{% if email %}{{ email | escape }}{% endif %}" class="w-full" placeholder="you@example.com">
       <label for="password" class="text-sm text-white">Password</label>
       <input id="password" type="password" name="password" class="w-full" placeholder="•••••••">
-      <p class="text-right my-4"><a href="{{ url('forgot_password') }}" class="text-white text-sm">Forgot password?</a></p>
+      <p class="text-right my-4"><a href="{{ url('forgot_password') }}" class="text-white text-sm">Forgot your password?</a></p>
       <button type="submit" class="btn btn-brand w-full">Login</button>
     </form>
-
-    <p class="text-light text-center text-sm my-4">New user? <a href="{{ url('user_new') }}" class="text-brand text-bold">Signup Now</a></p>
+    <br>
+    {% if sso == 'on' %}
+    <a href="{{ url('sso') }}"><button class="btn btn-brand w-full">Login using OpenCFP Central</button></a>
+    {% endif %}
+    <p class="text-light text-center text-sm my-4">New user? <a href="{{ url('user_new') }}" class="text-brand text-bold">Sign up Now</a></p>
   </div>
 {% endblock %}

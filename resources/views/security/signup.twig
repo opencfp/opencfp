@@ -10,7 +10,9 @@
 
         <form method="post" action="{{ url('user_create') }}">
             <label class="text-white text-sm">Email</label>
-            <input type="email" name="email" placeholder="you@example.com">
+            <input type="email" name="email"
+                   value="{% if flash.old_email %}{{ flash.old_email | escape }}{% endif %}"
+                   placeholder="you@example.com">
             <label class="text-white text-sm">Password</label>
             <input type="password" name="password" placeholder="•••••••">
             <ul class="list-reset">
