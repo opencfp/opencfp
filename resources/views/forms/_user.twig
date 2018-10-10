@@ -20,10 +20,13 @@
             <label for="form-user-twitter">Twitter</label>
             <input id="form-user-twitter" type="text" name="twitter" placeholder="@twitter" value="{{ twitter | default('') }}">
 
-            <label for="form-user-url">joind.in</label>
-            <input id="form-user-url" type="text" name="url" placeholder="https://joind.in/user/" value="{{ url | default('') }}">
+            <label for="form-user-joindin-username">joind.in username</label>
+            <input id="form-user-joindin-username" type="text" name="joindin_username" placeholder="first_lastname" value="{{ joindin_username | default('') }}">
 
-            {% if site.online_conference  == false %}
+            <label for="form-user-url">URL</label>
+            <input id="form-user-url" type="text" name="url" placeholder="https://example.com" value="{{ url | default('') }}">
+
+            {% if site.online_conference == false %}
                 <h3 class="text-base text-dark-soft mt-4">Travel Assistance</h3>
                 <div>
                     <input id="form-transportation" name="transportation" type="checkbox" value="1" {% if transportation == '1' %}checked{% endif %}>

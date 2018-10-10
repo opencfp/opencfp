@@ -11,7 +11,7 @@ function deleteTalk(tid) {
             if (data.delete == 'ok') {
                 $("#talk-"+tid).remove();
             } else if (data.delete == 'no-user') {
-                alert("You must be logged in to delete talks")
+                alert("You must be logged in to delete talks");
             } else {
                 alert("Unable to delete talk");
             }
@@ -47,11 +47,22 @@ function deleteTalk(tid) {
                 {% if profile.company %}
                     <p>{{ profile.company }}</p>
                 {% endif %}
+
                 {% if profile.twitter %}
-                    <a class="text-white text-xs" href="https://twitter.com/{{ profile.twitter }}" title="{{ profile.name }} on Twitter"><i class="fa fa-twitter"></i> @{{ profile.twitter }}</a>
+                    <a class="text-white text-xs" href="https://twitter.com/{{ profile.twitter }}" title="{{ profile.name }} on Twitter"><i class="fa fa-fw fa-twitter"></i> @{{ profile.twitter }}</a>
                 {% endif %}
+
+                {% if profile.joindInUsername %}
+                    <br /><a class="text-white text-xs"
+                       href="{{ profile.joindInUrl }}"
+                       title="Follow {{ profile.name }} on joind.in">
+                       <i class="fa fa-fw fa-commenting-o"></i> {{ profile.joindInUsername }}
+                   </a>
+                {% endif %}
+
                 {% if profile.url %}
-                    | <a class="text-white text-xs" href="{{ profile.url }}">{{ profile.url }}</a>
+                    <br /><a class="text-white text-xs" href="{{ profile.url }}">
+                        <i class="fa fa-fw fa-desktop"></i> {{ profile.url }}</a>
                 {% endif %}
             </div>
         </div>

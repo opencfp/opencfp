@@ -125,6 +125,36 @@ class SpeakerProfile
     /**
      * @throws NotAllowedException
      *
+     * @return null|string
+     */
+    public function getJoindInUsername()
+    {
+        $this->assertAllowedToSee('joindin_username');
+
+        return $this->speaker->joindin_username;
+    }
+
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
+    public function getJoindInUrl()
+    {
+        $this->assertAllowedToSee('joindin_username');
+
+        $username = $this->speaker->joindin_username;
+
+        if ($username === null || \trim($username) === '') {
+            return '';
+        }
+
+        return 'https://joind.in/user/' . $username;
+    }
+
+    /**
+     * @throws NotAllowedException
+     *
      * @return string
      */
     public function getTwitterUrl(): string
@@ -138,6 +168,36 @@ class SpeakerProfile
         }
 
         return 'https:://twitter.com/' . $twitter;
+    }
+
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
+    public function getJoindInUsername()
+    {
+        $this->assertAllowedToSee('joindin_username');
+
+        return $this->speaker->joindin_username;
+    }
+
+    /**
+     * @throws NotAllowedException
+     *
+     * @return null|string
+     */
+    public function getJoindInUrl()
+    {
+        $this->assertAllowedToSee('joindin_username');
+
+        $username = $this->speaker->joindin_username;
+
+        if ($username === null || \trim($username) === '') {
+            return '';
+        }
+
+        return 'https://joind.in/user/' . $username;
     }
 
     /**
