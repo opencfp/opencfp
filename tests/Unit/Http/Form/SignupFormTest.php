@@ -286,8 +286,45 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test that the Joind.in URL is being validated correctly
+     * @test
      *
+     * @param string $joindin_username
+     * @param bool   $expectedResponse
+     * @dataProvider joindInUsernameProvider
+     */
+    public function joindInUsernameIsValidatedCorrectly($joindin_username, $expectedResponse)
+    {
+        $data['joindin_username'] = $joindin_username;
+
+        $form = new \OpenCFP\Http\Form\SignupForm($data, $this->purifier);
+        $form->sanitize();
+
+        $this->assertSame(
+            $expectedResponse,
+            $form->validateJoindInUsername(),
+            'Did not validate joind.in username as expected'
+        );
+    }
+
+    public function joindInUsernameProvider(): array
+    {
+        return [
+            [null, true],
+            [false, true],
+            ['', true],
+            ['abc123', true],
+            ['do re mi', false],
+            ['_FirstLast', true],
+            ['first-last', true],
+            ['first@last', false],
+            ['first#last', false],
+            ['first.last', true],
+            [\str_repeat('X', 100), true],
+            [\str_repeat('X', 101), false],
+        ];
+    }
+
+    /**
      * @test
      *
      * @param string $url
@@ -307,34 +344,19 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * Data provider for urlIsValidatedCorrectly
-     *
-     * @return array
-     */
     public function urlProvider(): array
     {
-        $validBaseUrl = 'https://joind.in/user/';
-        $longUrl      = '';
-
-        for ($x = 1; $x <= 256; ++$x) {
-            $longUrl .= 'X';
-        }
-
         return [
-            [$validBaseUrl . 'abc123', true],
-            [$validBaseUrl, false],
             [null, true],
             [false, true],
             ['', true],
-            ['http://example.net', false],
-            ['http://joind.in/user/abc123', false],
-            [$validBaseUrl . 'do re mi', false],
-            [$validBaseUrl . '_FirstLast', true],
-            [$validBaseUrl . 'first-last', true],
-            [$validBaseUrl . 'firstname.last', true],
-            [$validBaseUrl . '._name_.', true],
-            [$validBaseUrl . $longUrl, false],
+            ['http://example.net', true],
+            ['example', false],
+            ['http://example.com/do re mi', false],
+            ['http://example.com/_FirstLast', true],
+            ['http://example.com/first-last', true],
+            ['https://', false],
+            ['$19.95 plus shipping and handling', false],
         ];
     }
 

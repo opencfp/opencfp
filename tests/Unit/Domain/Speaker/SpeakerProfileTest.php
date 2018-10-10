@@ -341,6 +341,96 @@ final class SpeakerProfileTest extends Framework\TestCase
     /**
      * @test
      */
+    public function getJoindInUsernameThrowsNotAllowedExceptionIfPropertyIsHidden(): void
+    {
+        $hiddenProperties = [
+            'joindin_username',
+        ];
+
+        $speaker = $this->createUserMock();
+
+        $profile = new SpeakerProfile($speaker, $hiddenProperties);
+
+        $this->expectException(NotAllowedException::class);
+
+        $profile->getJoindInUsername();
+    }
+
+    /**
+     * @test
+     */
+    public function getJoindInUsernameReturnsJoindInUsernameIfPropertyIsNotHidden(): void
+    {
+        $joindinUsername = $this->faker()->userName;
+
+        $speaker = $this->createUserMock([
+            'joindin_username' => $joindinUsername,
+        ]);
+
+        $profile = new SpeakerProfile($speaker);
+
+        $this->assertSame($joindinUsername, $profile->getJoindInUsername());
+    }
+
+    /**
+     * @test
+     * @dataProvider providerEmptyValue
+     *
+     * @param null|string $value
+     */
+    public function getJoindInUrlThrowsNotAllowedExceptionIfPropertyIsHidden(): void
+    {
+        $hiddenProperties = [
+            'joindin_username',
+        ];
+
+        $speaker = $this->createUserMock();
+
+        $profile = new SpeakerProfile($speaker, $hiddenProperties);
+
+        $this->expectException(NotAllowedException::class);
+
+        $profile->getJoindInUrl();
+    }
+
+    /**
+     * @test
+     * @dataProvider providerEmptyValue
+     *
+     * @param null|string $value
+     */
+    public function getJoindInUrlReturnsEmptyStringWhenJoindInUsernameIsNotHiddenButEmpty($value): void
+    {
+        $speaker = $this->createUserMock([
+            'joindin_username' => $value,
+        ]);
+
+        $profile = new SpeakerProfile($speaker);
+
+        $this->assertSame('', $profile->getJoindInUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function getJoindInUrlReturnsJoindInUrlIfPropertyIsNotHidden(): void
+    {
+        $joindinUsername = $this->faker()->userName;
+
+        $speaker = $this->createUserMock([
+            'joindin_username' => $joindinUsername,
+        ]);
+
+        $expectedUrl = 'https://joind.in/user/' . $joindinUsername;
+
+        $profile = new SpeakerProfile($speaker);
+
+        $this->assertSame($expectedUrl, $profile->getJoindInUrl());
+    }
+
+    /**
+     * @test
+     */
     public function getUrlThrowsNotAllowedExceptionIfPropertyIsHidden()
     {
         $hiddenProperties = [

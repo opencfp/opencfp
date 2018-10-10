@@ -12,19 +12,20 @@ declare(strict_types=1);
  */
 $factory->define(\OpenCFP\Domain\Model\User::class, function (\Faker\Generator $faker) {
     return [
-        'email'          => $faker->unique()->safeEmail,
-        'password'       => \password_hash('secret', PASSWORD_BCRYPT),
-        'activated'      => 1,
-        'first_name'     => $faker->firstName,
-        'last_name'      => $faker->lastName,
-        'company'        => $faker->company,
-        'twitter'        => '@' . $faker->userName,
-        'activated_at'   => $faker->dateTimeInInterval('-2 months', '-1 months'),
-        'last_login'     => $faker->dateTimeInInterval('-5 days', 'now'),
-        'transportation' => $faker->randomElement([0, 1]),
-        'hotel'          => $faker->randomElement([0, 1]),
-        'info'           => $faker->realText(),
-        'bio'            => $faker->realText(),
+        'email'            => $faker->unique()->safeEmail,
+        'password'         => \password_hash('secret', PASSWORD_BCRYPT),
+        'activated'        => 1,
+        'first_name'       => $faker->firstName,
+        'last_name'        => $faker->lastName,
+        'company'          => $faker->company,
+        'twitter'          => '@' . $faker->userName,
+        'joindin_username' => $faker->userName,
+        'activated_at'     => $faker->dateTimeInInterval('-2 months', '-1 months'),
+        'last_login'       => $faker->dateTimeInInterval('-5 days', 'now'),
+        'transportation'   => $faker->randomElement([0, 1]),
+        'hotel'            => $faker->randomElement([0, 1]),
+        'info'             => $faker->realText(),
+        'bio'              => $faker->realText(),
     ];
 });
 
