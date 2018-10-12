@@ -51,7 +51,7 @@
 
             {% if speaker.info is not empty %}
                 <h3>Additional Notes</h3>
-                <p>{{ speaker.info }}</p>
+                <p>{{ speaker.info | striptags | markdown }}</p>
             {% endif %}
         </div>
     </div>
