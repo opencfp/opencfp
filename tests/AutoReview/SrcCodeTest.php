@@ -11,78 +11,22 @@ declare(strict_types=1);
  * @see https://github.com/opencfp/opencfp
  */
 
-namespace OpenCFP\Test\Unit;
+namespace OpenCFP\Test\AutoReview;
 
 use Localheinz\Classy;
 use Localheinz\Test\Util\Helper;
-use OpenCFP\Domain;
 use OpenCFP\Http;
-use OpenCFP\Infrastructure;
-use OpenCFP\Kernel;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 
-final class ProjectCodeTest extends Framework\TestCase
+final class SrcCodeTest extends Framework\TestCase
 {
     use Helper;
 
     /**
      * @test
      */
-    public function productionClassesHaveUnitTests()
-    {
-        $this->assertClassesHaveTests(
-            __DIR__ . '/../../src',
-            'OpenCFP\\',
-            'OpenCFP\\Test\\Unit\\',
-            [
-                Domain\Model\Airport::class,
-                Domain\Model\Eloquent::class,
-                Domain\Model\Favorite::class,
-                Domain\Model\Persistence::class,
-                Domain\Model\Reminder::class,
-                Domain\Model\Talk::class,
-                Domain\Model\TalkComment::class,
-                Domain\Model\TalkMeta::class,
-                Domain\Model\Throttle::class,
-                Domain\Model\User::class,
-                Domain\Services\ProfileImageProcessor::class,
-                Domain\Talk\TalkFormatter::class,
-                Domain\Talk\TalkHandler::class,
-                Http\Action\Admin\DashboardAction::class,
-                Http\Action\Admin\Talk\IndexAction::class,
-                Http\Action\Admin\Talk\RateAction::class,
-                Http\Action\Profile\ChangePasswordProcessAction::class,
-                Http\Action\Profile\DeleteAction::class,
-                Http\Action\Profile\ProcessDeleteAction::class,
-                Http\Action\Reviewer\DashboardAction::class,
-                Http\Action\Reviewer\Speaker\IndexAction::class,
-                Http\Action\Reviewer\Speaker\ViewAction::class,
-                Http\Action\Reviewer\Talk\IndexAction::class,
-                Http\Action\Reviewer\Talk\RateAction::class,
-                Http\Action\Signup\PrivacyAction::class,
-                Http\Action\Signup\ProcessAction::class,
-                Http\Controller\Admin\ExportsController::class,
-                Http\Controller\Admin\SpeakersController::class,
-                Http\Controller\Admin\TalksController::class,
-                Http\Controller\ForgotController::class,
-                Http\Form\ForgotFormType::class,
-                Http\Form\ResetFormType::class,
-                Infrastructure\Event\AuthenticationListener::class,
-                Infrastructure\Event\CsrfValidationListener::class,
-                Infrastructure\Event\ExceptionListener::class,
-                Infrastructure\Event\RequestCleanerListener::class,
-                Infrastructure\Event\TwigGlobalsListener::class,
-                Infrastructure\Templating\TwigExtension::class,
-                Kernel::class,
-            ]
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function controllerActionsUseResponseReturnType()
+    public function controllerActionsUseResponseReturnType(): void
     {
         $actionsWithoutReturnTypes = $this->methodNames(\array_filter($this->controllerActions(), function (\ReflectionMethod $method) {
             $returnType = (string) $method->getReturnType();
@@ -100,7 +44,7 @@ final class ProjectCodeTest extends Framework\TestCase
     /**
      * @test
      */
-    public function controllerActionsUseActionSuffix()
+    public function controllerActionsUseActionSuffix(): void
     {
         $actionsWithoutSuffix = $this->methodNames(\array_filter($this->controllerActions(), function (\ReflectionMethod $method) {
             return \preg_match('/Action$/', $method->getName()) === 0;
@@ -161,21 +105,13 @@ final class ProjectCodeTest extends Framework\TestCase
     }
 
     /**
-     * @test
-     */
-    public function classesAreAbstractOrFinal()
-    {
-        $this->assertClassesAreAbstractOrFinal(__DIR__ . '/..');
-    }
-
-    /**
      * @dataProvider providerProductionClassesAreAbstractOrFinal
      *
      * @param string $directory
      *
      * @test
      */
-    public function productionClassesAreAbstractOrFinal(string $directory)
+    public function productionClassesAreAbstractOrFinal(string $directory): void
     {
         $this->assertClassesAreAbstractOrFinal($directory);
     }
