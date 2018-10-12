@@ -137,7 +137,7 @@ class SpeakerProfile
             return '';
         }
 
-        return 'https:://twitter.com/' . $twitter;
+        return 'https://twitter.com/' . $twitter;
     }
 
     /**
