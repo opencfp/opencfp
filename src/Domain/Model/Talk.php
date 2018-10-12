@@ -59,7 +59,7 @@ class Talk extends Eloquent
     public function scopeRecent(Builder $query, int $limit = 10): Builder
     {
         return $query
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'desc')
             ->with(['favorites', 'meta'])
             ->take($limit);
     }
