@@ -323,6 +323,9 @@ final class SpeakerProfileTest extends Framework\TestCase
         }, $values);
     }
 
+    /**
+     * @test
+     */
     public function getTwitterUrlReturnsTwitterUrlWhenTwitterPropertyIsNeitherHiddenNorEmpty(): void
     {
         $value = $this->faker()->userName;
