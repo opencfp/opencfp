@@ -6,5 +6,9 @@
         <span class="bg-brand text-white text-xs rounded-full py-2 px-3 mr-2"><i class="fa fa-graduation-cap"></i> {{ talkHelper.getCategoryDisplayName(talk.category) }}</span>
         <span class="bg-brand text-white text-xs rounded-full py-2 px-3">{{ talkHelper.getLevelDisplayName(talk.level) }}</span>
     </div>
-    <p class="text-sm text-dark-soft">{{ talk.description | markdown }}</p>
+    <p class="text-sm text-dark-soft">{{ talk.description | striptags | markdown }}</p>
+    {% if talk.other is not empty %}
+        <h4 class="mb-2 mt-4">Other Information</h4>
+        <p class="text-sm text-dark-soft">{{ talk.other | striptags | markdown }}</p>
+    {% endif %}
 {% endblock %}
