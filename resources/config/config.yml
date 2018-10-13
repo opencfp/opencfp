@@ -25,6 +25,7 @@ wouterj_eloquent:
 twig:
   default_path: '%kernel.project_dir%/resources/views'
   debug: '%kernel.debug%'
+  base_template_class: 'OpenCFP\Infrastructure\Templating\Template'
   globals:
     site:       '%config.application%'
     talkHelper: '@OpenCFP\Http\View\TalkHelper'
