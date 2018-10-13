@@ -15,7 +15,6 @@ namespace OpenCFP\Test\AutoReview;
 
 use Localheinz\Classy;
 use Localheinz\Test\Util\Helper;
-use OpenCFP\Http;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 
