@@ -16,6 +16,7 @@ namespace OpenCFP\Test\Unit\Http\Action\Security;
 use Localheinz\Test\Util\Helper;
 use OpenCFP\Domain\Services;
 use OpenCFP\Http\Action\Security\LogInAction;
+use OpenCFP\Infrastructure\Auth\UserInterface;
 use PHPUnit\Framework;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation;
@@ -110,9 +111,28 @@ final class LogInActionTest extends Framework\TestCase
     }
 
     /**
-     * @test
+     * Data provider for redirectsToDashboardIfAuthenticationSucceeded
+     *
+     * @return array
      */
-    public function redirectsToDashboardIfAuthenticationSucceeded()
+    public function userProvider(): array
+    {
+        return [ // admin check, reviewer check, expected redirect
+            [false, false, 'dashboard'],
+            [false, true, 'reviewer'],
+            [true, null, 'admin'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param bool      $isAdmin
+     * @param null|bool $isReviewer
+     * @param string    $shouldRedirectTo
+     * @dataProvider    userProvider
+     */
+    public function redirectsToDashboardIfAuthenticationSucceeded($isAdmin, $isReviewer, $shouldRedirectTo)
     {
         $faker = $this->faker();
 
@@ -142,10 +162,20 @@ final class LogInActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
+        $user = $this->prophesize(UserInterface::class);
+
+        $user->hasAccess(Argument::exact('admin'))->shouldBeCalled()->willReturn($isAdmin);
+
+        if ($isReviewer !== null) {
+            $user->hasAccess(Argument::exact('reviewer'))->shouldBeCalled()->willReturn($isReviewer);
+        }
+
+        $authentication->user()->shouldBeCalled()->willReturn($user);
+
         $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
 
         $urlGenerator
-            ->generate('dashboard')
+            ->generate(Argument::exact($shouldRedirectTo))
             ->shouldBeCalled()
             ->willReturn($url);
 
