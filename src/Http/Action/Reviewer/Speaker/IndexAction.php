@@ -34,8 +34,9 @@ final class IndexAction
     {
         $search = $request->get('search');
 
-        $speakers = Model\User::search($search)->get()->map(function($speaker) {
+        $speakers = Model\User::search($search)->get()->map(function ($speaker) {
             $speaker['twitterUrl'] = Model\User::twitterUrl($speaker);
+
             return $speaker;
         })->toArray();
 
