@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation;
  */
 class SignupForm extends Form
 {
+    const MUST_PROVIDE_AIRPORT_CODE_ERROR = "Since you specified that you'll need help with transportation costs, we need to know which airport you'll be departing from. You may specify additional information (e.g. alternate airports) in the Additional Notes field.";
+
     protected $fieldList = [
         'email',
         'password',
@@ -72,7 +74,7 @@ class SignupForm extends Form
         }
 
         if (!isset($this->taintedData['airport']) || !$this->taintedData['airport']) {
-            $this->addErrorMessage("Since you specified that you'll need help with transportation costs, we need to know which airport you'll be departing from. You may specify additional information (e.g. alternate airports) in the Additional Notes field.");
+            $this->addErrorMessage(static::MUST_PROVIDE_AIRPORT_CODE_ERROR);
 
             return false;
         }
