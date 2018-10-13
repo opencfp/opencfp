@@ -49,6 +49,11 @@ class User extends Eloquent
         return $this->hasMany(Throttle::class);
     }
 
+    public static function twitterUrl(?string $handle): string
+    {
+        return !$handle || !\trim($handle) ? '' : ('https://twitter.com/' . $handle);
+    }
+
     /**
      * Gets all the 'other' talks for a speaker, except the one given.
      * If called with no parameters returns all talks of that user.
