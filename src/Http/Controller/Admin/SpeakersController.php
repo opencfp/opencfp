@@ -112,6 +112,7 @@ class SpeakersController extends BaseController
 
             $speaker['is_admin'] = \in_array($speaker['id'], $adminUserIds);
             $speaker['is_reviewer'] = \in_array($speaker['id'], $reviewerUserIds);
+            $speaker['twitterUrl'] = User::twitterUrl($speaker['twitter']);
 
             return $speaker;
         })->toArray();

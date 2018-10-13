@@ -34,7 +34,10 @@ final class IndexAction
     {
         $search = $request->get('search');
 
-        $speakers = Model\User::search($search)->get()->toArray();
+        $speakers = Model\User::search($search)->get()->map(function($speaker) {
+            $speaker['twitterUrl'] = Model\User::twitterUrl($speaker);
+            return $speaker;
+        })->toArray();
 
         $pagination = new Services\Pagination($speakers);
 
