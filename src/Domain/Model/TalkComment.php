@@ -19,8 +19,8 @@ class TalkComment extends Eloquent
 {
     protected $table = 'talk_comments';
 
-    const CREATED_AT = 'created';
-    const UPDATED_AT = null;
+    public const CREATED_AT = 'created';
+    public const UPDATED_AT = null;
 
     public function user(): BelongsTo
     {

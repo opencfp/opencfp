@@ -15,9 +15,9 @@ namespace OpenCFP;
 
 class Environment
 {
-    const TYPE_PRODUCTION  = 'production';
-    const TYPE_DEVELOPMENT = 'development';
-    const TYPE_TESTING     = 'testing';
+    public const TYPE_PRODUCTION  = 'production';
+    public const TYPE_DEVELOPMENT = 'development';
+    public const TYPE_TESTING     = 'testing';
 
     /**
      * The specified environment.

@@ -19,8 +19,8 @@ class Favorite extends Eloquent
 {
     protected $table = 'favorites';
 
-    const CREATED_AT = 'created';
-    const UPDATED_AT = null;
+    public const CREATED_AT = 'created';
+    public const UPDATED_AT = null;
 
     public function talk(): BelongsTo
     {
