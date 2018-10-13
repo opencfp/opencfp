@@ -28,6 +28,16 @@ final class TalkTest extends WebTestCase implements TransactionalTestCase
         $this->setUpTalksForTests();
     }
 
+    /**
+     * @test
+     */
+    public function recentReturnsLatestTalksFirst()
+    {
+        $recent = Talk::recent()->get();
+        $this->assertSame('talks title NO 3', $recent->first()->title);
+        $this->assertSame('talks title', $recent->last()->title);
+    }
+
     /** @test */
     public function recentReturnsAnArrayOfTalks()
     {
@@ -138,6 +148,7 @@ final class TalkTest extends WebTestCase implements TransactionalTestCase
             'level'       => 'entry',
             'category'    => 'api',
             'selected'    => 0,
+            'created_at'  => '2018-01-01 00:00:00',
         ]);
 
         $talkTwo = Talk::create([
@@ -148,6 +159,7 @@ final class TalkTest extends WebTestCase implements TransactionalTestCase
             'level'       => 'entry',
             'category'    => 'api',
             'selected'    => 1,
+            'created_at'  => '2018-01-01 00:00:05',
         ]);
 
         Talk::create([
@@ -158,6 +170,7 @@ final class TalkTest extends WebTestCase implements TransactionalTestCase
             'level'       => 'entry',
             'category'    => 'api',
             'selected'    => 0,
+            'created_at'  => '2018-01-01 00:00:10',
         ]);
 
         TalkMeta::create([
