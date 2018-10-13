@@ -29,6 +29,19 @@ final class SignupFormTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+    public function formRejectsTransportationRequestsWithNoAirportCode()
+    {
+        $form = new SignupForm(['transportation' => 1, 'airport' => ''], $this->purifier);
+
+        $form->validateTransportationRequests();
+
+        $this->assertTrue($form->hasErrors());
+        $this->assertSame(SignupForm::MUST_PROVIDE_AIRPORT_CODE_ERROR, $form->getErrorMessages()[0]);
+    }
+
+    /**
+     * @test
+     */
     public function formRejectsValidationOnInvalidSpeakerPhoto()
     {
         // Mock speaker photo.
