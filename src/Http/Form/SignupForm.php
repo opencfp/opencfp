@@ -62,13 +62,10 @@ class SignupForm extends Form
             $validSpeakerBio = $this->validateSpeakerBio();
         }
 
-        return $this->validateEmail() && $validPasswords &&
-            $this->validateFirstName() && $this->validateLastName() && $this->validateUrl() &&
-            $validSpeakerInfo && $validSpeakerBio && $this->validateSpeakerPhoto() && $agreeCoc &&
-            $this->validateJoindInUsername() && $this->validateTransportationRequests();
+        return $this->validateEmail() && $validPasswords && $this->validateFirstName() && $this->validateLastName() && $this->validateUrl() && $validSpeakerInfo && $validSpeakerBio && $this->validateSpeakerPhoto() && $agreeCoc && $this->validateJoindInUsername() && $this->validateTransportationRequests();
     }
 
-    public function validateTransportationRequests()
+    public function validateTransportationRequests(): bool
     {
         if (!isset($this->taintedData['transportation']) || !$this->taintedData['transportation']) {
             return true;
