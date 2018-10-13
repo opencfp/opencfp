@@ -25,7 +25,7 @@ final class SpeakersTest extends \PHPUnit\Framework\TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    const SPEAKER_ID = '1';
+    public const SPEAKER_ID = '1';
 
     /** @var Speakers */
     private $sut;

@@ -19,11 +19,11 @@ class TalkMeta extends Eloquent
 {
     protected $table = 'talk_meta';
 
-    const CREATED_AT = 'created';
-    const UPDATED_AT = null;
+    public const CREATED_AT = 'created';
+    public const UPDATED_AT = null;
 
-    const DEFAULT_RATING = 0;
-    const DEFAULT_VIEWED = 0;
+    public const DEFAULT_RATING = 0;
+    public const DEFAULT_VIEWED = 0;
 
     protected $attributes = [
         'rating' => self::DEFAULT_RATING,
