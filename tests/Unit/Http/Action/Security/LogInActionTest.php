@@ -110,14 +110,9 @@ final class LogInActionTest extends Framework\TestCase
         $this->assertSame($content, $response->getContent());
     }
 
-    /**
-     * Data provider for redirectsToDashboardIfAuthenticationSucceeded
-     *
-     * @return array
-     */
     public function userProvider(): array
     {
-        return [ // admin check, reviewer check, expected redirect
+        return [ // admin check result, reviewer check result (null means expected to not be checked), expected redirect
             [false, false, 'dashboard'],
             [false, true, 'reviewer'],
             [true, null, 'admin'],
@@ -132,7 +127,7 @@ final class LogInActionTest extends Framework\TestCase
      * @param string    $shouldRedirectTo
      * @dataProvider    userProvider
      */
-    public function redirectsToDashboardIfAuthenticationSucceeded($isAdmin, $isReviewer, $shouldRedirectTo)
+    public function redirectsToDashboardIfAuthenticationSucceeded(bool $isAdmin, ?bool $isReviewer, string $shouldRedirectTo): void
     {
         $faker = $this->faker();
 
