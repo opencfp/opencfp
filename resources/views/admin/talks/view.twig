@@ -16,8 +16,8 @@
         </div>
         <div class="bg-grey-lighter border border-grey-light rounded-full py-4 px-6 whitespace-no-wrap">
 
-            {% if talk.desired %}<i class="fa fa-trophy mr-3"></i>{% endif %}
-            {% if talk.sponsor %}<i class="fa fa-credit-card mr-3"></i>{% endif %}
+            {% if talk.desired %}<i class="fa fa-trophy mr-3" title="The speaker believes this to be their best submission"></i>{% endif %}
+            {% if talk.sponsor %}<i class="fa fa-credit-card mr-3" title="The speaker's company is either sponsoring or is willing to sponsor"></i>{% endif %}
 
             {% if talk.desired or talk.sponsor %}<span class="mr-3 border-r border-grey"></span>{% endif %}
 
