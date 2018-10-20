@@ -7,14 +7,14 @@
 
     <div class="flex">
         <div class="mr-4 w-3/5">
-            <label for="form-talk-title">Talk Title</label>
-            <input id="form-talk-title" type="text" name="title" placeholder="Talk Title" value="{{ title }}" maxlength="100">
+            <label for="form-talk-title"><span class="text-red-dark font-bold" title="Required Field">*</span> Talk Title</label>
+            <input id="form-talk-title" type="text" name="title" placeholder="Talk Title" value="{{ title }}" maxlength="100" required>
 
-            <label for="form-talk-description">Description/Abstract</label>
-            <textarea id="form-talk-description" name="description" placeholder="Give a description of your talk (Abstract)" rows="10">{{ description }}</textarea>
+            <label for="form-talk-description"><span class="text-red-dark font-bold" title="Required Field">*</span> Description/Abstract</label>
+            <textarea id="form-talk-description" name="description" placeholder="Give a description of your talk (Abstract)" rows="10" required>{{ description }}</textarea>
             <p class="text-xs text-em mb-2 text-dark-soft">Speaker abstract can be written using <a href="https://daringfireball.net/projects/markdown/basics" target="_blank" rel="noopener noreferrer">markdown</a> to support links</p>
 
-            <label for="form-talk-other" >Additional Talk Information</label>
+            <label for="form-talk-other">Additional Talk Information</label>
             <textarea id="form-talk-other" name="other" placeholder="Other Considerations, such as Joind.In, Lanyrd, local user group, etc." rows="10">{{ other }}</textarea>
             <p class="text-xs text-em mb-2 text-dark-soft">Talk additional information can be written using <a href="https://daringfireball.net/projects/markdown/basics" target="_blank" rel="noopener noreferrer">markdown</a> to support links</p>
         </div>

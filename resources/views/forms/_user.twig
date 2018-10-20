@@ -5,14 +5,14 @@
 
     <div class="flex">
         <div class="w-1/2 mr-4">
-            <label for="form-user-email">Email</label>
-            <input id="form-user-email" type="email" name="email" placeholder="you@example.com" value="{{ email | default('') }}">
+            <label for="form-user-email"><span class="text-red-dark font-bold" title="Required Field">*</span> Email</label>
+            <input id="form-user-email" type="email" name="email" placeholder="you@example.com" value="{{ email | default('') }}" required>
 
-            <label for="form-user-first-name">First Name</label>
-            <input id="form-user-first-name" type="text" name="first_name" placeholder="First Name" value="{{ first_name | default('') }}">
+            <label for="form-user-first-name"><span class="text-red-dark font-bold" title="Required Field">*</span> First Name</label>
+            <input id="form-user-first-name" type="text" name="first_name" placeholder="First Name" value="{{ first_name | default('') }}" required>
 
-            <label for="form-user-last-name">Last Name</label>
-            <input id="form-user-last-name" type="text" name="last_name" placeholder="Last Name" value="{{ last_name | default('') }}">
+            <label for="form-user-last-name"><span class="text-red-dark font-bold" title="Required Field">*</span> Last Name</label>
+            <input id="form-user-last-name" type="text" name="last_name" placeholder="Last Name" value="{{ last_name | default('') }}" required>
 
             <label for="form-user-company">Company</label>
             <input id="form-user-company" type="text" name="company" placeholder="Company" value="{{ company | default('') }}">
