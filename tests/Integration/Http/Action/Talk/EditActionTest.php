@@ -96,6 +96,7 @@ final class EditActionTest extends WebTestCase implements TransactionalTestCase
 
         $response = $this
             ->asLoggedInSpeaker($speaker->id)
+            ->callForPapersIsOpen()
             ->get('/talk/edit/' . $talk->id . '?token_id=edit_talk&token=' . $csrfToken);
 
         $this->assertResponseIsSuccessful($response);

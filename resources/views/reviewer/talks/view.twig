@@ -58,7 +58,7 @@
                     <div class="p-3 border-b border-grey bg-blue-lightest flex justify-between">
                         <span class="font-bold">{{ comment.user.first_name }} {{ comment.user.last_name }}</span><span>{{ comment.created|date("F jS \\a\\t g:ia") }}</span>
                     </div>
-                    <div class="p-3">{{ comment.message }}</div>
+                    <div class="p-3">{{ comment.message | striptags | markdown }}</div>
                 </div>
             </div>
         {% endfor %}
