@@ -254,7 +254,7 @@ mail:
 ```
 ### [Running behind a trusted proxy](#run-trusted-proxy)
 
-If you are running open cfp behing a proxy server which adds X-Forwarded-For headers (this could be a cloud based load balancer or a service such as cloudflare) you will need to set the environment variable TRUST_PROXIES to true this will ensure that opencfp trusts the headers set by these proxies for the original IP address and ssl mode. Setting this will trust these headers regardless of where the original request originates, so it's advisable to either lock down your instance so that only the trusted proxy can access it, or modifiy the list of trusted proxies in the index.php file to only include the ip addresses of your proxies.
+If you are running OpenCFP behing a proxy server which adds X-Forwarded-For headers (this could be a cloud based load balancer or a service such as Cloudflare) you will need to set the environment variable TRUST_PROXIES to true this will ensure that OpenCFP trusts the headers set by these proxies for the original IP address and ssl mode. Setting this will trust these headers regardless of where the original request originates, so it's advisable to either lock down your instance so that only the trusted proxy can access it or modify the list of trusted proxies in the index.php file to only include the ip addresses of your proxies.
 
 
 ### [Run Migrations](#run-migrations)
