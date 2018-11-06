@@ -61,6 +61,8 @@ final class LogInAction
                 $request->get('email'),
                 $request->get('password')
             );
+
+            $user = $this->authentication->user();
         } catch (UserNotFoundException $exception) {
             $flash = [
                 'type'  => 'error',
@@ -91,7 +93,7 @@ final class LogInAction
                 $content,
                 HttpFoundation\Response::HTTP_BAD_REQUEST
             );
-        } catch (Services\AuthenticationException $exception) {
+        } catch (Services\AuthenticationException | Services\NotAuthenticatedException $exception) {
             $flash = [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -109,7 +111,13 @@ final class LogInAction
             );
         }
 
-        $url = $this->urlGenerator->generate('dashboard');
+        if ($user->hasAccess('admin')) {
+            $url = $this->urlGenerator->generate('admin');
+        } elseif ($user->hasAccess('reviewer')) {
+            $url = $this->urlGenerator->generate('reviewer');
+        } else {
+            $url = $this->urlGenerator->generate('dashboard');
+        }
 
         return new HttpFoundation\RedirectResponse($url);
     }

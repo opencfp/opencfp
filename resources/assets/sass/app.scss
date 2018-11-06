@@ -109,7 +109,7 @@ select {
 }
 
 textarea {
-  @apply .py-3 .px-2 .w-full .resize-y .rounded-sm .border-grey;
+  @apply .py-3 .px-3 .w-full .resize-y .rounded-sm .border .border-grey;
 }
 
 div:empty {
