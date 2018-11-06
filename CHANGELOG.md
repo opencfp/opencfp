@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Speakers now required to enter airport code if they request travel cost assistance
 - Twitter URL's now correctly displayed in speaker lists 
 - Additional information for a talk can now be viewed after the CFP has closed
+- Speaker counts now only show speakers who have submitted talks
 
 
 ## 1.6.0 - 2018-10-12
