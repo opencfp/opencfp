@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Additional speaker info can now be submitted in Markdown
 - Speakers now required to enter airport code if they request travel cost assistance
 - Twitter URL's now correctly displayed in speaker lists 
-- Additional information for a talk can now be modified after the CFP has closed
+- Additional information for a talk can now be viewed after the CFP has closed
 
 
 ## 1.6.0 - 2018-10-12
