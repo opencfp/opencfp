@@ -19,6 +19,7 @@ use OpenCFP\Domain\Model;
 use OpenCFP\Domain\Services;
 use OpenCFP\Http\Form;
 use OpenCFP\Http\View;
+use OpenCFP\Infrastructure\Templating\Template;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\HttpFoundation;
@@ -201,7 +202,7 @@ final class UpdateAction
 
     private function sendSubmitEmail(Model\Talk $talk, string $email): int
     {
-        /** @var \Twig_Template $template */
+        /** @var Template $template */
         $template = $this->twig->loadTemplate('emails/talk_submit.twig');
 
         $parameters = [
@@ -216,14 +217,14 @@ final class UpdateAction
 
             $message->setTo($email);
             $message->setFrom(
-                $template->renderBlock('from', $parameters),
-                $template->renderBlock('from_name', $parameters)
+                $template->renderBlockWithContext('from', $parameters),
+                $template->renderBlockWithContext('from_name', $parameters)
             );
 
-            $message->setSubject($template->renderBlock('subject', $parameters));
-            $message->setBody($template->renderBlock('body_text', $parameters));
+            $message->setSubject($template->renderBlockWithContext('subject', $parameters));
+            $message->setBody($template->renderBlockWithContext('body_text', $parameters));
             $message->addPart(
-                $template->renderBlock('body_html', $parameters),
+                $template->renderBlockWithContext('body_html', $parameters),
                 'text/html'
             );
 

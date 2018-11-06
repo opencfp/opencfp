@@ -5,7 +5,7 @@
 
 {% block body_html %}
 <p>
-    Thank you for the awesome talk submission. When the call for papers is over on {{ enddate }} talk selection will begin. We'll be in touch soon.
+    Thank you for the awesome talk submission. When the call for papers is over on {{ enddate | date(site.date_format) }} talk selection will begin. We'll be in touch soon.
 </p>
 <p>
     Submitted Talk Title: "{{ talk }}"
@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block body_text %}
-    Thank you for the awesome talk submission. When the call for papers is over on {{ enddate }} talk selection will begin. We'll be in touch soon.
+    Thank you for the awesome talk submission. When the call for papers is over on {{ enddate | date(site.date_format) }} talk selection will begin. We'll be in touch soon.
 
 Submitted Talk Title: "{{ talk }}"
 
