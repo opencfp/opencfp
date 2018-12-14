@@ -17,6 +17,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
+/**
+ * @method static self create(array $attributes)
+ * @method static self|null find($id, $columns = ['*'])
+ * @method static self findOrFail($id, $columns = ['*'])
+ * @method static self|null first($columns = ['*'])
+ * @method static Builder search(string $search = '')
+ *
+ * @property Collection|Talk[] $talks
+ */
 class User extends Eloquent
 {
     public function talks(): HasMany

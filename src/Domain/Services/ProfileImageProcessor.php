@@ -40,13 +40,14 @@ class ProfileImageProcessor
     private $size;
 
     /**
-     * @var Filesystem
+     * @var FilesystemInterface
      */
     private $filesystem;
 
     /**
      * @param string                $publishDir
      * @param RandomStringGenerator $generator
+     * @param FilesystemInterface   $filesystem
      * @param int                   $size
      */
     public function __construct($publishDir, RandomStringGenerator $generator, FilesystemInterface $filesystem, $size = 250)

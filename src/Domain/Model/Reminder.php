@@ -15,6 +15,10 @@ namespace OpenCFP\Domain\Model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static self create(array $attributes)
+ * @method static self|null find($id, $columns = ['*'])
+ */
 class Reminder extends Eloquent
 {
     public function user(): BelongsTo
