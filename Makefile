@@ -1,6 +1,6 @@
 .PHONY: asset auto-review cache coverage cs database infection integration it stan test test-env unit
 
-it: cs test
+it: cs stan test
 
 asset:
 	yarn install
@@ -34,7 +34,7 @@ integration: test-env vendor database cache
 stan: vendor
 	vendor/bin/phpstan analyse
 
-test: auto-review integration unit stan
+test: auto-review integration unit
 
 test-env:
 	if [ ! -f "config/testing.yml" ]; then cp config/testing.yml.dist config/testing.yml; fi
