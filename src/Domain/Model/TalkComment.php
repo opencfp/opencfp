@@ -15,6 +15,11 @@ namespace OpenCFP\Domain\Model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static self create(array $attributes)
+ * @method static self|null find($id, $columns = ['*'])
+ * @method static self|null first($columns = ['*'])
+ */
 class TalkComment extends Eloquent
 {
     protected $table = 'talk_comments';

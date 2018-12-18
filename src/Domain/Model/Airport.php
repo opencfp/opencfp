@@ -16,6 +16,10 @@ namespace OpenCFP\Domain\Model;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 
+/**
+ * @method static self create(array $attributes)
+ * @method static self|null find($id, $columns = ['*'])
+ */
 class Airport extends Eloquent implements AirportInformationDatabase
 {
     protected $table = 'airports';

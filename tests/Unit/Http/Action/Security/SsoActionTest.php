@@ -16,11 +16,24 @@ namespace OpenCFP\Test\Unit\Http\Action\Security;
 use OpenCFP\Domain\Services;
 use OpenCFP\Http\Action\Security\SsoAction;
 use PHPUnit\Framework;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 
 final class SsoActionTest extends Framework\TestCase
 {
+    /** @var ObjectProphecy */
+    private $urlGenerator;
+
+    /** @var ObjectProphecy */
+    private $request;
+
+    private $clientId;
+
+    private $redirectUri;
+
+    private $authorizeUrl;
+
     public function setUp()
     {
         parent::setUp();

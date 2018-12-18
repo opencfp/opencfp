@@ -24,6 +24,7 @@ use OpenCFP\Http\Action\Security\SsoRedirectAction;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
 use PHPUnit\Framework;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
 
@@ -31,9 +32,29 @@ final class SsoRedirectActionTest extends Framework\TestCase
 {
     use Helper;
 
+    private $clientId;
+
+    private $clientSecret;
+
+    private $redirectUri;
+
+    private $resourceUrl;
+
+    private $tokenUrl;
+
+    /** @var ObjectProphecy */
+    private $sentinel;
+
+    /** @var ObjectProphecy */
+    private $accounts;
+
+    /** @var ObjectProphecy */
+    private $urlGenerator;
+
     public function setUp()
     {
         parent::setUp();
+
         $this->clientId     = 1;
         $this->clientSecret = 'secret';
         $this->redirectUri  = '/redirect';

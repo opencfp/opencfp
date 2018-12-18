@@ -18,16 +18,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @method Builder recent(int $limit=10)
- * @method Builder selected()
- * @method Builder category()
- * @method Builder type()
- * @method Builder notViewedBy(int $userId)
- * @method Builder notRatedBy(int $userId)
- * @method Builder topRated()
- * @method Builder ratedPlusOneBy(int $userId)
- * @method Builder viewedBy(int $userId)
- * @method Builder favoritedBy(int $userId)
+ * @method static Builder distinct(string $column)
+ * @method static Builder recent(int $limit=10)
+ * @method static Builder selected()
+ * @method static Builder category()
+ * @method static Builder type()
+ * @method static Builder notViewedBy(int $userId)
+ * @method static Builder notRatedBy(int $userId)
+ * @method static Builder topRated()
+ * @method static Builder ratedPlusOneBy(int $userId)
+ * @method static Builder viewedBy(int $userId)
+ * @method static Builder favoritedBy(int $userId)
+ * @method static self create(array $attributes)
+ * @method static self|null find($id, $columns = ['*'])
+ *
+ * @property int $id
  */
 class Talk extends Eloquent
 {
@@ -157,7 +162,7 @@ class Talk extends Eloquent
     {
         $this->comments()
             ->get()
-            ->each(function ($comment) {
+            ->each(function (TalkComment $comment) {
                 if (!$comment->delete()) {
                     throw new \Exception('Unable to delete all comments');
                 }
@@ -173,7 +178,7 @@ class Talk extends Eloquent
     {
         $this->favorites()
             ->get()
-            ->each(function ($favorite) {
+            ->each(function (Favorite $favorite) {
                 if (!$favorite->delete()) {
                     throw new \Exception('Unable to delete all favorites');
                 }
@@ -189,7 +194,7 @@ class Talk extends Eloquent
     {
         $this->meta()
             ->get()
-            ->each(function ($meta) {
+            ->each(function (TalkMeta $meta) {
                 if (!$meta->delete()) {
                     throw new \Exception('Unable to delete all meta info');
                 }

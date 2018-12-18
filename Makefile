@@ -1,6 +1,6 @@
 .PHONY: asset auto-review cache coverage cs database infection integration it stan test test-env unit
 
-it: cs test
+it: cs stan test
 
 asset:
 	yarn install
@@ -26,13 +26,13 @@ database: test-env vendor
 	mysqldump -uroot cfp_test > tests/dump.sql
 
 infection: vendor database
-	vendor/bin/infection --test-framework-options="--printer PHPUnit\\\TextUI\\\ResultPrinter"
+	php -d zend_extension=xdebug.so vendor/bin/infection
 
 integration: test-env vendor database cache
 	vendor/bin/phpunit --testsuite integration
 
 stan: vendor
-	vendor/bin/phpstan analyse --level=2 src tests
+	vendor/bin/phpstan analyse
 
 test: auto-review integration unit
 
