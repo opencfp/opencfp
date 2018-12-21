@@ -130,14 +130,17 @@ class ExportsController extends BaseController
             return $this->redirectTo('admin');
         }
 
-        $keys   = \implode(',', \array_keys($contents[0]));
-        $output = $keys . "\n";
+        ob_start();
+        $output = fopen("php://output", "w");
+
+        fputcsv($output, array_keys($contents[0]));
 
         foreach ($contents as $content) {
-            $content = \array_map([$this, 'csvFormat'], $content);
-            $output  = $output . \implode(',', $content) . "\n";
+            fputcsv($output, \array_map([$this, 'csvFormat'], $content));
         }
 
-        return $this->export($output, $filename . '.csv');
+        fclose($output);
+
+        return $this->export(ob_get_clean(), $filename . '.csv');
     }
 }
