@@ -364,7 +364,9 @@ image and run the containers automatically for you:
 $  docker-compose -f docker-compose.yml.dist up --build -d
 ```
 
-So now if you head over to `http://localhost` you will be greeted with a running version of OpenCFP. 
+So now if you head over to `http://localhost` you will be greeted with a running version of OpenCFP.
+
+After building and running the Docker image you'll need to [Run Migrations](#run-migrations) and [Add an Admin User](#user-management) before logging-in.
 
 #### Run PHP commands within the Container
 
