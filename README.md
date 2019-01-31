@@ -327,7 +327,7 @@ For more usage information please see the [Laravel Homestead Docs](http://larave
     * `/log`
  * You may need to alter the `memory_limit` of the web server to allow image processing of head-shots. This is largely
    dictated by the size of the images people upload. Typically 512M works.
- * Customize templates and `/web/assets/css/site.css` to your heart's content.
+ * Customize templates and `/web/assets/css/app.css` to your heart's content.
 
 ### [Building Docker Image](#building-docker-image)
 
