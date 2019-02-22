@@ -1,0 +1,28 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.2-fpm-node-browsers
+      - image: tkuchiki/delayed-mysql
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: cfp_test
+
+    steps:
+      - checkout
+      - run: sudo composer self-update
+      - run: composer validate --no-check-publish
+      - run: composer install
+      - run: vendor/bin/php-cs-fixer fix --config=.php_cs.dist --dry-run --diff -v --using-cache=no
+      - run: mysql -e "CREATE DATABASE cfp_test" -u root
+      - run: cp config/testing.yml.dist config/testing.yml
+      - run: CFP_ENV=testing vendor/bin/phinx migrate --environment testing
+      - run: mysqldump -uroot cfp_test > tests/dump.sql
+      - run: yarn install
+      - run: yarn run production
+      - run: vendor/bin/phpunit --testsuite auto-review
+      - run: vendor/bin/phpunit --testsuite integration
+
+
+
