@@ -17,7 +17,7 @@ jobs:
       - run: composer validate --no-check-publish
       - run: composer install
       - run: vendor/bin/php-cs-fixer fix --config=.php_cs.dist --dry-run --diff -v --using-cache=no
-      - run: mysql -e "CREATE DATABASE cfp_test" -u root
+      - run: mysql -h 127.0.0.1 -u root -e "CREATE DATABASE cfp_test"
       - run: cp config/testing.yml.dist config/testing.yml
       - run: CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - run: mysqldump -uroot cfp_test > tests/dump.sql
