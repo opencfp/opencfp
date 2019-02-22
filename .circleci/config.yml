@@ -11,6 +11,8 @@ jobs:
 
     steps:
       - checkout
+      - sudo apt-get update
+      - sudo apt-get install mysql-client
       - run: sudo composer self-update
       - run: composer validate --no-check-publish
       - run: composer install
