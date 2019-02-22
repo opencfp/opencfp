@@ -13,6 +13,7 @@ jobs:
       - checkout
       - run: sudo apt-get update
       - run: sudo apt-get install mysql-client
+      - run: sudo docker-php-ext-install pdo_mysql
       - run: sudo composer self-update
       - run: composer validate --no-check-publish
       - run: composer install
