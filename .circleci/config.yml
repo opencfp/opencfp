@@ -24,6 +24,4 @@ jobs:
       - run: yarn run production
       - run: vendor/bin/phpunit --testsuite auto-review
       - run: vendor/bin/phpunit --testsuite integration
-
-
-
+      - run: vendor/bin/phpunit --testsuite unit
