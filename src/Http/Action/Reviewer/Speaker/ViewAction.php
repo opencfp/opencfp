@@ -61,7 +61,7 @@ final class ViewAction
                 'ext'   => 'Could not find requested speaker',
             ]);
 
-            $url = $this->urlGenerator->generate('reviewer_speakers');
+            $url = $this->urlGenerator->generate('admin_reviwer_speakers');
 
             return new HttpFoundation\RedirectResponse($url);
         }
