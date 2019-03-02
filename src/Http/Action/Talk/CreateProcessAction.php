@@ -165,16 +165,23 @@ final class CreateProcessAction
             'user_id' => $user->getId(),
         ]));
 
-        $request->getSession()->set('flash', [
-            'type'  => 'success',
-            'short' => 'Success',
-            'ext'   => 'Successfully saved talk.',
-        ]);
-
-        $this->sendSubmitEmail(
-            $user->getLogin(),
-            (int) $talk->id
-        );
+        try {
+            $this->sendSubmitEmail(
+                $user->getLogin(),
+                (int) $talk->id
+            );
+            $request->getSession()->set('flash', [
+                'type'  => 'success',
+                'short' => 'Success',
+                'ext'   => 'Successfully saved talk.',
+            ]);
+        } catch (\Swift_TransportException $e) {
+            $request->getSession()->set('flash', [
+                'type'  => 'error',
+                'short' => 'Error',
+                'ext'   => 'Your talk was saved but we could not send a confirmation email',
+            ]);
+        }
 
         $url = $this->urlGenerator->generate('dashboard');
 
@@ -208,26 +215,21 @@ final class CreateProcessAction
             'enddate' => $this->applicationEndDate,
         ];
 
-        try {
-            $message = new Swift_Message();
+        $message = new Swift_Message();
 
-            $message->setTo($email);
-            $message->setFrom(
-                $template->renderBlockWithContext('from', $parameters),
-                $template->renderBlockWithContext('from_name', $parameters)
-            );
+        $message->setTo($email);
+        $message->setFrom(
+            $template->renderBlockWithContext('from', $parameters),
+            $template->renderBlockWithContext('from_name', $parameters)
+        );
 
-            $message->setSubject($template->renderBlockWithContext('subject', $parameters));
-            $message->setBody($template->renderBlockWithContext('body_text', $parameters));
-            $message->addPart(
-                $template->renderBlockWithContext('body_html', $parameters),
-                'text/html'
-            );
+        $message->setSubject($template->renderBlockWithContext('subject', $parameters));
+        $message->setBody($template->renderBlockWithContext('body_text', $parameters));
+        $message->addPart(
+            $template->renderBlockWithContext('body_html', $parameters),
+            'text/html'
+        );
 
-            return $this->mailer->send($message);
-        } catch (\Exception $e) {
-            echo $e;
-            die();
-        }
+        return $this->mailer->send($message);
     }
 }

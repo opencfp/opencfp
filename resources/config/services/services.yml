@@ -79,3 +79,8 @@ services:
     autowire: false
     factory: [OpenCFP\Environment, fromString]
     arguments: ['%kernel.environment%']
+
+  Swift_Mailer:
+    public: true
+    class: Swift_Mailer
+
