@@ -130,7 +130,7 @@ final class CreateProcessActionTest extends WebTestCase implements Transactional
         // When I submit a valid talk
         // And the confirmation cannot be sent
         // Then we add an error message to the session
-        $speaker = factory(Model\User::class)->create()->first();
+        $speaker   = factory(Model\User::class)->create()->first();
         $csrfToken = $this->container->get('security.csrf.token_manager')
             ->getToken('speaker_talk');
         $response = $this

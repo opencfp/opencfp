@@ -28,7 +28,6 @@ use OpenCFP\Kernel;
 use OpenCFP\Test\Helper\MockAuthentication;
 use OpenCFP\Test\Helper\MockIdentityProvider;
 use OpenCFP\Test\Helper\ResponseHelper;
-use PHPUnit\Framework\MockObject\Stub\ReturnSelf as ReturnSelfStub;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\BrowserKit\Cookie;
@@ -232,7 +231,7 @@ abstract class WebTestCase extends KernelTestCase
         return $this->container->get('session');
     }
 
-    final protected function withFakeSwiftMailer() : self
+    final protected function withFakeSwiftMailer(): self
     {
         $fakeMailer = Mockery::mock(\Swift_Mailer::class);
         $fakeMailer->shouldReceive('send')->andThrow(\Swift_TransportException::class);
