@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # script/bootstrap: Resolve all dependencies that the application requires to run.
 
@@ -6,7 +6,7 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-if [ "$CFP_ENV" = "" ]; then
+if [ "x$CFP_ENV" = "x" ]; then
     export CFP_ENV="development"
 fi
 

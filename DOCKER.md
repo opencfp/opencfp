@@ -19,43 +19,6 @@ development environment, you need to follow the following steps:
       - "CFP_DB_PASS=root"
 ```
 
-* Modify the `app.volumes` section to look like the following:
-
-```
-    volumes:
-      - ./:/var/www
-      - ./config/docker.yml.dist:/var/www/config/development.yml
-      - ./.docker/script:/var/www/script
-```
-
-The most important section is the `app.volumes` section, as it will make sure that we share our code with the docker 
-container.
-
-The following, will create a shared volume with the container, so any file you create in your code will automatically 
-copied over to the container.
-
-```
- - ./:/var/www
-```
-
-Meanwhile, The following will create a copy from our `docker.yml.dist` file and call it `development.yml` file within 
-the container, you can remove this line and create your own `.yml` file.
-
-```
-- ./config/docker.yml.dist:/var/www/config/development.yml
-```
-
-The last part, is the important one, as the scripts was written in `bash` mean while the docker image depends on `alpine`
-to make sure it has a small size (about **270MB** in total), so we needs to copy over the docker specific files to the
-container, and replace the one on the container.
-
-```
-- ./.docker/script:/var/www/script
-```
-
-This will not overwrite the original `script` files, but will make our liver easier and will make the scripts 
-compatible with `sh`.
-
 ## Run Docker
 
 Now all you have to do is to run the following command:
@@ -72,4 +35,4 @@ and to stop your containers you can run:
 $ docker-compose down
 ```
 
-_PS_: You can access MySQL in the same way we described in the Docker section.
+_PS_: You can access MySQL in the same way we described in the Docker section of README file.
