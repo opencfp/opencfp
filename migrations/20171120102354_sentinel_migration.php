@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @see https://github.com/opencfp/opencfp
  */
+
 use Phinx\Migration\AbstractMigration;
 
 /**

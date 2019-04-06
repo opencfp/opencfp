@@ -10,6 +10,7 @@ declare(strict_types=1);
  *
  * @see https://github.com/opencfp/opencfp
  */
+
 use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Database\Capsule\Manager as Capsule;
