@@ -54,8 +54,6 @@ final class TestCodeTest extends Framework\TestCase
                 Http\Action\Profile\DeleteAction::class,
                 Http\Action\Profile\ProcessDeleteAction::class,
                 Http\Action\Reviewer\DashboardAction::class,
-                Http\Action\Reviewer\Speaker\IndexAction::class,
-                Http\Action\Reviewer\Speaker\ViewAction::class,
                 Http\Action\Reviewer\Talk\IndexAction::class,
                 Http\Action\Reviewer\Talk\RateAction::class,
                 Http\Action\Signup\PrivacyAction::class,
