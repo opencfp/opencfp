@@ -81,11 +81,6 @@ admin_export_csv_emails:
   methods: [GET]
   controller: 'OpenCFP\Http\Controller\Admin\ExportsController::emailExportAction'
 
-admin_reviwer_speakers:
-  path: /reviewer/speakers
-  methods: [GET]
-  controller: OpenCFP\Http\Action\Reviewer\Speaker\IndexAction
-
 reviewer:
   path: /reviewer/
   methods: [GET]

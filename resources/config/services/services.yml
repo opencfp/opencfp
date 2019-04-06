@@ -23,7 +23,6 @@ services:
       $applicationTitle: '%application.title%'
       $forgotForm: '@OpenCFP\Http\Form\ForgotForm'
       $resetForm: '@OpenCFP\Http\Form\ResetForm'
-      $reviewerUsers: '%reviewer.users%'
       $showSubmissionCount: '%application.show_submission_count%'
 
   OpenCFP\Http\Action\Security\SsoAction:
