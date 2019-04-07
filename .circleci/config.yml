@@ -8,6 +8,8 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: cfp_test
+          SYMFONY_DEPRECATION_NOTICES: disabled
+          SYMFONY_DEPRECATIONS_HELPER: disabled 
 
     steps:
       - checkout
@@ -22,6 +24,6 @@ jobs:
       - run: CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - run: yarn install
       - run: yarn run production
-      - run: SYMFONY_DEPRECATION_NOTICES=disabled vendor/bin/phpunit --testsuite auto-review
-      - run: SYMFONY_DEPRECATION_NOTICES=disabled vendor/bin/phpunit --testsuite integration
-      - run: SYMFONY_DEPRECATION_NOTICES=disabled vendor/bin/phpunit --testsuite unit
+      - run: vendor/bin/phpunit --testsuite auto-review
+      - run: vendor/bin/phpunit --testsuite integration
+      - run: vendor/bin/phpunit --testsuite unit
