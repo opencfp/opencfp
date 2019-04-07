@@ -29,7 +29,7 @@ infection: vendor database
 	php -d zend_extension=xdebug.so vendor/bin/infection
 
 integration: test-env vendor database cache
-	vendor/bin/phpunit --testsuite integration
+	SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --testsuite integration
 
 stan: vendor
 	vendor/bin/phpstan analyse

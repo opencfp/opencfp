@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Infrastructure\Templating;
 
-abstract class Template extends \Twig_Template
+abstract class Template extends \Twig\Template
 {
     /**
      * Renders a block, including global context variables, so it can be used directly

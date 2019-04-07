@@ -24,7 +24,7 @@ use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class CreateProcessAction
 {
@@ -69,7 +69,7 @@ final class CreateProcessAction
     private $applicationEndDate;
 
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -87,7 +87,7 @@ final class CreateProcessAction
         string $applicationEmail,
         string $applicationTitle,
         string $applicationEndDate,
-        Twig_Environment $twig,
+        Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->authentication     = $authentication;

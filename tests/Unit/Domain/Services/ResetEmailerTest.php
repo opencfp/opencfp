@@ -18,7 +18,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use OpenCFP\Domain\Services\ResetEmailer;
 use Swift_Mailer;
 use Swift_Message;
-use Twig_Template;
+use Twig\Template;
 
 final class ResetEmailerTest extends \PHPUnit\Framework\TestCase
 {
@@ -40,10 +40,10 @@ final class ResetEmailerTest extends \PHPUnit\Framework\TestCase
             }))
             ->getMock();
 
-        /* @var Twig_Template $template */
-        $template = Mockery::mock(Twig_Template::class)->shouldIgnoreMissing();
+        /* @var Twig\Template $template */
+        $template = Mockery::mock(Twig\Template::class)->shouldIgnoreMissing();
 
-        $twig = Mockery::mock(\Twig_Environment::class);
+        $twig = Mockery::mock(\Twig\Environment::class);
         $twig->shouldReceive('loadTemplate')
             ->withArgs(['emails/reset_password.twig'])
             ->andReturn($template);
