@@ -7,14 +7,14 @@ asset:
 	yarn run production
 
 auto-review: vendor
-	vendor/bin/phpunit --testsuite auto-review
+	SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --testsuite auto-review
 
 cache: vendor
 	bin/console cache:clear --env=development
 	bin/console cache:clear --env=testing
 
 coverage: vendor
-	if [ $(type) = "html" ]; then vendor/bin/phpunit --testsuite unit --coverage-html coverage; else vendor/bin/phpunit --testsuite unit --coverage-text; fi;
+	if [ $(type) = "html" ]; then SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --testsuite unit --coverage-html coverage; else vendor/bin/phpunit --testsuite unit --coverage-text; fi;
 
 cs: vendor
 	vendor/bin/php-cs-fixer fix --verbose --diff
@@ -40,7 +40,7 @@ test-env:
 	if [ ! -f "config/testing.yml" ]; then cp config/testing.yml.dist config/testing.yml; fi
 
 unit: vendor
-	vendor/bin/phpunit --testsuite unit
+	SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --testsuite unit
 
 vendor: composer.json composer.lock
 	composer validate
