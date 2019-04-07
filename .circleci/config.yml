@@ -22,6 +22,6 @@ jobs:
       - run: CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - run: yarn install
       - run: yarn run production
-      - run: vendor/bin/phpunit --testsuite auto-review
-      - run: vendor/bin/phpunit --testsuite integration
-      - run: vendor/bin/phpunit --testsuite unit
+      - run: SYMFONY_DEPRECATION_NOTICES=disabled vendor/bin/phpunit --testsuite auto-review
+      - run: SYMFONY_DEPRECATION_NOTICES=disabled vendor/bin/phpunit --testsuite integration
+      - run: SYMFONY_DEPRECATION_NOTICES=disabled vendor/bin/phpunit --testsuite unit
