@@ -17,10 +17,10 @@ use OpenCFP\PathInterface;
 use OpenCFP\WebPath;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Extension;
+use Twig\Extension\AbstractExtension;
 use Twig_SimpleFunction;
 
-class TwigExtension extends Twig_Extension
+class TwigExtension extends AbstractExtension
 {
     /**
      * @var RequestStack
