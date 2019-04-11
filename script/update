@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # script/update: Update application to run for its current checkout.
 
@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 
 script/bootstrap
 
-if [ "$CFP_ENV" = "" ]; then
+if [ "x$CFP_ENV" = "x" ]; then
     export CFP_ENV="development"
 fi
 
