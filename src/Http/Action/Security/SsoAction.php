@@ -24,7 +24,7 @@ final class SsoAction
      */
     private $authentication;
 
-    /** @var int */
+    /** @var string */
     private $clientId;
 
     /** @var string */
@@ -41,7 +41,7 @@ final class SsoAction
     public function __construct(
         Services\Authentication $authentication,
         Routing\Generator\UrlGeneratorInterface $urlGenerator,
-        int $clientId,
+        string $clientId,
         string $redirectUri,
         string $authorizeUrl
     ) {
