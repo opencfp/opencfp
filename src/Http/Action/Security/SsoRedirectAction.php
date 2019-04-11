@@ -76,14 +76,17 @@ final class SsoRedirectAction
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         try {
-            $response = $this->httpClient->request('POST', $this->tokenUrl, [
+            $response = $this->httpClient->request(
+                'POST',
+                $this->tokenUrl,
+                [
                 'form_params' => [
                     'grant_type'    => 'authorization_code',
                     'client_id'     => $this->clientId,
                     'client_secret' => $this->clientSecret,
                     'redirect_uri'  => $this->redirectUri,
                     'code'          => $request->get('code'),
-                ], 'verify' => false
+                ], 'verify' => false,
             ]
             );
         } catch (\RequestException $e) {
