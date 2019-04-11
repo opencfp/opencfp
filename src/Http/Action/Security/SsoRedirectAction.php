@@ -16,6 +16,7 @@ namespace OpenCFP\Http\Action\Security;
 use Alpha\A;
 use Cartalyst\Sentinel\Sentinel;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Infrastructure\Auth\SentinelUser;
 use OpenCFP\Infrastructure\Auth\UserNotFoundException;
@@ -89,7 +90,7 @@ final class SsoRedirectAction
                 ], 'verify' => false,
             ]
             );
-        } catch (\RequestException $e) {
+        } catch (RequestException $e) {
             return $this->redirectToLogin($request);
         }
 
@@ -116,7 +117,7 @@ final class SsoRedirectAction
         $userDetails = \json_decode((string) $userResponse->getBody(), true);
 
         if (\json_last_error() !== JSON_ERROR_NONE) {
-            $this->redirectToLogin($request);
+            return $this->redirectToLogin($request);
         }
 
         try {

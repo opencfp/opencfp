@@ -51,11 +51,13 @@ final class SsoRedirectActionTest extends Framework\TestCase
     /** @var ObjectProphecy */
     private $urlGenerator;
 
+    private $postResponse;
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->clientId     = 1;
+        $this->clientId     = 'client-id';
         $this->clientSecret = 'secret';
         $this->redirectUri  = '/redirect';
         $this->resourceUrl  = '/resource';
@@ -64,6 +66,12 @@ final class SsoRedirectActionTest extends Framework\TestCase
         $this->sentinel     = $this->prophesize(\Cartalyst\Sentinel\Sentinel::class);
         $this->accounts     = $this->prophesize(Services\AccountManagement::class);
         $this->urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
+        $this->postResponse = new class() {
+            public function getBody()
+            {
+                return '{"access_token": "test_token"}';
+            }
+        };
     }
 
     /**
@@ -98,6 +106,7 @@ final class SsoRedirectActionTest extends Framework\TestCase
         $request
             ->getSession()
             ->willReturn($session->reveal());
+        $request->get('code')->willReturn('test');
 
         $redirectAction = new SsoRedirectAction(
             $this->sentinel->reveal(),
@@ -132,7 +141,15 @@ final class SsoRedirectActionTest extends Framework\TestCase
             ->generate('dashboard')
             ->willReturn('/dashboard');
 
-        $httpClient = $this->createHttpClientDouble($email);
+        $httpClient = $this->prophesize(Client::class);
+        $httpClient
+            ->request(Argument::type('string'), Argument::type('string'), Argument::type('array'))
+            ->shouldBeCalled()
+            ->willReturn($this->postResponse);
+        $httpClient
+            ->get('/resource', Argument::type('array'))
+            ->shouldBeCalled()
+            ->willReturn($this->createGetResponse($email));
 
         $request        = $this->prophesize(HttpFoundation\Request::class);
         $redirectAction = new SsoRedirectAction(
@@ -144,7 +161,7 @@ final class SsoRedirectActionTest extends Framework\TestCase
             $this->redirectUri,
             $this->resourceUrl,
             $this->tokenUrl,
-            $httpClient
+            $httpClient->reveal()
         );
 
         $response = $redirectAction($request->reveal());
@@ -175,7 +192,15 @@ final class SsoRedirectActionTest extends Framework\TestCase
             ->generate('dashboard')
             ->willReturn('/dashboard');
 
-        $httpClient = $this->createHttpClientDouble($this->faker()->email);
+        $httpClient = $this->prophesize(Client::class);
+        $httpClient
+            ->request(Argument::type('string'), Argument::type('string'), Argument::type('array'))
+            ->shouldBeCalled()
+            ->willReturn($this->postResponse);
+        $httpClient
+            ->get('/resource', Argument::type('array'))
+            ->shouldBeCalled()
+            ->willReturn($this->createGetResponse($this->faker()->email));
 
         $request        = $this->prophesize(HttpFoundation\Request::class);
         $redirectAction = new SsoRedirectAction(
@@ -187,7 +212,7 @@ final class SsoRedirectActionTest extends Framework\TestCase
             $this->redirectUri,
             $this->resourceUrl,
             $this->tokenUrl,
-            $httpClient
+            $httpClient->reveal()
         );
 
         $response = $redirectAction($request->reveal());
@@ -212,7 +237,11 @@ final class SsoRedirectActionTest extends Framework\TestCase
 
         $httpClient = $this->prophesize(Client::class);
         $httpClient
-            ->post()
+            ->request('POST', Argument::type('string'), Argument::type('array'))
+            ->shouldBeCalled()
+            ->willReturn($postResponse);
+        $httpClient
+            ->get()
             ->willReturn($postResponse);
 
         $request = $this->prophesize(HttpFoundation\Request::class);
@@ -226,6 +255,7 @@ final class SsoRedirectActionTest extends Framework\TestCase
             ->getSession()
             ->shouldBeCalled()
             ->willReturn($session);
+        $request->get('code')->shouldBeCalled();
 
         $redirectAction = new SsoRedirectAction(
             $this->sentinel->reveal(),
@@ -246,7 +276,7 @@ final class SsoRedirectActionTest extends Framework\TestCase
     /**
      * @test
      */
-    public function redirectIfCentralAuthAttemptReturnsInvalidJson()
+    public function redirectIfCentralAuthAttemptReturnsInvalidJson(): void
     {
         $this->urlGenerator
             ->generate('login')
@@ -257,20 +287,22 @@ final class SsoRedirectActionTest extends Framework\TestCase
                 return '{"access_token": "test_token"}';
             }
         };
-        $userResponse = new class() {
-            public function get(): string
+        $badUserResponse = new class() {
+            public function getBody(): string
             {
-                return 'THISISNOTVALIDJSON';
+                return 'INVALID:JSON';
             }
         };
 
         $httpClient = $this->prophesize(Client::class);
         $httpClient
-            ->post()
+            ->request('POST', Argument::type('string'), Argument::type('array'))
+            ->shouldBeCalled()
             ->willReturn($postResponse);
         $httpClient
-            ->get()
-            ->willReturn($userResponse);
+            ->get('/resource', Argument::type('array'))
+            ->shouldBeCalled()
+            ->willReturn($badUserResponse);
 
         $request = $this->prophesize(HttpFoundation\Request::class);
         $session = new class() {
@@ -280,7 +312,11 @@ final class SsoRedirectActionTest extends Framework\TestCase
             }
         };
         $request
+            ->get('code')
+            ->shouldBeCalled();
+        $request
             ->getSession()
+            ->shouldBeCalled()
             ->willReturn($session);
 
         $redirectAction = new SsoRedirectAction(
@@ -310,15 +346,9 @@ final class SsoRedirectActionTest extends Framework\TestCase
         return $user;
     }
 
-    private function createHttpClientDouble($email)
+    private function createGetResponse($email)
     {
-        $postResponse = new class() {
-            public function getBody()
-            {
-                return '{"access_token": "test_token"}';
-            }
-        };
-        $getResponse = new class($email) {
+        return new class($email) {
             protected $email;
 
             public function __construct($email)
@@ -331,16 +361,5 @@ final class SsoRedirectActionTest extends Framework\TestCase
                 return '{"email": "' . $this->email . '"}';
             }
         };
-        $httpClient = $this->prophesize(Client::class);
-        $httpClient
-            ->post(Argument::type('string'), Argument::type('array'))
-            ->shouldBeCalled()
-            ->willReturn($postResponse);
-        $httpClient
-            ->get(Argument::type('string'), Argument::type('array'))
-            ->shouldBeCalled()
-            ->willReturn($getResponse);
-
-        return $httpClient->reveal();
     }
 }

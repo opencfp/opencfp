@@ -39,7 +39,7 @@ final class SsoActionTest extends Framework\TestCase
         parent::setUp();
         $this->urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
         $this->request      = $this->prophesize(HttpFoundation\Request::class);
-        $this->clientId     = 1;
+        $this->clientId     = 'client-id';
         $this->redirectUri  = '/redirect';
         $this->authorizeUrl = '/authorize/';
     }
