@@ -46,7 +46,7 @@ class CreateUserJoindInUsernameColumn extends AbstractMigration
         $users = EloquentUser::all();
 
         foreach ($users as $user) {
-            if (\preg_match($joindInRegex, $user->url, $matches) === 1) {
+            if ($user->url !== null && \preg_match($joindInRegex, $user->url, $matches) === 1) {
                 $user->joindin_username = $matches[1];
                 $user->url              = null;
                 $user->save();
