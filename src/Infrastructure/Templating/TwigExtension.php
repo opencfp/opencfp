@@ -50,8 +50,16 @@ class TwigExtension extends AbstractExtension
             new Twig_SimpleFunction('uploads', function ($path) {
                 return $this->path->uploadPath() . $path;
             }),
+            new Twig_SimpleFunction('thumbnail', function ($path) {
+                // Add the "thumb" segment to the given path
+                $tmpThumbnailFilenameParts = \explode('.', $path);
+                \array_splice($tmpThumbnailFilenameParts, -1, 0, ['thumb']);
+                $path = \implode('.', $tmpThumbnailFilenameParts);
+
+                return $this->path->uploadPath() . $path;
+            }),
             new Twig_SimpleFunction('assets', function ($path) {
-                return  $this->path->assetsPath() . $path;
+                return $this->path->assetsPath() . $path;
             }),
 
             new Twig_SimpleFunction('active', function ($route) {

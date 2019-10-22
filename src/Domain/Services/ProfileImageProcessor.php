@@ -25,6 +25,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class ProfileImageProcessor
 {
     /**
+     * @var int
+     */
+    private $applicationUserImageSize;
+
+    /**
      * @var string
      */
     private $publishDir;
@@ -35,27 +40,27 @@ class ProfileImageProcessor
     private $generator;
 
     /**
-     * @var int
-     */
-    private $size;
-
-    /**
      * @var FilesystemInterface
      */
     private $filesystem;
 
     /**
+     * @var int
+     */
+    private $applicationUserThumbnailSize = 240; // 120x120@2x
+
+    /**
      * @param string                $publishDir
      * @param RandomStringGenerator $generator
      * @param FilesystemInterface   $filesystem
-     * @param int                   $size
+     * @param int                   $applicationUserImageSize
      */
-    public function __construct($publishDir, RandomStringGenerator $generator, FilesystemInterface $filesystem, $size = 250)
+    public function __construct(string $publishDir, RandomStringGenerator $generator, FilesystemInterface $filesystem, int $applicationUserImageSize = 300)
     {
-        $this->publishDir = $publishDir;
-        $this->size       = $size;
-        $this->generator  = $generator;
-        $this->filesystem = $filesystem;
+        $this->publishDir               = $publishDir;
+        $this->generator                = $generator;
+        $this->filesystem               = $filesystem;
+        $this->applicationUserImageSize = $applicationUserImageSize;
     }
 
     /**
@@ -75,6 +80,12 @@ class ProfileImageProcessor
         if ($publishFilename === null) {
             $publishFilename = $this->generator->generate(50) . '.' . $extension;
         }
+
+        // Generate the thumbnail name by adding a "thumb" segment before the extension
+        $tmpThumbnailFilenameParts = \explode('.', $publishFilename);
+        \array_splice($tmpThumbnailFilenameParts, -1, 0, ['thumb']);
+        $thumbnailFilename = \implode('.', $tmpThumbnailFilenameParts);
+
         // Temporary filename to work with.
         $tempFilename = $this->generator->generate(40);
         $tempFilepath = $this->publishDir . '/' . $tempFilename;
@@ -82,21 +93,21 @@ class ProfileImageProcessor
         try {
             $file->move($this->publishDir, $tempFilename);
 
+            // Write the full-sized image to disk
             $speakerPhoto = Image::make($tempFilepath);
 
-            if ($speakerPhoto->height() > $speakerPhoto->width()) {
-                $speakerPhoto->resize($this->size, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            } else {
-                $speakerPhoto->resize(null, $this->size, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            }
+            $speakerPhoto->fit($this->applicationUserImageSize);
 
-            $speakerPhoto->crop($this->size, $this->size);
             $photoData = $speakerPhoto->encode($extension);
             $this->filesystem->write($publishFilename, $photoData);
+
+            // Write the thumbnail-sized image to disk
+            $speakerPhoto = Image::make($tempFilepath);
+
+            $speakerPhoto->fit($this->applicationUserThumbnailSize);
+
+            $photoData = $speakerPhoto->encode($extension);
+            $this->filesystem->write($thumbnailFilename, $photoData);
 
             return $publishFilename;
         } finally {
