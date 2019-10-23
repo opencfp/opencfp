@@ -38,7 +38,7 @@
             {% if talk.otherTalks | length > 0 %}
                 <h3><i class="fa fa-bullhorn"></i> Other Talks...</h3>
                 {% for talk in talk.otherTalks %}
-                    <p><a class="text-brand underline" href="{{ url('reviewer_talk_view', { id: talk.id }) }}">{{ talk.title }}</a></p>
+                    <p><a class="text-brand underline" href="{{ url('reviewer_talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a></p>
                 {% endfor %}
             {% endif %}
         </div>

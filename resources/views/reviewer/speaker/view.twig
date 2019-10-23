@@ -26,7 +26,7 @@
                 <h3><i class="fa fa-bullhorn"></i> Talk Submissions</h3>
 
                 {% for talk in talks %}
-                    <a class="text-brand block mb-3" href="{{ url('reviewer_talk_view', { id: talk.id }) }}">{{ talk.title }}</a>
+                    <a class="text-brand block mb-3" href="{{ url('reviewer_talk_view', { id: talk.id }) }}">{{ talk.title|raw }}</a>
                 {% endfor %}
             {% endif %}
 
