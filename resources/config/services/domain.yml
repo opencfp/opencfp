@@ -31,6 +31,7 @@ services:
     bind:
       $publishDir: '%kernel.project_dir%/web/uploads'
       League\Flysystem\FilesystemInterface: '@upload_filesystem'
+      $applicationUserImageSize: '%application.user_image_size%'
 
   OpenCFP\Domain\Services\RandomStringGenerator:
     alias: OpenCFP\Infrastructure\Crypto\PseudoRandomStringGenerator
