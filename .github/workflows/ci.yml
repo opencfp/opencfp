@@ -28,8 +28,10 @@ jobs:
           extension-csv: mbstring, xml, ctype, iconv, mysql
       - name: Install Composer dependencies
         run: |
+          composer self-update
           composer validate
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer normalize
+          composer install
       - name: PHP code styling rules
         run: |
           vendor/bin/php-cs-fixer fix --verbose --diff
