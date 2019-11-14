@@ -3,7 +3,7 @@
     "description": "OpenCFP is a PHP-based conference talk submission system.",
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "aptoma/twig-markdown": "^3.0.0",
         "cartalyst/sentinel": "^2.0.17",
         "ezyang/htmlpurifier": "^4.10.0",
@@ -70,7 +70,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.2"
+            "php": "7.3"
         },
         "preferred-install": "dist",
         "sort-packages": true
