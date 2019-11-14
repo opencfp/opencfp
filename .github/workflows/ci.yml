@@ -28,9 +28,7 @@ jobs:
           extension-csv: mbstring, xml, ctype, iconv, mysql
       - name: Install Composer dependencies
         run: |
-          composer self-update
           composer validate
-          composer normalize
           composer install
       - name: PHP code styling rules
         run: |
