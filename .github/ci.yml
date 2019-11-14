@@ -1,0 +1,44 @@
+name: OpenCFP CI
+on: [push, pull_request]
+jobs:
+  opencfp:
+    name: OpenCFP (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: cfp_test
+        ports:
+          - 3306
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extension-csv: mbstring, xml, ctype, iconv, mysql
+      - name: Install Composer dependencies
+        run: |
+          composer validate
+          composer normalize
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: PHP code styling rules
+        run: |
+          vendor/bin/php-cs-fixer fix --verbose --diff
+      - name: Run database migrations
+        run: |
+          CFP_ENV=testing vendor/bin/phinx migrate --environment testing
+      - name: Run tests
+        run: |
+          SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --testsuite unit
+          SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --testsuite integration
+
