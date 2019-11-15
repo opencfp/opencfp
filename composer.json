@@ -82,6 +82,9 @@
             "tests/helpers.php"
         ]
     },
+    "config": {
+        "optimize-autoloader": true
+    },
     "scripts": {
         "fix": "php vendor/bin/php-cs-fixer fix --config=.php_cs.dist --using-cache=no",
         "make": "make",

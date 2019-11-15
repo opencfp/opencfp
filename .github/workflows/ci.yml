@@ -32,8 +32,9 @@ jobs:
           ini-values-csv: post_max_size=512M, short_open_tag=On #optional, setup php.ini configuration
       - name: Install Composer dependencies
         run: |
+          composer normalize
           composer validate
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+          composer install
       - name: PHP code styling rules
         run: |
           vendor/bin/php-cs-fixer fix --verbose --diff
