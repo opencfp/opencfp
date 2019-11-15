@@ -69,6 +69,9 @@
         "symfony/web-profiler-bundle": "^3.4.15",
         "symfony/web-server-bundle": "^3.4.15"
     },
+    "config": {
+        "optimize-autoloader": true
+    },
     "autoload": {
         "psr-4": {
             "OpenCFP\\": "src/"
@@ -81,9 +84,6 @@
         "files": [
             "tests/helpers.php"
         ]
-    },
-    "config": {
-        "optimize-autoloader": true
     },
     "scripts": {
         "fix": "php vendor/bin/php-cs-fixer fix --config=.php_cs.dist --using-cache=no",
