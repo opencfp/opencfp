@@ -44,7 +44,7 @@ jobs:
           cp config/testing.yml.dist config/testing.yml
           CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - name: Build assets
-        run:
+        run: |
           yarn install
           yarn run production
       - name: Run tests
