@@ -39,6 +39,7 @@ jobs:
           vendor/bin/php-cs-fixer fix --verbose --diff
       - name: Run database migrations
         run: |
+          cp config/testing.yml.dist config/testing.yml
           CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - name: Run tests
         run: |
