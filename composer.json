@@ -16,6 +16,7 @@
         "intervention/image": "~2.3",
         "michelf/php-markdown": "~1.7",
         "monolog/monolog": "~1.22",
+        "ocramius/package-versions": "^1.2.0",
         "oneup/flysystem-bundle": "~3.0.2",
         "pagerfanta/pagerfanta": "^2.0.1",
         "phly/keep-a-changelog": "^1.0",
