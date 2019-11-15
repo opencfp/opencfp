@@ -2,8 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.2-fpm-node-browsers
-      - image: tkuchiki/delayed-mysql
+      - image: circleci/php:7.3-fpm-node-browsers
+      - image: circleci/mysql:8.0.4
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
@@ -11,8 +11,18 @@ jobs:
 
     steps:
       - checkout
+      - run:
+          name: Waiting for MySQL to be ready
+          command:
+            for i in `seq 1 10`;
+            do
+            nc -z 127.0.0.1 3306 && echo Success && exit 0
+            echo -n .
+            sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
       - run: sudo apt-get update
-      - run: sudo apt-get install mysql-client
+      - run: sudo apt-get install default-mysql-client
       - run: sudo docker-php-ext-install pdo_mysql
       - run: sudo composer self-update
       - run: composer validate --no-check-publish
