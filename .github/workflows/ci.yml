@@ -33,7 +33,6 @@ jobs:
       - name: Install Composer dependencies
         run: |
           sudo composer self-update
-          composer normalize
           composer validate
           composer install
       - name: PHP code styling rules
