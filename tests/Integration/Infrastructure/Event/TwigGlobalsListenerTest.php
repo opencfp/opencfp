@@ -45,7 +45,7 @@ final class TwigGlobalsListenerTest extends TestCase
      */
     public function globals(Authentication $authentication, bool $isOpen, string $uri, string $flash = null, string $fixture): void
     {
-        $twig    = new Environment(new \Twig\Loader\Filesystem(__DIR__ . '/Fixtures'));
+        $twig    = new Environment(new \Twig\Loader\FilesystemLoader(__DIR__ . '/Fixtures'));
         $session = new Session(new MockArraySessionStorage());
 
         if ($flash !== null) {
