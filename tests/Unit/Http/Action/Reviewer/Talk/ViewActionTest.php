@@ -20,7 +20,7 @@ use PHPUnit\Framework;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class ViewActionTest extends Framework\TestCase
 {
@@ -81,7 +81,7 @@ final class ViewActionTest extends Framework\TestCase
 
         $action = new ViewAction(
             $talkHandler->reveal(),
-            $this->prophesize(Twig_Environment::class)->reveal(),
+            $this->prophesize(Environment::class)->reveal(),
             $urlGenerator->reveal()
         );
 
@@ -128,7 +128,7 @@ final class ViewActionTest extends Framework\TestCase
             ->shouldBeCalled()
             ->willReturn($talkProfile);
 
-        $twig = $this->prophesize(Twig_Environment::class);
+        $twig = $this->prophesize(Environment::class);
 
         $twig
             ->render(
@@ -148,7 +148,6 @@ final class ViewActionTest extends Framework\TestCase
 
         $response = $action($request->reveal());
 
-        $this->assertInstanceOf(HttpFoundation\Response::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame($content, $response->getContent());
     }

@@ -20,7 +20,7 @@ use PHPUnit\Framework;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class ShowLogInActionTest extends Framework\TestCase
 {
@@ -53,7 +53,7 @@ final class ShowLogInActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $twig = $this->prophesize(Twig_Environment::class);
+        $twig = $this->prophesize(Environment::class);
 
         $url_generator = $this->prophesize(Routing\Generator\UrlGenerator::class);
         $url_generator->generate(Argument::exact('dashboard'))->willReturn('/dashboard');
@@ -102,7 +102,7 @@ final class ShowLogInActionTest extends Framework\TestCase
 
         $sso = 'on';
 
-        $twig = $this->prophesize(Twig_Environment::class);
+        $twig = $this->prophesize(Environment::class);
         $twig
             ->render('security/login.twig', ['sso' => $sso])
             ->shouldBeCalled();

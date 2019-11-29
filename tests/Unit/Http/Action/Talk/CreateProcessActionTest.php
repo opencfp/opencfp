@@ -23,6 +23,7 @@ use PHPUnit\Framework;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
+use Twig\Environment;
 
 final class CreateProcessActionTest extends Framework\TestCase
 {
@@ -68,7 +69,7 @@ final class CreateProcessActionTest extends Framework\TestCase
             ->shouldBeCalled()
             ->willReturn(false);
 
-        $twig = $this->prophesize(\Twig_Environment::class);
+        $twig = $this->prophesize(Environment::class);
 
         $urlGenerator = $this->prophesize(Routing\Generator\UrlGeneratorInterface::class);
 

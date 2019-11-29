@@ -22,7 +22,7 @@ use PHPUnit\Framework;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class EditActionTest extends Framework\TestCase
 {
@@ -89,7 +89,7 @@ final class EditActionTest extends Framework\TestCase
         $action = new EditAction(
             $authentication->reveal(),
             $this->prophesize(PathInterface::class)->reveal(),
-            $this->prophesize(Twig_Environment::class)->reveal(),
+            $this->prophesize(Environment::class)->reveal(),
             $urlGenerator->reveal()
         );
 

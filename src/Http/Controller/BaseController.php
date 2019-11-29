@@ -17,12 +17,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 abstract class BaseController
 {
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -31,7 +31,7 @@ abstract class BaseController
      */
     protected $urlGenerator;
 
-    public function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator)
+    public function __construct(Environment $twig, UrlGeneratorInterface $urlGenerator)
     {
         $this->twig         = $twig;
         $this->urlGenerator = $urlGenerator;

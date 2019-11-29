@@ -16,7 +16,7 @@ namespace OpenCFP\Http\Action\Reviewer\Talk;
 use OpenCFP\Domain\Talk;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class ViewAction
 {
@@ -26,7 +26,7 @@ final class ViewAction
     private $talkHandler;
 
     /**
-     * @var Twig_Environment
+     * @var Twig\Environment
      */
     private $twig;
 
@@ -37,7 +37,7 @@ final class ViewAction
 
     public function __construct(
         Talk\TalkHandler $talkHandler,
-        Twig_Environment $twig,
+        Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->talkHandler  = $talkHandler;

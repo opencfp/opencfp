@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Twig_Environment;
+use Twig\Environment;
 
 class TwigGlobalsListener implements EventSubscriberInterface
 {
@@ -40,7 +40,7 @@ class TwigGlobalsListener implements EventSubscriberInterface
     private $session;
 
     /**
-     * @var Twig_Environment
+     * @var Twig\Environment
      */
     private $twig;
 
@@ -48,7 +48,7 @@ class TwigGlobalsListener implements EventSubscriberInterface
         Authentication $authentication,
         CallForPapers $callForPapers,
         SessionInterface $session,
-        Twig_Environment $twig
+        Environment $twig
     ) {
         $this->authentication = $authentication;
         $this->callForPapers  = $callForPapers;

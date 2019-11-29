@@ -17,7 +17,7 @@ use OpenCFP\Domain\Services;
 use Symfony\Component\Form;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class ResetProcessAction
 {
@@ -32,7 +32,7 @@ final class ResetProcessAction
     private $accountManagement;
 
     /**
-     * @var Twig_Environment
+     * @var Twig\Environment
      */
     private $twig;
 
@@ -44,7 +44,7 @@ final class ResetProcessAction
     public function __construct(
         Form\FormInterface $resetForm,
         Services\AccountManagement $accountManagement,
-        Twig_Environment $twig,
+        Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->resetForm         = $resetForm;

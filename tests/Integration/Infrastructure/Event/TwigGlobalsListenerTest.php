@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Twig_Environment;
+use Twig\Environment;
 
 final class TwigGlobalsListenerTest extends TestCase
 {
@@ -34,10 +34,18 @@ final class TwigGlobalsListenerTest extends TestCase
      * @dataProvider provideTestSetup
      *
      * @test
+     * @param Authentication $authentication
+     * @param bool $isOpen
+     * @param string $uri
+     * @param string|null $flash
+     * @param string $fixture
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function globals(Authentication $authentication, bool $isOpen, string $uri, string $flash = null, string $fixture)
+    public function globals(Authentication $authentication, bool $isOpen, string $uri, string $flash = null, string $fixture): void
     {
-        $twig    = new Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/Fixtures'));
+        $twig    = new Environment(new \Twig_Loader_Filesystem(__DIR__ . '/Fixtures'));
         $session = new Session(new MockArraySessionStorage());
 
         if ($flash !== null) {

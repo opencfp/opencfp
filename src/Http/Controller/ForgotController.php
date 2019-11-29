@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 class ForgotController extends BaseController
 {
@@ -44,7 +44,7 @@ class ForgotController extends BaseController
         FormFactoryInterface $formFactory,
         AccountManagement $accounts,
         ResetEmailer $resetEmailer,
-        Twig_Environment $twig,
+        Environment $twig,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->formFactory  = $formFactory;

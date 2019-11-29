@@ -17,7 +17,7 @@ use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Services;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class IndexAction
 {
@@ -32,7 +32,7 @@ final class IndexAction
     private $callForPapers;
 
     /**
-     * @var Twig_Environment
+     * @var Twig\Environment
      */
     private $twig;
 
@@ -44,7 +44,7 @@ final class IndexAction
     public function __construct(
         Services\Authentication $authentication,
         CallForPapers $callForPapers,
-        Twig_Environment $twig,
+        Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->authentication = $authentication;

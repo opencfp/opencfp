@@ -19,7 +19,7 @@ use OpenCFP\Domain\Services;
 use OpenCFP\Http\Form\SignupForm;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class ProcessAction
 {
@@ -39,7 +39,7 @@ final class ProcessAction
     private $profileImageProcessor;
 
     /**
-     * @var Twig_Environment
+     * @var Twig\Environment
      */
     private $twig;
 
@@ -52,7 +52,7 @@ final class ProcessAction
         Services\Authentication $authentication,
         HTMLPurifier $purifier,
         Services\ProfileImageProcessor $profileImageProcessor,
-        Twig_Environment $twig,
+        Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->authentication        = $authentication;
