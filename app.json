@@ -1,0 +1,15 @@
+{
+    "name": "OpenCFP",
+    "description": "A Web-based Call For Papers Management application",
+    "repository": "https://github.com/opencfp/opencfp",
+    "logo": "https://raw.githubusercontent.com/opencfp/opencfp/master/docs/img/banner.png",
+    "keywords": ["PHP", "CFP"],
+    "scripts": {
+        "postdeploy": "./script/setup"
+    },
+    "env": {
+        "CFP_ENV": {
+            "value": "production"
+        }
+    }
+}
