@@ -1,0 +1,51 @@
+application:
+  title: OpenCFP
+  url: http://localhost
+  email: contact@openconf.com
+  eventurl: http://localhost
+  event_location: Miami, FL
+  enddate: Oct. 14th, 2018
+  show_submission_count: false
+  airport: MIA
+  arrival: 2014-10-26
+  departure: 2014-10-31
+  secure_ssl: false
+  online_conference: false
+  date_format: m-d-Y
+  coc_link: http://confcodeofconduct.com
+  venue_image_path: /assets/img/venue.jpg
+  user_image_size: 300
+
+database:
+  host: localhost
+  database: cfp_test
+  dsn: mysql:dbname=root;host=localhost
+  user: root
+  password: root
+
+log:
+  level: debug
+
+mail:
+  host: localhost
+  port: 1025
+  username: ~
+  password: ~
+  encryption: ~
+  auth_mode: ~
+
+opencfpcentral:
+  sso: false
+  clientId:
+  clientSecret:
+  authorizeUrl: http://localhost/oauth/authorize?
+  redirectUri: http://localhost/redirect
+  resourceUri: https://www.opencfpcentral.com/api/user
+  tokenUrl: https://www.opencfpcentral.com/oauth/token
+
+security:
+  firewalls:
+    secured_area:
+      form_forgot:
+        csrf_parameter: _csrf_security_token
+        csrf_token_id: forgot_password

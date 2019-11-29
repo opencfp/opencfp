@@ -41,7 +41,7 @@ jobs:
       - name: Run database migrations
         run: |
           echo "CREATE DATABASE cfp_test" | mysql -u root -proot
-          cp config/testing.yml.dist config/testing.yml
+          cp config/ci.yml.dist config/testing.yml
           CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - name: Build assets
         run: |
