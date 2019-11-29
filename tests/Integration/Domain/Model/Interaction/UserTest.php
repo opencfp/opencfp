@@ -25,12 +25,11 @@ final class UserTest extends WebTestCase implements TransactionalTestCase
      */
     public function deleteStillWorksNormally()
     {
+        $currentCount = count(User::all());
         $user = factory(User::class, 1)->create()->first();
-
-        $this->assertCount(1, User::all());
-
+        $this->assertCount($currentCount + 1, User::all());
         $this->assertTrue($user->delete());
-        $this->assertCount(0, User::all());
+        $this->assertCount($currentCount, User::all());
     }
 
     /**
@@ -38,12 +37,14 @@ final class UserTest extends WebTestCase implements TransactionalTestCase
      */
     public function deleteDeletesTalksAsWellAsUser()
     {
+        $talkCount = count(Talk::all());
+        $userCount = count(User::all());
         $talk = factory(Talk::class, 1)->create()->first();
 
         $user = $talk->speaker;
         $user->delete();
 
-        $this->assertCount(0, Talk::all());
-        $this->assertCount(0, User::all());
+        $this->assertCount($talkCount, Talk::all());
+        $this->assertCount($userCount, User::all());
     }
 }

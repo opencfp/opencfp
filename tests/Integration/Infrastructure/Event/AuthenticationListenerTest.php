@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace OpenCFP\Test\Integration\Infrastructure\Event;
 
+use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Domain\Model;
 use OpenCFP\Test\Integration\WebTestCase;
 use Symfony\Component\HttpFoundation;
@@ -46,6 +47,14 @@ final class AuthenticationListenerTest extends WebTestCase
      */
     public function talksRouteWithLogin()
     {
+        // Make sure the CFP is open
+        $now = new \DateTime();
+        $callForPapers = $this->container->get(CallForPapers::class);
+        $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
+        $method->setAccessible(true);
+        $method->invoke($callForPapers, new \DateTimeImmutable($now->format('M. jS, Y')));
+        $this->container->get('twig')->addGlobal('cfp_open', $callForPapers->isOpen());
+
         /** @var Model\User $speaker */
         $speaker = factory(Model\User::class)->create()->first();
 
