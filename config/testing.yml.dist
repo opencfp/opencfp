@@ -13,7 +13,6 @@ application:
   online_conference: false
   date_format: m-d-Y
   coc_link: http://confcodeofconduct.com
-  show_contrib_banner: true
   venue_image_path: /assets/img/venue.jpg
   user_image_size: 300
 
@@ -21,8 +20,8 @@ database:
   host: 127.0.0.1
   database: cfp_test
   dsn: mysql:dbname=cfp_test;host=127.0.0.1
-  user: root
-  password: root
+  user: cfp_test
+  password: cfp_test
 
 log:
   level: debug

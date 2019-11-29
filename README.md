@@ -186,23 +186,16 @@ server {
 }
 ```
 
-You can use the included `opencfp-nginx.conf.dist` file and modify it as needed.
+### [Running Locally](#running-locally)
 
-[Caddy](https://caddyserver.com) example:
+After having gone through the setup steps and database migrations, you can test out OpenCFP locally by installing the [Symfony binary](https://symfony.com/download)
+and using the following command:
 
 ```
-localhost:8080
-root /var/www/opencfp/web
-fastcgi / 127.0.0.1:9000 php 
-rewrite / {path} {path}/ /index.php/{path} 
-log access.log
-errors error.log
+symfony server:start
 ```
 
-You can use the included `Caddyfile.dist` file and modify it as needed.
-
-The application does not currently work properly if you use PHP's built-in
-server.
+By default it should start up a web server running your site at `https://127.0.0.1:8000`
 
 ### [Create a Database](#create-a-database)
 
