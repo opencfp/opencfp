@@ -40,7 +40,7 @@ final class TwigExtensionTest extends TestCase
         $routes->add('dashboard', new Route('/dashboard'));
         $urlGenerator = new UrlGenerator($routes, new RequestContext());
 
-        $twig = new \Twig\Environment(new \Twig_Loader_Filesystem(__DIR__ . '/Fixtures'));
+        $twig = new \Twig\Environment(new \Twig\Loader\Filesystem(__DIR__ . '/Fixtures'));
         $twig->addExtension(new TwigExtension(
             $requestStack,
             $urlGenerator,
