@@ -284,7 +284,7 @@ Run `vagrant up`
 Add `192.168.10.10 opencfp.test` to your operating system's hosts file (/etc/hosts)
 Point your browser to `http://opencfp.test`
 
-Edit your `config/development.yml` to use Homestead's database & mail settings:
+Edit your `config/dev.yml` to use Homestead's database & mail settings:
 
 ```
 database:

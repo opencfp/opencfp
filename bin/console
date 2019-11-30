@@ -12,7 +12,7 @@ use Symfony\Component\Debug\Debug;
 require __DIR__ . '/../vendor/autoload.php';
 
 $input       = new ArgvInput();
-$environment = Environment::fromString($input->getParameterOption(['--env'], \getenv('CFP_ENV') ?: 'development'));
+$environment = Environment::fromString($input->getParameterOption(['--env'], \getenv('CFP_ENV') ?: Environment::TYPE_DEVELOPMENT));
 
 if (!$environment->isProduction()) {
     Debug::enable();

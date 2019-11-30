@@ -3,7 +3,7 @@ imports:
 
 framework:
   router:
-    resource: '%kernel.project_dir%/resources/config/routing_development.yml'
+    resource: '%kernel.project_dir%/resources/config/routing_dev.yml'
   profiler: ~
 
 web_profiler:
