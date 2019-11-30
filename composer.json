@@ -38,7 +38,8 @@
         "symfony/yaml": "^3.4.15",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.4.4",
-        "wouterj/eloquent-bundle": "^1.0.2"
+        "wouterj/eloquent-bundle": "^1.0.2",
+        "symfony/dotenv": "^5.0"
     },
     "replace": {
         "paragonie/random_compat": "*",

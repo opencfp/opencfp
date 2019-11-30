@@ -23,7 +23,7 @@ final class EnvironmentTest extends \PHPUnit\Framework\TestCase
     public function constants()
     {
         $this->assertSame('production', Environment::TYPE_PRODUCTION);
-        $this->assertSame('development', Environment::TYPE_DEVELOPMENT);
+        $this->assertSame('dev', Environment::TYPE_DEVELOPMENT);
         $this->assertSame('testing', Environment::TYPE_TESTING);
     }
 
