@@ -263,7 +263,7 @@ If you are running OpenCFP behing a proxy server which adds X-Forwarded-For head
 
 ### [OpenCFP Central](#opencfp-central)
 
-[OpenCFP Central](https://www.opencfpcentral.com) is a web site created by Chris Hartjes to help both speakers and conference organizers. Conference
+[OpenCFP Central](https://www.opencfpcentral.com) is a web site created by [Chris Hartjes](https://github.com/sponsors/chartjes) to help both speakers and conference organizers. Conference
 organizers can create an account and get an OAuth2 client ID and client secret, which can be entered into the
 configuration files. With the ID and secret, change the values for `opencfpcentral.sso` to be `on`, and set
 `opencfpcentral.clientId` and `opencfpcentral.clientSecret` to their respective values. 
@@ -366,7 +366,7 @@ image and run the containers automatically for you:
 $  docker-compose -f docker-compose.yml.dist up --build -d
 ```
 
-So now if you head over to `http://localhost` you will be greeted with a running version of OpenCFP.
+So now if you head over to `http://localhost:8080` you will be greeted with a running version of OpenCFP.
 
 After building and running the Docker image you'll need to [Run Migrations](#run-migrations) and [Add an Admin User](#user-management) before logging-in.
 
