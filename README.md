@@ -140,6 +140,17 @@ Or you can run
 ```bash
 $ ./script/setup
 ```
+
+Due to current dependencies you will see the following warning message when installing
+this project's dependencies via Composer:
+
+```bash
+Carbon 1 is deprecated, see how to migrate to Carbon 2.
+https://carbon.nesbot.com/docs/#api-carbon-2
+    You can run './vendor/bin/upgrade-carbon' to get help in updating carbon and other frameworks and libraries that depend on it.
+```
+
+
 ### [Specify Web Server Document Root](#specify-web-server-document-root)
 
 Set up your desired webserver to point to the `/web` directory.
