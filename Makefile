@@ -50,5 +50,4 @@ unit: vendor
 
 vendor: composer.json composer.lock
 	composer validate
-	composer normalize
 	composer install
