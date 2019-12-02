@@ -25,6 +25,12 @@ database: test-env vendor
 	CFP_ENV=testing vendor/bin/phinx migrate --environment testing
 	mysqldump -uroot cfp_test > tests/dump.sql
 
+doctrine:
+	bin/console doctrine:schema:validate --env=development
+	bin/console doctrine:schema:validate --env=testing
+	bin/console doctrine:mapping:info --env=development
+	bin/console doctrine:mapping:info --env=testing
+
 infection: vendor database
 	php -d zend_extension=xdebug.so vendor/bin/infection
 
@@ -34,7 +40,7 @@ integration: test-env vendor database cache
 stan: vendor
 	vendor/bin/phpstan analyse
 
-test: auto-review integration unit
+test: auto-review doctrine integration unit
 
 test-env:
 	if [ ! -f "config/testing.yml" ]; then cp config/testing.yml.dist config/testing.yml; fi

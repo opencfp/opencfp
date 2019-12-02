@@ -83,3 +83,6 @@ services:
     public: true
     class: Swift_Mailer
 
+  OpenCFP\Domain\Repository\:
+    public: true
+    resource: '%kernel.project_dir%/src/Domain/Repository/*'

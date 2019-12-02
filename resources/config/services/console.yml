@@ -1,9 +1,11 @@
 services:
   _defaults:
     public: false
+    autoconfigure: true
     autowire: true
 
   OpenCFP\Console\Command\:
     resource: '%kernel.project_dir%/src/Console/Command/*'
     tags:
       - { name: console.command }
+

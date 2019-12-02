@@ -16,6 +16,7 @@ namespace OpenCFP\Http\Controller\Admin;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\User;
+use OpenCFP\Domain\Repository\AirportRepository;
 use OpenCFP\Domain\Services\AccountManagement;
 use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
@@ -40,11 +41,6 @@ class SpeakersController extends BaseController
     private $accounts;
 
     /**
-     * @var AirportInformationDatabase
-     */
-    private $airports;
-
-    /**
      * @var Capsule
      */
     private $capsule;
@@ -64,25 +60,41 @@ class SpeakersController extends BaseController
      */
     private $applicationAirport;
 
+    /**
+     * @var AirportRepository
+     */
+    private $airportRepository;
+
+    /**
+     * SpeakersController constructor.
+     * @param Authentication $authentication
+     * @param AccountManagement $accounts
+     * @param Capsule $capsule
+     * @param Environment $twig
+     * @param UrlGeneratorInterface $urlGenerator
+     * @param string $applicationAirport
+     * @param int $applicationArrival
+     * @param int $applicationDeparture
+     * @param AirportRepository $airportRepository
+     */
     public function __construct(
         Authentication $authentication,
         AccountManagement $accounts,
-        AirportInformationDatabase $airports,
         Capsule $capsule,
         Environment $twig,
         UrlGeneratorInterface $urlGenerator,
         string $applicationAirport,
         int $applicationArrival,
-        int $applicationDeparture
+        int $applicationDeparture,
+        AirportRepository $airportRepository
     ) {
         $this->authentication       = $authentication;
         $this->accounts             = $accounts;
-        $this->airports             = $airports;
         $this->capsule              = $capsule;
         $this->applicationAirport   = $applicationAirport;
         $this->applicationArrival   = $applicationArrival;
         $this->applicationDeparture = $applicationDeparture;
-
+        $this->airportRepository    = $airportRepository;
         parent::__construct($twig, $urlGenerator);
     }
 
@@ -98,16 +110,16 @@ class SpeakersController extends BaseController
         $rawSpeakers = User::search($search)->get();
 
         $rawSpeakers = $rawSpeakers->map(function ($speaker) use ($adminUserIds, $reviewerUserIds) {
-            try {
-                $airport = $this->airports->withCode($speaker['airport']);
+            if ($speaker['airport']) {
+                $airport = $this->airportRepository->withCode($speaker['airport']);
 
-                $speaker['airport'] = [
-                    'code'    => $airport->code,
-                    'name'    => $airport->name,
-                    'country' => $airport->country,
-                ];
-            } catch (EntityNotFoundException $e) {
-                //Do nothing
+                if ($airport !== null) {
+                    $speaker['airport'] = [
+                        'code'    => $airport->getCode(),
+                        'name'    => $airport->getName(),
+                        'country' => $airport->getCountry(),
+                    ];
+                }
             }
 
             $speaker['is_admin'] = \in_array($speaker['id'], $adminUserIds);
@@ -147,16 +159,16 @@ class SpeakersController extends BaseController
             return $this->redirectTo('admin_speakers');
         }
 
-        try {
-            $airport = $this->airports->withCode($speakerDetails->airport);
+        if ($speakerDetails->airport) {
+            $airport = $this->airportRepository->withCode($speakerDetails->airport);
 
-            $speakerDetails->airport = [
-                'code'    => $airport->code,
-                'name'    => $airport->name,
-                'country' => $airport->country,
-            ];
-        } catch (EntityNotFoundException $e) {
-            //Do nothing
+            if ($airport !== null) {
+                $speakerDetails->airport = [
+                    'code'    => $airport->getCode(),
+                    'name'    => $airport->getName(),
+                    'country' => $airport->getCountry(),
+                ];
+            }
         }
 
         $talks = $speakerDetails->talks()->get();

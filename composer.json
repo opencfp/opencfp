@@ -6,6 +6,8 @@
         "php": "^7.2",
         "aptoma/twig-markdown": "^3.0.0",
         "cartalyst/sentinel": "^2.0.17",
+        "doctrine/doctrine-bundle": "^1.0",
+        "doctrine/orm": "^2.6.2",
         "ezyang/htmlpurifier": "^4.10.0",
         "guzzlehttp/guzzle": "~6.2",
         "illuminate/container": "~5.5",
@@ -38,9 +40,7 @@
         "symfony/yaml": "^3.4",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.4.4",
-        "wouterj/eloquent-bundle": "^1.0.2",
-        "doctrine/orm": "^2.6.2",
-        "doctrine/doctrine-bundle": "^1.0"
+        "wouterj/eloquent-bundle": "^1.0.2"
     },
     "replace": {
         "paragonie/random_compat": "*",
@@ -52,6 +52,7 @@
     },
     "require-dev": {
         "codedungeon/phpunit-result-printer": "~0.23.2",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "friendsofphp/php-cs-fixer": "^2.13.0",
         "fzaninotto/faker": "^1.5.0",
         "infection/infection": "^0.9.3",
@@ -69,8 +70,7 @@
         "symfony/debug-bundle": "^3.4.15",
         "symfony/phpunit-bridge": "^3.4.15",
         "symfony/web-profiler-bundle": "^3.4.15",
-        "symfony/web-server-bundle": "^3.4.15",
-        "doctrine/doctrine-fixtures-bundle": "^3.3"
+        "symfony/web-server-bundle": "^3.4.15"
     },
     "config": {
         "optimize-autoloader": true
@@ -91,6 +91,7 @@
     "scripts": {
         "fix": "php vendor/bin/php-cs-fixer fix --config=.php_cs.dist --using-cache=no",
         "make": "make",
+        "migrate": "./script/migrate",
         "setup-env": "./script/setup",
         "test": "./script/test",
         "update-env": "./script/update"

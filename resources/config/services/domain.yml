@@ -10,6 +10,9 @@ services:
     arguments:
       $end: '@application.enddate'
 
+  OpenCFP\Domain\Entity\:
+    resource: '%kernel.project_dir%/src/Domain/Entity/*'
+
   OpenCFP\Domain\Repository\UserRepository:
     alias: OpenCFP\Infrastructure\Repository\IlluminateUserRepository
 

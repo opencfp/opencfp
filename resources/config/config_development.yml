@@ -19,3 +19,19 @@ oneup_flysystem:
     uploads:
       adapter: uploads
       alias: upload_filesystem
+
+doctrine:
+  dbal:
+    url: mysql://root:@127.0.0.1:3306/cfp
+    default_table_options:
+      charset: utm8mb4
+      collate: utg8mb4_unicode_ci
+  orm:
+    auto_mapping: true
+    auto_generate_proxy_classes: true
+    mappings:
+      OpenCFP\Domain\Entity:
+        type: annotation
+        dir: "%kernel.root_dir%/../src/Domain/Entity"
+        prefix: OpenCFP\Domain\Entity
+

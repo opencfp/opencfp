@@ -30,25 +30,10 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extension-csv: mbstring, xdebug #optional, setup extensions
           ini-values-csv: post_max_size=512M, short_open_tag=On #optional, setup php.ini configuration
-      - name: Install Composer dependencies
-        run: |
-          sudo composer self-update
-          composer validate
-          composer install
-      - name: PHP code styling rules
-        run: |
-          vendor/bin/php-cs-fixer fix --verbose --diff
-      - name: Run database migrations
-        run: |
-          echo "CREATE DATABASE cfp_test" | mysql -u root -proot
-          cp config/ci.yml.dist config/testing.yml
-          CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - name: Build assets
         run: |
           yarn install
           yarn run production
       - name: Run tests
         run: |
-          SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --testsuite unit
-          SYMFONY_DEPRECATIONS_HELPER=disabled vendor/bin/phpunit --testsuite integration
-
+          composer run test
