@@ -34,6 +34,7 @@ final class TestCodeTest extends Framework\TestCase
             'OpenCFP\\',
             'OpenCFP\\Test\\Unit\\',
             [
+                Domain\Entity\Airport::class,
                 Domain\Model\Airport::class,
                 Domain\Model\Eloquent::class,
                 Domain\Model\Favorite::class,
@@ -44,6 +45,7 @@ final class TestCodeTest extends Framework\TestCase
                 Domain\Model\TalkMeta::class,
                 Domain\Model\Throttle::class,
                 Domain\Model\User::class,
+                Domain\Repository\AirportRepository::class,
                 Domain\Services\ProfileImageProcessor::class,
                 Domain\Talk\TalkFormatter::class,
                 Domain\Talk\TalkHandler::class,
