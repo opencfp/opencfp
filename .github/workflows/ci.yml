@@ -36,4 +36,5 @@ jobs:
           yarn run production
       - name: Run tests
         run: |
+          cp config/testing.yml.dist config/testing.yml
           composer run test
