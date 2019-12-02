@@ -40,6 +40,7 @@ jobs:
           vendor/bin/php-cs-fixer fix --verbose --diff
       - name: Run database migrations
         run: |
+          cp config/ci.yml.dist config/testing.yml
           echo "CREATE DATABASE cfp_test" | mysql -u root -proot
           CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - name: Build assets
