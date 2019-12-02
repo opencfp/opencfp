@@ -26,9 +26,7 @@ database: test-env vendor
 	mysqldump -uroot cfp_test > tests/dump.sql
 
 doctrine:
-	bin/console doctrine:schema:validate --env=development
 	bin/console doctrine:schema:validate --env=testing
-	bin/console doctrine:mapping:info --env=development
 	bin/console doctrine:mapping:info --env=testing
 
 infection: vendor database
