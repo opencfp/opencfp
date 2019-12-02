@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Controller\Admin;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use OpenCFP\Domain\EntityNotFoundException;
 use OpenCFP\Domain\Model\User;
 use OpenCFP\Domain\Repository\AirportRepository;
 use OpenCFP\Domain\Services\AccountManagement;
-use OpenCFP\Domain\Services\AirportInformationDatabase;
 use OpenCFP\Domain\Services\Authentication;
 use OpenCFP\Domain\Services\Pagination;
 use OpenCFP\Domain\Speaker\SpeakerProfile;
@@ -67,15 +65,16 @@ class SpeakersController extends BaseController
 
     /**
      * SpeakersController constructor.
-     * @param Authentication $authentication
-     * @param AccountManagement $accounts
-     * @param Capsule $capsule
-     * @param Environment $twig
+     *
+     * @param Authentication        $authentication
+     * @param AccountManagement     $accounts
+     * @param Capsule               $capsule
+     * @param Environment           $twig
      * @param UrlGeneratorInterface $urlGenerator
-     * @param string $applicationAirport
-     * @param int $applicationArrival
-     * @param int $applicationDeparture
-     * @param AirportRepository $airportRepository
+     * @param string                $applicationAirport
+     * @param int                   $applicationArrival
+     * @param int                   $applicationDeparture
+     * @param AirportRepository     $airportRepository
      */
     public function __construct(
         Authentication $authentication,

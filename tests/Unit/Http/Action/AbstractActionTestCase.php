@@ -30,7 +30,7 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     /**
      * @deprecated
      *
-     * @return Framework\MockObject\MockObject|Environment
+     * @return Environment|Framework\MockObject\MockObject
      */
     final protected function createTwigMock(): Environment
     {

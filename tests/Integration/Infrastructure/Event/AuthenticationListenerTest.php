@@ -48,9 +48,9 @@ final class AuthenticationListenerTest extends WebTestCase
     public function talksRouteWithLogin()
     {
         // Make sure the CFP is open
-        $now = new \DateTime();
+        $now           = new \DateTime();
         $callForPapers = $this->container->get(CallForPapers::class);
-        $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
+        $method        = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
         $method->setAccessible(true);
         $method->invoke($callForPapers, new \DateTimeImmutable($now->format('M. jS, Y')));
         $this->container->get('twig')->addGlobal('cfp_open', $callForPapers->isOpen());

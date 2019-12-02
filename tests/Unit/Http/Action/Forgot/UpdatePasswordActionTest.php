@@ -143,6 +143,7 @@ final class UpdatePasswordActionTest extends Framework\TestCase
      * @param mixed $resetCode
      *
      * @test
+     *
      * @throws \Exception
      */
     public function throwsExceptionIfResetCodeIsEmpty($resetCode): void

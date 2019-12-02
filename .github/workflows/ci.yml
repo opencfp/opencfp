@@ -30,11 +30,29 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extension-csv: mbstring, xdebug #optional, setup extensions
           ini-values-csv: post_max_size=512M, short_open_tag=On #optional, setup php.ini configuration
+      - name: Install Composer dependencies
+        run: |
+          sudo composer self-update
+          composer validate
+          composer normalize
+          composer install
+      - name: Check for PHP code style violations
+        run: |
+          vendor/bin/php-cs-fixer fix --verbose --diff
+      - name: Check Doctrine entities and mappings
+        run: |
+          bin/console doctrine:schema:validate --env=testing
+          bin/console doctrine:mapping:info --env=testing
+      - name: Run database migrations
+        run: |
+          echo "CREATE DATABASE cfp_test" | mysql -u root -proot
+          cp config/ci.yml.dist config/testing.yml
+          CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - name: Build assets
         run: |
           yarn install
           yarn run production
       - name: Run tests
         run: |
-          cp config/ci.yml.dist config/testing.yml
-          composer run test
+          SYMFONY_DEPRECATIONS_HELPER=disabled CFP_ENV=testing vendor/bin/phpunit --testsuite unit
+          SYMFONY_DEPRECATIONS_HELPER=disabled CFP_ENV=testing vendor/bin/phpunit --testsuite integration

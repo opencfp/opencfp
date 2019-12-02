@@ -34,11 +34,13 @@ final class TwigGlobalsListenerTest extends TestCase
      * @dataProvider provideTestSetup
      *
      * @test
+     *
      * @param Authentication $authentication
-     * @param bool $isOpen
-     * @param string $uri
-     * @param string|null $flash
-     * @param string $fixture
+     * @param bool           $isOpen
+     * @param string         $uri
+     * @param null|string    $flash
+     * @param string         $fixture
+     *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
