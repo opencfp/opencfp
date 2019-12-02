@@ -40,12 +40,12 @@ jobs:
           vendor/bin/php-cs-fixer fix --verbose --diff
       - name: Check Doctrine entities and mappings
         run: |
+          cp config/ci.yml.dist config/testing.yml
           bin/console doctrine:schema:validate --env=testing
           bin/console doctrine:mapping:info --env=testing
       - name: Run database migrations
         run: |
           echo "CREATE DATABASE cfp_test" | mysql -u root -proot
-          cp config/ci.yml.dist config/testing.yml
           CFP_ENV=testing vendor/bin/phinx migrate --environment testing
       - name: Build assets
         run: |
