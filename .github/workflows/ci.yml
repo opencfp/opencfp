@@ -34,7 +34,6 @@ jobs:
         run: |
           sudo composer self-update
           composer validate
-          composer normalize
           composer install
       - name: Check for PHP code style violations
         run: |
