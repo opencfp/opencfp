@@ -15,7 +15,7 @@ use Phinx\Migration\AbstractMigration;
 
 final class UseNonNullableBoolean extends AbstractMigration
 {
-    public function change()
+    public function up()
     {
         $tableName = 'users';
 
@@ -35,7 +35,7 @@ SQL;
             $table->changeColumn($columnName, 'boolean', [
                 'default' => 0,
                 'null'    => false,
-            ]);
+            ])->save();
         }
     }
 }

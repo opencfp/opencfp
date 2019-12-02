@@ -15,7 +15,7 @@ use Phinx\Migration\AbstractMigration;
 
 class Favorites extends AbstractMigration
 {
-    public function change()
+    public function up()
     {
         $table = $this->table('favorites');
         $table->addColumn('admin_user_id', 'integer')
@@ -25,16 +25,14 @@ class Favorites extends AbstractMigration
     }
 
     /**
-     * Migrate Up.
-     */
-    public function up()
-    {
-    }
-
-    /**
      * Migrate Down.
      */
     public function down()
     {
+        $this->table('favorites')
+            ->removeColumn('admin_user_id')
+            ->removeColumn('talk_id')
+            ->removeColumn('created')
+            ->save();
     }
 }

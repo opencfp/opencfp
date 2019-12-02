@@ -17,18 +17,18 @@ class RemoveUselessItemsMigration extends AbstractMigration
 {
     public function up()
     {
-        $this->dropTable('tags');
-        $this->dropTable('talks_tags');
-        $this->dropTable('oauth_session_scopes');
-        $this->dropTable('oauth_auth_code_scopes');
-        $this->dropTable('oauth_access_token_scopes');
-        $this->dropTable('oauth_auth_codes');
-        $this->dropTable('oauth_refresh_tokens');
-        $this->dropTable('oauth_access_tokens');
-        $this->dropTable('oauth_sessions');
-        $this->dropTable('oauth_scopes');
-        $this->dropTable('oauth_client_redirect_uris');
-        $this->dropTable('oauth_clients');
+        $this->table('tags')->drop()->save();
+        $this->table('talks_tags')->drop()->save();
+        $this->table('oauth_session_scopes')->drop()->save();
+        $this->table('oauth_auth_code_scopes')->drop()->save();
+        $this->table('oauth_access_token_scopes')->drop()->save();
+        $this->table('oauth_auth_codes')->drop()->save();
+        $this->table('oauth_refresh_tokens')->drop()->save();
+        $this->table('oauth_access_tokens')->drop()->save();
+        $this->table('oauth_sessions')->drop()->save();
+        $this->table('oauth_scopes')->drop()->save();
+        $this->table('oauth_client_redirect_uris')->drop()->save();
+        $this->table('oauth_clients')->drop()->save();
     }
 
     public function down()

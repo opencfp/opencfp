@@ -15,19 +15,6 @@ use Phinx\Migration\AbstractMigration;
 
 class FixZeroDates extends AbstractMigration
 {
-    private $tables = [
-        'talks' => [
-            'created_at',
-            'updated_at',
-        ],
-        'users' => [
-            'activated_at',
-            'created_at',
-            'updated_at',
-            'last_login',
-        ],
-    ];
-
     public function up()
     {
         //$this->execute("SET SESSION sql_mode = ''");

@@ -15,7 +15,7 @@ use Phinx\Migration\AbstractMigration;
 
 class RemoveSpeakerTable extends AbstractMigration
 {
-    public function change()
+    public function up()
     {
         $users = $this->table('users');
 
@@ -36,14 +36,7 @@ class RemoveSpeakerTable extends AbstractMigration
             $this->execute($sql);
         }
 
-        $this->dropTable('speakers');
-    }
-
-    /**
-     * Migrate Up.
-     */
-    public function up()
-    {
+        $this->table('speakers')->drop()->save();
     }
 
     /**

@@ -15,7 +15,7 @@ use Phinx\Migration\AbstractMigration;
 
 class AddHotelAndTransportationCostFields extends AbstractMigration
 {
-    public function change()
+    public function up()
     {
         $table = $this->table('users');
         $table->addColumn('transportation', 'integer');
@@ -24,16 +24,13 @@ class AddHotelAndTransportationCostFields extends AbstractMigration
     }
 
     /**
-     * Migrate Up.
-     */
-    public function up()
-    {
-    }
-
-    /**
      * Migrate Down.
      */
     public function down()
     {
+        $this->table('users')
+            ->removeColumn('transportation')
+            ->removeColumn('hotel')
+            ->save();
     }
 }

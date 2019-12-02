@@ -25,7 +25,7 @@ class RolesMigration extends AbstractMigration
             ['name' => 'Reviewer', 'slug' => 'reviewer', 'permissions' => $reviewerPermissions],
             ['name' => 'Admin', 'slug' => 'admin', 'permissions' => $adminPermissions],
         ];
-        $this->insert('roles', $roleData);
+        $this->table('roles')->insert($roleData)->save();
     }
 
     public function down()
