@@ -38,10 +38,6 @@ jobs:
       - name: Check for PHP code style violations
         run: |
           vendor/bin/php-cs-fixer fix --verbose --diff
-      - name: Check Doctrine entities and mappings
-        run: |
-          cp config/ci.yml.dist config/testing.yml
-          CFP_ENV=testing bin/console doctrine:schema:validate
       - name: Run database migrations
         run: |
           echo "CREATE DATABASE cfp_test" | mysql -u root -proot
