@@ -2,20 +2,22 @@
 
 declare(strict_types=1);
 
+namespace OpenCFP\Migrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
 /**
- * Copyright (c) 2013-2019 OpenCFP
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- *
- * @see https://github.com/opencfp/opencfp
+ * Auto-generated Migration: Please modify to your needs!
  */
-
-use Phinx\Migration\AbstractMigration;
-
-class RolesMigration extends AbstractMigration
+final class Version20191203192007 extends AbstractMigration
 {
-    public function up()
+    public function getDescription() : string
+    {
+        return 'Modify user roles';
+    }
+
+    public function up(Schema $schema) : void
     {
         $speakerPermissions  = '{"talk.update":true,"talk.review":false,"user.delete":false}';
         $reviewerPermissions = '{"talk.update":true,"talk.review":true,"user.delete":false}';
@@ -25,11 +27,14 @@ class RolesMigration extends AbstractMigration
             ['name' => 'Reviewer', 'slug' => 'reviewer', 'permissions' => $reviewerPermissions],
             ['name' => 'Admin', 'slug' => 'admin', 'permissions' => $adminPermissions],
         ];
-        $this->table('roles')->insert($roleData)->save();
+
+        foreach ($roleData as $role) {
+            $this->addSql('INSERT INTO roles (name, slug, permissions) VALUES(:name, :slug, :permissions)', $role);
+        }
     }
 
-    public function down()
+    public function down(Schema $schema) : void
     {
-        $this->table('roles')->truncate();
+        $this->addSql('TRUNCATE roles');
     }
 }

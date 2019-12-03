@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace OpenCFP;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use Oneup\FlysystemBundle\OneupFlysystemBundle;
 use OpenCFP\Test\Helper\DependencyInjection\TestingPass;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
@@ -50,6 +51,7 @@ final class Kernel extends SymfonyKernel
             new WouterJEloquentBundle(),
             new OneupFlysystemBundle(),
             new DoctrineBundle(),
+            new DoctrineMigrationsBundle(),
         ];
 
         if ($this->getEnvironment() !== Environment::TYPE_PRODUCTION) {

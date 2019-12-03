@@ -14,6 +14,6 @@ if [ "x$CFP_ENV" = "x" ]; then
 fi
 
 echo "==> Setting up DB..."
-vendor/bin/phinx migrate -e $CFP_ENV
+bin/console doctrine:migrations:migrate -env=$CFP_ENV
 
 echo "==> App is now ready to go!"

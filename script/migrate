@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# script/migrate: run our database migrations
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+if [ "x$CFP_ENV" = "x" ]; then
+    export CFP_ENV="development"
+fi
+
+echo "==> Setting up DB..."
+bin/console doctrine:migrations:migrate --env=$CFP_ENV

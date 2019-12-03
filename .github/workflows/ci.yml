@@ -41,12 +41,16 @@ jobs:
       - name: Run database migrations
         run: |
           cp config/ci.yml.dist config/testing.yml
-          echo "CREATE DATABASE cfp_test" | mysql -u root -proot
-          CFP_ENV=testing vendor/bin/phinx migrate --environment testing
+          bin/console doctrine:database:create --env=testing
+          bin/console doctrine:migrations:migrate --env=testing -n
       - name: Build assets
         run: |
           yarn install
           yarn run production
+      - name: Verify Doctrine mappings and schemas
+        run: |
+          bin/console doctrine:schema:update --force --env=tesing
+          bin/console doctrine:schema:validate --env=testing
       - name: Run tests
         run: |
           SYMFONY_DEPRECATIONS_HELPER=disabled CFP_ENV=testing vendor/bin/phpunit --testsuite unit

@@ -283,17 +283,16 @@ SSO. If you don't already have an account on that instance, one will be created 
 
 ### [Run Migrations](#run-migrations)
 
-This project uses [Phinx](http://phinx.org) to handle migrations. Configuration for Phinx is loaded from [`phinx.php`](phinx.php). 
-The `CFP_ENV` environment variable is used to select an environment to migrate and defaults to `development`. Be sure 
-to correctly configure the app using the `config/:environment.yml` files.
+This project uses [Doctrine Migrations](https://www.doctrine-project.org/projects/migrations.html) to handle migrations. 
 
-To run migrations, make sure you are in the root directory for the project and run the following:
+To run the existing migrations, make sure you are in the root directory for the project and run the following:
 
 ```
-$ vendor/bin/phinx migrate
+$ bin/console doctrine:migrations:migrate --env=<environment> 
 ```
 
-Note: For updating previously installed instances only run migrations as needed.
+where <environment> is one of `testing`, `development`, or `production`. The default environment is `development` 
+
 
 ### [Using Vagrant](#using-vagrant)
 

@@ -2,32 +2,24 @@
 
 declare(strict_types=1);
 
+namespace OpenCFP\Migrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
 /**
- * Copyright (c) 2013-2019 OpenCFP
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- *
- * @see https://github.com/opencfp/opencfp
+ * Auto-generated Migration: Please modify to your needs!
  */
-
-use Phinx\Migration\AbstractMigration;
-
-class Airports extends AbstractMigration
+final class Version20191203184807 extends AbstractMigration
 {
-    /**
-     * Migrate Up.
-     */
-    public function up()
+    public function getDescription() : string
     {
-        $this->table('airports', ['id' => false, 'primary_key' => ['code']])
-            ->addColumn('code', 'string', ['limit' => 3])
-            ->addColumn('name', 'string', ['null' => 'true', 'default' => null])
-            ->addColumn('country', 'string', ['null' => 'true', 'default' => null])
-            ->create();
+        return 'Populate airport codes table';
+    }
 
-        $airports = $this->table('airports');
-        $airports->insert([
+    public function up(Schema $schema) : void
+    {
+        $records = [
             ['code' => 'AAC', 'name' => 'Al Arish', 'country' => 'Egypt'],
             ['code' => 'AAE', 'name' => 'Annaba', 'country' => 'Algeria'],
             ['code' => 'AAL', 'name' => 'Alborg', 'country' => 'Denmark'],
@@ -1969,11 +1961,16 @@ class Airports extends AbstractMigration
             ['code' => 'ZTH', 'name' => 'Zakynthos', 'country' => 'Greece'],
             ['code' => 'ZTM', 'name' => 'Shamattawa MB', 'country' => 'Canada'],
             ['code' => 'ZYL', 'name' => 'Sylhet', 'country' => 'Bangladesh'],
-        ])->save();
+        ];
+
+        foreach ($records as $record) {
+            $this->addSql('INSERT INTO airports VALUES(:code, :name, :country)', $record);
+        }
+
     }
 
-    public function down()
+    public function down(Schema $schema) : void
     {
-        $this->table('airports')->drop();
+        $this->addSql('DELETE FROM airports');
     }
 }

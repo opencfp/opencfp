@@ -22,7 +22,6 @@
         "oneup/flysystem-bundle": "~3.0.2",
         "pagerfanta/pagerfanta": "^2.0.1",
         "phly/keep-a-changelog": "^1.0",
-        "robmorgan/phinx": "^0.11.1",
         "sensio/framework-extra-bundle": "^5.1.3",
         "symfony/config": "^3.4.15",
         "symfony/console": "^3.4",
@@ -42,7 +41,9 @@
         "twig/twig": "^2.4.4",
         "wouterj/eloquent-bundle": "^1.0.2",
         "ramsey/uuid": "^3.9",
-        "ramsey/uuid-doctrine": "^1.5"
+        "ramsey/uuid-doctrine": "^1.5",
+        "doctrine/migrations": "^2.0",
+        "doctrine/doctrine-migrations-bundle": "^2.0"
     },
     "replace": {
         "paragonie/random_compat": "*",

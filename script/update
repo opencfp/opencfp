@@ -17,4 +17,4 @@ bin/console cache:clear
 
 echo "==> Updating db..."
 # run all database migrations to ensure everything is up to date.
-vendor/bin/phinx migrate -e $CFP_ENV
+bin/console doctrine:migrations:migrate -env=$CFP_ENV
