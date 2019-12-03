@@ -41,6 +41,7 @@ jobs:
       - name: Run database migrations
         run: |
           cp config/ci.yml.dist config/testing.yml
+          cp resources/config/config_ci.yml resources/config/config_testing.yml
           bin/console doctrine:database:create --env=testing
           bin/console doctrine:migrations:migrate --env=testing -n
       - name: Build assets
