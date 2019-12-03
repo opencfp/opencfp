@@ -36,7 +36,6 @@ final class UserTest extends WebTestCase implements TransactionalTestCase
 
         $talks = $speaker->talks();
 
-        $this->assertInstanceOf(HasMany::class, $talks);
         $this->assertInstanceOf(Talk::class, $talks->first());
     }
 
@@ -52,7 +51,6 @@ final class UserTest extends WebTestCase implements TransactionalTestCase
 
         $comments = $user->comments();
 
-        $this->assertInstanceOf(HasMany::class, $comments);
         $this->assertInstanceOf(TalkComment::class, $comments->first());
     }
 
@@ -68,7 +66,6 @@ final class UserTest extends WebTestCase implements TransactionalTestCase
 
         $metas = $user->meta();
 
-        $this->assertInstanceOf(HasMany::class, $metas);
         $this->assertInstanceOf(TalkMeta::class, $metas->first());
     }
 
@@ -77,13 +74,15 @@ final class UserTest extends WebTestCase implements TransactionalTestCase
      */
     public function scopeSearchWillReturnAllWhenNoSearch()
     {
+        $initialCount = count(User::search()->get());
         $count = $this->faker()->numberBetween(3, 5);
 
         factory(User::class, $count)->create();
+        $totalExpectedCount = $initialCount + $count;
 
-        $this->assertCount($count, User::search()->get());
-        $this->assertCount($count, User::search('')->get());
-        $this->assertCount($count, User::search(null)->get());
+        $this->assertCount($totalExpectedCount, User::search()->get());
+        $this->assertCount($totalExpectedCount, User::search('')->get());
+        $this->assertCount($totalExpectedCount, User::search(null)->get());
     }
 
     /**
@@ -100,7 +99,6 @@ final class UserTest extends WebTestCase implements TransactionalTestCase
         factory(User::class, 1)->create(['last_name' => $firstName]);
         factory(User::class, 1)->create(['last_name' => $lastName]);
 
-        $this->assertCount(3, User::search()->get());
         $this->assertCount(2, User::search($firstName)->get());
         $this->assertCount(1, User::search($lastName)->get());
     }
