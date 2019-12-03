@@ -50,7 +50,7 @@ jobs:
           yarn run production
       - name: Verify Doctrine mappings and schemas
         run: |
-          bin/console doctrine:schema:update --force --env=tesing
+          bin/console doctrine:schema:update --force --env=testing
           bin/console doctrine:schema:validate --env=testing
       - name: Run tests
         run: |
