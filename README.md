@@ -2,6 +2,8 @@
 
 OpenCFP is a PHP-based conference talk submission system.
 
+*YOU CAN SUPPORT THIS PROJECT BY SPONSORING CHRIS HARTJES VIA HIS [GitHub Sponsorship](https://github.com/sponsors/chartjes)*
+
 ---
 [![GitHub Actions](https://github.com/opencfp/opencfp/workflows/OpenCFP%20CI/badge.svg)](https://github.com/opencfp/opencfp/actions) [![GitHub release](https://img.shields.io/github/release/opencfp/opencfp.svg)](https://github.com/opencfp/opencfp/releases/latest)
 
