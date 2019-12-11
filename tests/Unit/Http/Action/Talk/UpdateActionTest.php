@@ -24,6 +24,7 @@ use Prophecy\Argument;
 use Swift_Mailer;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
+use Twig\Environment;
 
 final class UpdateActionTest extends Framework\TestCase
 {
@@ -93,7 +94,7 @@ final class UpdateActionTest extends Framework\TestCase
             $callForPapers->reveal(),
             $this->prophesize(HTMLPurifier::class)->reveal(),
             $this->prophesize(Swift_Mailer::class)->reveal(),
-            $this->prophesize(\Twig_Environment::class)->reveal(),
+            $this->prophesize(Environment::class)->reveal(),
             $urlGenerator->reveal(),
             $applicationEmail,
             $applicationTitle,

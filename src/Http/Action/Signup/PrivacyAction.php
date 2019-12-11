@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace OpenCFP\Http\Action\Signup;
 
 use Symfony\Component\HttpFoundation;
-use Twig_Environment;
+use Twig\Environment;
 
 final class PrivacyAction
 {
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     private $twig;
 
-    public function __construct(Twig_Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }

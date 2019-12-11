@@ -18,7 +18,7 @@ use OpenCFP\Http\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 class ExportsController extends BaseController
 {
@@ -27,7 +27,7 @@ class ExportsController extends BaseController
      */
     private $session;
 
-    public function __construct(Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, SessionInterface $session)
+    public function __construct(Environment $twig, UrlGeneratorInterface $urlGenerator, SessionInterface $session)
     {
         $this->session = $session;
 

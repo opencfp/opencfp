@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 class TalksController extends BaseController
 {
@@ -28,7 +28,7 @@ class TalksController extends BaseController
      */
     private $talkHandler;
 
-    public function __construct(TalkHandler $talkHandler, Twig_Environment $twig, UrlGeneratorInterface $urlGenerator)
+    public function __construct(TalkHandler $talkHandler, Environment $twig, UrlGeneratorInterface $urlGenerator)
     {
         $this->talkHandler = $talkHandler;
 

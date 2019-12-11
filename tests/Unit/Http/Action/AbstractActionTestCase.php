@@ -18,7 +18,7 @@ use OpenCFP\Domain\Services;
 use PHPUnit\Framework;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 /**
  * @deprecated
@@ -30,11 +30,11 @@ abstract class AbstractActionTestCase extends Framework\TestCase
     /**
      * @deprecated
      *
-     * @return Framework\MockObject\MockObject|Twig_Environment
+     * @return Environment|Framework\MockObject\MockObject
      */
-    final protected function createTwigMock(): Twig_Environment
+    final protected function createTwigMock(): Environment
     {
-        return $this->createMock(Twig_Environment::class);
+        return $this->createMock(Environment::class);
     }
 
     /**

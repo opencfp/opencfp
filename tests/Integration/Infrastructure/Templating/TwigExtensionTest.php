@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Twig\Environment;
 
 final class TwigExtensionTest extends TestCase
 {
@@ -40,7 +41,7 @@ final class TwigExtensionTest extends TestCase
         $routes->add('dashboard', new Route('/dashboard'));
         $urlGenerator = new UrlGenerator($routes, new RequestContext());
 
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/Fixtures'));
+        $twig = new Environment(new \Twig_Loader_Filesystem(__DIR__ . '/Fixtures'));
         $twig->addExtension(new TwigExtension(
             $requestStack,
             $urlGenerator,

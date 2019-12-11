@@ -24,7 +24,7 @@ use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class UpdateAction
 {
@@ -69,7 +69,7 @@ final class UpdateAction
     private $applicationEndDate;
 
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -84,7 +84,7 @@ final class UpdateAction
         CallForPapers $callForPapers,
         HTMLPurifier $purifier,
         Swift_Mailer $swiftMailer,
-        Twig_Environment $twig,
+        Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator,
         string $applicationEmail,
         string $applicationTitle,

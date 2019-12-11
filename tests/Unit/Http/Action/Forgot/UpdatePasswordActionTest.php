@@ -22,7 +22,7 @@ use Prophecy\Argument;
 use Symfony\Component\Form;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class UpdatePasswordActionTest extends Framework\TestCase
 {
@@ -55,7 +55,7 @@ final class UpdatePasswordActionTest extends Framework\TestCase
             ->shouldBeCalled()
             ->willReturn($resetFormView);
 
-        $twig = $this->prophesize(Twig_Environment::class);
+        $twig = $this->prophesize(Environment::class);
 
         $twig
             ->render(
@@ -113,7 +113,7 @@ final class UpdatePasswordActionTest extends Framework\TestCase
             ->shouldBeCalled()
             ->willReturn($resetFormView);
 
-        $twig = $this->prophesize(Twig_Environment::class);
+        $twig = $this->prophesize(Environment::class);
 
         $twig
             ->render(
@@ -183,7 +183,7 @@ final class UpdatePasswordActionTest extends Framework\TestCase
         $action = new UpdatePasswordAction(
             $resetForm->reveal(),
             $this->prophesize(Services\AccountManagement::class)->reveal(),
-            $this->prophesize(Twig_Environment::class)->reveal(),
+            $this->prophesize(Environment::class)->reveal(),
             $this->prophesize(Routing\Generator\UrlGeneratorInterface::class)->reveal()
         );
 
@@ -292,7 +292,7 @@ final class UpdatePasswordActionTest extends Framework\TestCase
         $action = new UpdatePasswordAction(
             $resetForm->reveal(),
             $accountManagement->reveal(),
-            $this->prophesize(Twig_Environment::class)->reveal(),
+            $this->prophesize(Environment::class)->reveal(),
             $urlGenerator->reveal()
         );
 
@@ -393,7 +393,7 @@ final class UpdatePasswordActionTest extends Framework\TestCase
         $action = new UpdatePasswordAction(
             $resetForm->reveal(),
             $accountManagement->reveal(),
-            $this->prophesize(Twig_Environment::class)->reveal(),
+            $this->prophesize(Environment::class)->reveal(),
             $urlGenerator->reveal()
         );
 
@@ -495,7 +495,7 @@ final class UpdatePasswordActionTest extends Framework\TestCase
         $action = new UpdatePasswordAction(
             $resetForm->reveal(),
             $accountManagement->reveal(),
-            $this->prophesize(Twig_Environment::class)->reveal(),
+            $this->prophesize(Environment::class)->reveal(),
             $urlGenerator->reveal()
         );
 

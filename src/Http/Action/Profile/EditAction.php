@@ -18,7 +18,7 @@ use OpenCFP\Domain\Services;
 use OpenCFP\PathInterface;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class EditAction
 {
@@ -33,7 +33,7 @@ final class EditAction
     private $path;
 
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -45,7 +45,7 @@ final class EditAction
     public function __construct(
         Services\Authentication $authentication,
         PathInterface $path,
-        Twig_Environment $twig,
+        Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->authentication = $authentication;

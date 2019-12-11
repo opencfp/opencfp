@@ -17,7 +17,7 @@ use OpenCFP\Domain\CallForPapers;
 use OpenCFP\Http\View;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class CreateAction
 {
@@ -32,7 +32,7 @@ final class CreateAction
     private $callForPapers;
 
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -44,7 +44,7 @@ final class CreateAction
     public function __construct(
         View\TalkHelper $talkHelper,
         CallForPapers $callForPapers,
-        Twig_Environment $twig,
+        Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator
     ) {
         $this->talkHelper    = $talkHelper;

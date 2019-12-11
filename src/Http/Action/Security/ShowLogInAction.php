@@ -16,7 +16,7 @@ namespace OpenCFP\Http\Action\Security;
 use OpenCFP\Domain\Services;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class ShowLogInAction
 {
@@ -26,7 +26,7 @@ final class ShowLogInAction
     private $authentication;
 
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -40,7 +40,7 @@ final class ShowLogInAction
 
     public function __construct(
         Services\Authentication $authentication,
-        Twig_Environment $twig,
+        Environment $twig,
         Routing\Generator\UrlGeneratorInterface $urlGenerator,
         string $sso
     ) {

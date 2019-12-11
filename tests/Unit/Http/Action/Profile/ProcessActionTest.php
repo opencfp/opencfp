@@ -22,7 +22,7 @@ use PHPUnit\Framework;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Routing;
-use Twig_Environment;
+use Twig\Environment;
 
 final class ProcessActionTest extends Framework\TestCase
 {
@@ -90,7 +90,7 @@ final class ProcessActionTest extends Framework\TestCase
             $authentication->reveal(),
             $this->prophesize(HTMLPurifier::class)->reveal(),
             $this->prophesize(Services\ProfileImageProcessor::class)->reveal(),
-            $this->prophesize(Twig_Environment::class)->reveal(),
+            $this->prophesize(Environment::class)->reveal(),
             $urlGenerator->reveal()
         );
 
