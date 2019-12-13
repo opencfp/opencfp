@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace OpenCFP\Test\Integration\Domain\Model;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use OpenCFP\Domain\Model\Talk;
 use OpenCFP\Domain\Model\TalkComment;
 use OpenCFP\Domain\Model\TalkMeta;
@@ -74,8 +73,8 @@ final class UserTest extends WebTestCase implements TransactionalTestCase
      */
     public function scopeSearchWillReturnAllWhenNoSearch()
     {
-        $initialCount = count(User::search()->get());
-        $count = $this->faker()->numberBetween(3, 5);
+        $initialCount = \count(User::search()->get());
+        $count        = $this->faker()->numberBetween(3, 5);
 
         factory(User::class, $count)->create();
         $totalExpectedCount = $initialCount + $count;
