@@ -39,17 +39,7 @@ final class ResetProcessActionTest extends Framework\TestCase
     {
         $userId = $this->faker()->numberBetween(1);
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
-
-        $request
-            ->get(Argument::exact('user_id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $userId);
-
-        $request
-            ->get(Argument::exact('reset_code'))
-            ->shouldBeCalled()
-            ->willReturn($resetCode);
+        $request = new HttpFoundation\Request([], [], ['user_id' => (string) $userId, 'reset_code' => $resetCode]);
 
         $action = new ResetProcessAction(
             $this->prophesize(Form\FormInterface::class)->reveal(),
@@ -60,7 +50,7 @@ final class ResetProcessActionTest extends Framework\TestCase
 
         $this->expectException(\Exception::class);
 
-        $action($request->reveal());
+        $action($request);
     }
 
     public function providerEmptyResetCode(): array

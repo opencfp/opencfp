@@ -26,7 +26,7 @@ final class ShowLogInAction
     private $authentication;
 
     /**
-     * @var Twig\Environment
+     * @var Environment
      */
     private $twig;
 

@@ -47,8 +47,8 @@ final class RateAction
         }
 
         $content = (string) $this->talkHandler
-            ->grabTalk((int) $request->get('id'))
-            ->rate((int) $request->get('rating'));
+            ->grabTalk($request->request->getInt('id'))
+            ->rate($request->request->getInt('rating'));
 
         return new HttpFoundation\Response($content);
     }

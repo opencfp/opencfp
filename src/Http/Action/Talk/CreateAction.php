@@ -56,7 +56,7 @@ final class CreateAction
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         if (!$this->callForPapers->isOpen()) {
-            $request->getSession()->set('flash', [
+            $request->request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'You cannot create talks once the call for papers has ended',
@@ -72,15 +72,15 @@ final class CreateAction
             'talkCategories' => $this->talkHelper->getTalkCategories(),
             'talkTypes'      => $this->talkHelper->getTalkTypes(),
             'talkLevels'     => $this->talkHelper->getTalkLevels(),
-            'title'          => $request->get('title'),
-            'description'    => $request->get('description'),
-            'type'           => $request->get('type'),
-            'level'          => $request->get('level'),
-            'category'       => $request->get('category'),
-            'desired'        => $request->get('desired'),
-            'slides'         => $request->get('slides'),
-            'other'          => $request->get('other'),
-            'sponsor'        => $request->get('sponsor'),
+            'title'          => $request->request->get('title'),
+            'description'    => $request->request->get('description'),
+            'type'           => $request->request->get('type'),
+            'level'          => $request->request->get('level'),
+            'category'       => $request->request->get('category'),
+            'desired'        => $request->request->get('desired'),
+            'slides'         => $request->request->get('slides'),
+            'other'          => $request->request->get('other'),
+            'sponsor'        => $request->request->get('sponsor'),
             'buttonInfo'     => 'Submit my talk!',
         ]);
 

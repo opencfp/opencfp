@@ -45,8 +45,8 @@ class TalksController extends BaseController
     public function favoriteAction(Request $request): Response
     {
         $content = (string) $this->talkHandler
-            ->grabTalk((int) $request->get('id'))
-            ->setFavorite($request->get('delete') == null);
+            ->grabTalk($request->attributes->getInt('id'))
+            ->setFavorite($request->request->get('delete') == null);
 
         return new Response($content);
     }
@@ -61,19 +61,19 @@ class TalksController extends BaseController
     public function selectAction(Request $request): Response
     {
         $content = (string) $this->talkHandler
-            ->grabTalk((int) $request->get('id'))
-            ->select($request->get('delete') != true);
+            ->grabTalk($request->attributes->getInt('id'))
+            ->select($request->request->get('delete') != true);
 
         return new Response($content);
     }
 
     public function commentCreateAction(Request $request): Response
     {
-        $talkId = (int) $request->get('id');
+        $talkId = (int) $request->attributes->getInt('id');
 
         $this->talkHandler
             ->grabTalk($talkId)
-            ->commentOn($request->get('comment'));
+            ->commentOn($request->request->get('comment'));
 
         $request->getSession()->set('flash', [
             'type'  => 'success',
