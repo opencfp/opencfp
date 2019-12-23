@@ -41,7 +41,7 @@ final class PromoteAction
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         $role = $request->query->get('role');
-        $id   = $request->query->getInt('id');
+        $id   = $request->attributes->getInt('id');
 
         try {
             $user = $this->accountManagement->findById($id);
