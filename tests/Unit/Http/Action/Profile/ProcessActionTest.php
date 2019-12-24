@@ -60,17 +60,9 @@ final class ProcessActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
+        $request = new HttpFoundation\Request([], ['id' => (string) $otherUserId]);
 
-        $request
-            ->get(Argument::is('id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $otherUserId);
-
-        $request
-            ->getSession()
-            ->shouldBeCalled()
-            ->willReturn($session);
+        $request->setSession($session->reveal());
 
         $authentication = $this->prophesize(Services\Authentication::class);
 
@@ -95,7 +87,7 @@ final class ProcessActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());

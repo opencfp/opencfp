@@ -56,7 +56,7 @@ final class CreateAction
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
         if (!$this->callForPapers->isOpen()) {
-            $request->request->getSession()->set('flash', [
+            $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
                 'ext'   => 'You cannot create talks once the call for papers has ended',

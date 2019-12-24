@@ -46,18 +46,9 @@ final class EditActionTest extends AbstractActionTestCase
                 ])
             );
 
-        $request = $this->createRequestMock();
+        $request = new HttpFoundation\Request([], [], ['id' => (string) $talkId]);
 
-        $request
-            ->expects($this->at(0))
-            ->method('get')
-            ->with($this->identicalTo('id'))
-            ->willReturn((string) $talkId);
-
-        $request
-            ->expects($this->at(1))
-            ->method('getSession')
-            ->willReturn($session);
+        $request->setSession($session);
 
         $authentication = $this->createAuthenticationMock();
 
@@ -120,13 +111,7 @@ final class EditActionTest extends AbstractActionTestCase
             ->expects($this->never())
             ->method($this->anything());
 
-        $request = $this->createRequestMock();
-
-        $request
-            ->expects($this->once())
-            ->method('get')
-            ->with($this->identicalTo('id'))
-            ->willReturn((string) $talkId);
+        $request = new HttpFoundation\Request([], [], ['id' => (string) $talkId]);
 
         $authentication = $this->createAuthenticationMock();
 

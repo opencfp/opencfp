@@ -83,17 +83,7 @@ final class ResetProcessActionTest extends Framework\TestCase
 
         $content = $faker->text;
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
-
-        $request
-            ->get(Argument::exact('user_id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $userId);
-
-        $request
-            ->get(Argument::exact('reset_code'))
-            ->shouldBeCalled()
-            ->willReturn($resetCode);
+        $request = new HttpFoundation\Request([], [], ['user_id' => (string) $userId, 'reset_code' => $resetCode]);
 
         $resetFormView = $this->prophesize(Form\FormView::class);
 
@@ -154,7 +144,7 @@ final class ResetProcessActionTest extends Framework\TestCase
             $this->prophesize(Routing\Generator\UrlGeneratorInterface::class)->reveal()
         );
 
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame($content, $response->getContent());
@@ -172,17 +162,7 @@ final class ResetProcessActionTest extends Framework\TestCase
 
         $content = $faker->text;
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
-
-        $request
-            ->get(Argument::exact('user_id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $userId);
-
-        $request
-            ->get(Argument::exact('reset_code'))
-            ->shouldBeCalled()
-            ->willReturn($resetCode);
+        $request = new HttpFoundation\Request([], [], ['user_id' => (string) $userId, 'reset_code' => $resetCode]);
 
         $resetFormView = $this->prophesize(Form\FormView::class);
 
@@ -248,7 +228,7 @@ final class ResetProcessActionTest extends Framework\TestCase
             $this->prophesize(Routing\Generator\UrlGeneratorInterface::class)->reveal()
         );
 
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame($content, $response->getContent());
@@ -279,22 +259,9 @@ final class ResetProcessActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
+        $request = new HttpFoundation\Request([], [], ['user_id' => (string) $userId, 'reset_code' => $resetCode]);
 
-        $request
-            ->get(Argument::exact('user_id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $userId);
-
-        $request
-            ->get(Argument::exact('reset_code'))
-            ->shouldBeCalled()
-            ->willReturn($resetCode);
-
-        $request
-            ->getSession()
-            ->shouldBeCalled()
-            ->willReturn($session);
+        $request->setSession($session->reveal());
 
         $resetForm = $this->prophesize(Form\FormInterface::class);
 
@@ -334,7 +301,7 @@ final class ResetProcessActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
@@ -366,22 +333,9 @@ final class ResetProcessActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
+        $request = new HttpFoundation\Request([], [], ['user_id' => (string) $userId, 'reset_code' => $resetCode]);
 
-        $request
-            ->get(Argument::exact('user_id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $userId);
-
-        $request
-            ->get(Argument::exact('reset_code'))
-            ->shouldBeCalled()
-            ->willReturn($resetCode);
-
-        $request
-            ->getSession()
-            ->shouldBeCalled()
-            ->willReturn($session);
+        $request->setSession($session->reveal());
 
         $resetForm = $this->prophesize(Form\FormInterface::class);
 
@@ -428,7 +382,7 @@ final class ResetProcessActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
@@ -447,17 +401,7 @@ final class ResetProcessActionTest extends Framework\TestCase
 
         $url = $faker->url;
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
-
-        $request
-            ->get(Argument::exact('user_id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $userId);
-
-        $request
-            ->get(Argument::exact('reset_code'))
-            ->shouldBeCalled()
-            ->willReturn($resetCode);
+        $request = new HttpFoundation\Request([], [], ['user_id' => (string) $userId, 'reset_code' => $resetCode]);
 
         $resetForm = $this->prophesize(Form\FormInterface::class);
 
@@ -504,7 +448,7 @@ final class ResetProcessActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());

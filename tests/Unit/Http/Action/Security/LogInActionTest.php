@@ -54,21 +54,9 @@ final class LogInActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
+        $request = new HttpFoundation\Request([], ['email' => $email, 'password' => $password]);
 
-        $request
-            ->get(Argument::exact('email'))
-            ->shouldBeCalled()
-            ->willReturn($email);
-
-        $request
-            ->get(Argument::exact('password'))
-            ->shouldBeCalled()
-            ->willReturn($password);
-
-        $request->getSession()
-            ->shouldBeCalled()
-            ->willReturn($session);
+        $request->setSession($session->reveal());
 
         $authentication = $this->prophesize(Services\Authentication::class);
 
@@ -103,7 +91,7 @@ final class LogInActionTest extends Framework\TestCase
             $this->prophesize(Routing\Generator\UrlGeneratorInterface::class)->reveal()
         );
 
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertSame(HttpFoundation\Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($content, $response->getContent());
@@ -135,17 +123,7 @@ final class LogInActionTest extends Framework\TestCase
 
         $url = $faker->url;
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
-
-        $request
-            ->get(Argument::exact('email'))
-            ->shouldBeCalled()
-            ->willReturn($email);
-
-        $request
-            ->get(Argument::exact('password'))
-            ->shouldBeCalled()
-            ->willReturn($password);
+        $request = new HttpFoundation\Request([], ['email' => $email, 'password' => $password]);
 
         $authentication = $this->prophesize(Services\Authentication::class);
 
@@ -180,7 +158,7 @@ final class LogInActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
