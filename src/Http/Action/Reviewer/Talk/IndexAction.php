@@ -85,7 +85,7 @@ final class IndexAction
             ),
             'talks'          => $pagination->getFanta(),
             'page'           => $pagination->getCurrentPage(),
-            'current_page'   => $request->query->getRequestUri(),
+            'current_page'   => $request->getRequestUri(),
             'totalRecords'   => \count($formattedTalks),
             'filter'         => $request->query->get('filter'),
             'category'       => $request->query->get('category'),

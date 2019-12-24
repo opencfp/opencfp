@@ -146,7 +146,7 @@ class SpeakersController extends BaseController
 
     public function viewAction(Request $request): Response
     {
-        $speakerDetails = User::find($request->query->get('id'));
+        $speakerDetails = User::find($request->attributes->get('id'));
 
         if (!$speakerDetails instanceof User) {
             $request->getSession()->set('flash', [
