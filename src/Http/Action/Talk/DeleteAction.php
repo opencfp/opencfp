@@ -44,7 +44,7 @@ final class DeleteAction
             ]);
         }
 
-        $talkId = $request->get('tid');
+        $talkId = $request->request->get('tid');
 
         $userId = $this->authentication->user()->getId();
 

@@ -69,7 +69,7 @@ final class UpdateAction
     private $applicationEndDate;
 
     /**
-     * @var Twig\Environment
+     * @var Environment
      */
     private $twig;
 
@@ -112,7 +112,7 @@ final class UpdateAction
             ]);
 
             $url = $this->urlGenerator->generate('talk_view', [
-                'id' => $request->get('id'),
+                'id' => $request->request->get('id'),
             ]);
 
             return new HttpFoundation\RedirectResponse($url);
@@ -121,17 +121,17 @@ final class UpdateAction
         $user = $this->authentication->user();
 
         $requestData = [
-            'id'          => $request->get('id'),
-            'title'       => $request->get('title'),
-            'description' => $request->get('description'),
-            'type'        => $request->get('type'),
-            'level'       => $request->get('level'),
-            'category'    => $request->get('category'),
-            'desired'     => $request->get('desired'),
-            'slides'      => $request->get('slides'),
-            'other'       => $request->get('other'),
-            'sponsor'     => $request->get('sponsor'),
-            'user_id'     => $request->get('user_id'),
+            'id'          => $request->request->get('id'),
+            'title'       => $request->request->get('title'),
+            'description' => $request->request->get('description'),
+            'type'        => $request->request->get('type'),
+            'level'       => $request->request->get('level'),
+            'category'    => $request->request->get('category'),
+            'desired'     => $request->request->get('desired'),
+            'slides'      => $request->request->get('slides'),
+            'other'       => $request->request->get('other'),
+            'sponsor'     => $request->request->get('sponsor'),
+            'user_id'     => $request->request->get('user_id'),
         ];
 
         $form = $this->createTalkForm($requestData);
@@ -174,16 +174,16 @@ final class UpdateAction
             'talkCategories' => $this->talkHelper->getTalkCategories(),
             'talkTypes'      => $this->talkHelper->getTalkTypes(),
             'talkLevels'     => $this->talkHelper->getTalkLevels(),
-            'id'             => $request->get('id'),
-            'title'          => $request->get('title'),
-            'description'    => $request->get('description'),
-            'type'           => $request->get('type'),
-            'level'          => $request->get('level'),
-            'category'       => $request->get('category'),
-            'desired'        => $request->get('desired'),
-            'slides'         => $request->get('slides'),
-            'other'          => $request->get('other'),
-            'sponsor'        => $request->get('sponsor'),
+            'id'             => $request->request->get('id'),
+            'title'          => $request->request->get('title'),
+            'description'    => $request->request->get('description'),
+            'type'           => $request->request->get('type'),
+            'level'          => $request->request->get('level'),
+            'category'       => $request->request->get('category'),
+            'desired'        => $request->request->get('desired'),
+            'slides'         => $request->request->get('slides'),
+            'other'          => $request->request->get('other'),
+            'sponsor'        => $request->request->get('sponsor'),
             'buttonInfo'     => 'Update my talk!',
             'flash'          => $request->getSession()->get('flash'),
         ]);

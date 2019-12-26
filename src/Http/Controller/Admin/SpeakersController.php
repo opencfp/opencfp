@@ -99,7 +99,7 @@ class SpeakersController extends BaseController
 
     public function indexAction(Request $request): Response
     {
-        $search = $request->get('search');
+        $search = $request->query->get('search');
 
         $adminUsers      = $this->accounts->findByRole('Admin');
         $adminUserIds    = \array_column($adminUsers, 'id');
@@ -130,7 +130,7 @@ class SpeakersController extends BaseController
 
         // Set up our page stuff
         $pagerfanta = new Pagination($rawSpeakers);
-        $pagerfanta->setCurrentPage($request->get('page'));
+        $pagerfanta->setCurrentPage($request->query->get('page'));
         $pagination = $pagerfanta->createView('/admin/speakers?');
 
         return $this->render('admin/speaker/index.twig', [
@@ -146,7 +146,7 @@ class SpeakersController extends BaseController
 
     public function viewAction(Request $request): Response
     {
-        $speakerDetails = User::find($request->get('id'));
+        $speakerDetails = User::find($request->attributes->get('id'));
 
         if (!$speakerDetails instanceof User) {
             $request->getSession()->set('flash', [
@@ -179,7 +179,7 @@ class SpeakersController extends BaseController
             'departure' => \date('Y-m-d', $this->applicationDeparture),
             'speaker'   => new SpeakerProfile($speakerDetails),
             'talks'     => $talks,
-            'page'      => $request->get('page'),
+            'page'      => $request->query->get('page'),
         ]);
     }
 
@@ -188,7 +188,7 @@ class SpeakersController extends BaseController
         $this->capsule->getConnection()->beginTransaction();
 
         try {
-            $user = User::findOrFail($request->get('id'));
+            $user = User::findOrFail($request->attributes->get('id'));
             $user->delete();
             $ext   = 'Successfully deleted the requested user';
             $type  = 'success';
@@ -213,8 +213,8 @@ class SpeakersController extends BaseController
 
     public function demoteAction(Request $request): Response
     {
-        $role = $request->get('role');
-        $id   = (int) $request->get('id');
+        $role = $request->query->get('role');
+        $id   = $request->attributes->getInt('id');
 
         if ($this->authentication->user()->getId() == $id) {
             $request->getSession()->set('flash', [

@@ -55,8 +55,8 @@ final class ChangePasswordProcessAction
          * validation code to make sure our password changes are good
          */
         $formData = [
-            'password'  => $request->get('password'),
-            'password2' => $request->get('password_confirm'),
+            'password'  => $request->request->get('password'),
+            'password2' => $request->request->get('password_confirm'),
         ];
 
         $form = new Form\SignupForm(

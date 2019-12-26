@@ -54,22 +54,9 @@ final class PromoteActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
+        $request = new HttpFoundation\Request(['role' => $role], [], ['id' => $id]);
 
-        $request
-            ->get(Argument::exact('role'))
-            ->shouldBeCalled()
-            ->willReturn($role);
-
-        $request
-            ->get(Argument::exact('id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $id);
-
-        $request
-            ->getSession()
-            ->shouldBeCalled()
-            ->willReturn($session);
+        $request->setSession($session->reveal());
 
         $accountManagement = $this->prophesize(Services\AccountManagement::class);
 
@@ -91,7 +78,7 @@ final class PromoteActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
@@ -126,22 +113,9 @@ final class PromoteActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
+        $request = new HttpFoundation\Request(['role' => $role], [], ['id' => $id]);
 
-        $request
-            ->get(Argument::exact('role'))
-            ->shouldBeCalled()
-            ->willReturn($role);
-
-        $request
-            ->get(Argument::exact('id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $id);
-
-        $request
-            ->getSession()
-            ->shouldBeCalled()
-            ->willReturn($session);
+        $request->setSession($session->reveal());
 
         $user = $this->prophesize(Auth\UserInterface::class);
 
@@ -170,7 +144,7 @@ final class PromoteActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
@@ -206,22 +180,9 @@ final class PromoteActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
+        $request = new HttpFoundation\Request(['role' => $role], [], ['id' => $id]);
 
-        $request
-            ->get(Argument::exact('role'))
-            ->shouldBeCalled()
-            ->willReturn($role);
-
-        $request
-            ->get(Argument::exact('id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $id);
-
-        $request
-            ->getSession()
-            ->shouldBeCalled()
-            ->willReturn($session);
+        $request->setSession($session->reveal());
 
         $user = $this->prophesize(Auth\UserInterface::class);
 
@@ -263,7 +224,7 @@ final class PromoteActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
@@ -296,22 +257,9 @@ final class PromoteActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
+        $request = new HttpFoundation\Request(['role' => $role], [], ['id' => $id]);
 
-        $request
-            ->get(Argument::exact('role'))
-            ->shouldBeCalled()
-            ->willReturn($role);
-
-        $request
-            ->get(Argument::exact('id'))
-            ->shouldBeCalled()
-            ->willReturn((string) $id);
-
-        $request
-            ->getSession()
-            ->shouldBeCalled()
-            ->willReturn($session);
+        $request->setSession($session->reveal());
 
         $user = $this->prophesize(Auth\UserInterface::class);
 
@@ -352,7 +300,7 @@ final class PromoteActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());

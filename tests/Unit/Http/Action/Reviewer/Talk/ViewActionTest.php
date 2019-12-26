@@ -49,17 +49,9 @@ final class ViewActionTest extends Framework\TestCase
             )
             ->shouldBeCalled();
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
+        $request = new HttpFoundation\Request([], [], ['id' => $id]);
 
-        $request
-            ->get(Argument::exact('id'))
-            ->shouldBeCalled()
-            ->willReturn($id);
-
-        $request
-            ->getSession()
-            ->shouldBeCalled()
-            ->willReturn($session);
+        $request->setSession($session->reveal());
 
         $talkHandler = $this->prophesize(Talk\TalkHandler::class);
 
@@ -86,7 +78,7 @@ final class ViewActionTest extends Framework\TestCase
         );
 
         /** @var HttpFoundation\RedirectResponse $response */
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertInstanceOf(HttpFoundation\RedirectResponse::class, $response);
         $this->assertSame(HttpFoundation\Response::HTTP_FOUND, $response->getStatusCode());
@@ -103,12 +95,7 @@ final class ViewActionTest extends Framework\TestCase
         $id      = $faker->numberBetween(1);
         $content = $faker->text;
 
-        $request = $this->prophesize(HttpFoundation\Request::class);
-
-        $request
-            ->get(Argument::exact('id'))
-            ->shouldBeCalled()
-            ->willReturn($id);
+        $request = new HttpFoundation\Request([], [], ['id' => $id]);
 
         $talkProfile = $this->prophesize(Talk\TalkProfile::class);
 
@@ -146,7 +133,7 @@ final class ViewActionTest extends Framework\TestCase
             $this->prophesize(Routing\Generator\UrlGeneratorInterface::class)->reveal()
         );
 
-        $response = $action($request->reveal());
+        $response = $action($request);
 
         $this->assertSame(HttpFoundation\Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame($content, $response->getContent());

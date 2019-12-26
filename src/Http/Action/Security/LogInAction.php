@@ -53,13 +53,13 @@ final class LogInAction
             // Validate that the email address is a valid email before attempting to log in
             // This will prevent improperly-formed emails from potentially getting recognized
             // as a missing user, not invalid input.
-            if (\filter_var($request->get('email'), FILTER_VALIDATE_EMAIL) === false) {
+            if (\filter_var($request->request->get('email'), FILTER_VALIDATE_EMAIL) === false) {
                 throw ValidationException::withErrors(['The email address is improperly formatted.']);
             }
 
             $this->authentication->authenticate(
-                $request->get('email'),
-                $request->get('password')
+                $request->request->get('email'),
+                $request->request->get('password')
             );
 
             $user = $this->authentication->user();
@@ -70,7 +70,7 @@ final class LogInAction
                 'ext'   => 'User does not exist in the system; you can sign up below!',
 
                 // Used to pre-populate the email field on the signup form
-                'old_email' => $request->get('email'),
+                'old_email' => $request->request->get('email'),
             ];
 
             $request->getSession()->set('flash', $flash);
