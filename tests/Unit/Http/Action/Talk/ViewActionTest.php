@@ -33,13 +33,7 @@ final class ViewActionTest extends AbstractActionTestCase
         $talkId = $faker->numberBetween(1);
         $url    = $faker->slug();
 
-        $request = $this->createRequestMock();
-
-        $request
-            ->expects($this->once())
-            ->method('get')
-            ->with($this->identicalTo('id'))
-            ->willReturn((string) $talkId);
+        $request = new HttpFoundation\Request([], [], ['id' => (string) $talkId]);
 
         $speakers = $this->createSpeakersMock();
 
@@ -79,13 +73,7 @@ final class ViewActionTest extends AbstractActionTestCase
 
         $talkId = $faker->numberBetween(1);
 
-        $request = $this->createRequestMock();
-
-        $request
-            ->expects($this->once())
-            ->method('get')
-            ->with($this->identicalTo('id'))
-            ->willReturn((string) $talkId);
+        $request = new HttpFoundation\Request([], [], ['id' => (string) $talkId]);
 
         $talk = $this->createTalkMock();
 

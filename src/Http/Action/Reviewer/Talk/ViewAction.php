@@ -47,7 +47,7 @@ final class ViewAction
 
     public function __invoke(HttpFoundation\Request $request): HttpFoundation\Response
     {
-        $this->talkHandler->grabTalk((int) $request->get('id'));
+        $this->talkHandler->grabTalk($request->attributes->getInt('id'));
 
         if (!$this->talkHandler->view()) {
             $request->getSession()->set('flash', [

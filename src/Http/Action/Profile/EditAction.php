@@ -58,7 +58,7 @@ final class EditAction
     {
         $user = $this->authentication->user();
 
-        if ((string) $user->getId() !== $request->get('id')) {
+        if ((string) $user->getId() !== $request->attributes->get('id')) {
             $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',

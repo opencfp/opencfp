@@ -44,7 +44,7 @@ final class ViewAction
      */
     public function __invoke(HttpFoundation\Request $request)
     {
-        $talkId = (int) $request->get('id');
+        $talkId = $request->attributes->getInt('id');
 
         try {
             $talk = $this->speakers->getTalk($talkId);

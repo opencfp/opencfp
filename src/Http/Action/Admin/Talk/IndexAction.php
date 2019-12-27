@@ -57,26 +57,26 @@ final class IndexAction
         $adminUserId = $this->authentication->user()->getId();
 
         $options = [
-            'order_by' => $request->get('order_by'),
-            'sort'     => $request->get('sort'),
+            'order_by' => $request->query->get('order_by'),
+            'sort'     => $request->query->get('sort'),
         ];
 
         $formattedTalks = $this->talkFilter->getTalks(
             $adminUserId,
-            $request->get('filter'),
-            $request->get('category'),
-            $request->get('type'),
+            $request->query->get('filter'),
+            $request->query->get('category'),
+            $request->query->get('type'),
             $options
         );
 
-        $perPage = (int) $request->get('per_page') ?: 20;
+        $perPage = (int) $request->query->get('per_page') ?: 20;
 
         $pagination = new Services\Pagination(
             $formattedTalks,
             $perPage
         );
 
-        $pagination->setCurrentPage($request->get('page'));
+        $pagination->setCurrentPage($request->query->get('page'));
 
         return [
             'pagination' => $pagination->createView(
@@ -87,14 +87,14 @@ final class IndexAction
             'page'           => $pagination->getCurrentPage(),
             'current_page'   => $request->getRequestUri(),
             'totalRecords'   => \count($formattedTalks),
-            'filter'         => $request->get('filter'),
-            'category'       => $request->get('category'),
-            'type'           => $request->get('type'),
+            'filter'         => $request->query->get('filter'),
+            'category'       => $request->query->get('category'),
+            'type'           => $request->query->get('type'),
             'talkCategories' => $this->talkHelper->getTalkCategories(),
             'talkTypes'      => $this->talkHelper->getTalkTypes(),
             'per_page'       => $perPage,
-            'sort'           => $request->get('sort'),
-            'order_by'       => $request->get('order_by'),
+            'sort'           => $request->query->get('sort'),
+            'order_by'       => $request->query->get('order_by'),
         ];
     }
 }

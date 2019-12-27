@@ -43,12 +43,9 @@ final class CreateActionTest extends AbstractActionTestCase
                 ])
             );
 
-        $request = $this->createRequestMock();
+        $request = new HttpFoundation\Request();
 
-        $request
-            ->expects($this->once())
-            ->method('getSession')
-            ->willReturn($session);
+        $request->setSession($session);
 
         $talkHelper = $this->createTalkHelperMock();
 
@@ -129,16 +126,7 @@ final class CreateActionTest extends AbstractActionTestCase
             'type'        => $type,
         ];
 
-        $request = $this->createRequestMock();
-
-        $request
-            ->expects($this->exactly(\count($fields)))
-            ->method('get')
-            ->willReturnCallback(function (string $name) use ($fields) {
-                if (\array_key_exists($name, $fields)) {
-                    return $fields[$name];
-                }
-            });
+        $request = new HttpFoundation\Request([], $fields);
 
         $talkHelper = $this->createTalkHelperMock();
 

@@ -64,14 +64,14 @@ final class ProcessAction
             ]);
 
             $this->accounts->create(
-                $request->get('email'),
-                $request->get('password'),
+                $request->request->get('email'),
+                $request->request->get('password'),
                 [
                     'activated' => 1,
                 ]
             );
 
-            $this->accounts->activate($request->get('email'));
+            $this->accounts->activate($request->request->get('email'));
 
             $request->getSession()->set('flash', [
                 'type'  => 'success',
@@ -80,8 +80,8 @@ final class ProcessAction
             ]);
 
             $this->authentication->authenticate(
-                $request->get('email'),
-                $request->get('password')
+                $request->request->get('email'),
+                $request->request->get('password')
             );
 
             $url = $this->urlGenerator->generate('dashboard');

@@ -101,7 +101,7 @@ class ForgotController extends BaseController
 
     public function resetAction(Request $request): Response
     {
-        if (empty($request->get('reset_code'))) {
+        if (empty($request->request->get('reset_code'))) {
             throw new \Exception();
         }
 
@@ -109,9 +109,9 @@ class ForgotController extends BaseController
         $error        = 0;
 
         try {
-            $user = $this->accounts->findById($request->get('user_id'));
+            $user = $this->accounts->findById($request->request->get('user_id'));
 
-            if (!$user->checkResetPasswordCode($request->get('reset_code'))) {
+            if (!$user->checkResetPasswordCode($request->request->get('reset_code'))) {
                 ++$error;
             }
         } catch (\RuntimeException $e) {
@@ -128,8 +128,8 @@ class ForgotController extends BaseController
 
         // Build password form and display it to the user
         $formOptions = [
-            'user_id'    => $request->get('user_id'),
-            'reset_code' => $request->get('reset_code'),
+            'user_id'    => $request->request->get('user_id'),
+            'reset_code' => $request->request->get('reset_code'),
         ];
         $form = $this->formFactory->create(new ResetFormType());
 

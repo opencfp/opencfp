@@ -60,7 +60,7 @@ final class EditAction
      */
     public function __invoke(HttpFoundation\Request $request)
     {
-        $talkId = (int) $request->get('id');
+        $talkId = $request->attributes->getInt('id');
 
         if (!$this->callForPapers->isOpen()) {
             $request->getSession()->set('flash', [

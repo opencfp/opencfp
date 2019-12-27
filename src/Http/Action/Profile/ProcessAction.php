@@ -39,7 +39,7 @@ final class ProcessAction
     private $profileImageProcessor;
 
     /**
-     * @var Twig\Environment
+     * @var Environment
      */
     private $twig;
 
@@ -66,7 +66,7 @@ final class ProcessAction
     {
         $userId = $this->authentication->user()->getId();
 
-        if ((string) $userId !== $request->get('id')) {
+        if ((string) $userId !== $request->request->get('id')) {
             $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -126,19 +126,19 @@ final class ProcessAction
     private function getFormData(HttpFoundation\Request $request): array
     {
         return [
-            'email'            => $request->get('email'),
-            'user_id'          => $request->get('id'),
-            'first_name'       => $request->get('first_name'),
-            'last_name'        => $request->get('last_name'),
-            'company'          => $request->get('company'),
-            'twitter'          => $request->get('twitter'),
-            'joindin_username' => $request->get('joindin_username'),
-            'url'              => $request->get('url'),
-            'airport'          => $request->get('airport'),
-            'transportation'   => (int) $request->get('transportation'),
-            'hotel'            => (int) $request->get('hotel'),
-            'speaker_info'     => $request->get('speaker_info') ?: null,
-            'speaker_bio'      => $request->get('speaker_bio') ?: null,
+            'email'            => $request->request->get('email'),
+            'user_id'          => $request->request->get('id'),
+            'first_name'       => $request->request->get('first_name'),
+            'last_name'        => $request->request->get('last_name'),
+            'company'          => $request->request->get('company'),
+            'twitter'          => $request->request->get('twitter'),
+            'joindin_username' => $request->request->get('joindin_username'),
+            'url'              => $request->request->get('url'),
+            'airport'          => $request->request->get('airport'),
+            'transportation'   => $request->request->getInt('transportation'),
+            'hotel'            => $request->request->getInt('hotel'),
+            'speaker_info'     => $request->request->get('speaker_info') ?: null,
+            'speaker_bio'      => $request->request->get('speaker_bio') ?: null,
         ];
     }
 
