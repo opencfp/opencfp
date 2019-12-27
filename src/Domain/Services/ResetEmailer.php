@@ -57,7 +57,7 @@ class ResetEmailer
      * @param string $email
      * @param string $resetCode
      *
-     * @return int
+     * @return false|int
      */
     public function send($userId, $email, $resetCode)
     {
@@ -65,6 +65,7 @@ class ResetEmailer
 
         try {
             $message = $this->preparedMessage($email, $parameters);
+
             return $this->swiftMailer->send($message);
         } catch (\Exception $e) {
             return false;

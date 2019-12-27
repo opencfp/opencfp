@@ -37,6 +37,9 @@ class TalkComment extends Eloquent
         return $this->belongsTo(Talk::class);
     }
 
+    /**
+     * @return void
+     */
     public function setUpdatedAt($value)
     {
         /**

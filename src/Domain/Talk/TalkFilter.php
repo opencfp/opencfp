@@ -45,7 +45,10 @@ class TalkFilter
         $this->talk      = $talk;
     }
 
-    public function getTalks(int $adminUserId, $filter = null, $category = null, $type = null, $options = []): array
+    /**
+     * @param array $options
+     */
+    public function getTalks(int $adminUserId, $filter = null, $category = null, $type = null, array $options = []): array
     {
         // Merge options with default options
         $options = $this->getSortOptions(

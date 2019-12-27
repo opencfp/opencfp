@@ -38,7 +38,7 @@ class Pagination
         }
     }
 
-    public function createView(string $baseUrl, $queryParams = []): string
+    public function createView(string $baseUrl, array $queryParams = []): string
     {
         $routeGenerator = function ($page) use ($queryParams, $baseUrl) {
             $queryParams['page'] = $page;

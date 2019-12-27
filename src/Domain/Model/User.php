@@ -69,7 +69,7 @@ class User extends Eloquent
      *
      * @param int $talkId
      *
-     * @return Collection|Talk[]
+     * @return Collection
      */
     public function getOtherTalks(int $talkId = 0): Collection
     {

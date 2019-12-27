@@ -28,6 +28,9 @@ class Throttle extends Eloquent
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * @return void
+     */
     public function setUpdatedAt($value)
     {
         /**
@@ -35,6 +38,9 @@ class Throttle extends Eloquent
          */
     }
 
+    /**
+     * @return void
+     */
     public function setCreatedAt($value)
     {
         /**

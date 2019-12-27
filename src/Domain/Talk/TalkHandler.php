@@ -150,7 +150,7 @@ class TalkHandler
         }
     }
 
-    public function rate($rating): bool
+    public function rate(int $rating): bool
     {
         if ($this->hasTalk()) {
             try {

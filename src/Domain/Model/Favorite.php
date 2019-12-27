@@ -31,6 +31,9 @@ class Favorite extends Eloquent
         return $this->belongsTo(Talk::class, 'talk_id');
     }
 
+    /**
+     * @return void
+     */
     public function setUpdatedAt($value)
     {
         /**

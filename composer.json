@@ -73,7 +73,8 @@
         "symfony/debug-bundle": "^3.4.15",
         "symfony/phpunit-bridge": "^3.4.15",
         "symfony/web-profiler-bundle": "^3.4.15",
-        "symfony/web-server-bundle": "^3.4.15"
+        "symfony/web-server-bundle": "^3.4.15",
+        "vimeo/psalm": "^3.7"
     },
     "config": {
         "optimize-autoloader": true
@@ -95,6 +96,7 @@
         "fix": "php vendor/bin/php-cs-fixer fix --config=.php_cs.dist --using-cache=no",
         "make": "make",
         "migrate": "./script/migrate",
+        "psalm": "./script/psalm",
         "setup-env": "./script/setup",
         "test": "./script/test",
         "update-env": "./script/update"

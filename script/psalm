@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# script/psalm: Run the Psalm static code analyzer tool on
+#               the current code base.
+
+
+set -e
+
+cd "$(dirname "$0")/.."
+./vendor/bin/psalm
+

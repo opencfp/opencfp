@@ -37,6 +37,9 @@ integration: test-env vendor database cache
 stan: vendor
 	vendor/bin/phpstan analyse
 
+static: vendor
+	vendor/bin/psalm
+
 test: auto-review doctrine integration unit
 
 test-env:

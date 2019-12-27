@@ -46,6 +46,9 @@ class TalkMeta extends Eloquent
         return $this->belongsTo(User::class, 'admin_user_id');
     }
 
+    /**
+     * @return void
+     */
     public function setUpdatedAt($value)
     {
         /**

@@ -67,7 +67,10 @@ class ExportsController extends BaseController
         return $this->csvReturn($formatted, 'emailExports');
     }
 
-    private function talksExportAction(bool $attributed, $where = null): Response
+    /**
+     * @param null|int[] $where
+     */
+    private function talksExportAction(bool $attributed, ?array $where = null): Response
     {
         $talks = Talk::orderBy('created_at', 'DESC');
         $talks = $where == null ? $talks : $talks->where($where);
@@ -111,7 +114,7 @@ class ExportsController extends BaseController
         return $info;
     }
 
-    private function startsWith($haystack, string $needle): bool
+    private function startsWith(string $haystack, string $needle): bool
     {
         $length = \strlen($needle);
 
