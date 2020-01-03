@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -46,9 +46,6 @@ class TalkMeta extends Eloquent
         return $this->belongsTo(User::class, 'admin_user_id');
     }
 
-    /**
-     * @return void
-     */
     public function setUpdatedAt($value)
     {
         /**

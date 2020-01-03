@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -24,7 +24,8 @@ final class SentinelServiceProviderTest extends WebTestCase
     public function allRepositoriesAreSet()
     {
         /** @var Sentinel $sentinel */
-        $sentinel = $this->container->get(Sentinel::class);
+        $container = self::$container;
+        $sentinel  = $container->get(Sentinel::class);
 
         $this->assertNotNull($sentinel->getUserRepository());
         $this->assertNotNull($sentinel->getActivationRepository());

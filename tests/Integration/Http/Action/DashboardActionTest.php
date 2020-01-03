@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -33,7 +33,7 @@ final class DashboardActionTest extends WebTestCase implements TransactionalTest
      */
     public function indexDisplaysUserAndTalks()
     {
-        $accounts = $this->container->get(AccountManagement::class);
+        $accounts = self::$container->get(AccountManagement::class);
 
         $user = $accounts->create('someone@example.com', 'some password', [
             'first_name' => 'Test',
@@ -52,11 +52,11 @@ final class DashboardActionTest extends WebTestCase implements TransactionalTest
         ]);
 
         /** @var MockAuthentication $authentication */
-        $authentication = $this->container->get(Authentication::class);
+        $authentication = self::$container->get(Authentication::class);
         $authentication->overrideUser($user);
 
         /** @var MockIdentityProvider $identityProvider */
-        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider = self::$container->get(IdentityProvider::class);
         $identityProvider->overrideCurrentUser(new User([
             'id'         => $user->getId(),
             'first_name' => 'Test',
@@ -77,7 +77,7 @@ final class DashboardActionTest extends WebTestCase implements TransactionalTest
      */
     public function it_hides_transportation_and_hotel_when_doing_an_online_conference()
     {
-        $accounts = $this->container->get(AccountManagement::class);
+        $accounts = self::$container->get(AccountManagement::class);
 
         $user = $accounts->create('another.one@example.com', 'some password', [
             'first_name' => 'Test',
@@ -86,11 +86,11 @@ final class DashboardActionTest extends WebTestCase implements TransactionalTest
         $accounts->activate($user->getLogin());
 
         /** @var MockAuthentication $authentication */
-        $authentication = $this->container->get(Authentication::class);
+        $authentication = self::$container->get(Authentication::class);
         $authentication->overrideUser($user);
 
         /** @var MockIdentityProvider $identityProvider */
-        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider = self::$container->get(IdentityProvider::class);
         $identityProvider->overrideCurrentUser(new User([
             'id'         => $user->getId(),
             'first_name' => 'Test',

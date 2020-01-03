@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -91,7 +91,7 @@ final class SpeakersControllerTest extends WebTestCase implements TransactionalT
         /** @var User $admin */
         $admin = factory(User::class, 1)->create()->first();
 
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 
@@ -122,7 +122,7 @@ final class SpeakersControllerTest extends WebTestCase implements TransactionalT
         /** @var User $admin */
         $admin = factory(User::class, 1)->create()->first();
 
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 
@@ -152,12 +152,12 @@ final class SpeakersControllerTest extends WebTestCase implements TransactionalT
         /** @var User $speaker */
         $speaker = factory(User::class, 1)->create()->first();
 
-        $this->container->get(AccountManagement::class)->promoteTo(
+        self::$container->get(AccountManagement::class)->promoteTo(
             $speaker->email,
             'admin'
         );
 
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
             ->getValue();
 
@@ -185,7 +185,7 @@ final class SpeakersControllerTest extends WebTestCase implements TransactionalT
         /** @var User $speaker */
         $speaker = factory(User::class, 1)->create()->first();
 
-        $this->container->get(AccountManagement::class)->promoteTo(
+        self::$container->get(AccountManagement::class)->promoteTo(
             $speaker->email,
             'admin'
         );

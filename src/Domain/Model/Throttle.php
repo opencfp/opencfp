@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -28,9 +28,6 @@ class Throttle extends Eloquent
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * @return void
-     */
     public function setUpdatedAt($value)
     {
         /**
@@ -38,9 +35,6 @@ class Throttle extends Eloquent
          */
     }
 
-    /**
-     * @return void
-     */
     public function setCreatedAt($value)
     {
         /**

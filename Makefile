@@ -34,9 +34,6 @@ infection: vendor database
 integration: test-env vendor database cache
 	SYMFONY_DEPRECATIONS_HELPER=disabled CFP_ENV=testing vendor/bin/phpunit --testsuite integration
 
-stan: vendor
-	vendor/bin/phpstan analyse
-
 static: vendor
 	vendor/bin/psalm
 

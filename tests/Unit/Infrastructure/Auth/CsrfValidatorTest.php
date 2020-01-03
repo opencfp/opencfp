@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -50,8 +50,8 @@ final class CsrfValidatorTest extends \PHPUnit\Framework\TestCase
         $manager = Mockery::mock(CsrfTokenManagerInterface::class);
         $manager->shouldReceive('isTokenValid')->andReturn(true);
         $request = Mockery::mock(Request::class);
-        $request->shouldReceive('get')->once()->with('token_id');
-        $request->shouldReceive('get')->once()->with('token');
+        $request->shouldReceive('get')->once()->with('token_id')->andReturn('TESTTOKENID');
+        $request->shouldReceive('get')->once()->with('token')->andReturn('TESTTOKEN');
 
         $csrf = new CsrfValidator($manager);
         $this->assertTrue($csrf->isValid($request));
@@ -66,8 +66,8 @@ final class CsrfValidatorTest extends \PHPUnit\Framework\TestCase
         $manager->shouldReceive('isTokenValid')->andReturn(false);
         $request = Mockery::mock(Request::class);
 
-        $request->shouldReceive('get')->once()->with('token_id');
-        $request->shouldReceive('get')->once()->with('token');
+        $request->shouldReceive('get')->once()->with('token_id')->andReturn('TESTTOKENID');
+        $request->shouldReceive('get')->once()->with('token')->andReturn('TESTTOKEN');
 
         $csrf = new CsrfValidator($manager);
         $this->assertFalse($csrf->isValid($request));

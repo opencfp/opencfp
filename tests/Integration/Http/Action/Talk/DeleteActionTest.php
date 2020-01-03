@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -31,7 +31,7 @@ final class DeleteActionTest extends WebTestCase implements TransactionalTestCas
         /** @var User $speaker */
         $speaker = $talk->speaker()->first();
 
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('delete_talk')
             ->getValue();
 
@@ -60,7 +60,7 @@ final class DeleteActionTest extends WebTestCase implements TransactionalTestCas
         /** @var User $otherSpeaker*/
         $otherSpeaker = factory(User::class, 1)->create()->first();
 
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('delete_talk')
             ->getValue();
 

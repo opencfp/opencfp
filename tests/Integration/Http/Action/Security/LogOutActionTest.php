@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -36,7 +36,7 @@ final class LogOutActionTest extends WebTestCase implements TransactionalTestCas
         $this->assertRedirectResponseUrlEquals('/', $response);
 
         /** @var Services\Authentication $authentication */
-        $authentication = $this->container->get(Services\Authentication::class);
+        $authentication = self::$container->get(Services\Authentication::class);
 
         $this->assertFalse($authentication->isAuthenticated());
     }

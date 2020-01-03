@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -30,14 +30,14 @@ final class CreateActionTest extends WebTestCase implements TransactionalTestCas
         // for the current date. `isCfpOpen` now uses 11:59pm current date.
         $now = new \DateTime();
 
-        $callForPapers = $this->container->get(CallForPapers::class);
+        $callForPapers = self::$container->get(CallForPapers::class);
 
         $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
 
         $method->setAccessible(true);
         $method->invoke($callForPapers, new \DateTimeImmutable($now->format('M. jS, Y')));
 
-        $this->container->get('twig')->addGlobal('cfp_open', $callForPapers->isOpen());
+        self::$container->get('twig')->addGlobal('cfp_open', $callForPapers->isOpen());
 
         /** @var Model\User $speaker */
         $speaker = factory(Model\User::class)->create()->first();

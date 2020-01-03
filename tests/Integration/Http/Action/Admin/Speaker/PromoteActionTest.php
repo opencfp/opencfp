@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -29,7 +29,7 @@ final class PromoteActionTest extends WebTestCase implements TransactionalTestCa
 
         /** @var Model\User $admin */
         $admin     = factory(Model\User::class, 1)->create()->first();
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_promote')
             ->getValue();
 
@@ -70,14 +70,14 @@ final class PromoteActionTest extends WebTestCase implements TransactionalTestCa
         $speaker = factory(Model\User::class, 1)->create()->first();
 
         /** @var Services\AccountManagement $accountManagement */
-        $accountManagement = $this->container->get(Services\AccountManagement::class);
+        $accountManagement = self::$container->get(Services\AccountManagement::class);
 
         $accountManagement ->promoteTo(
             $speaker->email,
             'admin'
         );
 
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_promote')
             ->getValue();
 
@@ -111,7 +111,7 @@ final class PromoteActionTest extends WebTestCase implements TransactionalTestCa
         /** @var Model\User $speaker */
         $speaker = factory(Model\User::class, 1)->create()->first();
 
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_promote')
             ->getValue();
 

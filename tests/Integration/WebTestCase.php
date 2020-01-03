@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -31,7 +31,6 @@ use OpenCFP\Test\Helper\ResponseHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session;
 
@@ -40,11 +39,6 @@ abstract class WebTestCase extends KernelTestCase
     use Helper;
     use MockeryPHPUnitIntegration;
     use ResponseHelper;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
 
     /**
      * Additional headers for a request.
@@ -60,7 +54,10 @@ abstract class WebTestCase extends KernelTestCase
      */
     protected $server = [];
 
-    protected function setUp()
+    /**
+     * @throws \Exception
+     */
+    protected function setUp(): void
     {
         $this->refreshContainer();
 
@@ -69,7 +66,7 @@ abstract class WebTestCase extends KernelTestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this instanceof TransactionalTestCase) {
             $this->databaseConnection()->rollBack();
@@ -78,33 +75,32 @@ abstract class WebTestCase extends KernelTestCase
         parent::tearDown();
     }
 
-    final protected static function getKernelClass()
+    final protected static function getKernelClass(): string
     {
         return Kernel::class;
     }
 
-    protected function refreshContainer()
+    protected function refreshContainer(): void
     {
         self::bootKernel(['environment' => Environment::TYPE_TESTING, 'debug' => true]);
-        $this->container = self::$kernel->getContainer();
     }
 
     private function databaseConnection(): Connection
     {
         /** @var Capsule\Manager $capsule */
-        $capsule = $this->container->get(Capsule\Manager::class);
+        $capsule = self::$container->get(Capsule\Manager::class);
 
         return $capsule->getConnection();
     }
 
     final protected function createClient(): Client
     {
-        return $this->container->get('test.client');
+        return self::$container->get('test.client');
     }
 
     final protected function call(string $method, string $uri, array $parameters = [], array $cookies = [], array $files = [], array $server = [], string $content = null): Response
     {
-        $client = $this->createClient();
+        $client = self::createClient();
 
         foreach ($cookies as $key => $value) {
             $client->getCookieJar()->set(new Cookie($key, $value));
@@ -137,33 +133,33 @@ abstract class WebTestCase extends KernelTestCase
 
     final protected function callForPapersIsOpen(): self
     {
-        $cfp    = $this->container->get(CallForPapers::class);
+        $cfp    = self::$container->get(CallForPapers::class);
         $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
         $method->setAccessible(true);
         $method->invoke($cfp, new \DateTimeImmutable('+1 week'));
 
-        $this->container->get('twig')->addGlobal('cfp_open', $cfp->isOpen());
+        self::$container->get('twig')->addGlobal('cfp_open', $cfp->isOpen());
 
         return $this;
     }
 
     final protected function callForPapersIsClosed(): self
     {
-        $cfp    = $this->container->get(CallForPapers::class);
+        $cfp    = self::$container->get(CallForPapers::class);
         $method = new \ReflectionMethod(CallForPapers::class, 'setEndDate');
         $method->setAccessible(true);
         $method->invoke($cfp, new \DateTimeImmutable('-1 week'));
 
-        $this->container->get('twig')->addGlobal('cfp_open', $cfp->isOpen());
+        self::$container->get('twig')->addGlobal('cfp_open', $cfp->isOpen());
 
         return $this;
     }
 
     final protected function isOnlineConference(): self
     {
-        $config                      = $this->container->getParameter('config.application');
+        $config                      = self::$container->getParameter('config.application');
         $config['online_conference'] = true;
-        $this->container->get('twig')->addGlobal('site', $config);
+        self::$container->get('twig')->addGlobal('site', $config);
 
         return $this;
     }
@@ -178,11 +174,11 @@ abstract class WebTestCase extends KernelTestCase
         $user->shouldReceive('getLogin')->andReturn('my@email.com');
 
         /** @var MockAuthentication $authentication */
-        $authentication = $this->container->get(Authentication::class);
+        $authentication = self::$container->get(Authentication::class);
         $authentication->overrideUser($user);
 
         /** @var MockIdentityProvider $identityProvider */
-        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider = self::$container->get(IdentityProvider::class);
         $identityProvider->overrideCurrentUser(new User(['id' => $id]));
 
         return $this;
@@ -197,11 +193,11 @@ abstract class WebTestCase extends KernelTestCase
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(false);
 
         /** @var MockAuthentication $authentication */
-        $authentication = $this->container->get(Authentication::class);
+        $authentication = self::$container->get(Authentication::class);
         $authentication->overrideUser($user);
 
         /** @var MockIdentityProvider $identityProvider */
-        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider = self::$container->get(IdentityProvider::class);
         $identityProvider->overrideCurrentUser(new User(['id' => $id]));
 
         return $this;
@@ -216,11 +212,11 @@ abstract class WebTestCase extends KernelTestCase
         $user->shouldReceive('hasAccess')->with('reviewer')->andReturn(true);
 
         /** @var MockAuthentication $authentication */
-        $authentication = $this->container->get(Authentication::class);
+        $authentication = self::$container->get(Authentication::class);
         $authentication->overrideUser($user);
 
         /** @var MockIdentityProvider $identityProvider */
-        $identityProvider = $this->container->get(IdentityProvider::class);
+        $identityProvider = self::$container->get(IdentityProvider::class);
         $identityProvider->overrideCurrentUser(new User(['id' => $id]));
 
         return $this;
@@ -228,14 +224,14 @@ abstract class WebTestCase extends KernelTestCase
 
     final protected function session(): Session\SessionInterface
     {
-        return $this->container->get('session');
+        return self::$container->get('session');
     }
 
     final protected function withFakeSwiftMailer(): self
     {
         $fakeMailer = Mockery::mock(\Swift_Mailer::class);
         $fakeMailer->shouldReceive('send')->andThrow(\Swift_TransportException::class);
-        $this->container->set(\Swift_Mailer::class, $fakeMailer);
+        self::$container->set(\Swift_Mailer::class, $fakeMailer);
 
         return $this;
     }

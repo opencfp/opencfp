@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -27,7 +27,7 @@ final class UpdateActionTest extends WebTestCase implements TransactionalTestCas
         /** @var Model\User $speaker */
         $speaker = factory(Model\User::class)->create()->first();
 
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 
@@ -52,7 +52,7 @@ final class UpdateActionTest extends WebTestCase implements TransactionalTestCas
         /** @var Model\User $speaker */
         $speaker = factory(Model\User::class)->create()->first();
 
-        $csrfToken = $this->container->get('security.csrf.token_manager')
+        $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('speaker_talk')
             ->getValue();
 

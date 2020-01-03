@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -24,7 +24,7 @@ final class ForgotControllerTest extends WebTestCase implements TransactionalTes
      */
     public function sendResetDisplaysCorrectMessage()
     {
-        $this->container->get(AccountManagement::class)
+        self::$container->get(AccountManagement::class)
             ->create('someone@example.com', 'some password');
 
         $client = $this->createClient();

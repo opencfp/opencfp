@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -25,7 +25,7 @@ final class ViewActionTest extends WebTestCase implements TransactionalTestCase
      */
     public function willDisplayOwnTalk()
     {
-        $accounts = $this->container->get(AccountManagement::class);
+        $accounts = self::$container->get(AccountManagement::class);
 
         $user = $accounts->create('someone@example.com', 'some password');
         $accounts->activate($user->getLogin());

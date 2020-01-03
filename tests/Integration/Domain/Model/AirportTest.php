@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -24,7 +24,7 @@ final class AirportTest extends WebTestCase
      */
     private $airports;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -32,7 +32,7 @@ final class AirportTest extends WebTestCase
     }
 
     /** @test */
-    public function it_queries_airports_table_by_code()
+    public function it_queries_airports_table_by_code(): void
     {
         $airport = $this->airports->withCode('AAC');
 
@@ -44,7 +44,7 @@ final class AirportTest extends WebTestCase
     /**
      * @test
      */
-    public function it_squawks_when_airport_is_not_found()
+    public function it_squawks_when_airport_is_not_found(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('not found');
@@ -55,7 +55,7 @@ final class AirportTest extends WebTestCase
     /**
      * @test
      */
-    public function itIsNotCaseSensitive()
+    public function itIsNotCaseSensitive(): void
     {
         $airport = $this->airports->withCode('aac');
 
@@ -67,7 +67,7 @@ final class AirportTest extends WebTestCase
     /**
      * @test
      */
-    public function itThrowsTheCorrectError()
+    public function itThrowsTheCorrectError(): void
     {
         $this->expectException(EntityNotFoundException::class);
         $this->expectExceptionMessage('not found');

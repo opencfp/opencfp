@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2013-2019 OpenCFP
+ * Copyright (c) 2013-2020 OpenCFP
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -22,7 +22,7 @@ final class ExceptionListenerTest extends WebTestCase
     /**
      * @test
      */
-    public function jsonOn404()
+    public function jsonOn404(): void
     {
         $response = $this->get('/invalid/uri', [], [], [], ['HTTP_ACCEPT' => 'application/json']);
 
@@ -34,7 +34,7 @@ final class ExceptionListenerTest extends WebTestCase
     /**
      * @test
      */
-    public function htmlOn404()
+    public function htmlOn404(): void
     {
         $response = $this->get('/invalid/uri');
 
@@ -42,10 +42,9 @@ final class ExceptionListenerTest extends WebTestCase
         $this->assertResponseBodyContains('Page Not Found!', $response);
     }
 
-    protected function refreshContainer()
+    protected function refreshContainer(): void
     {
         // Disable debug mode, so we see the rendered error page.
         self::bootKernel(['environment' => Environment::TYPE_TESTING, 'debug' => false]);
-        $this->container = self::$kernel->getContainer();
     }
 }
