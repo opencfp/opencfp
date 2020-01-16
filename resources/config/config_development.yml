@@ -22,7 +22,7 @@ oneup_flysystem:
 
 doctrine:
   dbal:
-    url: mysql://root:@127.0.0.1:3306/cfp
+    url: mysql://%database.user%:%database.password%@%database.host%/%database.database%
     default_table_options:
       charset: utf8mb4
       collate: utf8mb4_unicode_ci
