@@ -216,7 +216,7 @@ class SpeakersController extends BaseController
         $role = $request->query->get('role');
         $id   = $request->attributes->getInt('id');
 
-        if ($this->authentication->user()->getId() == $id) {
+        if ($this->authentication->user()->getId() === $id) {
             $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -228,7 +228,7 @@ class SpeakersController extends BaseController
 
         try {
             $user = $this->accounts->findById($id);
-            $this->accounts->demoteFrom($user->getLogin(), $role);
+            $this->accounts->demoteFromAdmin($user->getLogin());
 
             $request->getSession()->set('flash', [
                 'type'  => 'success',

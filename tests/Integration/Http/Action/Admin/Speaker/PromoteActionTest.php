@@ -72,10 +72,7 @@ final class PromoteActionTest extends WebTestCase implements TransactionalTestCa
         /** @var Services\AccountManagement $accountManagement */
         $accountManagement = self::$container->get(Services\AccountManagement::class);
 
-        $accountManagement ->promoteTo(
-            $speaker->email,
-            'admin'
-        );
+        $accountManagement ->promoteToAdmin($speaker->email);
 
         $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_promote')

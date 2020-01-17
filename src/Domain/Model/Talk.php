@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace OpenCFP\Domain\Model;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -59,7 +61,10 @@ class Talk extends Eloquent
     /**
      * Returns the most recent talks
      *
-     * @param int $limit maximum ammount of entries to return
+     * @param Builder $query
+     * @param int     $limit maximum ammount of entries to return
+     *
+     * @return Builder
      */
     public function scopeRecent(Builder $query, int $limit = 10): Builder
     {
@@ -69,24 +74,47 @@ class Talk extends Eloquent
             ->take($limit);
     }
 
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
     public function scopeSelected(Builder $query): Builder
     {
         return $query
             ->where('selected', '=', 1);
     }
 
+    /**
+     * @param Builder $query
+     * @param string  $category
+     *
+     * @return Builder
+     */
     public function scopeCategory(Builder $query, string $category): Builder
     {
         return $query
             ->where('category', '=', $category);
     }
 
+    /**
+     * @param Builder $query
+     * @param string  $type
+     *
+     * @return Builder
+     */
     public function scopeType(Builder $query, string $type): Builder
     {
         return $query
             ->where('type', '=', $type);
     }
 
+    /**
+     * @param Builder $query
+     * @param int     $userId
+     *
+     * @return Builder
+     */
     public function scopeViewedBy(Builder $query, int $userId): Builder
     {
         return $query
@@ -97,6 +125,12 @@ class Talk extends Eloquent
             });
     }
 
+    /**
+     * @param Builder $query
+     * @param int     $userId
+     *
+     * @return Builder
+     */
     public function scopeFavoritedBy(Builder $query, int $userId): Builder
     {
         return $query
@@ -105,6 +139,12 @@ class Talk extends Eloquent
             });
     }
 
+    /**
+     * @param Builder $query
+     * @param int     $userId
+     *
+     * @return Builder
+     */
     public function scopeRatedPlusOneBy(Builder $query, int $userId): Builder
     {
         return $query
@@ -115,6 +155,12 @@ class Talk extends Eloquent
             });
     }
 
+    /**
+     * @param Builder $query
+     * @param int     $userId
+     *
+     * @return Builder
+     */
     public function scopeNotRatedBy(Builder $query, int $userId): Builder
     {
         return $query
@@ -125,6 +171,12 @@ class Talk extends Eloquent
             });
     }
 
+    /**
+     * @param Builder $query
+     * @param int     $userId
+     *
+     * @return Builder
+     */
     public function scopeNotViewedBy(Builder $query, int $userId): Builder
     {
         return $query
@@ -135,6 +187,11 @@ class Talk extends Eloquent
             });
     }
 
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
     public function scopeTopRated(Builder $query): Builder
     {
         return $query->selectRaw('talks.*, sum(m.rating) as total')
@@ -144,7 +201,12 @@ class Talk extends Eloquent
             ->orderBy('total', 'desc');
     }
 
-    public function delete()
+    /**
+     * @throws \Exception
+     *
+     * @return null|bool
+     */
+    public function delete(): ?bool
     {
         $this->deleteComments();
         $this->deleteFavorites();
@@ -158,29 +220,29 @@ class Talk extends Eloquent
      *
      * @throws \Exception
      */
-    public function deleteComments()
+    public function deleteComments(): void
     {
         $this->comments()
             ->get()
             ->each(function (TalkComment $comment) {
                 if (!$comment->delete()) {
-                    throw new \Exception('Unable to delete all comments');
+                    throw new \RuntimeException('Unable to delete all comments');
                 }
             });
     }
 
     /**
-     * Delets all favorites of the talk
+     * Deletes all favorites of the talk
      *
      * @throws \Exception
      */
-    public function deleteFavorites()
+    public function deleteFavorites(): void
     {
         $this->favorites()
             ->get()
-            ->each(function (Favorite $favorite) {
+            ->each(static function (Favorite $favorite) {
                 if (!$favorite->delete()) {
-                    throw new \Exception('Unable to delete all favorites');
+                    throw new \RuntimeException('Unable to delete all favorites');
                 }
             });
     }
@@ -190,13 +252,13 @@ class Talk extends Eloquent
      *
      * @throws \Exception
      */
-    public function deleteMeta()
+    public function deleteMeta(): void
     {
         $this->meta()
             ->get()
-            ->each(function (TalkMeta $meta) {
+            ->each(static function (TalkMeta $meta) {
                 if (!$meta->delete()) {
-                    throw new \Exception('Unable to delete all meta info');
+                    throw new \RuntimeException('Unable to delete all meta info');
                 }
             });
     }
@@ -208,16 +270,21 @@ class Talk extends Eloquent
      * @param bool $willCreate on true it will create a new model if it doesn't exists, on false
      *                         it will throw an error
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws ModelNotFoundException
      *
-     * @return \Illuminate\Database\Eloquent\Model|static
+     * @return Model|static
      */
     public function getMetaFor(int $userId, bool $willCreate = false)
     {
         return $willCreate ? $this->getOrCreateMeta($userId) : $this->getOrFailMeta($userId);
     }
 
-    private function getOrCreateMeta(int $userId)
+    /**
+     * @param int $userId
+     *
+     * @return Model
+     */
+    private function getOrCreateMeta(int $userId): Model
     {
         return $this->meta()->firstOrCreate([
             'admin_user_id' => $userId,
@@ -225,6 +292,11 @@ class Talk extends Eloquent
         ]);
     }
 
+    /**
+     * @param int $userId
+     *
+     * @return HasMany|Model
+     */
     private function getOrFailMeta(int $userId)
     {
         return $this->meta()

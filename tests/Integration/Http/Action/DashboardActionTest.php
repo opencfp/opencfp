@@ -40,7 +40,7 @@ final class DashboardActionTest extends WebTestCase implements TransactionalTest
             'last_name'  => 'User',
         ]);
         $accounts->activate($user->getLogin());
-        $accounts->promoteTo($user->getLogin(), 'admin');
+        $accounts->promoteToAdmin($user->getLogin());
 
         Talk::create([
             'title'       => 'Test Title',

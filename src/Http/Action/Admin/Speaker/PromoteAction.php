@@ -60,7 +60,7 @@ final class PromoteAction
             return new HttpFoundation\RedirectResponse($url);
         }
 
-        if ($user->hasAccess(\strtolower($role))) {
+        if ($user->hasAccess($role)) {
             $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',
@@ -76,11 +76,16 @@ final class PromoteAction
         }
 
         try {
-            $this->accountManagement->promoteTo(
-                $user->getLogin(),
-                $role
-            );
+            if (\strtolower($role) === 'admin') {
+                $this->accountManagement->promoteToAdmin($user->getLogin());
+            } else {
+                $this->accountManagement->promoteTo(
+                    $user->getLogin(),
+                    $role
+                );
+            }
         } catch (Auth\RoleNotFoundException $exception) {
+            echo $exception->getMessage();
             $request->getSession()->set('flash', [
                 'type'  => 'error',
                 'short' => 'Error',

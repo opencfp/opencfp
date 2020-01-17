@@ -80,10 +80,10 @@ final class SentinelAccountManagement implements AccountManagement
             return new SentinelUser($user, $this->sentinel);
         }
 
-        throw new UserExistsException();
+        throw new UserExistsException('Could not create user for ' . $email);
     }
 
-    public function activate(string $email)
+    public function activate(string $email): void
     {
         $user           = $this->findByLogin($email)->getUser();
         $activationCode = $this->sentinel->getActivationRepository()->create($user)->getCode();
@@ -91,9 +91,9 @@ final class SentinelAccountManagement implements AccountManagement
         $this->sentinel->getActivationRepository()->complete($user, $activationCode);
     }
 
-    public function promoteTo(string $email, string $roleName)
+    public function promoteTo(string $email, string $roleName): void
     {
-        $role = $this->sentinel->getRoleRepository()->findByName(\strtolower($roleName));
+        $role = $this->sentinel->getRoleRepository()->findByName($roleName);
 
         if (!$role instanceof Roles\RoleInterface) {
             throw RoleNotFoundException::fromName($roleName);
@@ -104,9 +104,15 @@ final class SentinelAccountManagement implements AccountManagement
             ->attach($this->findByLogin($email)->getId());
     }
 
-    public function demoteFrom(string $email, string $roleName)
+    public function promoteToAdmin(string $email): void
     {
-        $role = $this->sentinel->getRoleRepository()->findByName(\strtolower($roleName));
+        $role = $this->sentinel->getRoleRepository()->findByName('Admin');
+        $role->users()->attach($this->findByLogin($email)->getId());
+    }
+
+    public function demoteFrom(string $email, string $roleName): void
+    {
+        $role = $this->sentinel->getRoleRepository()->findByName($roleName);
 
         if (!$role instanceof Roles\RoleInterface) {
             throw RoleNotFoundException::fromName($roleName);
@@ -115,5 +121,11 @@ final class SentinelAccountManagement implements AccountManagement
         $role
             ->users()
             ->detach($this->findByLogin($email)->getId());
+    }
+
+    public function demoteFromAdmin(string $email): void
+    {
+        $role = $this->sentinel->getRoleRepository()->findByName('Admin');
+        $role->users()->detach($this->findByLogin($email)->getId());
     }
 }

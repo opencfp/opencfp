@@ -58,7 +58,7 @@ final class SentinelUser implements UserInterface
             $users = $this->sentinel->getRoleRepository()->findByName($permissions)->getUsers();
 
             return $users->contains(function ($user) {
-                return $user->id == $this->user->id;
+                return $user->id === $this->user->id;
             });
         } catch (\Throwable $e) {
             return false;

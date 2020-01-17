@@ -152,10 +152,7 @@ final class SpeakersControllerTest extends WebTestCase implements TransactionalT
         /** @var User $speaker */
         $speaker = factory(User::class, 1)->create()->first();
 
-        self::$container->get(AccountManagement::class)->promoteTo(
-            $speaker->email,
-            'admin'
-        );
+        self::$container->get(AccountManagement::class)->promoteToAdmin($speaker->email);
 
         $csrfToken = self::$container->get('security.csrf.token_manager')
             ->getToken('admin_speaker_demote')
@@ -185,10 +182,7 @@ final class SpeakersControllerTest extends WebTestCase implements TransactionalT
         /** @var User $speaker */
         $speaker = factory(User::class, 1)->create()->first();
 
-        self::$container->get(AccountManagement::class)->promoteTo(
-            $speaker->email,
-            'admin'
-        );
+        self::$container->get(AccountManagement::class)->promoteToAdmin($speaker->email);
 
         $response = $this
             ->asAdmin($admin->id)
