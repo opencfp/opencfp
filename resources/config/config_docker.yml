@@ -1,5 +1,5 @@
 imports:
-  - { resource: config.yml }
+  - {resource: config.yml}
 
 oneup_flysystem:
   adapters:
@@ -26,4 +26,3 @@ doctrine:
         type: annotation
         dir: "%kernel.root_dir%/../src/Domain/Entity"
         prefix: OpenCFP\Domain\Entity
-
