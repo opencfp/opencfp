@@ -1,14 +1,10 @@
 #!/bin/sh
 
-# script/bootstrap: Resolve all dependencies that the application requires to run.
+# script/docker: Set things up so the app will run in the Docker container
 
 set -e
 
 cd "$(dirname "$0")/.."
-
-if [ "x$CFP_ENV" = "x" ]; then
-    export CFP_ENV="development"
-fi
 
 echo "==> Installing dependencies..."
 if command -v composer &>/dev/null; then
@@ -20,13 +16,8 @@ else
     exit 1
 fi
 
-cp config/$CFP_ENV.yml.dist config/$CFP_ENV.yml
-
-if [ ! -f "config/$CFP_ENV.yml" ]; then
-    echo "Missing config/$CFP_ENV.yml, be sure to copy from config/$CFP_ENV.yml.dist and update config"
-    exit 1
-fi
-
-
 echo "==> Clearing caches..."
 bin/console --env=$CFP_ENV cache:clear
+
+echo "==> Running migrations..."
+bin/console doctrine:migrations:migrate --env=$CFP_ENV

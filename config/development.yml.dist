@@ -18,11 +18,11 @@ application:
   user_image_size: 300
 
 database:
-  host: 127.0.0.1
+  host: database
   database: cfp
-  dsn: mysql:dbname=cfp;host=127.0.0.1
+  dsn: mysql:dbname=cfp;host=database
   user: root
-  password: ~
+  password: root
 
 log:
   level: debug

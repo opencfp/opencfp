@@ -1,6 +1,14 @@
 imports:
   - { resource: config.yml }
 
+framework:
+  router:
+    resource: '%kernel.project_dir%/resources/config/routing_development.yml'
+  profiler: ~
+
+web_profiler:
+  toolbar: true
+
 oneup_flysystem:
   adapters:
     uploads:
@@ -14,7 +22,7 @@ oneup_flysystem:
 
 doctrine:
   dbal:
-    url: mysql://root:@127.0.0.1:3306/cfp
+    url: mysql://root:root@database:3306/cfp
     default_table_options:
       charset: utf8mb4
       collate: utf8mb4_unicode_ci

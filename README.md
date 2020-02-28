@@ -259,17 +259,17 @@ mail:
     auth_mode: ~
 ```
 
-As the project migrates from using Eloquent to Doctrine, you also need to edit the following files to ensure the database
-credentials are correct:
+As the project migrates from using Eloquent to Doctrine you also need to edit the following files to ensure the database
+credentials are correct, creating a version of the modified file in the same location but without the `.dist` suffix.
 
-`resources/config/config_testing.yml`
-`resources/config/config_development.yml`
-`resources/config/config_production.yml`
+`resources/config/config_testing.yml.dist`
+`resources/config/config_development.yml.dist`
+`resources/config/config_production.yml.dist`
 
 
 ### [Running behind a trusted proxy](#run-trusted-proxy)
 
-If you are running OpenCFP behing a proxy server which adds X-Forwarded-For headers (this could be a cloud based load balancer or a service such as Cloudflare) you will need to set the environment variable TRUST_PROXIES to true this will ensure that OpenCFP trusts the headers set by these proxies for the original IP address and ssl mode. Setting this will trust these headers regardless of where the original request originates, so it's advisable to either lock down your instance so that only the trusted proxy can access it or modify the list of trusted proxies in the index.php file to only include the ip addresses of your proxies.
+If you are running OpenCFP behind a proxy server which adds X-Forwarded-For headers (this could be a cloud based load balancer or a service such as Cloudflare) you will need to set the environment variable TRUST_PROXIES to true this will ensure that OpenCFP trusts the headers set by these proxies for the original IP address and ssl mode. Setting this will trust these headers regardless of where the original request originates, so it's advisable to either lock down your instance so that only the trusted proxy can access it or modify the list of trusted proxies in the index.php file to only include the ip addresses of your proxies.
 
 
 ### [OpenCFP Central](#opencfp-central)
@@ -365,38 +365,35 @@ settings that machine might have that could differ from the machine used for wri
 #### Build & Run the image
 
 Please remember to edit the file `config/docker.yml.dist` to match your environment, then you can build your own 
-docker image by executing:
-
-```
-$ ./.docker/build latest
-```
-
-And the result will be an image called `opencfp/opencfp:latest`.
-
-Or if you like you can run [docker-compose](https://docs.docker.com/compose/install/) command which will build the 
+docker image by using a [docker-compose](https://docs.docker.com/compose/install/) command which will build the 
 image and run the containers automatically for you:
 
 ```
 $  docker-compose -f docker-compose.yml.dist up --build -d
 ```
 
-So now if you head over to `http://localhost:8080` you will be greeted with a running version of OpenCFP.
+So now if you head over to `http://localhost:8080` you will be greeted with a running version of OpenCFP in
+`development` mode.
 
-After building and running the Docker image you'll need to [Run Migrations](#run-migrations) and [Add an Admin User](#user-management) before logging-in.
+After building and running the Docker image you'll need to use the docker-compose [exec](https://docs.docker.com/compose/reference/exec/) 
+command to configure things inside the container:
+
+```bash
+$ docker-compose -f docker-compose.yml.dist exec app composer run setup-docker
+```
+
+and then [Add an Admin User](#user-management) before logging-in.
 
 #### Run PHP commands within the Container
 
 To run any command in the app container you can use the docker-compose 
-[exec](https://docs.docker.com/compose/reference/exec/) command, for example to run the `setup` script you run:
+[exec](https://docs.docker.com/compose/reference/exec/) command, for example to clear the cache for your
+environment:
 
 ```bash
-$ docker-compose -f docker-compose.yml.dist exec app composer run setup-env
+$ docker-compose -f docker-compose.yml.dist exec app bin/console cache:clear 
 ```
 OR
-
-```bash
-$ docker-compose -f docker-compose.yml.dist exec app ./script/setup
-```
 
 #### Running the image directly
 
@@ -412,7 +409,7 @@ Where `database` is the name of the running database container.
 
 #### Access MySQL container
 
-To access MySQL you can use the following information:
+To access the MySQL container from outside the application container you can use the following information:
 
 - **Host**: 127.0.0.1
 - **User**: root

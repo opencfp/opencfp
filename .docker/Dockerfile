@@ -13,7 +13,7 @@ LABEL Description="This is the docker image for OpenCFP, a PHP-based conference 
 RUN docker-php-ext-install pdo_mysql
 
 ENV CFP_ENV ${CFP_ENV:-development}
-ENV CFP_DB_HOST ${CFP_DB_HOST:-"127.0.0.1"}
+ENV CFP_DB_HOST ${CFP_DB_HOST:-database}
 ENV CFP_DB_PASS ${CFP_DB_PASS:-root}
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
