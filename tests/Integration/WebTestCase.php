@@ -164,6 +164,15 @@ abstract class WebTestCase extends KernelTestCase
         return $this;
     }
 
+    final protected function isAnonymizedReviews(): self
+    {
+        $config                       = self::$container->getParameter('config.application');
+        $config['anonymized_reviews'] = true;
+        self::$container->get('twig')->addGlobal('site', $config);
+
+        return $this;
+    }
+
     final protected function asLoggedInSpeaker(int $id): self
     {
         $user = Mockery::mock(UserInterface::class);
