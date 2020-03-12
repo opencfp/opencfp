@@ -16,6 +16,7 @@ application:
   coc_link: http://confcodeofconduct.com/
   venue_image_path: /assets/img/venue.jpg
   user_image_size: 300
+  anonymized_reviews: false
 
 database:
   host: database
