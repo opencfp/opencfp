@@ -33,7 +33,7 @@ swiftmailer:
 
 doctrine:
   dbal:
-    url: mysql://root:root@127.0.0.1:3306/cfp_test
+    url: mysql://root:root@mysql:3306/cfp_test
     default_table_options:
       charset: utf8mb4
       collate: utf8mb4_unicode_ci

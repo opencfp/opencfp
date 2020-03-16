@@ -20,7 +20,7 @@ application:
 database:
   host: localhost
   database: cfp_test
-  dsn: mysql:dbname=root;host=localhost
+  dsn: mysql:dbname=root;host=mysql
   user: root
   password: root
 
