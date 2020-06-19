@@ -2,7 +2,7 @@
 
 OpenCFP is a PHP-based conference talk submission system.
 
-*YOU CAN SUPPORT THIS PROJECT BY SPONSORING CHRIS HARTJES VIA HIS [GitHub Sponsorship](https://github.com/sponsors/chartjes)*
+*OpenCFP is now in maintenance mode with only security fixes being accepted*
 
 ---
 [![GitHub Actions](https://github.com/opencfp/opencfp/workflows/OpenCFP%20CI/badge.svg)](https://github.com/opencfp/opencfp/actions) [![GitHub release](https://img.shields.io/github/release/opencfp/opencfp.svg)](https://github.com/opencfp/opencfp/releases/latest)
@@ -22,7 +22,6 @@ OpenCFP is a PHP-based conference talk submission system.
    * [Specify Web Server Document Root](#specify-web-server-document-root)
    * [Create a Database](#create-a-database)
    * [Configure Environment](#configure-environment)
-   * [OpenCFP Central](#opencfp-central)
    * [Run Migrations](#run-migrations)
    * [Using Vagrant](#using-vagrant)
    * [Final Touches](#final-touches)
@@ -270,17 +269,6 @@ credentials are correct, creating a version of the modified file in the same loc
 ### [Running behind a trusted proxy](#run-trusted-proxy)
 
 If you are running OpenCFP behind a proxy server which adds X-Forwarded-For headers (this could be a cloud based load balancer or a service such as Cloudflare) you will need to set the environment variable TRUST_PROXIES to true this will ensure that OpenCFP trusts the headers set by these proxies for the original IP address and ssl mode. Setting this will trust these headers regardless of where the original request originates, so it's advisable to either lock down your instance so that only the trusted proxy can access it or modify the list of trusted proxies in the index.php file to only include the ip addresses of your proxies.
-
-
-### [OpenCFP Central](#opencfp-central)
-
-[OpenCFP Central](https://www.opencfpcentral.com) is a web site created by [Chris Hartjes](https://github.com/sponsors/chartjes) to help both speakers and conference organizers. Conference
-organizers can create an account and get an OAuth2 client ID and client secret, which can be entered into the
-configuration files. With the ID and secret, change the values for `opencfpcentral.sso` to be `on`, and set
-`opencfpcentral.clientId` and `opencfpcentral.clientSecret` to their respective values. 
-
-Any users who create an account at OpenCFP Central can use it to log into any OpenCFP instance that has enabled
-SSO. If you don't already have an account on that instance, one will be created for you.
 
 
 ### [Run Migrations](#run-migrations)
