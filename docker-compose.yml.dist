@@ -1,0 +1,40 @@
+version : "3.4"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    image: opencfp/opencfp
+    environment:
+      - "CFP_ENV=development"
+      - "CFP_DB_HOST=database"
+      - "CFP_DB_PASS=root"
+    volumes:
+      - ./:/srv/application
+      - ./config/docker.yml.dist:/srv/application/config/production.yml
+      - ./resources/config_docker.yml:/src/application/resources/config_production.yml
+    working_dir: /srv/application
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/srv/application
+      - ./.docker/nginx:/etc/nginx/conf.d
+    links:
+      - app
+
+  database:
+    image: mysql:5.7
+    environment:
+      - "MYSQL_DATABASE=cfp"
+      - "MYSQL_ROOT_PASSWORD=root"
+    ports:
+      - "3306:3306"
+    volumes:
+      - database:/var/lib/mysql
+
+volumes:
+  database:
