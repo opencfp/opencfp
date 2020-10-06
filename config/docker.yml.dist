@@ -19,22 +19,22 @@ application:
   anonymized_reviews: false
 
 database:
-  host: database
-  database: cfp
-  dsn: mysql:dbname=cfp;host=database
-  user: root
-  password: root
+  host: ${CFP_DB_HOST}
+  database: ${CFP_DATABASE}
+  dsn: mysql:dbname=${CFP_DATABASE};host=${CFP_DB_HOST}
+  user: ${CFP_DB_USER}
+  password: ${CFP_DB_PASS}
 
 log:
   level: error
 
 mail:
-  host: ~
-  port: ~
-  username: ~
-  password: ~
-  encryption: ~
-  auth_mode: ~
+  host: ${MAIL_HOST}
+  port: ${MAIL_PORT}
+  username: ${MAIL_USERNAME}
+  password: ${MAIL_PASSWORD}
+  encryption: ${MAIL_ENCRYPTION}
+  auth_mode: ${MAIL_AUTH_MODE}
 
 talk:
   categories:

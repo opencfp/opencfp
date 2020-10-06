@@ -1,0 +1,64 @@
+version : "3.4"
+
+services :
+  php:
+    build: 
+      context: .
+      target: php
+      args:
+        CFP_ENV: development
+    environment:
+      - CFP_DB_HOST=database
+      - CFP_DATABASE=opencfp
+      - CFP_DB_PASS=changeMe
+      - CFP_DB_USER=opencfp
+      - MAIL_HOST=~
+      - MAIL_PORT=~ 
+      - MAIL_USERNAME=~
+      - MAIL_PASSWORD=~
+      - MAIL_ENCRYPTION=~
+      - MAIL_AUTH_MODE=~
+      - ADMIN_NAME=changeMe
+      - ADMIN_LAST_NAME=changeMe
+      - ADMIN_PASSWORD=changeMe
+      - ADMIN_EMAIL=changeMe@changeMe
+    healthcheck : #override of the default configuration in dockerfile
+      interval : 10s
+      timeout : 3s
+      retries : 3
+      start_period: 30s
+    depends_on:
+      - database
+    volumes:
+      - ./:/srv/app:rw,cached
+
+  nginx:
+    build:
+      context: .
+      target: nginx #name of the alias in dockerfile
+      args:
+        CFP_ENV: development
+    depends_on:
+      - php
+    volumes:
+      - ./:/srv/app:ro
+      - ./log:/var/log/nginx
+    ports: 
+      - target: 80
+        published: 8080
+  
+  database:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=opencfp
+      - MYSQL_USER=opencfp
+      - MYSQL_ROOT_PASSWORD=changeMe
+      - MYSQL_PASSWORD=changeMe
+    volumes:
+      - database:/var/lib/mysql:rw
+    ports:
+      - target: 3306
+        published: 3306
+
+volumes :
+  database: {}

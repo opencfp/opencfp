@@ -19,9 +19,9 @@ application:
   anonymized_reviews: false
 
 database:
-  host: database
+  host: 127.0.0.1
   database: cfp
-  dsn: mysql:dbname=cfp;host=database
+  dsn: mysql:dbname=cfp;host=127.0.0.1
   user: root
   password: root
 

@@ -1,0 +1,47 @@
+imports:
+  - { resource: config.yml }
+
+services:
+  _defaults:
+    public: false
+
+  OpenCFP\Test\Helper\MockAuthentication:
+    decorates: OpenCFP\Domain\Services\Authentication
+    arguments: ['@OpenCFP\Test\Helper\MockAuthentication.inner']
+
+  OpenCFP\Test\Helper\MockIdentityProvider:
+    decorates: OpenCFP\Domain\Services\IdentityProvider
+    arguments: ['@OpenCFP\Test\Helper\MockIdentityProvider.inner']
+
+framework:
+  session:
+    storage_id: session.storage.mock_file
+  test: ~
+
+oneup_flysystem:
+  adapters:
+    uploads:
+      memory: ~
+
+  filesystems:
+    uploads:
+      adapter: uploads
+      alias: upload_filesystem
+
+swiftmailer:
+  disable_delivery: true
+
+doctrine:
+  dbal:
+    url: mysql://root:root@127.0.0.1:3306/cfp
+    default_table_options:
+      charset: utf8mb4
+      collate: utf8mb4_unicode_ci
+  orm:
+    auto_mapping: true
+    auto_generate_proxy_classes: true
+    mappings:
+      OpenCFP\Domain\Entity:
+        type: annotation
+        dir: "%kernel.root_dir%/../src/Domain/Entity"
+        prefix: OpenCFP\Domain\Entity
