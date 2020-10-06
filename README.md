@@ -354,90 +354,131 @@ settings that machine might have that could differ from the machine used for wri
 #### Build & Run the image
 
 OpenCfp provides a ready-to-use docker-compose.yml file.
-If you need to add configuration options specific to your working environment (network ...) add them to a docker-compose.override.yml file.
-Instead of updating the *ENV_PROD*.yaml.dist to set your environment, with the docker file, you only have to modify the environment variable in the docker-compose.yml.
 
+Instead of updating the *ENV_PROD*.yaml.dist file to set your environment, with the docker file, you only have to put the environment variables in the docker-compose.override.yml file wich will override the default configuration.
 
-You also have to add a value to the variables:
+Don't forget to edit **the /config/docker.yml.dist file**  at **the application level** to define your own configuration (Like the title, email or the event location or the event date). We **recommand** you to only modify the **application level** of this file, the other levels are automaticly set with environment variables provide in the *docker-compose.yml*.
+
+You also have to change the values named *changeMe* to truly define the environment variables:
 ```
 services :
   php:
-    ...
     environment:
-    - ...
-    - ADMIN_USERNAME=changeMe 
-    - ADMIN_PASSWORD=changeMe 
-    - ADMIN_EMAIL=changeMe
-    - ...
+      - CFP_DB_HOST=database
+      - CFP_DATABASE=opencfp
+      - CFP_DB_PASS=changeMe
+      - CFP_DB_USER=opencfp
+      - MAIL_HOST=~
+      - MAIL_PORT=~ 
+      - MAIL_USERNAME=~
+      - MAIL_PASSWORD=~
+      - MAIL_ENCRYPTION=~
+      - MAIL_AUTH_MODE=~
+      - ADMIN_NAME=changeMe
+      - ADMIN_LAST_NAME=changeMe
+      - ADMIN_PASSWORD=changeMe
+      - ADMIN_EMAIL=changeMe@changeMe
 ```
 which will be useful values for the creation of a development administrator.
 
-Then you can build the docker images by using a [docker-compose](https://docs.docker.com/compose/install/) command which will build the image, create a admin user in development or test, compiling the Frontend Assets and run the containers automatically for you:
+**Quick explanation of the environment variables :**
+
+ - The environment variables named *CFP_** are use to set the connection with the database.
+ - The environment variables named *MAIL_** are use to set the mail provider. This values are not mandatory.
+ - The environment variables name *ADMIN_** are use to create the admin account in development or test environment. If an admin user already exist the initialisation processus will warn you but will keep going his initialisation. You can ignore this warn message if you already made a previus docker build.
+
+If you need to add configuration options specific to your working environment (network ...) add them to a docker-compose.override.yml file.See [this link](https://docs.docker.com/compose/extends/#understanding-multiple-compose-files) to learn more about that.
+
+Then you can build the docker images by using a [docker-compose](https://docs.docker.com/compose/install/) command which will build the images, create an admin user in development or test environment, compiling the Frontend Assets and run the containers automatically for you:
 
 ```
 $  docker-compose up
 ```
-Once the container is up and ready, go to **http://localhost:8080/** to see your server ready to use
+This command starts the following services:
 
-If an administrator already exists, an error message will be displayed to you. You can ignore it if you've used docker-compose before.
+| Name        | Description                                                                | Port(s)            | Environment(s)                                   |
+|-------------|----------------------------------------------------------------------------|--------------------|--------------------------------------------------|
+| nodejs          | A nodejs container to compil css                                                | n/a               | all      |
+| database          | A MySQL 5.7 database server                                                | 3306               | all (prefer using a managed service in prod) |
+| php         | The OpenCfp project with PHP, PHP-FPM 7.4, Composer and sensitive configs     | n/a                | all                                              |
+| nginx       | The HTTP server for the OpenCfp project (NGINX)                               | 8080               | all                                              |
 
-Sometimes you only want to rebuild the images to create your container. To do that use
+<details>
+  <summary>To see the status of the containers, run:</summary>
+
+  ```bash
+  docker-compose ps
+  ```
+</details>
+
+<details>
+  <summary>To run any command in the app container you can use the docker-compose exec command:</summary>
+
+  ```bash
+  docker-compose exec <container name> <command>
+  docker-compose exec php sh # To enter the container directly, you will be placed at the root of the project
+  docker-compose exec php bin/console cache:clear # To execute a cache:clear with the php console
+  ```
+</details>
+
+<details>
+  <summary>To see the container's logs, run:</summary>
+
+  ```bash
+  docker-compose logs        # display the logs of all containers
+  docker-compose logs -f     # same but follow the logs
+  docker-compose logs -f <container_name> # follow the logs for one container
+  ```
+</details>
+
+<details>
+  <summary>To rebuild the containers:</summary>
+
+  ```bash
+  docker-compose build        # Rebuild all the containers
+  ```
+</details>
+
+Once the containers are up, you will have to add an administrator for the website.
+To do that you only have to execute 
 
 ```sh
-$ docker-compose build
+
+docker-compose exec php bin/console user:create --first_name="CHANGE_HERE" --last_name="CHANGE_HERE" --email="CHANGE_HERE" --password="CHANGE_HERE" --admin
+
 ```
 
-#### Run PHP commands within the Container
+After the execution of this command you will see : 
 
-To run any command in the app container you can use the docker-compose 
-[exec](https://docs.docker.com/compose/reference/exec/) command, for example to clear the cache for your
-environment:
+```sh
+OpenCFP
+=======
 
-```bash
-$ docker-compose exec php bin/console cache:clear 
-```
-OR
+Creating User
+-------------
 
-#### Running the image directly
+ * created user with login *login you passed*
+ * promoted user to admin
 
-You can run the image (after you build it) and link it to an already running database container using the docker 
-[run](https://docs.docker.com/engine/reference/commandline/run/) command like:
+                                                                                
+ [OK] User Created   
 
-```bash
-$ docker run 
- -e CFP_ENV=development 
- -e CFP_DB_HOST=database 
- -e CFP_DB_PASS=changeMe 
- -e CFP_DATABASE=opencfp
- -e CFP_DB_USER=opencfp
- -e MAIL_HOST=~
- -e MAIL_PORT=~ 
- -e MAIL_USERNAME=~
- -e MAIL_PASSWORD=~
- -e MAIL_ENCRYPTION=~
- -e MAIL_AUTH_MODE=~
- -e ADMIN_NAME=changeMe
- -e ADMIN_LAST_NAME=changeMe
- -e ADMIN_PASSWORD=changeMe
- -e ADMIN_EMAIL=changeMe@changeMe
- --name cfp --link database:database -p 80:80 -d opencfp/opencfp:latest
 ```
 
-Where `database` is the name of the running database container. 
+Now everything is set and ready to use. Go to localhost:8080 to see OpenCfp runnig. 
 
+To know how to use a docker-compose file in production, see [this documentation](https://docs.docker.com/compose/production/).
 
 #### Access MySQL container
 
 To access the MySQL container from outside the application container you can use the following information:
 
 - **Host**: 127.0.0.1
-- **User**: (the one you specfied in the docker-compose file)
-- **Password**:(the one you specfied in the docker-compose file) 
+- **User**: (the user name credential you provided in the docker-compose.yml file)
+- **Password**: (the user password credential you provided in the docker-compose.yml file) 
  
 
-For using docker in your development environment check [DOCKER.md](DOCKER.md) file. 
-
-_PS_: You can always modify the file `docker-compose.override.yml` and have your own setup.
+_PS_: You can always modify the file `docker-compose.override.yml` and have your own setup. See [this link](https://docs.docker.com/compose/extends/#understanding-multiple-compose-files) to learn more about that.
 
 
 ## [Command-line Utilities](#command-line-utilities)
@@ -576,4 +617,3 @@ The default phpunit.xml.dist file is in the root directory for the project.
 
 You may need to edit directory permissions for some vendor packages such as HTML Purifier. Check the `/cache` directory's
 permissions first.
-

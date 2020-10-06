@@ -26,3 +26,5 @@ deployment.xml
 infection-log.txt
 infection.json
 Homestead.yaml
+docker-compose.override.yml
+docker-compose.override.yaml

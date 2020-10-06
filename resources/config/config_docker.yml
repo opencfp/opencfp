@@ -14,7 +14,7 @@ oneup_flysystem:
 
 doctrine:
   dbal:
-    url :  mysql://%database.user%:%database.password%@%database.host%/%database.database%
+    url: mysql://%database.user%:%database.password%@%database.host%/%database.database%
     default_table_options:
       charset: utf8mb4
       collate: utf8mb4_unicode_ci

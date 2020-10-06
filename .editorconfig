@@ -1,20 +1,77 @@
+# EditorConfig helps developers define and maintain consistent
+# coding styles between different editors and IDEs
+# editorconfig.org
+
 root = true
 
 [*]
-end_of_line = lf
-insert_final_newline = true
-charset = utf-8
+# Change these settings to your own preference
 indent_style = space
 indent_size = 4
 
+# We recommend you to keep these unchanged
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
 [*.js]
+indent_style = space
 indent_size = 2
 
-[*.yml]
+[*.json]
+indent_style = space
 indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.php]
+indent_style = space
+indent_size = 4
+
+[*.sh]
+indent_style = tab
+indent_size = 4
 
 [*.scss]
+indent_style = space
 indent_size = 2
 
-[Makefile]
+[*.twig]
+indent_style = space
+indent_size = 4
+
+[*.xml]
+indent_style = space
+indent_size = 4
+
+[*.{yaml,yml}]
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = false
+
+[deploy/**.yaml]
+indent_style = space
+indent_size = 2
+
+[.github/**.yml]
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+
+[composer.json]
+indent_style = space
+indent_size = 4
+
+[docker-compose{,.*}.{yaml,yml}]
+indent_style = space
+indent_size = 2
+
+[Dockerfile]
 indent_style = tab
+indent_size = 4
+
+[package.json]
+indent_style = space
+indent_size = 2
