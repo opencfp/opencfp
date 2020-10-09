@@ -25,5 +25,4 @@ deployment.xml
 /phpunit.xml
 infection-log.txt
 infection.json
-docker-compose.yml
 Homestead.yaml

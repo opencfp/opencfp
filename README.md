@@ -335,6 +335,7 @@ You also need to edit the following files for Doctrine support
 
 ### [Building Docker Image](#building-docker-image)
 
+
 #### What is Docker
 
 Quoting [OpenSource](https://opensource.com/resources/what-docker):
@@ -352,25 +353,39 @@ settings that machine might have that could differ from the machine used for wri
 
 #### Build & Run the image
 
-Please remember to edit the file `config/docker.yml.dist` to match your environment, then you can build your own 
-docker image by using a [docker-compose](https://docs.docker.com/compose/install/) command which will build the 
-image and run the containers automatically for you:
+OpenCfp provides a ready-to-use docker-compose.yml file.
+If you need to add configuration options specific to your working environment (network ...) add them to a docker-compose.override.yml file.
+Instead of updating the *ENV_PROD*.yaml.dist to set your environment, with the docker file, you only have to modify the environment variable in the docker-compose.yml.
+
+
+You also have to add a value to the variables:
+```
+services :
+  php:
+    ...
+    environment:
+    - ...
+    - ADMIN_USERNAME=changeMe 
+    - ADMIN_PASSWORD=changeMe 
+    - ADMIN_EMAIL=changeMe
+    - ...
+```
+which will be useful values for the creation of a development administrator.
+
+Then you can build the docker images by using a [docker-compose](https://docs.docker.com/compose/install/) command which will build the image, create a admin user in development or test, compiling the Frontend Assets and run the containers automatically for you:
 
 ```
-$  docker-compose -f docker-compose.yml.dist up --build -d
+$  docker-compose up
 ```
+Once the container is up and ready, go to **http://localhost:8080/** to see your server ready to use
 
-So now if you head over to `http://localhost:8080` you will be greeted with a running version of OpenCFP in
-`development` mode.
+If an administrator already exists, an error message will be displayed to you. You can ignore it if you've used docker-compose before.
 
-After building and running the Docker image you'll need to use the docker-compose [exec](https://docs.docker.com/compose/reference/exec/) 
-command to configure things inside the container:
+Sometimes you only want to rebuild the images to create your container. To do that use
 
-```bash
-$ docker-compose -f docker-compose.yml.dist exec app composer run setup-docker
+```sh
+$ docker-compose build
 ```
-
-and then [Add an Admin User](#user-management) before logging-in.
 
 #### Run PHP commands within the Container
 
@@ -379,7 +394,7 @@ To run any command in the app container you can use the docker-compose
 environment:
 
 ```bash
-$ docker-compose -f docker-compose.yml.dist exec app bin/console cache:clear 
+$ docker-compose exec php bin/console cache:clear 
 ```
 OR
 
@@ -388,8 +403,24 @@ OR
 You can run the image (after you build it) and link it to an already running database container using the docker 
 [run](https://docs.docker.com/engine/reference/commandline/run/) command like:
 
-```
-docker run -e CFP_ENV=production -e CFP_DB_HOST=database -e CFP_DB_PASS=root --name cfp --link database:database -p 80:80 -d opencfp/opencfp:latest
+```bash
+$ docker run 
+ -e CFP_ENV=development 
+ -e CFP_DB_HOST=database 
+ -e CFP_DB_PASS=changeMe 
+ -e CFP_DATABASE=opencfp
+ -e CFP_DB_USER=opencfp
+ -e MAIL_HOST=~
+ -e MAIL_PORT=~ 
+ -e MAIL_USERNAME=~
+ -e MAIL_PASSWORD=~
+ -e MAIL_ENCRYPTION=~
+ -e MAIL_AUTH_MODE=~
+ -e ADMIN_NAME=changeMe
+ -e ADMIN_LAST_NAME=changeMe
+ -e ADMIN_PASSWORD=changeMe
+ -e ADMIN_EMAIL=changeMe@changeMe
+ --name cfp --link database:database -p 80:80 -d opencfp/opencfp:latest
 ```
 
 Where `database` is the name of the running database container. 
@@ -400,13 +431,13 @@ Where `database` is the name of the running database container.
 To access the MySQL container from outside the application container you can use the following information:
 
 - **Host**: 127.0.0.1
-- **User**: root
-- **Password**: root (or the one you specified in docker-compose) 
+- **User**: (the one you specfied in the docker-compose file)
+- **Password**:(the one you specfied in the docker-compose file) 
  
 
 For using docker in your development environment check [DOCKER.md](DOCKER.md) file. 
 
-_PS_: You can always modify the file `docker-compose.yml.dist` and have your own setup.
+_PS_: You can always modify the file `docker-compose.override.yml` and have your own setup.
 
 
 ## [Command-line Utilities](#command-line-utilities)
