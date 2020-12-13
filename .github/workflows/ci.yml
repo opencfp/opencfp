@@ -30,10 +30,10 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring
           ini-values: post_max_size=512M, short_open_tag=On
-      - name: Composer install
-        uses: docker:://composer:1.9.1
+      - name: Install depedencies
+        uses: php-actions/composer@v4
         with:
-          args: install
+          composer_version: 1.9.1
       - name: Check for PHP code style violations
         run: |
           vendor/bin/php-cs-fixer fix --verbose --diff
