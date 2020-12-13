@@ -55,7 +55,7 @@ See [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 ## [Minimum Requirements](#requirements)
 
- * PHP 7.3 (currently does not work on PHP 7.4 due to dependency issues)
+ * PHP 7.4
  * Apache 2+ with `mod_rewrite` enabled and an `AllowOverride all` directive in your `<Directory>` block is the recommended web server
  * Composer requirements are listed in [composer.json](composer.json).
  * You may need to install `php7.0-intl` extension for PHP. (`php-intl` on CentOS/RHEL-based distributions)
