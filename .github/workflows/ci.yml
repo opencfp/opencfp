@@ -33,7 +33,7 @@ jobs:
       - name: Install depedencies
         uses: php-actions/composer@v4
         with:
-          composer_version: 1
+          composer_version: 2 
       - name: Check for PHP code style violations
         run: |
           vendor/bin/php-cs-fixer fix --verbose --diff
