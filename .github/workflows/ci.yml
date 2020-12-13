@@ -31,7 +31,7 @@ jobs:
           extensions: mbstring
           ini-values: post_max_size=512M, short_open_tag=On
       - name: Composer install
-        uses: docker::/composer:1.9.1
+        uses: docker:://composer:1.9.1
         with:
           args: install
       - name: Check for PHP code style violations
