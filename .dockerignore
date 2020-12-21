@@ -1,7 +1,31 @@
+# Docker
+Dockerfile
+docker-compose.*
+
+# Symfony
 vendor
+
+# Node
 node_modules
+
+# Git
 .git
+.gitignore
+
+# Travis
 .travis
 .travis.yml
 
-docker.compose.override.yml
+# Opencfp
+.editorconfig
+opencfp-nginx.conf.dist
+PHPMDRuleSet.xml
+phpstan.neon.dist
+phpunit.xml.dist
+psalm.xml
+Vagrantfile
+Makefile
+after.sh
+Homestead.yaml.*
+infection.json.dist
+*.md

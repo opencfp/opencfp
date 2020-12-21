@@ -34,4 +34,3 @@ doctrine:
         type: annotation
         dir: "%kernel.root_dir%/../src/Domain/Entity"
         prefix: OpenCFP\Domain\Entity
-
