@@ -18,6 +18,7 @@ use OpenCFP\WebPath;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class TwigExtension extends AbstractExtension
@@ -37,11 +38,29 @@ class TwigExtension extends AbstractExtension
      */
     private $path;
 
-    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator, WebPath $path)
+    /**
+     * @var \HTMLPurifier
+     */
+    private $purifier;
+
+    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator, WebPath $path, \HTMLPurifier $purifier)
     {
         $this->requestStack = $requestStack;
         $this->urlGenerator = $urlGenerator;
         $this->path         = $path;
+        $this->purifier     = $purifier;
+    }
+
+    public function getFilters()
+    {
+        return [
+            new TwigFilter('purify', [$this, 'purify'], ['is_safe' => ['html']]),
+        ];
+    }
+
+    public function purify(string $content): string
+    {
+        return $this->purifier->purify($content);
     }
 
     public function getFunctions()

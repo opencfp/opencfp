@@ -28,10 +28,10 @@
 
     <div class="flex">
         <div class="w-2/3 mr-8">
-            {{ talk.description|striptags|markdown }}
+            {{ talk.description|striptags|markdown|purify }}
             {% if talk.other is not empty %}
                 <h4 class="mb-2 mt-4">Other Information</h4>
-                {{ talk.other|striptags|markdown }}
+                {{ talk.other|striptags|markdown|purify }}
             {% endif %}
         </div>
         <div>
@@ -58,7 +58,7 @@
                     <div class="p-3 border-b border-grey bg-blue-lightest flex justify-between">
                         <span class="font-bold">{{ comment.user.first_name }} {{ comment.user.last_name }}</span><span>{{ comment.created|date("F jS \\a\\t g:ia") }}</span>
                     </div>
-                    <div class="p-3">{{ comment.message | striptags | markdown }}</div>
+                    <div class="p-3">{{ comment.message | striptags | markdown | purify }}</div>
                 </div>
             </div>
         {% endfor %}
