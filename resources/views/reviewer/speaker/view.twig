@@ -19,7 +19,7 @@
     <div class="flex">
         <div class="w-1/2 mr-4">
             <h3><i class="fa fa-file-text-o"></i> Speaker Bio</h3>
-            {% if speaker.isAllowedToSee('bio') %}{{ speaker.bio|striptags|markdown }} {% endif %}
+            {% if speaker.isAllowedToSee('bio') %}{{ speaker.bio|striptags|markdown|purify }} {% endif %}
         </div>
         <div class="w-1/2">
             {% if talks | length > 0 %}
@@ -38,7 +38,7 @@
 
             {% if speaker.isAllowedToSee('info') and  speaker.info is not empty %}
                 <h3>Additional Notes</h3>
-                <p>{{ speaker.info | striptags | markdown }}</p>
+                <p>{{ speaker.info | striptags | markdown | purify }}</p>
             {% endif %}
         </div>
     </div>
