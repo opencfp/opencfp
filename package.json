@@ -26,6 +26,6 @@
     "mem": "4.0.0",
     "serialize-javascript": "^3.1.0",
     "webpack": "^4.0.0",
-    "webpack-dev-server": "^3.1.11"
+    "webpack-dev-server": "^5.2.4"
   }
 }
